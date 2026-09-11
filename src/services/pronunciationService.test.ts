@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   clearPronunciationAudioCacheForTests,
+  fetchTextPronunciationAudio,
   fetchFallbackWordPronunciationAudio,
   fetchWordPronunciationAudio
 } from "./pronunciationService";
@@ -31,6 +32,12 @@ describe("pronunciationService", () => {
     const audioUrl = await fetchWordPronunciationAudio("colour", "en-GB");
 
     expect(audioUrl).toBe("https://dict.youdao.com/dictvoice?type=1&audio=colour");
+  });
+
+  it("uses one Baidu audio request for a complete sentence", async () => {
+    await expect(fetchTextPronunciationAudio("  The bell   rings softly.  ", "en-US")).resolves.toBe(
+      "https://fanyi.baidu.com/gettts?lan=en&text=The+bell+rings+softly.&spd=3&source=web"
+    );
   });
 
   it("normalizes protocol-relative fallback audio urls", async () => {

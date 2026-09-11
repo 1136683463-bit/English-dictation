@@ -1,0 +1,1324 @@
+{
+  "capturedAt": "2026-07-06T13:25:10.522Z",
+  "baseUrl": "http://127.0.0.1:1421",
+  "desktop": [
+    {
+      "id": "01-entry",
+      "route": "/",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/01-entry-desktop.png",
+      "metrics": {
+        "url": "/",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 720
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 720
+        },
+        "sidebarWidth": null,
+        "mainWidth": null,
+        "overflow": []
+      }
+    },
+    {
+      "id": "02-today",
+      "route": "/today",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/02-today-desktop.png",
+      "metrics": {
+        "url": "/today",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 1325
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 1325
+        },
+        "sidebarWidth": 248,
+        "mainWidth": 1032,
+        "overflow": []
+      }
+    },
+    {
+      "id": "03-training",
+      "route": "/training",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/03-training-desktop.png",
+      "metrics": {
+        "url": "/training",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 922
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 922
+        },
+        "sidebarWidth": 248,
+        "mainWidth": 1032,
+        "overflow": []
+      }
+    },
+    {
+      "id": "04-spelling",
+      "route": "/spelling",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/04-spelling-desktop.png",
+      "metrics": {
+        "url": "/spelling",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 792
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 792
+        },
+        "sidebarWidth": 248,
+        "mainWidth": 1032,
+        "overflow": []
+      }
+    },
+    {
+      "id": "05-review",
+      "route": "/review",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/05-review-desktop.png",
+      "metrics": {
+        "url": "/review",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 811
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 811
+        },
+        "sidebarWidth": 248,
+        "mainWidth": 1032,
+        "overflow": []
+      }
+    },
+    {
+      "id": "06-library",
+      "route": "/library",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/06-library-desktop.png",
+      "metrics": {
+        "url": "/library",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 1790
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 1790
+        },
+        "sidebarWidth": 248,
+        "mainWidth": 1032,
+        "overflow": [
+          {
+            "tag": "select",
+            "className": "",
+            "text": "核心100 - Unit 1核心100 - Unit 2核心100 - Unit 3核心100 - Unit 4核心100 - Unit 5",
+            "left": 946,
+            "right": 1069,
+            "width": 123,
+            "clientWidth": 121,
+            "scrollWidth": 136,
+            "overRight": 0,
+            "scrollOverflow": 15,
+            "overflowX": "visible",
+            "whiteSpace": "pre"
+          }
+        ]
+      }
+    },
+    {
+      "id": "07-add",
+      "route": "/add",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/07-add-desktop.png",
+      "metrics": {
+        "url": "/add",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 769
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 769
+        },
+        "sidebarWidth": 248,
+        "mainWidth": 1032,
+        "overflow": []
+      }
+    },
+    {
+      "id": "08-import",
+      "route": "/import",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/08-import-desktop.png",
+      "metrics": {
+        "url": "/import",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 1955
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 1955
+        },
+        "sidebarWidth": 248,
+        "mainWidth": 1032,
+        "overflow": []
+      }
+    },
+    {
+      "id": "09-mistakes",
+      "route": "/mistakes",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/09-mistakes-desktop.png",
+      "metrics": {
+        "url": "/mistakes",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 720
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 720
+        },
+        "sidebarWidth": 248,
+        "mainWidth": 1032,
+        "overflow": []
+      }
+    },
+    {
+      "id": "10-stats",
+      "route": "/stats",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/10-stats-desktop.png",
+      "metrics": {
+        "url": "/stats",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 2206
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 2206
+        },
+        "sidebarWidth": 248,
+        "mainWidth": 1032,
+        "overflow": []
+      }
+    },
+    {
+      "id": "11-settings",
+      "route": "/settings",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/11-settings-desktop.png",
+      "metrics": {
+        "url": "/settings",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 1701
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 1701
+        },
+        "sidebarWidth": 248,
+        "mainWidth": 1032,
+        "overflow": []
+      }
+    },
+    {
+      "id": "12-units",
+      "route": "/units",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/12-units-desktop.png",
+      "metrics": {
+        "url": "/units",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 1118
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 1118
+        },
+        "sidebarWidth": 248,
+        "mainWidth": 1032,
+        "overflow": [
+          {
+            "tag": "button",
+            "className": "unit-book-card selected  ",
+            "text": "Vol. 01核心100 - Unit 12026 07 06010 / 35",
+            "left": 284,
+            "right": 462,
+            "width": 178,
+            "clientWidth": 176,
+            "scrollWidth": 194,
+            "overRight": 0,
+            "scrollOverflow": 18,
+            "overflowX": "hidden",
+            "whiteSpace": "normal"
+          },
+          {
+            "tag": "button",
+            "className": "unit-book-card   ",
+            "text": "Vol. 02核心100 - Unit 22026 07 06020 / 20",
+            "left": 480,
+            "right": 657,
+            "width": 178,
+            "clientWidth": 176,
+            "scrollWidth": 194,
+            "overRight": 0,
+            "scrollOverflow": 18,
+            "overflowX": "hidden",
+            "whiteSpace": "normal"
+          },
+          {
+            "tag": "button",
+            "className": "unit-book-card   ",
+            "text": "Vol. 03核心100 - Unit 32026 07 06030 / 20",
+            "left": 675,
+            "right": 853,
+            "width": 178,
+            "clientWidth": 176,
+            "scrollWidth": 194,
+            "overRight": 0,
+            "scrollOverflow": 18,
+            "overflowX": "hidden",
+            "whiteSpace": "normal"
+          },
+          {
+            "tag": "button",
+            "className": "unit-book-card   ",
+            "text": "Vol. 04核心100 - Unit 42026 07 06040 / 20",
+            "left": 871,
+            "right": 1048,
+            "width": 178,
+            "clientWidth": 176,
+            "scrollWidth": 194,
+            "overRight": 0,
+            "scrollOverflow": 18,
+            "overflowX": "hidden",
+            "whiteSpace": "normal"
+          },
+          {
+            "tag": "button",
+            "className": "unit-book-card   ",
+            "text": "Vol. 05核心100 - Unit 52026 07 06050 / 20",
+            "left": 1066,
+            "right": 1244,
+            "width": 178,
+            "clientWidth": 176,
+            "scrollWidth": 194,
+            "overRight": 0,
+            "scrollOverflow": 18,
+            "overflowX": "hidden",
+            "whiteSpace": "normal"
+          },
+          {
+            "tag": "button",
+            "className": "unit-book-card unit-create-card unit-create-vocab",
+            "text": "新建New自定义词书CREATE BOOK+添加单词",
+            "left": 284,
+            "right": 462,
+            "width": 178,
+            "clientWidth": 176,
+            "scrollWidth": 182,
+            "overRight": 0,
+            "scrollOverflow": 6,
+            "overflowX": "hidden",
+            "whiteSpace": "normal"
+          },
+          {
+            "tag": "a",
+            "className": "unit-book-card unit-create-card unit-create-listening",
+            "text": "新建New自定义精听CREATE LISTEN+导入材料",
+            "left": 480,
+            "right": 657,
+            "width": 178,
+            "clientWidth": 176,
+            "scrollWidth": 182,
+            "overRight": 0,
+            "scrollOverflow": 6,
+            "overflowX": "hidden",
+            "whiteSpace": "normal"
+          }
+        ]
+      }
+    },
+    {
+      "id": "13-words",
+      "route": "/words",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/13-words-desktop.png",
+      "metrics": {
+        "url": "/words",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 1047
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 1047
+        },
+        "sidebarWidth": 248,
+        "mainWidth": 1032,
+        "overflow": [
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          },
+          {
+            "tag": "input",
+            "className": "",
+            "text": "",
+            "left": 1059,
+            "right": 1101,
+            "width": 42,
+            "clientWidth": 40,
+            "scrollWidth": 208,
+            "overRight": 0,
+            "scrollOverflow": 168,
+            "overflowX": "clip",
+            "whiteSpace": "pre"
+          }
+        ]
+      }
+    },
+    {
+      "id": "14-sentences",
+      "route": "/sentences",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/14-sentences-desktop.png",
+      "metrics": {
+        "url": "/sentences",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 1280,
+          "height": 763
+        },
+        "docScroll": {
+          "width": 1280,
+          "height": 763
+        },
+        "sidebarWidth": 248,
+        "mainWidth": 1032,
+        "overflow": []
+      }
+    }
+  ],
+  "mobile": [
+    {
+      "id": "01-entry",
+      "route": "/",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/01-entry-mobile.png",
+      "metrics": {
+        "url": "/",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 390,
+          "height": 844
+        },
+        "docScroll": {
+          "width": 390,
+          "height": 844
+        },
+        "sidebarWidth": null,
+        "mainWidth": null,
+        "overflow": []
+      }
+    },
+    {
+      "id": "02-today",
+      "route": "/today",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/02-today-mobile.png",
+      "metrics": {
+        "url": "/today",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 390,
+          "height": 2350
+        },
+        "docScroll": {
+          "width": 390,
+          "height": 2350
+        },
+        "sidebarWidth": 390,
+        "mainWidth": 390,
+        "overflow": []
+      }
+    },
+    {
+      "id": "03-training",
+      "route": "/training",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/03-training-mobile.png",
+      "metrics": {
+        "url": "/training",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 390,
+          "height": 2122
+        },
+        "docScroll": {
+          "width": 390,
+          "height": 2122
+        },
+        "sidebarWidth": 390,
+        "mainWidth": 390,
+        "overflow": []
+      }
+    },
+    {
+      "id": "04-spelling",
+      "route": "/spelling",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/04-spelling-mobile.png",
+      "metrics": {
+        "url": "/spelling",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 390,
+          "height": 844
+        },
+        "docScroll": {
+          "width": 390,
+          "height": 844
+        },
+        "sidebarWidth": 390,
+        "mainWidth": 390,
+        "overflow": [
+          {
+            "tag": "strong",
+            "className": "",
+            "text": "核心词库 · 拼写模式",
+            "left": 79,
+            "right": 196,
+            "width": 117,
+            "clientWidth": 117,
+            "scrollWidth": 124,
+            "overRight": 0,
+            "scrollOverflow": 7,
+            "overflowX": "hidden",
+            "whiteSpace": "nowrap"
+          },
+          {
+            "tag": "a",
+            "className": "secondary-button",
+            "text": "错词专项",
+            "left": 204,
+            "right": 263,
+            "width": 59,
+            "clientWidth": 57,
+            "scrollWidth": 62,
+            "overRight": 0,
+            "scrollOverflow": 5,
+            "overflowX": "hidden",
+            "whiteSpace": "nowrap"
+          }
+        ]
+      }
+    },
+    {
+      "id": "05-review",
+      "route": "/review",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/05-review-mobile.png",
+      "metrics": {
+        "url": "/review",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 390,
+          "height": 1305
+        },
+        "docScroll": {
+          "width": 390,
+          "height": 1305
+        },
+        "sidebarWidth": 390,
+        "mainWidth": 390,
+        "overflow": []
+      }
+    },
+    {
+      "id": "06-library",
+      "route": "/library",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/06-library-mobile.png",
+      "metrics": {
+        "url": "/library",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 390,
+          "height": 3662
+        },
+        "docScroll": {
+          "width": 390,
+          "height": 3662
+        },
+        "sidebarWidth": 390,
+        "mainWidth": 390,
+        "overflow": []
+      }
+    },
+    {
+      "id": "08-import",
+      "route": "/import",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/08-import-mobile.png",
+      "metrics": {
+        "url": "/import",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 390,
+          "height": 3429
+        },
+        "docScroll": {
+          "width": 390,
+          "height": 3429
+        },
+        "sidebarWidth": 390,
+        "mainWidth": 390,
+        "overflow": []
+      }
+    },
+    {
+      "id": "09-mistakes",
+      "route": "/mistakes",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/09-mistakes-mobile.png",
+      "metrics": {
+        "url": "/mistakes",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 390,
+          "height": 844
+        },
+        "docScroll": {
+          "width": 390,
+          "height": 844
+        },
+        "sidebarWidth": 390,
+        "mainWidth": 390,
+        "overflow": []
+      }
+    },
+    {
+      "id": "10-stats",
+      "route": "/stats",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/10-stats-mobile.png",
+      "metrics": {
+        "url": "/stats",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 390,
+          "height": 5048
+        },
+        "docScroll": {
+          "width": 390,
+          "height": 5048
+        },
+        "sidebarWidth": 390,
+        "mainWidth": 390,
+        "overflow": []
+      }
+    },
+    {
+      "id": "11-settings",
+      "route": "/settings",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/11-settings-mobile.png",
+      "metrics": {
+        "url": "/settings",
+        "title": "听写工坊",
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "bodyScroll": {
+          "width": 390,
+          "height": 3324
+        },
+        "docScroll": {
+          "width": 390,
+          "height": 3324
+        },
+        "sidebarWidth": 390,
+        "mainWidth": 390,
+        "overflow": []
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "id": "15-spelling-feedback",
+      "route": "/spelling",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/15-spelling-feedback-desktop.png"
+    },
+    {
+      "id": "16-review-answer",
+      "route": "/review",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-07-06-product-design/screenshots-playwright/16-review-answer-desktop.png"
+    }
+  ]
+}

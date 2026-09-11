@@ -13,7 +13,40 @@ describe("storage migration helpers", () => {
     expect(migrated.schemaVersion).toBe(APP_SCHEMA_VERSION);
     expect(migrated.settings.lastExportedAt).toBe("");
     expect(migrated.mistakeGenerations).toEqual([]);
+    expect(migrated.adventures).toEqual([]);
     expect(migrated.schedules.find((schedule) => schedule.cardId === "card_1")).toBeTruthy();
+    expect(migrated.unitGroups.some((group) => group.title === "冒险积累")).toBe(true);
+    expect(migrated.units.some((unit) => unit.title === "冒险积累")).toBe(true);
+  });
+
+  it("normalizes adventure nodes and restores a valid current chapter", () => {
+    const migrated = migrateData({
+      adventures: [
+        {
+          id: "adventure_1",
+          title: "A route",
+          template: "city",
+          level: "B1",
+          currentNodeId: "missing_node",
+          nodes: [
+            {
+              id: "node_1",
+              chapter: 1,
+              title: "Start",
+              englishText: "A valid opening chapter.",
+              parentId: "orphan",
+              selectedChoiceId: "not-a-choice",
+              choices: [{ id: "walk", label: "Walk" }]
+            }
+          ]
+        }
+      ]
+    });
+
+    expect(migrated.adventures).toHaveLength(1);
+    expect(migrated.adventures[0].currentNodeId).toBe("node_1");
+    expect(migrated.adventures[0].nodes[0].parentId).toBeUndefined();
+    expect(migrated.adventures[0].nodes[0].selectedChoiceId).toBeUndefined();
   });
 
   it("preserves valid mistake generations and drops empty generated content", () => {

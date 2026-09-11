@@ -2,6 +2,7 @@ export type PronunciationLang = "en-US" | "en-GB";
 
 const DICTIONARY_API_URL = "https://api.dictionaryapi.dev/api/v2/entries/en";
 const YOUDAO_AUDIO_URL = "https://dict.youdao.com/dictvoice";
+const BAIDU_SENTENCE_AUDIO_URL = "https://fanyi.baidu.com/gettts";
 const DEFAULT_LANG: PronunciationLang = "en-US";
 const LOOKUP_TIMEOUT_MS = 3500;
 const LOOKUP_WORD_PATTERN = /^[a-z]+(?:[-'][a-z]+)*$/;
@@ -9,6 +10,12 @@ const US_HINT_PATTERN =
   /(?:^|[^a-z])(en[-_ ]?us|u\.s\.?|usa|us|american|united[-_ ]?states)(?:[^a-z]|$)/i;
 const GB_HINT_PATTERN =
   /(?:^|[^a-z])(en[-_ ]?(?:gb|uk)|u\.k\.?|gb|uk|british|united[-_ ]?kingdom|received[-_ ]?pronunciation|rp)(?:[^a-z]|$)/i;
+
+const viteEnv = (
+  import.meta as ImportMeta & {
+    readonly env?: { readonly DEV?: boolean; readonly MODE?: string };
+  }
+).env;
 
 const dictionaryAudioCache = new Map<string, Promise<string | null>>();
 
@@ -72,10 +79,32 @@ const selectAudioUrl = (responseBody: unknown, lang: PronunciationLang): string 
 };
 
 const buildYoudaoPronunciationAudioUrl = (word: string, lang: PronunciationLang) => {
-  const url = new URL(YOUDAO_AUDIO_URL);
+  const useLocalDevelopmentProxy = viteEnv?.DEV && viteEnv.MODE !== "test" && typeof window !== "undefined";
+  const url = new URL(useLocalDevelopmentProxy ? "/youdao-audio" : YOUDAO_AUDIO_URL, useLocalDevelopmentProxy ? window.location.origin : undefined);
   url.searchParams.set("type", lang === "en-GB" ? "1" : "0");
   url.searchParams.set("audio", word);
   return url.href;
+};
+
+const buildSentencePronunciationAudioUrl = (text: string) => {
+  const useLocalDevelopmentProxy = viteEnv?.DEV && viteEnv.MODE !== "test" && typeof window !== "undefined";
+  const url = new URL(useLocalDevelopmentProxy ? "/sentence-audio" : BAIDU_SENTENCE_AUDIO_URL, useLocalDevelopmentProxy ? window.location.origin : undefined);
+  url.searchParams.set("lan", "en");
+  url.searchParams.set("text", text);
+  url.searchParams.set("spd", "3");
+  url.searchParams.set("source", "web");
+  return url.href;
+};
+
+export const getOnlinePronunciationAudioUrl = (
+  text: string,
+  lang: PronunciationLang = DEFAULT_LANG
+): string | null => {
+  const normalizedText = text.trim().replace(/\s+/g, " ");
+  if (!normalizedText) return null;
+  return LOOKUP_WORD_PATTERN.test(normalizedText.toLowerCase())
+    ? buildYoudaoPronunciationAudioUrl(normalizedText.toLowerCase(), lang)
+    : buildSentencePronunciationAudioUrl(normalizedText);
 };
 
 const fetchDictionaryApiPronunciationAudio = async (word: string, lang: PronunciationLang): Promise<string | null> => {
@@ -104,6 +133,13 @@ const fetchDictionaryApiPronunciationAudio = async (word: string, lang: Pronunci
   }
 };
 
+export const fetchTextPronunciationAudio = (
+  text: string,
+  lang: PronunciationLang = DEFAULT_LANG
+): Promise<string | null> => {
+  return Promise.resolve(getOnlinePronunciationAudioUrl(text, lang));
+};
+
 export const fetchWordPronunciationAudio = (
   word: string,
   lang: PronunciationLang = DEFAULT_LANG
@@ -113,7 +149,7 @@ export const fetchWordPronunciationAudio = (
     return Promise.resolve(null);
   }
 
-  return Promise.resolve(buildYoudaoPronunciationAudioUrl(normalizedWord, lang));
+  return fetchTextPronunciationAudio(normalizedWord, lang);
 };
 
 export const fetchFallbackWordPronunciationAudio = (

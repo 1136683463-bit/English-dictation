@@ -21,6 +21,11 @@ const defaultSettings: Settings = {
     temperature: 0.7,
     timeoutMs: 120000,
     fallbackToLocal: true
+  },
+  dataSync: {
+    enabled: false,
+    baseUrl: "",
+    token: ""
   }
 };
 
@@ -39,6 +44,7 @@ export const makeTestData = (patch: TestDataPatch = {}): AppData => ({
   materialSegments: [],
   reviews: [],
   mistakeGenerations: [],
+  adventures: [],
   schedules: [],
   dictionaryEntries: [],
   seededWordVersions: ["core-100-v1"],

@@ -158,6 +158,7 @@ export default function StatsPage() {
       tone: reviewDebtRatio >= 1.5 ? "red" : stats.dueTotal > 0 ? "blue" : "green"
     }
   ];
+  const topRisk = riskBands.find((risk) => risk.tone === "red") ?? riskBands.find((risk) => risk.tone === "blue") ?? riskBands[0];
   const latestMaterial = data.materials.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
   const duePlanCount = Math.min(stats.dueTotal, stats.dueReviewGoal, 12);
   const weakPlanCount = Math.min(stats.weakWords, 10);
@@ -205,6 +206,11 @@ export default function StatsPage() {
     }
   ];
   const firstPlanStep = todayPlan.find((step) => step.active) ?? todayPlan[0];
+  const FirstPlanIcon = firstPlanStep.icon;
+  const TopRiskIcon = topRisk.icon;
+  const mobilePlanPreview = todayPlan.filter((step) => step.active).slice(0, 3);
+  const previewSteps = mobilePlanPreview.length > 0 ? mobilePlanPreview : [firstPlanStep];
+  const healthTone = healthScore >= 82 ? "good" : healthScore >= 62 ? "steady" : "attention";
   const hasTrainingDebt = stats.dueTotal > 0 || stats.weakWords > 0 || activeSentences > 0;
 
   return (
@@ -220,6 +226,56 @@ export default function StatsPage() {
           </Link>
         }
       />
+
+      <section className="stats-mobile-coach" aria-label="今日学习建议">
+        <div className="stats-mobile-coach-head">
+          <div>
+            <span className="eyebrow">Next Action</span>
+            <h2>{reportStatus}</h2>
+            <p>
+              {hasTrainingDebt
+                ? "先处理最影响节奏的任务，再看完整周报。"
+                : "今天负债很轻，保持一次短训练就够。"}
+            </p>
+          </div>
+          <div className={`stats-mobile-score ${healthTone}`} aria-label={`学习健康度 ${healthScore}%`}>
+            <strong>{healthScore}</strong>
+            <span>健康度</span>
+          </div>
+        </div>
+
+        <div className="stats-mobile-next-card">
+          <span className="stats-mobile-next-icon"><FirstPlanIcon size={20} /></span>
+          <div>
+            <span>下一步 · {firstPlanStep.estimate} · {firstPlanStep.amount}</span>
+            <strong>{firstPlanStep.label}</strong>
+            <p>{firstPlanStep.detail}</p>
+          </div>
+          <Link to={firstPlanStep.to} className="primary-button">
+            开始
+            <ArrowRight size={17} />
+          </Link>
+        </div>
+
+        <Link to={topRisk.to} className={`stats-mobile-risk ${topRisk.tone}`}>
+          <span><TopRiskIcon size={17} /></span>
+          <div>
+            <strong>{topRisk.title}</strong>
+            <p>{topRisk.detail}</p>
+          </div>
+          <ArrowRight size={16} />
+        </Link>
+
+        <div className="stats-mobile-plan-strip" aria-label="今日计划概览">
+          {previewSteps.map((step, index) => (
+            <Link key={step.label} to={step.to} className="stats-mobile-plan-pill">
+              <span>{index + 1}</span>
+              <strong>{step.label}</strong>
+              <em>{step.amount}</em>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <section className="stats-brief">
         <div className="stats-brief-main">

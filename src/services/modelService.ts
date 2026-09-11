@@ -1,5 +1,6 @@
 import type { AiProviderSettings } from "../types";
 import type { GenerateStructuredMistakeStoryInput, StructuredMistakeStoryResult } from "./aiService";
+import { describeModelRequestError, isAiProviderConfigured, normalizeChatCompletionsUrl, readResponsePayload, requestFetch } from "./aiHttpClient";
 
 interface ChatCompletionResponse {
   choices?: Array<{
@@ -10,15 +11,8 @@ interface ChatCompletionResponse {
   error?: {
     message?: string;
   };
+  content?: string;
 }
-
-const isConfigured = (settings: AiProviderSettings) =>
-  Boolean(settings.enabled && settings.baseUrl.trim() && settings.apiKey.trim() && settings.model.trim());
-
-const normalizeChatCompletionsUrl = (baseUrl: string) => {
-  const normalized = baseUrl.trim().replace(/\/+$/, "");
-  return normalized.endsWith("/chat/completions") ? normalized : `${normalized}/chat/completions`;
-};
 
 const extractJsonObject = (content: string) => {
   const trimmed = content.trim();
@@ -75,6 +69,7 @@ const normalizeStoryResult = (value: unknown): StructuredMistakeStoryResult => {
 const buildSystemPrompt = () => [
   "You write short English mistake-word stories for Chinese learners.",
   "Return JSON only: title, englishStory, chineseTranslation, usedWords, missingWords, wordNotes.",
+  "Your entire reply must be one JSON object and nothing else: the first character is { and the last is }. Never write analysis, notes, reasoning, or explanations before or after it.",
   "Keep target words in original spelling. No Markdown."
 ].join(" ");
 
@@ -100,15 +95,19 @@ export const generateStructuredMistakeStoryWithModel = async (
   provider: AiProviderSettings,
   input: GenerateStructuredMistakeStoryInput
 ): Promise<StructuredMistakeStoryResult> => {
-  if (!isConfigured(provider)) {
+  if (!isAiProviderConfigured(provider)) {
     throw new Error("AI 中转站配置不完整。");
   }
 
   const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), provider.timeoutMs);
+  let timedOut = false;
+  const timeout = window.setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, provider.timeoutMs);
 
   try {
-    const response = await fetch(normalizeChatCompletionsUrl(provider.baseUrl), {
+    const response = await requestFetch(normalizeChatCompletionsUrl(provider.baseUrl), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -127,20 +126,20 @@ export const generateStructuredMistakeStoryWithModel = async (
       signal: controller.signal
     });
 
-    const json = await response.json().catch(() => ({})) as ChatCompletionResponse;
+    const json = await readResponsePayload<ChatCompletionResponse>(response);
     if (!response.ok) {
       throw new Error(json.error?.message || `模型请求失败：${response.status}`);
     }
 
-    const content = json.choices?.[0]?.message?.content;
+    const content = json.choices?.[0]?.message?.content ?? json.content;
     if (!content) throw new Error("模型响应没有内容。");
 
     return normalizeStoryResult(JSON.parse(extractJsonObject(content)));
   } catch (error) {
-    if (error instanceof DOMException && error.name === "AbortError") {
+    if (timedOut || (error instanceof DOMException && error.name === "AbortError")) {
       throw new Error(`模型请求超时（已等待 ${Math.round(provider.timeoutMs / 1000)} 秒）。`);
     }
-    throw error;
+    throw new Error(describeModelRequestError(error));
   } finally {
     window.clearTimeout(timeout);
   }

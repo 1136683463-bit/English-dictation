@@ -1,5 +1,6 @@
 import { FormEvent, useMemo, useState } from "react";
 import { Mic2, Plus, Search, Star, Trash2, Upload } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
@@ -134,10 +135,19 @@ export default function SentencesPage() {
         <div className="panel">
           <div className="search-box">
             <Search size={17} />
-            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索句子、翻译或标签" />
+            <input
+              aria-label="搜索句子"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="搜索句子、翻译或标签"
+            />
           </div>
           {sentences.length === 0 ? (
-            <EmptyState title="还没有句子" description="添加几个你想真正掌握的表达，或者从导入材料里收藏。" />
+            <EmptyState
+              title="还没有句子"
+              description="添加几个你想真正掌握的表达，或者从导入材料里收藏。"
+              action={<Link to="/import" className="primary-button">从材料导入</Link>}
+            />
           ) : (
             <div className="card-list">
               {sentences.map((card) => {

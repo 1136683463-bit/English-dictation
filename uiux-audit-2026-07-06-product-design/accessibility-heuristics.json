@@ -1,0 +1,2988 @@
+[
+  {
+    "label": "desktop",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "results": [
+      {
+        "route": "/",
+        "checks": {
+          "interactives": 4,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "a",
+              "cls": "primary-button entry-primary",
+              "name": "打开学习入口",
+              "w": 170,
+              "h": 40,
+              "x": 289,
+              "y": 470
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "直接复习",
+              "w": 121,
+              "h": 40,
+              "x": 469,
+              "y": 470
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "拼写模式",
+              "w": 121,
+              "h": 40,
+              "x": 600,
+              "y": 470
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "去单词本",
+              "w": 121,
+              "h": 40,
+              "x": 731,
+              "y": 470
+            }
+          ],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/today",
+        "checks": {
+          "interactives": 24,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "sidebar-toggle",
+              "name": "收起侧边栏",
+              "w": 42,
+              "h": 42,
+              "x": 185,
+              "y": 24
+            },
+            {
+              "tag": "a",
+              "cls": "active",
+              "name": "今日",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 102
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "训练",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 148
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "错词本",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 194
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词书",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 240
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "添加",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 286
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词库",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 332
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "统计",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 378
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "设置",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 424
+            },
+            {
+              "tag": "a",
+              "cls": "sidebar-footer",
+              "name": "设置与导出",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 654
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button compact-button",
+              "name": "选择模式",
+              "w": 88,
+              "h": 34,
+              "x": 644,
+              "y": 436
+            },
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "开始今日训练",
+              "w": 425,
+              "h": 40,
+              "x": 307,
+              "y": 911
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "听音拼写",
+              "w": 208,
+              "h": 40,
+              "x": 307,
+              "y": 961
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "添加内容",
+              "w": 208,
+              "h": 40,
+              "x": 525,
+              "y": 961
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button compact-action",
+              "name": "词库",
+              "w": 208,
+              "h": 40,
+              "x": 307,
+              "y": 1011
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "查看词库",
+              "w": 96,
+              "h": 40,
+              "x": 1125,
+              "y": 1134
+            }
+          ],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/training",
+        "checks": {
+          "interactives": 18,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "sidebar-toggle",
+              "name": "收起侧边栏",
+              "w": 42,
+              "h": 42,
+              "x": 185,
+              "y": 24
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "今日",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 102
+            },
+            {
+              "tag": "a",
+              "cls": "active",
+              "name": "训练",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 148
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "错词本",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 194
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词书",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 240
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "添加",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 286
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词库",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 332
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "统计",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 378
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "设置",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 424
+            },
+            {
+              "tag": "a",
+              "cls": "sidebar-footer",
+              "name": "设置与导出",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 654
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "回到今日",
+              "w": 96,
+              "h": 40,
+              "x": 1148,
+              "y": 99
+            },
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "开始今日训练",
+              "w": 154,
+              "h": 40,
+              "x": 1067,
+              "y": 232
+            }
+          ],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/spelling",
+        "checks": {
+          "interactives": 18,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "sidebar-toggle",
+              "name": "收起侧边栏",
+              "w": 42,
+              "h": 42,
+              "x": 185,
+              "y": 24
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "今日",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 102
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "训练",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 148
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "错词本",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 194
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词书",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 240
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "添加",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 286
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词库",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 332
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "统计",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 378
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "设置",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 424
+            },
+            {
+              "tag": "a",
+              "cls": "sidebar-footer",
+              "name": "设置与导出",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 654
+            },
+            {
+              "tag": "a",
+              "cls": "icon-button",
+              "name": "返回今日",
+              "w": 40,
+              "h": 40,
+              "x": 459,
+              "y": 67
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "错词专项",
+              "w": 96,
+              "h": 40,
+              "x": 853,
+              "y": 67
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "提示",
+              "w": 64,
+              "h": 40,
+              "x": 957,
+              "y": 67
+            },
+            {
+              "tag": "a",
+              "cls": "icon-button",
+              "name": "首页",
+              "w": 40,
+              "h": 40,
+              "x": 1029,
+              "y": 67
+            },
+            {
+              "tag": "button",
+              "cls": "spelling-sound",
+              "name": "播放发音",
+              "w": 52,
+              "h": 42,
+              "x": 738,
+              "y": 556
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "提交",
+              "w": 64,
+              "h": 40,
+              "x": 707,
+              "y": 620
+            },
+            {
+              "tag": "button",
+              "cls": "icon-button",
+              "name": "播放发音",
+              "w": 40,
+              "h": 40,
+              "x": 781,
+              "y": 620
+            }
+          ],
+          "formControls": 1,
+          "unlabeledControls": [
+            {
+              "tag": "input",
+              "type": "",
+              "placeholder": "输入英文拼写",
+              "hasLabel": false,
+              "name": ""
+            }
+          ]
+        }
+      },
+      {
+        "route": "/review",
+        "checks": {
+          "interactives": 19,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "sidebar-toggle",
+              "name": "收起侧边栏",
+              "w": 42,
+              "h": 42,
+              "x": 185,
+              "y": 24
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "今日",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 102
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "训练",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 148
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "错词本",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 194
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词书",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 240
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "添加",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 286
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词库",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 332
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "统计",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 378
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "设置",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 424
+            },
+            {
+              "tag": "a",
+              "cls": "sidebar-footer",
+              "name": "设置与导出",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 654
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "看答案",
+              "w": 105,
+              "h": 42,
+              "x": 740,
+              "y": 590
+            }
+          ],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/library",
+        "checks": {
+          "interactives": 150,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "sidebar-toggle",
+              "name": "收起侧边栏",
+              "w": 42,
+              "h": 42,
+              "x": 185,
+              "y": 24
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "今日",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 102
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "训练",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 148
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "错词本",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 194
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词书",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 240
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "添加",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 286
+            },
+            {
+              "tag": "a",
+              "cls": "active",
+              "name": "词库",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 332
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "统计",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 378
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "设置",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 424
+            },
+            {
+              "tag": "a",
+              "cls": "sidebar-footer",
+              "name": "设置与导出",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 654
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "设置与导出",
+              "w": 137,
+              "h": 40,
+              "x": 1107,
+              "y": 99
+            },
+            {
+              "tag": "button",
+              "cls": "selected",
+              "name": "全部 115",
+              "w": 97,
+              "h": 32,
+              "x": 311,
+              "y": 475
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "单词 115",
+              "w": 97,
+              "h": 32,
+              "x": 410,
+              "y": 475
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "短语 0",
+              "w": 84,
+              "h": 32,
+              "x": 509,
+              "y": 475
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "句子 0",
+              "w": 84,
+              "h": 32,
+              "x": 595,
+              "y": 475
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "重点 0",
+              "w": 84,
+              "h": 32,
+              "x": 681,
+              "y": 475
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "到期 115",
+              "w": 97,
+              "h": 32,
+              "x": 311,
+              "y": 509
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "材料 0",
+              "w": 84,
+              "h": 32,
+              "x": 410,
+              "y": 509
+            },
+            {
+              "tag": "button",
+              "cls": "library-selection-toggle",
+              "name": "批量选择",
+              "w": 86,
+              "h": 27,
+              "x": 569,
+              "y": 563
+            },
+            {
+              "tag": "button",
+              "cls": "icon-button",
+              "name": "播放发音",
+              "w": 40,
+              "h": 40,
+              "x": 1042,
+              "y": 422
+            },
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "进入训练",
+              "w": 121,
+              "h": 40,
+              "x": 927,
+              "y": 1328
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "完整编辑",
+              "w": 96,
+              "h": 40,
+              "x": 1058,
+              "y": 1328
+            }
+          ],
+          "formControls": 2,
+          "unlabeledControls": [
+            {
+              "tag": "input",
+              "type": "",
+              "placeholder": "搜索单词、短语、句子、释义、标签或来源句",
+              "hasLabel": false,
+              "name": ""
+            },
+            {
+              "tag": "select",
+              "type": "",
+              "placeholder": "",
+              "hasLabel": false,
+              "name": ""
+            }
+          ]
+        }
+      },
+      {
+        "route": "/add",
+        "checks": {
+          "interactives": 15,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "sidebar-toggle",
+              "name": "收起侧边栏",
+              "w": 42,
+              "h": 42,
+              "x": 185,
+              "y": 24
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "今日",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 102
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "训练",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 148
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "错词本",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 194
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词书",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 240
+            },
+            {
+              "tag": "a",
+              "cls": "active",
+              "name": "添加",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 286
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词库",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 332
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "统计",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 378
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "设置",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 424
+            },
+            {
+              "tag": "a",
+              "cls": "sidebar-footer",
+              "name": "设置与导出",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 654
+            }
+          ],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/import",
+        "checks": {
+          "interactives": 24,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "sidebar-toggle",
+              "name": "收起侧边栏",
+              "w": 42,
+              "h": 42,
+              "x": 185,
+              "y": 24
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "今日",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 102
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "训练",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 148
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "错词本",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 194
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词书",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 240
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "添加",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 286
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词库",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 332
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "统计",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 378
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "设置",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 424
+            },
+            {
+              "tag": "a",
+              "cls": "sidebar-footer",
+              "name": "设置与导出",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 654
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "保存材料",
+              "w": 121,
+              "h": 40,
+              "x": 1123,
+              "y": 99
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "保存材料",
+              "w": 120,
+              "h": 40,
+              "x": 851,
+              "y": 593
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "查看词库",
+              "w": 120,
+              "h": 40,
+              "x": 979,
+              "y": 593
+            },
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "开始复习",
+              "w": 120,
+              "h": 40,
+              "x": 1107,
+              "y": 593
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "保存材料",
+              "w": 120,
+              "h": 40,
+              "x": 623,
+              "y": 1384
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "批量收词",
+              "w": 109,
+              "h": 34,
+              "x": 1112,
+              "y": 740
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "批量收句",
+              "w": 109,
+              "h": 34,
+              "x": 1112,
+              "y": 1089
+            },
+            {
+              "tag": "button",
+              "cls": "selected",
+              "name": "文本",
+              "w": 56,
+              "h": 32,
+              "x": 1103,
+              "y": 1513
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "CSV",
+              "w": 58,
+              "h": 32,
+              "x": 1159,
+              "y": 1513
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "填入示例",
+              "w": 120,
+              "h": 40,
+              "x": 749,
+              "y": 1638
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "导入可用项",
+              "w": 136,
+              "h": 40,
+              "x": 879,
+              "y": 1638
+            }
+          ],
+          "formControls": 3,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/mistakes",
+        "checks": {
+          "interactives": 11,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "sidebar-toggle",
+              "name": "收起侧边栏",
+              "w": 42,
+              "h": 42,
+              "x": 185,
+              "y": 24
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "今日",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 102
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "训练",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 148
+            },
+            {
+              "tag": "a",
+              "cls": "active",
+              "name": "错词本",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 194
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词书",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 240
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "添加",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 286
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词库",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 332
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "统计",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 378
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "设置",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 424
+            },
+            {
+              "tag": "a",
+              "cls": "sidebar-footer",
+              "name": "设置与导出",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 654
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "去训练",
+              "w": 80,
+              "h": 40,
+              "x": 1164,
+              "y": 99
+            }
+          ],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/stats",
+        "checks": {
+          "interactives": 25,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "sidebar-toggle",
+              "name": "收起侧边栏",
+              "w": 42,
+              "h": 42,
+              "x": 185,
+              "y": 24
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "今日",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 102
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "训练",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 148
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "错词本",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 194
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词书",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 240
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "添加",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 286
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词库",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 332
+            },
+            {
+              "tag": "a",
+              "cls": "active",
+              "name": "统计",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 378
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "设置",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 424
+            },
+            {
+              "tag": "a",
+              "cls": "sidebar-footer",
+              "name": "设置与导出",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 654
+            },
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "清到期复习",
+              "w": 137,
+              "h": 40,
+              "x": 1107,
+              "y": 99
+            },
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "清到期复习",
+              "w": 137,
+              "h": 40,
+              "x": 307,
+              "y": 299
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "查看词库",
+              "w": 96,
+              "h": 40,
+              "x": 454,
+              "y": 299
+            },
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "开始第 1 步",
+              "w": 137,
+              "h": 40,
+              "x": 857,
+              "y": 651
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "训练中心",
+              "w": 96,
+              "h": 40,
+              "x": 1001,
+              "y": 651
+            }
+          ],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/settings",
+        "checks": {
+          "interactives": 34,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "sidebar-toggle",
+              "name": "收起侧边栏",
+              "w": 42,
+              "h": 42,
+              "x": 185,
+              "y": 24
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "今日",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 102
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "训练",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 148
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "错词本",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 194
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词书",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 240
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "添加",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 286
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词库",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 332
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "统计",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 378
+            },
+            {
+              "tag": "a",
+              "cls": "active",
+              "name": "设置",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 424
+            },
+            {
+              "tag": "a",
+              "cls": "sidebar-footer active",
+              "name": "设置与导出",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 654
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "已保存",
+              "w": 105,
+              "h": 40,
+              "x": 1139,
+              "y": 99
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "立即备份",
+              "w": 121,
+              "h": 40,
+              "x": 1100,
+              "y": 174
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "试听",
+              "w": 89,
+              "h": 40,
+              "x": 1132,
+              "y": 282
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "测试连接",
+              "w": 121,
+              "h": 40,
+              "x": 611,
+              "y": 732
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "JSON 备份",
+              "w": 137,
+              "h": 40,
+              "x": 796,
+              "y": 912
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "Anki CSV",
+              "w": 129,
+              "h": 40,
+              "x": 943,
+              "y": 912
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "Markdown 笔记",
+              "w": 174,
+              "h": 40,
+              "x": 796,
+              "y": 962
+            },
+            {
+              "tag": "button",
+              "cls": "danger-button",
+              "name": "重置本地数据",
+              "w": 153,
+              "h": 40,
+              "x": 957,
+              "y": 1063
+            }
+          ],
+          "formControls": 16,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/units",
+        "checks": {
+          "interactives": 31,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "sidebar-toggle",
+              "name": "收起侧边栏",
+              "w": 42,
+              "h": 42,
+              "x": 185,
+              "y": 24
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "今日",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 102
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "训练",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 148
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "错词本",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 194
+            },
+            {
+              "tag": "a",
+              "cls": "active",
+              "name": "词书",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 240
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "添加",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 286
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词库",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 332
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "统计",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 378
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "设置",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 424
+            },
+            {
+              "tag": "a",
+              "cls": "sidebar-footer",
+              "name": "设置与导出",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 654
+            },
+            {
+              "tag": "button",
+              "cls": "selected",
+              "name": "#f06423",
+              "w": 24,
+              "h": 24,
+              "x": 906,
+              "y": 378
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#177e78",
+              "w": 24,
+              "h": 24,
+              "x": 939,
+              "y": 378
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#465366",
+              "w": 24,
+              "h": 24,
+              "x": 972,
+              "y": 378
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#d96a2f",
+              "w": 24,
+              "h": 24,
+              "x": 1005,
+              "y": 378
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#0f766e",
+              "w": 24,
+              "h": 24,
+              "x": 1038,
+              "y": 378
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#7a8493",
+              "w": 24,
+              "h": 24,
+              "x": 1071,
+              "y": 378
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#3157d5",
+              "w": 24,
+              "h": 24,
+              "x": 1104,
+              "y": 378
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#14845f",
+              "w": 24,
+              "h": 24,
+              "x": 1137,
+              "y": 378
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#7c3aed",
+              "w": 24,
+              "h": 24,
+              "x": 1170,
+              "y": 378
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#dc2626",
+              "w": 24,
+              "h": 24,
+              "x": 1203,
+              "y": 378
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "新建分组",
+              "w": 121,
+              "h": 40,
+              "x": 1106,
+              "y": 412
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button compact-button",
+              "name": "编辑分组",
+              "w": 111,
+              "h": 34,
+              "x": 1085,
+              "y": 507
+            },
+            {
+              "tag": "button",
+              "cls": "icon-button",
+              "name": "删除分组",
+              "w": 40,
+              "h": 40,
+              "x": 1204,
+              "y": 504
+            }
+          ],
+          "formControls": 1,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/words",
+        "checks": {
+          "interactives": 478,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "sidebar-toggle",
+              "name": "收起侧边栏",
+              "w": 42,
+              "h": 42,
+              "x": 185,
+              "y": 24
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "今日",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 102
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "训练",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 148
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "错词本",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 194
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词书",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 240
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "添加",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 286
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词库",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 332
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "统计",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 378
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "设置",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 424
+            },
+            {
+              "tag": "a",
+              "cls": "sidebar-footer",
+              "name": "设置与导出",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 654
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "添加单词",
+              "w": 121,
+              "h": 40,
+              "x": 1123,
+              "y": 99
+            },
+            {
+              "tag": "button",
+              "cls": "selected",
+              "name": "全部",
+              "w": 58,
+              "h": 32,
+              "x": 303,
+              "y": 256
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "核心100 - Unit 1",
+              "w": 141,
+              "h": 32,
+              "x": 369,
+              "y": 256
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "核心100 - Unit 2",
+              "w": 143,
+              "h": 32,
+              "x": 518,
+              "y": 256
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "核心100 - Unit 3",
+              "w": 144,
+              "h": 32,
+              "x": 670,
+              "y": 256
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "核心100 - Unit 4",
+              "w": 144,
+              "h": 32,
+              "x": 821,
+              "y": 256
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "核心100 - Unit 5",
+              "w": 144,
+              "h": 32,
+              "x": 974,
+              "y": 256
+            }
+          ],
+          "formControls": 116,
+          "unlabeledControls": [
+            {
+              "tag": "input",
+              "type": "",
+              "placeholder": "搜索单词、释义或标签",
+              "hasLabel": false,
+              "name": ""
+            }
+          ]
+        }
+      },
+      {
+        "route": "/sentences",
+        "checks": {
+          "interactives": 17,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "sidebar-toggle",
+              "name": "收起侧边栏",
+              "w": 42,
+              "h": 42,
+              "x": 185,
+              "y": 24
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "今日",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 102
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "训练",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 148
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "错词本",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 194
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词书",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 240
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "添加",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 286
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "词库",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 332
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "统计",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 378
+            },
+            {
+              "tag": "a",
+              "cls": "",
+              "name": "设置",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 424
+            },
+            {
+              "tag": "a",
+              "cls": "sidebar-footer",
+              "name": "设置与导出",
+              "w": 215,
+              "h": 42,
+              "x": 16,
+              "y": 654
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "保存",
+              "w": 89,
+              "h": 40,
+              "x": 619,
+              "y": 186
+            }
+          ],
+          "formControls": 6,
+          "unlabeledControls": [
+            {
+              "tag": "input",
+              "type": "",
+              "placeholder": "搜索句子、翻译或标签",
+              "hasLabel": false,
+              "name": ""
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "label": "mobile",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "results": [
+      {
+        "route": "/",
+        "checks": {
+          "interactives": 4,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "a",
+              "cls": "primary-button entry-primary",
+              "name": "打开学习入口",
+              "w": 316,
+              "h": 40,
+              "x": 37,
+              "y": 523
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "直接复习",
+              "w": 316,
+              "h": 40,
+              "x": 37,
+              "y": 573
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "拼写模式",
+              "w": 316,
+              "h": 40,
+              "x": 37,
+              "y": 623
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "去单词本",
+              "w": 316,
+              "h": 40,
+              "x": 37,
+              "y": 673
+            }
+          ],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/today",
+        "checks": {
+          "interactives": 23,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "a",
+              "cls": "secondary-button compact-button",
+              "name": "选择模式",
+              "w": 88,
+              "h": 34,
+              "x": 277,
+              "y": 885
+            },
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "开始今日训练",
+              "w": 340,
+              "h": 40,
+              "x": 25,
+              "y": 1436
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "听音拼写",
+              "w": 340,
+              "h": 40,
+              "x": 25,
+              "y": 1486
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "添加内容",
+              "w": 340,
+              "h": 40,
+              "x": 25,
+              "y": 1536
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button compact-action",
+              "name": "词库",
+              "w": 340,
+              "h": 40,
+              "x": 25,
+              "y": 1586
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "查看词库",
+              "w": 96,
+              "h": 40,
+              "x": 269,
+              "y": 1852
+            }
+          ],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/training",
+        "checks": {
+          "interactives": 17,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "回到今日",
+              "w": 96,
+              "h": 40,
+              "x": 10,
+              "y": 146
+            },
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "开始今日训练",
+              "w": 332,
+              "h": 40,
+              "x": 29,
+              "y": 653
+            }
+          ],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/spelling",
+        "checks": {
+          "interactives": 17,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "a",
+              "cls": "icon-button",
+              "name": "返回今日",
+              "w": 38,
+              "h": 40,
+              "x": 33,
+              "y": 41
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "错词专项",
+              "w": 59,
+              "h": 36,
+              "x": 204,
+              "y": 43
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "提示",
+              "w": 42,
+              "h": 36,
+              "x": 269,
+              "y": 43
+            },
+            {
+              "tag": "a",
+              "cls": "icon-button",
+              "name": "首页",
+              "w": 40,
+              "h": 40,
+              "x": 317,
+              "y": 41
+            },
+            {
+              "tag": "button",
+              "cls": "spelling-sound",
+              "name": "播放发音",
+              "w": 46,
+              "h": 36,
+              "x": 172,
+              "y": 561
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "提交",
+              "w": 64,
+              "h": 40,
+              "x": 138,
+              "y": 615
+            },
+            {
+              "tag": "button",
+              "cls": "icon-button",
+              "name": "播放发音",
+              "w": 40,
+              "h": 40,
+              "x": 212,
+              "y": 615
+            }
+          ],
+          "formControls": 1,
+          "unlabeledControls": [
+            {
+              "tag": "input",
+              "type": "",
+              "placeholder": "输入英文拼写",
+              "hasLabel": false,
+              "name": ""
+            }
+          ]
+        }
+      },
+      {
+        "route": "/review",
+        "checks": {
+          "interactives": 19,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "secondary-button review-session-action",
+              "name": "看答案",
+              "w": 118,
+              "h": 40,
+              "x": 129,
+              "y": 396
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "看答案",
+              "w": 105,
+              "h": 42,
+              "x": 230,
+              "y": 928
+            }
+          ],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/library",
+        "checks": {
+          "interactives": 149,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "设置与导出",
+              "w": 137,
+              "h": 40,
+              "x": 10,
+              "y": 146
+            },
+            {
+              "tag": "button",
+              "cls": "selected",
+              "name": "全部 115",
+              "w": 165,
+              "h": 32,
+              "x": 29,
+              "y": 1143
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "单词 115",
+              "w": 165,
+              "h": 32,
+              "x": 196,
+              "y": 1143
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "短语 0",
+              "w": 165,
+              "h": 32,
+              "x": 29,
+              "y": 1177
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "句子 0",
+              "w": 165,
+              "h": 32,
+              "x": 196,
+              "y": 1177
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "重点 0",
+              "w": 165,
+              "h": 32,
+              "x": 29,
+              "y": 1211
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "到期 115",
+              "w": 165,
+              "h": 32,
+              "x": 196,
+              "y": 1211
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "材料 0",
+              "w": 165,
+              "h": 32,
+              "x": 29,
+              "y": 1245
+            },
+            {
+              "tag": "button",
+              "cls": "library-selection-toggle",
+              "name": "批量选择",
+              "w": 86,
+              "h": 27,
+              "x": 25,
+              "y": 1321
+            },
+            {
+              "tag": "button",
+              "cls": "icon-button",
+              "name": "播放发音",
+              "w": 40,
+              "h": 40,
+              "x": 114,
+              "y": 1859
+            },
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "进入训练",
+              "w": 340,
+              "h": 40,
+              "x": 25,
+              "y": 2880
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "完整编辑",
+              "w": 340,
+              "h": 40,
+              "x": 25,
+              "y": 2930
+            }
+          ],
+          "formControls": 2,
+          "unlabeledControls": [
+            {
+              "tag": "input",
+              "type": "",
+              "placeholder": "搜索单词、短语、句子、释义、标签或来源句",
+              "hasLabel": false,
+              "name": ""
+            },
+            {
+              "tag": "select",
+              "type": "",
+              "placeholder": "",
+              "hasLabel": false,
+              "name": ""
+            }
+          ]
+        }
+      },
+      {
+        "route": "/add",
+        "checks": {
+          "interactives": 14,
+          "unnamed": [],
+          "smallTargets": [],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/import",
+        "checks": {
+          "interactives": 23,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "保存材料",
+              "w": 121,
+              "h": 40,
+              "x": 10,
+              "y": 146
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "保存材料",
+              "w": 164,
+              "h": 40,
+              "x": 27,
+              "y": 1018
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "查看词库",
+              "w": 164,
+              "h": 40,
+              "x": 199,
+              "y": 1018
+            },
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "开始复习",
+              "w": 336,
+              "h": 40,
+              "x": 27,
+              "y": 1066
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "保存材料",
+              "w": 314,
+              "h": 40,
+              "x": 38,
+              "y": 1733
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "批量收词",
+              "w": 109,
+              "h": 34,
+              "x": 256,
+              "y": 1834
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "批量收句",
+              "w": 109,
+              "h": 34,
+              "x": 256,
+              "y": 2167
+            },
+            {
+              "tag": "button",
+              "cls": "selected",
+              "name": "文本",
+              "w": 166,
+              "h": 32,
+              "x": 29,
+              "y": 2541
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "CSV",
+              "w": 166,
+              "h": 32,
+              "x": 195,
+              "y": 2541
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "填入示例",
+              "w": 340,
+              "h": 40,
+              "x": 25,
+              "y": 3070
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "导入可用项",
+              "w": 340,
+              "h": 40,
+              "x": 25,
+              "y": 3120
+            }
+          ],
+          "formControls": 3,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/mistakes",
+        "checks": {
+          "interactives": 10,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "去训练",
+              "w": 80,
+              "h": 40,
+              "x": 10,
+              "y": 146
+            }
+          ],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/stats",
+        "checks": {
+          "interactives": 24,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "清到期复习",
+              "w": 137,
+              "h": 40,
+              "x": 10,
+              "y": 119
+            },
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "清到期复习",
+              "w": 332,
+              "h": 40,
+              "x": 29,
+              "y": 330
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "查看词库",
+              "w": 332,
+              "h": 40,
+              "x": 29,
+              "y": 380
+            },
+            {
+              "tag": "a",
+              "cls": "primary-button",
+              "name": "开始第 1 步",
+              "w": 312,
+              "h": 40,
+              "x": 39,
+              "y": 1799
+            },
+            {
+              "tag": "a",
+              "cls": "secondary-button",
+              "name": "训练中心",
+              "w": 312,
+              "h": 40,
+              "x": 39,
+              "y": 1847
+            }
+          ],
+          "formControls": 0,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/settings",
+        "checks": {
+          "interactives": 33,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "已保存",
+              "w": 105,
+              "h": 40,
+              "x": 10,
+              "y": 146
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "立即备份",
+              "w": 121,
+              "h": 40,
+              "x": 244,
+              "y": 243
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "试听",
+              "w": 89,
+              "h": 40,
+              "x": 276,
+              "y": 794
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "测试连接",
+              "w": 121,
+              "h": 40,
+              "x": 244,
+              "y": 1228
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "JSON 备份",
+              "w": 137,
+              "h": 40,
+              "x": 25,
+              "y": 2252
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "Anki CSV",
+              "w": 129,
+              "h": 40,
+              "x": 172,
+              "y": 2252
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button",
+              "name": "Markdown 笔记",
+              "w": 174,
+              "h": 40,
+              "x": 25,
+              "y": 2302
+            },
+            {
+              "tag": "button",
+              "cls": "danger-button",
+              "name": "重置本地数据",
+              "w": 153,
+              "h": 40,
+              "x": 186,
+              "y": 2403
+            }
+          ],
+          "formControls": 16,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/units",
+        "checks": {
+          "interactives": 30,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "selected",
+              "name": "#f06423",
+              "w": 24,
+              "h": 24,
+              "x": 27,
+              "y": 987
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#177e78",
+              "w": 24,
+              "h": 24,
+              "x": 60,
+              "y": 987
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#465366",
+              "w": 24,
+              "h": 24,
+              "x": 93,
+              "y": 987
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#d96a2f",
+              "w": 24,
+              "h": 24,
+              "x": 126,
+              "y": 987
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#0f766e",
+              "w": 24,
+              "h": 24,
+              "x": 159,
+              "y": 987
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#7a8493",
+              "w": 24,
+              "h": 24,
+              "x": 192,
+              "y": 987
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#3157d5",
+              "w": 24,
+              "h": 24,
+              "x": 225,
+              "y": 987
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#14845f",
+              "w": 24,
+              "h": 24,
+              "x": 258,
+              "y": 987
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#7c3aed",
+              "w": 24,
+              "h": 24,
+              "x": 291,
+              "y": 987
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "#dc2626",
+              "w": 24,
+              "h": 24,
+              "x": 324,
+              "y": 987
+            },
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "新建分组",
+              "w": 121,
+              "h": 40,
+              "x": 27,
+              "y": 1021
+            },
+            {
+              "tag": "button",
+              "cls": "secondary-button compact-button",
+              "name": "编辑分组",
+              "w": 111,
+              "h": 34,
+              "x": 10,
+              "y": 1200
+            },
+            {
+              "tag": "button",
+              "cls": "icon-button",
+              "name": "删除分组",
+              "w": 40,
+              "h": 40,
+              "x": 129,
+              "y": 1197
+            }
+          ],
+          "formControls": 1,
+          "unlabeledControls": []
+        }
+      },
+      {
+        "route": "/words",
+        "checks": {
+          "interactives": 477,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "添加单词",
+              "w": 121,
+              "h": 40,
+              "x": 10,
+              "y": 146
+            },
+            {
+              "tag": "button",
+              "cls": "selected",
+              "name": "全部",
+              "w": 58,
+              "h": 32,
+              "x": 25,
+              "y": 488
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "核心100 - Unit 1",
+              "w": 141,
+              "h": 32,
+              "x": 91,
+              "y": 488
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "核心100 - Unit 2",
+              "w": 143,
+              "h": 32,
+              "x": 25,
+              "y": 528
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "核心100 - Unit 3",
+              "w": 144,
+              "h": 32,
+              "x": 176,
+              "y": 528
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "核心100 - Unit 4",
+              "w": 144,
+              "h": 32,
+              "x": 25,
+              "y": 568
+            },
+            {
+              "tag": "button",
+              "cls": "",
+              "name": "核心100 - Unit 5",
+              "w": 144,
+              "h": 32,
+              "x": 177,
+              "y": 568
+            }
+          ],
+          "formControls": 116,
+          "unlabeledControls": [
+            {
+              "tag": "input",
+              "type": "",
+              "placeholder": "搜索单词、释义或标签",
+              "hasLabel": false,
+              "name": ""
+            }
+          ]
+        }
+      },
+      {
+        "route": "/sentences",
+        "checks": {
+          "interactives": 16,
+          "unnamed": [],
+          "smallTargets": [
+            {
+              "tag": "button",
+              "cls": "primary-button",
+              "name": "保存",
+              "w": 89,
+              "h": 40,
+              "x": 276,
+              "y": 171
+            }
+          ],
+          "formControls": 6,
+          "unlabeledControls": [
+            {
+              "tag": "input",
+              "type": "",
+              "placeholder": "搜索句子、翻译或标签",
+              "hasLabel": false,
+              "name": ""
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

@@ -1,20 +1,40 @@
 import { Settings } from "../types";
+import { getOnlinePronunciationAudioUrl } from "./pronunciationService";
 
 export interface SpeakOptions {
   audioUrl?: string;
   lang?: Settings["speechLang"];
   rate?: number;
   voiceURI?: string;
+  /** Keep the legacy browser TTS fallback enabled for existing callers. */
+  fallbackToSystem?: boolean;
+  /** Skip the word-only dictionary fallback when speaking a full sentence. */
+  fallbackToDictionary?: boolean;
+  lifecycle?: SpeechLifecycleHandlers;
 }
 
-type PronunciationAudioFetcher = (word: string, lang?: Settings["speechLang"]) => Promise<string | null>;
+export interface SpeechLifecycleHandlers {
+  onLoading?: () => void;
+  onStart?: () => void;
+  onEnd?: () => void;
+  onPause?: () => void;
+  onResume?: () => void;
+  onError?: () => void;
+  onSystemFallback?: () => void;
+}
+
+export type SpeechPlaybackState = "idle" | "loading" | "playing" | "paused" | "error";
+
+type PronunciationAudioFetcher = (text: string, lang?: Settings["speechLang"]) => Promise<string | null>;
 type PronunciationServiceModule = {
+  fetchTextPronunciationAudio?: PronunciationAudioFetcher;
   fetchWordPronunciationAudio?: PronunciationAudioFetcher;
   fetchFallbackWordPronunciationAudio?: PronunciationAudioFetcher;
 };
 
 const MAX_AUDIO_ELEMENT_CACHE_SIZE = 60;
 const MAX_PRONUNCIATION_URL_CACHE_SIZE = 300;
+const AUDIO_START_TIMEOUT_MS = 6000;
 
 const pronunciationServiceLoaders = (
   import.meta as ImportMeta & {
@@ -27,6 +47,11 @@ const pronunciationAudioUrlCache = new Map<string, Promise<string | null>>();
 const fallbackPronunciationAudioUrlCache = new Map<string, Promise<string | null>>();
 const audioElementCache = new Map<string, HTMLAudioElement>();
 let currentAudio: HTMLAudioElement | null = null;
+let currentSpeechLifecycle: SpeechLifecycleHandlers | undefined;
+let currentAudioListenerCleanup: (() => void) | null = null;
+let currentWebAudioContext: AudioContext | null = null;
+let currentWebAudioSource: AudioBufferSourceNode | null = null;
+let currentWebAudioLifecycle: SpeechLifecycleHandlers | undefined;
 
 export const isSpeechSupported = () =>
   typeof window !== "undefined" && "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
@@ -34,6 +59,86 @@ export const isSpeechSupported = () =>
 export const getSpeechVoices = () => {
   if (!isSpeechSupported()) return [];
   return window.speechSynthesis.getVoices();
+};
+
+const NATURAL_VOICE_HINTS = [
+  "natural",
+  "neural",
+  "enhanced",
+  "premium",
+  "online",
+  "siri",
+  "ava",
+  "samantha",
+  "alex",
+  "daniel",
+  "eddy",
+  "flo",
+  "sandy",
+  "karen"
+];
+
+const HIGH_QUALITY_SYSTEM_VOICE_HINTS = ["samantha", "alex", "ava", "daniel"];
+
+const NOVELTY_VOICE_HINTS = [
+  "bad news",
+  "bells",
+  "boing",
+  "bubbles",
+  "cellos",
+  "jester",
+  "organ",
+  "superstar",
+  "trinoids",
+  "wobble",
+  "whisper",
+  "zarvox"
+];
+
+const normalizeVoiceLanguage = (language: string) => language.trim().replace(/_/g, "-").toLowerCase();
+
+const scoreSpeechVoice = (voice: SpeechSynthesisVoice, language?: Settings["speechLang"]) => {
+  const requestedLanguage = normalizeVoiceLanguage(language ?? "en-US");
+  const voiceLanguage = normalizeVoiceLanguage(voice.lang);
+  const voiceName = `${voice.name} ${voice.voiceURI}`.toLowerCase();
+  const requestedBase = requestedLanguage.split("-")[0];
+  const voiceBase = voiceLanguage.split("-")[0];
+  let score = 0;
+
+  if (voiceLanguage === requestedLanguage) score += 120;
+  else if (voiceBase === requestedBase) score += 55;
+  else if (voiceBase === "en") score += 10;
+  else score -= 80;
+
+  NATURAL_VOICE_HINTS.forEach((hint) => {
+    if (voiceName.includes(hint)) score += hint === "natural" || hint === "neural" ? 70 : 24;
+  });
+  HIGH_QUALITY_SYSTEM_VOICE_HINTS.forEach((hint) => {
+    if (voiceName.includes(hint)) score += 52;
+  });
+  NOVELTY_VOICE_HINTS.forEach((hint) => {
+    if (voiceName.includes(hint)) score -= 120;
+  });
+
+  // Local voices are available without a network round trip. Keep them slightly
+  // ahead of remote voices when the quality indicators are otherwise equal.
+  if (voice.localService) score += 4;
+  return score;
+};
+
+export const selectPreferredSpeechVoice = (
+  voices: SpeechSynthesisVoice[],
+  language?: Settings["speechLang"],
+  voiceURI?: string
+) => {
+  if (voiceURI) {
+    const selected = voices.find((voice) => voice.voiceURI === voiceURI);
+    if (selected) return selected;
+  }
+
+  return voices
+    .map((voice, index) => ({ voice, index, score: scoreSpeechVoice(voice, language) }))
+    .sort((left, right) => right.score - left.score || left.index - right.index)[0]?.voice;
 };
 
 export const setPronunciationAudioFetcherForTest = (
@@ -46,17 +151,82 @@ export const setPronunciationAudioFetcherForTest = (
 };
 
 export const stopSpeaking = () => {
+  currentAudioListenerCleanup?.();
+  currentAudioListenerCleanup = null;
   if (currentAudio) {
     try {
       currentAudio.pause();
-      currentAudio.currentTime = 0;
+      if (currentAudio.readyState > 0 && Number.isFinite(currentAudio.duration)) {
+        currentAudio.currentTime = 0;
+      }
     } finally {
       currentAudio = null;
     }
   }
+  if (currentWebAudioSource) {
+    const source = currentWebAudioSource;
+    currentWebAudioSource = null;
+    currentWebAudioLifecycle = undefined;
+    source.onended = null;
+    try {
+      source.stop();
+    } catch {
+      // The source may already have ended.
+    }
+    source.disconnect();
+  }
+  currentSpeechLifecycle = undefined;
 
   if (isSpeechSupported()) {
     window.speechSynthesis.cancel();
+  }
+};
+
+const getWebAudioContext = () => {
+  if (typeof window === "undefined") return null;
+  const AudioContextConstructor =
+    window.AudioContext ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+  if (!AudioContextConstructor) return null;
+  if (!currentWebAudioContext) currentWebAudioContext = new AudioContextConstructor();
+  return currentWebAudioContext;
+};
+
+const unlockWebAudio = () => {
+  const context = getWebAudioContext();
+  if (!context || context.state === "running") return context;
+  void context.resume().catch(() => undefined);
+  return context;
+};
+
+const playDecodedAudioUrl = async (audioUrl: string, lifecycle?: SpeechLifecycleHandlers) => {
+  const context = unlockWebAudio();
+  if (!context || typeof fetch !== "function") return false;
+
+  try {
+    const response = await fetch(audioUrl, { credentials: "omit" });
+    if (!response.ok) return false;
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await context.decodeAudioData(arrayBuffer.slice(0));
+    await context.resume();
+
+    const source = context.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(context.destination);
+    currentWebAudioSource = source;
+    currentWebAudioLifecycle = lifecycle;
+    source.onended = () => {
+      if (currentWebAudioSource === source) {
+        currentWebAudioSource = null;
+        currentWebAudioLifecycle = undefined;
+        lifecycle?.onEnd?.();
+      }
+      source.disconnect();
+    };
+    source.start(0);
+    lifecycle?.onStart?.();
+    return true;
+  } catch {
+    return false;
   }
 };
 
@@ -102,7 +272,10 @@ const getCachedAudioElement = (audioUrl?: string | null) => {
     return { audioUrl: audioUrlKey, audio: cachedAudio, isNew: false };
   }
 
-  const audio = new Audio(audioUrlKey);
+  const audio = new Audio();
+  audio.src = audioUrlKey;
+  audio.setAttribute?.("playsinline", "true");
+  audio.setAttribute?.("webkit-playsinline", "true");
   audio.preload = "auto";
   rememberAudioElement(audioUrlKey, audio);
   return { audioUrl: audioUrlKey, audio, isNew: true };
@@ -124,46 +297,106 @@ export const preloadAudioUrl = (audioUrl?: string | null) => {
   }
 };
 
-const chooseVoice = (options: SpeakOptions) => {
-  const voices = getSpeechVoices();
-  if (options.voiceURI) {
-    const selected = voices.find((voice) => voice.voiceURI === options.voiceURI);
-    if (selected) return selected;
-  }
-  if (options.lang) {
-    return voices.find((voice) => voice.lang === options.lang) ?? voices.find((voice) => voice.lang.startsWith("en"));
-  }
-  return voices.find((voice) => voice.lang.startsWith("en"));
-};
+const chooseVoice = (options: SpeakOptions) => selectPreferredSpeechVoice(getSpeechVoices(), options.lang, options.voiceURI);
 
-const playAudioUrl = async (audioUrl?: string | null) => {
+const playAudioUrl = async (audioUrl?: string | null, lifecycle?: SpeechLifecycleHandlers) => {
   const cachedAudio = getCachedAudioElement(audioUrl);
   if (!cachedAudio) return false;
 
   const { audioUrl: audioUrlKey, audio } = cachedAudio;
   currentAudio = audio;
+  currentSpeechLifecycle = lifecycle;
   audio.preload = "auto";
+
+  let hasStarted = false;
+  let isStartSettled = false;
+  let startTimeoutId: number | undefined;
+  let resolveStart: (started: boolean) => void = () => undefined;
+  const startPromise = new Promise<boolean>((resolve) => {
+    resolveStart = resolve;
+  });
 
   const clearCurrentAudio = () => {
     if (currentAudio === audio) {
       currentAudio = null;
+      currentSpeechLifecycle = undefined;
     }
   };
-  audio.addEventListener?.("ended", clearCurrentAudio, { once: true });
-  audio.addEventListener?.(
-    "error",
-    () => {
+  const settleStart = (started: boolean) => {
+    if (isStartSettled) return;
+    isStartSettled = true;
+    if (startTimeoutId !== undefined) {
+      window.clearTimeout(startTimeoutId);
+      startTimeoutId = undefined;
+    }
+    if (started) {
+      hasStarted = true;
+      lifecycle?.onStart?.();
+    }
+    resolveStart(started);
+  };
+  const handlePlaying = () => settleStart(true);
+  const handleProgress = () => {
+    if (!audio.paused && audio.currentTime > 0) settleStart(true);
+  };
+  const removePlaybackListeners = () => {
+    audio.removeEventListener?.("playing", handlePlaying);
+    audio.removeEventListener?.("timeupdate", handleProgress);
+    audio.removeEventListener?.("error", handleError);
+    audio.removeEventListener?.("ended", handleEnded);
+  };
+  const cancelPlaybackAttempt = () => {
+    settleStart(false);
+    removePlaybackListeners();
+    if (currentAudioListenerCleanup === cancelPlaybackAttempt) {
+      currentAudioListenerCleanup = null;
+    }
+  };
+  const handleEnded = () => {
+    cancelPlaybackAttempt();
+    if (hasStarted) lifecycle?.onEnd?.();
+    clearCurrentAudio();
+  };
+  const handleError = () => {
+    const failedAfterStart = hasStarted;
+    cancelPlaybackAttempt();
+    if (failedAfterStart) lifecycle?.onError?.();
+    clearCurrentAudio();
+    forgetAudioElement(audioUrlKey, audio);
+  };
+  audio.addEventListener?.("playing", handlePlaying);
+  audio.addEventListener?.("timeupdate", handleProgress);
+  audio.addEventListener?.("error", handleError, { once: true });
+  audio.addEventListener?.("ended", handleEnded, { once: true });
+  currentAudioListenerCleanup = cancelPlaybackAttempt;
+  startTimeoutId = window.setTimeout(() => {
+    cancelPlaybackAttempt();
+    try {
+      audio.pause();
+      if (audio.readyState > 0 && Number.isFinite(audio.duration)) {
+        audio.currentTime = 0;
+      }
+    } finally {
       clearCurrentAudio();
       forgetAudioElement(audioUrlKey, audio);
-    },
-    { once: true }
-  );
+    }
+  }, AUDIO_START_TIMEOUT_MS);
 
   try {
-    audio.currentTime = 0;
-    await audio.play();
-    return true;
+    if (audio.readyState > 0 && Number.isFinite(audio.duration)) {
+      audio.currentTime = 0;
+    }
+    const playPromise = audio.play();
+    void playPromise.catch(() => settleStart(false));
+    const started = await startPromise;
+    if (started) return true;
+
+    cancelPlaybackAttempt();
+    clearCurrentAudio();
+    forgetAudioElement(audioUrlKey, audio);
+    return false;
   } catch {
+    cancelPlaybackAttempt();
     clearCurrentAudio();
     forgetAudioElement(audioUrlKey, audio);
     return false;
@@ -171,7 +404,7 @@ const playAudioUrl = async (audioUrl?: string | null) => {
 };
 
 const fetchPronunciationAudioUrl = async (text: string, lang?: Settings["speechLang"]) => {
-  const normalizedText = text.trim().toLowerCase();
+  const normalizedText = text.trim().replace(/\s+/g, " ").toLowerCase();
   if (!normalizedText) return null;
 
   const cacheKey = `${normalizedText}:${lang ?? "default"}`;
@@ -241,7 +474,7 @@ const loadPronunciationAudioFetcher = async () => {
   }
 
   const service = await loadPronunciationService();
-  return service?.fetchWordPronunciationAudio ?? null;
+  return service?.fetchTextPronunciationAudio ?? service?.fetchWordPronunciationAudio ?? null;
 };
 
 const loadFallbackPronunciationAudioFetcher = async () => {
@@ -266,11 +499,20 @@ export const preloadSpeechAudio = async (text: string, options: SpeakOptions = {
 
   const shouldDeferProvidedAudio = isLegacyDictionaryApiAudioUrl(options.audioUrl);
 
-  if (!shouldDeferProvidedAudio && preloadAudioUrl(options.audioUrl)) {
+  if (options.audioUrl && !shouldDeferProvidedAudio && preloadAudioUrl(options.audioUrl)) {
     return true;
   }
 
-  const pronunciationAudioUrl = await fetchPronunciationAudioUrl(trimmed, options.lang);
+  const immediateAudioUrl = pronunciationAudioFetcherForTest === undefined
+    ? getOnlinePronunciationAudioUrl(trimmed, options.lang)
+    : null;
+  if (immediateAudioUrl && preloadAudioUrl(immediateAudioUrl)) {
+    return true;
+  }
+
+  const pronunciationAudioUrl = immediateAudioUrl
+    ? null
+    : await fetchPronunciationAudioUrl(trimmed, options.lang);
   if (preloadAudioUrl(pronunciationAudioUrl)) {
     return true;
   }
@@ -279,6 +521,7 @@ export const preloadSpeechAudio = async (text: string, options: SpeakOptions = {
     return true;
   }
 
+  if (options.fallbackToDictionary === false) return false;
   const fallbackPronunciationAudioUrl = await fetchFallbackPronunciationAudioUrl(trimmed, options.lang);
   return preloadAudioUrl(fallbackPronunciationAudioUrl);
 };
@@ -287,31 +530,57 @@ export const speakText = async (text: string, options: SpeakOptions = {}) => {
   const trimmed = text.trim();
   if (!trimmed && !options.audioUrl) return false;
 
+  const lifecycle = options.lifecycle;
+  lifecycle?.onLoading?.();
   stopSpeaking();
+  unlockWebAudio();
 
   const shouldDeferProvidedAudio = isLegacyDictionaryApiAudioUrl(options.audioUrl);
 
-  if (!shouldDeferProvidedAudio && (await playAudioUrl(options.audioUrl))) {
+  if (options.audioUrl && !shouldDeferProvidedAudio && (await playAudioUrl(options.audioUrl, lifecycle))) {
     return true;
   }
 
-  const pronunciationAudioUrl = await fetchPronunciationAudioUrl(trimmed, options.lang);
-  if (await playAudioUrl(pronunciationAudioUrl)) {
+  // Build the public URL synchronously so audio.play() still runs inside the
+  // original click gesture. Browsers may reject playback after an async lookup.
+  const immediateAudioUrl = pronunciationAudioFetcherForTest === undefined
+    ? getOnlinePronunciationAudioUrl(trimmed, options.lang)
+    : null;
+  if (immediateAudioUrl && (await playAudioUrl(immediateAudioUrl, lifecycle))) {
+    return true;
+  }
+  if (immediateAudioUrl && (await playDecodedAudioUrl(immediateAudioUrl, lifecycle))) {
     return true;
   }
 
-  if (shouldDeferProvidedAudio && (await playAudioUrl(options.audioUrl))) {
+  const pronunciationAudioUrl = immediateAudioUrl
+    ? null
+    : await fetchPronunciationAudioUrl(trimmed, options.lang);
+  if (await playAudioUrl(pronunciationAudioUrl, lifecycle)) {
+    return true;
+  }
+  if (pronunciationAudioUrl && (await playDecodedAudioUrl(pronunciationAudioUrl, lifecycle))) {
     return true;
   }
 
-  const fallbackPronunciationAudioUrl = await fetchFallbackPronunciationAudioUrl(trimmed, options.lang);
-  if (fallbackPronunciationAudioUrl !== pronunciationAudioUrl && (await playAudioUrl(fallbackPronunciationAudioUrl))) {
+  if (shouldDeferProvidedAudio && (await playAudioUrl(options.audioUrl, lifecycle))) {
     return true;
   }
 
-  if (!isSpeechSupported()) return false;
+  if (options.fallbackToDictionary !== false) {
+    const fallbackPronunciationAudioUrl = await fetchFallbackPronunciationAudioUrl(trimmed, options.lang);
+    if (fallbackPronunciationAudioUrl !== pronunciationAudioUrl && (await playAudioUrl(fallbackPronunciationAudioUrl, lifecycle))) {
+      return true;
+    }
+  }
+
+  if (options.fallbackToSystem === false || !isSpeechSupported()) {
+    lifecycle?.onError?.();
+    return false;
+  }
 
   const utterance = new SpeechSynthesisUtterance(trimmed);
+  lifecycle?.onSystemFallback?.();
   utterance.lang = options.lang ?? "en-US";
   utterance.rate = options.rate ?? 0.9;
   const voice = chooseVoice(options);
@@ -319,7 +588,52 @@ export const speakText = async (text: string, options: SpeakOptions = {}) => {
     utterance.voice = voice;
   }
 
+  utterance.onstart = lifecycle?.onStart ?? null;
+  utterance.onend = lifecycle?.onEnd ?? null;
+  utterance.onerror = lifecycle?.onError ?? null;
   window.speechSynthesis.speak(utterance);
+  return true;
+};
+
+export const speakTextWithLifecycle = (
+  text: string,
+  options: SpeakOptions = {},
+  handlers: SpeechLifecycleHandlers = {}
+) => {
+  return speakText(text, { ...options, lifecycle: handlers });
+};
+
+export const pauseSpeaking = () => {
+  if (currentAudio && !currentAudio.paused) {
+    currentAudio.pause();
+    currentSpeechLifecycle?.onPause?.();
+    return true;
+  }
+  if (currentWebAudioSource && currentWebAudioContext?.state === "running") {
+    void currentWebAudioContext.suspend();
+    currentWebAudioLifecycle?.onPause?.();
+    return true;
+  }
+  if (!isSpeechSupported() || !window.speechSynthesis.speaking || window.speechSynthesis.paused) return false;
+  window.speechSynthesis.pause();
+  currentSpeechLifecycle?.onPause?.();
+  return true;
+};
+
+export const resumeSpeaking = () => {
+  if (currentAudio && currentAudio.paused) {
+    void currentAudio.play();
+    currentSpeechLifecycle?.onResume?.();
+    return true;
+  }
+  if (currentWebAudioSource && currentWebAudioContext?.state === "suspended") {
+    void currentWebAudioContext.resume();
+    currentWebAudioLifecycle?.onResume?.();
+    return true;
+  }
+  if (!isSpeechSupported() || !window.speechSynthesis.paused) return false;
+  window.speechSynthesis.resume();
+  currentSpeechLifecycle?.onResume?.();
   return true;
 };
 
@@ -337,4 +651,6 @@ export const clearSpeechAudioCacheForTests = () => {
   audioElementCache.clear();
   pronunciationAudioUrlCache.clear();
   fallbackPronunciationAudioUrlCache.clear();
+  void currentWebAudioContext?.close?.();
+  currentWebAudioContext = null;
 };

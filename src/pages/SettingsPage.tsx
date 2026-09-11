@@ -2,6 +2,8 @@ import {
   AlertTriangle,
   BookOpen,
   CheckCircle2,
+  CloudDownload,
+  CloudUpload,
   Database,
   Download,
   FileJson,
@@ -18,17 +20,19 @@ import { useAppData } from "../AppContext";
 import PageHeader from "../components/PageHeader";
 import { getDictionaryStats } from "../services/dictionaryService";
 import { exportAnkiCsv, exportJson, exportMarkdown } from "../services/exportService";
-import { testAiProviderConnection } from "../services/modelService";
-import { getSpeechVoices, speakText } from "../services/speechService";
+import { testAdventureProviderConnection } from "../services/adventureModelService";
+import { describeSyncError, pullDataSnapshot, pushDataSnapshot } from "../services/syncService";
+import { getSpeechVoices, selectPreferredSpeechVoice, speakText } from "../services/speechService";
 import {
   downloadTextFile,
   markDataExported,
   needsBackupReminder,
   restoreDataFromJson
 } from "../services/storage";
+import type { AiProviderSettings, DataSyncSettings } from "../types";
 
 export default function SettingsPage() {
-  const { data, setData, updateData, reset } = useAppData();
+  const { data, setData, updateData, reset, dataSyncStatus, setDataSyncStatus, markDataSynced } = useAppData();
   const [settings, setSettings] = useState(data.settings);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [restoreMessage, setRestoreMessage] = useState<{ tone: "success" | "error"; text: string } | null>(null);
@@ -36,6 +40,7 @@ export default function SettingsPage() {
   const [voicePreviewStatus, setVoicePreviewStatus] = useState<{ tone: "success" | "error"; text: string } | null>(null);
   const [aiTestStatus, setAiTestStatus] = useState<{ tone: "success" | "error"; text: string } | null>(null);
   const [isTestingAi, setIsTestingAi] = useState(false);
+  const [aiSaveStatus, setAiSaveStatus] = useState<{ tone: "success" | "error"; text: string } | null>(null);
   const [resetArmed, setResetArmed] = useState(false);
   const dictionaryStats = getDictionaryStats(data);
   const showBackupReminder = needsBackupReminder(data);
@@ -53,13 +58,20 @@ export default function SettingsPage() {
   }, [data.settings]);
 
   useEffect(() => {
-    const loadVoices = () => setVoices(getSpeechVoices().filter((voice) => voice.lang.startsWith("en")));
+    const loadVoices = () => {
+      const availableVoices = getSpeechVoices().filter((voice) => voice.lang.replace(/_/g, "-").toLowerCase().startsWith("en"));
+      const preferred = selectPreferredSpeechVoice(availableVoices, settings.speechLang);
+      setVoices([
+        ...availableVoices.filter((voice) => voice.voiceURI === preferred?.voiceURI),
+        ...availableVoices.filter((voice) => voice.voiceURI !== preferred?.voiceURI)
+      ]);
+    };
     loadVoices();
     if ("speechSynthesis" in window) {
       window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
       return () => window.speechSynthesis.removeEventListener("voiceschanged", loadVoices);
     }
-  }, []);
+  }, [settings.speechLang]);
 
   const saveSettings = () => {
     updateData((current) => ({ ...current, settings }));
@@ -85,12 +97,79 @@ export default function SettingsPage() {
     setIsTestingAi(true);
     setAiTestStatus({ tone: "success", text: "正在测试中转站连接..." });
     try {
-      await testAiProviderConnection(settings.aiProvider);
-      setAiTestStatus({ tone: "success", text: "连接成功，模型已返回结构化故事。" });
+      await testAdventureProviderConnection(settings.aiProvider);
+      setAiTestStatus({ tone: "success", text: "连接成功，冒险续章接口已返回有效内容。" });
     } catch (error) {
       setAiTestStatus({ tone: "error", text: error instanceof Error ? error.message : "连接测试失败。" });
     } finally {
       setIsTestingAi(false);
+    }
+  };
+
+  // Editing any relay field invalidates the previous test verdict. Leaving the
+  // old result on screen makes it look like the new settings were tested.
+  const updateAiProvider = (patch: Partial<AiProviderSettings>) => {
+    setSettings((current) => ({ ...current, aiProvider: { ...current.aiProvider, ...patch } }));
+    setAiTestStatus(null);
+    setAiSaveStatus(null);
+  };
+
+  const saveAiProviderSettings = () => {
+    saveSettings();
+    setAiSaveStatus({ tone: "success", text: "AI 中转站设置已保存到本机。" });
+    window.setTimeout(() => setAiSaveStatus(null), 2200);
+  };
+
+  const [syncManualStatus, setSyncManualStatus] = useState<{ tone: "success" | "error"; text: string } | null>(null);
+  const [isSyncingManually, setIsSyncingManually] = useState(false);
+
+  const updateDataSync = (patch: Partial<DataSyncSettings>) => {
+    setSettings((current) => ({ ...current, dataSync: { ...current.dataSync, ...patch } }));
+    setSyncManualStatus(null);
+  };
+
+  const formatSyncTime = (iso: string) => {
+    const date = new Date(iso);
+    return Number.isNaN(date.getTime()) ? "" : new Intl.DateTimeFormat("zh-CN", {
+      month: "numeric",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    }).format(date);
+  };
+
+  const pushToCloudNow = async () => {
+    setIsSyncingManually(true);
+    setSyncManualStatus({ tone: "success", text: "正在上传到云端..." });
+    try {
+      const savedAt = await pushDataSnapshot(settings.dataSync, data);
+      markDataSynced(data);
+      setDataSyncStatus({ state: "ok", message: "已上传到云端。" });
+      setSyncManualStatus({ tone: "success", text: `已上传到云端${savedAt ? `（${formatSyncTime(savedAt)}）` : ""}。` });
+    } catch (error) {
+      setSyncManualStatus({ tone: "error", text: describeSyncError(error) });
+    } finally {
+      setIsSyncingManually(false);
+    }
+  };
+
+  const pullFromCloudNow = async () => {
+    setIsSyncingManually(true);
+    setSyncManualStatus({ tone: "success", text: "正在从云端恢复..." });
+    try {
+      const remote = await pullDataSnapshot(settings.dataSync);
+      if (!remote) {
+        setSyncManualStatus({ tone: "error", text: "云端还没有数据，先在旧浏览器里上传一次。" });
+        return;
+      }
+      setData(remote.data);
+      markDataSynced(remote.data);
+      setDataSyncStatus({ state: "ok", message: "已从云端恢复数据。" });
+      setSyncManualStatus({ tone: "success", text: "已从云端恢复数据。" });
+    } catch (error) {
+      setSyncManualStatus({ tone: "error", text: describeSyncError(error) });
+    } finally {
+      setIsSyncingManually(false);
     }
   };
 
@@ -249,13 +328,14 @@ export default function SettingsPage() {
               value={settings.speechVoice}
               onChange={(event) => setSettings({ ...settings, speechVoice: event.target.value })}
             >
-              <option value="">自动选择</option>
+              <option value="">自动选择（优先自然音色）</option>
               {voices.map((voice) => (
                 <option key={voice.voiceURI} value={voice.voiceURI}>
                   {voice.name} · {voice.lang}
                 </option>
               ))}
             </select>
+            <span className="field-hint">自动选择会避开效果音，优先使用 Samantha、Alex、增强或自然英文音色。</span>
           </label>
           <label>
             语速 {settings.speechRate.toFixed(1)}x
@@ -297,21 +377,24 @@ export default function SettingsPage() {
               <span className="eyebrow">AI Story</span>
               <h2>AI 中转站</h2>
             </div>
-            <button className="secondary-button" type="button" onClick={testAiConnection} disabled={isTestingAi}>
-              <PlugZap size={17} />
-              {isTestingAi ? "测试中" : "测试连接"}
-            </button>
+            <div className="panel-header-actions">
+              <button className="secondary-button" type="button" onClick={testAiConnection} disabled={isTestingAi}>
+                <PlugZap size={17} />
+                {isTestingAi ? "测试中" : "测试连接"}
+              </button>
+              <button className="primary-button" type="button" onClick={saveAiProviderSettings}>
+                <Save size={17} />
+                保存
+              </button>
+            </div>
           </div>
           <label className="checkbox-line">
             <input
               type="checkbox"
               checked={settings.aiProvider.enabled}
-              onChange={(event) => setSettings({
-                ...settings,
-                aiProvider: { ...settings.aiProvider, enabled: event.target.checked }
-              })}
+              onChange={(event) => updateAiProvider({ enabled: event.target.checked })}
             />
-            使用真实模型生成错词故事
+            使用真实模型生成冒险和错词故事
           </label>
           <label>
             中转站 Base URL
@@ -319,10 +402,7 @@ export default function SettingsPage() {
               type="url"
               placeholder="https://your-proxy.example.com/v1"
               value={settings.aiProvider.baseUrl}
-              onChange={(event) => setSettings({
-                ...settings,
-                aiProvider: { ...settings.aiProvider, baseUrl: event.target.value }
-              })}
+              onChange={(event) => updateAiProvider({ baseUrl: event.target.value })}
             />
           </label>
           <label>
@@ -331,10 +411,7 @@ export default function SettingsPage() {
               type="password"
               placeholder="sk-..."
               value={settings.aiProvider.apiKey}
-              onChange={(event) => setSettings({
-                ...settings,
-                aiProvider: { ...settings.aiProvider, apiKey: event.target.value }
-              })}
+              onChange={(event) => updateAiProvider({ apiKey: event.target.value })}
             />
           </label>
           <label>
@@ -342,10 +419,7 @@ export default function SettingsPage() {
             <input
               placeholder="gpt-4o-mini / deepseek-chat / ..."
               value={settings.aiProvider.model}
-              onChange={(event) => setSettings({
-                ...settings,
-                aiProvider: { ...settings.aiProvider, model: event.target.value }
-              })}
+              onChange={(event) => updateAiProvider({ model: event.target.value })}
             />
           </label>
           <div className="settings-ai-grid">
@@ -357,10 +431,7 @@ export default function SettingsPage() {
                 max={1.5}
                 step={0.1}
                 value={settings.aiProvider.temperature}
-                onChange={(event) => setSettings({
-                  ...settings,
-                  aiProvider: { ...settings.aiProvider, temperature: Number(event.target.value) }
-                })}
+                onChange={(event) => updateAiProvider({ temperature: Number(event.target.value) })}
               />
             </label>
             <label>
@@ -370,10 +441,7 @@ export default function SettingsPage() {
                 min={5}
                 max={300}
                 value={Math.round(settings.aiProvider.timeoutMs / 1000)}
-                onChange={(event) => setSettings({
-                  ...settings,
-                  aiProvider: { ...settings.aiProvider, timeoutMs: Number(event.target.value) * 1000 }
-                })}
+                onChange={(event) => updateAiProvider({ timeoutMs: Number(event.target.value) * 1000 })}
               />
             </label>
           </div>
@@ -381,17 +449,85 @@ export default function SettingsPage() {
             <input
               type="checkbox"
               checked={settings.aiProvider.fallbackToLocal}
-              onChange={(event) => setSettings({
-                ...settings,
-                aiProvider: { ...settings.aiProvider, fallbackToLocal: event.target.checked }
-              })}
+              onChange={(event) => updateAiProvider({ fallbackToLocal: event.target.checked })}
             />
             模型失败时使用本地模板兜底
           </label>
-          <p className="field-hint">兼容 OpenAI Chat Completions 格式的中转站。API Key 会保存在本机设置中；如果模型较慢，建议把超时调到 120-180 秒。</p>
+          <p className="field-hint">兼容 OpenAI Chat Completions 格式的中转站。开启并保存后，冒险续章和错词故事都会请求真实模型；API Key 只保存在本机。如果模型较慢，建议把超时调到 120-180 秒。</p>
+          {aiSaveStatus && (
+            <div className={`audio-message ${aiSaveStatus.tone}`} role="status">
+              {aiSaveStatus.text}
+            </div>
+          )}
           {aiTestStatus && (
             <div className={`audio-message ${aiTestStatus.tone}`} role="status">
               {aiTestStatus.text}
+            </div>
+          )}
+        </div>
+
+        <div className="panel form-panel settings-sync-panel">
+          <div className="panel-header">
+            <div>
+              <span className="eyebrow">Data Sync</span>
+              <h2>云同步</h2>
+            </div>
+            <div className="panel-header-actions">
+              <button
+                className="secondary-button"
+                type="button"
+                onClick={pushToCloudNow}
+                disabled={isSyncingManually || !settings.dataSync.enabled}
+              >
+                <CloudUpload size={17} />
+                立即上传
+              </button>
+              <button
+                className="secondary-button"
+                type="button"
+                onClick={pullFromCloudNow}
+                disabled={isSyncingManually || !settings.dataSync.enabled}
+              >
+                <CloudDownload size={17} />
+                从云端恢复
+              </button>
+            </div>
+          </div>
+          <label className="checkbox-line">
+            <input
+              type="checkbox"
+              checked={settings.dataSync.enabled}
+              onChange={(event) => updateDataSync({ enabled: event.target.checked })}
+            />
+            启用自动云同步（数据自动备份，换浏览器自动恢复）
+          </label>
+          <label>
+            同步服务地址
+            <input
+              type="url"
+              placeholder="https://your-server.com（服务端运行 scripts/sync-server.mjs）"
+              value={settings.dataSync.baseUrl}
+              onChange={(event) => updateDataSync({ baseUrl: event.target.value })}
+            />
+          </label>
+          <label>
+            访问令牌
+            <input
+              type="password"
+              placeholder="与服务器 TOKEN 保持一致"
+              value={settings.dataSync.token}
+              onChange={(event) => updateDataSync({ token: event.target.value })}
+            />
+          </label>
+          <p className="field-hint">启用后数据会自动备份到你自己的服务器；换浏览器或换设备打开时，会自动恢复云端最新数据。服务端运行项目里的 scripts/sync-server.mjs，并让服务器 TOKEN 与这里的访问令牌一致。AI Key 等设置也会同步，请只使用自己信任的服务器。</p>
+          {syncManualStatus && (
+            <div className={`audio-message ${syncManualStatus.tone}`} role="status">
+              {syncManualStatus.text}
+            </div>
+          )}
+          {dataSyncStatus.state !== "idle" && (
+            <div className={`audio-message ${dataSyncStatus.state === "error" ? "error" : "success"}`} role="status">
+              {dataSyncStatus.message}
             </div>
           )}
         </div>

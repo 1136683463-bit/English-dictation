@@ -6,6 +6,8 @@ import {
   Home,
   Library,
   ListChecks,
+  MoreHorizontal,
+  Map,
   PanelLeftClose,
   PanelLeftOpen,
   PlusCircle,
@@ -13,7 +15,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { NavLink, Route, Routes } from "react-router-dom";
+import { NavLink, Route, Routes, useLocation } from "react-router-dom";
 import { AppProvider } from "./AppContext";
 import EntryPage from "./pages/EntryPage";
 import TodayPage from "./pages/TodayPage";
@@ -29,10 +31,13 @@ import MistakeBookPage from "./pages/MistakeBookPage";
 import StatsPage from "./pages/StatsPage";
 import SettingsPage from "./pages/SettingsPage";
 import UnitsPage from "./pages/UnitsPage";
+import AdventurePage from "./pages/AdventurePage";
+import AdventurePlayPage from "./pages/AdventurePlayPage";
 
 const navItems = [
   { to: "/today", label: "今日", icon: Home },
   { to: "/training", label: "训练", icon: ListChecks },
+  { to: "/adventure", label: "冒险", icon: Map },
   { to: "/mistakes", label: "错词本", icon: BookMarked },
   { to: "/units", label: "词书", icon: BookOpenCheck },
   { to: "/add", label: "添加", icon: PlusCircle },
@@ -41,18 +46,28 @@ const navItems = [
   { to: "/settings", label: "设置", icon: Settings }
 ];
 
+const mobilePrimaryNavPaths = new Set(["/today", "/training", "/adventure", "/library"]);
+const mobileMoreItems = navItems.filter((item) => !mobilePrimaryNavPaths.has(item.to));
+
 const SIDEBAR_COLLAPSED_KEY = "sidebar-collapsed";
 
 const AppLayout = () => {
+  const location = useLocation();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
     return localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === "true";
   });
+  const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(SIDEBAR_COLLAPSED_KEY, String(isSidebarCollapsed));
   }, [isSidebarCollapsed]);
 
+  useEffect(() => {
+    setIsMobileMoreOpen(false);
+  }, [location.pathname]);
+
   const ToggleIcon = isSidebarCollapsed ? PanelLeftOpen : PanelLeftClose;
+  const isMobileMoreActive = mobileMoreItems.some((item) => location.pathname.startsWith(item.to));
 
   return (
     <div className={`app-shell${isSidebarCollapsed ? " sidebar-collapsed" : ""}`}>
@@ -81,6 +96,7 @@ const AppLayout = () => {
         <nav>
           {navItems.map((item) => {
             const Icon = item.icon;
+            const mobileClass = mobilePrimaryNavPaths.has(item.to) ? "mobile-primary-nav" : "mobile-secondary-nav";
             return (
               <NavLink
                 key={item.to}
@@ -88,14 +104,46 @@ const AppLayout = () => {
                 aria-label={item.label}
                 data-tooltip={isSidebarCollapsed ? item.label : undefined}
                 title={isSidebarCollapsed ? item.label : undefined}
-                className={({ isActive }) => (isActive ? "active" : "")}
+                className={({ isActive }) => `${isActive ? "active" : ""} ${mobileClass}`.trim()}
               >
                 <Icon size={18} />
                 <span>{item.label}</span>
               </NavLink>
             );
           })}
+          <button
+            type="button"
+            className={`mobile-more-toggle${isMobileMoreActive || isMobileMoreOpen ? " active" : ""}`}
+            aria-label={isMobileMoreOpen ? "关闭更多导航" : "打开更多导航"}
+            aria-expanded={isMobileMoreOpen}
+            aria-controls="mobile-more-nav"
+            onClick={() => setIsMobileMoreOpen((open) => !open)}
+          >
+            <MoreHorizontal size={18} />
+            <span>更多</span>
+          </button>
         </nav>
+        {isMobileMoreOpen && (
+          <>
+            <button
+              type="button"
+              className="mobile-more-backdrop"
+              aria-label="关闭更多导航"
+              onClick={() => setIsMobileMoreOpen(false)}
+            />
+            <div className="mobile-more-panel" id="mobile-more-nav" role="dialog" aria-label="更多导航">
+              {mobileMoreItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink key={item.to} to={item.to} className={({ isActive }) => (isActive ? "active" : "")}>
+                    <Icon size={18} />
+                    <span>{item.label}</span>
+                  </NavLink>
+                );
+              })}
+            </div>
+          </>
+        )}
         <NavLink
           to="/settings"
           className="sidebar-footer"
@@ -111,6 +159,8 @@ const AppLayout = () => {
         <Routes>
           <Route path="/today" element={<TodayPage />} />
           <Route path="/training" element={<TrainingPage />} />
+          <Route path="/adventure" element={<AdventurePage />} />
+          <Route path="/adventure/:adventureId" element={<AdventurePlayPage />} />
           <Route path="/mistakes" element={<MistakeBookPage />} />
           <Route path="/add" element={<AddPage />} />
           <Route path="/library" element={<LibraryPage />} />

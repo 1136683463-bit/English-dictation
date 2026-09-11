@@ -4,6 +4,7 @@ import {
   isSpeechSupported,
   preloadAudioUrl,
   preloadSpeechAudio,
+  selectPreferredSpeechVoice,
   setPronunciationAudioFetcherForTest,
   speakText
 } from "./speechService";
@@ -12,21 +13,34 @@ const installAudioMock = (playResults: Array<Promise<void> | Error | undefined> 
   const playMocks: ReturnType<typeof vi.fn>[] = [];
   const AudioMock = vi.fn().mockImplementation(() => {
     const result = playResults.shift();
+    let paused = false;
+    const listeners = new Map<string, () => void>();
     const play = vi.fn(() => {
+      paused = false;
       if (result instanceof Error) {
         return Promise.reject(result);
       }
+      if (result === undefined) listeners.get("playing")?.();
       return result ?? Promise.resolve();
+    });
+    const pause = vi.fn(() => {
+      paused = true;
     });
     playMocks.push(play);
     return {
-      addEventListener: vi.fn(),
+      addEventListener: vi.fn((eventName: string, listener: () => void) => listeners.set(eventName, listener)),
       currentTime: 0,
+      duration: 0,
       load: vi.fn(),
-      pause: vi.fn(),
+      readyState: 0,
+      get paused() {
+        return paused;
+      },
+      pause,
       play,
       preload: "",
-      removeAttribute: vi.fn()
+      removeAttribute: vi.fn(),
+      removeEventListener: vi.fn((eventName: string) => listeners.delete(eventName))
     };
   });
 
@@ -36,7 +50,7 @@ const installAudioMock = (playResults: Array<Promise<void> | Error | undefined> 
 
 const installSpeechSynthesisMock = () => {
   const cancel = vi.fn();
-  const getVoices = vi.fn(() => []);
+  const getVoices = vi.fn<() => SpeechSynthesisVoice[]>(() => []);
   const speak = vi.fn();
 
   // @ts-expect-error narrow mock for speech synthesis tests
@@ -55,6 +69,7 @@ describe("speechService", () => {
     clearSpeechAudioCacheForTests();
     setPronunciationAudioFetcherForTest(undefined);
     vi.unstubAllGlobals();
+    vi.useRealTimers();
     // @ts-expect-error test cleanup
     delete window.speechSynthesis;
     // @ts-expect-error test cleanup
@@ -68,6 +83,40 @@ describe("speechService", () => {
     await expect(speakText("hello")).resolves.toBe(false);
   });
 
+  it("prefers a matching natural voice over the first available novelty voice", () => {
+    const novelty = { name: "Bad News", lang: "en_US", voiceURI: "bad-news", localService: true } as SpeechSynthesisVoice;
+    const natural = { name: "Samantha (Enhanced)", lang: "en_US", voiceURI: "samantha-enhanced", localService: true } as SpeechSynthesisVoice;
+
+    expect(selectPreferredSpeechVoice([novelty, natural], "en-US")).toBe(natural);
+
+    const defaultMacVoice = { name: "Samantha", lang: "en_US", voiceURI: "samantha", localService: true } as SpeechSynthesisVoice;
+    const firstListedVoice = { name: "Eddy", lang: "en_US", voiceURI: "eddy", localService: true } as SpeechSynthesisVoice;
+    expect(selectPreferredSpeechVoice([firstListedVoice, defaultMacVoice], "en-US")).toBe(defaultMacVoice);
+  });
+
+  it("honors an explicitly selected system voice", () => {
+    const first = { name: "Alex", lang: "en_US", voiceURI: "alex", localService: true } as SpeechSynthesisVoice;
+    const selected = { name: "Daniel", lang: "en_GB", voiceURI: "daniel", localService: true } as SpeechSynthesisVoice;
+
+    expect(selectPreferredSpeechVoice([first, selected], "en-US", "daniel")).toBe(selected);
+  });
+
+  it("uses the preferred natural voice for the system fallback", async () => {
+    const { AudioMock } = installAudioMock([new Error("network")]);
+    const speech = installSpeechSynthesisMock();
+    const eddy = { name: "Eddy", lang: "en_US", voiceURI: "eddy", localService: true } as SpeechSynthesisVoice;
+    const samantha = { name: "Samantha", lang: "en_US", voiceURI: "samantha", localService: true } as SpeechSynthesisVoice;
+    speech.getVoices.mockReturnValue([eddy, samantha]);
+    const fetchPronunciationAudio = vi.fn().mockResolvedValue("https://cdn.example.com/hello.mp3");
+    setPronunciationAudioFetcherForTest(fetchPronunciationAudio);
+
+    await expect(speakText("hello", { fallbackToDictionary: false })).resolves.toBe(true);
+
+    expect(AudioMock).toHaveBeenCalledTimes(1);
+    expect(speech.speak).toHaveBeenCalledTimes(1);
+    expect(speech.speak.mock.calls[0][0].voice).toBe(samantha);
+  });
+
   it("prefers uploaded audio before system speech", async () => {
     const { AudioMock, playMocks } = installAudioMock();
     const speech = installSpeechSynthesisMock();
@@ -76,7 +125,7 @@ describe("speechService", () => {
 
     await expect(speakText("hello", { audioUrl: "data:audio/mp3;base64,abc" })).resolves.toBe(true);
 
-    expect(AudioMock).toHaveBeenCalledWith("data:audio/mp3;base64,abc");
+    expect(AudioMock).toHaveBeenCalledWith();
     expect(playMocks[0]).toHaveBeenCalled();
     expect(fetchPronunciationAudio).not.toHaveBeenCalled();
     expect(speech.speak).not.toHaveBeenCalled();
@@ -103,9 +152,74 @@ describe("speechService", () => {
     await expect(speakText("  hello  ", { lang: "en-GB" })).resolves.toBe(true);
 
     expect(fetchPronunciationAudio).toHaveBeenCalledWith("hello", "en-GB");
-    expect(AudioMock).toHaveBeenCalledWith("https://cdn.example.com/hello.mp3");
+    expect(AudioMock).toHaveBeenCalledWith();
     expect(playMocks[0]).toHaveBeenCalled();
     expect(speech.speak).not.toHaveBeenCalled();
+  });
+
+  it("plays a sentence with one continuous online audio request without using system speech", async () => {
+    const { AudioMock, playMocks } = installAudioMock();
+    const speech = installSpeechSynthesisMock();
+
+    const playback = speakText("The bell rings softly.", {
+      lang: "en-US",
+      fallbackToSystem: false,
+      fallbackToDictionary: false
+    });
+
+    // play() must run before yielding so the browser still recognizes the click gesture.
+    expect(AudioMock).toHaveBeenCalledTimes(1);
+    expect(AudioMock).toHaveBeenCalledWith();
+    expect(playMocks[0]).toHaveBeenCalledTimes(1);
+    await expect(playback).resolves.toBe(true);
+    expect(speech.speak).not.toHaveBeenCalled();
+  });
+
+  it("starts playback from the media playing event when the play promise stays pending", async () => {
+    const listeners = new Map<string, () => void>();
+    const play = vi.fn(() => new Promise<void>(() => undefined));
+    const pause = vi.fn();
+    const AudioMock = vi.fn().mockImplementation(() => ({
+      addEventListener: vi.fn((eventName: string, listener: () => void) => listeners.set(eventName, listener)),
+      currentTime: 0,
+      load: vi.fn(),
+      paused: false,
+      pause,
+      play,
+      preload: "",
+      removeAttribute: vi.fn(),
+      removeEventListener: vi.fn((eventName: string) => listeners.delete(eventName))
+    }));
+    const onStart = vi.fn();
+    vi.stubGlobal("Audio", AudioMock);
+
+    const playback = speakText("A complete sentence.", {
+      fallbackToSystem: false,
+      fallbackToDictionary: false,
+      lifecycle: { onStart }
+    });
+
+    expect(play).toHaveBeenCalledTimes(1);
+    listeners.get("playing")?.();
+    await expect(playback).resolves.toBe(true);
+    expect(onStart).toHaveBeenCalledTimes(1);
+  });
+
+  it("exits loading when online audio never starts", async () => {
+    vi.useFakeTimers();
+    const pendingPlayback = new Promise<void>(() => undefined);
+    installAudioMock([pendingPlayback]);
+    const onError = vi.fn();
+
+    const playback = speakText("A complete sentence.", {
+      fallbackToSystem: false,
+      fallbackToDictionary: false,
+      lifecycle: { onError }
+    });
+
+    await vi.advanceTimersByTimeAsync(6000);
+    await expect(playback).resolves.toBe(false);
+    expect(onError).toHaveBeenCalledTimes(1);
   });
 
   it("preloads fetched pronunciation audio and reuses it on click", async () => {
@@ -120,7 +234,7 @@ describe("speechService", () => {
     expect(fetchPronunciationAudio).toHaveBeenCalledTimes(1);
     expect(fetchPronunciationAudio).toHaveBeenCalledWith("hello", "en-US");
     expect(AudioMock).toHaveBeenCalledTimes(1);
-    expect(AudioMock).toHaveBeenCalledWith("https://cdn.example.com/hello.mp3");
+    expect(AudioMock).toHaveBeenCalledWith();
     expect(playMocks[0]).toHaveBeenCalledTimes(1);
     expect(speech.speak).not.toHaveBeenCalled();
   });
@@ -133,8 +247,8 @@ describe("speechService", () => {
 
     await expect(speakText("hello", { audioUrl: "blob:uploaded" })).resolves.toBe(true);
 
-    expect(AudioMock).toHaveBeenNthCalledWith(1, "blob:uploaded");
-    expect(AudioMock).toHaveBeenNthCalledWith(2, "https://cdn.example.com/hello.mp3");
+    expect(AudioMock).toHaveBeenNthCalledWith(1);
+    expect(AudioMock).toHaveBeenNthCalledWith(2);
     expect(playMocks[0]).toHaveBeenCalled();
     expect(playMocks[1]).toHaveBeenCalled();
     expect(speech.speak).not.toHaveBeenCalled();
@@ -153,7 +267,7 @@ describe("speechService", () => {
     ).resolves.toBe(true);
 
     expect(AudioMock).toHaveBeenCalledTimes(1);
-    expect(AudioMock).toHaveBeenCalledWith("https://dict.youdao.com/dictvoice?type=0&audio=hello");
+    expect(AudioMock).toHaveBeenCalledWith();
     expect(playMocks[0]).toHaveBeenCalled();
     expect(speech.speak).not.toHaveBeenCalled();
   });
@@ -167,8 +281,8 @@ describe("speechService", () => {
 
     await expect(speakText("hello", { audioUrl: legacyAudioUrl })).resolves.toBe(true);
 
-    expect(AudioMock).toHaveBeenNthCalledWith(1, "https://dict.youdao.com/dictvoice?type=0&audio=hello");
-    expect(AudioMock).toHaveBeenNthCalledWith(2, legacyAudioUrl);
+    expect(AudioMock).toHaveBeenNthCalledWith(1);
+    expect(AudioMock).toHaveBeenNthCalledWith(2);
     expect(playMocks[0]).toHaveBeenCalled();
     expect(playMocks[1]).toHaveBeenCalled();
     expect(speech.speak).not.toHaveBeenCalled();
@@ -182,7 +296,7 @@ describe("speechService", () => {
 
     await expect(speakText("hello")).resolves.toBe(true);
 
-    expect(AudioMock).toHaveBeenCalledWith("https://cdn.example.com/hello.mp3");
+    expect(AudioMock).toHaveBeenCalledWith();
     expect(speech.speak).toHaveBeenCalledTimes(1);
   });
 
@@ -206,7 +320,32 @@ describe("speechService", () => {
     await expect(speakText("hello")).resolves.toBe(true);
 
     expect(isSpeechSupported()).toBe(false);
-    expect(AudioMock).toHaveBeenCalledWith("https://cdn.example.com/hello.mp3");
+    expect(AudioMock).toHaveBeenCalledWith();
     expect(playMocks[0]).toHaveBeenCalled();
+  });
+
+  it("does not fall back to system speech when online audio is required", async () => {
+    const { AudioMock } = installAudioMock([new Error("network")]);
+    const speech = installSpeechSynthesisMock();
+    const fetchPronunciationAudio = vi.fn().mockResolvedValue("https://cdn.example.com/hello.mp3");
+    setPronunciationAudioFetcherForTest(fetchPronunciationAudio);
+
+    await expect(speakText("hello", { fallbackToSystem: false, fallbackToDictionary: false })).resolves.toBe(false);
+
+    expect(AudioMock).toHaveBeenCalledWith();
+    expect(speech.speak).not.toHaveBeenCalled();
+  });
+
+  it("pauses and resumes the active online audio element", async () => {
+    const { playMocks } = installAudioMock();
+    const speech = installSpeechSynthesisMock();
+    const fetchPronunciationAudio = vi.fn().mockResolvedValue("https://cdn.example.com/hello.mp3");
+    setPronunciationAudioFetcherForTest(fetchPronunciationAudio);
+
+    await expect(speakText("hello", { fallbackToSystem: false })).resolves.toBe(true);
+    expect((await import("./speechService")).pauseSpeaking()).toBe(true);
+    expect((await import("./speechService")).resumeSpeaking()).toBe(true);
+    expect(playMocks[0]).toHaveBeenCalledTimes(2);
+    expect(speech.speak).not.toHaveBeenCalled();
   });
 });

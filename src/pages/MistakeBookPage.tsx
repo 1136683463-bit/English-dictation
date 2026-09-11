@@ -936,7 +936,11 @@ export default function MistakeBookPage() {
           description="拼写或复习中出现错误后，会按本地日期自动汇总到这里。"
           action={<Link to="/training" className="secondary-button">去训练</Link>}
         />
-        <EmptyState title="错词本还是空的" description="完成一次拼写或复习，答错的词会自动进入按日期整理的错词本。" />
+        <EmptyState
+          title="错词本还是空的"
+          description="完成一次拼写或复习，答错的词会自动进入按日期整理的错词本。"
+          action={<Link to="/spelling" className="primary-button">开始听写</Link>}
+        />
       </div>
     );
   }

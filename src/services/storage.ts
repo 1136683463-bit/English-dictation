@@ -1,5 +1,12 @@
 import {
   AppData,
+  Adventure,
+  AdventureChoice,
+  AdventureLevel,
+  AdventureNode,
+  AdventureNodeSource,
+  AdventureTemplate,
+  AdventureVocabulary,
   Card,
   CardStatus,
   CardType,
@@ -29,7 +36,7 @@ import { seedDictionary } from "../data/seedDictionary";
 import { CORE_100_WORDS_VERSION, core100Words } from "../data/seedWords";
 
 const STORAGE_KEY = "personal-vocab-app-data-v1";
-export const APP_SCHEMA_VERSION = 3;
+export const APP_SCHEMA_VERSION = 6;
 
 export const uid = (prefix: string) =>
   `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 9)}`;
@@ -54,6 +61,11 @@ const defaultSettings: Settings = {
     temperature: 0.7,
     timeoutMs: 120000,
     fallbackToLocal: true
+  },
+  dataSync: {
+    enabled: false,
+    baseUrl: "",
+    token: ""
   }
 };
 
@@ -68,6 +80,7 @@ const createInitialData = (): AppData => ({
   materialSegments: [],
   reviews: [],
   mistakeGenerations: [],
+  adventures: [],
   schedules: [],
   dictionaryEntries: seedDictionary,
   seededWordVersions: [],
@@ -108,6 +121,7 @@ const knownAppDataKeys = [
   "materialSegments",
   "reviews",
   "mistakeGenerations",
+  "adventures",
   "schedules",
   "dictionaryEntries",
   "settings"
@@ -119,6 +133,7 @@ const hasRecognizableAppShape = (value: Record<string, unknown>) =>
 const normalizeSettings = (value: unknown): Settings => {
   const settings = isRecord(value) ? value : {};
   const aiProvider = isRecord(settings.aiProvider) ? settings.aiProvider : {};
+  const dataSync = isRecord(settings.dataSync) ? settings.dataSync : {};
   const speechLang = asString(settings.speechLang);
   const normalizedAiTimeout = Math.min(300000, Math.max(5000, Math.round(asNumber(aiProvider.timeoutMs, defaultSettings.aiProvider.timeoutMs))));
 
@@ -140,6 +155,11 @@ const normalizeSettings = (value: unknown): Settings => {
       temperature: Math.min(2, Math.max(0, asNumber(aiProvider.temperature, defaultSettings.aiProvider.temperature))),
       timeoutMs: normalizedAiTimeout < 60000 ? defaultSettings.aiProvider.timeoutMs : normalizedAiTimeout,
       fallbackToLocal: asBoolean(aiProvider.fallbackToLocal, defaultSettings.aiProvider.fallbackToLocal)
+    },
+    dataSync: {
+      enabled: asBoolean(dataSync.enabled, defaultSettings.dataSync.enabled),
+      baseUrl: asString(dataSync.baseUrl, defaultSettings.dataSync.baseUrl).trim(),
+      token: asString(dataSync.token, defaultSettings.dataSync.token).trim()
     }
   };
 };
@@ -493,6 +513,95 @@ const normalizeMistakeGeneration = (value: unknown, cardIds: Set<string>): Mista
   };
 };
 
+const normalizeAdventureLevel = (value: unknown): AdventureLevel => {
+  if (value === "A1" || value === "A2" || value === "B1" || value === "B2" || value === "C1") return value;
+  return "A2";
+};
+
+const normalizeAdventureTemplate = (value: unknown): AdventureTemplate => {
+  if (value === "campus" || value === "city" || value === "travel" || value === "fantasy" || value === "custom") return value;
+  return "city";
+};
+
+const normalizeAdventureSource = (value: unknown): AdventureNodeSource => value === "ai" ? "ai" : "offline";
+
+const normalizeAdventureChoices = (value: unknown): AdventureChoice[] =>
+  (Array.isArray(value) ? value : [])
+    .filter(isRecord)
+    .map((choice, index) => ({
+      id: asString(choice.id).trim() || `choice_${index + 1}`,
+      label: asString(choice.label).trim(),
+      description: asString(choice.description).trim(),
+      promptHint: asString(choice.promptHint).trim()
+    }))
+    .filter((choice) => choice.label)
+    .slice(0, 4);
+
+const normalizeAdventureVocabulary = (value: unknown): AdventureVocabulary[] =>
+  (Array.isArray(value) ? value : [])
+    .filter(isRecord)
+    .map((item) => ({
+      word: asString(item.word).trim().toLowerCase(),
+      translation: asString(item.translation).trim(),
+      partOfSpeech: asString(item.partOfSpeech).trim(),
+      sentence: asString(item.sentence).trim(),
+      cardId: asString(item.cardId).trim() || undefined
+    }))
+    .filter((item) => item.word);
+
+const normalizeAdventureNode = (value: unknown, index: number): AdventureNode | null => {
+  if (!isRecord(value)) return null;
+  const englishText = asString(value.englishText).trim();
+  if (!englishText) return null;
+
+  return {
+    id: asString(value.id).trim() || uid("adventure_node"),
+    parentId: asString(value.parentId).trim() || undefined,
+    chapter: Math.max(1, Math.round(asNumber(value.chapter, index + 1))),
+    title: asString(value.title).trim() || `Chapter ${index + 1}`,
+    englishText,
+    chineseText: asString(value.chineseText).trim(),
+    sentenceTranslations: asTrimmedStringArray(value.sentenceTranslations),
+    summary: asString(value.summary).trim(),
+    source: normalizeAdventureSource(value.source),
+    choices: normalizeAdventureChoices(value.choices),
+    selectedChoiceId: asString(value.selectedChoiceId).trim() || undefined,
+    customAction: asString(value.customAction).trim() || undefined,
+    vocabulary: normalizeAdventureVocabulary(value.vocabulary),
+    createdAt: validIsoOrNow(value.createdAt)
+  };
+};
+
+const normalizeAdventure = (value: unknown): Adventure | null => {
+  if (!isRecord(value)) return null;
+  const nodes = (Array.isArray(value.nodes) ? value.nodes : [])
+    .map(normalizeAdventureNode)
+    .filter((node): node is AdventureNode => Boolean(node));
+  if (nodes.length === 0) return null;
+
+  const nodeIds = new Set(nodes.map((node) => node.id));
+  const validNodes = nodes.map((node) => ({
+    ...node,
+    parentId: node.parentId && nodeIds.has(node.parentId) ? node.parentId : undefined,
+    selectedChoiceId: node.selectedChoiceId && node.choices.some((choice) => choice.id === node.selectedChoiceId)
+      ? node.selectedChoiceId
+      : undefined
+  }));
+  const currentNodeId = asString(value.currentNodeId).trim();
+
+  return {
+    id: asString(value.id).trim() || uid("adventure"),
+    title: asString(value.title).trim() || "未命名冒险",
+    template: normalizeAdventureTemplate(value.template),
+    level: normalizeAdventureLevel(value.level),
+    customPrompt: asString(value.customPrompt).trim(),
+    createdAt: validIsoOrNow(value.createdAt),
+    updatedAt: validIsoOrNow(value.updatedAt || value.createdAt),
+    currentNodeId: nodeIds.has(currentNodeId) ? currentNodeId : validNodes[validNodes.length - 1].id,
+    nodes: validNodes
+  };
+};
+
 const localDateKey = (value: unknown) => {
   const date = new Date(validIsoOrNow(value));
   const year = date.getFullYear();
@@ -604,6 +713,9 @@ export const migrateData = (raw: unknown): AppData => {
     mistakeGenerations: (Array.isArray(parsed.mistakeGenerations) ? parsed.mistakeGenerations : [])
       .map((generation) => normalizeMistakeGeneration(generation, cardIds))
       .filter((generation): generation is MistakeGeneration => Boolean(generation)),
+    adventures: (Array.isArray(parsed.adventures) ? parsed.adventures : [])
+      .map(normalizeAdventure)
+      .filter((adventure): adventure is Adventure => Boolean(adventure)),
     schedules: normalizeSchedules(parsed.schedules, cards),
     dictionaryEntries: normalizeDictionaryEntries(parsed.dictionaryEntries),
     seededWordVersions: asStringArray(parsed.seededWordVersions),
@@ -672,10 +784,14 @@ const seedCoreWords = (data: AppData): AppData => {
     existingWords.add(normalized);
   }
 
+  const existingGroupTitles = new Set(data.unitGroups.map((group) => group.title.trim()));
+  const defaultGroups = createDefaultUnitGroups(timestamp).filter((group) => !existingGroupTitles.has(group.title));
+  const unitGroups = mergeUnitGroups(data.unitGroups, defaultGroups);
+  const adventureGroupId = unitGroups.find((group) => group.title.trim() === "冒险积累")?.id;
   return {
     ...data,
-    unitGroups: mergeUnitGroups(data.unitGroups, createDefaultUnitGroups(timestamp)),
-    units: mergeUnits(data.units, seededUnits),
+    unitGroups,
+    units: mergeUnits(data.units, [...seededUnits, createAdventureAccumulationUnit(timestamp, adventureGroupId)]),
     cards: nextCards,
     wordDetails: nextWordDetails,
     schedules: nextSchedules,
@@ -695,12 +811,31 @@ const createCoreUnits = (timestamp: string) =>
     updatedAt: timestamp
   }));
 
+const createAdventureAccumulationUnit = (timestamp: string, groupId = "group-adventure-accumulation"): Unit => ({
+  id: "unit-adventure-accumulation",
+  title: "冒险积累",
+  description: "在冒险阅读中收藏的单词",
+  order: 6,
+  color: "#177e78",
+  groupId,
+  createdAt: timestamp,
+  updatedAt: timestamp
+});
+
 const createDefaultUnitGroups = (timestamp: string): UnitGroup[] => [
   {
     id: "group-core-100",
     title: "核心100",
     color: "#f06423",
     order: 1,
+    createdAt: timestamp,
+    updatedAt: timestamp
+  },
+  {
+    id: "group-adventure-accumulation",
+    title: "冒险积累",
+    color: "#177e78",
+    order: 2,
     createdAt: timestamp,
     updatedAt: timestamp
   }
@@ -718,9 +853,12 @@ const mergeUnitGroups = (currentGroups: AppData["unitGroups"], nextGroups: AppDa
 
 const ensureDefaultUnits = (data: AppData): AppData => {
   const timestamp = nowIso();
-  const unitGroups = mergeUnitGroups(data.unitGroups ?? [], createDefaultUnitGroups(timestamp));
+  const existingGroupTitles = new Set((data.unitGroups ?? []).map((group) => group.title.trim()));
+  const defaultGroups = createDefaultUnitGroups(timestamp).filter((group) => !existingGroupTitles.has(group.title));
+  const unitGroups = mergeUnitGroups(data.unitGroups ?? [], defaultGroups);
   const coreUnits = createCoreUnits(timestamp);
-  const units = mergeUnits(data.units ?? [], coreUnits).map((unit) =>
+  const adventureGroupId = unitGroups.find((group) => group.title.trim() === "冒险积累")?.id;
+  const units = mergeUnits(data.units ?? [], [...coreUnits, createAdventureAccumulationUnit(timestamp, adventureGroupId)]).map((unit) =>
     unit.id.startsWith("core-100-unit-") && !unit.groupId ? { ...unit, groupId: "group-core-100", color: "#f06423" } : unit
   );
   const wordCards = data.cards.filter((card) => card.type === "word");

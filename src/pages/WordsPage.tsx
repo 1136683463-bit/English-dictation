@@ -12,7 +12,7 @@ import {
   Trash2,
   Upload
 } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
@@ -526,7 +526,12 @@ export default function WordsPage() {
           <div className="words-toolbar">
             <div className="search-box words-search">
               <Search size={17} />
-              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索单词、释义或标签" />
+              <input
+                aria-label="搜索单词"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="搜索单词、释义或标签"
+              />
             </div>
             <div className="words-summary" aria-label="当前单词统计">
               <div>
@@ -604,7 +609,11 @@ export default function WordsPage() {
             </section>
           )}
           {words.length === 0 ? (
-            <EmptyState title="还没有单词" description="先添加几个常用词，或者去导入页从文章里收词。" />
+            <EmptyState
+              title="还没有单词"
+              description="先添加几个常用词，或者去导入页从文章里收词。"
+              action={<Link to="/import" className="primary-button">去导入材料</Link>}
+            />
           ) : (
             <div className="card-list">
               {words.map((card) => {

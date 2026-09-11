@@ -6,6 +6,7 @@ import {
   Import,
   Keyboard,
   ListChecks,
+  Map,
   RotateCcw,
   Sparkles,
   Volume2
@@ -50,6 +51,14 @@ export default function TrainingPage() {
       to: "/mistakes",
       icon: BookMarked,
       tone: "neutral"
+    },
+    {
+      title: "冒险学习",
+      description: "读分支故事、做选择，并把愿意复习的词保存到词库。",
+      meta: `${data.adventures.length} 段已保存路线`,
+      to: "/adventure",
+      icon: Map,
+      tone: "teal"
     },
     {
       title: "单元训练",

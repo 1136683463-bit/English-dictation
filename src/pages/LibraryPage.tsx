@@ -699,7 +699,7 @@ export default function LibraryPage() {
           </div>
           {data.units.length > 0 && (
             <div className="library-unit-picker">
-              <select value={detailUnitId} onChange={(event) => setDetailUnitId(event.target.value)}>
+              <select aria-label="选择要加入的单元" value={detailUnitId} onChange={(event) => setDetailUnitId(event.target.value)}>
                 {data.units.map((item) => (
                   <option key={item.id} value={item.id}>{item.title}</option>
                 ))}
@@ -786,7 +786,12 @@ export default function LibraryPage() {
           <div className="library-toolbar">
             <div className="search-box library-search">
               <Search size={17} />
-              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索单词、短语、句子、释义、标签或来源句" />
+              <input
+                aria-label="搜索词库内容"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="搜索单词、短语、句子、释义、标签或来源句"
+              />
             </div>
             <div className="segmented-control library-filter" aria-label="词库筛选">
               {(Object.keys(filterLabels) as LibraryFilter[]).map((key) => (
@@ -844,7 +849,7 @@ export default function LibraryPage() {
                 </button>
                 {data.units.length > 0 && (
                   <div className="library-bulk-unit">
-                    <select value={bulkUnitId} onChange={(event) => setBulkUnitId(event.target.value)}>
+                    <select aria-label="批量选择要加入的单元" value={bulkUnitId} onChange={(event) => setBulkUnitId(event.target.value)}>
                       {data.units.map((unit) => (
                         <option key={unit.id} value={unit.id}>{unit.title}</option>
                       ))}

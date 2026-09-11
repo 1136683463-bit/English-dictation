@@ -667,6 +667,7 @@ export default function SpellingPage() {
         <form className="spelling-form" onSubmit={submit}>
           <input
             ref={inputRef}
+            aria-label="输入英文拼写"
             value={answer}
             onChange={(event) => setAnswer(event.target.value)}
             onKeyDown={handleInputKeyDown}

@@ -174,6 +174,13 @@ export interface Settings {
   autoSpeakInSpelling: boolean;
   lastExportedAt: string;
   aiProvider: AiProviderSettings;
+  dataSync: DataSyncSettings;
+}
+
+export interface DataSyncSettings {
+  enabled: boolean;
+  baseUrl: string;
+  token: string;
 }
 
 export interface AiProviderSettings {
@@ -184,6 +191,54 @@ export interface AiProviderSettings {
   temperature: number;
   timeoutMs: number;
   fallbackToLocal: boolean;
+}
+
+export type AdventureLevel = "A1" | "A2" | "B1" | "B2" | "C1";
+export type AdventureTemplate = "campus" | "city" | "travel" | "fantasy" | "custom";
+export type AdventureNodeSource = "offline" | "ai";
+
+export interface AdventureChoice {
+  id: string;
+  label: string;
+  description: string;
+  promptHint: string;
+}
+
+export interface AdventureVocabulary {
+  word: string;
+  translation: string;
+  partOfSpeech: string;
+  sentence: string;
+  cardId?: string;
+}
+
+export interface AdventureNode {
+  id: string;
+  parentId?: string;
+  chapter: number;
+  title: string;
+  englishText: string;
+  chineseText: string;
+  sentenceTranslations?: string[];
+  summary: string;
+  source: AdventureNodeSource;
+  choices: AdventureChoice[];
+  selectedChoiceId?: string;
+  customAction?: string;
+  vocabulary: AdventureVocabulary[];
+  createdAt: string;
+}
+
+export interface Adventure {
+  id: string;
+  title: string;
+  template: AdventureTemplate;
+  level: AdventureLevel;
+  customPrompt: string;
+  createdAt: string;
+  updatedAt: string;
+  currentNodeId: string;
+  nodes: AdventureNode[];
 }
 
 export interface AppData {
@@ -197,6 +252,7 @@ export interface AppData {
   materialSegments: MaterialSegment[];
   reviews: Review[];
   mistakeGenerations: MistakeGeneration[];
+  adventures: Adventure[];
   schedules: Schedule[];
   dictionaryEntries: DictionaryEntry[];
   seededWordVersions: string[];
