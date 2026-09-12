@@ -906,7 +906,6 @@ export default function UnitsPage() {
             aria-labelledby="unit-modal-title"
             style={{ "--unit-color": selectedUnit.color || unitGroupMap.get(selectedUnit.groupId ?? "")?.color || "#ff5a1f" } as CSSProperties}
           >
-            <div className="unit-modal-accent" />
             <header className="unit-modal-header">
               <div>
                 <span className="eyebrow">Unit Words</span>
@@ -915,15 +914,15 @@ export default function UnitsPage() {
               </div>
               <div className="unit-modal-head-side">
                 <div
-                  className="unit-modal-ring"
+                  className="unit-modal-completion"
                   role="img"
                   aria-label={`完成度 ${selectedStats.completionPercent}%`}
-                  style={{ "--ring-percent": `${selectedStats.completionPercent}%` } as CSSProperties}
                 >
-                  <div className="unit-modal-ring-inner">
-                    <strong>{selectedStats.completionPercent}%</strong>
-                    <span>已完成</span>
-                  </div>
+                  <strong>
+                    {selectedStats.completionPercent}
+                    <i>%</i>
+                  </strong>
+                  <span>已完成</span>
                 </div>
                 <button className="icon-button unit-modal-close" type="button" title="关闭弹窗" onClick={closeUnitModal}>
                   <X size={18} />
@@ -932,38 +931,36 @@ export default function UnitsPage() {
             </header>
 
             <div className="unit-modal-progress" aria-label="单元学习数据">
-              <div className="unit-progress-head">
-                <div
-                  className="unit-progress-track"
-                  role="progressbar"
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-valuenow={selectedStats.completionPercent}
-                  aria-label="掌握进度"
-                >
-                  <div className="unit-progress-fill" style={{ width: `${selectedStats.completionPercent}%` }} />
-                </div>
-                <span className="unit-progress-label">
-                  已掌握 <strong>{selectedStats.mastered}</strong> / {selectedStats.total}
-                </span>
+              <div
+                className="unit-progress-track"
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={selectedStats.completionPercent}
+                aria-label="掌握进度"
+              >
+                <div className="unit-progress-fill" style={{ width: `${selectedStats.completionPercent}%` }} />
               </div>
-              <div className="unit-status-row">
-                <span className="unit-status-chip">
-                  <i className="status-dot dot-new" />
-                  新词 {selectedStats.newWords}
-                </span>
-                <span className="unit-status-chip">
-                  <i className="status-dot dot-learning" />
-                  学习中 {selectedStats.learning}
-                </span>
-                <span className="unit-status-chip">
-                  <i className="status-dot dot-mastered" />
-                  已掌握 {selectedStats.mastered}
-                </span>
-                <span className={`unit-status-chip${selectedStats.due > 0 ? " attention" : ""}`}>
-                  <i className="status-dot dot-due" />
-                  今日到期 {selectedStats.due}
-                </span>
+              <div className="unit-stat-row">
+                <div className="unit-stat">
+                  <span>已掌握</span>
+                  <strong>
+                    {selectedStats.mastered}
+                    <em> / {selectedStats.total}</em>
+                  </strong>
+                </div>
+                <div className="unit-stat">
+                  <span>新词</span>
+                  <strong>{selectedStats.newWords}</strong>
+                </div>
+                <div className="unit-stat">
+                  <span>学习中</span>
+                  <strong>{selectedStats.learning}</strong>
+                </div>
+                <div className="unit-stat">
+                  <span>今日到期</span>
+                  <strong className={selectedStats.due > 0 ? "is-due" : ""}>{selectedStats.due}</strong>
+                </div>
               </div>
               <p className="unit-substats">
                 正确率 {selectedStats.accuracy || 0}%
@@ -1114,7 +1111,7 @@ export default function UnitsPage() {
                               : "学习中";
                       return (
                         <article key={card.id}>
-                          <span className={`word-status s-${card.status || "learning"}`}>{statusLabel}</span>
+                          <span className={`word-dot d-${card.status || "learning"}`} title={statusLabel} aria-label={statusLabel} />
                           <div>
                             <strong>{card.front}</strong>
                             <span>{details?.phonetic}</span>

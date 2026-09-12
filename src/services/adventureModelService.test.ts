@@ -525,3 +525,4 @@ describe("adventure model service", () => {
     vi.unstubAllGlobals();
   });
 });
+

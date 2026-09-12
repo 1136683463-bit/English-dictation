@@ -93,10 +93,12 @@ describe("sync service", () => {
   it("finds the newest entity timestamp across collections", () => {
     const base = buildData();
     const oldCard = { ...base.cards[0], updatedAt: "2026-01-01T00:00:00.000Z" };
-    const newCard = { ...base.cards[0], id: "card_new", updatedAt: "2026-09-10T20:00:00.000Z" };
+    // 种子数据使用当前时间，因此断言取未来时间戳，避免测试随运行日期失效。
+    const newest = new Date(Date.now() + 86400000).toISOString();
+    const newCard = { ...base.cards[0], id: "card_new", updatedAt: newest };
     const adventure = { ...base.adventures[0], updatedAt: "2026-06-01T00:00:00.000Z" };
 
     expect(latestLocalUpdatedAt({ ...base, cards: [oldCard, newCard], adventures: [adventure] }))
-      .toBe("2026-09-10T20:00:00.000Z");
+      .toBe(newest);
   });
 });

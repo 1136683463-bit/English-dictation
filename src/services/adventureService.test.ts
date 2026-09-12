@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { appendAdventureNode, createAdventure, deleteAdventure, getAdventure, getAdventureFavoriteWords, getAdventurePath, isAdventureFavoriteWord, saveAdventureVocabulary, toggleAdventureFavoriteWord } from "./adventureService";
+import { appendAdventureNode, createAdventure, deleteAdventure, getAdventure, getAdventureFavoriteWords, getAdventurePath, isAdventureFavoriteWord, saveAdventureVocabulary, sortAdventuresForList, toggleAdventureFavoriteWord } from "./adventureService";
 import { splitAdventureSentences } from "./adventureReaderService";
 import { makeTestData } from "./testUtils";
 
@@ -161,5 +161,14 @@ describe("adventure service", () => {
     expect(second.favorite).toBe(false);
     expect(getAdventureFavoriteWords(second.data)).toHaveLength(0);
     expect(second.data.cards).toHaveLength(1);
+  });
+
+  it("lists routes most recently updated first", () => {
+    const first = createAdventure(makeTestData(), { template: "city", level: "A2" });
+    const second = createAdventure(first.data, { template: "travel", level: "A2" });
+    const third = createAdventure(second.data, { template: "campus", level: "A2" });
+
+    const ordered = sortAdventuresForList(third.data.adventures).map((item) => item.id);
+    expect(ordered[0]).toBe(third.adventure.id);
   });
 });

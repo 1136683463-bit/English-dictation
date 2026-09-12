@@ -593,6 +593,10 @@ const normalizeAdventure = (value: unknown): Adventure | null => {
     id: asString(value.id).trim() || uid("adventure"),
     title: asString(value.title).trim() || "未命名冒险",
     template: normalizeAdventureTemplate(value.template),
+    // 冒险对应的场景插画 ID（AdventureSceneId）；非法值交给页面侧按关键词兜底。
+    scene: asString(value.scene).trim() || undefined,
+    // 内置主题库 ID，缺省/非法时列表回退到 scene 插画。
+    themeId: asString(value.themeId).trim() || undefined,
     level: normalizeAdventureLevel(value.level),
     customPrompt: asString(value.customPrompt).trim(),
     createdAt: validIsoOrNow(value.createdAt),

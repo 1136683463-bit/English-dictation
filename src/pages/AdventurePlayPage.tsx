@@ -1,10 +1,9 @@
 import {
   ArrowLeft,
   BookOpen,
-  Check,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Download,
   History,
   Languages,
   LoaderCircle,
@@ -316,7 +315,6 @@ export default function AdventurePlayPage() {
   const [status, setStatus] = useState("");
   const [selectedVocabulary, setSelectedVocabulary] = useState<Set<string>>(new Set());
   const [preloadingChoiceIds, setPreloadingChoiceIds] = useState<Set<string>>(new Set());
-  const [preloadedNodes, setPreloadedNodes] = useState<Record<string, AdventureModelNode>>({});
   const [isAutoPreloadEnabled, setIsAutoPreloadEnabled] = useState(readStoredAutoPreload);
   const [readingMode, setReadingMode] = useState<AdventureReadingMode>(readStoredReadingMode);
   const [expandedSentenceIndex, setExpandedSentenceIndex] = useState<number | null>(null);
@@ -390,7 +388,6 @@ export default function AdventurePlayPage() {
     preloadingChoiceIdsRef.current = new Set();
     setPreloadingChoiceIds(new Set());
     preloadedNodesRef.current = {};
-    setPreloadedNodes({});
     translationRequestRef.current = null;
     setExpandedSentenceIndex(null);
     setSentencePopupPosition(null);
@@ -414,10 +411,6 @@ export default function AdventurePlayPage() {
       // Local preference is optional; private browsing may reject storage writes.
     }
   }, [readingMode]);
-
-  useEffect(() => {
-    preloadedNodesRef.current = preloadedNodes;
-  }, [preloadedNodes]);
 
   useEffect(() => {
     try {
@@ -842,34 +835,6 @@ export default function AdventurePlayPage() {
 
   const cachePreloadedNode = (choiceId: string, node: AdventureModelNode) => {
     preloadedNodesRef.current = { ...preloadedNodesRef.current, [choiceId]: node };
-    setPreloadedNodes(preloadedNodesRef.current);
-  };
-
-  const preloadChoice = async (choiceId: string, quiet = false) => {
-    const choice = current.choices.find((item) => item.id === choiceId);
-    if (!choice || preloadedNodesRef.current[choiceId] || preloadingChoiceIdsRef.current.has(choiceId)) return false;
-    if (!isAiConfigured) {
-      if (!quiet) setStatus("自动预加载需要先配置 AI；离线下一章仍可直接打开。");
-      return false;
-    }
-    const nodeId = current.id;
-    markPreloading([choiceId], true);
-    if (!quiet) setStatus("正在预加载这条 AI 路线…");
-    try {
-      const node = await generateAdventureContinuationWithModel(data.settings.aiProvider, getModelInput(choice.promptHint));
-      if (currentNodeIdRef.current !== nodeId) return false;
-      cachePreloadedNode(choiceId, node);
-      if (!quiet) setStatus("这条 AI 路线已准备好，选择后会直接进入下一章。");
-      return true;
-    } catch (error) {
-      if (!quiet && currentNodeIdRef.current === nodeId) {
-        const reason = error instanceof Error ? error.message : "未知错误";
-        setStatus(`AI 预加载失败：${reason}；选择时会改用离线剧情。`);
-      }
-      return false;
-    } finally {
-      markPreloading([choiceId], false);
-    }
   };
 
   const preloadAllChoices = async () => {
@@ -1044,7 +1009,7 @@ export default function AdventurePlayPage() {
               aria-expanded={isSummaryOpen}
               onClick={() => { setIsSummaryOpen((open) => !open); setIsFontMenuOpen(false); setIsMoreMenuOpen(false); }}
             >
-              摘要
+              摘要 <ChevronDown size={12} className="adventure-summary-caret" />
             </button>
             {isSummaryOpen && <div className="adventure-summary-pop" role="tooltip">{current.summary}</div>}
           </div>
@@ -1241,10 +1206,7 @@ export default function AdventurePlayPage() {
           </div>
           <div className="adventure-choice-list">
             {current.choices.map((choice) => (
-              <div key={choice.id} className="adventure-choice-row">
-                <button type="button" className="adventure-choice" disabled={isPreviewing || isContinuing || preloadingChoiceIds.size > 0} onClick={() => void continueStory(choice.id)}><span><strong>{choice.label}</strong><small>{choice.description}</small></span><ChevronRight size={18} /></button>
-                <button type="button" className={`icon-button adventure-preload-button${preloadedNodes[choice.id] ? " ready" : ""}`} disabled={isPreviewing || preloadingChoiceIds.size > 0 || isContinuing || Boolean(preloadedNodes[choice.id]) || isAutoPreloadEnabled} onClick={() => void preloadChoice(choice.id)} aria-label={preloadedNodes[choice.id] ? "这条路线已预加载" : `预加载 ${choice.label} 的 AI 续章`} title={isAutoPreloadEnabled ? "自动预加载已开启" : preloadedNodes[choice.id] ? "AI 续章已预加载" : "预加载 AI 续章"}>{preloadingChoiceIds.has(choice.id) ? <LoaderCircle size={16} className="spin" /> : preloadedNodes[choice.id] ? <Check size={16} /> : <Download size={16} />}</button>
-              </div>
+              <button key={choice.id} type="button" className="adventure-choice" disabled={isPreviewing || isContinuing || preloadingChoiceIds.size > 0} onClick={() => void continueStory(choice.id)}><span><strong>{choice.label}</strong><small>{choice.description}</small></span><ChevronRight size={18} /></button>
             ))}
           </div>
           <div className="adventure-custom-action"><MessageCircle size={17} /><input value={customAction} disabled={isPreviewing} onChange={(event) => setCustomAction(event.target.value.slice(0, 100))} placeholder="或者写下你想做的事" maxLength={100} /><button type="button" className="icon-button" disabled={isPreviewing || !customAction.trim() || isContinuing || preloadingChoiceIds.size > 0} onClick={() => void continueStory()} aria-label="用自定义行动继续" title="继续"><ChevronRight size={18} /></button></div>

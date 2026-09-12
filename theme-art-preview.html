@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>主题插画预览</title>
+  <style>
+    body { background: #f4f6f8; font-family: -apple-system, "PingFang SC", sans-serif; padding: 20px; }
+    h1 { font-size: 16px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+    .card { display: flex; gap: 10px; align-items: center; background: #fff; border-radius: 14px; padding: 9px 10px; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+    .tile { width: 52px; height: 52px; border-radius: 13px; overflow: hidden; flex: none; }
+    .copy strong { display: block; font-size: 13px; color: #1f2b3a; }
+    .copy small { font-size: 11px; color: #7a8494; }
+  </style>
+</head>
+<body>
+  <h1>50 主题专属插画预览</h1>
+  <div id="root"></div>
+  <script type="module" src="/src/dev/themeArtPreview.tsx"></script>
+</body>
+</html>

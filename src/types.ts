@@ -233,6 +233,10 @@ export interface Adventure {
   id: string;
   title: string;
   template: AdventureTemplate;
+  /** 冒险对应的场景插画 ID（AdventureSceneId）；AI/自定义冒险在创建时记录，旧数据缺省时按关键词推断。 */
+  scene?: string;
+  /** 内置主题库 ID：从随机推荐创建的冒险记录它，列表里能还原该主题的专属插画。 */
+  themeId?: string;
   level: AdventureLevel;
   customPrompt: string;
   createdAt: string;

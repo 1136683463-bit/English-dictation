@@ -27,6 +27,10 @@ export interface CreateAdventureInput {
   source?: AdventureNodeSource;
   initialNode?: Omit<AdventureNode, "id" | "parentId" | "chapter" | "createdAt" | "selectedChoiceId" | "customAction" | "source">;
   title?: string;
+  /** 场景插画 ID（AdventureSceneId），AI/自定义冒险创建时传入，供路线列表与继续阅读卡展示。 */
+  scene?: string;
+  /** 内置主题库 ID：从随机推荐创建的冒险传入，列表可还原主题专属插画。 */
+  themeId?: string;
 }
 
 export interface ContinueAdventureInput {
@@ -68,10 +72,10 @@ export interface AdventureFavoriteWordResult {
 }
 
 export const adventureTemplates: AdventureTemplateMeta[] = [
-  { id: "campus", title: "校园谜题", description: "在新校园里找到失落的社团钥匙。", scene: "校园" },
-  { id: "city", title: "城市寻信", description: "沿着一封旧信的线索穿过陌生街区。", scene: "城市" },
-  { id: "travel", title: "海岸列车", description: "在错过末班车前帮一位旅人回到海边。", scene: "旅行" },
-  { id: "fantasy", title: "雾林灯塔", description: "跟随一盏会说话的灯穿过雾林。", scene: "奇幻" }
+  { id: "campus", title: "校园谜题", description: "找回失落的社团钥匙。", scene: "校园" },
+  { id: "city", title: "城市寻信", description: "沿旧信线索穿过街区。", scene: "城市" },
+  { id: "travel", title: "海岸列车", description: "赶上开往海边的末班车。", scene: "旅行" },
+  { id: "fantasy", title: "雾林灯塔", description: "跟随会说话的灯穿过雾林。", scene: "奇幻" }
 ];
 
 const templateById = (template: AdventureTemplate) =>
@@ -401,6 +405,8 @@ export const createAdventure = (data: AppData, input: CreateAdventureInput): { d
     id: uid("adventure"),
     title: input.title?.trim() || withPromptTitle(input.template, input.customPrompt ?? ""),
     template: input.template,
+    ...(input.scene ? { scene: input.scene } : {}),
+    ...(input.themeId ? { themeId: input.themeId } : {}),
     level: input.level,
     customPrompt: input.customPrompt?.trim() ?? "",
     createdAt: timestamp,
@@ -493,6 +499,10 @@ export const selectAdventureNode = (data: AppData, adventureId: string, nodeId: 
       : adventure
   )
 });
+
+/** "我的路线"排序：按最近更新。 */
+export const sortAdventuresForList = (adventures: Adventure[]): Adventure[] =>
+  adventures.slice().sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
 
 export const saveAdventureVocabulary = (
   data: AppData,

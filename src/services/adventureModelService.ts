@@ -42,12 +42,6 @@ export interface AdventureOpeningInput {
   targetWords: Array<{ word: string; translation: string }>;
 }
 
-export interface AdventureRecommendation {
-  title: string;
-  description: string;
-  scene: string;
-}
-
 export interface AdventureBatchModelInput {
   template: AdventureTemplate;
   title: string;
@@ -739,66 +733,6 @@ export const generateAdventureOpeningWithModel = async (
   return normalizeAdventureModelNode(value);
 };
 
-const normalizeRecommendations = (value: unknown): AdventureRecommendation[] => {
-  const record = value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : {};
-  const items = Array.isArray(value)
-    ? value
-    : Array.isArray(record.recommendations)
-      ? record.recommendations
-      : Array.isArray(record.items)
-        ? record.items
-        : Array.isArray(record.themes) ? record.themes : [];
-  const seen = new Set<string>();
-  return items
-    .map((item) => {
-      const entry = item && typeof item === "object" && !Array.isArray(item) ? item as Record<string, unknown> : {};
-      const title = stringValue(entry.title).slice(0, 16);
-      const description = stringValue(entry.description ?? entry.summary ?? entry.hook).slice(0, 48);
-      const scene = stringValue(entry.scene ?? entry.genre ?? entry.setting).slice(0, 12);
-      return { title, description, scene };
-    })
-    .filter((item) => {
-      if (!item.title || !item.description) return false;
-      const key = item.title.toLowerCase();
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    })
-    .slice(0, 4);
-};
-
-export const generateAdventureRecommendationsWithModel = async (
-  provider: AiProviderSettings,
-  input: { level: AdventureLevel; excludeTitles?: string[]; targetWords?: Array<{ word: string; translation: string }> }
-): Promise<AdventureRecommendation[]> => {
-  const value = await requestModelJson(provider, [
-    {
-      role: "system",
-      content: [
-        "You invent four distinct adventure-story themes for Chinese learners of English.",
-        "Return JSON only: {\"recommendations\":[{\"title\":\"...\",\"description\":\"...\",\"scene\":\"...\"}]}.",
-        "Your entire reply must be one JSON object and nothing else: the first character is { and the last is }.",
-        "Each title must be a short catchy Chinese theme name (4-10 characters), like 校园谜题 or 雾林灯塔.",
-        "Each description must be one short Chinese sentence (under 24 characters) hinting at the setting and goal, written to spark curiosity.",
-        "scene is a 1-4 character Chinese genre keyword such as 悬疑, 旅行, 奇幻, 科幻.",
-        "The four themes must span different settings and moods; avoid near-duplicates.",
-        "Themes must be suitable for a branching story with clear goals and safe, emotionally clear choices."
-      ].join(" ")
-    },
-    {
-      role: "user",
-      content: JSON.stringify({
-        task: "recommend_adventure_themes",
-        level: input.level,
-        avoidTitles: input.excludeTitles ?? [],
-        targetWords: input.targetWords ?? []
-      })
-    }
-  ], 900);
-  const recommendations = normalizeRecommendations(value);
-  if (recommendations.length < 2) throw new Error("模型推荐的主题不够完整，请重试。");
-  return recommendations;
-};
 
 export const testAdventureProviderConnection = async (provider: AiProviderSettings) => {
   const node = await generateAdventureContinuationWithModel(provider, {

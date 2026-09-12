@@ -121,10 +121,16 @@ export default function TrainingPage() {
             <strong>{stats.reviewedToday}</strong>
           </div>
         </div>
-        <Link to="/review" className="primary-button">
-          开始今日训练
-          <ArrowRight size={18} />
-        </Link>
+        <div className="mode-hero-actions">
+          <Link to="/review" className="primary-button">
+            开始今日训练
+            <ArrowRight size={18} />
+          </Link>
+          <Link to="/spelling" className="secondary-button">
+            <Volume2 size={17} />
+            听音拼写
+          </Link>
+        </div>
       </section>
 
       <section className="mode-grid" aria-label="训练模式">
