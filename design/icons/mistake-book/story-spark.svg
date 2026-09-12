@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+  <g id="story-spark">
+    <path d="M12 7.1C9.9 5.7 6.8 5.5 4 6.7v11.1c2.8-1.2 5.9-1 8 .4"/>
+    <path d="M12 7.1c2.1-1.4 5.2-1.6 8-.4v11.1c-2.8-1.2-5.9-1-8 .4"/>
+    <path d="M19.2 2.5c.19.92.68 1.41 1.6 1.6-.92.19-1.41.68-1.6 1.6-.19-.92-.68-1.41-1.6-1.6.92-.19 1.41-.68 1.6-1.6Z" fill="currentColor" stroke="none"/>
+  </g>
+</svg>

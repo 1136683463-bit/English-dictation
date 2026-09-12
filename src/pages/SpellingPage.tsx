@@ -1,4 +1,4 @@
-import { FormEvent, KeyboardEvent as ReactKeyboardEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, KeyboardEvent as ReactKeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, CheckCircle2, ChevronLeft, Headphones, Home, RotateCcw, Star, Undo2, Volume2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
@@ -25,6 +25,10 @@ interface SpellingResult {
   isCorrect: boolean;
   diff: LetterDiffToken[];
 }
+
+// WebKit（Safari / WKWebView）会忽略 autoComplete="off"，按“域名 + 字段名”记住用户历史输入并弹出补全建议。
+// 每次启动生成一个随机字段名，让内核的历史记录永远匹配不上这个输入框，从根源上禁止单词补齐。
+const SPELLING_INPUT_NAME = `dictation-${Math.random().toString(36).slice(2, 10)}`;
 
 interface SpellingAttempt {
   result: SpellingResult;
@@ -119,7 +123,14 @@ export default function SpellingPage() {
   const planLimit = parsePositiveLimit(searchParams.get("limit"), 30);
   const queueKey = `${unitId ?? "all"}:${queueMode}:${mistakeDate ?? "any-date"}:${cardIds.join("|") || "any-card"}:${planLimit}:${isTodayPlan ? "today" : "normal"}`;
   const activeUnit = unitId ? data.units.find((unit) => unit.id === unitId) : undefined;
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // 挂载时先设为只读（WebKit 不会对只读输入框弹出自动补全），聚焦瞬间再解锁。
+  // 用稳定的 useCallback 引用避免每次渲染重复触发。
+  const attachInput = useCallback((element: HTMLInputElement | null) => {
+    inputRef.current = element;
+    if (element) element.setAttribute("readonly", "");
+  }, []);
   const autoAdvanceTimerRef = useRef<number | null>(null);
   const [queue, setQueue] = useState<Card[]>(() => buildQueue(data, unitId, queueMode, planLimit, mistakeDate, cardIds));
   const [index, setIndex] = useState(0);
@@ -664,16 +675,22 @@ export default function SpellingPage() {
           )}
         </div>
 
-        <form className="spelling-form" onSubmit={submit}>
+        <form className="spelling-form" onSubmit={submit} autoComplete="off">
           <input
-            ref={inputRef}
+            ref={attachInput}
+            name={SPELLING_INPUT_NAME}
             aria-label="输入英文拼写"
             value={answer}
             onChange={(event) => setAnswer(event.target.value)}
             onKeyDown={handleInputKeyDown}
+            onFocus={(event) => event.currentTarget.removeAttribute("readonly")}
             disabled={Boolean(feedback)}
             placeholder="输入英文拼写"
             autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="none"
+            spellCheck={false}
+            data-form-type="other"
           />
         </form>
 

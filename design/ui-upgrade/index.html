@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>听写工坊 · 全站 UI 升级设计方案</title>
+<style>
+  :root{
+    --bg:#f4f6f8; --surface:#fff; --surface-muted:#f8fafb;
+    --ink:#1f2b3a; --ink-soft:#3e4c5e; --muted:#5f6b7a; --faint:#98a4b3;
+    --line:#e8edf1; --line-strong:#d7dfe6;
+    --accent:#f26a1b; --accent-strong:#d95a12; --accent-soft:#fff1e8; --accent-ink:#c04a0b;
+    --green:#48b878; --green-soft:#e9f8ef; --green-ink:#24784c;
+    --blue:#3b6ef5; --blue-soft:#eef3ff; --blue-ink:#2f62ea;
+    --amber:#f5b301; --amber-soft:#fdf3d8; --amber-ink:#8a6200;
+    --danger:#d64545; --danger-soft:#fdeeee; --danger-ink:#b03535;
+    --r-xs:8px; --r-sm:12px; --r-md:16px; --r-lg:20px; --r-pill:99px;
+    --sh-sm:0 1px 2px rgba(31,43,58,.04);
+    --sh-md:0 8px 24px rgba(31,43,58,.08);
+    --sh-lift:0 12px 28px rgba(31,43,58,.12);
+    --sh-pop:0 18px 44px rgba(31,43,58,.16);
+    --ease:160ms cubic-bezier(.2,.7,.3,1);
+    --f:Inter,"HarmonyOS Sans SC","PingFang SC",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:var(--f);color:var(--ink);background:var(--bg);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  .shell{display:grid;grid-template-columns:244px minmax(0,1fr);gap:0;min-height:100vh}
+
+  /* ---------- 侧栏目录 ---------- */
+  .toc{position:sticky;top:0;height:100vh;padding:28px 18px;background:var(--surface);border-right:1px solid var(--line);overflow-y:auto}
+  .toc .mark{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+  .toc .mark i{width:36px;height:36px;border-radius:11px;background:linear-gradient(140deg,var(--accent),#ff9142);display:grid;place-items:center;color:#fff;font-style:normal;font-weight:800;font-size:15px;box-shadow:0 6px 16px rgba(242,106,27,.28)}
+  .toc .mark b{font-size:14px;letter-spacing:-.01em}
+  .toc .mark span{display:block;font-size:11px;color:var(--faint);font-weight:500;margin-top:1px}
+  .toc .grp{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:18px 0 8px 10px}
+  .toc a{
+    display:flex;align-items:center;gap:9px;padding:8px 10px;margin-bottom:2px;
+    color:var(--muted);font-size:13px;font-weight:500;text-decoration:none;border-radius:9px;
+    transition:background var(--ease),color var(--ease);
+  }
+  .toc a:hover{background:var(--surface-muted);color:var(--ink)}
+  .toc a em{font-style:normal;font-size:10.5px;font-weight:800;color:var(--faint);font-variant-numeric:tabular-nums;min-width:18px}
+
+  /* ---------- 内容 ---------- */
+  .doc{max-width:1010px;padding:0 46px 100px}
+  .hero{padding:64px 0 40px;border-bottom:1px solid var(--line)}
+  .eyebrow{display:block;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink)}
+  .hero h1{margin:14px 0 0;font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1.1}
+  .hero p{max-width:660px;margin:16px 0 0;font-size:14.5px;line-height:1.65;color:var(--ink-soft)}
+  .hero .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .hero .pills span{height:28px;display:inline-flex;align-items:center;padding:0 12px;border-radius:var(--r-pill);background:var(--surface);border:1px solid var(--line);font-size:12px;color:var(--muted);font-weight:500}
+
+  section{padding-top:64px}
+  h2.sec{margin:0 0 6px;font-size:26px;font-weight:700;letter-spacing:-.02em}
+  h2.sec em{font-style:normal;color:var(--accent-ink);margin-right:10px;font-variant-numeric:tabular-nums}
+  .sec-sub{margin:0 0 26px;font-size:13.5px;color:var(--muted);line-height:1.6;max-width:720px}
+  h3{margin:34px 0 12px;font-size:17px;font-weight:700;letter-spacing:-.01em}
+  h4{margin:22px 0 10px;font-size:14px;font-weight:700;color:var(--ink-soft)}
+  p{font-size:13.5px;line-height:1.7;color:var(--ink-soft)}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:var(--surface-muted);border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--accent-ink)}
+
+  /* ---------- 原则卡 ---------- */
+  .laws{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .law{background:var(--surface);border-radius:var(--r-md);padding:18px 20px;box-shadow:var(--sh-sm);display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;transition:transform var(--ease),box-shadow var(--ease)}
+  .law:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
+  .law i{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink);display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:800}
+  .law b{display:block;font-size:14px;font-weight:700;letter-spacing:-.01em}
+  .law p{margin:5px 0 0;font-size:12.5px;line-height:1.6;color:var(--muted)}
+
+  /* ---------- 令牌 ---------- */
+  .swatches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+  .sw{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden}
+  .sw .chip{height:52px}
+  .sw .meta{padding:9px 11px;border-top:1px solid var(--line)}
+  .sw .meta b{display:block;font-size:11.5px;font-weight:700}
+  .sw .meta span{display:block;font-size:10.5px;color:var(--faint);font-family:ui-monospace,monospace;margin-top:2px}
+  .sw .meta em{display:block;font-style:normal;font-size:10.5px;color:var(--muted);margin-top:3px}
+  .sw.new::after{content:"新增";position:relative}
+
+  table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:var(--r-md);overflow:hidden;box-shadow:var(--sh-sm);font-size:12.5px}
+  th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+  th{background:var(--surface-muted);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+  tr:last-child td{border-bottom:none}
+  td.mono{font-family:ui-monospace,monospace;font-size:11.5px;color:var(--accent-ink)}
+  .ok{color:var(--green-ink);font-weight:700}
+  .warn{color:var(--amber-ink);font-weight:700}
+
+  /* ---------- 组件演示舞台 ---------- */
+  .stage{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;margin-bottom:14px}
+  .stage--bg{background:var(--bg);border:1px dashed var(--line-strong)}
+  .stage .label{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:16px}
+  .spec{margin:10px 0 0;font-size:11.5px;color:var(--muted);line-height:1.7}
+  .spec b{color:var(--ink-soft)}
+
+  /* PageHero 演示 */
+  .demo-hero{padding:4px 0 20px;border-bottom:1px dashed var(--line-strong)}
+  .demo-hero .row{display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+  .demo-hero h1{margin:12px 0 0;font-size:32px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+  .demo-hero p{margin:10px 0 0;font-size:13.5px;color:var(--muted)}
+
+  /* 按钮 */
+  .btnrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .btn{height:44px;padding:0 22px;border-radius:var(--r-pill);font-size:13.5px;font-weight:600;font-family:var(--f);border:none;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all var(--ease)}
+  .btn--primary{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(242,106,27,.22)}
+  .btn--primary:hover{background:var(--accent-strong);transform:translateY(-1px)}
+  .btn--primary:active{transform:scale(.97)}
+  .btn--ghost{height:38px;background:var(--surface);border:1px solid var(--line);color:var(--ink-soft)}
+  .btn--ghost:hover{border-color:var(--line-strong);background:var(--surface-muted)}
+  .btn--quiet{height:36px;padding:0 8px;background:none;color:var(--muted)}
+  .btn--quiet:hover{color:var(--accent-ink)}
+  .btn--danger{height:38px;background:none;border:1px solid transparent;color:var(--danger-ink)}
+  .btn--danger:hover{background:var(--danger-soft);border-color:var(--danger-soft)}
+
+  /* IconBadge */
+  .icons{display:flex;gap:18px;flex-wrap:wrap}
+  .ib{display:grid;justify-items:center;gap:8px}
+  .ib i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-style:normal}
+  .ib span{font-size:11px;color:var(--muted)}
+  .ib svg{width:20px;height:20px}
+
+  /* ListRow */
+  .rows{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--sh-sm);overflow:hidden}
+  .row-item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line);transition:background var(--ease)}
+  .row-item:last-child{border-bottom:none}
+  .row-item:hover{background:var(--surface-muted)}
+  .row-item b{display:block;font-size:15px;font-weight:600;letter-spacing:-.01em}
+  .row-item p{margin:4px 0 0;font-size:12.5px;color:var(--muted)}
+  .row-item .tail{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+  .row-item.active{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+
+  /* 数据列 */
+  .figures{display:flex;flex-wrap:wrap;gap:0}
+  .fig{padding:0 26px;border-right:1px solid var(--line)}
+  .fig:first-child{padding-left:0}
+  .fig:last-child{border-right:none}
+  .fig span{display:block;font-size:11px;font-weight:600;color:var(--muted)}
+  .fig b{display:block;font-size:30px;font-weight:650;letter-spacing:-.03em;margin-top:6px;font-variant-numeric:tabular-nums}
+  .fig em{display:block;font-style:normal;font-size:11.5px;color:var(--faint);margin-top:2px}
+
+  /* 分段控件 */
+  .seg{display:inline-flex;gap:2px;padding:3px;border-radius:var(--r-xs);background:#f2f3f6}
+  .seg button{min-width:46px;padding:8px 6px;border:none;border-radius:8px;background:transparent;color:var(--muted);font-family:var(--f);font-size:12.5px;font-weight:600;cursor:pointer;transition:all var(--ease)}
+  .seg button:hover{color:var(--ink)}
+  .seg button.on{background:var(--surface);color:var(--accent-ink);box-shadow:inset 0 0 0 1px var(--accent)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chipbtn{height:30px;padding:0 12px;border-radius:var(--r-pill);border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);font-size:12px;font-family:var(--f);cursor:pointer;transition:all var(--ease)}
+  .chipbtn:hover{color:var(--accent-ink);border-color:#f5cdb6;background:var(--accent-soft)}
+  .input{height:42px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:13px;font-family:var(--f);color:var(--ink);width:280px;outline:none;transition:all var(--ease)}
+  .input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(242,106,27,.12)}
+  .input::placeholder{color:var(--faint)}
+
+  /* 空状态 */
+  .emptybox{border:1px dashed var(--line-strong);border-radius:var(--r-md);padding:48px 24px;text-align:center}
+  .emptybox i{width:56px;height:56px;border-radius:50%;background:var(--surface-muted);color:var(--faint);display:grid;place-items:center;margin:0 auto 16px}
+  .emptybox b{display:block;font-size:15px;font-weight:600}
+  .emptybox p{max-width:360px;margin:8px auto 0;font-size:12.5px;color:var(--muted);line-height:1.6}
+  .emptybox .btn{margin-top:20px;height:40px}
+
+  /* 反馈条 */
+  .note{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:var(--r-sm);font-size:13px;margin-bottom:10px}
+  .note--amber{background:var(--amber-soft);border:1px solid #f0dfa8;color:var(--amber-ink)}
+  .note--green{background:var(--green-soft);border:1px solid #c6e8d4;color:var(--green-ink)}
+
+  /* ---------- 板块方案卡 ---------- */
+  .pagecard{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh-sm);padding:26px 28px;margin-bottom:16px}
+  .pagecard > header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+  .pagecard > header h3{margin:0;font-size:20px;font-weight:700;letter-spacing:-.02em}
+  .tag{height:24px;display:inline-flex;align-items:center;padding:0 10px;border-radius:var(--r-pill);font-size:11px;font-weight:700}
+  .tag.p0{background:var(--danger-soft);color:var(--danger-ink)}
+  .tag.p1{background:var(--amber-soft);color:var(--amber-ink)}
+  .tag.p2{background:var(--blue-soft);color:var(--blue-ink)}
+  .diag{margin:14px 0 0;padding-left:0;list-style:none}
+  .diag li{position:relative;padding-left:18px;font-size:12.5px;line-height:1.65;color:var(--muted);margin-bottom:5px}
+  .diag li::before{content:"";position:absolute;left:4px;top:8px;width:5px;height:5px;border-radius:50%;background:var(--danger)}
+  .flow{margin-top:18px;background:var(--bg);border-radius:var(--r-md);padding:18px 20px}
+  .flow .label{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+  .flow ol{margin:0;padding-left:0;list-style:none;counter-reset:s}
+  .flow li{counter-increment:s;position:relative;padding-left:30px;font-size:12.5px;line-height:1.6;color:var(--ink-soft);margin-bottom:9px}
+  .flow li:last-child{margin-bottom:0}
+  .flow li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:1px;font-size:11px;font-weight:800;color:var(--accent-ink);font-variant-numeric:tabular-nums}
+  .flow li b{color:var(--ink);font-weight:700}
+  .insight{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:16px}
+  .box{border-radius:var(--r-md);padding:16px 18px}
+  .box.before{background:#fbf7f4;border:1px solid #f0e2d8}
+  .box.after{background:var(--accent-soft);border:1px solid #f7d9c4}
+  .box span{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+  .box.after span{color:var(--accent-ink)}
+  .box p{margin:0;font-size:12.5px;line-height:1.65;color:var(--ink-soft)}
+
+  /* 词书封面 before/after */
+  .covers{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
+  .cover{width:146px}
+  .cover .bk{aspect-ratio:.95;border-radius:var(--r-sm);overflow:hidden;position:relative;padding:14px;display:flex;flex-direction:column;justify-content:space-between}
+  .cover .bk b{font-size:15px;font-weight:700;letter-spacing:-.01em;line-height:1.25}
+  .cover .bk span{font-size:11px;opacity:.85}
+  .cover .bk i{font-style:normal;font-size:11px;opacity:.7;font-variant-numeric:tabular-nums}
+  .cover.old .bk{background:linear-gradient(145deg,#f98b3c,#e2620f);color:#fff}
+  .cover.old .bk::after{content:"";position:absolute;left:9px;top:0;bottom:0;width:5px;background:rgba(255,255,255,.22)}
+  .cover.new .bk{background:#fdf8f3;border:1px solid var(--line);color:var(--ink);box-shadow:var(--sh-sm)}
+  .cover.new .bk::after{content:"";position:absolute;left:11px;top:0;bottom:0;width:3px;background:var(--accent)}
+  .cover.new .bk b{color:var(--ink)}
+  .cover.new .bk span{color:var(--accent-ink);opacity:1;font-weight:700}
+  .cover.new .bk i{color:var(--faint);opacity:1}
+  .cover .cap{font-size:11px;color:var(--muted);margin-top:8px;text-align:center}
+  .cover.new .cap{color:var(--accent-ink);font-weight:700}
+
+  /* 路线图 */
+  .phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .phase{background:var(--surface);border-radius:var(--r-md);padding:20px;box-shadow:var(--sh-sm);border-top:3px solid var(--line)}
+  .phase:nth-child(1){border-top-color:var(--accent)}
+  .phase:nth-child(2){border-top-color:#f7a56a}
+  .phase:nth-child(3){border-top-color:#fbd0b0}
+  .phase em{font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .phase b{display:block;font-size:15px;font-weight:700;margin-top:8px;letter-spacing:-.01em}
+  .phase p{margin:8px 0 0;font-size:12.5px;color:var(--muted);line-height:1.6}
+  .phase ul{margin:10px 0 0;padding-left:16px;font-size:12px;color:var(--ink-soft);line-height:1.7}
+
+  /* 验收 */
+  .check{background:var(--surface);border-radius:var(--r-lg);padding:22px 26px;box-shadow:var(--sh-sm)}
+  .check li{list-style:none;position:relative;padding-left:26px;font-size:13px;line-height:1.6;color:var(--ink-soft);margin-bottom:10px}
+  .check ul{margin:0;padding:0}
+  .check li::before{content:"";position:absolute;left:0;top:3px;width:15px;height:15px;border-radius:4px;border:1.5px solid var(--line-strong)}
+  .note-box{background:var(--surface-muted);border-radius:var(--r-md);padding:16px 20px;margin-top:14px;font-size:12.5px;line-height:1.7;color:var(--muted)}
+  .note-box b{color:var(--ink-soft)}
+
+  @media (max-width:1100px){
+    .shell{grid-template-columns:1fr}
+    .toc{position:static;height:auto;border-right:none;border-bottom:1px solid var(--line)}
+    .doc{padding:0 24px 80px}
+    .laws,.swatches,.phases,.insight{grid-template-columns:1fr}
+    .hero h1{font-size:34px}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ================= 目录 ================= -->
+  <nav class="toc">
+    <div class="mark">
+      <i>听</i>
+      <div><b>听写工坊</b><span>UI 升级设计方案 v1.0</span></div>
+    </div>
+    <div class="grp">总纲</div>
+    <a href="#laws"><em>01</em>设计基因</a>
+    <a href="#tokens"><em>02</em>设计令牌</a>
+    <div class="grp">规范</div>
+    <a href="#components"><em>03</em>组件库</a>
+    <div class="grp">落地</div>
+    <a href="#pages"><em>04</em>逐板块方案</a>
+    <a href="#roadmap"><em>05</em>实施路线</a>
+    <a href="#check"><em>06</em>验收清单</a>
+  </nav>
+
+  <!-- ================= 正文 ================= -->
+  <main class="doc">
+
+    <header class="hero">
+      <span class="eyebrow">UI Upgrade Proposal</span>
+      <h1>让全站都用同一套语言</h1>
+      <p>冒险板块已经验证了一套克制、排版主导、通栏 Hero 起首的设计语言。本方案把它抽象为可复用的令牌与组件，逐一落地到其余 8 个板块——不推翻结构，只统一口径。</p>
+      <div class="pills">
+        <span>8 个板块</span><span>8 类核心组件</span><span>1 套令牌</span><span>3 期实施</span><span>WCAG AA</span>
+      </div>
+    </header>
+
+    <!-- ---------- 01 设计基因 ---------- -->
+    <section id="laws">
+      <h2 class="sec"><em>01</em>设计基因</h2>
+      <p class="sec-sub">从冒险板块的精修实现中提炼出 7 条铁律。它们是后续所有改动的判断准绳——出现分歧时，以此为准。</p>
+      <div class="laws">
+        <div class="law"><i>1</i><div><b>通栏 Hero 起首</b><p>每页第一屏由通栏视觉区承载「眉标 + 大标题 + 定位 + 主行动」，底部以渐变融入页面底色，绝不出现硬边。</p></div></div>
+        <div class="law"><i>2</i><div><b>扁平化区块</b><p>区块直接置于页面背景上。白卡只用于必须框住的一组同类信息（列表、表单），禁止卡套卡。</p></div></div>
+        <div class="law"><i>3</i><div><b>眉标系统</b><p>所有区块统一 11px / 700 / 0.14em / uppercase 小标签；主区块用橙色，次级区块用灰色。</p></div></div>
+        <div class="law"><i>4</i><div><b>排版主导层级</b><p>用 32 → 22 → 17 → 15 → 13 → 12 的字号阶梯加字重与留白建立层级，而不是靠色块和边框堆叠。</p></div></div>
+        <div class="law"><i>5</i><div><b>圆形语义图标</b><p>40px 圆形，浅 tint 底配同色系加深前景。一个模块只允许出现一个语义色，全页不超过三个。</p></div></div>
+        <div class="law"><i>6</i><div><b>胶囊控件</b><p>按钮与 chips 全部胶囊化；多选一统一为「灰底分段控件 + 白底选中块 + 橙色内描边」。</p></div></div>
+        <div class="law"><i>7</i><div><b>克制动效</b><p>hover 上浮 2px 加深投影，active 缩到 0.97，统一 140–180ms。始终尊重减少动效偏好。</p></div></div>
+        <div class="law" style="background:var(--accent-soft);box-shadow:none"><i style="background:#fff">✓</i><div><b>基准不可动</b><p>冒险板块是本方案的对齐基准。若它需要调整，先改规范，再同步到各页，避免基准漂移。</p></div></div>
+      </div>
+    </section>
+
+    <!-- ---------- 02 令牌 ---------- -->
+    <section id="tokens">
+      <h2 class="sec"><em>02</em>设计令牌</h2>
+      <p class="sec-sub">沿用项目现有色相，不引入新颜色。核心增量是补齐一套「文字级」语义色——解决当前小号橙字对比度不达标的问题。</p>
+
+      <h3>2.1 颜色</h3>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#f4f6f8"></div><div class="meta"><b>页面底色</b><span>--bg</span><em>#f4f6f8</em></div></div>
+        <div class="sw"><div class="chip" style="background:#fff;border-bottom:1px solid var(--line)"></div><div class="meta"><b>表面</b><span>--surface</span><em>#ffffff</em></div></div>
+        <div class="sw"><div class="chip" style="background:#1f2b3a"></div><div class="meta"><b>主文字</b><span>--ink</span><em>13.9:1 通过</em></div></div>
+        <div class="sw"><div class="chip" style="background:#5f6b7a"></div><div class="meta"><b>辅助文字</b><span>--muted</span><em>5.4:1 通过</em></div></div>
+        <div class="sw"><div class="chip" style="background:#f26a1b"></div><div class="meta"><b>品牌橙 · 图形</b><span>--accent</span><em>3.0:1 仅图形</em></div></div>
+        <div class="sw"><div class="chip" style="background:#c04a0b"></div><div class="meta"><b>品牌橙 · 文字</b><span>--accent-ink</span><em style="color:var(--green-ink)">4.97:1 新增</em></div></div>
+        <div class="sw"><div class="chip" style="background:#fff1e8"></div><div class="meta"><b>橙色浅底</b><span>--accent-soft</span><em>#fff1e8</em></div></div>
+        <div class="sw"><div class="chip" style="background:#24784c"></div><div class="meta"><b>绿 · 文字</b><span>--green-ink</span><em style="color:var(--green-ink)">5.43:1 新增</em></div></div>
+        <div class="sw"><div class="chip" style="background:#2f62ea"></div><div class="meta"><b>蓝 · 文字</b><span>--blue-ink</span><em style="color:var(--green-ink)">4.62:1 新增</em></div></div>
+        <div class="sw"><div class="chip" style="background:#8a6200"></div><div class="meta"><b>琥珀 · 文字</b><span>--amber-ink</span><em style="color:var(--green-ink)">5.01:1 新增</em></div></div>
+        <div class="sw"><div class="chip" style="background:#b03535"></div><div class="meta"><b>红 · 文字</b><span>--danger-ink</span><em style="color:var(--green-ink)">5.26:1 新增</em></div></div>
+        <div class="sw"><div class="chip" style="background:linear-gradient(90deg,#e8edf1 50%,#d7dfe6 50%)"></div><div class="meta"><b>描边</b><span>--line / -strong</span><em>#e8edf1 / #d7dfe6</em></div></div>
+      </div>
+
+      <div class="note-box" style="margin-top:14px">
+        <b>可访问性硬修复：</b>现状眉标用 <code>#f26a1b</code> 打在冷灰底上只有 3.0:1，未达 WCAG AA 对小号文字要求的 4.5:1。升级后所有 16px 以下的橙／绿／蓝／琥珀／红文字一律改用 <code>-ink</code> 值；原色值保留给按钮底、描边、图标填充等图形场景（图形门槛为 3:1）。
+      </div>
+
+      <h3>2.2 字号阶梯</h3>
+      <table>
+        <thead><tr><th>角色</th><th>规格</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>眉标</td><td class="mono">11 / 700 / 0.14em / upper</td><td>区块与页面标签</td></tr>
+          <tr><td>页面主标题</td><td class="mono">32 / 700 / -0.02em</td><td>Hero 内的 H1</td></tr>
+          <tr><td>区块标题</td><td class="mono">22 / 700 / -0.02em</td><td>SectionHead</td></tr>
+          <tr><td>卡片标题</td><td class="mono">17 / 600 / -0.01em</td><td>Surface 头部</td></tr>
+          <tr><td>列表项标题</td><td class="mono">15 / 600</td><td>ListRow</td></tr>
+          <tr><td>正文</td><td class="mono">13.5 / 400 / 1.6</td><td>描述与说明</td></tr>
+          <tr><td>元信息</td><td class="mono">12 / 500</td><td>时间、计数、路径</td></tr>
+          <tr><td>关键数字</td><td class="mono">30 / 650 / -0.03em / tabular</td><td>替代成堆的大数字卡</td></tr>
+        </tbody>
+      </table>
+
+      <h3>2.3 圆角 · 阴影 · 间距 · 动效</h3>
+      <table>
+        <thead><tr><th>类别</th><th>取值</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>圆角</td><td class="mono">8 / 12 / 16 / 20 / 99px</td><td>仅五档：分段内块 · 提示条 · 卡片 · Hero与大面板 · 胶囊</td></tr>
+          <tr><td>阴影</td><td class="mono">sm / md / lift / pop</td><td>仅四档，分别对应静置 · 卡片 · hover 上浮 · 浮层弹窗</td></tr>
+          <tr><td>间距</td><td class="mono">4 / 8 / 12 / 16 / 24 / 32 / 48</td><td>4px 基准；区块间 32 · 卡片间 12 · 卡内 16–20</td></tr>
+          <tr><td>动效</td><td class="mono">160ms cubic-bezier(.2,.7,.3,1)</td><td>hover 上浮 2px · active 缩 0.97 · 支持减少动效</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ---------- 03 组件库 ---------- -->
+    <section id="components">
+      <h2 class="sec"><em>03</em>组件库</h2>
+      <p class="sec-sub">以下 8 类组件是各板块统一的最小单元。每一块都按真实渲染给出，可直接对照实现。</p>
+
+      <!-- 3.1 PageHero -->
+      <h3>3.1 · PageHero 页头（最高优先级）</h3>
+      <p>现状有 5 套互不相同的实现（<code>page-header</code> / <code>mode-hero</code> / <code>hub-hero</code> / <code>action-hero</code> / <code>stats-brief</code>）。统一为「素色」与「图版」两种形态，除冒险页外一律使用素色。</p>
+      <div class="stage stage--bg">
+        <span class="label">素色 Hero · 真实渲染</span>
+        <div class="demo-hero">
+          <div class="row">
+            <div>
+              <span class="eyebrow">Next Best Action</span>
+              <h1>今天先清到期复习</h1>
+              <p>到期 115 个 · 薄弱词 0 个 · 今日已练 0 次</p>
+            </div>
+            <div class="btnrow">
+              <button class="btn btn--primary">开始今日训练 →</button>
+              <button class="btn btn--ghost">错词本</button>
+            </div>
+          </div>
+        </div>
+        <p class="spec"><b>要点：</b>标题与右侧按钮基线对齐；行动区最多 2 个按钮（1 主 1 副）；Hero 不加卡片底、不加分隔线，底部留 24px 接首个区块。</p>
+      </div>
+
+      <!-- 3.2 SectionHead -->
+      <h3>3.2 · SectionHead 区块头</h3>
+      <div class="stage stage--bg">
+        <span class="label">区块头 · 真实渲染</span>
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px">
+          <div>
+            <span class="eyebrow">Queue</span>
+            <h2 style="margin:6px 0 0;font-size:22px;font-weight:700;letter-spacing:-.02em">今日任务队列</h2>
+          </div>
+          <button class="btn btn--quiet">选择模式 ›</button>
+        </div>
+        <div class="rows" style="margin-top:18px">
+          <div class="row-item active">
+            <div class="ib"><i style="background:var(--accent-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#c04a0b" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></i></div>
+            <div><b>到期复习</b><p>115 个单词 · 0 个句子到期</p></div>
+            <div class="tail"><b style="font-size:15px;font-variant-numeric:tabular-nums">0 / 30</b></div>
+          </div>
+          <div class="row-item">
+            <div class="ib"><i style="background:var(--danger-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#b03535" stroke-width="2" stroke-linecap="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></i></div>
+            <div><b>错词专项</b><p>0 个薄弱词 · 今日错 0</p></div>
+            <div class="tail">0</div>
+          </div>
+          <div class="row-item">
+            <div class="ib"><i style="background:var(--blue-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#2f62ea" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></i></div>
+            <div><b>新词目标</b><p>115 个新词还在队列里</p></div>
+            <div class="tail">0 / 10</div>
+          </div>
+        </div>
+        <p class="spec"><b>要点：</b>区块本身不套白卡；进行中的行用 3px 橙色竖条 + 橙浅底标记；右侧尾部统一用 tabular 数字右对齐。</p>
+      </div>
+
+      <!-- 3.3 Surface -->
+      <h3>3.3 · Surface 面板（克制使用）</h3>
+      <div class="stage">
+        <span class="label">Surface · 真实渲染</span>
+        <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--sh-sm)">
+          <span class="eyebrow">Today Training</span>
+          <h2 style="margin:8px 0 0;font-size:17px;font-weight:600;letter-spacing:-.01em">今日训练</h2>
+          <p style="margin:8px 0 0;font-size:13px;color:var(--muted)">预计 12 分钟，优先处理 115 个到期复习和 0 个薄弱词。</p>
+          <div class="figures" style="margin-top:20px">
+            <div class="fig"><span>到期</span><b>115</b></div>
+            <div class="fig"><span>错词</span><b>0</b></div>
+            <div class="fig"><span>今日已练</span><b>0</b></div>
+          </div>
+        </div>
+        <p class="spec"><b>要点：</b>描边与投影二选一，禁止同时重描边加重投影；一张页面最多一个视觉重量级面板；数据用无边框数据列代替成堆的小白卡。</p>
+      </div>
+
+      <!-- 3.4 IconBadge -->
+      <h3>3.4 · IconBadge 圆形语义图标</h3>
+      <div class="stage">
+        <span class="label">圆形图标 · 真实渲染</span>
+        <div class="icons">
+          <div class="ib"><i style="background:var(--accent-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#c04a0b" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M5 8l7-5 7 5"/></svg></i><span>主行动</span></div>
+          <div class="ib"><i style="background:var(--blue-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#2f62ea" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></i><span>新词</span></div>
+          <div class="ib"><i style="background:var(--green-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#24784c" stroke-width="2" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></i><span>完成</span></div>
+          <div class="ib"><i style="background:var(--amber-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#8a6200" stroke-width="2" stroke-linecap="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></i><span>提醒</span></div>
+          <div class="ib"><i style="background:var(--danger-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#b03535" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></i><span>错词</span></div>
+        </div>
+        <p class="spec"><b>要点：</b>直径 40px（次级 32px）。底色用 tint，图标色用 <b>加深的 -ink 值</b>而非原色——原色在浅底上对比度普遍不足。一个模块只用一个语义色，全页不超过三个。</p>
+      </div>
+
+      <!-- 3.5 按钮 -->
+      <h3>3.5 · 按钮体系（收敛为 4 型）</h3>
+      <div class="stage">
+        <span class="label">按钮 · 真实渲染（可 hover）</span>
+        <div class="btnrow">
+          <button class="btn btn--primary">开始冒险 ＋</button>
+          <button class="btn btn--ghost">随机推荐</button>
+          <button class="btn btn--quiet">查看全部 ›</button>
+          <button class="btn btn--danger">删除词书</button>
+        </div>
+        <p class="spec"><b>要点：</b>主按钮每屏最多一个；ghost 用于次级操作；quiet 用于"查看全部 ›"这类文字入口；danger 只在危险区出现。移除各页自造的高饱和小按钮。</p>
+      </div>
+
+      <!-- 3.6 表单 -->
+      <h3>3.6 · 表单控件</h3>
+      <div class="stage">
+        <span class="label">分段控件 · chips · 输入框 · 真实渲染（可交互）</span>
+        <div style="display:flex;flex-wrap:wrap;gap:22px;align-items:center">
+          <div class="seg">
+            <button class="on">A1</button><button>A2</button><button>B1</button><button>C1</button>
+          </div>
+          <input class="input" placeholder="例：我想找一只走失的猫" />
+        </div>
+        <div class="chips" style="margin-top:16px">
+          <button class="chipbtn">一只会送信的鸽子</button>
+          <button class="chipbtn">午夜开往雪国的巴士</button>
+          <button class="chipbtn">图书馆里少了一页的书</button>
+        </div>
+        <p class="spec"><b>要点：</b>输入框 42px 高、10px 圆角，聚焦时橙色描边加 4px 柔光环；多选一统一为分段控件，选中态是白底加橙色内描边，不是高饱和填充。</p>
+      </div>
+
+      <!-- 3.7 空状态 -->
+      <h3>3.7 · 空状态模板</h3>
+      <div class="stage stage--bg">
+        <span class="label">空状态 · 真实渲染</span>
+        <div class="emptybox">
+          <i><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></i>
+          <b>错词本还是空的</b>
+          <p>完成一次拼写或复习，答错的词会自动按日期整理到这里，方便下一轮优先攻克。</p>
+          <button class="btn btn--primary">开始听写</button>
+        </div>
+        <p class="spec"><b>要点：</b>圆形图标 + 主文案 + 最多两行说明 + 一个主按钮。禁止"虚线框里只有一段灰字"的裸状态。</p>
+      </div>
+
+      <!-- 3.8 反馈条 -->
+      <h3>3.8 · 反馈条</h3>
+      <div class="stage">
+        <span class="label">反馈条 · 真实渲染</span>
+        <div class="note note--amber">⚠️ 建议现在导出一次 JSON 备份 · 上次备份：尚未备份 <button class="btn btn--ghost" style="margin-left:auto;height:32px">立即备份</button></div>
+        <div class="note note--green">✓ 这些数值会影响今日任务、周报目标和复习负载判断。</div>
+        <p class="spec"><b>要点：</b>文字一律用 <code>-ink</code> 值；同屏最多一条；能内联在区块里的说明不要升级为整条横幅——设置页目前的"黄条 + 绿条"并存就是典型的过量信号。</p>
+      </div>
+    </section>
+
+    <!-- ---------- 04 逐板块 ---------- -->
+    <section id="pages">
+      <h2 class="sec"><em>04</em>逐板块精修方案</h2>
+      <p class="sec-sub">按优先级排列。P0 是视觉割裂最严重的四页，也是投入产出比最高的；P2 只需组件口径对齐。</p>
+
+      <!-- 今日 -->
+      <div class="pagecard">
+        <header><h3>今日 · TodayPage</h3><span class="tag p0">P0 优先</span></header>
+        <ul class="diag">
+          <li>标题裸在灰底上，与下方大卡形成"两层页头"，视觉重心混乱</li>
+          <li>大卡内左侧橙色进度环 + 右侧三张白卡，两套层级并置</li>
+          <li>任务队列四条各带彩色底（橙／粉／紫／蓝），是全站杂色最重的一屏</li>
+          <li>页面底部还有一大块橙色 CTA，重复了上方的主行动</li>
+        </ul>
+        <div class="flow">
+          <span class="label">精修后结构</span>
+          <ol>
+            <li><b>PageHero 素色</b>：NEXT BEST ACTION / 今天先清到期复习 / 定位 + 右侧主按钮与错词本</li>
+            <li><b>今日任务队列</b>：区块头 + 一个面板内四条列表行，首条为进行中态；尾部数值右对齐</li>
+            <li><b>数据条</b>：三个「标签 + 30px 大数字」无边框数据列，替代三张白卡</li>
+            <li><b>最近错误</b>：区块头 + 统一空状态模板</li>
+            <li><b>底部橙色 CTA 删除</b>，主行动已上提到 Hero</li>
+          </ol>
+        </div>
+        <div class="insight">
+          <div class="box before"><span>现状</span><p>页头、大卡、彩色任务行三套层级争夺注意力，主行动同时出现在 Hero 与页脚。</p></div>
+          <div class="box after"><span>精修后</span><p>一个 Hero 定调，其余全部退为"信息 + 一行动作"，注意力只落在唯一的开始按钮上。</p></div>
+        </div>
+      </div>
+
+      <!-- 训练 -->
+      <div class="pagecard">
+        <header><h3>训练 · TrainingPage</h3><span class="tag p0">P0 优先</span></header>
+        <ul class="diag">
+          <li>已有眉标雏形，但 Hero 与"今日训练"卡仍有两层页头感</li>
+          <li>八张训练卡全白且图标是彩色方块（非圆形），密度高又没有视觉引导</li>
+          <li>"推荐节奏"三卡与上文风格脱节，图标又是另一种配色</li>
+        </ul>
+        <div class="flow">
+          <span class="label">精修后结构</span>
+          <ol>
+            <li><b>PageHero 素色</b>：TRAINING / 选择今天的训练方式 / 右侧"回到今日"</li>
+            <li><b>今日训练面板</b>：左标题与耗时，右三个无边框数据列 + 主按钮，去掉卡中卡</li>
+            <li><b>训练方式</b>：八条列表行（两列），圆形语义图标，语义色收敛到四色</li>
+            <li><b>推荐节奏</b>：改为无面板的编号步骤（序号橙色 28px）</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 词书 -->
+      <div class="pagecard">
+        <header><h3>词书 · UnitsPage</h3><span class="tag p0">P0 优先</span></header>
+        <ul class="diag">
+          <li>全站视觉最"重"的一屏：封面用满色橙／青渐变，饱和度远高于全站基调</li>
+          <li>目标进度区与下方卡片的密度、字号不同步</li>
+          <li>分组标题的彩色竖条与眉标系统重复表达同一件事</li>
+        </ul>
+        <div class="flow">
+          <span class="label">精修后结构</span>
+          <ol>
+            <li><b>PageHero 素色</b>：UNITS / 单元 / 右侧"新建分组"</li>
+            <li><b>目标条</b>：单行面板——左侧完成度大数字与细进度条，右侧四个数据列</li>
+            <li><b>分组区块</b>：眉标作分组标题；封面改为低饱和「纸面 + 橙色书脊」，等级与进度用元信息行</li>
+            <li><b>新建词书卡</b>：虚线描边 + 加号，去掉彩色双卡</li>
+          </ol>
+        </div>
+        <h4>封面色彩方案对比</h4>
+        <div class="covers">
+          <div class="cover old"><div class="bk"><b>Vol. 01<br/>核心100 · Unit 1</b><div><span>2026 09 12</span><br/><i>0 / 15</i></div></div><div class="cap">现状 · 满色渐变</div></div>
+          <div class="cover new"><div class="bk"><b>Vol. 01<br/>核心100 · Unit 1</b><div><span>A2 · 0 / 15</span><br/><i>2026 09 12</i></div></div><div class="cap">精修 · 低饱和纸面</div></div>
+        </div>
+        <div class="insight">
+          <div class="box before"><span>问题</span><p>满色封面在冷灰页面上形成大面积高饱和色块，把注意力从"要不要开始学"抢到了"颜色好不好看"。</p></div>
+          <div class="box after"><span>解法</span><p>纸面白底 + 3px 橙色书脊 + 墨色书名。识别书仍然是书，但视觉重量降到与全站同一水平。</p></div>
+        </div>
+      </div>
+
+      <!-- 设置 -->
+      <div class="pagecard">
+        <header><h3>设置 · SettingsPage</h3><span class="tag p0">P0 优先</span></header>
+        <ul class="diag">
+          <li>同屏出现黄告警条 + 绿提示条 + 橙色按钮 + 蓝绿粉图标块，颜色数严重超标</li>
+          <li>左右两列都是同权重白卡，分组标题层级弱，整体像后台管理页</li>
+          <li>危险区、云同步等区域的样式语言与其他页不统一</li>
+        </ul>
+        <div class="flow">
+          <span class="label">精修后结构</span>
+          <ol>
+            <li><b>PageHero 素色</b>：SETTINGS / 设置与导出 / 右侧"已保存"用 quiet 态而非橙色按钮</li>
+            <li><b>备份提醒</b>：全页仅保留一条反馈条（琥珀），操作用 ghost</li>
+            <li><b>四组设置</b>：区块头 + 面板，去掉卡套卡；数值说明改无底色小字</li>
+            <li><b>危险区</b>：面板 + 红色浅描边，按钮用 danger 型</li>
+            <li><b>色彩收敛到两种</b>：橙（主）与琥珀（提醒），其余全部中性</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 词库 -->
+      <div class="pagecard">
+        <header><h3>词库 · LibraryPage</h3><span class="tag p1">P1</span></header>
+        <ul class="diag">
+          <li>顶部五张大数字白卡与筛选条数字重复表达同一批数据</li>
+          <li>左右分栏的详情面板与列表面板同为白卡，缺少层级差</li>
+        </ul>
+        <div class="flow">
+          <span class="label">精修后结构</span>
+          <ol>
+            <li><b>PageHero 素色</b>：LIBRARY / 管理你的个人语料库 / 右侧"设置与导出"</li>
+            <li><b>数据条</b>：五个无边框数据列，替代五张大白卡</li>
+            <li><b>轻量入口行</b>：图标 + 文字 + 计数，透明底，hover 才出底色</li>
+            <li><b>工作区</b>：左列表面板 + 右详情面板同规格；左列当前项用 3px 橙色态条</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 错词本 -->
+      <div class="pagecard">
+        <header><h3>错词本 · MistakeBookPage</h3><span class="tag p1">P1</span></header>
+        <ul class="diag">
+          <li>空状态全站最弱：虚线框里一段灰字，缺少引导与情绪</li>
+          <li>有数据态下日期徽标颜色过多，双面板缺少主次</li>
+        </ul>
+        <div class="flow">
+          <span class="label">精修后结构</span>
+          <ol>
+            <li><b>PageHero 素色</b>：MISTAKE BOOK / 错词本 / 右侧"去训练"</li>
+            <li><b>空状态</b>：套用统一模板，并把"如何产生错词"拆成三步提示</li>
+            <li><b>有数据</b>：左日期列表（当前日期橙色态条）右错词详情；徽标统一为中性灰加一个橙色强调</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 统计 -->
+      <div class="pagecard">
+        <header><h3>统计 · StatsPage</h3><span class="tag p1">P1</span></header>
+        <ul class="diag">
+          <li>绿色健康度圆环、三色图标块与蓝紫渐变卡并存，色彩数量超标</li>
+          <li>风险分层卡与今日计划步骤卡，与训练页各自为政</li>
+        </ul>
+        <div class="flow">
+          <span class="label">精修后结构</span>
+          <ol>
+            <li><b>PageHero 素色</b>：WEEKLY REPORT / 学习周报 / 右侧"清到期复习"</li>
+            <li><b>简报面板</b>：左标题与动作，右「健康度 40」大数字；粗圆环改为细弧</li>
+            <li><b>数据条</b>：三个无边框数据列（今日收尾／错词专项／下周负载）</li>
+            <li><b>风险分层</b>：列表行 + 统一琥珀图标</li>
+            <li><b>今日计划</b>：编号步骤，与训练页共用同一组件</li>
+            <li><b>底部渐变彩卡</b>改无边框数据列栅格</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 添加 -->
+      <div class="pagecard">
+        <header><h3>添加 · AddPage</h3><span class="tag p2">P2 收尾</span></header>
+        <ul class="diag">
+          <li>全站唯一把 Hero 做成整块大白卡的页面，与冒险的通栏 Hero 直接冲突</li>
+          <li>入口卡片图标为浅底方块，与圆形图标规范不一致</li>
+        </ul>
+        <div class="flow">
+          <span class="label">精修后结构</span>
+          <ol>
+            <li><b>PageHero 素色</b>（不再包白卡）：ADD / 把今天遇到的材料放进来 / 右侧"导入一段材料"</li>
+            <li><b>采集入口</b>：四条列表行，圆形图标 + 右侧计数与箭头</li>
+            <li><b>建议顺序</b>：编号步骤，去掉橙色方块底，复用统一组件</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- 05 路线 ---------- -->
+    <section id="roadmap">
+      <h2 class="sec"><em>05</em>实施路线</h2>
+      <p class="sec-sub">建议在现有样式文件里新增一层 <code>ui-*</code> 通用类，与冒险板块的 <code>adv-*</code> 并行；每替换完一页就删掉该页旧样式，避免长期存在第三套命名。</p>
+      <div class="phases">
+        <div class="phase">
+          <em>Phase 1 · 基础</em>
+          <b>令牌与通用组件</b>
+          <p>补齐文字级语义色与间距／阴影／圆角令牌，落地 PageHero、Surface、ListRow、IconBadge、按钮五件套。</p>
+          <ul><li>不动任何业务逻辑</li><li>可独立验证</li></ul>
+        </div>
+        <div class="phase">
+          <em>Phase 2 · 高价值</em>
+          <b>今日 · 训练 · 设置 · 词书</b>
+          <p>把视觉割裂最严重的四页归位，这四页占总割裂感的大部分。</p>
+          <ul><li>今日与训练共用组件</li><li>设置页色彩收敛</li><li>词书封面降饱和</li></ul>
+        </div>
+        <div class="phase">
+          <em>Phase 3 · 收尾</em>
+          <b>词库 · 错词本 · 统计 · 添加</b>
+          <p>剩余四页按规范对齐，全站达成一套语言。</p>
+          <ul><li>统一空状态</li><li>统一编号步骤</li><li>清理死代码</li></ul>
+        </div>
+      </div>
+      <div class="note-box">
+        <b>落地顺序建议：</b>先做「今日」一页作为样板，跑通令牌与组件后横向复制到训练／统计／添加（这三页结构相近，可复用同一套 PageHero 与编号步骤）。词书与设置单独处理，因为它们各自包含一块需要重新设计的区域。
+      </div>
+    </section>
+
+    <!-- ---------- 06 验收 ---------- -->
+    <section id="check">
+      <h2 class="sec"><em>06</em>验收清单</h2>
+      <p class="sec-sub">每页改完对照自检，全部通过才算完成。</p>
+      <div class="check">
+        <ul>
+          <li>页面顶部为 PageHero，主标题 32px／700，眉标 11px uppercase，行动区不超过两个按钮</li>
+          <li>区块直接置于页面背景，无卡套卡；全页视觉重量级面板不超过一个</li>
+          <li>图标全部为圆形 IconBadge，图标前景使用 <code>-ink</code> 系列</li>
+          <li>全页语义色不超过三种；所有小号彩色文字对比度不低于 4.5:1</li>
+          <li>圆角只出现五档，阴影只出现四档，没有临时值</li>
+          <li>多选一控件为分段控件；按钮只用 primary／ghost／quiet／danger 四型</li>
+          <li>空状态使用统一模板</li>
+          <li>键盘 Tab 可达全部交互元素，聚焦环可见</li>
+          <li>系统开启减少动效时降级正常</li>
+          <li>1440／1024／720／420 四个断点无溢出、无错位</li>
+        </ul>
+      </div>
+      <div class="note-box" style="margin-top:16px">
+        <b>三条注意事项：</b>一、不要改冒险板块，它是基准；二、样式文件已超过一万四千行，先建通用层再统一清死代码，不要边改边删；三、词书封面降饱和是观感变化最大的一项，建议先出单页对比再推广。
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // 分段控件演示交互
+  document.querySelectorAll('.seg').forEach(function (seg) {
+    seg.addEventListener('click', function (e) {
+      if (e.target.tagName !== 'BUTTON') return;
+      seg.querySelectorAll('button').forEach(function (b) { b.classList.remove('on'); });
+      e.target.classList.add('on');
+    });
+  });
+</script>
+</body>
+</html>

@@ -173,6 +173,8 @@ export interface Settings {
   speechRate: number;
   autoSpeakInSpelling: boolean;
   lastExportedAt: string;
+  /** 每天日记的题目数量，只允许 3 / 5 / 10。 */
+  diaryDailyCount: number;
   aiProvider: AiProviderSettings;
   dataSync: DataSyncSettings;
 }
@@ -257,6 +259,12 @@ export interface AppData {
   reviews: Review[];
   mistakeGenerations: MistakeGeneration[];
   adventures: Adventure[];
+  huntAttempts: HuntAttempt[];
+  huntResults: HuntResult[];
+  /** 「小美的一天」已完成课程 ID，驱动课程地图点亮。 */
+  grammarLessonsDone: string[];
+  /** 「我的英文日记」条目。 */
+  diaryEntries: DiaryEntry[];
   schedules: Schedule[];
   dictionaryEntries: DictionaryEntry[];
   seededWordVersions: string[];
@@ -273,6 +281,203 @@ export interface LetterDiffToken {
   char: string;
   expected?: string;
   status: "match" | "missing" | "extra" | "substitution";
+}
+
+/** 语法错误类型标签：与「侦探找错」的罪名体系一一对应。 */
+export type GrammarErrorTag =
+  | "tense"
+  | "sv_agreement"
+  | "missing_be"
+  | "article"
+  | "plural"
+  | "preposition"
+  | "fragment"
+  | "run_on"
+  | "word_order"
+  | "verb_form";
+
+/** 案件里植入的一处错误。tokenIndex 指向 HuntCase.tokens 的下标。 */
+export interface HuntError {
+  tokenIndex: number;
+  tag: GrammarErrorTag;
+  original: string;
+  correction: string;
+  explanation: string;
+}
+
+/** 侦查案件：一段含若干错误的英文，玩家点出错误并判定罪名。 */
+export interface HuntCase {
+  id: string;
+  number: number;
+  title: string;
+  scene: string;
+  tokens: string[];
+  errors: HuntError[];
+  /** 案件里超出核心词汇门槛、必须保留的生词提示（页面展示为「生词提示」）。 */
+  notes?: { word: string; zh: string }[];
+}
+
+/** 一次点选记录，用于统计误判率与高频错因。 */
+export interface HuntAttempt {
+  id: string;
+  caseId: string;
+  tokenIndex: number;
+  guessedTag: GrammarErrorTag | null;
+  hit: boolean;
+  createdAt: string;
+}
+
+/** 一次破案结算。 */
+export interface HuntResult {
+  id: string;
+  caseId: string;
+  found: number;
+  total: number;
+  misses: number;
+  stars: number;
+  durationMs: number;
+  finishedAt: string;
+}
+
+/** 讲解阶段的一个词块：text 是英文，role 是它的大白话角色。 */
+export interface LessonBlock {
+  text: string;
+  role: string;
+}
+
+export interface LessonExample {
+  en: string;
+  zh: string;
+}
+
+/** 引导练习（第②段「试一试」）：几乎不会错的点选 / 拼装 / 找茬题。 */
+export interface LessonGuidedStep {
+  kind: "choose" | "arrange" | "spot";
+  promptZh: string;
+  /** choose 题干：空位前的部分。 */
+  before?: string;
+  /** choose 题干：空位后的部分。 */
+  after?: string;
+  /** choose 的选项。 */
+  options?: string[];
+  /** arrange / spot 的词块（arrange 含干扰项；spot 是含错的完整词块序列）。 */
+  tokens?: string[];
+  /** spot：藏了问题的那个词块（命中即通过）。 */
+  wrongToken?: string;
+  /** spot：点对之后给出的纠正说法。 */
+  correctionZh?: string;
+  answer: string;
+  explain: string;
+}
+
+/** 自由练习（第③段「自己来」）：给中文意思，点词成句，无干扰项。 */
+export interface LessonPracticeStep {
+  promptZh: string;
+  tokens: string[];
+  answer: string;
+}
+
+/** 小剧场的一句台词：who 为 "me" 表示轮到小美说的那句。 */
+export interface LessonDialogueLine {
+  who: string;
+  en: string;
+  zh: string;
+}
+
+/** 正误对比：先见「有人是这样说的」，揭晓后给正确句 + 为什么。 */
+export interface LessonContrast {
+  wrong: string;
+  /** 需要标出的问题词；null 表示整句缺了一块。 */
+  wrongMark?: string | null;
+  correct: string;
+  whyZh: string;
+}
+
+/** 句式变体：肯定 / 否定 / 疑问三种口气。 */
+export interface LessonVariant {
+  label: string;
+  en: string;
+  zh: string;
+  noteZh?: string;
+}
+
+/** 场景变奏：同一句型换一个生活场景。 */
+export interface LessonSceneSwing {
+  sceneZh: string;
+  en: string;
+  zh: string;
+}
+
+/** 深挖折叠卡（默认收起）：辨析、规则背后的道理。 */
+export interface LessonDeepDive {
+  title: string;
+  paragraphs: string[];
+}
+
+/** 完课页迷你小结卡：一屏读完的「我会了」清单。 */
+export interface LessonSummary {
+  rule: string;
+  points: string[];
+}
+
+/** 一节课：「小美的一天」连续剧的一集，四段式流程（看→跟→练→破）。 */
+export interface GrammarLesson {
+  id: string;
+  number: number;
+  title: string;
+  /** 这一课学的语法点（卡片与课程页展示），如「be 动词 · I am」。 */
+  grammarLabel: string;
+  episode: string;
+  /** 场景插画 ID（AdventureSceneId），用于图文小剧场。 */
+  scene: string;
+  sceneSetupZh: string;
+  dialogueEn: string;
+  dialogueZh: string;
+  intentZh: string;
+  targetSentence: string;
+  blocks: LessonBlock[];
+  oneLineRule: string;
+  examples: LessonExample[];
+  guided: LessonGuidedStep[];
+  practice: LessonPracticeStep[];
+  /** 第④段侦探挑战关联的找错案件。 */
+  huntCaseIds: string[];
+  // ── 以下为深度优化增量字段（全部可选，旧数据不填自动回退旧版形态）──
+  /** 多句小对话；不填则回退 dialogueEn/dialogueZh 单句。 */
+  dialogue?: LessonDialogueLine[];
+  /** 正误对比揭示卡。 */
+  contrast?: LessonContrast[];
+  /** 肯定 / 否定 / 疑问变体。 */
+  variants?: LessonVariant[];
+  /** 场景变奏列表。 */
+  sceneSwings?: LessonSceneSwing[];
+  /** 「想知道为什么？」深挖折叠卡。 */
+  deepDive?: LessonDeepDive;
+  /** 完课页迷你小结卡。 */
+  summary?: LessonSummary;
+}
+
+/** 日记批改指出的一处问题（语气必须温和，不出现「错误」字样）。 */
+export interface DiaryIssue {
+  original: string;
+  correction: string;
+  explanation: string;
+  /** 语法点归因（R01⑤）：AI 批改顺带输出 10 类罪名之一；无 AI / 未识别时缺省。 */
+  tag?: GrammarErrorTag;
+}
+
+/** 一条英文日记。status: pending=还没批改（离线保存），done=已批改。 */
+export interface DiaryEntry {
+  id: string;
+  dateKey: string;
+  questionId: string;
+  questionZh: string;
+  answerEn: string;
+  correctedEn: string;
+  issues: DiaryIssue[];
+  status: "pending" | "done";
+  note?: string;
+  createdAt: string;
 }
 
 declare global {

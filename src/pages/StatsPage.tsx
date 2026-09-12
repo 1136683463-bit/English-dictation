@@ -5,10 +5,14 @@ import {
   BarChart3,
   BookOpen,
   CalendarClock,
+  CalendarDays,
   CheckCircle2,
+  ChevronRight,
   Flame,
+  Layers,
   Lightbulb,
   ListChecks,
+  RotateCcw,
   Target,
   TrendingUp
 } from "lucide-react";
@@ -50,9 +54,6 @@ export default function StatsPage() {
   const stats = getLearningStats(data);
   const weekly = getWeeklyStatsReport(data);
   const maxTrendReviews = Math.max(1, ...weekly.sevenDayTrend.map((day) => day.reviews));
-  const hasTrendData = weekly.sevenDayTrend.some(
-    (day) => day.reviews > 0 || day.newCards > 0 || day.masteredCards > 0
-  );
   const weeklyGoalTotal = weekly.goalProgress.reduce((sum, goal) => sum + goal.target, 0);
   const weeklyGoalDone = weekly.goalProgress.reduce((sum, goal) => sum + Math.min(goal.current, goal.target), 0);
   const nextWeekSuggestions =
@@ -78,6 +79,7 @@ export default function StatsPage() {
   const activeWords = stats.cardsByType.words;
   const activePhrases = stats.cardsByType.phrases;
   const activeSentences = stats.cardsByType.sentences;
+  const hasTrainingDebt = stats.dueTotal > 0 || stats.weakWords > 0 || activeSentences > 0;
   const focusActions = [
     {
       title: "今日收尾",
@@ -114,6 +116,17 @@ export default function StatsPage() {
       to: "/training",
       icon: BarChart3,
       tone: weekly.dueNextWeek > stats.dueReviewGoal * 2 ? "red" : "blue"
+    },
+    {
+      title: "学习建议",
+      detail: hasTrainingDebt
+        ? "每天固定一段短训练，先清到期再补一点新词。"
+        : "当前负债很轻，保持每日短训练巩固手感即可。",
+      metric: hasTrainingDebt ? 10 : 6,
+      unit: "分钟/天",
+      to: "/training",
+      icon: Lightbulb,
+      tone: "purple"
     }
   ];
   const weakInsights = getWeakCardInsights(data, { limit: 30 });
@@ -163,6 +176,7 @@ export default function StatsPage() {
   const duePlanCount = Math.min(stats.dueTotal, stats.dueReviewGoal, 12);
   const weakPlanCount = Math.min(stats.weakWords, 10);
   const sentencePlanCount = Math.min(activeSentences, Math.max(1, data.settings.dailySentences || 5));
+  const planStepTones = ["orange", "red", "green", "blue"] as const;
   const todayPlan = [
     {
       label: "清到期复习",
@@ -211,7 +225,15 @@ export default function StatsPage() {
   const mobilePlanPreview = todayPlan.filter((step) => step.active).slice(0, 3);
   const previewSteps = mobilePlanPreview.length > 0 ? mobilePlanPreview : [firstPlanStep];
   const healthTone = healthScore >= 82 ? "good" : healthScore >= 62 ? "steady" : "attention";
-  const hasTrainingDebt = stats.dueTotal > 0 || stats.weakWords > 0 || activeSentences > 0;
+  const cnRangeDate = (shortDate: string) => {
+    const [month, day] = shortDate.split("/");
+    if (!month || !day) return shortDate;
+    return `${parseInt(month, 10)}月${parseInt(day, 10)}日`;
+  };
+  const weekStartLabel = weekly.sevenDayTrend[0]?.shortDate ?? "";
+  const weekEndLabel = weekly.sevenDayTrend[weekly.sevenDayTrend.length - 1]?.shortDate ?? "";
+  const weekRangeText =
+    weekStartLabel && weekEndLabel ? `${cnRangeDate(weekStartLabel)} - ${cnRangeDate(weekEndLabel)}` : "";
 
   return (
     <div className="page stats-page">
@@ -220,10 +242,12 @@ export default function StatsPage() {
         title="学习周报"
         description="看趋势，更要知道下一步怎么练。"
         action={
-          <Link to={primaryAction.to} className="primary-button">
-            {primaryAction.label}
-            <ArrowRight size={17} />
-          </Link>
+          weekRangeText ? (
+            <span className="stats-header-chip">
+              <CalendarDays size={15} />
+              {weekRangeText}
+            </span>
+          ) : undefined
         }
       />
 
@@ -298,7 +322,20 @@ export default function StatsPage() {
         <div className="stats-health-meter" aria-label={`学习健康度 ${healthScore}%`}>
           <strong>{healthScore}</strong>
           <span>健康度</span>
-          <div className="health-ring" style={{ "--score": `${healthScore}%` } as CSSProperties} />
+          <div
+            className="health-ring"
+            style={
+              {
+                "--score": `${healthScore}%`,
+                "--ring-color":
+                  healthTone === "good"
+                    ? "var(--secondary)"
+                    : healthTone === "steady"
+                      ? "var(--amber)"
+                      : "var(--accent)"
+              } as CSSProperties
+            }
+          />
         </div>
         <div className="stats-brief-grid" aria-label="当前学习摘要">
           <div><span>当前到期</span><strong>{stats.dueTotal}</strong></div>
@@ -331,7 +368,7 @@ export default function StatsPage() {
               <span className="eyebrow">Risk Layers</span>
               <h2>风险分层</h2>
             </div>
-            <AlertTriangle size={20} />
+            <span className="panel-chip red"><AlertTriangle size={17} /></span>
           </div>
           <div className="stats-risk-list">
             {riskBands.map((risk) => {
@@ -363,7 +400,7 @@ export default function StatsPage() {
             <strong>{weekly.weekNewCards} / {weekly.weekMasteredCards}</strong>
             <small>{weekly.weekNewWords} 个新词 · {weekly.weekMasteredWords} 个词掌握</small>
           </div>
-          <div className="metric-card">
+          <div className="metric-card purple">
             <Activity size={20} />
             <span>拼写正确率</span>
             <strong>{formatPercent(weekly.spellingAccuracy)}</strong>
@@ -383,10 +420,9 @@ export default function StatsPage() {
               <span className="eyebrow">Today Plan</span>
               <h2>今日 10 分钟计划</h2>
             </div>
-            <Lightbulb size={20} />
           </div>
           <div className="stats-plan-summary">
-            <div>
+            <div className="stats-plan-summary-copy">
               <strong>{hasTrainingDebt ? "约 10 分钟" : "约 6 分钟"}</strong>
               <span>{hasTrainingDebt ? "先压到期，再修错词，最后补一点上下文。" : "今天没有明显负债，用短训练保持手感。"}</span>
             </div>
@@ -398,23 +434,29 @@ export default function StatsPage() {
               <Link to="/training" className="secondary-button">训练中心</Link>
             </div>
           </div>
-          <div className="stats-combo-list">
+          <div className="stats-plan-list">
             {todayPlan.map((step, index) => {
               const Icon = step.icon;
+              const tone = planStepTones[index] ?? "neutral";
               return (
-                <Link key={step.label} to={step.to} className={step.active ? "stats-combo-step active" : "stats-combo-step"}>
-                  <span className="combo-index">{index + 1}</span>
-                  <Icon size={18} />
+                <Link
+                  key={step.label}
+                  to={step.to}
+                  className={`ui-row plan-row${step.active ? "" : " plan-row--muted"}`}
+                >
+                  <span className={`ui-icon ui-icon--${tone}`}>
+                    <Icon size={20} />
+                  </span>
                   <div>
-                    <strong>{step.label}</strong>
-                    <p>{step.detail}</p>
-                    <span className="stats-plan-meta">
-                      <em>{step.estimate}</em>
-                      <em>{step.amount}</em>
-                      <em className={step.active ? "stats-plan-chip active" : "stats-plan-chip"}>{step.status}</em>
-                    </span>
+                    <span className="ui-row-title">{step.label}</span>
+                    <span className="ui-row-desc">{step.detail}</span>
                   </div>
-                  <ArrowRight size={16} />
+                  <span className="ui-row-tail">
+                    <span>{step.estimate} · {step.amount}</span>
+                  </span>
+                  <span className="ui-row-arrow" aria-hidden="true">
+                    <ChevronRight size={17} />
+                  </span>
                 </Link>
               );
             })}
@@ -429,15 +471,12 @@ export default function StatsPage() {
               <span className="eyebrow">7-Day Trend</span>
               <h2>最近 7 天趋势</h2>
             </div>
-            <TrendingUp size={20} />
+            <span className="panel-chip green"><TrendingUp size={17} /></span>
           </div>
-          {!hasTrendData ? (
-            <EmptyState title="暂无趋势数据" description="完成一次复习或添加新词后，这里会出现最近 7 天的变化。" />
-          ) : (
-            <div className="trend-chart" aria-label="最近 7 天复习趋势">
-              {weekly.sevenDayTrend.map((day) => {
-                const correctHeight = Math.max(4, Math.round((day.correct / maxTrendReviews) * 100));
-                const wrongHeight = Math.max(day.wrong > 0 ? 4 : 0, Math.round((day.wrong / maxTrendReviews) * 100));
+          <div className="trend-chart" aria-label="最近 7 天复习趋势">
+            {weekly.sevenDayTrend.map((day) => {
+              const correctHeight = day.reviews === 0 ? 0 : Math.max(4, Math.round((day.correct / maxTrendReviews) * 100));
+              const wrongHeight = day.reviews === 0 || day.wrong === 0 ? 0 : Math.max(4, Math.round((day.wrong / maxTrendReviews) * 100));
 
                 return (
                   <div className={day.reviews === 0 ? "trend-day is-empty" : "trend-day"} key={day.dateKey}>
@@ -454,8 +493,7 @@ export default function StatsPage() {
                   </div>
                 );
               })}
-            </div>
-          )}
+          </div>
         </div>
 
         <div className="panel stats-goal-panel">
@@ -464,7 +502,7 @@ export default function StatsPage() {
               <span className="eyebrow">Goals</span>
               <h2>目标完成度</h2>
             </div>
-            <Target size={20} />
+            <span className="panel-chip green"><Target size={17} /></span>
           </div>
           <div className="stats-goal-list">
             {weekly.goalProgress.map((goal) => (
@@ -490,7 +528,7 @@ export default function StatsPage() {
               <span className="eyebrow">Mistakes</span>
               <h2>最常错 10 词</h2>
             </div>
-            <AlertTriangle size={20} />
+            <span className="panel-chip red"><AlertTriangle size={17} /></span>
           </div>
           {weekly.mostWrongWords.length === 0 ? (
             <EmptyState title="暂时没有常错词" description="拼写或复习评分较低的单词会自动进入这里。" />
@@ -514,12 +552,25 @@ export default function StatsPage() {
         </div>
 
         <div className="panel stats-advice-panel">
+          <svg
+            className="stats-advice-art"
+            viewBox="0 0 120 120"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M64 118 C62 88 60 66 46 44 M64 118 C66 92 74 74 92 60 M64 118 C58 100 44 92 26 88" stroke="#9ed3ba" strokeWidth="3.2" fill="none" strokeLinecap="round" />
+            <path d="M46 44 C36 34 34 22 38 12 C50 16 56 28 52 42 Z" fill="#79c3a1" />
+            <path d="M92 60 C86 46 88 34 96 26 C104 36 104 50 96 62 Z" fill="#a5d8bf" />
+            <path d="M26 88 C14 84 8 74 8 64 C20 66 30 74 32 86 Z" fill="#c2e5d2" />
+            <circle cx="98" cy="98" r="3" fill="#bfe3d0" />
+            <circle cx="84" cy="106" r="2.2" fill="#bfe3d0" />
+          </svg>
           <div className="panel-header">
             <div>
               <span className="eyebrow">Next Week</span>
               <h2>下周建议</h2>
             </div>
-            <Lightbulb size={20} />
+            <span className="panel-chip purple"><Lightbulb size={17} /></span>
           </div>
           <ol className="suggestion-list">
             {nextWeekSuggestions.map((suggestion) => (
@@ -536,22 +587,32 @@ export default function StatsPage() {
 
       <section className="two-column stats-detail-grid">
         <div className="panel">
-          <div className="panel-header"><h2>卡片构成</h2></div>
+          <div className="panel-header">
+            <div className="panel-title-row">
+              <span className="panel-chip blue"><Layers size={17} /></span>
+              <h2>卡片构成</h2>
+            </div>
+          </div>
           <div className="task-list">
-            <div><span>全部卡片</span><strong>{stats.totalCards}</strong></div>
-            <div><span>单词</span><strong>{activeWords}</strong></div>
-            <div><span>短语</span><strong>{activePhrases}</strong></div>
-            <div><span>句子</span><strong>{activeSentences}</strong></div>
+            <div><span>全部卡片</span><strong>{stats.totalCards}</strong><ChevronRight size={15} /></div>
+            <div><span>单词</span><strong>{activeWords}</strong><ChevronRight size={15} /></div>
+            <div><span>短语</span><strong>{activePhrases}</strong><ChevronRight size={15} /></div>
+            <div><span>句子</span><strong>{activeSentences}</strong><ChevronRight size={15} /></div>
           </div>
         </div>
 
         <div className="panel">
-          <div className="panel-header"><h2>复习概览</h2></div>
+          <div className="panel-header">
+            <div className="panel-title-row">
+              <span className="panel-chip green"><RotateCcw size={17} /></span>
+              <h2>复习概览</h2>
+            </div>
+          </div>
           <div className="task-list">
-            <div><span>全部复习记录</span><strong>{data.reviews.length}</strong></div>
-            <div><span>当前到期</span><strong>{stats.dueTotal}</strong></div>
-            <div><span>薄弱词</span><strong>{stats.weakWords}</strong></div>
-            <div><span>最近错误时间</span><strong>{formatDateTime(weekly.mostWrongWords[0]?.latestWrongAt ?? null)}</strong></div>
+            <div><span>全部复习记录</span><strong>{data.reviews.length}</strong><ChevronRight size={15} /></div>
+            <div><span>当前到期</span><strong>{stats.dueTotal}</strong><ChevronRight size={15} /></div>
+            <div><span>薄弱词</span><strong>{stats.weakWords}</strong><ChevronRight size={15} /></div>
+            <div><span>最近错误时间</span><strong>{formatDateTime(weekly.mostWrongWords[0]?.latestWrongAt ?? null)}</strong><ChevronRight size={15} /></div>
           </div>
         </div>
       </section>

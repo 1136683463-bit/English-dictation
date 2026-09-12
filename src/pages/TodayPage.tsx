@@ -3,21 +3,22 @@ import {
   ArrowRight,
   BookMarked,
   CheckCircle2,
+  ChevronRight,
   Clock,
-  Flame,
-  Keyboard,
-  Layers,
-  Plus,
+  GraduationCap,
   Target,
-  Volume2,
   Zap
 } from "lucide-react";
 import type { CSSProperties } from "react";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
+import BannerHero from "../components/BannerHero";
 import { getLearningStats, getRecentErrorReviews } from "../services/reviewService";
+import { summarizeLessonProgress } from "../services/lessonService";
 import { getUnitStats } from "../services/unitService";
 import { CardType, ReviewMode } from "../types";
+import todayHero from "../assets/today-hero.jpg";
 
 const modeLabel: Record<ReviewMode, string> = {
   recognize: "识别",
@@ -88,27 +89,9 @@ const greetingByHour = () => {
 export default function TodayPage() {
   const { data } = useAppData();
   const stats = getLearningStats(data);
-  const recentErrors = getRecentErrorReviews(data, 5);
+  const recentErrors = getRecentErrorReviews(data, 4);
   const units = data.units.slice().sort((a, b) => a.order - b.order).slice(0, 4);
   const minutes = estimateMinutes(stats.dueTotal, stats.weakWords);
-  const goalRows = [
-    {
-      label: "新词目标",
-      detail: `${stats.availableNewWords} 个新词还在队列里`,
-      current: stats.newWordsToday,
-      target: stats.newWordGoal,
-      icon: Target,
-      tone: "teal"
-    },
-    {
-      label: "句子目标",
-      detail: `今天已碰到 ${stats.reviewedSentencesToday} 个句子`,
-      current: stats.reviewedSentencesToday,
-      target: stats.sentenceGoal,
-      icon: BookMarked,
-      tone: "blue"
-    }
-  ];
   const primaryTask =
     stats.dueTotal > 0
       ? "先清到期复习"
@@ -118,54 +101,90 @@ export default function TodayPage() {
           ? "可以推进新词"
           : "今天轻量保持";
   const streak = computeStreak(data.reviews);
+  const lessonSummary = useMemo(() => summarizeLessonProgress(data), [data]);
   const todayPercent = Math.min(100, Math.round((stats.reviewedToday / Math.max(1, stats.dueReviewGoal)) * 100));
   const today = new Date();
-  const dateLabel = new Intl.DateTimeFormat("zh-CN", {
-    month: "long",
-    day: "numeric",
-    weekday: "long"
-  }).format(today);
+  const dateLabel = [
+    new Intl.DateTimeFormat("zh-CN", { month: "long", day: "numeric" }).format(today),
+    new Intl.DateTimeFormat("zh-CN", { weekday: "long" }).format(today)
+  ].join(" ");
+
+  const tasks = [
+    {
+      key: "due",
+      to: "/review",
+      tone: "orange",
+      icon: Clock,
+      title: "到期复习",
+      desc: `${stats.dueWords} 个单词 · ${stats.dueSentences} 个句子到期`,
+      current: stats.reviewedToday,
+      target: stats.dueReviewGoal,
+      percent: todayPercent,
+      active: true
+    },
+    {
+      key: "mistakes",
+      to: "/mistakes",
+      tone: "red",
+      icon: AlertTriangle,
+      title: "错词专项",
+      desc: `${stats.weakWords} 个薄弱词 · 今日错 ${stats.wrongToday}`,
+      current: stats.wrongCards,
+      target: null,
+      percent: null,
+      active: false
+    },
+    {
+      key: "new",
+      to: "/spelling",
+      tone: "blue",
+      icon: Target,
+      title: "新词目标",
+      desc: `${stats.availableNewWords} 个新词还在队列里`,
+      current: stats.newWordsToday,
+      target: stats.newWordGoal,
+      percent: goalPercent(stats.newWordsToday, stats.newWordGoal),
+      active: false
+    },
+    {
+      key: "grammar",
+      to: "/grammar",
+      tone: "amber",
+      icon: GraduationCap,
+      title: "语法 10 分钟",
+      desc:
+        lessonSummary.nextLesson != null
+          ? `已完成 ${lessonSummary.done}/${lessonSummary.total} 课 · 下一课：${lessonSummary.nextLesson.title}`
+          : `12 课全部完成，去侦探找错巩固一下`,
+      current: lessonSummary.done,
+      target: lessonSummary.total,
+      percent: lessonSummary.percent,
+      active: false
+    },
+    {
+      key: "sentences",
+      to: null,
+      tone: "green",
+      icon: BookMarked,
+      title: "句子目标",
+      desc: `今天已碰到 ${stats.reviewedSentencesToday} 个句子`,
+      current: stats.reviewedSentencesToday,
+      target: stats.sentenceGoal,
+      percent: goalPercent(stats.reviewedSentencesToday, stats.sentenceGoal),
+      active: false
+    }
+  ];
 
   return (
     <div className="page today-page">
-      <header className="page-header today-greeting">
-        <div>
-          <h1>{greetingByHour()}，继续今天的练习</h1>
-          <p>
-            {dateLabel} · 建议{primaryTask}，先练 {minutes} 分钟
-          </p>
-        </div>
-        {streak > 0 && (
-          <div className="page-action">
-            <span className="streak-pill">
-              <Flame size={16} />
-              连续打卡 {streak} 天
-            </span>
-          </div>
-        )}
-      </header>
-
-      <section className="action-hero">
-        <div className="action-hero-main">
-          <div className="action-hero-headline">
-            <div
-              className="action-hero-ring"
-              role="img"
-              aria-label={`今日目标完成 ${todayPercent}%`}
-              style={{ "--ring-percent": `${todayPercent * 3.6}deg` } as CSSProperties}
-            >
-              <strong>{todayPercent}%</strong>
-              <span>今日目标</span>
-            </div>
-            <div>
-              <span className="eyebrow">Next Best Action</span>
-              <h2>{primaryTask}</h2>
-              <p>
-                到期 {stats.dueTotal} 个 · 错词 {stats.weakWords} 个 · 今日已练 {stats.reviewedToday} 次。
-              </p>
-            </div>
-          </div>
-          <div className="action-hero-actions">
+      <BannerHero
+        eyebrow="Next Best Action"
+        title={`${greetingByHour()}，继续今天的练习`}
+        description={`${dateLabel} · 建议${primaryTask}，先练 ${minutes} 分钟`}
+        image={todayHero}
+        position="72% 10%"
+        action={
+          <>
             <Link to="/training" className="primary-button">
               开始今日训练
               <ArrowRight size={18} />
@@ -174,124 +193,143 @@ export default function TodayPage() {
               <Zap size={17} />
               错词本
             </Link>
-          </div>
+          </>
+        }
+      />
+
+      <div className="today-content">
+      <section className="ui-surface ui-figures" aria-label="今日摘要">
+        <div className="ui-figure">
+          <span>到期</span>
+          <strong>{stats.dueTotal}</strong>
+          <small>{stats.dueWords} 词 · {stats.dueSentences} 句</small>
         </div>
-        <div className="action-hero-stats" aria-label="今日摘要">
-          <div className="blue">
-            <Clock size={18} />
-            <span>到期</span>
-            <strong>{stats.dueTotal}</strong>
-            <small>{stats.dueWords} 词 · {stats.dueSentences} 句</small>
-          </div>
-          <div className="green">
-            <CheckCircle2 size={18} />
-            <span>已练</span>
-            <strong>{stats.reviewedToday}</strong>
-            <small>{stats.reviewedCardsToday} 张卡</small>
-          </div>
-          <div className="red">
-            <AlertTriangle size={18} />
-            <span>薄弱</span>
-            <strong>{stats.weakWords}</strong>
-            <small>错卡 {stats.wrongCards}</small>
-          </div>
+        <div className="ui-figure">
+          <span>已练</span>
+          <strong>{stats.reviewedToday}</strong>
+          <small>{stats.reviewedCardsToday} 张卡</small>
         </div>
+        <div className="ui-figure">
+          <span>薄弱</span>
+          <strong>{stats.weakWords}</strong>
+          <small>错卡 {stats.wrongCards}</small>
+        </div>
+        {streak > 0 && (
+          <div className="ui-figure">
+            <span>连续打卡</span>
+            <strong>{streak}</strong>
+            <small>天</small>
+          </div>
+        )}
       </section>
 
-      <section className="two-column today-workbench">
-        <div className="panel">
-          <div className="panel-header">
+      <section className="today-cols">
+        <div>
+          <div className="ui-section-head">
             <div>
               <span className="eyebrow">Queue</span>
               <h2>今日任务队列</h2>
             </div>
-            <Link to="/training" className="secondary-button compact-button">选择模式</Link>
+            <Link to="/training" className="ui-quiet">
+              选择模式 ›
+            </Link>
           </div>
-          <div className="task-queue">
-            <Link to="/review" className="task-row priority">
-              <span className="goal-icon accent"><Clock size={18} /></span>
-              <div>
-                <strong>到期复习</strong>
-                <span>{stats.dueWords} 个单词 · {stats.dueSentences} 个句子到期</span>
-              </div>
-              <em>{stats.reviewedToday} / {stats.dueReviewGoal}</em>
-            </Link>
-            <Link to="/mistakes" className={`task-row${stats.weakWords > 0 || stats.wrongToday > 0 ? " warning" : ""}`}>
-              <span className="goal-icon danger"><AlertTriangle size={18} /></span>
-              <div>
-                <strong>错词专项</strong>
-                <span>{stats.weakWords} 个薄弱词 · 今日错 {stats.wrongToday}</span>
-              </div>
-              <em>{stats.wrongCards}</em>
-            </Link>
-            {goalRows.map((goal) => {
-              const Icon = goal.icon;
-              const percent = goalPercent(goal.current, goal.target);
-
-              return (
-                <div className="task-row" key={goal.label}>
-                  <span className={`goal-icon ${goal.tone}`}><Icon size={18} /></span>
+          <div className="ui-surface">
+            {tasks.map((task) => {
+              const Icon = task.icon;
+              const hasGoal = typeof task.percent === "number";
+              const row = (
+                <>
+                  {hasGoal ? (
+                    <span
+                      className={`ui-ring ui-ring--${task.tone}`}
+                      style={{ "--pct": task.percent } as CSSProperties}
+                      role="img"
+                      aria-label={`${task.title}完成度 ${task.percent}%`}
+                    >
+                      <Icon size={18} />
+                    </span>
+                  ) : (
+                    <span className={`ui-icon ui-icon--${task.tone}`}>
+                      <Icon size={20} />
+                    </span>
+                  )}
                   <div>
-                    <strong>{goal.label}</strong>
-                    <span>{goal.detail}</span>
-                    <div className="goal-progress" aria-label={`${goal.label}完成度 ${percent}%`}>
-                      <span style={{ width: `${percent}%` }} />
-                    </div>
+                    <span className="ui-row-title">{task.title}</span>
+                    <span className="ui-row-desc">{task.desc}</span>
                   </div>
-                  <em>{goal.current} / {goal.target}</em>
+                  <span className="ui-row-metric">
+                    <span className="ui-row-metric-num">
+                      <b>{task.current}</b>
+                      {task.target != null && <i>/{task.target}</i>}
+                    </span>
+                  </span>
+                  <span className="ui-row-arrow" aria-hidden="true">
+                    <ChevronRight size={17} />
+                  </span>
+                </>
+              );
+
+              return task.to ? (
+                <Link key={task.key} to={task.to} className={`ui-row${task.active ? " on" : ""}`}>
+                  {row}
+                </Link>
+              ) : (
+                <div key={task.key} className="ui-row">
+                  {row}
                 </div>
               );
             })}
           </div>
-          <div className="quick-action-row">
-            <Link to="/training" className="primary-button">
-              开始今日训练
-              <ArrowRight size={18} />
-            </Link>
-            <Link to="/spelling" className="secondary-button">
-              <Volume2 size={17} />
-              听音拼写
-            </Link>
-            <Link to="/add" className="secondary-button">
-              <Plus size={17} />
-              添加内容
-            </Link>
-            <Link to="/library" className="secondary-button compact-action">
-              <Layers size={17} />
-              词库
-            </Link>
-          </div>
         </div>
 
-        <div className="panel">
-          <div className="panel-header">
+        <div>
+          <div className="ui-section-head">
             <div>
               <span className="eyebrow">Mistakes</span>
               <h2>最近错误</h2>
             </div>
-            <span className="panel-count">{stats.wrongCards} 张错卡</span>
+            <Link to="/mistakes" className="ui-quiet">
+              全部 ›
+            </Link>
           </div>
           {recentErrors.length === 0 ? (
-            <p className="muted">还没有错误记录。今天的错题会留在这里，方便下一轮优先处理。</p>
+            <div className="ui-empty">
+              <span className="ui-empty-icon">
+                <CheckCircle2 size={24} />
+              </span>
+              <span className="ui-empty-title">还没有错误记录</span>
+              <p>今天练错的词会自动留在这里，方便下一轮优先攻克。</p>
+            </div>
           ) : (
-            <div className="recent-error-feed">
-              {recentErrors.map((item) => (
-                <div className="recent-error-item" key={item.review.id}>
-                  <div className="recent-error-main">
-                    <strong>{item.title}</strong>
-                    {item.description && <span>{item.description}</span>}
-                  </div>
-                  <div className="recent-error-meta">
-                    <span>{cardTypeLabel[item.type]} · {modeLabel[item.review.mode]} · 评分 {item.review.rating}</span>
-                    <span>{formatDateTime(item.review.reviewedAt)}</span>
-                    <span>下次 {formatDateTime(item.nextReviewAt)}</span>
-                  </div>
-                  <div className="recent-error-actions">
-                    <Link to="/mistakes" className="secondary-button compact-button">错词本</Link>
-                    <Link to="/library" className="secondary-button compact-button">查看词库</Link>
-                  </div>
-                </div>
-              ))}
+            <div className="ui-surface">
+              {recentErrors.map((item) => {
+                const meta = [
+                  item.description,
+                  `${cardTypeLabel[item.type]} · ${modeLabel[item.review.mode]} · 评分 ${item.review.rating}`,
+                  `下次 ${formatDateTime(item.nextReviewAt)}`
+                ]
+                  .filter(Boolean)
+                  .join(" · ");
+
+                return (
+                  <Link key={item.review.id} to="/mistakes" className="ui-row">
+                    <span className="ui-icon ui-icon--red ui-icon--letter" aria-hidden="true">
+                      {item.title.charAt(0).toUpperCase()}
+                    </span>
+                    <div>
+                      <span className="ui-row-title">{item.title}</span>
+                      <span className="ui-row-desc">{meta}</span>
+                    </div>
+                    <span className="ui-row-tail">
+                      <span>{formatDateTime(item.review.reviewedAt)}</span>
+                    </span>
+                    <span className="ui-row-arrow" aria-hidden="true">
+                      <ChevronRight size={17} />
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>
@@ -317,6 +355,7 @@ export default function TodayPage() {
           })}
         </div>
       </section>
+      </div>
     </div>
   );
 }

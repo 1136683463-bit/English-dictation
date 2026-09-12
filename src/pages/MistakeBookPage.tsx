@@ -1,23 +1,22 @@
 import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
-import {
-  AlertTriangle,
-  BookOpen,
-  CalendarDays,
-  CheckCircle2,
-  ChevronDown,
-  ChevronRight,
-  Copy,
-  FileText,
-  ListChecks,
-  RefreshCw,
-  Search,
-  SlidersHorizontal,
-  Sparkles,
-  Target,
-} from "lucide-react";
+import { ArrowRight, ChevronDown, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
+import {
+  MbAlert,
+  MbCalendarCheck,
+  MbCheck,
+  MbCopy,
+  MbExamples,
+  MbMastered,
+  MbPencil,
+  MbRefresh,
+  MbSpark,
+  MbStory,
+  MbTune
+} from "../components/MistakeIcons";
+import mistakeHero from "../assets/mistake-hero.png";
 import LetterDiffView from "../components/LetterDiffView";
 import PageHeader from "../components/PageHeader";
 import {
@@ -278,8 +277,6 @@ const renderDiffRows = (tokens: LetterDiffToken[]) => {
   return { expectedRow, answerRow };
 };
 
-const encodeCardIds = (entries: MistakeEntry[]) => encodeURIComponent(entries.map((entry) => entry.card.id).join(","));
-
 const sortEntries = (entries: MistakeEntry[], insights: Map<string, MistakeInsight>, sort: MistakeSort) => {
   const priorityRank: Record<MasteryStatus, number> = {
     stubborn: 0,
@@ -320,6 +317,7 @@ const getGroupProgress = (entries: MistakeEntry[], reviews: Review[], generation
   };
 };
 
+
 export default function MistakeBookPage() {
   const { data, updateData, updateDataAsync } = useAppData();
   const wordLookupRequestRef = useRef(0);
@@ -332,6 +330,7 @@ export default function MistakeBookPage() {
   const [expandedGenerationIds, setExpandedGenerationIds] = useState<string[]>([]);
   const [expandedTranslationIds, setExpandedTranslationIds] = useState<string[]>([]);
   const [expandedDiffIds, setExpandedDiffIds] = useState<string[]>([]);
+  const [expandedWordIds, setExpandedWordIds] = useState<string[]>([]);
   const [activeFilter, setActiveFilter] = useState<MistakeFilter>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortMode, setSortMode] = useState<MistakeSort>("priority");
@@ -407,12 +406,6 @@ export default function MistakeBookPage() {
       .some((value) => value.toLowerCase().includes(normalizedSearch));
   });
   const visibleEntries = sortEntries(searchedEntries, entryInsights, sortMode);
-  const filters: Array<{ value: MistakeFilter; label: string; count: number }> = [
-    { value: "all", label: "全部", count: entries.length },
-    { value: "unmastered", label: "未掌握", count: unmasteredEntries.length },
-    { value: "pending", label: "未重练", count: pendingEntries.length },
-    { value: "stubborn", label: "仍易错", count: stubbornEntries.length }
-  ];
   const storySourceEntries = useMemo(
     () => getStorySourceEntries(storySourceMode, visibleEntries, entries, unmasteredEntries, stubbornEntries),
     [entries, storySourceMode, stubbornEntries, unmasteredEntries, visibleEntries]
@@ -448,34 +441,6 @@ export default function MistakeBookPage() {
     data.settings.aiProvider.model
   );
   const selectedCompletion = entries.length > 0 ? Math.round((selectedStats.mastered / entries.length) * 100) : 0;
-  const nextAction = selectedStats.pending > 0
-    ? {
-        title: "先练未重练",
-        description: `${selectedStats.pending} 个错词还没有错后复习，先处理它们。`,
-        to: `/spelling?mode=mistakes&date=${selectedGroup.dateKey}&cards=${encodeCardIds(pendingEntries)}`,
-        icon: ListChecks
-      }
-    : selectedStats.stubborn > 0
-      ? {
-          title: "攻克易错词",
-          description: `${selectedStats.stubborn} 个词反复出错，建议看差异后集中重练。`,
-          to: `/spelling?mode=mistakes&date=${selectedGroup.dateKey}&cards=${encodeCardIds(stubbornEntries)}`,
-          icon: AlertTriangle
-        }
-      : !generations.some((generation) => generation.type === "story")
-        ? {
-            title: "生成错词故事",
-            description: "这一天还没有故事，把错词放进语境里再记一遍。",
-            to: "",
-            icon: Sparkles
-          }
-        : {
-            title: "当天复盘完成",
-            description: "已完成关键动作，可以回到训练页继续推进。",
-            to: "/training",
-            icon: CheckCircle2
-          };
-  const NextActionIcon = nextAction.icon;
 
   useEffect(() => {
     if (activeFilter !== "all" && entries.length > 0 && statusFilteredEntries.length === 0) {
@@ -645,6 +610,12 @@ export default function MistakeBookPage() {
     );
   };
 
+  const toggleWord = (id: string) => {
+    setExpandedWordIds((current) =>
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id]
+    );
+  };
+
   const openStoryWordPopover = (
     word: string,
     generation: MistakeGeneration,
@@ -809,7 +780,7 @@ export default function MistakeBookPage() {
         )}
         <div className="mistake-story-actions">
           <Link to={practiceUrl} className="secondary-button">
-            <Target size={17} />
+            <MbPencil size={17} />
             重练故事词汇
           </Link>
         </div>
@@ -884,7 +855,7 @@ export default function MistakeBookPage() {
             {storyWordPopover.status === "miss" && <small>没有更多词典信息，已显示故事里的记录。</small>}
             {practiceUrl && (
               <Link className="secondary-button compact-button story-word-practice-link" to={practiceUrl}>
-                <Target size={15} />
+                <MbPencil size={15} />
                 重练这个词
               </Link>
             )}
@@ -917,7 +888,7 @@ export default function MistakeBookPage() {
               {isExpanded ? <ChevronDown size={17} /> : <ChevronRight size={17} />}
             </button>
             <button className="icon-button" type="button" title="复制内容" onClick={() => copyContent(generation.id, generation.content)}>
-              {copiedId === generation.id ? <CheckCircle2 size={17} /> : <Copy size={17} />}
+              {copiedId === generation.id ? <MbCheck size={17} /> : <MbCopy size={17} />}
             </button>
           </div>
         </div>
@@ -952,71 +923,107 @@ export default function MistakeBookPage() {
         eyebrow="Mistake Book"
         title={todayGroup ? `今天 ${todayGroup.mistakeCount} 个错词` : "错词本"}
         description={todayGroup ? `今天已记录 ${todayGroup.attemptCount} 次错误，先处理未掌握词，再生成例句或故事巩固。` : "按日期复盘错词，快速重练，并把当天错词生成例句或英文小故事。"}
+        action={
+          <div className="mb-header-actions">
+            <Link to="/settings" className="mb-icon-button" aria-label="打开设置">
+              <MbTune size={18} />
+            </Link>
+          </div>
+        }
       />
 
       {todayGroup && (
-        <section className="mistake-today-focus" aria-label="今日错词焦点">
-          <div>
-            <span className="eyebrow">Today Focus</span>
+        <section className="mb-focus" aria-label="今日错词焦点">
+          <div className="mb-focus-copy">
+            <span className="mb-focus-label">Today Focus</span>
             <h2>先把今天的错词收住</h2>
             <p>{todayGroup.mistakeCount} 个错词 · {todayGroup.attemptCount} 次错误 · {getMistakeGenerationsByDate(data, todayKey).length} 条生成内容</p>
+          </div>
+          <div className="mb-focus-art" aria-hidden="true">
+            <span className="mb-focus-script">少犯错&nbsp;&nbsp;多进步</span>
+            <img className="mb-focus-art-img" src={mistakeHero} alt="错词本插画：摊开的书与学习气泡" />
           </div>
         </section>
       )}
 
-      <section className="mistake-summary-strip" aria-label="错词本摘要">
-        <div>
-          <CalendarDays size={18} />
-          <span>记录天数</span>
+      <section className="mb-stats" aria-label="错词本摘要">
+        <article className="mb-stat" data-tone="amber">
+          <header>
+            <span className="mb-stat-icon"><MbCalendarCheck size={17} /></span>
+            <span className="mb-stat-label">记录天数</span>
+          </header>
           <strong>{groups.length}</strong>
-        </div>
-        <div>
-          <CheckCircle2 size={18} />
-          <span>当天已掌握</span>
+          <small>坚持学习，积累更好的自己</small>
+        </article>
+        <article className="mb-stat" data-tone="green">
+          <header>
+            <span className="mb-stat-icon"><MbMastered size={17} /></span>
+            <span className="mb-stat-label">当天已掌握</span>
+          </header>
           <strong>{selectedCompletion}%</strong>
-        </div>
-        <div>
-          <AlertTriangle size={18} />
-          <span>仍易错</span>
+          <small>继续加油，掌握更多词汇</small>
+        </article>
+        <article className="mb-stat" data-tone="orange">
+          <header>
+            <span className="mb-stat-icon"><MbAlert size={17} /></span>
+            <span className="mb-stat-label">仍易错</span>
+          </header>
           <strong>{selectedStats.stubborn}</strong>
-        </div>
-        <div>
-          <Sparkles size={18} />
-          <span>已生成</span>
+          <small>保持状态，稳步前进</small>
+        </article>
+        <article className="mb-stat" data-tone="purple">
+          <header>
+            <span className="mb-stat-icon"><MbSpark size={17} /></span>
+            <span className="mb-stat-label">已生成</span>
+          </header>
           <strong>{data.mistakeGenerations.length}</strong>
-        </div>
+          <small>用例句和故事让记忆更牢固</small>
+        </article>
       </section>
 
       <section className="mistake-book-layout">
-        <aside className="panel mistake-date-panel" aria-label="错词日期">
-          <div className="panel-header">
-            <div>
-              <span className="eyebrow">Dates</span>
-              <h2>按日期</h2>
+        <aside className="ui-surface mistake-date-panel" aria-label="错词日期">
+          <div className="mb-panel-head">
+            <div className="mb-panel-title">
+              <span className="mb-panel-chip"><MbCalendarCheck size={16} /></span>
+              <h2>错词计划</h2>
             </div>
-            <span className="panel-count">{groups.length} 天</span>
+            <span className="mb-panel-count">{groups.length} 天</span>
           </div>
-          <div className="mistake-date-list">
+          <div className="mb-date-list">
             {groups.map((group) => {
               const progress = groupProgress.get(group.dateKey);
+              const active = group.dateKey === selectedGroup?.dateKey;
+              const isToday = group.dateKey === todayKey;
+              const dateLabel = isToday ? group.label : group.label.split(" ")[0];
+              const weekdayLabel = isToday ? group.dateKey.slice(5) : group.label.split(" ")[1] ?? "";
               return (
                 <button
                   key={group.dateKey}
                   type="button"
-                  className={`mistake-date-button ${group.dateKey === selectedGroup?.dateKey ? "active" : ""}`}
+                  className={`mb-date-card${active ? " on" : ""}`}
+                  aria-pressed={active}
                   onClick={() => setSelectedDateKey(group.dateKey)}
                 >
-                  <span>{group.label}</span>
-                  <strong>{group.mistakeCount} 个错词</strong>
-                  <em>{group.attemptCount} 次错误 · {progress?.completion ?? 0}% 已掌握</em>
-                  <div className="mistake-date-progress" aria-hidden="true">
-                    <span style={{ width: `${progress?.completion ?? 0}%` }} />
-                  </div>
-                  <div className="mistake-date-badges">
-                    {progress && progress.unmastered > 0 && <small>{progress.unmastered} 未掌握</small>}
-                    {progress && progress.generationCount > 0 && <small>{progress.generationCount} 生成</small>}
-                    {progress?.hasStory && <small>故事</small>}
-                  </div>
+                  <span className="mb-date-card-main">
+                    <span className="mb-date-card-date">
+                      <strong>{dateLabel}</strong>
+                      {weekdayLabel && <em>{weekdayLabel}</em>}
+                    </span>
+                    <span className="mb-date-card-count">{group.mistakeCount} 个错词</span>
+                    <span className="mb-date-card-meta">{group.attemptCount} 次错误 · {progress?.completion ?? 0}% 已掌握</span>
+                    <span className="mb-date-card-progress" aria-hidden="true">
+                      <i style={{ width: `${progress?.completion ?? 0}%` }} />
+                    </span>
+                    <span className="mb-date-card-badges">
+                      {progress && progress.unmastered > 0 && <em>{progress.unmastered} 未掌握</em>}
+                      {progress && progress.generationCount > 0 && <em>{progress.generationCount} 生成</em>}
+                      {progress?.hasStory && <em>故事</em>}
+                    </span>
+                  </span>
+                  <span className="mb-date-card-arrow" aria-hidden="true">
+                    <ChevronRight size={17} />
+                  </span>
                 </button>
               );
             })}
@@ -1024,79 +1031,19 @@ export default function MistakeBookPage() {
         </aside>
 
         <div className="mistake-book-main">
-          <section className="panel mistake-word-panel">
-            <div className="panel-header">
+          <section className="ui-surface mistake-word-panel">
+            <div className="ui-section-head">
               <div>
                 <span className="eyebrow">{selectedGroup?.dateKey}</span>
                 <h2>{selectedGroup?.label}错词</h2>
               </div>
             </div>
             {generationError && <p className="mistake-generation-error" role="alert">{generationError}</p>}
-            <div className="mistake-next-action" aria-label="下一步建议">
-              <div>
-                <NextActionIcon size={18} />
+            <div className="mb-story" aria-label="错词故事生成器">
+              <div className="mb-story-head">
                 <div>
-                  <strong>{nextAction.title}</strong>
-                  <span>{nextAction.description}</span>
-                </div>
-              </div>
-              {nextAction.to ? (
-                <Link to={nextAction.to} className="secondary-button compact-button">开始</Link>
-              ) : (
-                <button className="secondary-button compact-button" type="button" onClick={() => generate("story", storySourceEntries)} disabled={generationStatus !== "idle" || storySourceEntries.length === 0}>生成</button>
-              )}
-            </div>
-            <div className="mistake-day-progress" aria-label="当天错词掌握进度">
-              <div>
-                <strong>{selectedCompletion}%</strong>
-                <span>{selectedStats.mastered} / {entries.length} 已拼对 · {selectedStats.pending} 个未重练</span>
-              </div>
-              <div className="mistake-progress-track">
-                <span style={{ width: `${selectedCompletion}%` }} />
-              </div>
-            </div>
-            <div className="mistake-filter-bar" aria-label="错词筛选">
-              <span><SlidersHorizontal size={15} />筛选</span>
-              <div>
-                {filters.map((filter) => (
-                  <button
-                    key={filter.value}
-                    type="button"
-                    className={activeFilter === filter.value ? "active" : ""}
-                    onClick={() => setActiveFilter(filter.value)}
-                  >
-                    {filter.label}<em>{filter.count}</em>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="mistake-list-toolbar" aria-label="错词列表工具">
-              <label className="mistake-search-box">
-                <Search size={16} />
-                <input
-                  type="search"
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                  placeholder="搜索单词、释义或错误答案"
-                />
-              </label>
-              <label className="mistake-sort-box">
-                <span>排序</span>
-                <select value={sortMode} onChange={(event) => setSortMode(event.target.value as MistakeSort)}>
-                  <option value="priority">修复优先</option>
-                  <option value="wrongCount">错误次数</option>
-                  <option value="recent">最近错误</option>
-                  <option value="alphabetical">字母顺序</option>
-                </select>
-              </label>
-              <span className="mistake-visible-count">显示 {visibleEntries.length} / {entries.length}</span>
-            </div>
-            <div className="mistake-story-settings" aria-label="错词故事生成器">
-              <div className="mistake-story-settings-head">
-                <div>
-                  <span className="eyebrow"><BookOpen size={14} />Story Builder</span>
-                  <strong>错词小故事</strong>
-                  <span>{storySourceLabel} · {storySourceEntries.length} 个词 · {storySettingsSummary}</span>
+                  <span className="eyebrow"><MbStory size={13} />Story Builder</span>
+                  <h3>错词小故事</h3>
                 </div>
                 <button
                   type="button"
@@ -1104,10 +1051,13 @@ export default function MistakeBookPage() {
                   aria-expanded={storySettingsOpen}
                   onClick={() => setStorySettingsOpen((current) => !current)}
                 >
-                  <SlidersHorizontal size={16} />
+                  <MbTune size={15} />
                   设置
                 </button>
               </div>
+              <p className="mb-story-summary">
+                {storySourceLabel}：{storySourceEntries.length} 个词 · {storySettingsSummary}
+              </p>
               {storySettingsOpen && (
                 <div className="mistake-story-settings-body">
                   <div className="mistake-story-source" role="group" aria-label="故事词源">
@@ -1184,13 +1134,13 @@ export default function MistakeBookPage() {
                   </div>
                   <div className="mistake-story-secondary-actions">
                     <button className="text-button" type="button" onClick={() => generate("examples")} disabled={generationStatus !== "idle" || visibleEntries.length === 0}>
-                      {generationStatus === "examples" ? <RefreshCw size={15} /> : <FileText size={15} />}
+                      {generationStatus === "examples" ? <MbRefresh size={15} /> : <MbExamples size={15} />}
                       生成当前例句
                     </button>
                   </div>
                 </div>
               )}
-              <div className="mistake-story-footer" aria-live="polite">
+              <div className="mb-story-footer" aria-live="polite">
                 <span>{generationStatus === "story" && isRealModelConfigured ? "正在调用真实模型生成故事" : hasStoryForCurrentSource ? "当前来源已有故事" : `${storySourceEntries.length} 个词待生成`}</span>
                 <button
                   className="primary-button"
@@ -1198,11 +1148,10 @@ export default function MistakeBookPage() {
                   onClick={() => generate("story", storySourceEntries)}
                   disabled={generationStatus !== "idle" || storySourceEntries.length === 0}
                 >
-                  {generationStatus === "story" ? <RefreshCw size={17} /> : <Sparkles size={17} />}
+                  {generationStatus === "story" ? <MbRefresh size={17} /> : <MbSpark size={17} />}
                   {generationStatus === "story" ? "生成中" : "生成故事"}
                 </button>
               </div>
-              {generationError && <p className="mistake-generation-error" role="alert">{generationError}</p>}
               {currentSourceStory && (
                 <div className="mistake-story-current" aria-label="当前来源生成的故事">
                   <div className="mistake-story-current-head">
@@ -1215,7 +1164,7 @@ export default function MistakeBookPage() {
                 </div>
               )}
             </div>
-            <div className="mistake-word-list">
+            <div className="mb-word-list">
               {visibleEntries.length === 0 ? (
                 <div className="mistake-filter-empty">
                   <strong>没有匹配的错词</strong>
@@ -1229,59 +1178,91 @@ export default function MistakeBookPage() {
                 const diffSummary = summarizeLetterDiff(diffTokens);
                 const diffRows = renderDiffRows(diffTokens);
                 const isDiffExpanded = expandedDiffIds.includes(entry.card.id);
+                const isExpanded = expandedWordIds.includes(entry.card.id);
 
                 return (
-                  <article className="mistake-word-item" key={entry.card.id}>
-                    <div className="mistake-word-main">
-                      <div>
-                        <strong>{entry.card.front}</strong>
-                        <span>{entry.card.back || entry.details?.chineseDefinition || "暂无释义"}</span>
-                      </div>
-                      <span className={`mistake-status-pill ${insight.status}`}>{insight.label}</span>
-                    </div>
-                    <div className="mistake-word-meta">
-                      {entry.details?.phonetic && <em>{entry.details.phonetic}</em>}
-                      <span>错 {entry.wrongCount} 次</span>
-                      <small>{insight.description}</small>
-                    </div>
-                    {primaryWrongAnswer && (
-                      <div className="mistake-diff-block">
-                        <div className="mistake-answer-row">
-                          <span>正确：<strong>{entry.card.front}</strong></span>
-                          <span>常错：<strong>{primaryWrongAnswer}</strong></span>
-                        </div>
-                        {hasTypedWrongAnswer ? (
-                          <div className="mistake-diff-summary">
-                            <div className="mistake-inline-diff" aria-label="拼写差异对照">
-                              <div>
-                                <span>正确</span>
-                                <p>{diffRows.expectedRow}</p>
+                  <article className={`mb-word${isExpanded ? " expanded" : ""}`} key={entry.card.id}>
+                    <button
+                      type="button"
+                      className="mb-word-row"
+                      aria-expanded={isExpanded}
+                      onClick={() => toggleWord(entry.card.id)}
+                    >
+                      <span className="ui-icon ui-icon--red ui-icon--letter mb-word-avatar" aria-hidden="true">
+                        {entry.card.front.charAt(0).toUpperCase()}
+                      </span>
+                      <span className="mb-word-main">
+                        <span className="mb-word-title">{entry.card.front}</span>
+                        <span className="mb-word-desc">
+                          {[
+                            entry.card.back || entry.details?.chineseDefinition || "暂无释义",
+                            entry.details?.phonetic,
+                            `错 ${entry.wrongCount} 次`,
+                            diffSummary.changes.length > 0 ? diffSummary.title : undefined
+                          ].filter(Boolean).join(" · ")}
+                        </span>
+                      </span>
+                      <span className={`mb-word-status ${insight.status}`}><i aria-hidden="true" />{insight.label}</span>
+                      <span className="mb-word-arrow" aria-hidden="true"><ChevronRight size={17} /></span>
+                    </button>
+                    {isExpanded && (
+                      <div className="mb-word-detail">
+                        {primaryWrongAnswer && (
+                          <div className="mistake-diff-block mb-diff-card">
+                            <div className="mb-diff-head">
+                              <div className="mb-diff-cell is-correct">
+                                <span>正确拼写</span>
+                                <strong>{entry.card.front}</strong>
                               </div>
-                              <div>
-                                <span>你的</span>
-                                <p>{diffRows.answerRow}</p>
+                              <div className="mb-diff-cell is-wrong">
+                                <span>你的答案</span>
+                                <strong>{primaryWrongAnswer}</strong>
                               </div>
                             </div>
-                            {diffSummary.changes.length > 0 && (
-                              <div className="mistake-diff-chips">
-                                {diffSummary.changes.slice(0, 3).map((change) => <span key={change.key}>{change.text}</span>)}
+                            {hasTypedWrongAnswer ? (
+                              <div className="mistake-diff-summary">
+                                <div className="mistake-inline-diff" aria-label="拼写差异对照">
+                                  <div>
+                                    <span>正确</span>
+                                    <p>{diffRows.expectedRow}</p>
+                                  </div>
+                                  <div>
+                                    <span>你的</span>
+                                    <p>{diffRows.answerRow}</p>
+                                  </div>
+                                </div>
+                                {diffSummary.changes.length > 0 && (
+                                  <div className="mistake-diff-chips">
+                                    {diffSummary.changes.slice(0, 3).map((change) => <span key={change.key}>{change.text}</span>)}
+                                  </div>
+                                )}
+                                {diffTokens.length > 0 && (
+                                  <button type="button" className="mb-diff-toggle" onClick={() => toggleDiff(entry.card.id)} aria-expanded={isDiffExpanded}>
+                                    {isDiffExpanded ? "收起字母对照" : "查看字母对照"}
+                                    <ChevronDown size={13} />
+                                  </button>
+                                )}
+                              </div>
+                            ) : (
+                              <div className="mistake-diff-summary">
+                                <strong>这次没有填写答案</strong>
+                                <div>
+                                  <span>先听发音，再尝试完整拼写</span>
+                                </div>
                               </div>
                             )}
-                            {diffTokens.length > 0 && (
-                              <button type="button" onClick={() => toggleDiff(entry.card.id)}>
-                                {isDiffExpanded ? "收起字母对照" : "查看字母对照"}
-                              </button>
-                            )}
-                          </div>
-                        ) : (
-                          <div className="mistake-diff-summary">
-                            <strong>这次没有填写答案</strong>
-                            <div>
-                              <span>先听发音，再尝试完整拼写</span>
-                            </div>
+                            {hasTypedWrongAnswer && isDiffExpanded && <LetterDiffView tokens={diffTokens} />}
                           </div>
                         )}
-                        {hasTypedWrongAnswer && isDiffExpanded && <LetterDiffView tokens={diffTokens} />}
+                        <div className="mb-word-detail-actions">
+                          <Link
+                            className="mb-retry-button"
+                            to={`/spelling?mode=mistakes&date=${selectedGroup?.dateKey ?? ""}&cards=${encodeURIComponent(entry.card.id)}`}
+                          >
+                            <MbPencil size={14} />
+                            重练这个词
+                          </Link>
+                        </div>
                       </div>
                     )}
                   </article>
@@ -1289,26 +1270,27 @@ export default function MistakeBookPage() {
               })}
             </div>
           </section>
-
-          <section className="panel mistake-generation-panel">
-            <div className="panel-header">
-              <div>
-                <span className="eyebrow">Generated</span>
-                <h2>生成内容</h2>
-              </div>
-              <span className="panel-count">{generations.length} 条</span>
-            </div>
-            {generations.length === 0 ? (
-              <p className="muted">还没有为这一天生成内容。可以先生成逐词例句，再把全部错词串成一个英文小故事。</p>
-            ) : lowerGenerations.length === 0 ? (
-              <p className="muted">当前故事已显示在上方 Story Builder 下方。</p>
-            ) : (
-              <div className="mistake-generation-list">
-                {lowerGenerations.map((generation) => renderGenerationCard(generation))}
-              </div>
-            )}
-          </section>
         </div>
+      </section>
+
+
+      <section className="ui-surface mb-gen-panel">
+        <div className="ui-section-head">
+          <div>
+            <span className="eyebrow">Generated</span>
+            <h2>生成内容</h2>
+          </div>
+          <span className="ui-quiet">{generations.length} 条</span>
+        </div>
+        {generations.length === 0 ? (
+          <p className="muted mb-gen-empty">还没有为这一天生成内容。可以先生成逐词例句，再把全部错词串成一个英文小故事。</p>
+        ) : lowerGenerations.length === 0 ? (
+          <p className="muted mb-gen-empty">当前故事已显示在上方 Story Builder 下方。</p>
+        ) : (
+          <div className="mistake-generation-list">
+            {lowerGenerations.map((generation) => renderGenerationCard(generation))}
+          </div>
+        )}
       </section>
     </div>
   );

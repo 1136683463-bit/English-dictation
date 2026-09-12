@@ -2,19 +2,18 @@ import {
   ArrowRight,
   BookMarked,
   BookOpenCheck,
+  ChevronRight,
   Flame,
   Import,
-  Keyboard,
-  ListChecks,
   Map,
   RotateCcw,
-  Sparkles,
   Volume2
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
-import PageHeader from "../components/PageHeader";
+import BannerHero from "../components/BannerHero";
 import { getLearningStats, getWeakStats } from "../services/reviewService";
+import trainingHero from "../assets/training-hero.jpg";
 
 const estimateMinutes = (dueTotal: number, weakWords: number) => {
   if (dueTotal === 0 && weakWords === 0) return 6;
@@ -58,7 +57,7 @@ export default function TrainingPage() {
       meta: `${data.adventures.length} 段已保存路线`,
       to: "/adventure",
       icon: Map,
-      tone: "teal"
+      tone: "orange"
     },
     {
       title: "单元训练",
@@ -82,16 +81,36 @@ export default function TrainingPage() {
       meta: `${data.materials.length} 份材料`,
       to: "/import",
       icon: Import,
-      tone: "teal"
+      tone: "blue"
+    }
+  ];
+
+  const steps = [
+    {
+      no: "01",
+      title: "先清到期",
+      desc: "让复习负债别滚大。到期的词是记忆曲线最紧的一段，先处理性价比最高。"
+    },
+    {
+      no: "02",
+      title: "再练错词",
+      desc: "当天错过的词尽快回炉。刚犯过的错误在几小时内纠正，留存率最高。"
+    },
+    {
+      no: "03",
+      title: "最后补新词",
+      desc: "时间够再推进新材料。把新词留到精力最后，避免挤压复习。"
     }
   ];
 
   return (
     <div className="page training-page">
-      <PageHeader
+      <BannerHero
         eyebrow="Training"
         title="选择今天的训练方式"
         description="复习、拼写、错词和材料训练都从这里开始；先完成今日训练，再按需要专项加练。"
+        image={trainingHero}
+        position="42% 45%"
         action={
           <Link to="/today" className="secondary-button">
             回到今日
@@ -99,85 +118,93 @@ export default function TrainingPage() {
         }
       />
 
-      <section className="mode-hero">
-        <div className="mode-hero-copy">
+      <div className="training-content">
+      <section className="ui-surface training-recommend">
+        <div>
           <span className="eyebrow">Recommended</span>
           <h2>今日训练</h2>
           <p>
             预计 {minutes} 分钟，优先处理 {stats.dueTotal} 个到期复习和 {weakStats.weakWords} 个薄弱词。
           </p>
         </div>
-        <div className="mode-hero-stats" aria-label="今日训练摘要">
-          <div>
-            <span>到期</span>
-            <strong>{stats.dueTotal}</strong>
+        <div className="training-recommend-side">
+          <div className="ui-figures" aria-label="今日训练摘要">
+            <div className="ui-figure">
+              <span>到期</span>
+              <strong>{stats.dueTotal}</strong>
+            </div>
+            <div className="ui-figure">
+              <span>错词</span>
+              <strong>{weakStats.weakWords}</strong>
+            </div>
+            <div className="ui-figure">
+              <span>今日已练</span>
+              <strong>{stats.reviewedToday}</strong>
+            </div>
           </div>
-          <div>
-            <span>错词</span>
-            <strong>{weakStats.weakWords}</strong>
-          </div>
-          <div>
-            <span>今日已练</span>
-            <strong>{stats.reviewedToday}</strong>
-          </div>
-        </div>
-        <div className="mode-hero-actions">
-          <Link to="/review" className="primary-button">
-            开始今日训练
-            <ArrowRight size={18} />
-          </Link>
-          <Link to="/spelling" className="secondary-button">
-            <Volume2 size={17} />
-            听音拼写
-          </Link>
-        </div>
-      </section>
-
-      <section className="mode-grid" aria-label="训练模式">
-        {modes.map((mode) => {
-          const Icon = mode.icon;
-          return (
-            <Link key={mode.title} to={mode.to} className={`mode-card ${mode.tone}`}>
-              <span className="mode-card-icon">
-                <Icon size={20} />
-              </span>
-              <div>
-                <strong>{mode.title}</strong>
-                <p>{mode.description}</p>
-              </div>
-              <em>{mode.meta}</em>
-              <ArrowRight size={17} />
+          <div className="training-recommend-actions">
+            <Link to="/review" className="primary-button">
+              开始今日训练
+              <ArrowRight size={18} />
             </Link>
-          );
-        })}
+            <Link to="/spelling" className="secondary-button">
+              <Volume2 size={17} />
+              听音拼写
+            </Link>
+          </div>
+        </div>
       </section>
 
-      <section className="panel training-note-panel">
-        <div className="panel-header">
+      <section aria-label="训练模式">
+        <div className="ui-section-head">
+          <div>
+            <span className="eyebrow">Modes</span>
+            <h2>训练方式</h2>
+          </div>
+        </div>
+        <div className="ui-grid-2">
+          {modes.map((mode) => {
+            const Icon = mode.icon;
+            return (
+              <Link key={mode.title} to={mode.to} className="ui-row">
+                <span className={`ui-icon ui-icon--${mode.tone}`}>
+                  <Icon size={20} />
+                </span>
+                <div>
+                  <span className="ui-row-title">{mode.title}</span>
+                  <span className="ui-row-desc">{mode.description}</span>
+                </div>
+                <span className="ui-row-tail">
+                  <span>{mode.meta}</span>
+                  <ChevronRight size={16} className="ui-arrow" />
+                </span>
+              </Link>
+            );
+          })}
+          {modes.length % 2 === 1 && <div className="ui-grid-filler" aria-hidden="true" />}
+        </div>
+      </section>
+
+      <section aria-label="推荐节奏">
+        <div className="ui-section-head">
           <div>
             <span className="eyebrow">Flow</span>
             <h2>推荐节奏</h2>
           </div>
-          <Sparkles size={20} />
         </div>
-        <div className="training-flow">
-          <div>
-            <ListChecks size={18} />
-            <strong>先清到期</strong>
-            <span>让复习负债别滚大。</span>
-          </div>
-          <div>
-            <Flame size={18} />
-            <strong>再练错词</strong>
-            <span>当天错过的词，尽快回炉。</span>
-          </div>
-          <div>
-            <Keyboard size={18} />
-            <strong>最后补新词</strong>
-            <span>时间够，再推进新材料。</span>
-          </div>
+        <div className="ui-steps">
+          {steps.map((step) => (
+            <div className="ui-step" key={step.no}>
+              <span className="ui-step-no" aria-hidden="true">{step.no}</span>
+              <div>
+                <span className="ui-step-title">{step.title}</span>
+                <p>{step.desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
+      </div>
     </div>
   );
 }

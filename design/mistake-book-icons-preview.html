@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>错词本模块 · 功能图标集 v1.0</title>
+<style>
+  :root{
+    --bg:#FAF6F0; --card:#FFFFFF; --line:#F0E7DB; --line-2:#E7DCCC;
+    --ink:#3F4550; --ink-2:#6E7681; --ink-3:#9AA3AF;
+    --brand:#F97316; --brand-deep:#EA580C; --brand-soft:#FFF1E5;
+    --success:#22C55E; --danger:#EF4444; --violet:#8B5CF6;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    padding:44px 28px 90px; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1060px;margin:0 auto}
+  .hero{background:linear-gradient(135deg,#FFF7EF,#FFEFDFA6);border:1px solid var(--line);
+    border-radius:24px;padding:34px 36px;position:relative;overflow:hidden}
+  .hero .kicker{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--brand)}
+  .hero h1{font-size:28px;margin:8px 0 10px;letter-spacing:.01em}
+  .hero p{font-size:14px;color:var(--ink-2);line-height:1.7;max-width:640px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12px;color:var(--ink-2)}
+  .chip b{color:var(--ink);font-weight:600}
+  .hero-book{position:absolute;right:26px;top:50%;transform:translateY(-50%);color:var(--brand);opacity:.9}
+  section{margin-top:40px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
+  .sec-head .no{font-size:12px;font-weight:800;color:var(--brand);background:var(--brand-soft);
+    border:1px solid #FFE0C7;border-radius:8px;padding:3px 8px}
+  .sec-head h2{font-size:19px}
+  .sec-head span{font-size:13px;color:var(--ink-3)}
+  .grid6{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+  .anchor{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+  .anchor .k{font-size:12px;color:var(--ink-3);margin-bottom:4px}
+  .anchor .v{font-size:14px;font-weight:650}
+  .anchor .s{font-size:12px;color:var(--ink-2);margin-top:2px}
+  .icard-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .icard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 14px 12px;
+    display:flex;flex-direction:column;align-items:center;gap:8px;transition:box-shadow .15s,transform .15s}
+  .icard:hover{box-shadow:0 8px 24px #EAD9C55C;transform:translateY(-2px)}
+  .ibox{width:56px;height:56px;border-radius:14px;background:var(--bg);display:flex;align-items:center;justify-content:center}
+  .iname{font-size:13.5px;font-weight:650}
+  .itoken{font-size:11px;color:var(--ink-3);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .iscene{font-size:11px;color:var(--ink-2);text-align:center;line-height:1.5;min-height:30px}
+  .copy{border:1px solid var(--line-2);background:#fff;border-radius:8px;padding:4px 12px;font-size:12px;
+    color:var(--ink-2);cursor:pointer}
+  .copy:hover{color:var(--brand-deep);border-color:#F5C89E;background:var(--brand-soft)}
+  .ladder{display:flex;gap:34px;align-items:flex-end;background:var(--card);border:1px solid var(--line);
+    border-radius:16px;padding:26px 30px;flex-wrap:wrap}
+  .lstep{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .lstep .lab{font-size:12px;color:var(--ink-2)}
+  .lstep .use{font-size:11px;color:var(--ink-3)}
+  .color-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+  .ccard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .ccard .dot{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+  .ccard .t{font-size:13.5px;font-weight:650}
+  .ccard .tok{font-size:11px;font-family:ui-monospace,Menlo,monospace;color:var(--ink-3);margin:2px 0 6px}
+  .ccard .d{font-size:12px;color:var(--ink-2);line-height:1.55}
+  .states{display:flex;gap:28px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:20px 26px;margin-top:12px;align-items:center;flex-wrap:wrap}
+  .state{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .state .lab{font-size:12px;color:var(--ink-2)}
+  .state .tok{font-size:10.5px;color:var(--ink-3);font-family:ui-monospace,Menlo,monospace}
+  .demo-chips{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+  .dchip{display:flex;align-items:center;gap:10px;border-radius:12px;padding:12px 16px;font-size:13px;font-weight:600;border:1px solid var(--line)}
+  .dchip small{display:block;font-weight:400;color:var(--ink-3);font-size:11px;margin-top:1px}
+  table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--line);
+    border-radius:16px;overflow:hidden;font-size:13px}
+  th{background:#FBF5EC;text-align:left;font-size:12px;color:var(--ink-2);font-weight:650;padding:11px 16px}
+  td{padding:11px 16px;border-top:1px solid var(--line);color:var(--ink)}
+  td code{font-size:11.5px;color:var(--brand-deep);font-family:ui-monospace,Menlo,monospace}
+  td .tdicon{display:inline-flex;vertical-align:middle;margin-right:8px}
+  .dodont{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .dd{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .dd h3{font-size:14px;margin-bottom:10px}
+  .dd ul{list-style:none}
+  .dd li{font-size:13px;color:var(--ink-2);line-height:1.5;padding:5px 0 5px 24px;position:relative}
+  .dd.do li::before{content:"✓";position:absolute;left:2px;color:var(--success);font-weight:800}
+  .dd.dont li::before{content:"✕";position:absolute;left:2px;color:var(--danger);font-weight:800}
+  .tpl{position:relative}
+  pre{background:#2E2A26;color:#F3EDE4;border-radius:16px;padding:22px 24px;font-size:12.5px;line-height:1.75;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:auto;white-space:pre-wrap}
+  .tpl .copy{position:absolute;top:14px;right:14px;background:#ffffff22;border-color:#ffffff44;color:#F3EDE4}
+  .tpl .copy:hover{background:var(--brand);border-color:var(--brand);color:#fff}
+  footer{margin-top:48px;text-align:center;font-size:12px;color:var(--ink-3)}
+  #toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(20px);background:#3F4550;color:#fff;
+    font-size:13px;padding:9px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:all .25s}
+  #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  @media (max-width:860px){.grid6{grid-template-columns:repeat(3,1fr)}.icard-grid{grid-template-columns:repeat(2,1fr)}.color-grid{grid-template-columns:repeat(2,1fr)}.dodont{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">MISTAKE BOOK · ICON SET</div>
+    <h1>错词本模块 · 功能图标集 <span style="color:var(--brand)">v1.0</span></h1>
+    <p>覆盖错词本模块的入口、统计卡、计划卡、工具条与操作按钮共 14 个场景。全部为生产级可编辑 SVG：单色 currentColor，可随主题换色；与现有 lucide 线性图标观感统一。</p>
+    <div class="chips">
+      <span class="chip">网格 <b>24 × 24</b></span>
+      <span class="chip">描边 <b>1.75px</b></span>
+      <span class="chip">端点/拐角 <b>圆头 · 圆角</b></span>
+      <span class="chip">矩形圆角 <b>rx 3</b></span>
+      <span class="chip">安全区 <b>20 × 20</b></span>
+      <span class="chip">配色 <b>currentColor</b></span>
+    </div>
+    <div class="hero-book"></div>
+  </header>
+
+  <section>
+    <div class="sec-head"><span class="no">01</span><h2>风格锚点</h2><span>整套图标的统一基因，新增图标必须对齐</span></div>
+    <div class="grid6">
+      <div class="anchor"><div class="k">网格基准</div><div class="v">24 × 24</div><div class="s">主形状留 2px 边距</div></div>
+      <div class="anchor"><div class="k">线条粗细</div><div class="v">1.75px</div><div class="s">全套唯一描边值</div></div>
+      <div class="anchor"><div class="k">端点拐角</div><div class="v">round</div><div class="s">cap / join 均圆头</div></div>
+      <div class="anchor"><div class="k">容器圆角</div><div class="v">rx = 3</div><div class="s">矩形类形状统一</div></div>
+      <div class="anchor"><div class="k">视觉重量</div><div class="v">均衡</div><div class="s">主体占活动区 ≥ 60%</div></div>
+      <div class="anchor"><div class="k">色彩策略</div><div class="v">currentColor</div><div class="s">颜色由场景注入</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="no">02</span><h2>图标总览</h2><span>点击「复制 SVG」获取生产级源码</span></div>
+    <div class="icard-grid" id="iconGrid"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="no">03</span><h2>尺寸档位</h2><span>等比缩放 viewBox，禁止拉伸变形</span></div>
+    <div class="ladder" id="ladder"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="no">04</span><h2>颜色语义与状态</h2><span>颜色只经 currentColor 注入，不改图形</span></div>
+    <div class="color-grid" id="colorGrid"></div>
+    <div class="states" id="stateRow"></div>
+    <div class="demo-chips">
+      <div class="dchip" style="background:#FFF3E8;color:#EA580C"><span data-i="streak-calendar" data-s="20"></span><span style="color:var(--ink)">记录天数<small>brand-soft 容器 + brand 图标</small></span></div>
+      <div class="dchip" style="background:#EAF9EF;color:#16A34A"><span data-i="mastered-check" data-s="20" style="color:#22C55E"></span><span style="color:var(--ink)">当天已掌握<small>success-soft 容器 + success 图标</small></span></div>
+      <div class="dchip" style="background:#FDECEC;color:#DC2626"><span data-i="error-prone" data-s="20" style="color:#EF4444"></span><span style="color:var(--ink)">仍易错<small>danger-soft 容器 + danger 图标</small></span></div>
+      <div class="dchip" style="background:#F3EEFD;color:#7C3AED"><span data-i="story-spark" data-s="20" style="color:#8B5CF6"></span><span style="color:var(--ink)">已生成<small>violet-soft 容器 + violet 图标</small></span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="no">05</span><h2>场景映射</h2><span>截图界面 → 图标 → 颜色与尺寸建议</span></div>
+    <table>
+      <thead><tr><th style="width:30%">界面位置</th><th style="width:34%">图标</th><th style="width:18%">Token</th><th>颜色 / 尺寸</th></tr></thead>
+      <tbody id="mapBody"></tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="no">06</span><h2>使用规范</h2><span>一致性优先于个性</span></div>
+    <div class="dodont">
+      <div class="dd do"><h3>✅ 应该</h3><ul>
+        <li>同一界面内统一档位：统计卡 20、工具条 16–18、按钮 18、列表行 18–20</li>
+        <li>彩色语义通过 currentColor 或「10% 色底容器 + 全色图标」实现</li>
+        <li>图标与文字间距 6–8px；容器圆角 8–10，与卡片圆角呼应</li>
+        <li>空状态用 32–40 档位，配 10% 色底圆角容器</li>
+        <li>新图标先套用「AI 提示词模板」，再人工校验锚点</li>
+      </ul></div>
+      <div class="dd dont"><h3>✕ 禁止</h3><ul>
+        <li>单枚图标使用渐变、投影、多色描边，破坏成套感</li>
+        <li>混用直角端点 / 直角拐角 / 其他描边粗细</li>
+        <li>拉伸变形适配位置——改用正确档位等比缩放</li>
+        <li>主形状越过 2px 安全区（除四角星等点缀元素）</li>
+        <li>直接改 SVG 内部颜色值，应通过外层 color 控制</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="no">07</span><h2>AI 提示词模板</h2><span>批量扩展图标时保证风格不漂移</span></div>
+    <div class="tpl">
+      <pre id="promptTpl"></pre>
+      <button class="copy" id="copyPrompt">复制模板</button>
+    </div>
+  </section>
+
+  <footer>高象素 · 错词本模块图标集 v1.0 · 2026-09-12 · design/icons/mistake-book/</footer>
+</div>
+<div id="toast">已复制到剪贴板</div>
+
+<script>
+const RAW = {
+  "mistake-book": ['<rect x="5" y="3.75" width="14" height="16.5" rx="3"/>','<path d="M9 3.75v16.5"/>','<path d="M11.7 9.7l4.6 4.6M16.3 9.7l-4.6 4.6"/>'],
+  "streak-calendar": ['<rect x="3.75" y="5" width="16.5" height="15.25" rx="3"/>','<path d="M8.25 3.25v3.5M15.75 3.25v3.5"/>','<path d="M3.75 9.75h16.5"/>','<path d="M9.2 15.1l2 2 3.6-4.2"/>'],
+  "mastered-check": ['<circle cx="12" cy="12" r="8.25"/>','<path d="M8.4 12.4l2.5 2.5 4.9-5.4"/>'],
+  "error-prone": ['<path d="M12 4.4L20.2 18.4H3.8L12 4.4Z"/>','<path d="M12 10.2v3.4"/>','<circle cx="12" cy="16.3" r="0.95" fill="currentColor" stroke="none"/>'],
+  "story-spark": ['<path d="M12 7.1C9.9 5.7 6.8 5.5 4 6.7v11.1c2.8-1.2 5.9-1 8 .4"/>','<path d="M12 7.1c2.1-1.4 5.2-1.6 8-.4v11.1c-2.8-1.2-5.9-1-8 .4"/>','<path d="M19.2 2.5c.19.92.68 1.41 1.6 1.6-.92.19-1.41.68-1.6 1.6-.19-.92-.68-1.41-1.6-1.6.92-.19 1.41-.68 1.6-1.6Z" fill="currentColor" stroke="none"/>'],
+  "story-wand": ['<path d="M5 19l8.6-8.6"/>','<path d="M16.6 4.7c.19.92.68 1.41 1.6 1.6-.92.19-1.41.68-1.6 1.6-.19-.92-.68-1.41-1.6-1.6.92-.19 1.41-.68 1.6-1.6Z" fill="currentColor" stroke="none"/>','<circle cx="19.7" cy="3.5" r="0.8" fill="currentColor" stroke="none"/>'],
+  "filter": ['<path d="M4.4 5.5h15.2l-5.7 6.6v5.7l-3.8-2.2v-3.5L4.4 5.5Z"/>'],
+  "search": ['<circle cx="11" cy="11" r="6.25"/>','<path d="M15.6 15.6L19.4 19.4"/>'],
+  "sort-priority": ['<path d="M4 6.5h8.5M4 11.5h5.5M4 16.5h3"/>','<path d="M17.5 6.8v9.9"/>','<path d="M14.6 13.8l2.9 2.9 2.9-2.9"/>'],
+  "sliders": ['<path d="M4 6.5h3.2M11.8 6.5H20M4 12h9.2M17.8 12H20M4 17.5h2.2M10.8 17.5H20"/>','<circle cx="9.5" cy="6.5" r="2.1"/>','<circle cx="15.5" cy="12" r="2.1"/>','<circle cx="8.5" cy="17.5" r="2.1"/>'],
+  "play-practice": ['<circle cx="12" cy="12" r="8.25"/>','<path d="M10.1 8.8v6.4L15.5 12l-5.4-3.2Z"/>'],
+  "repeat-practice": ['<path d="M19.5 12a7.5 7.5 0 1 1-7.5-7.5c2.1 0 4.1.84 5.6 2.28L19.5 8.6"/>','<path d="M19.5 3.6v5h-5"/>'],
+  "pronounce": ['<path d="M4.4 9.6h3.4l4.5-4v12.8l-4.5-4H4.4v-4.8Z"/>','<path d="M15.9 9.4a4 4 0 0 1 0 5.2"/>','<path d="M18.3 7.2a7 7 0 0 1 0 9.6"/>'],
+  "plus": ['<path d="M12 5.2v13.6M5.2 12h13.6"/>']
+};
+const ICONS = [
+  {t:"mistake-book", cn:"错词本入口", scene:"侧边栏入口 / 模块页头", c:"brand"},
+  {t:"streak-calendar", cn:"记录天数", scene:"统计卡 · 连续记录", c:"brand"},
+  {t:"mastered-check", cn:"已掌握", scene:"统计卡 / 掌握状态", c:"success"},
+  {t:"error-prone", cn:"仍易错", scene:"统计卡 / 错误警示", c:"danger"},
+  {t:"story-spark", cn:"已生成", scene:"统计卡 / AI 故事内容", c:"violet"},
+  {t:"repeat-practice", cn:"重练提醒", scene:"先练未重练 / 重练标记", c:"brand"},
+  {t:"play-practice", cn:"开始练习", scene:"开始按钮 / 训练入口", c:"brand"},
+  {t:"story-wand", cn:"生成故事", scene:"AI 生成故事按钮", c:"brand"},
+  {t:"pronounce", cn:"发音", scene:"单词行朗读操作", c:"brand"},
+  {t:"filter", cn:"筛选", scene:"筛选 chip", c:"ink"},
+  {t:"search", cn:"搜索", scene:"搜索框前缀", c:"ink"},
+  {t:"sort-priority", cn:"排序·修复优先", scene:"排序下拉", c:"ink"},
+  {t:"sliders", cn:"设置", scene:"故事设置等配置入口", c:"ink"},
+  {t:"plus", cn:"添加", scene:"添加单词 / 新建", c:"ink"}
+];
+const C = {ink:"#464C56", brand:"#F97316", success:"#22C55E", danger:"#EF4444", violet:"#8B5CF6", soft:"#8A94A3"};
+const SW = 1.75;
+function svgText(t){
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+SW+'" stroke-linecap="round" stroke-linejoin="round">\n  <g id="'+t+'">\n    '+RAW[t].join("\n    ")+'\n  </g>\n</svg>';
+}
+function inlineSvg(t){
+  return '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+SW+'" stroke-linecap="round" stroke-linejoin="round">'+RAW[t].join("")+'</svg>';
+}
+const $ = s => document.querySelector(s);
+
+/* 02 图标总览 */
+$("#iconGrid").innerHTML = ICONS.map(ic =>
+  '<div class="icard">'+
+    '<div class="ibox" style="color:'+C[ic.c]+'"><div style="width:30px;height:30px">'+inlineSvg(ic.t)+'</div></div>'+
+    '<div class="iname">'+ic.cn+'</div>'+
+    '<div class="itoken">'+ic.t+'</div>'+
+    '<div class="iscene">'+ic.scene+'</div>'+
+    '<button class="copy" data-copy="'+ic.t+'">复制 SVG</button>'+
+  '</div>').join("");
+
+/* 03 尺寸档位 */
+const SIZES = [[16,"16","行内 / 表单"],[20,"20","导航 · chip · 统计卡"],[24,"24","按钮 · 列表行（默认）"],[32,"32","分区空态"],[40,"40","页面空态"]];
+$("#ladder").innerHTML = SIZES.map(s =>
+  '<div class="lstep"><div style="width:'+s[0]+'px;height:'+s[0]+'px;color:'+C.ink+'">'+inlineSvg("mastered-check")+'</div>'+
+  '<div class="lab"><b>'+s[1]+'</b>px</div><div class="use">'+s[2]+'</div></div>').join("");
+
+/* 04 颜色语义 */
+const SEM = [
+  {k:"brand", t:"品牌 / 操作", tok:"--icon-brand: #F97316", d:"错词本入口、开始、生成故事等主动作；hover #EA580C"},
+  {k:"success", t:"成功 / 已掌握", tok:"--icon-success: #22C55E", d:"已掌握、达成类状态；hover #16A34A"},
+  {k:"danger", t:"警示 / 仍易错", tok:"--icon-danger: #EF4444", d:"仍易错、错误提醒；hover #DC2626"},
+  {k:"violet", t:"AI / 已生成", tok:"--icon-violet: #8B5CF6", d:"AI 生成内容、故事资产；hover #7C3AED"},
+  {k:"ink", t:"中性 / 工具", tok:"--icon-ink: #464C56", d:"筛选、搜索、排序等中性工具；hover #333A44"}
+];
+$("#colorGrid").innerHTML = SEM.map(s =>
+  '<div class="ccard"><div class="dot" style="background:'+C[s.k]+'1A;color:'+C[s.k]+'"><div style="width:20px;height:20px">'+inlineSvg("streak-calendar")+'</div></div>'+
+  '<div class="t">'+s.t+'</div><div class="tok">'+s.tok+'</div><div class="d">'+s.d+'</div></div>').join("");
+const STATES = [["默认","#464C56","--icon-ink"],["悬停","#333A44","ink-hover"],["选中 / 品牌","#F97316","--icon-brand"],["禁用","#C3C9D2","--icon-disabled"]];
+$("#stateRow").innerHTML = STATES.map(st =>
+  '<div class="state"><div style="width:24px;height:24px;color:'+st[1]+'">'+inlineSvg("search")+'</div>'+
+  '<div class="lab">'+st[0]+'</div><div class="tok">'+st[2]+'</div></div>').join("")+
+  '<div style="flex:1;min-width:180px;font-size:12.5px;color:var(--ink-2);line-height:1.7">以 search 为例的四态。中性图标默认用 ink，进入品牌动作或选中态时切换为 brand；禁用态降低对比但不改透明度以外的属性。</div>';
+
+/* 05 场景映射 */
+const MAP = [
+  ["侧边栏 · 错词本","mistake-book","brand","20"],
+  ["统计卡 · 记录天数","streak-calendar","brand","20 · 10% 橙底容器"],
+  ["统计卡 · 当天已掌握","mastered-check","success","20 · 10% 绿底容器"],
+  ["统计卡 · 仍易错","error-prone","danger","20 · 10% 红底容器"],
+  ["统计卡 · 已生成","story-spark","violet","20 · 10% 紫底容器"],
+  ["今日错词 · 先练未重练","repeat-practice","brand","18"],
+  ["列表 · 开始按钮","play-practice","brand","18"],
+  ["故事区 · 生成故事按钮","story-wand","白 / brand","18"],
+  ["单词行 · 发音","pronounce","brand","18"],
+  ["工具条 · 筛选 chip","filter","ink","16"],
+  ["工具条 · 搜索框","search","ink","16"],
+  ["工具条 · 排序（修复优先）","sort-priority","ink","16"],
+  ["工具条 · 设置","sliders","ink","18"],
+  ["错词计划列表头","streak-calendar","ink","18（复用；如需区分可扩展 plan-calendar）"],
+  ["全局 · 添加","plus","ink","20"]
+];
+$("#mapBody").innerHTML = MAP.map(m =>
+  '<tr><td>'+m[0]+'</td><td><span class="tdicon" style="width:18px;height:18px;color:'+ (m[2].includes("白")?C.brand:(C[m[2].split(" ")[0]]||C.ink)) +'">'+inlineSvg(m[1])+'</span>'+m[0].split("·").pop().trim()+'</td><td><code>'+m[1]+'</code></td><td>'+m[2]+' · '+m[3]+'</td></tr>').join("");
+
+/* 07 提示词模板 */
+const PROMPT = [
+"【角色】资深图标设计师，为「英语听写」产品「错词本」模块产出界面功能图标。",
+"【目标】新增一枚语义为「{中文语义}」的图标，token：{english-name}，场景：{使用场景}。",
+"【风格锚点（必须遵守）】",
+"1. viewBox 0 0 24 24，主形状落在 20×20 活动区内（四周 2px 安全边距）；",
+'2. 线性风格：fill="none" stroke="currentColor" stroke-width="1.75"；',
+'3. stroke-linecap="round" stroke-linejoin="round"；矩形圆角 rx=3；圆环半径 ≤ 8.25；',
+'4. 点缀元素（实心圆点 r0.8-1、四角星）可用 fill="currentColor" stroke="none"；',
+"5. 单色，无渐变、无投影、无文字；视觉重量与「圆环对勾 / 日历对勾 / 漏斗」一致。",
+"【输出】仅输出生产级 SVG：路径闭合、锚点最少、分组语义化 <g id=\"{english-name}\">，可直接进组件库。",
+"【自查】逐项核对：安全区越界、描边一致、圆角一致、与成套图标视觉密度一致。"
+].join("\n");
+$("#promptTpl").textContent = PROMPT;
+
+/* 交互 */
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1400);}
+function doCopy(text,msg){
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>toast(msg),()=>fallback(text,msg));}
+  else fallback(text,msg);
+}
+function fallback(text,msg){const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast(msg);}catch(e){toast("复制失败，请手动选择");}document.body.removeChild(ta);}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-copy]");
+  if(b){doCopy(svgText(b.dataset.copy),"已复制 "+b.dataset.copy+".svg");return;}
+  if(e.target.id==="copyPrompt"){doCopy(PROMPT,"已复制提示词模板");}
+});
+/* 颜色语义 demo 容器内的图标 */
+document.querySelectorAll("[data-i]").forEach(el=>{el.style.width=el.dataset.s+"px";el.style.height=el.dataset.s+"px";el.innerHTML=inlineSvg(el.dataset.i);});
+</script>
+</body>
+</html>

@@ -11,6 +11,10 @@ import {
   CardStatus,
   CardType,
   DictionaryEntry,
+  DiaryEntry,
+  GrammarErrorTag,
+  HuntAttempt,
+  HuntResult,
   Material,
   MaterialSegment,
   MistakeGeneration,
@@ -36,7 +40,7 @@ import { seedDictionary } from "../data/seedDictionary";
 import { CORE_100_WORDS_VERSION, core100Words } from "../data/seedWords";
 
 const STORAGE_KEY = "personal-vocab-app-data-v1";
-export const APP_SCHEMA_VERSION = 6;
+export const APP_SCHEMA_VERSION = 8;
 
 export const uid = (prefix: string) =>
   `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 9)}`;
@@ -53,6 +57,7 @@ const defaultSettings: Settings = {
   speechRate: 0.9,
   autoSpeakInSpelling: true,
   lastExportedAt: "",
+  diaryDailyCount: 3,
   aiProvider: {
     enabled: false,
     baseUrl: "",
@@ -81,6 +86,10 @@ const createInitialData = (): AppData => ({
   reviews: [],
   mistakeGenerations: [],
   adventures: [],
+  huntAttempts: [],
+  huntResults: [],
+  grammarLessonsDone: [],
+  diaryEntries: [],
   schedules: [],
   dictionaryEntries: seedDictionary,
   seededWordVersions: [],
@@ -122,6 +131,10 @@ const knownAppDataKeys = [
   "reviews",
   "mistakeGenerations",
   "adventures",
+  "huntAttempts",
+  "huntResults",
+  "grammarLessonsDone",
+  "diaryEntries",
   "schedules",
   "dictionaryEntries",
   "settings"
@@ -136,6 +149,8 @@ const normalizeSettings = (value: unknown): Settings => {
   const dataSync = isRecord(settings.dataSync) ? settings.dataSync : {};
   const speechLang = asString(settings.speechLang);
   const normalizedAiTimeout = Math.min(300000, Math.max(5000, Math.round(asNumber(aiProvider.timeoutMs, defaultSettings.aiProvider.timeoutMs))));
+  const rawDiaryCount = Math.round(asNumber(settings.diaryDailyCount, defaultSettings.diaryDailyCount));
+  const diaryDailyCount = rawDiaryCount === 5 || rawDiaryCount === 10 ? rawDiaryCount : 3;
 
   return {
     dailyNewWords: Math.max(0, Math.round(asNumber(settings.dailyNewWords, defaultSettings.dailyNewWords))),
@@ -147,6 +162,7 @@ const normalizeSettings = (value: unknown): Settings => {
     speechRate: Math.min(1.5, Math.max(0.4, asNumber(settings.speechRate, defaultSettings.speechRate))),
     autoSpeakInSpelling: asBoolean(settings.autoSpeakInSpelling, defaultSettings.autoSpeakInSpelling),
     lastExportedAt: asString(settings.lastExportedAt, defaultSettings.lastExportedAt),
+    diaryDailyCount,
     aiProvider: {
       enabled: asBoolean(aiProvider.enabled, defaultSettings.aiProvider.enabled),
       baseUrl: asString(aiProvider.baseUrl, defaultSettings.aiProvider.baseUrl).trim(),
@@ -606,6 +622,78 @@ const normalizeAdventure = (value: unknown): Adventure | null => {
   };
 };
 
+const normalizeGrammarErrorTag = (value: unknown): GrammarErrorTag => {
+  const allowed: GrammarErrorTag[] = [
+    "tense",
+    "sv_agreement",
+    "missing_be",
+    "article",
+    "plural",
+    "preposition",
+    "fragment",
+    "run_on",
+    "word_order",
+    "verb_form"
+  ];
+  const tag = asString(value).trim();
+  return (allowed as string[]).includes(tag) ? (tag as GrammarErrorTag) : "tense";
+};
+
+const normalizeDiaryEntries = (value: unknown): DiaryEntry[] =>
+  (Array.isArray(value) ? value : [])
+    .filter(isRecord)
+    .map<DiaryEntry>((item) => ({
+      id: asString(item.id) || uid("diary"),
+      dateKey: asString(item.dateKey).trim() || localDateKey(item.createdAt),
+      questionId: asString(item.questionId).trim(),
+      questionZh: asString(item.questionZh).trim(),
+      answerEn: asString(item.answerEn).trim(),
+      correctedEn: asString(item.correctedEn).trim(),
+      issues: (Array.isArray(item.issues) ? item.issues : [])
+        .filter(isRecord)
+        .map((issue) => ({
+          original: asString(issue.original),
+          correction: asString(issue.correction),
+          explanation: asString(issue.explanation),
+          ...(issue.tag ? { tag: normalizeGrammarErrorTag(issue.tag) } : {})
+        }))
+        .filter((issue) => issue.original || issue.correction),
+      status: item.status === "done" ? ("done" as const) : ("pending" as const),
+      note: asString(item.note).trim() || undefined,
+      createdAt: validIsoOrNow(item.createdAt)
+    }))
+    .filter((item) => item.answerEn && item.questionId);
+
+const normalizeHuntAttempts = (value: unknown): HuntAttempt[] =>
+  (Array.isArray(value) ? value : [])
+    .filter(isRecord)
+    .map<HuntAttempt>((item) => ({
+      id: asString(item.id) || uid("hunt_attempt"),
+      caseId: asString(item.caseId).trim(),
+      tokenIndex: Math.max(0, Math.round(asNumber(item.tokenIndex, 0))),
+      guessedTag: item.guessedTag == null || asString(item.guessedTag) === ""
+        ? null
+        : normalizeGrammarErrorTag(item.guessedTag),
+      hit: asBoolean(item.hit),
+      createdAt: validIsoOrNow(item.createdAt)
+    }))
+    .filter((item) => item.caseId);
+
+const normalizeHuntResults = (value: unknown): HuntResult[] =>
+  (Array.isArray(value) ? value : [])
+    .filter(isRecord)
+    .map<HuntResult>((item) => ({
+      id: asString(item.id) || uid("hunt_result"),
+      caseId: asString(item.caseId).trim(),
+      found: Math.max(0, Math.round(asNumber(item.found, 0))),
+      total: Math.max(0, Math.round(asNumber(item.total, 0))),
+      misses: Math.max(0, Math.round(asNumber(item.misses, 0))),
+      stars: Math.min(3, Math.max(0, Math.round(asNumber(item.stars, 0)))),
+      durationMs: Math.max(0, Math.round(asNumber(item.durationMs, 0))),
+      finishedAt: validIsoOrNow(item.finishedAt)
+    }))
+    .filter((item) => item.caseId);
+
 const localDateKey = (value: unknown) => {
   const date = new Date(validIsoOrNow(value));
   const year = date.getFullYear();
@@ -720,6 +808,10 @@ export const migrateData = (raw: unknown): AppData => {
     adventures: (Array.isArray(parsed.adventures) ? parsed.adventures : [])
       .map(normalizeAdventure)
       .filter((adventure): adventure is Adventure => Boolean(adventure)),
+    huntAttempts: normalizeHuntAttempts(parsed.huntAttempts),
+    huntResults: normalizeHuntResults(parsed.huntResults),
+    grammarLessonsDone: asStringArray(parsed.grammarLessonsDone),
+    diaryEntries: normalizeDiaryEntries(parsed.diaryEntries),
     schedules: normalizeSchedules(parsed.schedules, cards),
     dictionaryEntries: normalizeDictionaryEntries(parsed.dictionaryEntries),
     seededWordVersions: asStringArray(parsed.seededWordVersions),

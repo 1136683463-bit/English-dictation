@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>精修预览 · 今日 / 训练</title>
+<style>
+  :root{
+    --bg:#f4f6f8; --surface:#fff; --surface-strong:#fff; --surface-muted:#f8fafb;
+    --ink:#1f2b3a; --ink-soft:#3e4c5e; --muted:#5f6b7a; --faint:#98a4b3;
+    --line:#e8edf1; --line-strong:#d7dfe6;
+    --accent:#f26a1b; --accent-strong:#d95a12; --accent-soft:#fff1e8; --accent-ink:#c04a0b;
+    --green-soft:#e9f8ef; --green-ink:#24784c;
+    --blue-soft:#eef3ff; --blue-ink:#2f62ea;
+    --amber-soft:#fdf3d8; --amber-ink:#8a6200;
+    --danger-soft:#fdeeee; --danger-ink:#b03535;
+    --r-sm:12px; --r-md:16px; --r-lg:20px; --pill:99px;
+    --sh-sm:0 1px 2px rgba(31,43,58,.04);
+    --sh-md:0 8px 24px rgba(31,43,58,.08);
+    --sh-lift:0 12px 28px rgba(31,43,58,.12);
+    --ease:160ms cubic-bezier(.2,.7,.3,1);
+    --f:Inter,"HarmonyOS Sans SC","PingFang SC",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--f);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  svg{display:block}
+
+  /* ================= 外壳 ================= */
+  .shell{display:grid;grid-template-columns:224px minmax(0,1fr);min-height:100vh}
+  .sidebar{background:var(--surface);border-right:1px solid #f1f2f4;padding:24px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:22px}
+  .brand{display:flex;align-items:center;gap:11px;padding:0 8px}
+  .brand .logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(140deg,#f98b3c,#e2620f);display:grid;place-items:center;box-shadow:0 6px 16px rgba(242,106,27,.26)}
+  .brand .word{font-size:15px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+  .brand .sub{font-size:11px;color:var(--faint);font-weight:500;margin-top:2px}
+  nav{display:flex;flex-direction:column;gap:2px}
+  .grp{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:14px 0 6px 10px}
+  .grp:first-child{margin-top:0}
+  .nav-item{display:flex;align-items:center;gap:11px;height:38px;padding:0 11px;border-radius:10px;color:#6f7885;font-size:13.5px;font-weight:500;transition:background var(--ease),color var(--ease)}
+  .nav-item svg{width:18px;height:18px;color:#949ca8;transition:color var(--ease)}
+  .nav-item:hover{background:#f3f5f7}
+  .nav-item.on{background:var(--accent-soft);color:var(--accent-ink);font-weight:700}
+  .nav-item.on svg{color:var(--accent-ink)}
+
+  .main{padding:36px 40px 64px;max-width:1320px}
+  .view{display:none}
+  .view.on{display:block}
+
+  /* ================= PageHero ================= */
+  .hero{padding:6px 0 34px;border-bottom:1px solid var(--line);margin-bottom:32px}
+  .hero .row{display:flex;align-items:flex-end;justify-content:space-between;gap:28px}
+  .eyebrow{display:block;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink)}
+  .hero h1{margin:13px 0 0;font-size:32px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+  .hero p{margin:11px 0 0;font-size:13.5px;color:var(--muted);line-height:1.6}
+  .hero .actions{display:flex;gap:10px;flex-shrink:0;padding-bottom:4px}
+
+  /* ================= 按钮 ================= */
+  .btn{height:44px;padding:0 22px;border:none;border-radius:var(--pill);font-family:var(--f);font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:8px;cursor:pointer;transition:all var(--ease);white-space:nowrap}
+  .btn--primary{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(242,106,27,.22)}
+  .btn--primary:hover{background:var(--accent-strong);transform:translateY(-1px);box-shadow:0 10px 22px rgba(242,106,27,.28)}
+  .btn--primary:active{transform:scale(.97)}
+  .btn--ghost{height:40px;background:var(--surface);border:1px solid var(--line);color:var(--ink-soft)}
+  .btn--ghost:hover{border-color:var(--line-strong);background:var(--surface-muted)}
+  .btn--quiet{height:32px;padding:0 6px;background:none;color:var(--muted);font-size:12.5px;font-weight:600}
+  .btn--quiet:hover{color:var(--accent-ink)}
+
+  /* ================= SectionHead ================= */
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:14px}
+  .sec-head h2{margin:6px 0 0;font-size:22px;font-weight:700;letter-spacing:-.02em}
+
+  /* ================= 布局 ================= */
+  .cols{display:grid;gap:20px}
+  .cols--2{grid-template-columns:minmax(0,1.65fr) minmax(0,1fr)}
+  .stack{display:grid;gap:28px;align-content:start}
+
+  /* ================= Surface ================= */
+  .surface{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--sh-sm);overflow:hidden}
+  .surface--pad{padding:22px 24px}
+  .surface--interactive{transition:transform var(--ease),box-shadow var(--ease)}
+  .surface--interactive:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
+
+  /* ================= ListRow ================= */
+  .list{display:grid}
+  /* 双列模式网格：用 1px gap 透出分隔线，行与行天然等高、不错位 */
+  .modes-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border-radius:var(--r-md);box-shadow:var(--sh-sm);overflow:hidden}
+  .modes-grid .row{background:var(--surface);border-bottom:none}
+  .modes-grid .row:hover{background:var(--surface-muted)}
+  .modes-grid .row.on{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+  .row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:15px 20px;border-bottom:1px solid var(--line);transition:background var(--ease);cursor:pointer;position:relative}
+  .row:last-child{border-bottom:none}
+  .row:hover{background:var(--surface-muted)}
+  .row.on{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+  .row.on:hover{background:#ffe9da}
+  .ib{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex-shrink:0}
+  .ib svg{width:20px;height:20px}
+  .ib--orange{background:var(--accent-soft)} .ib--orange svg{stroke:var(--accent-ink)}
+  .ib--red{background:var(--danger-soft)}   .ib--red svg{stroke:var(--danger-ink)}
+  .ib--blue{background:var(--blue-soft)}    .ib--blue svg{stroke:var(--blue-ink)}
+  .ib--green{background:var(--green-soft)}  .ib--green svg{stroke:var(--green-ink)}
+  .ib--amber{background:var(--amber-soft)}  .ib--amber svg{stroke:var(--amber-ink)}
+  .row b.t{display:block;font-size:15px;font-weight:600;letter-spacing:-.01em}
+  .row p.d{margin:4px 0 0;font-size:12.5px;color:var(--muted)}
+  .tail{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+  .tail .num{font-size:15px;font-weight:650;color:var(--ink);letter-spacing:-.02em}
+  .tail .arrow{color:#c3cad3;transition:transform var(--ease),color var(--ease)}
+  .row:hover .tail .arrow{transform:translateX(2px);color:var(--accent-ink)}
+  .bar{height:3px;border-radius:2px;background:var(--line);margin-top:9px;overflow:hidden;max-width:260px}
+  .bar i{display:block;height:100%;border-radius:2px;background:var(--accent)}
+
+  /* ================= 数据列 ================= */
+  .figures{display:flex;flex-wrap:wrap}
+  .fig{padding:0 24px;border-right:1px solid var(--line)}
+  .fig:first-child{padding-left:0}
+  .fig:last-child{border-right:none;padding-right:0}
+  .fig span{display:block;font-size:11px;font-weight:600;color:var(--muted)}
+  .fig b{display:block;font-size:30px;font-weight:650;letter-spacing:-.03em;margin-top:6px;font-variant-numeric:tabular-nums;line-height:1}
+  .fig em{display:block;font-style:normal;font-size:11.5px;color:var(--faint);margin-top:4px}
+
+  /* ================= 空状态 ================= */
+  .empty{border:1px dashed var(--line-strong);border-radius:var(--r-md);padding:44px 24px;text-align:center}
+  .empty .ic{width:56px;height:56px;border-radius:50%;background:var(--surface-muted);color:var(--faint);display:grid;place-items:center;margin:0 auto 16px}
+  .empty b{display:block;font-size:15px;font-weight:600;letter-spacing:-.01em}
+  .empty p{max-width:330px;margin:8px auto 0;font-size:12.5px;color:var(--muted);line-height:1.65}
+  .steps-mini{display:flex;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap}
+  .steps-mini span{height:26px;display:inline-flex;align-items:center;padding:0 11px;border-radius:var(--pill);background:var(--surface);border:1px solid var(--line);font-size:11.5px;color:var(--muted)}
+
+  /* ================= 编号步骤 ================= */
+  .flow{display:grid;gap:10px}
+  .step{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:baseline;padding:16px 18px;border-radius:var(--r-md);background:var(--surface);box-shadow:var(--sh-sm);transition:transform var(--ease),box-shadow var(--ease)}
+  .step:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
+  .step .no{font-size:28px;font-weight:650;letter-spacing:-.04em;color:var(--accent-ink);font-variant-numeric:tabular-nums;line-height:1}
+  .step b{display:block;font-size:15px;font-weight:600;letter-spacing:-.01em}
+  .step p{margin:5px 0 0;font-size:12.5px;color:var(--muted);line-height:1.6}
+
+  /* ================= tab 切换条 ================= */
+  .switch{position:fixed;right:26px;bottom:26px;z-index:9;display:flex;gap:3px;padding:4px;border-radius:var(--pill);background:rgba(255,255,255,.92);backdrop-filter:blur(12px);box-shadow:var(--sh-md);border:1px solid var(--line)}
+  .switch button{height:36px;padding:0 18px;border:none;border-radius:var(--pill);background:none;font-family:var(--f);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all var(--ease)}
+  .switch button.on{background:var(--accent);color:#fff;box-shadow:0 4px 12px rgba(242,106,27,.26)}
+
+  @media (max-width:1080px){
+    .shell{grid-template-columns:1fr}
+    .sidebar{position:static;height:auto;flex-direction:row;align-items:center;overflow-x:auto}
+    nav{flex-direction:row;align-items:center}
+    .grp{display:none}
+    .cols--2{grid-template-columns:1fr}
+    .main{padding:22px 18px 80px}
+    .hero .row{flex-direction:column;align-items:flex-start;gap:18px}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ================= 侧栏 ================= -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round">
+          <path d="M4 12h1.5M8 8v8M12 5v14M16 9v6M20 11h-.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="word">听写工坊</div>
+        <div class="sub">个人词句训练</div>
+      </div>
+    </div>
+    <nav>
+      <span class="grp">训练台</span>
+      <a class="nav-item on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>今日</a>
+      <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m3 6 6 6 4-4 8 8"/><path d="M21 10v6h-6"/></svg>训练</a>
+      <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>冒险</a>
+      <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>错词本</a>
+      <span class="grp">内容库</span>
+      <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="m9 7 2 2 4-4"/></svg>词书</a>
+      <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>添加</a>
+      <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 6 8 18H4l4-6H4l4-6z"/><path d="M20 6l-8 12"/></svg>词库</a>
+      <span class="grp">回顾</span>
+      <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-6M22 20H2"/></svg>统计</a>
+      <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.1a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0-1.2-2.9H1a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 2.6 7a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 8 2.6h.1A2 2 0 0 1 12 1h0a2 2 0 0 1 2 2v.1"/></svg>设置</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+
+    <!-- =================================================================
+         视图一 · 今日
+    ================================================================== -->
+    <section class="view on" id="v-today">
+      <header class="hero">
+        <div class="row">
+          <div>
+            <span class="eyebrow">Next Best Action</span>
+            <h1>中午好，继续今天的练习</h1>
+            <p>优先清掉 115 个到期复习，再按需要的加入拼写与句子。</p>
+          </div>
+          <div class="actions">
+            <button class="btn btn--primary">开始今日训练
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+            </button>
+            <button class="btn btn--ghost">错词本</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="cols cols--2">
+        <!-- 左：任务队列 -->
+        <div>
+          <div class="sec-head">
+            <div>
+              <span class="eyebrow">Queue</span>
+              <h2>今日任务队列</h2>
+            </div>
+            <button class="btn btn--quiet">选择模式 ›</button>
+          </div>
+          <div class="surface">
+            <div class="list">
+              <div class="row on">
+                <div class="ib ib--orange"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></svg></div>
+                <div>
+                  <b class="t">到期复习</b>
+                  <p class="d">115 个单词 · 0 个句子到期</p>
+                  <div class="bar"><i style="width:0%"></i></div>
+                </div>
+                <div class="tail"><span class="num">0 / 30</span><svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></div>
+              </div>
+
+              <div class="row">
+                <div class="ib ib--red"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+                <div>
+                  <b class="t">错词专项</b>
+                  <p class="d">0 个薄弱词 · 今日错 0</p>
+                </div>
+                <div class="tail"><span class="num">0</span><svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></div>
+              </div>
+
+              <div class="row">
+                <div class="ib ib--blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></div>
+                <div>
+                  <b class="t">新词目标</b>
+                  <p class="d">115 个新词还在队列里</p>
+                  <div class="bar"><i style="width:0%"></i></div>
+                </div>
+                <div class="tail"><span class="num">0 / 10</span><svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></div>
+              </div>
+
+              <div class="row">
+                <div class="ib ib--green"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                <div>
+                  <b class="t">句子目标</b>
+                  <p class="d">今天已碰到 0 个句子</p>
+                  <div class="bar"><i style="width:0%"></i></div>
+                </div>
+                <div class="tail"><span class="num">0 / 5</span><svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右：数据 + 最近错误 -->
+        <div class="stack">
+          <div>
+            <div class="sec-head">
+              <div>
+                <span class="eyebrow">Progress</span>
+                <h2 style="font-size:18px">今日进度</h2>
+              </div>
+            </div>
+            <div class="surface surface--pad">
+              <div class="figures">
+                <div class="fig"><span>到期</span><b>115</b><em>115 词 · 0 句</em></div>
+                <div class="fig"><span>已练</span><b>0</b><em>0 张卡</em></div>
+                <div class="fig"><span>薄弱</span><b>0</b><em>错卡 0</em></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="sec-head">
+              <div>
+                <span class="eyebrow">Mistakes</span>
+                <h2 style="font-size:18px">最近错误</h2>
+              </div>
+              <button class="btn btn--quiet">全部 ›</button>
+            </div>
+            <div class="empty">
+              <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="m9 11 3 3L22 4"/></svg></div>
+              <b>还没有错误记录</b>
+              <p>今天练错的词会自动留在这里，方便下一轮优先攻克。</p>
+              <div class="steps-mini"><span>① 开始拼写</span><span>② 答错自动收录</span><span>③ 次日优先复习</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         视图二 · 训练
+    ================================================================== -->
+    <section class="view" id="v-training">
+      <header class="hero">
+        <div class="row">
+          <div>
+            <span class="eyebrow">Training</span>
+            <h1>选择今天的训练方式</h1>
+            <p>复习、拼写、错词和材料训练都从这里开始；先完成今日训练，再按需要专项加练。</p>
+          </div>
+          <div class="actions">
+            <button class="btn btn--ghost">回到今日</button>
+          </div>
+        </div>
+      </header>
+
+      <div style="margin-bottom:34px">
+        <div class="surface surface--pad" style="display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;padding:24px 26px">
+          <div>
+            <span class="eyebrow">Recommended</span>
+            <h2 style="margin:8px 0 0;font-size:20px;font-weight:700;letter-spacing:-.02em">今日训练</h2>
+            <p style="margin:8px 0 0;font-size:13px;color:var(--muted)">预计 12 分钟，优先处理 115 个到期复习和 0 个薄弱词。</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:30px;flex-wrap:wrap">
+            <div class="figures">
+              <div class="fig"><span>到期</span><b>115</b></div>
+              <div class="fig"><span>错词</span><b>0</b></div>
+              <div class="fig"><span>今日已练</span><b>0</b></div>
+            </div>
+            <button class="btn btn--primary">开始今日训练
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:34px">
+        <div class="sec-head">
+          <div>
+            <span class="eyebrow">Modes</span>
+            <h2>训练方式</h2>
+          </div>
+        </div>
+        <div class="modes-grid">
+            <div class="row">
+              <div class="ib ib--orange"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></div>
+              <div><b class="t">听音拼写</b><p class="d">听发音写单词，适合把认识的训练到能拼出来</p></div>
+              <div class="tail"><span>115 个可练单词</span><svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></div>
+            </div>
+            <div class="row">
+              <div class="ib ib--red"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+              <div><b class="t">错词专项</b><p class="d">只处理最近错过、连续错过或标记重点的词</p></div>
+              <div class="tail"><span>0 个薄弱词</span><svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></div>
+            </div>
+            <div class="row">
+              <div class="ib ib--blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+              <div><b class="t">词本</b><p class="d">按日期查看错词，生成例句或把当天错词串成小故事</p></div>
+              <div class="tail"><span>0 个今日错词</span><svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></div>
+            </div>
+            <div class="row">
+              <div class="ib ib--orange"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7"/></svg></div>
+              <div><b class="t">冒险学习</b><p class="d">读分支故事、做选择，并把愿意复习的词保存到词库</p></div>
+              <div class="tail"><span>0 段已保存路线</span><svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></div>
+            </div>
+            <div class="row">
+              <div class="ib ib--green"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg></div>
+              <div><b class="t">单元训练</b><p class="d">按词书或单元进入拼写，适合集中推进一组词</p></div>
+              <div class="tail"><span>6 个词书单元</span><svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></div>
+            </div>
+            <div class="row">
+              <div class="ib ib--blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></div>
+              <div><b class="t">句子回译</b><p class="d">看中文提示或释义，回忆英文句子和表达</p></div>
+              <div class="tail"><span>0 个句子</span><svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></div>
+            </div>
+            <div class="row">
+              <div class="ib ib--amber"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+              <div><b class="t">材料听写</b><p class="d">下一版重点：从材料逐句播放、输入、批改、回流错词</p></div>
+              <div class="tail"><span>0 份材料</span><svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></div>
+            </div>
+            <div class="row" style="opacity:.45">
+              <div class="ib" style="background:var(--surface-muted)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke="#98a4b3"><path d="M12 17h.01"/><path d="M12 8v5"/></svg></div>
+              <div><b class="t">更多方式</b><p class="d">按你的训练记录推荐，之后会陆续开放</p></div>
+              <div class="tail"><span>敬请期待</span></div>
+            </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sec-head">
+          <div>
+            <span class="eyebrow">Flow</span>
+            <h2>推荐节奏</h2>
+          </div>
+        </div>
+        <div class="flow">
+          <div class="step"><span class="no">01</span><div><b>先清到期</b><p>让复习负债别滚大。到期的词是记忆曲线最紧的一段，先处理性价比最高。</p></div></div>
+          <div class="step"><span class="no">02</span><div><b>再练错词</b><p>当天错的词尽快回炉。刚犯过的错误在几小时内纠正，留存率最高。</p></div></div>
+          <div class="step"><span class="no">03</span><div><b>最后补新词</b><p>时间够再推进新材料。把新词留到精力最后，避免挤压复习。</p></div></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- 视图切换 -->
+<div class="switch">
+  <button class="on" data-v="v-today">今日</button>
+  <button data-v="v-training">训练</button>
+</div>
+
+<script>
+  var btns = document.querySelectorAll('.switch button');
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      btns.forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on');
+      document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('on'); });
+      document.getElementById(b.dataset.v).classList.add('on');
+      window.scrollTo({ top: 0 });
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+import type { AppData, GrammarLesson, LessonGuidedStep, LessonPracticeStep } from "../types";
+import { GRAMMAR_LESSON_BY_ID, grammarLessons } from "../data/grammarLessons";
+import { addSentence } from "./cardService";
+import { nowIso } from "./storage";
+
+/** 英文句子判分用的归一化：小写、去掉标点、压缩空白。 */
+export const normalizeLessonSentence = (value: string): string =>
+  value
+    .toLowerCase()
+    .replace(/[.,!?;:'"’‘（），。？！、]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+/** 点词成句判分：顺序与内容都对才算通过（标点与大小写宽容）。 */
+export const checkLessonTokens = (selected: string[], answer: string): boolean =>
+  normalizeLessonSentence(selected.join(" ")) === normalizeLessonSentence(answer);
+
+/** 点选题判分。 */
+export const checkLessonChoice = (picked: string, answer: string): boolean =>
+  picked.trim().toLowerCase() === answer.trim().toLowerCase();
+
+/**
+ * 点词成句答错时，找出第一个对不上的位置（0 起）。
+ * 用于温和提示「从第 N 个词开始有点不对」，全部对上返回 -1。
+ */
+export const firstMismatchIndex = (selected: string[], answer: string): number => {
+  const answerTokens = normalizeLessonSentence(answer).split(" ").filter(Boolean);
+  const pickedTokens = selected.map((token) => normalizeLessonSentence(token)).filter(Boolean);
+  const length = Math.max(answerTokens.length, pickedTokens.length);
+  for (let index = 0; index < length; index += 1) {
+    if (pickedTokens[index] !== answerTokens[index]) return index;
+  }
+  return -1;
+};
+
+export const listGrammarLessons = (): GrammarLesson[] => grammarLessons;
+
+export const getGrammarLesson = (lessonId: string): GrammarLesson | undefined =>
+  GRAMMAR_LESSON_BY_ID.get(lessonId);
+
+export const getCompletedLessonIds = (data: AppData): Set<string> =>
+  new Set(data.grammarLessonsDone ?? []);
+
+export const isLessonDone = (data: AppData, lessonId: string): boolean =>
+  getCompletedLessonIds(data).has(lessonId);
+
+/** 下一节待学课程：按编号找第一个未完成的。全部完成则返回 null。 */
+export const getNextLesson = (data: AppData): GrammarLesson | null => {
+  const done = getCompletedLessonIds(data);
+  return grammarLessons.find((lesson) => !done.has(lesson.id)) ?? null;
+};
+
+/** 完成一课（幂等，不可变返回新 AppData）。完课时把本课核心句型一并送入复习队列（R03：核心句型+错句均入队）。 */
+export const markLessonDone = (data: AppData, lessonId: string): AppData => {
+  if (!GRAMMAR_LESSON_BY_ID.has(lessonId)) return data;
+  if ((data.grammarLessonsDone ?? []).includes(lessonId)) return data;
+  const lesson = GRAMMAR_LESSON_BY_ID.get(lessonId);
+  const withDone: AppData = { ...data, grammarLessonsDone: [...(data.grammarLessonsDone ?? []), lessonId] };
+  return lesson ? addLessonCoreSentence(withDone, lesson) : withDone;
+};
+
+/**
+ * 本课核心句型进入 SM-2 复习队列（R03）。与错句同一个来源约定：sourceId = lesson:<id>。
+ * 幂等：同一句子 + 同一课程只收一次。
+ */
+export const addLessonCoreSentence = (data: AppData, lesson: GrammarLesson): AppData => {
+  const sentence = lesson.targetSentence.trim();
+  if (!sentence) return data;
+  const duplicated = data.cards.some(
+    (card) => card.type === "sentence" && card.front.trim() === sentence && card.sourceId === `lesson:${lesson.id}`
+  );
+  if (duplicated) return data;
+  return addSentence(data, {
+    sentence,
+    translation: "",
+    keywords: "",
+    grammarNote: lesson.oneLineRule,
+    sourceId: `lesson:${lesson.id}`,
+    note: `语法课核心句：${lesson.episode} ${lesson.title}`,
+    tags: "语法"
+  });
+};
+
+export interface LessonGuidedState {
+  index: number;
+  /** choose 已选选项；arrange 已拼词块。 */
+  picked: string[];
+  checked: boolean;
+  passed: boolean;
+}
+
+export const createGuidedState = (): LessonGuidedState => ({ index: 0, picked: [], checked: false, passed: false });
+
+/** 判当前引导题：全部词块用上后调用（spot 为单选命中制）。 */
+export const judgeGuidedStep = (step: LessonGuidedStep, picked: string[]): boolean => {
+  if (step.kind === "choose") return checkLessonChoice(picked[picked.length - 1] ?? "", step.answer);
+  if (step.kind === "spot") return checkLessonChoice(picked[picked.length - 1] ?? "", step.wrongToken ?? step.answer);
+  return checkLessonTokens(picked, step.answer);
+};
+
+/** 判当前自由练习题。 */
+export const judgePracticeStep = (step: LessonPracticeStep, picked: string[]): boolean =>
+  checkLessonTokens(picked, step.answer);
+
+/**
+ * 三单常驻检查（R04）：he / she / it 后面跟动词原形时温和提醒（不算错，只提示）。
+ * 中文动词不变形，漏 -s 是初学者最高频的顽固错，所以在所有输出场景常驻。
+ */
+const THIRD_PERSON_BASE_VERBS =
+  "go|like|have|do|does|want|need|work|live|come|comes|make|take|play|watch|eat|speak|study|read|write|walk|run|sing|know|think";
+
+export const detectThirdPersonMiss = (input: string): string | null => {
+  const pattern = new RegExp(`\\b(he|she|it)\\s+(${THIRD_PERSON_BASE_VERBS})\\b`, "i");
+  return pattern.test(input) ? "他 / 她 / 它做事，动词要加 s——检查一下动词有没有小尾巴。" : null;
+};
+
+export interface LessonProgressSummary {
+  done: number;
+  total: number;
+  nextLesson: GrammarLesson | null;
+  percent: number;
+}
+
+export const summarizeLessonProgress = (data: AppData): LessonProgressSummary => {
+  const done = getCompletedLessonIds(data);
+  const completed = grammarLessons.filter((lesson) => done.has(lesson.id)).length;
+  return {
+    done: completed,
+    total: grammarLessons.length,
+    nextLesson: getNextLesson(data),
+    percent: grammarLessons.length === 0 ? 0 : Math.round((completed / grammarLessons.length) * 100)
+  };
+};
+
+/** 课程完成时间戳（用于以后做「我的英文变化」对比，先存起来）。 */
+export const lessonCompletionMark = (): string => nowIso();
+
+/**
+ * 课程里练错过一次以上的句子，回流成句子卡，进入现有 SM-2 复习队列。
+ * 同一句子 + 同一课程只收一次，避免反复刷课产生重复卡片。
+ */
+export const addLessonMistakeSentence = (
+  data: AppData,
+  lesson: GrammarLesson,
+  sentence: string,
+  grammarNote: string
+): AppData => {
+  const trimmed = sentence.trim();
+  if (!trimmed) return data;
+  const duplicated = data.cards.some(
+    (card) => card.type === "sentence" && card.front.trim() === trimmed && card.sourceId === `lesson:${lesson.id}`
+  );
+  if (duplicated) return data;
+
+  return addSentence(data, {
+    sentence: trimmed,
+    translation: "",
+    keywords: "",
+    grammarNote,
+    sourceId: `lesson:${lesson.id}`,
+    note: `语法课：${lesson.episode} ${lesson.title}`,
+    tags: "语法"
+  });
+};

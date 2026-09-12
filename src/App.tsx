@@ -2,6 +2,7 @@ import {
   BookOpenCheck,
   BookMarked,
   FileText,
+  GraduationCap,
   Home,
   Library,
   ListChecks,
@@ -30,11 +31,17 @@ import SettingsPage from "./pages/SettingsPage";
 import UnitsPage from "./pages/UnitsPage";
 import AdventurePage from "./pages/AdventurePage";
 import AdventurePlayPage from "./pages/AdventurePlayPage";
+import GrammarPathPage from "./pages/GrammarPathPage";
+import GrammarReviewPage from "./pages/GrammarReviewPage";
+import GrammarLessonPage from "./pages/GrammarLessonPage";
+import GrammarHuntPage from "./pages/GrammarHuntPage";
+import GrammarDiaryPage from "./pages/GrammarDiaryPage";
 
 const navItems = [
-  { to: "/today", label: "今日", icon: Home, group: "训练台" },
+  { to: "/today", label: "首页", icon: Home, group: "训练台" },
   { to: "/training", label: "训练", icon: ListChecks, group: "训练台" },
   { to: "/adventure", label: "冒险", icon: Compass, group: "训练台" },
+  { to: "/grammar", label: "语法", icon: GraduationCap, group: "训练台" },
   { to: "/mistakes", label: "错词本", icon: BookMarked, group: "训练台" },
   { to: "/units", label: "词书", icon: BookOpenCheck, group: "内容库" },
   { to: "/add", label: "添加", icon: PlusCircle, group: "内容库" },
@@ -65,8 +72,8 @@ const AppLayout = () => {
           <div className="brand">
             <BrandMark size={40} />
             <div className="brand-copy">
-              <strong>听写工坊</strong>
-              <span>个人词句训练</span>
+              <strong>今日词</strong>
+              <span>让词汇更简单</span>
             </div>
           </div>
         </div>
@@ -107,6 +114,10 @@ const AppLayout = () => {
             <span>更多</span>
           </button>
         </nav>
+        <div className="sidebar-footer">
+          <strong>每天进步一点点</strong>
+          <span>遇见更好的自己</span>
+        </div>
         {isMobileMoreOpen && (
           <>
             <button
@@ -135,6 +146,11 @@ const AppLayout = () => {
           <Route path="/training" element={<TrainingPage />} />
           <Route path="/adventure" element={<AdventurePage />} />
           <Route path="/adventure/:adventureId" element={<AdventurePlayPage />} />
+          <Route path="/grammar" element={<GrammarPathPage />} />
+          <Route path="/grammar/review" element={<GrammarReviewPage />} />
+          <Route path="/grammar/lesson/:lessonId" element={<GrammarLessonPage />} />
+          <Route path="/grammar/hunt" element={<GrammarHuntPage />} />
+          <Route path="/grammar/diary" element={<GrammarDiaryPage />} />
           <Route path="/mistakes" element={<MistakeBookPage />} />
           <Route path="/add" element={<AddPage />} />
           <Route path="/library" element={<LibraryPage />} />

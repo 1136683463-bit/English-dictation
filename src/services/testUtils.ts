@@ -13,6 +13,7 @@ const defaultSettings: Settings = {
   speechRate: 0.9,
   autoSpeakInSpelling: true,
   lastExportedAt: "",
+  diaryDailyCount: 3,
   aiProvider: {
     enabled: false,
     baseUrl: "",
@@ -45,6 +46,10 @@ export const makeTestData = (patch: TestDataPatch = {}): AppData => ({
   reviews: [],
   mistakeGenerations: [],
   adventures: [],
+  huntAttempts: [],
+  huntResults: [],
+  grammarLessonsDone: [],
+  diaryEntries: [],
   schedules: [],
   dictionaryEntries: [],
   seededWordVersions: ["core-100-v1"],
