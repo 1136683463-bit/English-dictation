@@ -84,6 +84,7 @@ const getUnitCoverEnd = (color: string) => unitCoverEndMap[color.toLowerCase()] 
 export default function UnitsPage() {
   const { data, updateData, updateDataAsync } = useAppData();
   const [selectedUnitId, setSelectedUnitId] = useState("");
+  const [isGroupFormOpen, setIsGroupFormOpen] = useState(false);
   const [assignQuery, setAssignQuery] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [isUnitModalOpen, setIsUnitModalOpen] = useState(false);
@@ -550,22 +551,22 @@ export default function UnitsPage() {
         </div>
         <div className="vocab-goal-stats">
           <div>
-            <Target size={18} />
+            <Target size={14} />
             <span>总词数</span>
             <strong>{goalStats.total}</strong>
           </div>
           <div>
-            <Plus size={18} />
+            <Plus size={14} />
             <span>新词</span>
             <strong>{goalStats.newWords}</strong>
           </div>
           <div>
-            <Keyboard size={18} />
+            <Keyboard size={14} />
             <span>学习中</span>
             <strong>{goalStats.learning}</strong>
           </div>
           <div>
-            <CalendarDays size={18} />
+            <CalendarDays size={14} />
             <span>今日待复习</span>
             <strong>{goalStats.dueToday}</strong>
           </div>
@@ -577,39 +578,54 @@ export default function UnitsPage() {
           <EmptyState title="还没有单元" description="可以新建一个单元，或者刷新后使用内置核心100单元。" />
         )}
 
-        <form className="unit-group-create" onSubmit={createGroup}>
-          <div>
-            <span className="eyebrow">Groups</span>
-            <h2>书架分组</h2>
-            <p>把同一套词书放在一起；分组颜色会同步到组内词书封面。</p>
-          </div>
-          <label>
-            分组名
-            <input
-              value={newGroupTitle}
-              onChange={(event) => setNewGroupTitle(event.target.value)}
-              placeholder="例如：核心100 / 考研高频"
-            />
-          </label>
-          <div className="unit-group-create-actions">
-            <div className="color-picker-row compact" aria-label="新分组颜色">
-              {unitColors.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  className={newGroupColor === item ? "selected" : ""}
-                  style={{ background: item }}
-                  title={item}
-                  onClick={() => setNewGroupColor(item)}
-                />
-              ))}
+        <div className="unit-group-toolbar">
+          <span className="unit-group-toolbar-hint">书架分组：把同一套词书放在一起</span>
+          <button className="secondary-button compact-button" type="button" onClick={() => setIsGroupFormOpen((current) => !current)}>
+            <Plus size={15} />
+            {isGroupFormOpen ? "收起" : "新建分组"}
+          </button>
+        </div>
+
+        {isGroupFormOpen && (
+          <form className="unit-group-create" onSubmit={createGroup}>
+            <div>
+              <span className="eyebrow">Groups</span>
+              <h2>书架分组</h2>
+              <p>分组颜色会同步到组内词书封面。</p>
             </div>
-            <button className="primary-button" type="submit" disabled={!newGroupTitle.trim()}>
-              <Plus size={17} />
-              新建分组
-            </button>
-          </div>
-        </form>
+            <label>
+              分组名
+              <input
+                value={newGroupTitle}
+                onChange={(event) => setNewGroupTitle(event.target.value)}
+                placeholder="例如：核心100 / 考研高频"
+              />
+            </label>
+            <div className="unit-group-create-actions">
+              <div className="color-picker-row compact" aria-label="新分组颜色">
+                {unitColors.map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    className={newGroupColor === item ? "selected" : ""}
+                    style={{ background: item }}
+                    title={item}
+                    onClick={() => setNewGroupColor(item)}
+                  />
+                ))}
+              </div>
+              <div className="button-row">
+                <button className="primary-button" type="submit" disabled={!newGroupTitle.trim()}>
+                  <Plus size={17} />
+                  新建分组
+                </button>
+                <button className="secondary-button" type="button" onClick={() => setIsGroupFormOpen(false)}>
+                  取消
+                </button>
+              </div>
+            </div>
+          </form>
+        )}
 
         {groupedUnitSections.map((section) => {
           const isUngrouped = !section.id;
@@ -895,46 +911,66 @@ export default function UnitsPage() {
               <div>
                 <span className="eyebrow">Unit Words</span>
                 <h2 id="unit-modal-title">{selectedUnit.title}</h2>
-                <p>{selectedUnit.description || "自定义单元"} · 到期 {selectedStats.due} · 正确率 {selectedStats.accuracy || 0}%</p>
+                <p>{selectedUnit.description || "自定义单元"}</p>
               </div>
-              <button className="icon-button unit-modal-close" type="button" title="关闭弹窗" onClick={closeUnitModal}>
-                <X size={18} />
-              </button>
+              <div className="unit-modal-head-side">
+                <div
+                  className="unit-modal-ring"
+                  role="img"
+                  aria-label={`完成度 ${selectedStats.completionPercent}%`}
+                  style={{ "--ring-percent": `${selectedStats.completionPercent}%` } as CSSProperties}
+                >
+                  <div className="unit-modal-ring-inner">
+                    <strong>{selectedStats.completionPercent}%</strong>
+                    <span>已完成</span>
+                  </div>
+                </div>
+                <button className="icon-button unit-modal-close" type="button" title="关闭弹窗" onClick={closeUnitModal}>
+                  <X size={18} />
+                </button>
+              </div>
             </header>
 
-            <div className="unit-modal-stats" aria-label="单元学习数据">
-              <div>
-                <span>总词数</span>
-                <strong>{selectedStats.total}</strong>
+            <div className="unit-modal-progress" aria-label="单元学习数据">
+              <div className="unit-progress-head">
+                <div
+                  className="unit-progress-track"
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={selectedStats.completionPercent}
+                  aria-label="掌握进度"
+                >
+                  <div className="unit-progress-fill" style={{ width: `${selectedStats.completionPercent}%` }} />
+                </div>
+                <span className="unit-progress-label">
+                  已掌握 <strong>{selectedStats.mastered}</strong> / {selectedStats.total}
+                </span>
               </div>
-              <div>
-                <span>新词</span>
-                <strong>{selectedStats.newWords}</strong>
+              <div className="unit-status-row">
+                <span className="unit-status-chip">
+                  <i className="status-dot dot-new" />
+                  新词 {selectedStats.newWords}
+                </span>
+                <span className="unit-status-chip">
+                  <i className="status-dot dot-learning" />
+                  学习中 {selectedStats.learning}
+                </span>
+                <span className="unit-status-chip">
+                  <i className="status-dot dot-mastered" />
+                  已掌握 {selectedStats.mastered}
+                </span>
+                <span className={`unit-status-chip${selectedStats.due > 0 ? " attention" : ""}`}>
+                  <i className="status-dot dot-due" />
+                  今日到期 {selectedStats.due}
+                </span>
               </div>
-              <div>
-                <span>学习中</span>
-                <strong>{selectedStats.learning}</strong>
-              </div>
-              <div>
-                <span>已掌握</span>
-                <strong>{selectedStats.mastered}</strong>
-              </div>
-              <div>
-                <span>今日到期</span>
-                <strong>{selectedStats.due}</strong>
-              </div>
-              <div>
-                <span>完成百分比</span>
-                <strong>{selectedStats.completionPercent}%</strong>
-              </div>
-              <div>
-                <span>预计天数</span>
-                <strong>{selectedStats.estimatedDays}</strong>
-              </div>
-              <div>
-                <span>薄弱词</span>
-                <strong>{selectedWeakCount}</strong>
-              </div>
+              <p className="unit-substats">
+                正确率 {selectedStats.accuracy || 0}%
+                {selectedStats.reviewed > 0 && <> · 已测 {selectedStats.reviewed} 次</>}
+                {selectedStats.estimatedDays > 0 && <> · 预计 {selectedStats.estimatedDays} 天完成</>}
+                {selectedWeakCount > 0 && <> · 薄弱词 {selectedWeakCount}</>}
+              </p>
             </div>
 
             <div className="unit-modal-actions">
@@ -1068,14 +1104,23 @@ export default function UnitsPage() {
                   <div className="compact-word-list unit-modal-word-list">
                     {selectedCards.map((card) => {
                       const details = getWordDetails(data, card.id);
+                      const statusLabel =
+                        card.status === "new"
+                          ? "新词"
+                          : card.status === "mastered"
+                            ? "已掌握"
+                            : card.status === "review"
+                              ? "复习中"
+                              : "学习中";
                       return (
                         <article key={card.id}>
+                          <span className={`word-status s-${card.status || "learning"}`}>{statusLabel}</span>
                           <div>
                             <strong>{card.front}</strong>
                             <span>{details?.phonetic}</span>
                             <p>{card.back}</p>
                           </div>
-                          <button className="icon-button" type="button" title="移出单元" onClick={() => removeFromSelected(card.id)}>
+                          <button className="icon-button word-remove" type="button" title="移出单元" onClick={() => removeFromSelected(card.id)}>
                             <X size={16} />
                           </button>
                         </article>

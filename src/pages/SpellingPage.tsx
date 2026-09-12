@@ -653,7 +653,7 @@ export default function SpellingPage() {
         </aside>
       )}
 
-      <section className="spelling-stage">
+      <section className="spelling-stage" key={`${card.id}-${index}-${feedback ? "checked" : "pending"}`}>
         <div className="spelling-word-preview">
           <span>{details?.phonetic || "无音标 · 听音拼写"}</span>
           {showHint && (
@@ -683,16 +683,6 @@ export default function SpellingPage() {
             <Volume2 size={40} />
           </button>
         </div>
-
-        {feedback?.isCorrect && (
-          <div className="spelling-feedback correct">
-            <CheckCircle2 size={22} />
-            <div>
-              <strong>拼写正确</strong>
-              <p>已记录为熟练，马上进入下一题。</p>
-            </div>
-          </div>
-        )}
 
         <div className="spelling-actions">
           <button className="primary-button" type="button" onClick={submitAnswer} disabled={Boolean(feedback) || Boolean(autoAdvanceTimerRef.current)}>

@@ -1,5 +1,6 @@
-import { ArrowRight, BookOpen, Keyboard, Languages, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, Clock3, Keyboard, Languages, Layers } from "lucide-react";
 import { Link } from "react-router-dom";
+import BrandMark from "../components/BrandMark";
 import { useAppData } from "../AppContext";
 
 export default function EntryPage() {
@@ -11,22 +12,25 @@ export default function EntryPage() {
     <div className="entry-page">
       <div className="entry-shell">
         <div className="entry-brand">
-          <div className="brand-icon large">
-            <Sparkles size={24} />
-          </div>
+          <BrandMark size={48} />
           <div>
-            <span className="eyebrow">Open</span>
             <h1>听写工坊</h1>
-            <p>个人背单词和句子的入口页，先进去，再开始今天的复习。</p>
+            <p>个人单词与句子训练工作台，先进训练台清完今日到期，再推进新词。</p>
           </div>
         </div>
 
         <div className="entry-stats">
           <div>
+            <span className="entry-stat-icon" aria-hidden="true">
+              <Layers size={17} />
+            </span>
             <span>卡片总数</span>
             <strong>{totalCards}</strong>
           </div>
-          <div>
+          <div className={dueCards > 0 ? "due-today" : undefined}>
+            <span className="entry-stat-icon" aria-hidden="true">
+              <Clock3 size={17} />
+            </span>
             <span>今日到期</span>
             <strong>{dueCards}</strong>
           </div>

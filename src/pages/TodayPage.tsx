@@ -4,6 +4,7 @@ import {
   BookMarked,
   CheckCircle2,
   Clock,
+  Flame,
   Keyboard,
   Layers,
   Plus,
@@ -11,9 +12,9 @@ import {
   Volume2,
   Zap
 } from "lucide-react";
+import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
-import PageHeader from "../components/PageHeader";
 import { getLearningStats, getRecentErrorReviews } from "../services/reviewService";
 import { getUnitStats } from "../services/unitService";
 import { CardType, ReviewMode } from "../types";
@@ -55,6 +56,35 @@ const estimateMinutes = (dueTotal: number, weakWords: number) => {
   return Math.max(8, Math.min(28, Math.ceil(dueTotal * 0.1 + weakWords * 0.5)));
 };
 
+const dayKey = (date: Date) => date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
+
+const computeStreak = (reviews: { reviewedAt: string }[]) => {
+  const days = new Set(reviews.map((review) => dayKey(new Date(review.reviewedAt))));
+  const offsetKey = (offset: number) => {
+    const date = new Date();
+    date.setDate(date.getDate() - offset);
+    return dayKey(date);
+  };
+
+  let cursor = days.has(offsetKey(0)) ? 0 : days.has(offsetKey(1)) ? 1 : -1;
+  if (cursor === -1) return 0;
+
+  let streak = 0;
+  while (days.has(offsetKey(cursor))) {
+    streak += 1;
+    cursor += 1;
+  }
+  return streak;
+};
+
+const greetingByHour = () => {
+  const hour = new Date().getHours();
+  if (hour < 11) return "早上好";
+  if (hour < 14) return "中午好";
+  if (hour < 18) return "下午好";
+  return "晚上好";
+};
+
 export default function TodayPage() {
   const { data } = useAppData();
   const stats = getLearningStats(data);
@@ -87,22 +117,54 @@ export default function TodayPage() {
         : stats.availableNewWords > 0
           ? "可以推进新词"
           : "今天轻量保持";
+  const streak = computeStreak(data.reviews);
+  const todayPercent = Math.min(100, Math.round((stats.reviewedToday / Math.max(1, stats.dueReviewGoal)) * 100));
+  const today = new Date();
+  const dateLabel = new Intl.DateTimeFormat("zh-CN", {
+    month: "long",
+    day: "numeric",
+    weekday: "long"
+  }).format(today);
 
   return (
     <div className="page today-page">
-      <PageHeader
-        eyebrow="Today"
-        title={`今天建议先练 ${minutes} 分钟`}
-        description={`${primaryTask}。单词是入口，句子是核心，错误会自动变成下一轮训练。`}
-      />
+      <header className="page-header today-greeting">
+        <div>
+          <h1>{greetingByHour()}，继续今天的练习</h1>
+          <p>
+            {dateLabel} · 建议{primaryTask}，先练 {minutes} 分钟
+          </p>
+        </div>
+        {streak > 0 && (
+          <div className="page-action">
+            <span className="streak-pill">
+              <Flame size={16} />
+              连续打卡 {streak} 天
+            </span>
+          </div>
+        )}
+      </header>
 
       <section className="action-hero">
         <div className="action-hero-main">
-          <span className="eyebrow">Next Best Action</span>
-          <h2>{primaryTask}</h2>
-          <p>
-            到期 {stats.dueTotal} 个 · 错词 {stats.weakWords} 个 · 今日已练 {stats.reviewedToday} 次。
-          </p>
+          <div className="action-hero-headline">
+            <div
+              className="action-hero-ring"
+              role="img"
+              aria-label={`今日目标完成 ${todayPercent}%`}
+              style={{ "--ring-percent": `${todayPercent * 3.6}deg` } as CSSProperties}
+            >
+              <strong>{todayPercent}%</strong>
+              <span>今日目标</span>
+            </div>
+            <div>
+              <span className="eyebrow">Next Best Action</span>
+              <h2>{primaryTask}</h2>
+              <p>
+                到期 {stats.dueTotal} 个 · 错词 {stats.weakWords} 个 · 今日已练 {stats.reviewedToday} 次。
+              </p>
+            </div>
+          </div>
           <div className="action-hero-actions">
             <Link to="/training" className="primary-button">
               开始今日训练
@@ -154,7 +216,7 @@ export default function TodayPage() {
               </div>
               <em>{stats.reviewedToday} / {stats.dueReviewGoal}</em>
             </Link>
-            <Link to="/mistakes" className="task-row warning">
+            <Link to="/mistakes" className={`task-row${stats.weakWords > 0 || stats.wrongToday > 0 ? " warning" : ""}`}>
               <span className="goal-icon danger"><AlertTriangle size={18} /></span>
               <div>
                 <strong>错词专项</strong>
