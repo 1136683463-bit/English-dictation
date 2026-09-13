@@ -1,4 +1,4 @@
-import { ArrowLeft, CheckCircle2, Eraser, Search, Sparkles } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Eraser, Flag, Search, Sparkles, Volume2 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
@@ -76,16 +76,41 @@ const outputSkeleton = (sentence: string): string => {
 
 /**
  * R23：跨重启累计每课学习时长——修复 durationMs 被课中重启截断的问题
- * （L06 真实首轮 285.7s，旧口径只记了末段 100.5s）。应用会话内有效；完课后清零。
+ * （L06 真实首轮 285.7s，旧口径只记了末段 100.5s）。完课后清零。
+ * R23b：累计器持久化到 localStorage（旁路键，不进 AppData），跨应用重启也不丢。
  */
-const lessonTimeAccumulator = new Map<string, number>();
+const LESSON_TIME_KEY = "grammar-lesson-time-v1";
+
+const readPersistedLessonTime = (): Record<string, number> => {
+  try {
+    if (typeof window === "undefined") return {};
+    const raw = window.localStorage.getItem(LESSON_TIME_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw) as Record<string, number>;
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+};
+
+const lessonTimeAccumulator = new Map<string, number>(Object.entries(readPersistedLessonTime()));
 const lessonSessionStart = new Map<string, number>();
+
+/** 把累计器快照写入 localStorage（每次结算时调用；失败静默，绝不影响学习主流程）。 */
+const persistLessonTime = () => {
+  try {
+    window.localStorage.setItem(LESSON_TIME_KEY, JSON.stringify(Object.fromEntries(lessonTimeAccumulator)));
+  } catch {
+    // 存储满 / 隐私模式：静默降级为会话内累计（R23 原行为）
+  }
+};
 
 const accumulateLessonTime = (lessonId: string) => {
   const startedAt = lessonSessionStart.get(lessonId);
   if (startedAt === undefined) return;
   lessonTimeAccumulator.set(lessonId, (lessonTimeAccumulator.get(lessonId) ?? 0) + Math.max(0, Date.now() - startedAt));
   lessonSessionStart.delete(lessonId);
+  persistLessonTime();
 };
 
 /** R2：深挖卡展开偏好——默认展开（试玩实证 3/3 主动展开）；用户折叠/展开后记住偏好，后续课沿用。 */
@@ -335,6 +360,8 @@ export default function GrammarLessonPage() {
   const [practiceOrder, setPracticeOrder] = useState<number[]>([]);
   const [dragChip, setDragChip] = useState<{ from: "bank" | "build"; index: number } | null>(null);
   const [insertAt, setInsertAt] = useState<number | null>(null);
+  /** R3 对比题分布：练段常规题做完后、产出题前，插入「再看两组对错」位点（讲解段已放 2 组，此处再放 2 组）。 */
+  const [midContrastOpen, setMidContrastOpen] = useState(false);
 
   // ── R01 数据埋点：课程计时 + 「一次通过」标记（旁路记录，不参与判题逻辑）──
   const lessonStartRef = useRef(Date.now());
@@ -381,6 +408,32 @@ export default function GrammarLessonPage() {
     };
   }, [lessonKey]);
 
+  // ── R20 段级停留：进入新段（或产出/破案子态）时，结算上一段的停留时长 ──
+  // 六段预算核验的来源（PRD §7：看 90–140s / 跟 50–80s / 忆 40–60s / 练 100–160s / 产 50–80s / 破 60–110s）。
+  const sectionDwellRef = useRef<{ lessonId: string; section: LessonSection; at: number }>({
+    lessonId: "",
+    section: "pretest",
+    at: 0
+  });
+  // 产出是 practice 段内的子态（outputActive），完课小结挂 challenge 桶（破 + 收）
+  const currentSection: LessonSection =
+    stage === "practice" ? (practiceDone ? "challenge" : outputActive ? "output" : "practice") : stage;
+  useEffect(() => {
+    const now = Date.now();
+    const prev = sectionDwellRef.current;
+    // 同一课内才结算（跨课切换不计入）；≥1s 才记录，滤掉严格模式双调用与快速切换的噪音
+    if (prev.lessonId && prev.lessonId === lessonKey && now - prev.at >= 1000) {
+      appendGrammarEvent({
+        kind: "section_dwell",
+        lessonId: prev.lessonId,
+        section: prev.section,
+        dwellMs: now - prev.at,
+        ts: nowIso()
+      });
+    }
+    sectionDwellRef.current = { lessonId: lessonKey, section: currentSection, at: now };
+  }, [currentSection, lessonKey]);
+
   // R02：课前测试题——choose 复用引导题第 1 题，contrast 复用第一组正误对比
   const pretestQuestions = useMemo<PretestQuestion[]>(() => {
     if (!lesson) return [];
@@ -423,6 +476,8 @@ export default function GrammarLessonPage() {
   }
 
   const isDone = data.grammarLessonsDone.includes(lesson.id);
+  // R08：纯零基础判定——第 1 课且尚未完成任何课。此态 pretest 导览化（不判分、纯预览）。
+  const isFirstEverLesson = lesson.number === 1 && (data.grammarLessonsDone ?? []).length === 0;
   const guidedStep: LessonGuidedStep | undefined = lesson.guided[guided.index];
   const practiceStep: LessonPracticeStep | undefined = lesson.practice[practiceIndex];
 
@@ -832,6 +887,14 @@ export default function GrammarLessonPage() {
 
   const practiceNext = () => {
     if (practiceIndex + 1 >= lesson.practice.length) {
+      // R3 分布位点②：讲解段只放了 2 组对比，若本课对比题更多（≥3 组），
+      // 练段末尾、产出题前先插入「再看两组对错」——分布到 ≥2 个位置，避免集中开头。
+      const hasMidContrast = (lesson.contrast?.length ?? 0) > 2;
+      if (hasMidContrast && !midContrastOpen && !outputActive) {
+        setMidContrastOpen(true);
+        window.scrollTo({ top: 0 });
+        return;
+      }
       // R04：常规练习结束后先进入「无提示输出」，完成（或看答案）后再真正完课
       if (!outputActive) {
         setOutputActive(true);
@@ -858,6 +921,7 @@ export default function GrammarLessonPage() {
       });
       lessonTimeAccumulator.delete(lesson.id);
       lessonSessionStart.delete(lesson.id);
+      persistLessonTime();
       lessonStartRef.current = Date.now();
       updateData((latest) => markLessonDone(latest, lesson.id));
       setPracticeDone(true);
@@ -1036,7 +1100,30 @@ export default function GrammarLessonPage() {
       {/* ───────────────── ⭐ 课前试一试（Test→Teach→Test 的前测） ───────────────── */}
       {stage === "pretest" && (
         <section className="lesson-stage" aria-label="课前试一试">
-          {pretestFinished || pretestQuestions.length === 0 ? (
+          {/* R08 首课导览化：纯零基础（首课且未完成任何课）不判分、纯预览，
+              避免「连题干都读不懂就被考」的无力感；其余课保留原前测逻辑。 */}
+          {isFirstEverLesson && !pretestFinished ? (
+            <div className="lesson-complete">
+              <Sparkles size={28} />
+              <h2>先看看今天要避免的误读</h2>
+              <p>下面两句是初学者最容易踩的坑。看一眼、心里有个印象就行——不考你，讲解里会揭晓。</p>
+              <div className="lesson-pretest-review">
+                {pretestQuestions.map((question, index) => (
+                  <div className="lesson-summary-card" key={index}>
+                    <p className="lesson-summary-grammar">第 {index + 1} 处 · {question.kind === "choose" ? "选对搭档" : "看出问题"}</p>
+                    <p className="lesson-summary-rule">
+                      {question.kind === "choose" ? question.prompt : question.sentence}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <div className="lesson-stage-actions">
+                <button type="button" className="primary-button" onClick={() => { setPretestFinished(true); gotoStage("watch"); }}>
+                  去讲解里揭晓
+                </button>
+              </div>
+            </div>
+          ) : pretestFinished || pretestQuestions.length === 0 ? (
             <div className="lesson-complete">
               <Sparkles size={28} />
               {pretestQuestions.length === 0 ? (
@@ -1256,7 +1343,8 @@ export default function GrammarLessonPage() {
                 {lesson.contrast && lesson.contrast.length > 0 && (
                   <div className="lesson-contrast-block">
                     <p className="lesson-section-label">有人是这样说的，你帮他看看</p>
-                    {lesson.contrast.map((item, index) => (
+                    {/* R3 分布位点①：讲解段只放前 2 组对比，避免一屏 6 卡造成阅读疲劳；余下分布到练段与挑战前 */}
+                    {lesson.contrast.slice(0, 2).map((item, index) => (
                       <LessonContrastCard
                         key={index}
                         item={item}
@@ -1356,6 +1444,12 @@ export default function GrammarLessonPage() {
                 <button type="button" className="secondary-button" onClick={() => setWatchStep(1)}>
                   上一步
                 </button>
+                {/* R08：前测全对（非首课）给「可快进」出口——已会的内容不必走完引导题 */}
+                {!isFirstEverLesson && pretestWrongCount === 0 && pretestFinished && (
+                  <button type="button" className="secondary-button" onClick={() => gotoStage("practice")}>
+                    已会，直接去练习
+                  </button>
+                )}
                 <button type="button" className="primary-button" onClick={() => gotoStage("guided")}>
                   看懂了，试一试
                 </button>
@@ -1392,15 +1486,24 @@ export default function GrammarLessonPage() {
                 </div>
                 {guidedFeedback === "retry" && <p className="lesson-spot-hint">这一块看起来没问题，再点点别的词块。</p>}
               </div>
-            ) : guidedStep.kind === "choose" ? (
+            ) : guidedStep.kind === "choose" || guidedStep.kind === "replace" ? (
               <div className="lesson-choose" style={{ display: "grid", gap: 20 }}>
-                <p className="lesson-choose-sentence">
-                  <span>{guidedStep.before}</span>
-                  <span className="lesson-choose-blank">
-                    {guided.picked[0] ?? "＿＿"}
-                  </span>
-                  <span>{guidedStep.after}</span>
-                </p>
+                {guidedStep.kind === "replace" ? (
+                  /* R9 变形/替换题：展示原句 + 替换提示，选项行与 choose 共用 */
+                  <p className="lesson-choose-sentence">
+                    <span className="lesson-replace-base">{guidedStep.replaceBase}</span>
+                    <span className="lesson-replace-arrow"> → {guidedStep.replaceTarget}：</span>
+                    <span className="lesson-choose-blank">{guided.picked[0] ?? "＿＿"}</span>
+                  </p>
+                ) : (
+                  <p className="lesson-choose-sentence">
+                    <span>{guidedStep.before}</span>
+                    <span className="lesson-choose-blank">
+                      {guided.picked[0] ?? "＿＿"}
+                    </span>
+                    <span>{guidedStep.after}</span>
+                  </p>
+                )}
                 <div className="lesson-option-row">
                   {(guidedStep.options ?? []).map((option) => (
                     <button
@@ -1524,7 +1627,45 @@ export default function GrammarLessonPage() {
       )}
 
       {/* ───────────────── ④ 练 · 自己来 ───────────────── */}
-      {stage === "practice" && practiceStep && !practiceDone && !outputActive && (
+      {/* ───────────────── R3 分布位点② · 练段末尾再看两组对错 ───────────────── */}
+      {stage === "practice" && midContrastOpen && !outputActive && !practiceDone && (
+        <section className="lesson-stage" aria-label="再看两组对错">
+          <div className="lesson-quiz-card">
+            <div className="lesson-quiz-head">
+              <span className="lesson-quiz-step">练完一轮，再帮他看看这两句</span>
+              <span className="lesson-quiz-note">挑出对的那句——错的能说出哪不对就更稳了</span>
+            </div>
+            <div className="lesson-contrast-block">
+              {(lesson.contrast ?? []).slice(2, 4).map((item, offset) => {
+                const index = offset + 2;
+                return (
+                  <LessonContrastCard
+                    key={index}
+                    item={item}
+                    index={index}
+                    onJudge={(passed) => recordStepResult("practice", "contrast", index, passed ? 0 : 1, passed)}
+                  />
+                );
+              })}
+            </div>
+            <div className="lesson-stage-actions center">
+              <button
+                type="button"
+                className="primary-button"
+                onClick={() => {
+                  setMidContrastOpen(false);
+                  setOutputActive(true);
+                  window.scrollTo({ top: 0 });
+                }}
+              >
+                最后一步：说出来
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {stage === "practice" && practiceStep && !practiceDone && !outputActive && !midContrastOpen && (
         <section className="lesson-stage" aria-label="自己来">
           <div className="lesson-quiz-card">
             <div className="lesson-quiz-head">
@@ -1718,74 +1859,124 @@ export default function GrammarLessonPage() {
       {practiceDone && (stage === "practice" || stage === "challenge") && (
         <section className="lesson-stage" aria-label="课程完成">
           <div className="lesson-complete">
-            <CheckCircle2 size={28} />
-            <h2>第 {lesson.number} 课完成</h2>
+            <header className="complete-hero">
+              <span className="complete-hero-badge">
+                <CheckCircle2 size={26} strokeWidth={2.4} />
+              </span>
+              <h2>第 {lesson.number} 课完成</h2>
+              <p className="complete-hero-sub">
+                学完这 20 课，你就能用 60 多个句子介绍自己、讲正在做的事、说明天的计划。
+              </p>
+            </header>
 
-            {/* ✅ 掌握了什么 */}
-            <p className="lesson-section-label">✅ 这一课掌握了什么</p>
-            {lesson.summary ? (
-              <div className="lesson-summary-card">
-                <p className="lesson-summary-grammar">{lesson.grammarLabel}</p>
-                <p className="lesson-summary-rule">
-                  <span className="lesson-rule-label">一句话</span>
-                  {lesson.summary.rule}
-                </p>
-                <ul className="lesson-summary-points">
-                  {lesson.summary.points.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : (
-              <div className="lesson-summary-card">
-                <p className="lesson-summary-grammar">{lesson.grammarLabel}</p>
-                <p className="lesson-summary-rule">{lesson.oneLineRule}</p>
+            <div className="complete-receipt">
+              {/* ✅ 掌握了什么 */}
+              <section className="receipt-block">
+                <h3 className="receipt-block-title">
+                  <span className="receipt-block-icon gain" aria-hidden="true">
+                    <CheckCircle2 size={14} strokeWidth={2.6} />
+                  </span>
+                  这一课掌握了什么
+                </h3>
+                {lesson.summary ? (
+                  <div className="receipt-card">
+                    <span className="receipt-chip">{lesson.grammarLabel}</span>
+                    <p className="receipt-rule">
+                      <span className="lesson-rule-label">一句话</span>
+                      {lesson.summary.rule}
+                    </p>
+                    <ul className="receipt-points">
+                      {lesson.summary.points.map((point) => (
+                        <li key={point}>{point}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <div className="receipt-card">
+                    <span className="receipt-chip">{lesson.grammarLabel}</span>
+                    <p className="receipt-rule">{lesson.oneLineRule}</p>
+                  </div>
+                )}
+              </section>
+
+              {/* 🗣️ 你现在能说出哪几个新句子 */}
+              <section className="receipt-block">
+                <h3 className="receipt-block-title">
+                  <span className="receipt-block-icon speak" aria-hidden="true">
+                    <Volume2 size={14} strokeWidth={2.6} />
+                  </span>
+                  你现在能说出这些新句子
+                </h3>
+                <div className="receipt-card">
+                  <ul className="receipt-sentences">
+                    <li>
+                      <span className="receipt-sentence-text">{lesson.targetSentence}</span>
+                      <SpeakButton text={lesson.targetSentence} />
+                    </li>
+                    {(lesson.variants ?? []).map((variant) => (
+                      <li key={variant.en}>
+                        <span className="receipt-sentence-text">
+                          <em className="receipt-sentence-label">{variant.label}</em>
+                          {variant.en}
+                        </span>
+                        <SpeakButton text={variant.en} />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </section>
+
+              {/* ⚠️ 还差什么 */}
+              <section className="receipt-block">
+                <h3 className="receipt-block-title">
+                  <span className="receipt-block-icon gap" aria-hidden="true">
+                    <Flag size={13} strokeWidth={2.6} />
+                  </span>
+                  还差什么
+                </h3>
+                <div className="receipt-card">
+                  {reviewNotes.length > 0 ? (
+                    <ul className="receipt-points">
+                      {reviewNotes.map((note) => (
+                        <li key={note}>{note}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="receipt-rule">本课没有留下漏洞——真棒。</p>
+                  )}
+                  {pretestWrongCount > 0 && (
+                    <p className="receipt-rule">
+                      前测里拿不准的 {pretestWrongCount} 处，这一课已经讲过、也练过了。
+                    </p>
+                  )}
+                  <p className="receipt-queue-note">
+                    上面这些句子已排进复习队列，明天会自动来见你
+                    <Link to="/grammar/review" className="receipt-queue-link">
+                      去复习
+                    </Link>
+                  </p>
+                </div>
+              </section>
+            </div>
+
+            {/* R3 分布位点③ · 挑战前最后一轮对错（剩余对比组，去破案前再稳一次） */}
+            {(lesson.contrast?.length ?? 0) > 4 && (
+              <div className="lesson-contrast-block">
+                <p className="lesson-section-label">去破案之前，最后再帮他看两句</p>
+                {(lesson.contrast ?? []).slice(4).map((item, offset) => {
+                  const index = offset + 4;
+                  return (
+                    <LessonContrastCard
+                      key={index}
+                      item={item}
+                      index={index}
+                      onJudge={(passed) => recordStepResult("challenge", "contrast", index, passed ? 0 : 1, passed)}
+                    />
+                  );
+                })}
               </div>
             )}
 
-            {/* 🗣️ 你现在能说出哪几个新句子 */}
-            <p className="lesson-section-label">🗣️ 你现在能说出这些新句子</p>
-            <div className="lesson-summary-card">
-              <ul className="lesson-summary-points">
-                <li>
-                  {lesson.targetSentence}
-                  <SpeakButton text={lesson.targetSentence} />
-                </li>
-                {(lesson.variants ?? []).map((variant) => (
-                  <li key={variant.en}>
-                    {variant.label}：{variant.en}
-                    <SpeakButton text={variant.en} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* ⚠️ 还差什么 */}
-            <p className="lesson-section-label">⚠️ 还差什么</p>
-            <div className="lesson-summary-card">
-              {reviewNotes.length > 0 ? (
-                <ul className="lesson-summary-points">
-                  {reviewNotes.map((note) => (
-                    <li key={note}>{note}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="lesson-summary-rule">本课没有留下漏洞——真棒。</p>
-              )}
-              {pretestWrongCount > 0 && (
-                <p className="lesson-summary-rule">
-                  前测里拿不准的 {pretestWrongCount} 处，这一课已经讲过、也练过了。
-                </p>
-              )}
-              <p className="lesson-summary-rule">
-                上面这些句子已排进复习队列，明天会自动来见你——
-                <Link to="/grammar/review">去复习</Link>
-              </p>
-            </div>
-
-            <p className="lesson-complete-sub">
-              学完这 20 课，你就能用 60 多个句子介绍自己、讲正在做的事、说明天的计划。
-            </p>
             <div className="lesson-stage-actions">
               {lesson.huntCaseIds.length > 0 && stage === "practice" ? (
                 <button type="button" className="primary-button" onClick={() => gotoStage("challenge")}>

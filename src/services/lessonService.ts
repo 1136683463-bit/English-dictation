@@ -44,6 +44,109 @@ export const getCompletedLessonIds = (data: AppData): Set<string> =>
 export const isLessonDone = (data: AppData, lessonId: string): boolean =>
   getCompletedLessonIds(data).has(lessonId);
 
+// ── F1 三关卡粒度完成态（2026-09-13 PRD）────────────────────────────────
+// 关卡序号口径：1 = 本课正课 / 2 = 次日回访关 / 3 = 旧案重审关。
+// 双写原则：关 1 完成时 grammarLessonsDone 与 grammarLessonStagesDone 同步写；
+// 读口径上，所有存量消费方（路径页点亮、hunt 解锁、进度汇总）继续读 grammarLessonsDone（= 关 1），
+// 只有三关卡 UI/回访逻辑读新字段——旧数据经 backfillLessonStages 补 [1]，老用户不丢进度。
+
+export type LessonStageIndex = 1 | 2 | 3;
+
+/** 读取某课已完成的关卡序号集合（含旧字段回填视角：grammarLessonsDone 有值即视为关 1 完成）。 */
+export const getLessonStagesDone = (data: AppData, lessonId: string): Set<number> => {
+  const stages = new Set(data.grammarLessonStagesDone?.[lessonId] ?? []);
+  if (data.grammarLessonsDone?.includes(lessonId)) stages.add(1);
+  return stages;
+};
+
+export const isLessonStageDone = (data: AppData, lessonId: string, stage: LessonStageIndex): boolean =>
+  getLessonStagesDone(data, lessonId).has(stage);
+
+/** 完成某关（幂等，不可变）。关 1 完成时同步写旧字段（双写），保持存量消费方口径不变。 */
+export const markLessonStageDone = (data: AppData, lessonId: string, stage: LessonStageIndex): AppData => {
+  if (!GRAMMAR_LESSON_BY_ID.has(lessonId)) return data;
+  const current = getLessonStagesDone(data, lessonId);
+  if (current.has(stage)) return data;
+  const nextStages = { ...(data.grammarLessonStagesDone ?? {}) };
+  nextStages[lessonId] = [...current, stage].sort((a, b) => a - b);
+  const withStages: AppData = { ...data, grammarLessonStagesDone: nextStages };
+  // 关 1 = 旧字段口径的「完课」：走既有 markLessonDone 链路（含核心句入 SM-2），保证双写一致。
+  return stage === 1 ? markLessonDone(withStages, lessonId) : withStages;
+};
+
+/**
+ * F1 旧数据回填（幂等）：把 grammarLessonsDone 里已完成、但新字段缺关 1 记录的课程补 [1]。
+ * 双写上线前的存量进度 = 关 1 完成。返回 { data, backfilled } 供 dry-run 对账。
+ */
+export const backfillLessonStages = (data: AppData): { data: AppData; backfilled: number } => {
+  const done = data.grammarLessonsDone ?? [];
+  const stages = { ...(data.grammarLessonStagesDone ?? {}) };
+  let backfilled = 0;
+  for (const lessonId of done) {
+    const existing = new Set(stages[lessonId] ?? []);
+    if (existing.has(1)) continue;
+    existing.add(1);
+    stages[lessonId] = [...existing].sort((a, b) => a - b);
+    backfilled += 1;
+  }
+  return { data: { ...data, grammarLessonStagesDone: stages }, backfilled };
+};
+
+// ── F1 三关卡解锁判定（2026-09-13 PRD §6.1）──────────────────────────────
+// 关 2（次日回访）：关 1 完成 且 SM-2 到期（v1 严格次日 20h，SM-2 内部仍弹性——决策点⑤已拍板）。
+// 关 3（旧案重审）：关 2 完成即解锁（柔性入口，不阻塞——决策点①已拍板）。
+// 关 1 完成时间取自遥测 grammar_lesson_completed.completedAt（最近一次），无事件时回退「已完成即可解锁」
+// （老用户回填进度无时间戳，按「已满次日窗」处理，避免老课永久锁关 2）。
+
+const STAGE2_UNLOCK_DELAY_MS = 20 * 60 * 60 * 1000; // 次日 20h（严格次日窗下界）
+
+export type LessonStageLockState = "locked" | "unlocked" | "done";
+
+export interface LessonStageLockInfo {
+  stage: LessonStageIndex;
+  state: LessonStageLockState;
+  /** 关 2 未解锁时的预计解锁时刻（ISO），供路径页显示「明早 8 点解锁」。 */
+  unlockAt?: string;
+}
+
+/** 关 1 完成时间（遥测最近一次 completed 事件；无则 null）。由调用方注入事件读取，避免反向依赖遥测。 */
+export type LessonCompletedAtReader = (lessonId: string) => string | null;
+
+export const getLessonStageLock = (
+  data: AppData,
+  lessonId: string,
+  stage: LessonStageIndex,
+  readCompletedAt: LessonCompletedAtReader,
+  now = Date.now()
+): LessonStageLockInfo => {
+  const done = getLessonStagesDone(data, lessonId);
+  if (done.has(stage)) return { stage, state: "done" };
+
+  if (stage === 1) {
+    // 关 1 线性解锁：前一课关 1 完成即可（第 1 课恒解锁）。
+    const lesson = GRAMMAR_LESSON_BY_ID.get(lessonId);
+    if (!lesson) return { stage, state: "locked" };
+    if (lesson.number === 1) return { stage, state: "unlocked" };
+    const prev = grammarLessons.find((item) => item.number === lesson.number - 1);
+    const prevDone = prev ? getLessonStagesDone(data, prev.id).has(1) : false;
+    return { stage, state: prevDone ? "unlocked" : "locked" };
+  }
+
+  if (stage === 2) {
+    if (!done.has(1)) return { stage, state: "locked" };
+    const completedAt = readCompletedAt(lessonId);
+    // 老用户回填进度无时间戳：按已满次日窗处理，直接解锁（不永久锁关 2）。
+    if (!completedAt) return { stage, state: "unlocked" };
+    const doneTime = Date.parse(completedAt);
+    if (!Number.isFinite(doneTime)) return { stage, state: "unlocked" };
+    if (now - doneTime >= STAGE2_UNLOCK_DELAY_MS) return { stage, state: "unlocked" };
+    return { stage, state: "locked", unlockAt: new Date(doneTime + STAGE2_UNLOCK_DELAY_MS).toISOString() };
+  }
+
+  // stage === 3：关 2 完成即解锁
+  return { stage, state: done.has(2) ? "unlocked" : "locked" };
+};
+
 /** 下一节待学课程：按编号找第一个未完成的。全部完成则返回 null。 */
 export const getNextLesson = (data: AppData): GrammarLesson | null => {
   const done = getCompletedLessonIds(data);
@@ -81,6 +184,25 @@ export const addLessonCoreSentence = (data: AppData, lesson: GrammarLesson): App
   });
 };
 
+/**
+ * R04 存量回填：遍历已完成课程，把核心句没入队的课补进 SM-2 复习队列。
+ * 背景：核心句入队只挂在 markLessonDone（完课时刻）一条链路上——
+ * 在此功能上线前已完成、或经测试/导入写入 grammarLessonsDone 的课程，核心句从未进过队列。
+ * 幂等：addLessonCoreSentence 自带去重，重复执行不会产生重复卡。返回 { data, backfilled }。
+ */
+export const backfillLessonCoreSentences = (data: AppData): { data: AppData; backfilled: number } => {
+  const done = getCompletedLessonIds(data);
+  let next = data;
+  let backfilled = 0;
+  for (const lesson of grammarLessons) {
+    if (!done.has(lesson.id)) continue;
+    const before = next.cards.length;
+    next = addLessonCoreSentence(next, lesson);
+    if (next.cards.length > before) backfilled += 1;
+  }
+  return { data: next, backfilled };
+};
+
 export interface LessonGuidedState {
   index: number;
   /** choose 已选选项；arrange 已拼词块。 */
@@ -91,9 +213,11 @@ export interface LessonGuidedState {
 
 export const createGuidedState = (): LessonGuidedState => ({ index: 0, picked: [], checked: false, passed: false });
 
-/** 判当前引导题：全部词块用上后调用（spot 为单选命中制）。 */
+/** 判当前引导题：全部词块用上后调用（spot 为单选命中制；replace 复用 choose 单选内核）。 */
 export const judgeGuidedStep = (step: LessonGuidedStep, picked: string[]): boolean => {
-  if (step.kind === "choose") return checkLessonChoice(picked[picked.length - 1] ?? "", step.answer);
+  if (step.kind === "choose" || step.kind === "replace") {
+    return checkLessonChoice(picked[picked.length - 1] ?? "", step.answer);
+  }
   if (step.kind === "spot") return checkLessonChoice(picked[picked.length - 1] ?? "", step.wrongToken ?? step.answer);
   return checkLessonTokens(picked, step.answer);
 };

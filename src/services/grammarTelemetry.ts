@@ -17,7 +17,14 @@ const MAX_EVENTS = 3000;
 const TELEMETRY_ARCHIVE_KEY = "grammar-telemetry-archive-v1";
 const ARCHIVE_MAX_EVENTS = 12000;
 
-export type LessonSection = "watch" | "pretest" | "guided" | "recall" | "practice" | "output";
+export type LessonSection =
+  | "watch"
+  | "pretest"
+  | "guided"
+  | "recall"
+  | "practice"
+  | "output"
+  | "challenge";
 
 /** 进课事件（R21）：漏斗的起点——没有它无法计算「进入 → 完课」流失。每次进入课程记一条。 */
 export interface GrammarLessonStartedEvent {
@@ -88,7 +95,8 @@ export interface DiaryIssueTagEvent {
 export interface GrammarReviewResultEvent {
   kind: "grammar_review_result";
   cardId: string;
-  mode: "cloze" | "rebuild";
+  /** R09 Step2 起含 free_type（自由输出轮）。 */
+  mode: "cloze" | "rebuild" | "free_type";
   attempts: number;
   passed: boolean;
   sourceId?: string;
@@ -118,6 +126,53 @@ export interface HuntHintUsedEvent {
   ts: string;
 }
 
+/** 段级停留事件（R20）：六段预算核验（PRD §7）的来源——进入下一段时结算上一段的停留时长。 */
+export interface SectionDwellEvent {
+  kind: "section_dwell";
+  lessonId: string;
+  section: LessonSection;
+  dwellMs: number;
+  ts: string;
+}
+
+/** 进入语法路径页事件（R05）：核心漏斗第一环——此前「进入语法页 → 进首课」的流失完全不可测。 */
+export interface GrammarPathViewedEvent {
+  kind: "grammar_path_viewed";
+  /** 进入时的课程完成数（分态依据：0 = 首访态，>0 = 继续态）。 */
+  lessonsDone: number;
+  ts: string;
+}
+
+/** 复习卡首次跃迁到 mastered（R06）：「我学会了」的正向确证——此前只有单次复习结果，没有状态跃迁。 */
+export interface CardMasteredEvent {
+  kind: "card_mastered";
+  cardId: string;
+  /** 卡片来源（lesson:xxx / hunt:xxx / diary:xxx），弱点归因用。 */
+  sourceId?: string;
+  /** hunt 来源卡的罪名（从 grammarNote [tag:原错词] token 解析），其他来源为 null。 */
+  tag: GrammarErrorTag | null;
+  ts: string;
+}
+
+/**
+ * F3 回马枪题结果（2026-09-13 PRD）：关 2/关 3 头部 1–2 题弱点加权旧点变式。
+ * weakSpotTag 非空 = 命中弱点档案的题；null = 无弱点时的降级（最近 3 课随机旧点）。
+ */
+export interface GrammarAmbushResultEvent {
+  kind: "grammar_ambush_result";
+  /** 宿主关卡（lessonId#stageIndex，如 lesson-13#2）。 */
+  hostId: string;
+  /** 被回顾的旧课（huntCase 来源课）。 */
+  sourceLessonId: string;
+  /** 命中的弱点罪名（降级随机时为 null）。 */
+  weakSpotTag: GrammarErrorTag | null;
+  /** 被抽中的植错点所在案件。 */
+  caseId: string;
+  passed: boolean;
+  attempts: number;
+  ts: string;
+}
+
 export type GrammarTelemetryEvent =
   | GrammarLessonStartedEvent
   | GrammarLessonCompletedEvent
@@ -128,7 +183,11 @@ export type GrammarTelemetryEvent =
   | HuntCaseSettledEvent
   | DiaryIssueTagEvent
   | GrammarReviewResultEvent
-  | HuntHintUsedEvent;
+  | HuntHintUsedEvent
+  | SectionDwellEvent
+  | GrammarPathViewedEvent
+  | CardMasteredEvent
+  | GrammarAmbushResultEvent;
 
 const memoryEvents: GrammarTelemetryEvent[] = [];
 
@@ -207,6 +266,29 @@ export const appendGrammarEvent = (event: GrammarTelemetryEvent): void => {
 
 export const listGrammarEvents = (): GrammarTelemetryEvent[] => [...readEvents()];
 
+/** R14 周聚合：错误 tag 按自然周（周一为起点）统计——周环比的原料。
+ *  referenceDate 决定「当前周」的锚点（默认真实当前时间；周报场景传与 buildLastWeekReport 相同的参考日，避免周日边界错位）。 */
+export const weeklyErrorTagCounts = (weekOffset = 0, referenceDate = new Date()): Partial<Record<GrammarErrorTag, number>> => {
+  const DAY_MS = 24 * 60 * 60 * 1000;
+  const local = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), referenceDate.getDate());
+  const monday = new Date(local.getTime() - ((local.getDay() + 6) % 7) * DAY_MS + weekOffset * 7 * DAY_MS);
+  const nextMonday = new Date(monday.getTime() + 7 * DAY_MS);
+  const counts: Partial<Record<GrammarErrorTag, number>> = {};
+  for (const event of listGrammarEvents()) {
+    const rawTs = "ts" in event ? (event.ts as string) : "";
+    const parsed = new Date(rawTs);
+    const ts = Number.isFinite(parsed.getTime()) ? parsed.getTime() : NaN;
+    if (!Number.isFinite(ts) || ts < monday.getTime() || ts >= nextMonday.getTime()) continue;
+    if (event.kind === "diary_issue_tag") {
+      counts[event.tag] = (counts[event.tag] ?? 0) + 1;
+    } else if (event.kind === "hunt_verdict" && (event.verdictKind === "wrongTag" || event.verdictKind === "notError")) {
+      // hunt 里的误判/归错罪名：guessedTag 才是玩家困惑的语法点
+      if (event.guessedTag) counts[event.guessedTag] = (counts[event.guessedTag] ?? 0) + 1;
+    }
+  }
+  return counts;
+};
+
 export const listGrammarEventsByKind = <K extends GrammarTelemetryEvent["kind"]>(
   kind: K
 ): Extract<GrammarTelemetryEvent, { kind: K }>[] =>
@@ -278,7 +360,11 @@ export interface GrammarTelemetrySummary {
   huntFalsePositiveRate: number;
   /** R19：侦探结算汇总——破案率终于可算（此前只有 verdict，无结算）。 */
   huntSettled: { cases: number; solved: number; solveRate: number };
+  /** R20：段级停留汇总——各段累计停留与样本数（均值 = totalMs / samples），对照六段预算表。 */
+  sectionDwell: Partial<Record<LessonSection, { totalMs: number; samples: number }>>;
   diaryTagCounts: Partial<Record<GrammarErrorTag, number>>;
+  /** R05：漏斗第一环——进入路径页 → 7 天内进课。 */
+  pathFunnel: { views: number; firstVisitViews: number; pathToLessonWithin7d: number; pathToLessonRate7d: number };
 }
 
 /** 汇总遥测：M1 决策门指标（完成率/一次通过率/展开率/误报率）都从这里读。 */
@@ -312,6 +398,35 @@ export const summarizeGrammarTelemetry = (): GrammarTelemetrySummary => {
   const settled = events.filter((event): event is HuntCaseSettledEvent => event.kind === "hunt_case_settled");
   const solvedCount = settled.filter((event) => event.solved).length;
 
+  // R05：漏斗第一环聚合——进入路径页次数、首访态（lessonsDone=0）次数、以及进入后 7 天内进首课的次数。
+  const pathViews = events.filter((event): event is GrammarPathViewedEvent => event.kind === "grammar_path_viewed");
+  const firstVisitViews = pathViews.filter((event) => event.lessonsDone === 0);
+  const lessonStarts = events.filter(
+    (event): event is GrammarLessonStartedEvent => event.kind === "grammar_lesson_started"
+  );
+  const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+  let pathToLesson7d = 0;
+  for (const view of pathViews) {
+    const viewTs = Date.parse(view.ts);
+    if (!Number.isFinite(viewTs)) continue;
+    const started = lessonStarts.some((start) => {
+      const startTs = Date.parse(start.ts);
+      return Number.isFinite(startTs) && startTs >= viewTs && startTs - viewTs <= SEVEN_DAYS_MS;
+    });
+    if (started) pathToLesson7d += 1;
+  }
+
+  // R20：段级停留聚合——总停留与样本数，供六段预算核验（均值 = totalMs / samples）
+  const sectionDwell: Partial<Record<LessonSection, { totalMs: number; samples: number }>> = {};
+  for (const event of events) {
+    if (event.kind === "section_dwell") {
+      const bucket = sectionDwell[event.section] ?? { totalMs: 0, samples: 0 };
+      bucket.totalMs += event.dwellMs;
+      bucket.samples += 1;
+      sectionDwell[event.section] = bucket;
+    }
+  }
+
   return {
     totalEvents: events.length,
     completions: completions.length,
@@ -325,6 +440,13 @@ export const summarizeGrammarTelemetry = (): GrammarTelemetrySummary => {
       solved: solvedCount,
       solveRate: settled.length === 0 ? 0 : solvedCount / settled.length
     },
-    diaryTagCounts
+    sectionDwell,
+    diaryTagCounts,
+    pathFunnel: {
+      views: pathViews.length,
+      firstVisitViews: firstVisitViews.length,
+      pathToLessonWithin7d: pathToLesson7d,
+      pathToLessonRate7d: pathViews.length === 0 ? 0 : pathToLesson7d / pathViews.length
+    }
   };
 };

@@ -19,6 +19,10 @@ import cover17 from "../assets/lessons/lesson-17.jpg";
 import cover18 from "../assets/lessons/lesson-18.jpg";
 import cover19 from "../assets/lessons/lesson-19.jpg";
 import cover20 from "../assets/lessons/lesson-20.jpg";
+import cover21 from "../assets/lessons/lesson-21.jpg";
+import cover22 from "../assets/lessons/lesson-22.jpg";
+import cover23 from "../assets/lessons/lesson-23.jpg";
+import cover24 from "../assets/lessons/lesson-24.jpg";
 
 /**
  * 「小美的一天」· 初学者语法连续剧（第一季 1–12 课 · 第二季进阶篇 13 课起，规划见 PRD-grammar-advanced）。
@@ -79,6 +83,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I am Xiaomei.",
         whyZh: "中文说「我小美」不用动词，但英语的句子必须有动词。把 am 丢了，句子就塌了。"
+      },
+      {
+        wrong: "I are Xiaomei.",
+        wrongMark: "are",
+        correct: "I am Xiaomei.",
+        whyZh: "are 也不是 I 的搭档。I 只认 am 这一个搭档——is 和 are 都管不到「我」。"
+      },
+      {
+        wrong: "I am not happy today.",
+        wrongMark: null,
+        correct: "I am happy today.",
+        whyZh: "想说「开心」却多了 not，意思就反了。not 是「不」，要真不开心才放——别让它偷偷溜进来。"
+      },
+      {
+        wrong: "Am I Xiaomei.",
+        wrongMark: "Am I",
+        correct: "I am Xiaomei.",
+        whyZh: "自我介绍是陈述句，I 在最前面：I am。Am 搬到句首是问别人「我是不是……」，自我介绍用不上。"
+      },
+      {
+        wrong: "I am student.",
+        wrongMark: null,
+        correct: "I am a student.",
+        whyZh: "说「我是一名学生」，a 不能丢：一个学生要先报数 a 再出场。光有 student 站在那儿，句子就差一口气。"
       }
     ],
     variants: [
@@ -138,6 +166,16 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "is",
         correctionZh: "把 is 换成 am：I am Xiaomei。",
         explain: "I 的搭档永远是 am；is 是他、她专用的搭档。"
+      },
+      {
+        // R9 变形/替换：换表语（开心→累），I am 搭档不变（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I am happy.」把「开心」换成「累（tired）」，am 要怎么变？",
+        replaceBase: "I am happy.",
+        replaceTarget: "把 happy 换成 tired",
+        options: ["am", "is", "are"],
+        answer: "am",
+        explain: "换表语不用怕：主语还是 I，搭档永远是 am——I am tired。"
       }
     ],
     practice: [
@@ -218,6 +256,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "am",
         correct: "She is a nurse.",
         whyZh: "am 只跟 I 走，谁都不借。She 的搭档是 is。"
+      },
+      {
+        wrong: "He are a doctor.",
+        wrongMark: "are",
+        correct: "He is a doctor.",
+        whyZh: "He 是一个人，搭档用 is 不用 are。are 管的是 you、we、they 这些「多数派」。"
+      },
+      {
+        wrong: "You are a teacher?",
+        wrongMark: null,
+        correct: "Are you a teacher?",
+        whyZh: "问「你是不是老师」要把 Are 搬到句首：Are you……？语序不换，就成了陈述句不是问句。"
+      },
+      {
+        wrong: "She is nurse.",
+        wrongMark: null,
+        correct: "She is a nurse.",
+        whyZh: "她是「一名」护士，a 不能丢：a nurse。单数的东西前面要报数 a，光秃秃的 nurse 站不住。"
+      },
+      {
+        wrong: "You not are my friend.",
+        wrongMark: "not are",
+        correct: "You are not my friend.",
+        whyZh: "「不是」要把 not 放在 are 后面：are not。not 不能跑到搭档前面去。"
       }
     ],
     variants: [
@@ -278,6 +340,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "am",
         correctionZh: "把 am 换成 is：She is a nurse。",
         explain: "am 只跟 I 走，She 的搭档是 is。"
+      },
+      {
+        // R8 跨课复现：上一课（L1 I am）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我很开心。",
+        tokens: ["I", "am", "happy."],
+        answer: "I am happy.",
+        explain: "复现第 1 课：I 的搭档永远是 am。"
+      },
+      {
+        // R9 变形/替换：换主语 You→She，be 动词跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「You are my friend.」把主语 You 换成 She，are 要怎么变？",
+        replaceBase: "You are my friend.",
+        replaceTarget: "把 You 换成 She",
+        options: ["is", "are", "am"],
+        answer: "is",
+        explain: "She 是一个人，搭档换 is：She is my friend。are 管不到「她」。"
       }
     ],
     practice: [
@@ -358,6 +438,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "have",
         correct: "She has a cat.",
         whyZh: "说「她有什么」，have 要换成 has。has 是他、她专用的搭档。"
+      },
+      {
+        wrong: "I have a apple.",
+        wrongMark: "a",
+        correct: "I have an apple.",
+        whyZh: "apple 第一个音是元音，a 和它连读会拗口，要换 an 才顺口——看发音不看字母。"
+      },
+      {
+        wrong: "I haves a bag.",
+        wrongMark: "haves",
+        correct: "I have a bag.",
+        whyZh: "have 只有「他、她」才换 has，「我」还是用 have——没有 haves 这种形状。"
+      },
+      {
+        wrong: "I have a water.",
+        wrongMark: "a",
+        correct: "I have water.",
+        whyZh: "water 这类数不清的东西，前面不加 a——a 只给数得清的一个一个的东西用。"
+      },
+      {
+        wrong: "Does she has a cat?",
+        wrongMark: "has",
+        correct: "Does she have a cat?",
+        whyZh: "Does 一出场，动词要打回原形 have：Does she have……？一场戏只让一个词扛变化。"
       }
     ],
     variants: [
@@ -418,6 +522,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "have",
         correctionZh: "把 have 换成 has：She has a cat。",
         explain: "他、她专用 has；我、你、我们用 have。"
+      },
+      {
+        // R8 跨课复现：上一课（L2 you are/he is）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：她是我的朋友。",
+        tokens: ["She", "is", "my", "friend."],
+        answer: "She is my friend.",
+        explain: "复现第 2 课：She 的搭档是 is。"
+      },
+      {
+        // R9 变形/替换：换主语 I→She，have 变 has（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I have a pen.」把主语 I 换成 She，have 要怎么变？",
+        replaceBase: "I have a pen.",
+        replaceTarget: "把 I 换成 She",
+        options: ["has", "have", "haves"],
+        answer: "has",
+        explain: "「她有」要换 has：She has a pen。has 是他、她专用的搭档。"
       }
     ],
     practice: [
@@ -498,6 +620,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "an",
         correct: "I want a book.",
         whyZh: "book 以辅音开头，配 a 才顺。an 只给元音开头的词穿。"
+      },
+      {
+        wrong: "I want a hour.",
+        wrongMark: "a",
+        correct: "I want an hour.",
+        whyZh: "hour 虽然以辅音字母 h 开头，但 h 不发音，第一个音是元音——所以用 an。看发音，不看字母。"
+      },
+      {
+        wrong: "I want apple.",
+        wrongMark: null,
+        correct: "I want an apple.",
+        whyZh: "说「想要一个苹果」，可数的东西前面要报数：an apple。光秃秃的 apple 站不住。"
+      },
+      {
+        wrong: "She want a milk tea.",
+        wrongMark: "want",
+        correct: "She wants a milk tea.",
+        whyZh: "「她想要」，want 要换三单 wants。变形的是 want 自己，奶茶前面的 a 不变。"
+      },
+      {
+        wrong: "I want an uniform.",
+        wrongMark: "an",
+        correct: "I want a uniform.",
+        whyZh: "uniform 虽然以元音字母 u 开头，但读出来第一个音是「优」这个辅音——所以用 a。还是看发音，不看字母。"
       }
     ],
     variants: [
@@ -558,6 +704,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "a",
         correctionZh: "把 a 换成 an：I want an apple。",
         explain: "apple 元音开头，要用 an。"
+      },
+      {
+        // R8 跨课复现：上一课（L3 have + a）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我有一支笔。",
+        tokens: ["I", "have", "a", "pen."],
+        answer: "I have a pen.",
+        explain: "复现第 3 课：一个可数的东西前面要报数 a。"
+      },
+      {
+        // R9 变形/替换：换名词（辅音→元音开头），冠词跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I want a book.」把「书」换成「苹果（apple）」，a 要怎么变？",
+        replaceBase: "I want a book.",
+        replaceTarget: "把 book 换成 apple",
+        options: ["an", "a", "the"],
+        answer: "an",
+        explain: "apple 元音开头，a 要换 an：I want an apple。看发音，不看字母。"
       }
     ],
     practice: [
@@ -637,6 +801,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "a",
         correct: "I like music.",
         whyZh: "music 这类词数不清，前面不加 a，直接跟在 like 后面。"
+      },
+      {
+        wrong: "She like cats.",
+        wrongMark: "like",
+        correct: "She likes cats.",
+        whyZh: "「她喜欢」，like 要换三单 likes。变形的是 like 自己，cats 照样复数。"
+      },
+      {
+        wrong: "I like a dogs.",
+        wrongMark: "a",
+        correct: "I like dogs.",
+        whyZh: "「喜欢狗这一整类」用复数 dogs，前面不能再加 a——a 是「一个」，dogs 是「一类」，不能凑一起。"
+      },
+      {
+        wrong: "I not like coffee.",
+        wrongMark: "not like",
+        correct: "I don't like coffee.",
+        whyZh: "「不喜欢」要把 don't 放在 like 前面：don't like。not 不能自己站在动词前。"
+      },
+      {
+        wrong: "Does you like coffee?",
+        wrongMark: "Does",
+        correct: "Do you like coffee?",
+        whyZh: "问「你喜欢吗」用 Do 不用 Does——Does 只配他、她。you 的帮手是 Do。"
       }
     ],
     variants: [
@@ -697,6 +885,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "a",
         correctionZh: "把 a 去掉：I like music。",
         explain: "music 数不清，前面不加 a。"
+      },
+      {
+        // R8 跨课复现：上一课（L4 want + a/an）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我想要一个苹果。",
+        tokens: ["I", "want", "an", "apple."],
+        answer: "I want an apple.",
+        explain: "复现第 4 课：apple 元音开头用 an。"
+      },
+      {
+        // R9 变形/替换：换主语 I→She，like 变 likes（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I like music.」把主语 I 换成 She，like 要怎么变？",
+        replaceBase: "I like music.",
+        replaceTarget: "把 I 换成 She",
+        options: ["likes", "like", "liking"],
+        answer: "likes",
+        explain: "「她喜欢」要换三单 likes：She likes music。变形的是 like，music 不变。"
       }
     ],
     practice: [
@@ -777,6 +983,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "It is three o'clock.",
         whyZh: "缺了 is，句子就塌了。It 后面要跟上它的搭档 is。"
+      },
+      {
+        wrong: "It am hot.",
+        wrongMark: "am",
+        correct: "It is hot.",
+        whyZh: "am 只跟 I 走，It 的搭档是 is。说天气热，用 It is hot。"
+      },
+      {
+        wrong: "It is rains.",
+        wrongMark: "rains",
+        correct: "It is raining.",
+        whyZh: "说「正在下雨」，动词要穿 -ing 外套：is raining。is 后面的动词不能光用原形加 -s。"
+      },
+      {
+        wrong: "Is it three o'clock?",
+        wrongMark: null,
+        correct: "It is three o'clock.",
+        whyZh: "回答别人的提问用陈述句：It is three o'clock。Is it 开头是问句——这里要答，不是要问。"
+      },
+      {
+        wrong: "It is not cold today.",
+        wrongMark: null,
+        correct: "It is cold today.",
+        whyZh: "想说「冷」却多了 not，意思就反了。not 是「不」，要真不冷才放——别让它偷偷溜进来。"
       }
     ],
     variants: [
@@ -837,6 +1067,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "are",
         correctionZh: "把 are 换成 is：It is Friday。",
         explain: "It 的搭档是 is。"
+      },
+      {
+        // R8 跨课复现：上一课（L5 like + 名词）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我喜欢音乐。",
+        tokens: ["I", "like", "music."],
+        answer: "I like music.",
+        explain: "复现第 5 课：music 数不清，前面不加 a。"
+      },
+      {
+        // R9 变形/替换：换表语（时间→天气），It is 搭档不变（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「It is three o'clock.」把「三点」换成「冷（cold）」，is 要怎么变？",
+        replaceBase: "It is three o'clock.",
+        replaceTarget: "把 three o'clock 换成 cold",
+        options: ["is", "are", "am"],
+        answer: "is",
+        explain: "换表语不用怕：天气和时间都用 It is——It is cold。"
       }
     ],
     practice: [
@@ -916,6 +1164,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "student",
         correct: "They are students.",
         whyZh: "They 指两个以上的人，student 要加 s 变 students。"
+      },
+      {
+        wrong: "They is my friends.",
+        wrongMark: "is",
+        correct: "They are my friends.",
+        whyZh: "They 是「他们」，一伙人，搭档用 are 不用 is。is 只配单个的他、她、它。"
+      },
+      {
+        wrong: "We are a students.",
+        wrongMark: "a",
+        correct: "We are students.",
+        whyZh: "「我们是学生」用复数 students，前面不能再加 a——a 是「一个」，students 是「一伙」，不能凑一起。"
+      },
+      {
+        wrong: "Are they classmates?",
+        wrongMark: null,
+        correct: "They are classmates.",
+        whyZh: "告诉别人「他们是同学」用陈述句：They are。Are they 开头是问句——这里要说，不是要问。"
+      },
+      {
+        wrong: "We am happy.",
+        wrongMark: "am",
+        correct: "We are happy.",
+        whyZh: "am 只跟 I 一个人走，We 是「我们」，搭档换 are。am 管不到一伙人。"
       }
     ],
     variants: [
@@ -976,6 +1248,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "is",
         correctionZh: "把 is 换成 are：We are classmates。",
         explain: "一伙人（We / They）的搭档是 are。"
+      },
+      {
+        // R8 跨课复现：上一课（L6 It is）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：今天很冷。",
+        tokens: ["It", "is", "cold", "today."],
+        answer: "It is cold today.",
+        explain: "复现第 6 课：天气用 It is 开头。"
+      },
+      {
+        // R9 变形/替换：换主语 We→They，be 动词不变（一伙人都用 are，构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「We are happy.」把主语 We 换成 They，are 要怎么变？",
+        replaceBase: "We are happy.",
+        replaceTarget: "把 We 换成 They",
+        options: ["are", "is", "am"],
+        answer: "are",
+        explain: "They 也是一伙的，搭档还是 are：They are happy。一伙人都用 are。"
       }
     ],
     practice: [
@@ -1056,6 +1346,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "Her",
         correct: "She is my friend.",
         whyZh: "当「她」是主角时要用 She；her 是贴在东西前面的标签，只说「她的……」。"
+      },
+      {
+        wrong: "I like she cat.",
+        wrongMark: "she",
+        correct: "I like her cat.",
+        whyZh: "「她的猫」要用小标签 her 贴在 cat 前面。she 只能当主角，不能贴在东西前。"
+      },
+      {
+        wrong: "My am happy.",
+        wrongMark: "My",
+        correct: "I am happy.",
+        whyZh: "当主角的是 I，不是 my。my 是贴在东西前的标签，不能站到句子开头当主角。"
+      },
+      {
+        wrong: "He name is Tom.",
+        wrongMark: "He",
+        correct: "His name is Tom.",
+        whyZh: "「他的名字」要用小标签 his 贴在 name 前面。he 只能当主角，his 才是「他的」。"
+      },
+      {
+        wrong: "This is my a book.",
+        wrongMark: "a",
+        correct: "This is my book.",
+        whyZh: "有 my 这个小标签在前面，就不用再报数 a——my 已经说清是「我的那本」了，a 和 my 不能同时贴。"
       }
     ],
     variants: [
@@ -1116,6 +1430,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "I",
         correctionZh: "把 I 换成 my：This is my book。",
         explain: "贴在东西前面的「我的」要用小标签 my。"
+      },
+      {
+        // R8 跨课复现：上一课（L7 we are）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我们是同学。",
+        tokens: ["We", "are", "classmates."],
+        answer: "We are classmates.",
+        explain: "复现第 7 课：一伙人（We）的搭档是 are。"
+      },
+      {
+        // R9 变形/替换：换主角 my→her（物主标签跟着换，构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「This is my book.」把「我的」换成「她的」，my 要怎么变？",
+        replaceBase: "This is my book.",
+        replaceTarget: "把 my 换成「她的」",
+        options: ["her", "she", "hers"],
+        answer: "her",
+        explain: "「她的」用标签 her 贴在 book 前：This is her book。she 只能当主角。"
       }
     ],
     practice: [
@@ -1196,6 +1528,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "to",
         correct: "I go home.",
         whyZh: "home 是特例：go home 本身就是「到家」，前面不用垫 to。规则有边界，特例单独记。"
+      },
+      {
+        wrong: "I go to the school.",
+        wrongMark: "the",
+        correct: "I go to school.",
+        whyZh: "「去上学」是 go to school，school 前不加 the——这是去读书的意思。加 the 就变成「去那所学校（那栋楼）」，意思不一样了。"
+      },
+      {
+        wrong: "She go to the park.",
+        wrongMark: "go",
+        correct: "She goes to the park.",
+        whyZh: "「她去」，go 要换三单 goes。变形的是 go 自己，to the park 不变。"
+      },
+      {
+        wrong: "I goes to the park.",
+        wrongMark: "goes",
+        correct: "I go to the park.",
+        whyZh: "「我去」用原形 go——goes 只配他、她。I 后面不接三单 goes。"
+      },
+      {
+        wrong: "I go the library.",
+        wrongMark: "the",
+        correct: "I go to the library.",
+        whyZh: "「去图书馆」中间要垫 to：go to the library。漏了 to，脚步就迈不过去。"
       }
     ],
     variants: [
@@ -1256,6 +1612,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "school.",
         correctionZh: "在 school 前面垫一个 to：I go to school。",
         explain: "「去哪里」中间要垫一个 to。"
+      },
+      {
+        // R8 跨课复现：上一课（L8 my/her）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：她是我的朋友。",
+        tokens: ["She", "is", "my", "friend."],
+        answer: "She is my friend.",
+        explain: "复现第 8 课：当主角用 She，her 是贴在东西前的标签。"
+      },
+      {
+        // R9 变形/替换：换地点（park→school），to 踏板不变但 the 消失（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I go to the park.」把「公园」换成「学校」，to the 要怎么变？",
+        replaceBase: "I go to the park.",
+        replaceTarget: "把 the park 换成 school",
+        options: ["to school", "to the school", "school"],
+        answer: "to school",
+        explain: "「去上学」固定是 go to school，school 前不加 the——去读书的意思。park 才要 the。"
       }
     ],
     practice: [
@@ -1336,6 +1710,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "eated",
         correct: "I ate an apple.",
         whyZh: "eat 的昨天版是 ate。有些动词换形状不走加 -ed 的路，要单独记。"
+      },
+      {
+        wrong: "I didn't went out.",
+        wrongMark: "went",
+        correct: "I didn't go out.",
+        whyZh: "didn't 一出场，动词就要打回原形：didn't go。一场戏只让一个词换形状。"
+      },
+      {
+        wrong: "Did you went yesterday?",
+        wrongMark: "went",
+        correct: "Did you go yesterday?",
+        whyZh: "Did 搬句首时，后面的动词也要变回原形 go：Did you go？别让动词换两次形状。"
+      },
+      {
+        wrong: "I was watch TV.",
+        wrongMark: "watch",
+        correct: "I watched TV.",
+        whyZh: "watch 的昨天版是直接加 -ed：watched。was 是 am/is 的昨天版，不能跟动词原形凑一对。"
+      },
+      {
+        wrong: "She see a bird yesterday.",
+        wrongMark: "see",
+        correct: "She saw a bird yesterday.",
+        whyZh: "yesterday 是信号灯：see 的昨天版是 saw，不规则变化要单独记。"
       }
     ],
     variants: [
@@ -1396,6 +1794,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "go",
         correctionZh: "把 go 换成昨天版 went：Yesterday I went to the park。",
         explain: "yesterday 是信号灯，动词要换昨天版。"
+      },
+      {
+        // R8 跨课复现：上一课（L9 go to + 地点）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：放学去图书馆。",
+        tokens: ["I", "go", "to", "the", "library", "after", "school."],
+        answer: "I go to the library after school.",
+        explain: "复现第 9 课：go to + 地点，图书馆前面要加 the。"
+      },
+      {
+        // R9 变形/替换：换时间 yesterday→every day，动词打回原形（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「Yesterday I went to the park.」把 Yesterday 换成 Every day，went 要怎么变？",
+        replaceBase: "Yesterday I went to the park.",
+        replaceTarget: "把 Yesterday 换成 Every day",
+        options: ["go", "went", "goes"],
+        answer: "go",
+        explain: "Every day 是每天，动词要用原形 go：Every day I go to the park. went 只是昨天版。"
       }
     ],
     practice: [
@@ -1476,6 +1892,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "brother",
         correct: "I have three brothers.",
         whyZh: "three 是三个，brother 要加 s 变 brothers。"
+      },
+      {
+        wrong: "I ate two sandwichs.",
+        wrongMark: "sandwichs",
+        correct: "I ate two sandwiches.",
+        whyZh: "sandwich 以 ch 结尾，复数不是只加 s，要加 es：sandwiches。和 watches、boxes 是一个规律。"
+      },
+      {
+        wrong: "I buyed some bread.",
+        wrongMark: "buyed",
+        correct: "I bought some bread.",
+        whyZh: "buy 的昨天版是 bought，不走加 -ed 的路——这些老词要单独记，和 go→went 一样。"
+      },
+      {
+        wrong: "I ate a sandwiches.",
+        wrongMark: "a",
+        correct: "I ate a sandwich.",
+        whyZh: "a 是「一个」，后面跟单数 sandwich；复数 sandwiches 前面不能再用 a。一个和一类不能凑一起。"
+      },
+      {
+        wrong: "I eated two sandwiches.",
+        wrongMark: "eated",
+        correct: "I ate two sandwiches.",
+        whyZh: "eat 的昨天版是 ate，不是 eated——eat 不走加 -ed 的路，要单独记。"
       }
     ],
     variants: [
@@ -1536,6 +1976,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "sandwich.",
         correctionZh: "两个以上要加 s：I ate two sandwiches。",
         explain: "two 后面是复数，sandwich 要加 es。"
+      },
+      {
+        // R8 跨课复现：上一课（L10 一般过去时）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：昨天我去了公园。",
+        tokens: ["Yesterday", "I", "went", "to", "the", "park."],
+        answer: "Yesterday I went to the park.",
+        explain: "复现第 10 课：yesterday 在场，动词换昨天版 went。"
+      },
+      {
+        // R9 变形/替换：换数量（一个→两个），名词变复数（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I ate a sandwich.」把「一个」换成「两个（two）」，sandwich 要怎么变？",
+        replaceBase: "I ate a sandwich.",
+        replaceTarget: "把 a 换成 two",
+        options: ["sandwiches", "sandwich", "sandwichs"],
+        answer: "sandwiches",
+        explain: "两个以上，sandwich 要加 es 变 sandwiches——ch 结尾加 es。"
       }
     ],
     practice: [
@@ -1616,6 +2074,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "drew",
         correct: "Tomorrow I will draw.",
         whyZh: "will 出场时动词保持原样，不换昨天版。一场戏只有一个变化。"
+      },
+      {
+        wrong: "I will drawing.",
+        wrongMark: "drawing",
+        correct: "I will draw.",
+        whyZh: "will 后面的动词穿原样，不穿 -ing 外套：will draw。外套只在进行时里才穿。"
+      },
+      {
+        wrong: "She wills draw.",
+        wrongMark: "wills",
+        correct: "She will draw.",
+        whyZh: "will 和 can 一样从不变形：不管主语是谁都是 will，没有 wills 这种形状。"
+      },
+      {
+        wrong: "I not will go.",
+        wrongMark: "not will",
+        correct: "I will not go.",
+        whyZh: "「不去（将）」要把 not 放在 will 后面：will not（可缩成 won't）。not 不能跑到 will 前面。"
+      },
+      {
+        wrong: "Will you goes tomorrow?",
+        wrongMark: "goes",
+        correct: "Will you go tomorrow?",
+        whyZh: "Will 搬到句首问话，动词照样穿原样 go：Will you go……？三单 -s 管不到 will。"
       }
     ],
     variants: [
@@ -1676,6 +2158,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "drew",
         correctionZh: "把 drew 换回原形 draw：I will draw a picture。",
         explain: "will 后面的动词保持原样。"
+      },
+      {
+        // R8 跨课复现：上一课（L11 复数+不规则过去式）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我吃了两个三明治。",
+        tokens: ["I", "ate", "two", "sandwiches."],
+        answer: "I ate two sandwiches.",
+        explain: "复现第 11 课：两个以上，sandwich 加 es。"
+      },
+      {
+        // R9 变形/替换：换时间（今天→明天），动词时态跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I draw a picture today.」把「今天」换成「明天」，draw 前要加什么？",
+        replaceBase: "I draw a picture today.",
+        replaceTarget: "把 today 换成 tomorrow",
+        options: ["will", "am", "did"],
+        answer: "will",
+        explain: "说「明天要做」，动词前面放 will：I will draw tomorrow。will 出场动词穿原样。"
       }
     ],
     practice: [
@@ -1757,6 +2257,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "draw",
         correct: "I am drawing a picture.",
         whyZh: "说「正在做」，动词要穿 -ing 这件外套：draw → drawing。"
+      },
+      {
+        wrong: "They is playing football.",
+        wrongMark: "is",
+        correct: "They are playing football.",
+        whyZh: "they 的搭档是 are 不是 is。一伙人做事，be 动词要用 are。"
+      },
+      {
+        wrong: "He are sleeping.",
+        wrongMark: "are",
+        correct: "He is sleeping.",
+        whyZh: "he 是单数，搭档是 is。are 是 you/we/they 这些「多数派」的搭档。"
+      },
+      {
+        wrong: "I am not sleep.",
+        wrongMark: "sleep",
+        correct: "I am not sleeping.",
+        whyZh: "否定句里动词照样要穿 -ing 外套：am not sleeping，外套不能脱。"
+      },
+      {
+        wrong: "What you are doing?",
+        wrongMark: "you are",
+        correct: "What are you doing?",
+        whyZh: "问句里 are 要搬到主语 you 前面：What are you doing？语序要换位置。"
       }
     ],
     variants: [
@@ -1825,6 +2349,16 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "will", "draw", "tomorrow."],
         answer: "I will draw tomorrow.",
         explain: "复现第 12 课：will 后面的动词穿原样。"
+      },
+      {
+        // R9 变形/替换：换主语 I→She，be 动词跟着变（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I am drawing.」把主语 I 换成 She，动词要怎么变？",
+        replaceBase: "I am drawing.",
+        replaceTarget: "把 I 换成 She",
+        options: ["is", "am", "are"],
+        answer: "is",
+        explain: "I 的搭档是 am，但 She 的搭档要换成 is：She is drawing."
       }
     ],
     practice: [
@@ -1906,6 +2440,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "cans",
         correct: "She can dance.",
         whyZh: "can 从来不变形：不管主语是谁都是 can，没有 cans 这种形状。"
+      },
+      {
+        wrong: "I can swimming.",
+        wrongMark: "swimming",
+        correct: "I can swim.",
+        whyZh: "can 后面的动词穿原样，不穿 -ing 外套：can swim。外套只在进行时里才穿。"
+      },
+      {
+        wrong: "Can he plays football?",
+        wrongMark: "plays",
+        correct: "Can he play football?",
+        whyZh: "有 can 在前面扛变化，动词打回原形：Can he play。三单 -s 管不到 can。"
+      },
+      {
+        wrong: "I not can swim.",
+        wrongMark: "not can",
+        correct: "I can't swim.",
+        whyZh: "「不能」要把 not 贴在 can 后面：can't。顺序不能倒，not 不能跑到 can 前面。"
+      },
+      {
+        wrong: "Do you can swim?",
+        wrongMark: "Do you can",
+        correct: "Can you swim?",
+        whyZh: "问「会不会」直接把 Can 搬到句首就行，不用再请 Do 来帮忙：Can you swim？"
       }
     ],
     variants: [
@@ -1968,12 +2526,14 @@ export const grammarLessons: GrammarLesson[] = [
         explain: "can 永远不变形，没有 cans 这种形状。"
       },
       {
-        // R9 替换型（构造迁移）：同一句型换主语
-        kind: "arrange",
-        promptZh: "同一句话，换个人说：他会游泳。",
-        tokens: ["He", "can", "swim."],
-        answer: "He can swim.",
-        explain: "换主语也不用怕：can 后面的动词照旧穿原样。"
+        // R9 变形/替换：换主语 I→He，can 不变、动词穿原样（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I can swim.」把主语 I 换成 He，swim 要怎么变？",
+        replaceBase: "I can swim.",
+        replaceTarget: "把 I 换成 He",
+        options: ["swim", "swims", "swimming"],
+        answer: "swim",
+        explain: "can 后面的动词永远穿原样：He can swim。三单 -s 管不到 can。"
       },
       {
         // R8 跨课复现：上一课（L13 进行时）的句式混入
@@ -2064,6 +2624,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "travels",
         correct: "She wants to travel.",
         whyZh: "变形的事已经由 wants 做完了（三单加 -s），to 后面的动词永远穿原样。"
+      },
+      {
+        wrong: "She want to read.",
+        wrongMark: "want",
+        correct: "She wants to read.",
+        whyZh: "「她想读」，want 要换三单 wants。变形的是 want 自己，不是 to 后面的词。"
+      },
+      {
+        wrong: "I want to going home.",
+        wrongMark: "going",
+        correct: "I want to go home.",
+        whyZh: "to 后面的动词穿原样，不穿 -ing 外套：want to go。外套只在进行时里才穿。"
+      },
+      {
+        wrong: "I don't want go.",
+        wrongMark: "want go",
+        correct: "I don't want to go.",
+        whyZh: "加了 don't，to 这块小垫板也不能丢：don't want to go。垫板和否定是两回事。"
+      },
+      {
+        wrong: "Want you to play?",
+        wrongMark: "Want you",
+        correct: "Do you want to play?",
+        whyZh: "问「想不想」要把 Do 搬到句首来帮忙：Do you want to……？want 自己不会问话。"
       }
     ],
     variants: [
@@ -2124,6 +2708,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "plays",
         correctionZh: "把 plays 换回原形 play：He wants to play football。",
         explain: "to 后面的动词永远穿原样。"
+      },
+      {
+        // R8 跨课复现：上一课（L14 can）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我会游泳。",
+        tokens: ["I", "can", "swim."],
+        answer: "I can swim.",
+        explain: "复现第 14 课：can 后面的动词穿原样。"
+      },
+      {
+        // R9 变形/替换：换主语 I→She，want 变三单 wants（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I want to travel.」把主语 I 换成 She，want 要怎么变？",
+        replaceBase: "I want to travel.",
+        replaceTarget: "把 I 换成 She",
+        options: ["wants", "want", "wanted"],
+        answer: "wants",
+        explain: "She 是单数，want 要换三单 wants：She wants to travel。但 to 后面照样原形。"
       }
     ],
     practice: [
@@ -2206,6 +2808,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "musts",
         correct: "She must finish it.",
         whyZh: "must 和 can 一样从不变形：不管主语是谁都是 must，没有 musts 这种形状。"
+      },
+      {
+        wrong: "I must to go.",
+        wrongMark: "to",
+        correct: "I must go.",
+        whyZh: "must 和 can 是一家的：后面动词直接跟，中间不垫 to。要垫 to 的是 have to。"
+      },
+      {
+        wrong: "She have to get up early.",
+        wrongMark: "have",
+        correct: "She has to get up early.",
+        whyZh: "have to 里的 have 要变三单：she has to。must 不变形，但 have to 的 have 会变。"
+      },
+      {
+        wrong: "You must not to be late.",
+        wrongMark: "to be",
+        correct: "You must not be late.",
+        whyZh: "must not 后面照样跟原形 be：must not be。not 不改变「must 后面穿原形」的规矩。"
+      },
+      {
+        wrong: "Must you to go now?",
+        wrongMark: "to go",
+        correct: "Must you go now?",
+        whyZh: "Must 搬到句首问话，后面的动词还是原形 go，不垫 to：Must you go？"
       }
     ],
     variants: [
@@ -2266,6 +2892,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "musts",
         correctionZh: "把 musts 换回 must：She must clean her room。",
         explain: "must 从不变形，没有 musts。"
+      },
+      {
+        // R8 跨课复现：上一课（L15 want to）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我想去旅行。",
+        tokens: ["I", "want", "to", "travel."],
+        answer: "I want to travel.",
+        explain: "复现第 15 课：want 后面垫 to，动词穿原样。"
+      },
+      {
+        // R9 变形/替换：换主语 I→She，must 不变（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I must go now.」把主语 I 换成 She，must 要怎么变？",
+        replaceBase: "I must go now.",
+        replaceTarget: "把 I 换成 She",
+        options: ["must", "musts", "have to"],
+        answer: "must",
+        explain: "must 从不变形：She must go。这是它和 have to 最大的不一样。"
       }
     ],
     practice: [
@@ -2347,6 +2991,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "beautifuller",
         correct: "This flower is more beautiful than that one.",
         whyZh: "长的形容词搬不动，不自己加 -er，请 more 站在前面帮忙。"
+      },
+      {
+        wrong: "This tree is more taller than that one.",
+        wrongMark: "more",
+        correct: "This tree is taller than that one.",
+        whyZh: "-er 和 more 只能用一个，不能双份：taller 已经带了 -er，more 就不用来了。"
+      },
+      {
+        wrong: "I am taller that my sister.",
+        wrongMark: "that",
+        correct: "I am taller than my sister.",
+        whyZh: "比「更」要用 than 接住比较的对象：taller than。than 和 that 长得像，别认错。"
+      },
+      {
+        wrong: "This book is gooder than that one.",
+        wrongMark: "gooder",
+        correct: "This book is better than that one.",
+        whyZh: "good 的「更好」是 better，不是 gooder。它和 go→went 一样是不守规矩的，要单独记。"
+      },
+      {
+        wrong: "Today is hoter than yesterday.",
+        wrongMark: "hoter",
+        correct: "Today is hotter than yesterday.",
+        whyZh: "hot 这种短促有力的词，加 -er 前要双写最后一个字母：hotter——和 running 双写 n 一个道理。"
       }
     ],
     variants: [
@@ -2408,6 +3076,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "more",
         correctionZh: "more 和 taller 不能同时出场，留一个就行：This tree is taller than that one。",
         explain: "-er 和 more 只能用一个，不能双份。"
+      },
+      {
+        // R8 跨课复现：上一课（L16 must）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我现在必须走。",
+        tokens: ["I", "must", "go", "now."],
+        answer: "I must go now.",
+        explain: "复现第 16 课：must 后面的动词穿原形。"
+      },
+      {
+        // R9 变形/替换：换形容词 short→long（短词 -er 变长词 more），比较级形状跟着变（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「This boat is bigger than that one.」把「大」换成「好看（beautiful）」，bigger 要怎么变？",
+        replaceBase: "This boat is bigger than that one.",
+        replaceTarget: "把 bigger 换成「更好看」",
+        options: ["more beautiful", "beautifuller", "beautiful"],
+        answer: "more beautiful",
+        explain: "beautiful 是长词，搬不动 -er，要请 more 帮忙：more beautiful than。"
       }
     ],
     practice: [
@@ -2489,6 +3175,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "in",
         correct: "I read on Monday.",
         whyZh: "星期几是具体某一天，前面用 on：on Monday。in 留给月份、年份和早中晚。"
+      },
+      {
+        wrong: "She is in home.",
+        wrongMark: "in",
+        correct: "She is at home.",
+        whyZh: "「在家」是固定搭配 at home，用 at 不用 in。at 管「某个点」的地方。"
+      },
+      {
+        wrong: "I get up on six o'clock.",
+        wrongMark: "on",
+        correct: "I get up at six o'clock.",
+        whyZh: "几点钟是时间点，前面用 at：at six。on 管具体某一天，时间点要交给 at。"
+      },
+      {
+        wrong: "The book is at the desk.",
+        wrongMark: "at",
+        correct: "The book is on the desk.",
+        whyZh: "「在桌面上」用 on：on the desk。at 是「在某个点」，桌面是平面要用 on。"
+      },
+      {
+        wrong: "We meet at Sunday.",
+        wrongMark: "at",
+        correct: "We meet on Sunday.",
+        whyZh: "周日是具体的一天，前面用 on：on Sunday。at 只给几点钟这种时间点用。"
       }
     ],
     variants: [
@@ -2549,6 +3259,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "on",
         correctionZh: "早中晚是大块时间，用 in：in the morning。",
         explain: "大块时间用 in，具体某天用 on。"
+      },
+      {
+        // R8 跨课复现：上一课（L17 比较级）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我比我姐姐高。",
+        tokens: ["I", "am", "taller", "than", "my", "sister."],
+        answer: "I am taller than my sister.",
+        explain: "复现第 17 课：taller than，-er 形状加 than。"
+      },
+      {
+        // R9 变形/替换：换地方 in the box→on the desk，介词跟着变（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「My hat is in the box.」把「盒子里」换成「桌子上」，in 要怎么变？",
+        replaceBase: "My hat is in the box.",
+        replaceTarget: "把「盒子里」换成「桌子上」",
+        options: ["on", "in", "at"],
+        answer: "on",
+        explain: "「在桌面上」用 on：on the desk。盒子是里面用 in，桌面是上面用 on。"
       }
     ],
     practice: [
@@ -2629,6 +3357,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "The snow is cold, but I am happy.",
         whyZh: "逗号连不住两个句子，中间必须站一个连词：这里意思转折，用 but。"
+      },
+      {
+        wrong: "I was busy but happy.",
+        wrongMark: "but",
+        correct: "I was busy and happy.",
+        whyZh: "「又忙又开心」是两件事一起对，用 and；but 是意思转弯（前面和后面相反）才用的。"
+      },
+      {
+        wrong: "I like apples, and I like oranges, and I like bananas.",
+        wrongMark: "and I like bananas",
+        correct: "I like apples, oranges, and bananas.",
+        whyZh: "一长串同类的东西，只在最后两个之间放一个 and：apples, oranges, and bananas。句句都加 and 就啰嗦了。"
+      },
+      {
+        wrong: "I am tired, and I don't want to stop.",
+        wrongMark: "and",
+        correct: "I am tired, but I don't want to stop.",
+        whyZh: "「累了」和「不想停」意思是转弯的，用 but 连接才对味；and 是顺着往下加。"
+      },
+      {
+        wrong: "My sister and I is happy.",
+        wrongMark: "is",
+        correct: "My sister and I are happy.",
+        whyZh: "My sister and I 是两个人，算一伙的，用 are 不用 is。and 连起来的主语是复数。"
       }
     ],
     variants: [
@@ -2690,6 +3442,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "was",
         correctionZh: "My sister and I 是两个人，用 were：My sister and I were happy。",
         explain: "and 连起来的主语算复数。"
+      },
+      {
+        // R8 跨课复现：上一课（L18 介词）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：她在家。",
+        tokens: ["She", "is", "at", "home."],
+        answer: "She is at home.",
+        explain: "复现第 18 课：at home 是固定搭配。"
+      },
+      {
+        // R9 变形/替换：换语境（顺接→转折），连词跟着变（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I was busy and happy.」如果想说「我很累，但还不想停」，and 要怎么变？",
+        replaceBase: "I was busy and happy.",
+        replaceTarget: "换成「我很累，＿不想停」（意思转弯）",
+        options: ["but", "and", "so"],
+        answer: "but",
+        explain: "「累了」和「不想停」意思转弯，用 but；顺着往下加才用 and。"
       }
     ],
     practice: [
@@ -2770,6 +3540,30 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I was late because the bus was late.",
         whyZh: "because 开头的半句只是一个原因，不能自己站住——要抱着结果一起说，才是完整的句子。"
+      },
+      {
+        wrong: "I was late, because so I missed the bus.",
+        wrongMark: "so",
+        correct: "I was late because I missed the bus.",
+        whyZh: "because 后面直接跟原因，别再塞 so：because I missed the bus。两个连词不能挤在一起。"
+      },
+      {
+        wrong: "I was tired. Because I went to bed late.",
+        wrongMark: "Because",
+        correct: "I was tired because I went to bed late.",
+        whyZh: "because 从句是原因，不能自己独立成句——要和结果连成一句话，中间不加句号。"
+      },
+      {
+        wrong: "It rained, because I took an umbrella.",
+        wrongMark: "because",
+        correct: "It rained, so I took an umbrella.",
+        whyZh: "「下雨了」是原因，「带伞」是结果——结果前面用 so，不是 because。因果别弄反。"
+      },
+      {
+        wrong: "I was hungry, so because I ate noodles.",
+        wrongMark: "because",
+        correct: "I was hungry, so I ate noodles.",
+        whyZh: "so 后面直接跟结果，别再塞 because：so I ate noodles。so 和 because 二选一，不能都要。"
       }
     ],
     variants: [
@@ -2830,6 +3624,24 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "so",
         correctionZh: "because 和 so 只留一个：Because it was cold, I stayed at home。",
         explain: "中文成对出现，英语二选一。"
+      },
+      {
+        // R8 跨课复现：上一课（L19 and/but）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我很累，但不想停。",
+        tokens: ["I", "am", "tired,", "but", "I", "don't", "want", "to", "stop."],
+        answer: "I am tired, but I don't want to stop.",
+        explain: "复现第 19 课：意思转弯用 but。"
+      },
+      {
+        // R9 变形/替换：换因果方向（前因→前果），连词跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「It was cold, so I stayed at home.」想改成「因为天冷，我才待在家」，so 要怎么变？",
+        replaceBase: "It was cold, so I stayed at home.",
+        replaceTarget: "换成「因为天冷」（说原因）",
+        options: ["because", "so", "and"],
+        answer: "because",
+        explain: "说「因为……」用 because：Because it was cold, I stayed at home。because 和 so 二选一。"
       }
     ],
     practice: [
@@ -2867,6 +3679,738 @@ export const grammarLessons: GrammarLesson[] = [
     },
     // R7：每课 1–2 案（本案练 because 半句独立与 missing_be，主题契合）
     huntCaseIds: ["hunt-late-note", "hunt-mom-note"]
+  },
+  {
+    // ── 第三季 · 第二批（析客规格书 prd-grammar-second-batch-2026-09-13）：现在完成时拆 3 课 + 对比课 ──
+    // L21 基本式「刚做完」：不规则做过版只引入 done / eaten；一词两义（have=有 / have+做过版）在主线对比卡正面拆解
+    id: "lesson-21-have-done",
+    number: 21,
+    title: "作业写完了",
+    grammarLabel: "现在完成时 · have + 做过版",
+    episode: "小美的一天 ㉑",
+    scene: "mansion",
+    cover: cover21,
+    sceneSetupZh: "清晨出门前，妈妈指着门口的书包问作业。",
+    dialogueEn: "Have you finished your homework?",
+    dialogueZh: "妈妈一边帮忙整理书包一边问。",
+    intentZh: "我已经写完作业了。",
+    targetSentence: "I have done my homework.",
+    blocks: [
+      { text: "I", role: "我" },
+      { text: "have", role: "信号灯（做过了）" },
+      { text: "done", role: "做（做过版）" },
+      { text: "my homework", role: "我的作业" }
+    ],
+    oneLineRule: "说「做完了、做过了」，用 have + 做过版：I have done…。have 后面站做过的版，不是原形。",
+    examples: [
+      { en: "I have done my homework.", zh: "我已经写完作业了。" },
+      { en: "I have eaten breakfast.", zh: "我吃过早饭了。" },
+      { en: "I have finished my picture.", zh: "我画完画了。" },
+      { en: "I have watched the game.", zh: "我看过比赛了。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Have you finished your homework?", zh: "妈妈一边整理书包一边问。" },
+      { who: "npc", en: "Don't forget your lunch box.", zh: "她又把饭盒塞进书包。" },
+      { who: "me", en: "I have done my homework.", zh: "轮到你说了——作业已经写完了。" }
+    ],
+    contrast: [
+      {
+        wrong: "I have do my homework.",
+        wrongMark: "do",
+        correct: "I have done my homework.",
+        whyZh: "have 后面要站动词的做过版。do 的做过版是 done——have 已经占好了位置，动词要换上做过版的外套。"
+      },
+      {
+        wrong: "I have eat breakfast.",
+        wrongMark: "eat",
+        correct: "I have eaten breakfast.",
+        whyZh: "have 后面跟「东西」是「有」（I have a bag），跟「做过版」就是「做过了」（I have eaten breakfast）。看 have 后面站的是什么词。"
+      },
+      {
+        wrong: "I have finished my homework yesterday.",
+        wrongMark: "yesterday",
+        correct: "I finished my homework yesterday.",
+        whyZh: "有 yesterday 这种确切的过去时间，要用一般过去时 finished——完成时不说「具体哪一刻」，只说「做过了」。这是完成时和过去时最容易撞车的地方。"
+      },
+      {
+        wrong: "She have done her homework.",
+        wrongMark: "have",
+        correct: "She has done her homework.",
+        whyZh: "「她做完了」，have 要换三单 has：She has done。have/has 跟着主语变，做过版 done 不变。"
+      },
+      {
+        wrong: "I have watched TV yesterday.",
+        wrongMark: "yesterday",
+        correct: "I have watched TV.",
+        whyZh: "完成时只说「看过了」，不带 yesterday 这种确定时间——要么说 I have watched TV（看过），要么说 I watched TV yesterday（昨天看了），两个只能选一个。"
+      },
+      {
+        wrong: "Have you do your homework?",
+        wrongMark: "do",
+        correct: "Have you done your homework?",
+        whyZh: "问「做完了吗」，Have 搬到句首，动词照样换做过版：Have you done……？做过版不能偷懒。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I have done my homework.", zh: "我已经写完作业了。" },
+      { label: "否定", en: "I haven't done my homework.", zh: "我还没写作业。", noteZh: "haven't = have not：have 后面加 not，就是「还没做」。" },
+      { label: "疑问", en: "Have you finished your homework?", zh: "你写完作业了吗？", noteZh: "问别人时把 Have 搬到句首。回答还是 I have。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "早餐桌上，妈妈问你吃了没", en: "I have eaten breakfast.", zh: "我吃过早饭了。" },
+      { sceneZh: "画室里，老师看你的画", en: "I have finished my picture.", zh: "我画完画了。" },
+      { sceneZh: "球场上，朋友问你看了比赛没", en: "I have watched the game.", zh: "我看过比赛了。" }
+    ],
+    deepDive: {
+      title: "have 明明是「有」，怎么又变成「做过了」？",
+      paragraphs: [
+        "have 是个多面手：后面跟「东西」，就是「有」——I have a new bag（我有一个新背包，第 3 课学过）；后面跟「做过版」，就是「做过了」——I have done my homework（我写完了作业）。判断方法只有一个：看 have 后面站的是什么词。",
+        "做过版是动词的第三件外套。大多数动词的做过版和昨天版长得一样：watch→watched、finish→finished，昨天穿今天穿都是它。只有几个老词走自己的路：do→done、eat→eaten，遇到就单独记住。",
+        "下一课你会见到 been 和 seen——be 和 see 的做过版。加上这课的 done、eaten，四个常客就集齐了。"
+      ]
+    },
+    summary: {
+      rule: "说「做过了」用 have + 做过版；have 后面跟东西是「有」，跟做过版是「做过了」。",
+      points: [
+        "I have done my homework. —— have + 做过版",
+        "I haven't done my homework. —— 还没做：have 后面加 not",
+        "Have you finished your homework? —— 问别人：Have 搬到句首"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我已经写完作业了。",
+        before: "I",
+        after: "done my homework.",
+        options: ["have", "has", "had"],
+        answer: "have",
+        explain: "说「我做过了」，信号灯用 have；has 是他、她专用的，这里先不用管。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我吃过早饭了。",
+        tokens: ["eaten", "I", "breakfast.", "have"],
+        answer: "I have eaten breakfast.",
+        explain: "have 后面站做过版：eaten 是 eat 的做过版。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我已经写完作业了。",
+        tokens: ["homework.", "my", "done", "have", "I"],
+        answer: "I have done my homework.",
+        explain: "I have 开头，done 站在 have 后面。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "have", "do", "my", "homework."],
+        wrongToken: "do",
+        answer: "do",
+        correctionZh: "把 do 换成做过版 done：I have done my homework。",
+        explain: "have 后面要站做过版，do 的做过版是 done。"
+      },
+      {
+        // R8 跨课复现：上一课（L20 because/so）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：天冷了，所以我待在家。",
+        tokens: ["It", "was", "cold,", "so", "I", "stayed", "at", "home."],
+        answer: "It was cold, so I stayed at home.",
+        explain: "复现第 20 课：结果前面用 so。"
+      },
+      {
+        // R9 变形/替换：换主语 I→She，have 变 has（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I have done my homework.」把主语 I 换成 She，have 要怎么变？",
+        replaceBase: "I have done my homework.",
+        replaceTarget: "把 I 换成 She",
+        options: ["has", "have", "had"],
+        answer: "has",
+        explain: "She 是单数，have 换三单 has：She has done。做过版 done 不变。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我画完画了。",
+        tokens: ["picture.", "my", "finished", "have", "I"],
+        distractors: ["has"],
+        answer: "I have finished my picture."
+      },
+      {
+        promptZh: "早餐桌上，你想说：我吃过早饭了。",
+        tokens: ["breakfast.", "eaten", "have", "I"],
+        distractors: ["eat", "ate"],
+        answer: "I have eaten breakfast."
+      },
+      {
+        promptZh: "先复习一小步——上一季学过：昨天我去了公园。",
+        tokens: ["went", "Yesterday", "I", "to", "the", "park."],
+        distractors: ["go"],
+        answer: "Yesterday I went to the park."
+      },
+      {
+        promptZh: "作业早写完了，你想问同桌：你写完作业了吗？",
+        tokens: ["you", "Have", "homework?", "finished", "your"],
+        distractors: ["done"],
+        answer: "Have you finished your homework?"
+      }
+    ],
+    // R5 忆段：析客规格 §4.5 降档——本课忆 L10 旧句热身，规避 have 一词两义 + 无提示回忆双重陡坡
+    recall: {
+      promptZh: "出门前最后检查：周日的日记本上，昨天最开心的一件事要写下来。凭记忆，写出那句英文。",
+      intentZh: "我昨天去了公园。",
+      answer: "Yesterday I went to the park.",
+      noteZh: "这是第 10 课的核心句——先热个身，下一课开始回忆新句型。"
+    },
+    huntCaseIds: ["hunt-homework-note"]
+  },
+  {
+    // L22 经历「去过」：引入 been / seen；gone 仅深挖卡认读不进必做题（Non-goals）
+    id: "lesson-22-been-to",
+    number: 22,
+    title: "去过北京",
+    grammarLabel: "现在完成时 · have been to / have seen",
+    episode: "小美的一天 ㉒",
+    scene: "city",
+    cover: cover22,
+    sceneSetupZh: "课间，班上新来的转学生正在聊暑假去了哪儿。",
+    dialogueEn: "Have you been to Beijing?",
+    dialogueZh: "新同学转过身来问你。",
+    intentZh: "我去过北京。",
+    targetSentence: "I have been to Beijing.",
+    blocks: [
+      { text: "I", role: "我" },
+      { text: "have", role: "信号灯" },
+      { text: "been", role: "去（做过版）" },
+      { text: "to Beijing", role: "去过北京" }
+    ],
+    oneLineRule: "说「去过某地」用 have been to：I have been to Beijing。been 是 be 的做过版——去过了、回来了。",
+    examples: [
+      { en: "I have been to Beijing.", zh: "我去过北京。" },
+      { en: "I have seen that film.", zh: "我看过那部电影。" },
+      { en: "I have been to the zoo.", zh: "我去过动物园。" },
+      { en: "I have been to Shanghai.", zh: "我去过上海。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Have you been to Beijing?", zh: "新同学转过身来问你。" },
+      { who: "npc", en: "I have seen that film twice!", zh: "她还聊起了最近看的电影。" },
+      { who: "me", en: "I have been to Beijing.", zh: "轮到你说了——小美去过北京。" }
+    ],
+    contrast: [
+      {
+        wrong: "I have be to Beijing.",
+        wrongMark: "be",
+        correct: "I have been to Beijing.",
+        whyZh: "be 的做过版是 been，不是 be 本身。做过版是另一件外套，不能拿原形充数。"
+      },
+      {
+        wrong: "I see that film yesterday.",
+        wrongMark: "see",
+        correct: "I saw that film yesterday.",
+        whyZh: "句子里有 yesterday，就要用昨天版：I saw that film yesterday。没有时间点、只说「看过」，才用 have + 做过版。"
+      },
+      {
+        wrong: "I have been to Beijing yesterday.",
+        wrongMark: "yesterday",
+        correct: "I have been to Beijing.",
+        whyZh: "「去过」只说有过这个经历，不带 yesterday 这种确定时间——要说具体哪次，就用 I went to Beijing yesterday（一般过去时）。"
+      },
+      {
+        wrong: "She have been to the zoo.",
+        wrongMark: "have",
+        correct: "She has been to the zoo.",
+        whyZh: "「她去过」，信号灯要换三单 has：She has been to。been 这个做过版不变，have/has 跟着主语变。"
+      },
+      {
+        wrong: "I have went to Beijing.",
+        wrongMark: "went",
+        correct: "I have been to Beijing.",
+        whyZh: "have 后面要站做过版，went 是 go 的昨天版（一般过去时用的），不是做过版——「去过」固定是 have been to。"
+      },
+      {
+        wrong: "Have you ever went to Beijing?",
+        wrongMark: "went",
+        correct: "Have you ever been to Beijing?",
+        whyZh: "问「去过没有」，Have 搬到句首，后面照样用做过版 been：Have you (ever) been to……？went 在这里站不住。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I have been to Beijing.", zh: "我去过北京。" },
+      { label: "否定", en: "I haven't seen that film.", zh: "我还没看过那部电影。", noteZh: "haven't = have not：还没看过。" },
+      { label: "疑问", en: "Have you been to Beijing?", zh: "你去过北京吗？", noteZh: "把 Have 搬到句首，问别人去过没。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "相册前，你指着一张剧照", en: "I have seen that film.", zh: "我看过那部电影。" },
+      { sceneZh: "地图前，同学问你暑假去了哪儿", en: "I have been to Beijing.", zh: "我去过北京。" },
+      { sceneZh: "动物园门口，朋友约你再去", en: "I have been to the zoo.", zh: "我去过动物园。" }
+    ],
+    deepDive: {
+      title: "been 和 was 长得像，它们是什么关系？",
+      paragraphs: [
+        "been 和 was 其实是同一个动词的两件外套：am / is 的昨天版是 was，做过版是 been。说「我昨天在北京」用 was（I was in Beijing yesterday），说「我去过北京」用 been（I have been to Beijing）。",
+        "还有一个近亲 gone：go 的做过版。gone 是「去了还没回来」，been 是「去过了、已经回来」——说 He has gone to Beijing 是他人还在北京，说 He has been to Beijing 是他去玩过、人回来了。这两个词先混个脸熟，不用考。",
+        "说「去过哪儿、看过什么」不用报日子，像翻相册：一张一张说过去就行。这也是为什么这类句子里不放 yesterday。"
+      ]
+    },
+    summary: {
+      rule: "说「去过某地」用 have been to；「看过什么」用 have + 做过版。",
+      points: [
+        "I have been to Beijing. —— been 是 be 的做过版",
+        "I haven't seen that film. —— 还没看过：haven't + 做过版",
+        "Have you been to Beijing? —— 问别人：Have 搬到句首"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我去过北京。",
+        before: "I have",
+        after: "to Beijing.",
+        options: ["been", "was", "go"],
+        answer: "been",
+        explain: "been 是 be 的做过版；was 是昨天版，不能站错位置。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我看过那部电影。",
+        tokens: ["that", "I", "film.", "seen", "have"],
+        answer: "I have seen that film.",
+        explain: "have 后面站 seen——see 的做过版。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我去过北京。",
+        tokens: ["have", "been", "I", "Beijing.", "to"],
+        answer: "I have been to Beijing.",
+        explain: "been to + 地名：去过哪儿。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["She", "have", "been", "to", "the", "zoo."],
+        wrongToken: "have",
+        answer: "have",
+        correctionZh: "她专用的信号灯是 has：She has been to the zoo。",
+        explain: "说「她做过了」，信号灯要用 has。这个先认个脸，以后细讲。"
+      },
+      {
+        // R8 跨课复现：上一课（L21 have done）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我做完作业了。",
+        tokens: ["I", "have", "done", "my", "homework."],
+        answer: "I have done my homework.",
+        explain: "复现第 21 课：have 后面站做过版 done。"
+      },
+      {
+        // R9 变形/替换：换主语 I→She，have 变 has（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I have been to Beijing.」把主语 I 换成 She，have 要怎么变？",
+        replaceBase: "I have been to Beijing.",
+        replaceTarget: "把 I 换成 She",
+        options: ["has", "have", "is"],
+        answer: "has",
+        explain: "She 是单数，信号灯换 has：She has been to。been 这个做过版不变。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我去过北京。",
+        tokens: ["I", "been", "have", "Beijing.", "to"],
+        distractors: ["was", "go"],
+        answer: "I have been to Beijing."
+      },
+      {
+        promptZh: "聊到电影，你想说：我看过那部电影。",
+        tokens: ["film.", "seen", "that", "have", "I"],
+        distractors: ["saw"],
+        answer: "I have seen that film."
+      },
+      {
+        promptZh: "先复习一小步——学过的老句子：我去图书馆。",
+        tokens: ["library.", "I", "go", "to", "the"],
+        distractors: ["goes"],
+        answer: "I go to the library."
+      },
+      {
+        promptZh: "同学聊起一部你没看过的电影，你想说：我还没看过那部电影。",
+        tokens: ["film.", "I", "seen", "that", "haven't"],
+        distractors: ["saw"],
+        answer: "I haven't seen that film."
+      }
+    ],
+    recall: {
+      promptZh: "新同学笑着等你回答，轮到你介绍自己去过哪儿了。凭记忆，写出那句英文。",
+      intentZh: "我去过北京。",
+      answer: "I have been to Beijing.",
+      noteZh: "been 是 be 的做过版：去过了、回来了。"
+    },
+    huntCaseIds: ["hunt-photo-album"]
+  },
+  {
+    // L23 结果「还在呢」：引入 broken / written；lost 白捡（昨天版做过版同形）
+    id: "lesson-23-have-lost",
+    number: 23,
+    title: "钥匙不见了",
+    grammarLabel: "现在完成时 · have lost / have broken",
+    episode: "小美的一天 ㉓",
+    scene: "mansion",
+    cover: cover23,
+    sceneSetupZh: "放学回家，小美站在门口翻遍了书包——钥匙不见了。",
+    dialogueEn: "Is it in your bag?",
+    dialogueZh: "外婆隔着门问。",
+    intentZh: "我把钥匙弄丢了。",
+    targetSentence: "I have lost my key.",
+    blocks: [
+      { text: "I", role: "我" },
+      { text: "have", role: "信号灯" },
+      { text: "lost", role: "弄丢（做过版）" },
+      { text: "my key", role: "我的钥匙" }
+    ],
+    oneLineRule: "丢了、坏了、还在呢——结果现在还看得见的事，用 have + 做过版说：I have lost my key。",
+    examples: [
+      { en: "I have lost my key.", zh: "我把钥匙弄丢了。" },
+      { en: "I have broken my cup.", zh: "我把杯子打碎了。" },
+      { en: "I have written a letter.", zh: "我写好了一封信。" },
+      { en: "I have lost my pen.", zh: "我把钢笔弄丢了。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Is it in your bag?", zh: "外婆隔着门问。" },
+      { who: "npc", en: "Don't worry. I have my key here.", zh: "外婆拿出备用钥匙：别担心，我这儿有。" },
+      { who: "me", en: "I have lost my key.", zh: "轮到你说了——钥匙弄丢了。" }
+    ],
+    contrast: [
+      {
+        wrong: "I have lose my key.",
+        wrongMark: "lose",
+        correct: "I have lost my key.",
+        whyZh: "lose 的做过版是 lost，不走加 -ed 的路。丢失的结果现在还在——还没进家门呢，所以用 have + 做过版。"
+      },
+      {
+        wrong: "I break my cup yesterday.",
+        wrongMark: "break",
+        correct: "I broke my cup yesterday.",
+        whyZh: "句子里有 yesterday，要用昨天版 broke。没提时间、只说「碎了还在」，才用 have + 做过版。"
+      },
+      {
+        wrong: "I have lost my key yesterday.",
+        wrongMark: "yesterday",
+        correct: "I lost my key yesterday.",
+        whyZh: "说了 yesterday 就用一般过去时 lost——完成时只管「现在还没找到」，不问哪天丢的。时间点一出现，就换昨天版。"
+      },
+      {
+        wrong: "She have lost her key.",
+        wrongMark: "have",
+        correct: "She has lost her key.",
+        whyZh: "「她丢了」，信号灯换三单 has：She has lost。lost 这个做过版不变，have/has 跟着主语变。"
+      },
+      {
+        wrong: "I have breaked my cup.",
+        wrongMark: "breaked",
+        correct: "I have broken my cup.",
+        whyZh: "break 的做过版是 broken，不是 breaked——它不走加 -ed 的寻常路。做过版里这种「老词」要单独记。"
+      },
+      {
+        wrong: "I lost my key. So I can't open the door now.",
+        wrongMark: "lost",
+        correct: "I have lost my key. So I can't open the door now.",
+        whyZh: "强调「丢了，现在进不了门」这个结果还在，用 have lost 更贴——一般过去时只说「丢过」，完成时才说清「影响到现在」。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I have lost my key.", zh: "我把钥匙弄丢了。" },
+      { label: "否定", en: "I haven't cleaned my room.", zh: "我还没打扫房间。", noteZh: "haven't = have not：还没做好。" },
+      { label: "疑问", en: "Have you cleaned your room?", zh: "你打扫房间了吗？", noteZh: "把 Have 搬到句首，问别人做好了没。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "家门口，外婆问你钥匙哪去了", en: "I have lost my key.", zh: "我把钥匙弄丢了。" },
+      { sceneZh: "厨房里，你收拾碗时手一滑", en: "I have broken my cup.", zh: "我把杯子打碎了。" },
+      { sceneZh: "书房里，你给笔友回信", en: "I have written a letter.", zh: "我写好了一封信。" }
+    ],
+    deepDive: {
+      title: "丢钥匙的事在昨天，为什么不用昨天版？",
+      paragraphs: [
+        "重点不在哪一天丢的，而在「现在还没找回来」——结果一直留到了现在。凡是结果还在的事（钥匙丢了、杯子碎了），英语用 have + 做过版来说。",
+        "lost 是个白捡的词：lose 的昨天版和做过版长得一样，都是 lost。I lost my key yesterday（昨天丢的，讲故事）和 I have lost my key（还没找回来，说结果）都对，只是分工不同。",
+        "broken、written 也是老词走自己的路：break 的昨天版是 broke、做过版是 broken；write 的昨天版是 wrote、做过版是 written。两件外套别穿混。"
+      ]
+    },
+    summary: {
+      rule: "结果还在的事（丢了、碎了）用 have + 做过版：I have lost my key。",
+      points: [
+        "I have lost my key. —— 结果还在：用做过版",
+        "I broke my cup yesterday. —— 有时间点：用昨天版",
+        "Have you cleaned your room? —— 问别人：Have 搬到句首"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我把钥匙弄丢了。",
+        before: "I have",
+        after: "my key.",
+        options: ["lost", "lose", "losed"],
+        answer: "lost",
+        explain: "lose 的做过版是 lost；losed 是不存在的形状。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我写好了一封信。",
+        tokens: ["letter.", "a", "written", "have", "I"],
+        answer: "I have written a letter.",
+        explain: "have 后面站 written——write 的做过版。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我把钥匙弄丢了。",
+        tokens: ["key.", "lost", "my", "have", "I"],
+        answer: "I have lost my key.",
+        explain: "I have lost = 已经丢了，还没找回来。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "have", "break", "my", "cup."],
+        wrongToken: "break",
+        answer: "break",
+        correctionZh: "把 break 换成做过版 broken：I have broken my cup。",
+        explain: "have 后面要站做过版：break 的做过版是 broken。"
+      },
+      {
+        // R8 跨课复现：上一课（L22 have been to）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我去过北京。",
+        tokens: ["I", "have", "been", "to", "Beijing."],
+        answer: "I have been to Beijing.",
+        explain: "复现第 22 课：「去过」固定是 have been to。"
+      },
+      {
+        // R9 变形/替换：换动词 lose→break，做过版跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I have lost my key.」把「丢了钥匙」换成「碎了杯子」，lost 要怎么变？",
+        replaceBase: "I have lost my key.",
+        replaceTarget: "把 lost（丢）换成 break（碎）的做过版",
+        options: ["broken", "breaked", "broke"],
+        answer: "broken",
+        explain: "break 的做过版是 broken：I have broken my cup。不走加 -ed 的路。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "外婆问你钥匙哪去了，你想说：我把钥匙弄丢了。",
+        tokens: ["I", "lost", "have", "key.", "my"],
+        distractors: ["lose", "losed"],
+        answer: "I have lost my key."
+      },
+      {
+        promptZh: "厨房里，你想说：我把杯子打碎了。",
+        tokens: ["cup.", "my", "broken", "have", "I"],
+        distractors: ["broke"],
+        answer: "I have broken my cup."
+      },
+      {
+        promptZh: "先复习一小步——学过的老句子：它在你书包里吗？",
+        tokens: ["it", "Is", "your", "bag?", "in"],
+        distractors: ["on", "at"],
+        answer: "Is it in your bag?"
+      },
+      {
+        promptZh: "妈妈快回家了，你想说：我还没打扫房间。",
+        tokens: ["cleaned", "I", "room.", "my", "haven't"],
+        distractors: ["clean"],
+        answer: "I haven't cleaned my room."
+      }
+    ],
+    recall: {
+      promptZh: "外婆在门口等你，你翻遍了书包也没找到，该告诉她坏消息了。凭记忆，写出那句英文。",
+      intentZh: "我把钥匙弄丢了。",
+      answer: "I have lost my key.",
+      noteZh: "丢了、还没找回来——结果还在，用 have + 做过版。"
+    },
+    huntCaseIds: ["hunt-lost-key"]
+  },
+  {
+    // L24 对比收口课：targetSentence 存昨天版核心句（无提示产出题恰好考「昨天信号选昨天版」）；
+    // 做过版核心句由 variants 肯定卡 + 破案/练习承载。零新增分词，全批复用。
+    id: "lesson-24-past-vs-perfect",
+    number: 24,
+    title: "昨天去了，还是去过了？",
+    grammarLabel: "对比 · 一般过去时 vs 现在完成时",
+    episode: "小美的一天 ㉔",
+    scene: "mystery",
+    cover: cover24,
+    sceneSetupZh: "周日晚，小美在灯下写周记，妈妈端着水果进来聊天。",
+    dialogueEn: "Have you been to the new park?",
+    dialogueZh: "妈妈一边削苹果一边问。",
+    intentZh: "我昨天去了公园。",
+    targetSentence: "Yesterday I went to the park.",
+    blocks: [
+      { text: "Yesterday", role: "昨天（信号灯）" },
+      { text: "I", role: "我" },
+      { text: "went", role: "去（昨天版）" },
+      { text: "to the park", role: "去公园" }
+    ],
+    oneLineRule: "句子里有具体时间点（yesterday、last week）就用昨天版；不报时间、只说「做过了、去过」就用 have + 做过版。",
+    examples: [
+      { en: "Yesterday I went to the park.", zh: "我昨天去了公园。" },
+      { en: "I have been to the park.", zh: "我去过那个公园。" },
+      { en: "I saw that film yesterday.", zh: "我昨天看了那部电影。" },
+      { en: "I have seen that film.", zh: "我看过那部电影。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Have you been to the new park?", zh: "妈妈一边削苹果一边问。" },
+      { who: "npc", en: "I heard it is beautiful.", zh: "她说：听说那儿很漂亮。" },
+      { who: "me", en: "I have been to the park.", zh: "轮到你说了——小美去过那个公园。" }
+    ],
+    contrast: [
+      {
+        wrong: "I have seen that film yesterday.",
+        wrongMark: "seen",
+        correct: "I saw that film yesterday.",
+        whyZh: "yesterday 已经站在句子里了，就得用昨天版 saw。做过版和具体时间点不能同台。"
+      },
+      {
+        wrong: "Yesterday I have done my homework.",
+        wrongMark: "have",
+        correct: "Yesterday I did my homework.",
+        whyZh: "Yesterday 在场，讲的是哪一天干了啥——用昨天版 did。做过版只说「做过了」，不带日子。"
+      },
+      {
+        wrong: "I saw that film. It's great!",
+        wrongMark: "saw",
+        correct: "I have seen that film. It's great!",
+        whyZh: "没提时间、只说「看过，觉得好」这个经历，用 have seen 更自然——强调看过之后的感受留到了现在。"
+      },
+      {
+        wrong: "Did you finish your homework? Mom is waiting.",
+        wrongMark: "Did you finish",
+        correct: "Have you finished your homework? Mom is waiting.",
+        whyZh: "妈妈现在就在等，关心的是「现在做完没有」这个结果，用 Have you finished 更贴——完成时管「现在的状态」。"
+      },
+      {
+        wrong: "I have gone to the park yesterday afternoon.",
+        wrongMark: "have gone",
+        correct: "I went to the park yesterday afternoon.",
+        whyZh: "yesterday afternoon 是确定时间，用一般过去时 went——完成时不能挂具体时间状语，这是两个时态最硬的分界线。"
+      },
+      {
+        wrong: "She has lost her key last week.",
+        wrongMark: "last week",
+        correct: "She lost her key last week.",
+        whyZh: "last week 也是确定的过去时间，用一般过去时 lost——完成时只说「丢了还没找到」，不说哪一周丢的。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I have been to the park.", zh: "我去过那个公园。" },
+      { label: "否定", en: "I didn't go out yesterday.", zh: "我昨天没出门。", noteZh: "昨天 + 不 = didn't：did 出场后动词变回原形 go。" },
+      { label: "疑问", en: "Have you been to the new park?", zh: "你去过新开的公园吗？", noteZh: "不报时间地问经历：Have 搬到句首。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "日记里写下昨天的行程", en: "I went to the park yesterday.", zh: "我昨天去了公园。" },
+      { sceneZh: "饭桌上，妈妈问你饿不饿", en: "I have eaten breakfast, so I am full.", zh: "我吃过早饭了，所以很饱。" },
+      { sceneZh: "照片前，你指着天安门", en: "I have been to Beijing.", zh: "我去过北京。" }
+    ],
+    deepDive: {
+      title: "went 和 have been，到底怎么选？",
+      paragraphs: [
+        "两句话并排看：Yesterday I went to the park（我昨天去了公园——讲故事，有日子）；I have been to the park（我去过那个公园——说经历，没有日子）。同一件事，讲法分工不同。",
+        "一句话判据：句子里有具体时间点吗？有——yesterday、last week——用昨天版；没有，只说「做过了、去过」，或事情和现在有关——用 have + 做过版。",
+        "信号词小清单：看到 yesterday、last week，用昨天版；看到 just（刚刚）或不报时间，用做过版。just 先混个脸熟，不用考。",
+        "gone 和 been 再认一次：gone 是去了还没回来，been 是去过了、回来了。说经历，用 been。"
+      ]
+    },
+    summary: {
+      rule: "有具体时间点用昨天版；不报时间、只说做过了就用 have + 做过版。",
+      points: [
+        "Yesterday I went to the park. —— yesterday 在场：昨天版",
+        "I have been to the park. —— 不报时间的经历：做过版",
+        "I didn't go out yesterday. —— 昨天版否定：did + 原形"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：昨天我去了公园。",
+        before: "",
+        after: "I went to the park.",
+        options: ["Yesterday", "Just", "Now"],
+        answer: "Yesterday",
+        explain: "说哪一天干了啥，开头放时间点 Yesterday，动词穿昨天版。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：昨天我去了公园。",
+        tokens: ["to", "Yesterday", "I", "the", "park.", "went"],
+        answer: "Yesterday I went to the park.",
+        explain: "Yesterday 开头，went 是 go 的昨天版。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我去过那个公园。",
+        tokens: ["park.", "been", "I", "the", "to", "have"],
+        answer: "I have been to the park.",
+        explain: "不报时间，只说去过：have + been。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "have", "seen", "that", "film", "yesterday."],
+        wrongToken: "seen",
+        answer: "seen",
+        correctionZh: "把 seen 换成昨天版 saw：I saw that film yesterday。",
+        explain: "yesterday 在场，动词要用昨天版，做过版不能同台。"
+      },
+      {
+        // R8 跨课复现：上一课（L23 have lost）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我丢了钥匙。",
+        tokens: ["I", "have", "lost", "my", "key."],
+        answer: "I have lost my key.",
+        explain: "复现第 23 课：「丢了（还没找到）」用 have lost。"
+      },
+      {
+        // R9 变形/替换：加时间状语（无→yesterday），时态跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I have seen that film.」句尾加上 yesterday，have seen 要怎么变？",
+        replaceBase: "I have seen that film.",
+        replaceTarget: "句尾加上 yesterday",
+        options: ["saw", "have seen", "seen"],
+        answer: "saw",
+        explain: "一出现 yesterday，就换一般过去时 saw——完成时和具体时间不能同台。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "写周记的第一句，你想说：昨天我去了公园。",
+        tokens: ["I", "went", "Yesterday", "to", "the", "park."],
+        distractors: ["have", "been"],
+        answer: "Yesterday I went to the park."
+      },
+      {
+        promptZh: "回答妈妈的问题，你想说：我去过那个公园。",
+        tokens: ["park.", "I", "been", "the", "have", "to"],
+        distractors: ["went", "Yesterday"],
+        answer: "I have been to the park."
+      },
+      {
+        promptZh: "先复习一小步——学过的老句子：我吃了两个三明治。",
+        tokens: ["I", "ate", "two", "sandwiches."],
+        distractors: ["eat"],
+        answer: "I ate two sandwiches."
+      },
+      {
+        promptZh: "昨天作业太多，你想说：我昨天没出门。",
+        tokens: ["go", "didn't", "I", "out", "yesterday."],
+        distractors: ["went"],
+        answer: "I didn't go out yesterday."
+      }
+    ],
+    recall: {
+      promptZh: "妈妈笑着等你回答——去过新开的公园没？凭记忆，写出那句英文。",
+      intentZh: "我去过那个公园。",
+      answer: "I have been to the park.",
+      noteZh: "不报时间、只说去过：have + been to。"
+    },
+    huntCaseIds: ["hunt-diary-mix", "hunt-weekend-note"]
   }
 ];
 

@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   addLessonCoreSentence,
   addLessonMistakeSentence,
+  backfillLessonCoreSentences,
+  backfillLessonStages,
   checkLessonChoice,
   checkLessonTokens,
   createGuidedState,
@@ -10,12 +12,16 @@ import {
   firstMismatchIndex,
   getCompletedLessonIds,
   getGrammarLesson,
+  getLessonStageLock,
+  getLessonStagesDone,
   getNextLesson,
   isLessonDone,
+  isLessonStageDone,
   judgeGuidedStep,
   judgePracticeStep,
   listGrammarLessons,
   markLessonDone,
+  markLessonStageDone,
   normalizeLessonSentence,
   shuffleTokenOrder,
   summarizeLessonProgress
@@ -161,6 +167,38 @@ describe("lessonService · 错句与核心句回流 SM-2", () => {
     expect(once.cards[0].front).toBe("I am Xiaomei.");
     expect(addLessonCoreSentence(once, lesson).cards).toHaveLength(1);
   });
+
+  it("R04 backfillLessonCoreSentences：只回填已完成课，幂等", () => {
+    const done = baseData({ grammarLessonsDone: ["lesson-01-am", "lesson-02-is"] });
+    const { data: once, backfilled } = backfillLessonCoreSentences(done);
+    expect(backfilled).toBe(2);
+    expect(once.cards.filter((card) => card.sourceId === "lesson:lesson-01-am")).toHaveLength(1);
+    expect(once.cards.filter((card) => card.sourceId === "lesson:lesson-02-is")).toHaveLength(1);
+    expect(once.cards.every((card) => card.tags.includes("语法"))).toBe(true);
+
+    // 幂等：第二次执行零新增
+    const { data: twice, backfilled: again } = backfillLessonCoreSentences(once);
+    expect(again).toBe(0);
+    expect(twice.cards).toHaveLength(once.cards.length);
+  });
+
+  it("R04 backfillLessonCoreSentences：未完成课不回填，空进度零回填", () => {
+    const { data, backfilled } = backfillLessonCoreSentences(baseData());
+    expect(backfilled).toBe(0);
+    expect(data.cards).toHaveLength(0);
+
+    const partial = baseData({ grammarLessonsDone: ["lesson-01-am"] });
+    const { data: result, backfilled: count } = backfillLessonCoreSentences(partial);
+    expect(count).toBe(1);
+    expect(result.cards.some((card) => card.sourceId === "lesson:lesson-02-is")).toBe(false);
+  });
+
+  it("R04 backfillLessonCoreSentences：已有核心句卡的课（markLessonDone 正常路径）不重复回填", () => {
+    const done = markLessonDone(baseData(), "lesson-01-am");
+    const { data: result, backfilled } = backfillLessonCoreSentences(done);
+    expect(backfilled).toBe(0);
+    expect(result.cards).toHaveLength(done.cards.length);
+  });
 });
 
 describe("lessonService · 三单常驻检查（R04）", () => {
@@ -246,5 +284,141 @@ describe("lessonService · 输出题差异说明（R04 反馈说人话）", () =
 
   it("空输入安全返回", () => {
     expect(describeOutputGap("   ", target)).toBeNull();
+  });
+});
+
+// ── F1 三关卡粒度完成态（2026-09-13 PRD）────────────────────────────────
+describe("F1 三关卡完成态", () => {
+  it("markLessonStageDone 关 1：双写新旧字段 + 核心句入队", () => {
+    const next = markLessonStageDone(baseData(), "lesson-01-am", 1);
+    expect(next.grammarLessonsDone).toContain("lesson-01-am");
+    expect(next.grammarLessonStagesDone?.["lesson-01-am"]).toEqual([1]);
+    // 核心句入 SM-2（走既有 markLessonDone 链路）
+    expect(next.cards.some((card) => card.sourceId === "lesson:lesson-01-am")).toBe(true);
+  });
+
+  it("markLessonStageDone 关 2/3：只写新字段，不碰旧字段、不入队", () => {
+    const after1 = markLessonStageDone(baseData(), "lesson-01-am", 1);
+    const cardsAfter1 = after1.cards.length;
+    const after2 = markLessonStageDone(after1, "lesson-01-am", 2);
+    expect(after2.grammarLessonStagesDone?.["lesson-01-am"]).toEqual([1, 2]);
+    expect(after2.cards.length).toBe(cardsAfter1); // 关 2 不再入队
+    const after3 = markLessonStageDone(after2, "lesson-01-am", 3);
+    expect(after3.grammarLessonStagesDone?.["lesson-01-am"]).toEqual([1, 2, 3]);
+  });
+
+  it("markLessonStageDone 幂等：重复标同一关不产生变化", () => {
+    const once = markLessonStageDone(baseData(), "lesson-01-am", 1);
+    const twice = markLessonStageDone(once, "lesson-01-am", 1);
+    expect(twice).toBe(once); // 不可变且幂等：直接返回原引用
+    expect(twice.grammarLessonStagesDone?.["lesson-01-am"]).toEqual([1]);
+  });
+
+  it("markLessonStageDone 未知课程：安全返回原数据", () => {
+    const data = baseData();
+    expect(markLessonStageDone(data, "lesson-99-nope", 1)).toBe(data);
+  });
+
+  it("getLessonStagesDone 兼容视角：旧字段有值即视为关 1 完成（未回填也能读对）", () => {
+    const legacy = baseData({ grammarLessonsDone: ["lesson-01-am"] }); // 无新字段
+    expect(getLessonStagesDone(legacy, "lesson-01-am").has(1)).toBe(true);
+    expect(isLessonStageDone(legacy, "lesson-01-am", 1)).toBe(true);
+    expect(isLessonStageDone(legacy, "lesson-01-am", 2)).toBe(false);
+  });
+
+  it("backfillLessonStages：旧进度补 [1]，已有关卡不动", () => {
+    const data = baseData({
+      grammarLessonsDone: ["lesson-01-am", "lesson-02-is"],
+      grammarLessonStagesDone: { "lesson-01-am": [1, 2] } // L1 已有 1、2
+    });
+    const { data: next, backfilled } = backfillLessonStages(data);
+    expect(backfilled).toBe(1); // 只有 L2 需要补
+    expect(next.grammarLessonStagesDone?.["lesson-01-am"]).toEqual([1, 2]); // 不动
+    expect(next.grammarLessonStagesDone?.["lesson-02-is"]).toEqual([1]); // 补上
+  });
+
+  it("backfillLessonStages 幂等：重复执行 backfilled=0", () => {
+    const data = baseData({ grammarLessonsDone: ["lesson-01-am"] });
+    const once = backfillLessonStages(data);
+    expect(once.backfilled).toBe(1);
+    const twice = backfillLessonStages(once.data);
+    expect(twice.backfilled).toBe(0);
+  });
+
+  it("isLessonStageDone 从未学课：全部 false", () => {
+    const data = baseData();
+    expect(isLessonStageDone(data, "lesson-01-am", 1)).toBe(false);
+    expect(isLessonStageDone(data, "lesson-01-am", 2)).toBe(false);
+    expect(isLessonStageDone(data, "lesson-01-am", 3)).toBe(false);
+  });
+});
+
+// ── R9 replace 变形题判题（复用 choose 内核）─────────────────────────
+describe("R9 replace 变形题", () => {
+  const replaceStep: LessonGuidedStep = {
+    kind: "replace",
+    promptZh: "句子变身：「I am drawing.」把主语 I 换成 She，动词要怎么变？",
+    replaceBase: "I am drawing.",
+    replaceTarget: "把 I 换成 She",
+    options: ["is", "am", "are"],
+    answer: "is",
+    explain: "She 的搭档是 is：She is drawing."
+  };
+
+  it("选对变形结果：通过", () => {
+    expect(judgeGuidedStep(replaceStep, ["is"])).toBe(true);
+  });
+
+  it("选原形的搭档（未跟着变）：不通过", () => {
+    expect(judgeGuidedStep(replaceStep, ["am"])).toBe(false);
+  });
+
+  it("选错搭档：不通过", () => {
+    expect(judgeGuidedStep(replaceStep, ["are"])).toBe(false);
+  });
+});
+
+// ── F1 三关卡解锁判定（2026-09-13 PRD §6.1）─────────────────────────────
+describe("F1 三关卡解锁判定", () => {
+  const NOW = Date.parse("2026-09-13T20:00:00.000Z");
+  const hoursAgo = (h: number) => new Date(NOW - h * 3600 * 1000).toISOString();
+
+  it("关 1：第 1 课恒解锁；后续课需前一课关 1 完成", () => {
+    const data = baseData();
+    const noRead = () => null;
+    expect(getLessonStageLock(data, "lesson-01-am", 1, noRead, NOW).state).toBe("unlocked");
+    expect(getLessonStageLock(data, "lesson-02-is", 1, noRead, NOW).state).toBe("locked");
+    const done1 = markLessonStageDone(data, "lesson-01-am", 1);
+    expect(getLessonStageLock(done1, "lesson-02-is", 1, noRead, NOW).state).toBe("unlocked");
+    expect(getLessonStageLock(done1, "lesson-01-am", 1, noRead, NOW).state).toBe("done");
+  });
+
+  it("关 2：关 1 完成 + 次日 20h 后解锁；未满 20h 锁定并给 unlockAt", () => {
+    const data = markLessonStageDone(baseData(), "lesson-13-now", 1);
+    // 关 1 完成于 5 小时前（<20h）→ 锁定
+    const lock5h = getLessonStageLock(data, "lesson-13-now", 2, () => hoursAgo(5), NOW);
+    expect(lock5h.state).toBe("locked");
+    expect(lock5h.unlockAt).toBeDefined();
+    // 关 1 完成于 25 小时前（>20h）→ 解锁
+    expect(getLessonStageLock(data, "lesson-13-now", 2, () => hoursAgo(25), NOW).state).toBe("unlocked");
+  });
+
+  it("关 2：关 1 未完成 → 锁定", () => {
+    const data = baseData();
+    expect(getLessonStageLock(data, "lesson-13-now", 2, () => null, NOW).state).toBe("locked");
+  });
+
+  it("关 2：老用户回填进度无时间戳 → 按满窗处理直接解锁", () => {
+    const legacy = baseData({ grammarLessonsDone: ["lesson-13-now"] }); // 旧字段有值、无遥测时间
+    expect(getLessonStageLock(legacy, "lesson-13-now", 2, () => null, NOW).state).toBe("unlocked");
+  });
+
+  it("关 3：关 2 完成即解锁；关 2 未完 → 锁定", () => {
+    const d1 = markLessonStageDone(baseData(), "lesson-13-now", 1);
+    expect(getLessonStageLock(d1, "lesson-13-now", 3, () => null, NOW).state).toBe("locked");
+    const d2 = markLessonStageDone(d1, "lesson-13-now", 2);
+    expect(getLessonStageLock(d2, "lesson-13-now", 3, () => null, NOW).state).toBe("unlocked");
+    const d3 = markLessonStageDone(d2, "lesson-13-now", 3);
+    expect(getLessonStageLock(d3, "lesson-13-now", 3, () => null, NOW).state).toBe("done");
   });
 });

@@ -12,11 +12,15 @@ import {
   CardType,
   DictionaryEntry,
   DiaryEntry,
+  GateAttempt,
   GrammarErrorTag,
+  GrammarRune,
   HuntAttempt,
   HuntResult,
+  LanguageGate,
   Material,
   MaterialSegment,
+  MisreadBranch,
   MistakeGeneration,
   MistakeGenerationCoverage,
   MistakeGenerationLength,
@@ -29,6 +33,7 @@ import {
   Rating,
   Review,
   ReviewMode,
+  RuneState,
   Schedule,
   SentenceDetails,
   Settings,
@@ -38,6 +43,8 @@ import {
 } from "../types";
 import { seedDictionary } from "../data/seedDictionary";
 import { CORE_100_WORDS_VERSION, core100Words } from "../data/seedWords";
+import { syncUnitCompletion } from "./learningTelemetry";
+import { restructureOversizedUnits } from "./bookRestructureService";
 
 const STORAGE_KEY = "personal-vocab-app-data-v1";
 export const APP_SCHEMA_VERSION = 8;
@@ -47,7 +54,8 @@ export const uid = (prefix: string) =>
 
 export const nowIso = () => new Date().toISOString();
 
-const defaultSettings: Settings = {
+// 设置默认值的唯一来源（R13）：测试侧的 testUtils 也从这里取，改默认值只改这一处。
+export const defaultSettings: Settings = {
   dailyNewWords: 10,
   dailyReviewLimit: 30,
   dailySentences: 5,
@@ -57,6 +65,7 @@ const defaultSettings: Settings = {
   speechRate: 0.9,
   autoSpeakInSpelling: true,
   lastExportedAt: "",
+  lastSyncedAt: "",
   diaryDailyCount: 3,
   aiProvider: {
     enabled: false,
@@ -93,6 +102,9 @@ const createInitialData = (): AppData => ({
   schedules: [],
   dictionaryEntries: seedDictionary,
   seededWordVersions: [],
+  languageGates: [],
+  gateAttempts: [],
+  runeStates: [],
   settings: defaultSettings
 });
 
@@ -119,6 +131,25 @@ const validIsoOrNow = (value: unknown) => {
   return text && !Number.isNaN(new Date(text).getTime()) ? text : nowIso();
 };
 
+/**
+ * F1 三关卡完成态归一化：Record<lessonId, number[]>，关卡序号只保留合法值 1/2/3 并去重排序。
+ * 非法输入（非对象、数组含非数字、序号越界）一律降级为安全值，绝不让坏数据进入 AppData。
+ */
+const normalizeLessonStagesDone = (value: unknown): Record<string, number[]> => {
+  if (!isRecord(value)) return {};
+  const result: Record<string, number[]> = {};
+  for (const [lessonId, stages] of Object.entries(value)) {
+    if (typeof lessonId !== "string" || !lessonId) continue;
+    const legal = Array.isArray(stages)
+      ? [...new Set(stages.filter((stage): stage is number => stage === 1 || stage === 2 || stage === 3))].sort(
+          (a, b) => a - b
+        )
+      : [];
+    if (legal.length > 0) result[lessonId] = legal;
+  }
+  return result;
+};
+
 const knownAppDataKeys = [
   "schemaVersion",
   "unitGroups",
@@ -134,6 +165,7 @@ const knownAppDataKeys = [
   "huntAttempts",
   "huntResults",
   "grammarLessonsDone",
+  "grammarLessonStagesDone",
   "diaryEntries",
   "schedules",
   "dictionaryEntries",
@@ -151,6 +183,12 @@ const normalizeSettings = (value: unknown): Settings => {
   const normalizedAiTimeout = Math.min(300000, Math.max(5000, Math.round(asNumber(aiProvider.timeoutMs, defaultSettings.aiProvider.timeoutMs))));
   const rawDiaryCount = Math.round(asNumber(settings.diaryDailyCount, defaultSettings.diaryDailyCount));
   const diaryDailyCount = rawDiaryCount === 5 || rawDiaryCount === 10 ? rawDiaryCount : 3;
+  // R11：批改强度归一化（默认 standard；非法值回退）
+  const rawStyle = asString(settings.diaryCorrectionStyle);
+  const diaryCorrectionStyle = (rawStyle === "gentle" || rawStyle === "strict" ? rawStyle : "standard") as
+    | "gentle"
+    | "standard"
+    | "strict";
 
   return {
     dailyNewWords: Math.max(0, Math.round(asNumber(settings.dailyNewWords, defaultSettings.dailyNewWords))),
@@ -162,7 +200,9 @@ const normalizeSettings = (value: unknown): Settings => {
     speechRate: Math.min(1.5, Math.max(0.4, asNumber(settings.speechRate, defaultSettings.speechRate))),
     autoSpeakInSpelling: asBoolean(settings.autoSpeakInSpelling, defaultSettings.autoSpeakInSpelling),
     lastExportedAt: asString(settings.lastExportedAt, defaultSettings.lastExportedAt),
+    lastSyncedAt: asString(settings.lastSyncedAt, defaultSettings.lastSyncedAt),
     diaryDailyCount,
+    diaryCorrectionStyle,
     aiProvider: {
       enabled: asBoolean(aiProvider.enabled, defaultSettings.aiProvider.enabled),
       baseUrl: asString(aiProvider.baseUrl, defaultSettings.aiProvider.baseUrl).trim(),
@@ -183,6 +223,9 @@ const normalizeSettings = (value: unknown): Settings => {
 const normalizeUnit = (value: unknown, index: number): Unit | null => {
   if (!isRecord(value)) return null;
   const timestamp = validIsoOrNow(value.createdAt);
+  // completedAt 是「全部掌握」的打点时间，只在合法 ISO 字符串时保留；缺失/非法时不得补 now。
+  const completedAt = asString(value.completedAt);
+  const hasValidCompletedAt = completedAt && !Number.isNaN(new Date(completedAt).getTime());
 
   return {
     id: asString(value.id) || uid("unit"),
@@ -192,7 +235,9 @@ const normalizeUnit = (value: unknown, index: number): Unit | null => {
     color: asString(value.color) || "#2563eb",
     groupId: asString(value.groupId) || undefined,
     createdAt: timestamp,
-    updatedAt: validIsoOrNow(value.updatedAt || timestamp)
+    updatedAt: validIsoOrNow(value.updatedAt || timestamp),
+    ...(hasValidCompletedAt ? { completedAt } : {}),
+    ...(asBoolean(value.speedRun) ? { speedRun: true } : {})
   };
 };
 
@@ -229,6 +274,9 @@ const normalizeCard = (value: unknown): Card | null => {
 
   if (!front.trim() && !back.trim()) return null;
 
+  const status = normalizeCardStatus(value.status);
+  const updatedAt = validIsoOrNow(value.updatedAt || timestamp);
+
   return {
     id: asString(value.id) || uid("card"),
     type,
@@ -238,10 +286,12 @@ const normalizeCard = (value: unknown): Card | null => {
     sourceId: asString(value.sourceId) || undefined,
     unitId: type === "word" ? asString(value.unitId) || undefined : undefined,
     tags: asStringArray(value.tags),
-    status: normalizeCardStatus(value.status),
+    status,
     priority: asBoolean(value.priority),
+    // R13：masteredAt 是「进入掌握」的打点时间；历史 mastered 卡无此字段时回退 updatedAt，非 mastered 恒为 null。
+    masteredAt: status === "mastered" ? validIsoOrNow(value.masteredAt || updatedAt) : null,
     createdAt: timestamp,
-    updatedAt: validIsoOrNow(value.updatedAt || timestamp)
+    updatedAt
   };
 };
 
@@ -702,6 +752,75 @@ const localDateKey = (value: unknown) => {
   return `${year}-${month}-${day}`;
 };
 
+/* ── 语言之门 / 符文 归一化（GRAMMAR_ADVENTURE_PLAN §8.2）──────────────── */
+
+const GATE_MODES = ["complete", "say", "respond"] as const;
+const RUNE_MASTERIES = ["unseen", "seen", "usable", "fluent", "instinct"] as const;
+const GATE_VERDICTS = ["pass", "near", "misread"] as const;
+
+const normalizeMisreadBranches = (value: unknown): MisreadBranch[] =>
+  (Array.isArray(value) ? value : [])
+    .filter(isRecord)
+    .map<MisreadBranch>((item) => ({
+      errorTag: normalizeGrammarErrorTag(item.errorTag),
+      npcReply: asString(item.npcReply),
+      npcReplyZh: asString(item.npcReplyZh),
+      lampHint: asString(item.lampHint)
+    }))
+    .filter((item) => item.npcReply);
+
+const normalizeLanguageGates = (value: unknown): LanguageGate[] =>
+  (Array.isArray(value) ? value : [])
+    .filter(isRecord)
+    .map<LanguageGate>((item) => {
+      const hintsRaw = Array.isArray(item.hints) ? item.hints.map((hint) => asString(hint)) : [];
+      const hints: [string, string, string] = [hintsRaw[0] ?? "", hintsRaw[1] ?? "", hintsRaw[2] ?? ""];
+      return {
+        id: asString(item.id) || uid("gate"),
+        topicId: asString(item.topicId),
+        runeId: asString(item.runeId),
+        mode: GATE_MODES.includes(item.mode as (typeof GATE_MODES)[number]) ? (item.mode as LanguageGate["mode"]) : "say",
+        npcLine: asString(item.npcLine),
+        npcLineZh: asString(item.npcLineZh),
+        zhIntent: asString(item.zhIntent),
+        requiredPattern: asString(item.requiredPattern),
+        sampleAnswer: asString(item.sampleAnswer),
+        hints,
+        acceptRegex: asString(item.acceptRegex) || undefined,
+        misreadBranches: normalizeMisreadBranches(item.misreadBranches)
+      };
+    })
+    .filter((item) => item.npcLine && item.sampleAnswer);
+
+const normalizeGateAttempts = (value: unknown): GateAttempt[] =>
+  (Array.isArray(value) ? value : [])
+    .filter(isRecord)
+    .map<GateAttempt>((item) => ({
+      id: asString(item.id) || uid("gate_attempt"),
+      adventureId: asString(item.adventureId),
+      nodeId: asString(item.nodeId),
+      gateId: asString(item.gateId),
+      topicId: asString(item.topicId),
+      raw: asString(item.raw),
+      verdict: GATE_VERDICTS.includes(item.verdict as (typeof GATE_VERDICTS)[number]) ? (item.verdict as GateAttempt["verdict"]) : "near",
+      errorTags: (Array.isArray(item.errorTags) ? item.errorTags : []).map(normalizeGrammarErrorTag),
+      hintsUsed: Math.max(0, Math.round(asNumber(item.hintsUsed, 0))),
+      attemptIndex: Math.max(1, Math.round(asNumber(item.attemptIndex, 1))),
+      createdAt: validIsoOrNow(item.createdAt)
+    }))
+    .filter((item) => item.gateId);
+
+const normalizeRuneStates = (value: unknown): RuneState[] =>
+  (Array.isArray(value) ? value : [])
+    .filter(isRecord)
+    .map<RuneState>((item) => ({
+      runeId: asString(item.runeId),
+      mastery: RUNE_MASTERIES.includes(item.mastery as (typeof RUNE_MASTERIES)[number]) ? (item.mastery as RuneState["mastery"]) : "unseen",
+      xp: Math.max(0, Math.round(asNumber(item.xp, 0))),
+      unlockedAt: item.unlockedAt ? validIsoOrNow(item.unlockedAt) : undefined
+    }))
+    .filter((item) => item.runeId);
+
 const createDefaultSchedule = (cardId: string): Schedule => ({
   cardId,
   easeFactor: 2.5,
@@ -727,7 +846,11 @@ const normalizeSchedules = (value: unknown, cards: Card[]) => {
         intervalDays: Math.max(0, Math.round(asNumber(item.intervalDays, 0))),
         reviewCount: Math.max(0, Math.round(asNumber(item.reviewCount, 0))),
         lapseCount: Math.max(0, Math.round(asNumber(item.lapseCount, 0))),
-        nextReviewAt: validIsoOrNow(item.nextReviewAt)
+        nextReviewAt: validIsoOrNow(item.nextReviewAt),
+        // R2：recoveryCount 透传（可选字段，旧数据缺省为 undefined，无需迁移版本号）。
+        ...(item.recoveryCount !== undefined
+          ? { recoveryCount: Math.max(0, Math.round(asNumber(item.recoveryCount, 0))) }
+          : {})
       });
     }
   }
@@ -758,8 +881,16 @@ const normalizeDictionaryEntries = (value: unknown): DictionaryEntry[] => {
   return entries.length > 0 ? entries : seedDictionary;
 };
 
-export const migrateData = (raw: unknown): AppData => {
-  const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+/**
+ * M1 启动迁移（P0-3 + P1-7）：词书粒度重组（≤200 词/本）+ 维护 Unit.completedAt。
+ * 幂等：拆完后所有词书 ≤200，重复执行为 no-op；在 loadData / 恢复备份时执行。
+ */
+const applyStartupMigration = (data: AppData): AppData => {
+  const restructured = restructureOversizedUnits(data).data;
+  return syncUnitCompletion(restructured);
+};
+
+export const migrateData = (raw: unknown): AppData => {  const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
   if (!isRecord(parsed) || !hasRecognizableAppShape(parsed)) {
     throw new Error("这不是可识别的听写工坊 JSON 备份。");
   }
@@ -811,14 +942,29 @@ export const migrateData = (raw: unknown): AppData => {
     huntAttempts: normalizeHuntAttempts(parsed.huntAttempts),
     huntResults: normalizeHuntResults(parsed.huntResults),
     grammarLessonsDone: asStringArray(parsed.grammarLessonsDone),
+    grammarLessonStagesDone: normalizeLessonStagesDone(parsed.grammarLessonStagesDone),
     diaryEntries: normalizeDiaryEntries(parsed.diaryEntries),
     schedules: normalizeSchedules(parsed.schedules, cards),
     dictionaryEntries: normalizeDictionaryEntries(parsed.dictionaryEntries),
     seededWordVersions: asStringArray(parsed.seededWordVersions),
+    languageGates: normalizeLanguageGates(parsed.languageGates),
+    gateAttempts: normalizeGateAttempts(parsed.gateAttempts),
+    runeStates: normalizeRuneStates(parsed.runeStates),
     settings: normalizeSettings(parsed.settings)
   };
 
-  return { ...seedCoreWords(normalizedData), schemaVersion: APP_SCHEMA_VERSION };
+  // F1 旧数据回填（幂等）：双写上线前的存量 grammarLessonsDone 进度 = 关 1 完成，补进新字段。
+  // 内联实现而非调 lessonService.backfillLessonStages——避免 storage → lessonService → cardService → storage 循环依赖。
+  // 逻辑与 lessonService.backfillLessonStages 等价（纯数据操作）：旧字段有值但新字段缺 1 的课补 [1]。
+  const stagesDone = { ...normalizedData.grammarLessonStagesDone };
+  for (const lessonId of normalizedData.grammarLessonsDone) {
+    const existing = new Set(stagesDone[lessonId] ?? []);
+    if (existing.has(1)) continue;
+    existing.add(1);
+    stagesDone[lessonId] = [...existing].sort((a, b) => a - b);
+  }
+  const withStages: AppData = { ...normalizedData, grammarLessonStagesDone: stagesDone };
+  return { ...seedCoreWords(withStages), schemaVersion: APP_SCHEMA_VERSION };
 };
 
 const seedCoreWords = (data: AppData): AppData => {
@@ -972,17 +1118,23 @@ const ensureDefaultUnits = (data: AppData): AppData => {
 export const loadData = (): AppData => {
   const raw = window.localStorage.getItem(STORAGE_KEY);
   if (!raw) {
-    const initial = seedCoreWords(createInitialData());
+    const initial = applyStartupMigration(seedCoreWords(createInitialData()));
     saveData(initial);
     return initial;
   }
 
   try {
-    const migrated = migrateData(raw);
+    const migrated = applyStartupMigration(migrateData(raw));
+    // R12：干净数据马上会被写回，修复信号必须在这里捕获留档。
+    // 报告是粘性的：只在发现新修复时覆盖，不因后续干净启动而清除
+    //（否则 HMR/二次刷新会立刻抹掉它，用户永远看不到）。
+    const repairs = summarizeStartupRepairs(raw, migrated);
+    if (repairs.length > 0) recordStartupRepairs(repairs);
     saveData(migrated);
     return migrated;
   } catch {
-    const initial = seedCoreWords(createInitialData());
+    recordStartupRepairs(["本地数据损坏（无法解析），已自动重置为初始状态；如有 JSON 备份可在设置页恢复"]);
+    const initial = applyStartupMigration(seedCoreWords(createInitialData()));
     saveData(initial);
     return initial;
   }
@@ -999,8 +1151,11 @@ export const resetData = () => {
   return initial;
 };
 
+/** R02：解析 JSON 备份用于预览——与 restoreDataFromJson 同一条迁移管线，但不写 localStorage。 */
+export const parseBackupJson = (json: string): AppData => applyStartupMigration(migrateData(json));
+
 export const restoreDataFromJson = (json: string): AppData => {
-  const restored = migrateData(json);
+  const restored = parseBackupJson(json);
   saveData(restored);
   return restored;
 };
@@ -1013,13 +1168,152 @@ export const markDataExported = (data: AppData, exportedAt = nowIso()): AppData 
   }
 });
 
+/** R03：一次成功的云同步（上传或恢复）同样是一次有效备份，记录到 lastSyncedAt。 */
+export const markDataSyncedBackup = (data: AppData, syncedAt = nowIso()): AppData => ({
+  ...data,
+  settings: {
+    ...data.settings,
+    lastSyncedAt: syncedAt
+  }
+});
+
+/**
+ * R12 存储健康诊断。关键约束：loadData 迁移后会立刻把干净数据写回 localStorage，
+ * 页面代码永远读不到"脏"快照——因此修复信号必须在 loadData 内捕获，
+ * 以一份轻量报告（STARTUP_REPAIR_KEY）留给设置页展示。
+ * - repaired：最近一次启动时被自动修复/清理的问题（旧 schema、孤儿引用、损坏重置）。
+ * - issues：当前仍需用户处理的问题（体积超限、存储不可读）。
+ * 只读不改——修复动作（导出/重置）由设置页触发。
+ */
+export interface DataDiagnosis {
+  /** 无 repaired 且无 issues。 */
+  ok: boolean;
+  /** 最近一次启动时自动修复/清理的问题描述。 */
+  repaired: string[];
+  /** 当前仍然存在的问题描述（需要用户动作）。 */
+  issues: string[];
+  schemaVersion: number;
+  sizeKb: number;
+  /** 修复报告生成时间（ISO），无报告时为空串。 */
+  repairedAt: string;
+}
+
+export const LOCAL_STORAGE_SOFT_LIMIT_KB = 4096;
+const STARTUP_REPAIR_KEY = "personal-vocab-startup-repairs-v1";
+
+/** 纯函数：对比启动时的 raw 快照与迁移结果，列出被自动修复/清理的问题。 */
+export const summarizeStartupRepairs = (rawJson: string, normalized: AppData): string[] => {
+  let raw: unknown;
+  try {
+    raw = JSON.parse(rawJson);
+  } catch {
+    return ["本地数据损坏（无法解析），已自动重置为初始状态；如有 JSON 备份可在设置页恢复"];
+  }
+  if (!isRecord(raw)) return [];
+
+  const items: string[] = [];
+  if (raw.schemaVersion !== APP_SCHEMA_VERSION) {
+    items.push(`旧版本数据结构（v${asNumber(raw.schemaVersion, 0)}）已自动迁移到 v${APP_SCHEMA_VERSION}`);
+  }
+  const rawCards = Array.isArray(raw.cards) ? raw.cards : [];
+  const rawCardIds = new Set(rawCards.map((card) => (isRecord(card) ? asString(card.id) : "")).filter(Boolean));
+  const rawReviews = Array.isArray(raw.reviews) ? raw.reviews : [];
+  const orphanReviews = rawReviews.filter(
+    (review) => !isRecord(review) || !rawCardIds.has(asString(review.cardId))
+  ).length;
+  if (orphanReviews > 0 || rawReviews.length > normalized.reviews.length) {
+    items.push(`${Math.max(orphanReviews, rawReviews.length - normalized.reviews.length)} 条无效复习记录（找不到对应卡片）已自动清理`);
+  }
+  const rawMaterials = Array.isArray(raw.materials) ? raw.materials : [];
+  const rawMaterialIds = new Set(
+    rawMaterials.map((material) => (isRecord(material) ? asString(material.id) : "")).filter(Boolean)
+  );
+  const rawSegments = Array.isArray(raw.materialSegments) ? raw.materialSegments : [];
+  const orphanSegments = rawSegments.filter(
+    (segment) => !isRecord(segment) || !rawMaterialIds.has(asString(segment.materialId))
+  ).length;
+  if (orphanSegments > 0) {
+    items.push(`${orphanSegments} 个无效句段（找不到所属材料）已自动清理`);
+  }
+  return items;
+};
+
+const recordStartupRepairs = (items: string[]) => {
+  try {
+    window.localStorage.setItem(STARTUP_REPAIR_KEY, JSON.stringify({ at: nowIso(), items }));
+  } catch {
+    // 存储不可用时忽略——诊断报告只是增强，不影响主流程。
+  }
+};
+
+/** 用户在设置页确认"知道了"后清除修复报告。 */
+export const clearStartupRepairReport = () => {
+  try {
+    window.localStorage.removeItem(STARTUP_REPAIR_KEY);
+  } catch {
+    // 忽略。
+  }
+};
+
+/** 纯函数：由修复条目 + 体积 + 存储可用性组装诊断结果。 */
+export const buildDiagnosis = (
+  repaired: string[],
+  sizeKb: number,
+  schemaVersion: number,
+  storageIssue?: string,
+  repairedAt = ""
+): DataDiagnosis => {
+  const issues = storageIssue ? [storageIssue] : [];
+  if (sizeKb > LOCAL_STORAGE_SOFT_LIMIT_KB) {
+    issues.push(`本地数据约 ${(sizeKb / 1024).toFixed(1)}MB，接近浏览器存储上限，建议导出备份后清理`);
+  }
+  return { ok: repaired.length === 0 && issues.length === 0, repaired, issues, schemaVersion, sizeKb, repairedAt };
+};
+
+/** 读取 localStorage（数据快照体积 + 启动修复报告）并诊断。 */
+export const diagnoseStoredData = (data: AppData): DataDiagnosis => {
+  if (typeof window === "undefined") {
+    return buildDiagnosis([], 0, data.schemaVersion, "读不到本地存储快照，浏览器可能限制了存储访问");
+  }
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const sizeKb = Math.round((raw ?? JSON.stringify(data)).length / 1024);
+    let repaired: string[] = [];
+    let repairedAt = "";
+    const repairRaw = window.localStorage.getItem(STARTUP_REPAIR_KEY);
+    if (repairRaw) {
+      try {
+        const parsed: unknown = JSON.parse(repairRaw);
+        if (isRecord(parsed) && Array.isArray(parsed.items)) {
+          repaired = parsed.items.filter((item): item is string => typeof item === "string");
+          repairedAt = asString(parsed.at);
+        }
+      } catch {
+        // 报告损坏时按无报告处理。
+      }
+    }
+    return buildDiagnosis(
+      repaired,
+      sizeKb,
+      data.schemaVersion,
+      raw === null ? "读不到本地存储快照，浏览器可能限制了存储访问" : undefined,
+      repairedAt
+    );
+  } catch {
+    return buildDiagnosis([], 0, data.schemaVersion, "访问本地存储被浏览器拒绝，请检查隐私模式或站点权限设置");
+  }
+};
+
 export const needsBackupReminder = (data: AppData, dayThreshold = 7) => {
   if (data.cards.length === 0 && data.reviews.length === 0) return false;
-  if (!data.settings.lastExportedAt) return true;
 
-  const exportedAt = new Date(data.settings.lastExportedAt).getTime();
-  if (!Number.isFinite(exportedAt)) return true;
-  return Date.now() - exportedAt > dayThreshold * 24 * 60 * 60 * 1000;
+  // 备份时间点取「本地导出」与「云同步成功」两者中较近的一个（R03：
+  // 之前只看 lastExportedAt，开了云同步的用户会被误报「7 天未备份」）。
+  const backupTimes = [data.settings.lastExportedAt, data.settings.lastSyncedAt]
+    .map((value) => new Date(value).getTime())
+    .filter((time) => Number.isFinite(time));
+  if (backupTimes.length === 0) return true;
+  return Date.now() - Math.max(...backupTimes) > dayThreshold * 24 * 60 * 60 * 1000;
 };
 
 export const downloadTextFile = (filename: string, content: string, type = "text/plain") => {

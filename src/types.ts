@@ -17,9 +17,16 @@ export interface Card {
   unitId?: string;
   tags: string[];
   status: CardStatus;
+  suspendedFrom?: CardStatus;
   priority: boolean;
+  /** 重点标记来源：manual=用户手动标星；system=算法因 lapseCount≥3 自动置位。缺省视为 manual（历史数据）。 */
+  prioritySource?: "manual" | "system";
   createdAt: string;
   updatedAt: string;
+  /** R13：进入 mastered 状态的时间（仅在状态转换瞬间写入，不随 priority/编辑等操作变化）；非 mastered 为 null。 */
+  masteredAt?: string | null;
+  /** P1-1：从动态错词书毕业的时间（连续全对自动移出时写入）；晚于最近一次错误即视为错词本「已掌握」标记，再次出错后失效。 */
+  mistakeGraduatedAt?: string;
 }
 
 export interface Unit {
@@ -31,6 +38,12 @@ export interface Unit {
   groupId?: string;
   createdAt: string;
   updatedAt: string;
+  /** M1 打点（P1-7）：整本词书全部单词 mastered 的时间；任何一张卡退回未掌握时清除。 */
+  completedAt?: string;
+  /** 速通本徽标（P0-3）：前两本未启动的词书标记为「3 天速通本」。 */
+  speedRun?: boolean;
+  /** P1-1 动态词书类型（#3 拍板：实体 Unit + 系统徽标）。mistakes=错词自动聚成；预留 weekly_materials 等扩展位。 */
+  dynamicKind?: "mistakes";
 }
 
 export interface UnitGroup {
@@ -152,6 +165,8 @@ export interface Schedule {
   reviewCount: number;
   lapseCount: number;
   nextReviewAt: string;
+  // R2：priority 康复计数（仅系统置位卡维护；旧数据无此字段 → undefined，天然向后兼容）。
+  recoveryCount?: number;
 }
 
 export interface DictionaryEntry {
@@ -173,10 +188,20 @@ export interface Settings {
   speechRate: number;
   autoSpeakInSpelling: boolean;
   lastExportedAt: string;
+  /** 最近一次云同步成功（上传或恢复）的时间；与 lastExportedAt 一起作为备份提醒依据。 */
+  lastSyncedAt: string;
   /** 每天日记的题目数量，只允许 3 / 5 / 10。 */
   diaryDailyCount: number;
+  /** R11 日记批改强度：gentle=温柔（只夸+最多指 1 处）/ standard=标准 / strict=严格（全量指出+追问一句）。 */
+  diaryCorrectionStyle?: "gentle" | "standard" | "strict";
   aiProvider: AiProviderSettings;
   dataSync: DataSyncSettings;
+  /** P1-4 纯复习日临时档：等于当天 dayKey（statsService.dayKey）时生效——当日拼写队列不安排新词；跨天自动失效，无需迁移。 */
+  reviewOnlyDayKey?: number;
+  /** P2-1 学习范围锁定：全局智能队列只出这些词书的词；undefined/空数组 = 未锁定（全部词书）。 */
+  studyScopeUnitIds?: string[];
+  /** P2-2 里程碑激励：已弹过庆祝的里程碑 id 记录（milestoneService.MILESTONES 的 id），避免重复弹。 */
+  reachedMilestoneIds?: string[];
 }
 
 export interface DataSyncSettings {
@@ -247,6 +272,81 @@ export interface Adventure {
   nodes: AdventureNode[];
 }
 
+/* ── 语言之门（Language Gate，GRAMMAR_ADVENTURE_PLAN §8.2）──────────────── */
+
+/** 误读支线：NPC 按字面理解错误句子后的温和错位反应（喜剧），按 errorTag 匹配。 */
+export interface MisreadBranch {
+  errorTag: GrammarErrorTag;
+  /** NPC 当真理解后的反应（必须是语法正确的英语，红线 2）。 */
+  npcReply: string;
+  npcReplyZh: string;
+  /** 小灯的一句话提示（引导玩家自己改对，不出现"错误"字样）。 */
+  lampHint: string;
+}
+
+/** 语言之门：挂在 AdventureNode 上的语法挑战——写一句英文才能推进剧情。 */
+export interface LanguageGate {
+  id: string;
+  /** 对应语法点（V1 grammarTopics 的 topicId）。 */
+  topicId: string;
+  /** 对应符文。 */
+  runeId: string;
+  /** 介入模式：补全 / 说出这句 / 自由回应。 */
+  mode: "complete" | "say" | "respond";
+  /** NPC 的英文台词与中文对照。 */
+  npcLine: string;
+  npcLineZh: string;
+  /** 中文意图（"告诉她你从北京来，昨晚到的"）。 */
+  zhIntent: string;
+  /** 期望句式（结构描述，如 "I + 过去式 + …"）。 */
+  requiredPattern: string;
+  sampleAnswer: string;
+  /** 三档提示（由小灯说出，hint3 可给完整答案）。 */
+  hints: [string, string, string];
+  /** 宽松接受正则（同义表达）。 */
+  acceptRegex?: string;
+  /** 误读支线集合，按 errorTag 匹配。 */
+  misreadBranches: MisreadBranch[];
+}
+
+/** 一次语言之门回答记录：驱动 NPC 记忆与弱点档案。 */
+export interface GateAttempt {
+  id: string;
+  adventureId: string;
+  nodeId: string;
+  gateId: string;
+  topicId: string;
+  raw: string;
+  verdict: "pass" | "near" | "misread";
+  errorTags: GrammarErrorTag[];
+  hintsUsed: number;
+  attemptIndex: number;
+  createdAt: string;
+}
+
+/** 语言符文：把语法点变成可收集的物件。 */
+export interface GrammarRune {
+  id: string;
+  topicId: string;
+  stage: "S0" | "S1" | "S2" | "S3" | "S4" | "S5";
+  worldId: string;
+  name: string;
+  /** 几何符号 id（环、链、锚、镜、羽……）。 */
+  glyph: string;
+  rarity: "common" | "uncommon" | "rare" | "legendary";
+  oneLineRule: string;
+  /** 三条「咒语」（例句）。 */
+  spells: string[];
+}
+
+/** 符文熟练度状态：只有到 instinct 才算真正掌握。 */
+export interface RuneState {
+  runeId: string;
+  mastery: "unseen" | "seen" | "usable" | "fluent" | "instinct";
+  xp: number;
+  unlockedAt?: string;
+}
+
 export interface AppData {
   schemaVersion: number;
   unitGroups: UnitGroup[];
@@ -261,13 +361,24 @@ export interface AppData {
   adventures: Adventure[];
   huntAttempts: HuntAttempt[];
   huntResults: HuntResult[];
-  /** 「小美的一天」已完成课程 ID，驱动课程地图点亮。 */
+  /** 「小美的一天」已完成课程 ID，驱动课程地图点亮。语义 = 关 1（本课正课）完成。 */
   grammarLessonsDone: string[];
+  /**
+   * 三关卡粒度完成态（F1，2026-09-13 PRD）：lessonId → 已完成关卡序号数组（1=正课 / 2=次日回访 / 3=旧案重审）。
+   * 与 grammarLessonsDone 双写并存：关 1 完成时两处都写；旧数据回填时此处补 [1]。旧字段保留 ≥1 版本可回滚。
+   */
+  grammarLessonStagesDone?: Record<string, number[]>;
   /** 「我的英文日记」条目。 */
   diaryEntries: DiaryEntry[];
   schedules: Schedule[];
   dictionaryEntries: DictionaryEntry[];
   seededWordVersions: string[];
+  /** 语言之门关卡库（内置手写 + AI 生成）。 */
+  languageGates: LanguageGate[];
+  /** 语言之门回答记录。 */
+  gateAttempts: GateAttempt[];
+  /** 符文熟练度状态。 */
+  runeStates: RuneState[];
   settings: Settings;
 }
 
@@ -354,13 +465,13 @@ export interface LessonExample {
 
 /** 引导练习（第②段「试一试」）：几乎不会错的点选 / 拼装 / 找茬题。 */
 export interface LessonGuidedStep {
-  kind: "choose" | "arrange" | "spot";
+  kind: "choose" | "arrange" | "spot" | "replace";
   promptZh: string;
   /** choose 题干：空位前的部分。 */
   before?: string;
   /** choose 题干：空位后的部分。 */
   after?: string;
-  /** choose 的选项。 */
+  /** choose / replace 的选项。 */
   options?: string[];
   /** arrange / spot 的词块（arrange 含干扰项；spot 是含错的完整词块序列）。 */
   tokens?: string[];
@@ -368,6 +479,13 @@ export interface LessonGuidedStep {
   wrongToken?: string;
   /** spot：点对之后给出的纠正说法。 */
   correctionZh?: string;
+  /**
+   * R9 变形/替换题（构造迁移）：换主语/时间/情态后，句中需跟着变形的那个词。
+   * replaceBase = 给出的正确原句（如 "I am drawing."）；replaceTarget = 要换成的成分提示（如 "把 I 换成 She"）。
+   * answer = 变形后的正确词（如 "is"），options = 候选（is/am/are）。复用 choose 判题内核。
+   */
+  replaceBase?: string;
+  replaceTarget?: string;
   answer: string;
   explain: string;
 }
@@ -482,6 +600,14 @@ export interface DiaryIssue {
   explanation: string;
   /** 语法点归因（R01⑤）：AI 批改顺带输出 10 类罪名之一；无 AI / 未识别时缺省。 */
   tag?: GrammarErrorTag;
+}
+
+/** R11 日记批改结果：recast = 更地道的写法（与用户原句并排展示，低成本高感知价值）。 */
+export interface DiaryCorrectionResult {
+  correctedEn: string;
+  issues: DiaryIssue[];
+  /** 更地道的重述（recast）；AI 未返回时缺省。 */
+  recast?: string;
 }
 
 /** 一条英文日记。status: pending=还没批改（离线保存），done=已批改。 */
