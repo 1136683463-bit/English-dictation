@@ -4411,6 +4411,567 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "不报时间、只说去过：have + been to。"
     },
     huntCaseIds: ["hunt-diary-mix", "hunt-weekend-note"]
+  },
+  {
+    // ── 第三季巩固篇 · R1（L25 三单 -s）：A2 最高频、中式错误 Top，24 课竟跳过的一般现在时三单 ──
+    id: "lesson-25-third-person",
+    number: 25,
+    title: "他每天喝牛奶",
+    grammarLabel: "一般现在时 · 三单 -s",
+    episode: "小美的一天 ㉕",
+    scene: "campus",
+    cover: cover1,
+    sceneSetupZh: "周一早读，小美观察同桌的习惯，发现了好多「他每天都做的事」。",
+    dialogueEn: "He drinks milk every day.",
+    dialogueZh: "你指着同桌跟朋友说。",
+    intentZh: "他每天喝牛奶。",
+    targetSentence: "He drinks milk every day.",
+    blocks: [
+      { text: "He", role: "他" },
+      { text: "drinks", role: "喝（三单版）" },
+      { text: "milk", role: "牛奶" },
+      { text: "every day", role: "每天" }
+    ],
+    oneLineRule: "他、她、它做事，动词后面要加个小尾巴 -s：He drinks。中文动词不变，英语三单必须变。",
+    examples: [
+      { en: "She likes music.", zh: "她喜欢音乐。" },
+      { en: "He plays football.", zh: "他踢足球。" },
+      { en: "It rains a lot.", zh: "（天）老下雨。" },
+      { en: "She watches TV every night.", zh: "她每晚看电视。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What does he do every day?", zh: "朋友顺着你的话问。" },
+      { who: "npc", en: "Does he play sports too?", zh: "她又补了一句。" },
+      { who: "me", en: "He drinks milk every day.", zh: "轮到你说了——他每天喝牛奶。" }
+    ],
+    contrast: [
+      {
+        wrong: "He drink milk every day.",
+        wrongMark: "drink",
+        correct: "He drinks milk every day.",
+        whyZh: "「他喝」是三单，动词要加小尾巴 -s：drinks。中文动词不变，英语三单必须变。"
+      },
+      {
+        wrong: "She like music.",
+        wrongMark: "like",
+        correct: "She likes music.",
+        whyZh: "「她喜欢」要加 -s：likes。这是英语里最顽固的小尾巴，别丢了。"
+      },
+      {
+        wrong: "He don't like milk.",
+        wrongMark: "don't",
+        correct: "He doesn't like milk.",
+        whyZh: "「他不喜欢」，帮手要换三单 doesn't。don't 只配 I、you、we、they。"
+      },
+      {
+        wrong: "Does he likes milk?",
+        wrongMark: "likes",
+        correct: "Does he like milk?",
+        whyZh: "Does 一出场，动词要打回原形 like——一场戏只让一个词扛变化，别让小尾巴长两次。"
+      },
+      {
+        wrong: "She watch TV every night.",
+        wrongMark: "watch",
+        correct: "She watches TV every night.",
+        whyZh: "watch 以 ch 结尾，三单不是只加 s，要加 es：watches——和 sandwich 加 es 是一个规律。"
+      },
+      {
+        wrong: "He studys English.",
+        wrongMark: "studys",
+        correct: "He studies English.",
+        whyZh: "study 是「辅音 + y」结尾，三单要把 y 变 i 再加 es：studies。和 story→stories 同款。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "He drinks milk every day.", zh: "他每天喝牛奶。" },
+      { label: "否定", en: "He doesn't like coffee.", zh: "他不喜欢咖啡。", noteZh: "三单的「不」用 doesn't，动词打回原形。" },
+      { label: "疑问", en: "Does he play football?", zh: "他踢足球吗？", noteZh: "Does 搬到句首，动词打回原形 play。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说妈妈的日常", en: "She cooks dinner every day.", zh: "她每天做晚饭。" },
+      { sceneZh: "说天气的规律", en: "It rains a lot in summer.", zh: "夏天老下雨。" },
+      { sceneZh: "问同桌的习惯", en: "Does he read every morning?", zh: "他每天早读吗？" }
+    ],
+    deepDive: {
+      title: "为什么三单要加 -s？什么时候加 es？",
+      paragraphs: [
+        "一般现在时里，只有「他、她、它」（三单）的动词要加小尾巴：I/you/we/they 都用原形。这是英语里最显眼的人称标记。",
+        "大多数动词直接加 -s：drink → drinks、like → likes、play → plays。",
+        "以 s、x、ch、sh、o 结尾的加 -es：watch → watches、go → goes、fix → fixes。",
+        "「辅音 + y」结尾的把 y 变 i 再加 -es：study → studies、carry → carries。元音 + y 不变：play → plays。",
+        "疑问句和否定句里，Does / doesn't 出场后动词打回原形：Does he play？He doesn't play——小尾巴由帮手扛。"
+      ]
+    },
+    summary: {
+      rule: "他、她、它做事，动词加小尾巴 -s；Does / doesn't 出场，动词打回原形。",
+      points: [
+        "He drinks. —— 三单加 -s",
+        "She watches. —— ch 结尾加 -es",
+        "Does he play? / He doesn't play. —— 帮手出场，动词回原形"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：他喜欢音乐。",
+        before: "He",
+        after: "music.",
+        options: ["likes", "like", "liking"],
+        answer: "likes",
+        explain: "「他喜欢」是三单，动词加小尾巴 -s：likes。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：她每晚看电视。",
+        tokens: ["She", "watches", "TV", "every", "night."],
+        answer: "She watches TV every night.",
+        explain: "watch 以 ch 结尾，三单加 es：watches。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：他踢足球吗？",
+        tokens: ["Does", "he", "play", "football?"],
+        answer: "Does he play football?",
+        explain: "Does 搬到句首，动词打回原形 play。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["He", "drink", "milk", "every", "day."],
+        wrongToken: "drink",
+        answer: "drink",
+        correctionZh: "把 drink 加小尾巴：He drinks milk every day。",
+        explain: "三单动词要加 -s。"
+      },
+      {
+        // R8 跨课复现：上一课（L24 完成时 vs 过去时）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我去过北京。",
+        tokens: ["I", "have", "been", "to", "Beijing."],
+        answer: "I have been to Beijing.",
+        explain: "复现第 24 课：「去过」固定是 have been to。"
+      },
+      {
+        // R9 变形/替换：换主语 I→He，动词原形变三单（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I play football.」把主语 I 换成 He，play 要怎么变？",
+        replaceBase: "I play football.",
+        replaceTarget: "把 I 换成 He",
+        options: ["plays", "play", "playing"],
+        answer: "plays",
+        explain: "He 是三单，play 要加小尾巴：He plays football。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：他每天喝牛奶。",
+        tokens: ["He", "drinks", "milk", "every", "day."],
+        distractors: ["drink"],
+        answer: "He drinks milk every day."
+      },
+      {
+        promptZh: "你想说：她不喜欢咖啡。",
+        tokens: ["She", "doesn't", "like", "coffee."],
+        distractors: ["don't"],
+        answer: "She doesn't like coffee."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡一致的否定变体题
+        promptZh: "你想说：他不喜欢咖啡。",
+        tokens: ["He", "doesn't", "like", "coffee."],
+        distractors: ["don't", "isn't"],
+        answer: "He doesn't like coffee."
+      },
+      {
+        promptZh: "问同桌的习惯，你想说：他踢足球吗？",
+        tokens: ["Does", "he", "play", "football?"],
+        distractors: ["plays", "Is"],
+        answer: "Does he play football?"
+      },
+      {
+        promptZh: "你想说：他学英语。",
+        tokens: ["He", "studies", "English."],
+        distractors: ["studys"],
+        answer: "He studies English."
+      }
+    ],
+    // R5「忆」段：不给选项，凭记忆还原核心句
+    recall: {
+      promptZh: "朋友问你同桌有什么习惯。凭记忆，写出那句英文。",
+      intentZh: "他每天喝牛奶。",
+      answer: "He drinks milk every day.",
+      noteZh: "「他喝」是三单，drink 要加小尾巴 -s。"
+    },
+    // R7：三单是中式错误 Top，配 2 案持续追踪 sv_agreement
+    huntCaseIds: ["hunt-my-sister", "hunt-third-person-daily"]
+  },
+  {
+    // ── 第三季巩固篇 · R2（L26 there be）：S0 明确列出而始终无课的 there be 句型 ──
+    id: "lesson-26-there-be",
+    number: 26,
+    title: "桌上有一本书",
+    grammarLabel: "存在句 · there is / there are",
+    episode: "小美的一天 ㉖",
+    scene: "mansion",
+    cover: cover8,
+    sceneSetupZh: "周末整理房间，小美帮你数桌上的东西。",
+    dialogueEn: "What is on the desk?",
+    dialogueZh: "你指着书桌问她。",
+    intentZh: "桌上有一本书。",
+    targetSentence: "There is a book on the desk.",
+    blocks: [
+      { text: "There is", role: "有（单数）" },
+      { text: "a book", role: "一本书" },
+      { text: "on the desk", role: "在桌上" }
+    ],
+    oneLineRule: "说「某处有某物」用 There is / There are 开头：单数用 is，复数用 are——中文的「有」直接说，英语要让 There 先占位。",
+    examples: [
+      { en: "There is a cat under the chair.", zh: "椅子下面有一只猫。" },
+      { en: "There are three apples on the table.", zh: "桌上有三个苹果。" },
+      { en: "There is some milk in the fridge.", zh: "冰箱里有一些牛奶。" },
+      { en: "Is there a park near here?", zh: "这附近有公园吗？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What is on the desk?", zh: "你指着书桌问她。" },
+      { who: "npc", en: "Anything else?", zh: "她探头看了看又问。" },
+      { who: "me", en: "There is a book on the desk.", zh: "轮到你说了——桌上有一本书。" }
+    ],
+    contrast: [
+      {
+        wrong: "There have a book on the desk.",
+        wrongMark: "have",
+        correct: "There is a book on the desk.",
+        whyZh: "「某处有某物」用 There is / There are，不用 have——have 是「某人拥有」，There be 是「某处存在」。中文都是「有」，英语两条路。"
+      },
+      {
+        wrong: "There is three apples on the table.",
+        wrongMark: "is",
+        correct: "There are three apples on the table.",
+        whyZh: "三个苹果是复数，用 There are 不用 There is——看后面的东西是单数还是复数。"
+      },
+      {
+        wrong: "There are a cat under the chair.",
+        wrongMark: "are",
+        correct: "There is a cat under the chair.",
+        whyZh: "一只猫是单数，用 There is。are 只配两个以上的东西。"
+      },
+      {
+        wrong: "Is there a park near here?",
+        wrongMark: null,
+        correct: "There is a park near here.",
+        whyZh: "告诉别人「这里有公园」用陈述句 There is。Is there 开头是问句——这里要答，不是要问。"
+      },
+      {
+        wrong: "There is some books on the desk.",
+        wrongMark: "is",
+        correct: "There are some books on the desk.",
+        whyZh: "some books 是复数，用 There are。some 不改变单复数的判断——看后面的词本身。"
+      },
+      {
+        wrong: "There is a milk in the fridge.",
+        wrongMark: "a",
+        correct: "There is some milk in the fridge.",
+        whyZh: "milk 数不清，前面不能报数 a——用 some（一些）或直接 there is milk。数不清的东西不数个数。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "There is a book on the desk.", zh: "桌上有一本书。" },
+      { label: "否定", en: "There isn't a park near here.", zh: "这附近没有公园。", noteZh: "在 is 后面加 not：isn't。复数用 aren't。" },
+      { label: "疑问", en: "Is there a park near here?", zh: "这附近有公园吗？", noteZh: "把 Is 搬到句首就是问句。复数用 Are there。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "看冰箱里的东西", en: "There is some milk in the fridge.", zh: "冰箱里有一些牛奶。" },
+      { sceneZh: "数桌上的水果", en: "There are three apples on the table.", zh: "桌上有三个苹果。" },
+      { sceneZh: "问附近有没有公园", en: "Is there a park near here?", zh: "这附近有公园吗？" }
+    ],
+    deepDive: {
+      title: "There be 和 have 都是「有」，怎么分？",
+      paragraphs: [
+        "There be 说「某处存在某物」：There is a book on the desk（桌上有一本书）——重点是「那个地方有什么」。",
+        "have 说「某人拥有某物」：I have a book（我有一本书）——重点是「谁拥有」。",
+        "单数用 There is，复数用 There are，数不清的用 There is（牛奶、水这类）：There is some milk。",
+        "问句把 Is / Are 搬到句首：Is there…? / Are there…?；否定在 be 后面加 not：isn't / aren't。"
+      ]
+    },
+    summary: {
+      rule: "某处有某物：单数 There is，复数 There are；问句 Is/Are 搬句首。",
+      points: [
+        "There is a book. —— 单数用 is",
+        "There are three apples. —— 复数用 are",
+        "Is there a park? —— 问句：Is 搬句首"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：桌上有一本书。",
+        before: "",
+        after: "a book on the desk.",
+        options: ["There is", "There are", "There have"],
+        answer: "There is",
+        explain: "一本书是单数，用 There is。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：桌上有三个苹果。",
+        tokens: ["There", "are", "three", "apples", "on", "the", "table."],
+        answer: "There are three apples on the table.",
+        explain: "三个苹果是复数，用 There are。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想问：这附近有公园吗？",
+        tokens: ["Is", "there", "a", "park", "near", "here?"],
+        answer: "Is there a park near here?",
+        explain: "问句把 Is 搬到句首。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["There", "have", "a", "book", "on", "the", "desk."],
+        wrongToken: "have",
+        answer: "have",
+        correctionZh: "把 have 换成 is：There is a book on the desk。",
+        explain: "「某处有某物」用 There be，不用 have。"
+      },
+      {
+        // R8 跨课复现：上一课（L25 三单 -s）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：他喜欢音乐。",
+        tokens: ["He", "likes", "music."],
+        answer: "He likes music.",
+        explain: "复现第 25 课：三单动词加 -s。"
+      },
+      {
+        // R9 变形/替换：换数量（一本→三本），be 动词跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「There is a book on the desk.」把「一本书」换成「三本书」，is 要怎么变？",
+        replaceBase: "There is a book on the desk.",
+        replaceTarget: "把 a book 换成 three books",
+        options: ["are", "is", "have"],
+        answer: "are",
+        explain: "三本书是复数，用 There are：There are three books。看后面的东西是单是复。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：桌上有一本书。",
+        tokens: ["There", "is", "a", "book", "on", "the", "desk."],
+        distractors: ["are"],
+        answer: "There is a book on the desk."
+      },
+      {
+        promptZh: "你想说：椅子上有一只猫。",
+        tokens: ["There", "is", "a", "cat", "under", "the", "chair."],
+        distractors: ["are"],
+        answer: "There is a cat under the chair."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡一致的否定变体题
+        promptZh: "你想说：这附近没有公园。",
+        tokens: ["There", "isn't", "a", "park", "near", "here."],
+        distractors: ["is", "aren't"],
+        answer: "There isn't a park near here."
+      },
+      {
+        promptZh: "你想问：这附近有公园吗？",
+        tokens: ["Is", "there", "a", "park", "near", "here?"],
+        distractors: ["Are", "Does"],
+        answer: "Is there a park near here?"
+      }
+    ],
+    // R5「忆」段：不给选项，凭记忆还原核心句
+    recall: {
+      promptZh: "朋友问你桌上有什么。凭记忆，写出那句英文。",
+      intentZh: "桌上有一本书。",
+      answer: "There is a book on the desk.",
+      noteZh: "「某处有某物」用 There is / There are，不用 have。"
+    },
+    huntCaseIds: ["hunt-there-be-room"]
+  },
+  {
+    // ── 第三季巩固篇 · R3（L27 疑问词系统）：what/where/when/how 从未专攻，只作对话背景出现 ──
+    id: "lesson-27-question-words",
+    number: 27,
+    title: "你在找什么",
+    grammarLabel: "疑问词 · what / where / when / how",
+    episode: "小美的一天 ㉗",
+    scene: "city",
+    cover: cover6,
+    sceneSetupZh: "放学路上，小美看你东张西望，猜到你在找东西。",
+    dialogueEn: "What are you looking for?",
+    dialogueZh: "她停下来问你。",
+    intentZh: "我在找我的钥匙。",
+    targetSentence: "What are you looking for?",
+    blocks: [
+      { text: "What", role: "什么（问东西）" },
+      { text: "are you", role: "你在" },
+      { text: "looking for", role: "找" }
+    ],
+    oneLineRule: "问事情用 What，问地方用 Where，问时间用 When，问方式用 How——疑问词站句首，后面跟着 be 或帮手动词。",
+    examples: [
+      { en: "What is this?", zh: "这是什么？" },
+      { en: "Where is my key?", zh: "我的钥匙在哪？" },
+      { en: "When is your birthday?", zh: "你的生日是什么时候？" },
+      { en: "How are you?", zh: "你好吗？（你怎么样）" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What are you looking for?", zh: "她停下来问你。" },
+      { who: "npc", en: "Can I help you?", zh: "她又补了一句：要我帮忙吗？" },
+      { who: "me", en: "I am looking for my key.", zh: "轮到你说了——你在找钥匙。" }
+    ],
+    contrast: [
+      {
+        wrong: "Where is this?",
+        wrongMark: "Where",
+        correct: "What is this?",
+        whyZh: "问「这是什么」用 What；Where 是问地方（在哪）。拿错疑问词，意思就跑偏了。"
+      },
+      {
+        wrong: "What is your birthday?",
+        wrongMark: "What",
+        correct: "When is your birthday?",
+        whyZh: "问生日是问「什么时候」，用 When；What 是问「什么东西」。"
+      },
+      {
+        wrong: "Where my key is?",
+        wrongMark: "my key is",
+        correct: "Where is my key?",
+        whyZh: "疑问句里 be 要搬到主语前面：Where is my key？疑问词后面跟着 be，不是跟着主语。"
+      },
+      {
+        wrong: "How is your name?",
+        wrongMark: "How",
+        correct: "What is your name?",
+        whyZh: "问名字用 What（是什么）；How 是问方式或状况（怎么样）。"
+      },
+      {
+        wrong: "When you go to school?",
+        wrongMark: "you go",
+        correct: "When do you go to school?",
+        whyZh: "问动作（去上学）要请帮手 do：When do you go……？be 管名词，do 管动作。"
+      },
+      {
+        wrong: "What are you look for?",
+        wrongMark: "look",
+        correct: "What are you looking for?",
+        whyZh: "「正在找」用进行时 looking：What are you looking for？are 后面的动词要穿 -ing 外套。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "This is my key.", zh: "这是我的钥匙。" },
+      { label: "否定", en: "I don't know where it is.", zh: "我不知道它在哪。", noteZh: "「不知道」用 don't know，后面疑问句变陈述语序（where it is，不颠倒）。" },
+      { label: "疑问", en: "Where is my key?", zh: "我的钥匙在哪？", noteZh: "问地方用 Where，be 搬到主语前。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "指着不认识的东西问", en: "What is this?", zh: "这是什么？" },
+      { sceneZh: "找不着钥匙时自言自语", en: "Where is my key?", zh: "我的钥匙在哪？" },
+      { sceneZh: "问同学几点上课", en: "When is the class?", zh: "什么时候上课？" }
+    ],
+    deepDive: {
+      title: "疑问词后面，be 和 do 怎么选？",
+      paragraphs: [
+        "问名词（是什么、在哪、什么时候），疑问词后面跟 be：What is this? / Where is my key? / When is the class?",
+        "问动作（做什么、怎么做），疑问词后面要请帮手 do/does/did：What do you want? / How does he go to school?",
+        "四个疑问词各管一摊：What 管东西，Where 管地方，When 管时间，How 管方式或身体状况（How are you）。",
+        "记住口诀：疑问词站句首，名词用 be，动作用 do——语序和陈述句正好反过来。"
+      ]
+    },
+    summary: {
+      rule: "What 问东西，Where 问地方，When 问时间，How 问方式；名词用 be，动作用 do。",
+      points: [
+        "What is this? —— 问东西：What + be",
+        "Where is my key? —— 问地方：Where + be",
+        "When do you go? —— 问动作：When + do"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想问：这是什么？",
+        before: "",
+        after: "is this?",
+        options: ["What", "Where", "When"],
+        answer: "What",
+        explain: "问「是什么」用 What。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想问：我的钥匙在哪？",
+        tokens: ["Where", "is", "my", "key?"],
+        answer: "Where is my key?",
+        explain: "问地方用 Where，be 搬到主语前。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想问：你什么时候去上学？",
+        tokens: ["When", "do", "you", "go", "to", "school?"],
+        answer: "When do you go to school?",
+        explain: "问动作要请帮手 do：When do you go……？"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["Where", "my", "key", "is?"],
+        wrongToken: "my",
+        answer: "my",
+        correctionZh: "be 要搬到主语前面：Where is my key？",
+        explain: "疑问句里 be 站在疑问词后面、主语前面。"
+      },
+      {
+        // R8 跨课复现：上一课（L26 there be）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：桌上有三个苹果。",
+        tokens: ["There", "are", "three", "apples", "on", "the", "table."],
+        answer: "There are three apples on the table.",
+        explain: "复现第 26 课：复数用 There are。"
+      },
+      {
+        // R9 变形/替换：换疑问对象（东西→地方），疑问词跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「What is this?」把「这是什么」换成「我的钥匙在哪」，What 要怎么变？",
+        replaceBase: "What is this?",
+        replaceTarget: "换成「在哪」（问地方）",
+        options: ["Where", "When", "How"],
+        answer: "Where",
+        explain: "问地方用 Where：Where is my key？What 管东西，Where 管地方。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想问：这是什么？",
+        tokens: ["What", "is", "this?"],
+        distractors: ["Where"],
+        answer: "What is this?"
+      },
+      {
+        promptZh: "你想问：你的生日是什么时候？",
+        tokens: ["When", "is", "your", "birthday?"],
+        distractors: ["What"],
+        answer: "When is your birthday?"
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡一致的否定变体题
+        promptZh: "朋友问你钥匙在哪，你想说：我不知道它在哪。",
+        tokens: ["I", "don't", "know", "where", "it", "is."],
+        distractors: ["isn't", "doesn't"],
+        answer: "I don't know where it is."
+      },
+      {
+        promptZh: "你想问：我的钥匙在哪？",
+        tokens: ["Where", "is", "my", "key?"],
+        distractors: ["What", "are"],
+        answer: "Where is my key?"
+      }
+    ],
+    // R5「忆」段：不给选项，凭记忆还原核心句
+    recall: {
+      promptZh: "你看到朋友在找东西，想问他在找什么。凭记忆，写出那句英文。",
+      intentZh: "你在找什么？",
+      answer: "What are you looking for?",
+      noteZh: "问「正在找什么」：What are you looking for？are 后面动词穿 -ing 外套。"
+    },
+    huntCaseIds: ["hunt-question-words"]
   }
 ];
 

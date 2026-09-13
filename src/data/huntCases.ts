@@ -16,6 +16,15 @@ import type { HuntCase } from "../types";
  * R15 人工校验记录（2026-09-12）：3 号案 + 13–20 号案（原 AI 初稿、未被任何课引用）逐案核对——
  * 语法正确性、罪名标注、讲解话术、tokenIndex 全部通过；修正 13 号案未标注的时态错（stay → stayed）。
  * 标记 reviewed: true。被课程引用的案件在配课时校验，新增案件若暂未配课须先校验并标记 reviewed。
+ *
+ * R13 人工校验记录（2026-09-13）：第一季 19 案逐案核对——tokenIndex 对位、罪名合法、
+ * explanation 话术、修正≠原词、植错密度 2-4 全部通过；修正 hunt-passive 的 The people → People
+ * （泛指「人们」不加 the，tokenIndex 11→10）。33 案全部 reviewed: true，红线断言入 huntService.test。
+ *
+ * 决策⑤（2026-09-13，5 课空 huntCaseIds 是否配案）：不配案，维持番外定位。
+ * 空课（2/3/5/6/8 课）是第一季基础课，而番外案（white-cat/sports-day/pen-pal-letter/
+ * fridge-note/term-review）各含 5-7 类混合罪名，是综合复习性质——配给基础课会越级撞墙，
+ * 违背 R01 难度闸门。第一季混题复习已由「第 12 课番外整体解锁」承担（huntService R01）。
  */
 export const huntCases: HuntCase[] = [
   {
@@ -58,7 +67,8 @@ export const huntCases: HuntCase[] = [
         correction: "were",
         explanation: "主语是 We（复数），be 动词要用 were，不是 was。"
       }
-    ]
+    ],
+    reviewed: true
   },
   {
     id: "hunt-yesterday-park",
@@ -84,7 +94,8 @@ export const huntCases: HuntCase[] = [
         correction: "saw",
         explanation: "同一段里的动作都发生在昨天，see 要变成 saw。"
       }
-    ]
+    ],
+    reviewed: true
   },
   {
     id: "hunt-my-sister",
@@ -151,7 +162,8 @@ export const huntCases: HuntCase[] = [
         correction: "bananas",
         explanation: "two 后面是可数名词复数：two bananas。"
       }
-    ]
+    ],
+    reviewed: true
   },
   {
     id: "hunt-call-mother",
@@ -178,7 +190,8 @@ export const huntCases: HuntCase[] = [
         correction: "is glad",
         explanation: "同样少了 be 动词：She is very glad。没有它就只剩一个主语加一个形容词，句子是塌的。"
       }
-    ]
+    ],
+    reviewed: true
   },
   {
     id: "hunt-prepositions",
@@ -212,7 +225,8 @@ export const huntCases: HuntCase[] = [
         correction: "at",
         explanation: "arrive at 用于较小的地方（station、airport 这类具体的点），arrive in 用于城市和国家。"
       }
-    ]
+    ],
+    reviewed: true
   },
   {
     id: "hunt-because-so",
@@ -238,7 +252,8 @@ export const huntCases: HuntCase[] = [
         correction: "去掉 but",
         explanation: "同样的道理：Though 和 but 不能同时出现，留一个就够。"
       }
-    ]
+    ],
+    reviewed: true
   },
   {
     id: "hunt-tense-jump",
@@ -264,7 +279,8 @@ export const huntCases: HuntCase[] = [
         correction: "laughed",
         explanation: "and 连接的两个动作时态要一致，都要用过去式。"
       }
-    ]
+    ],
+    reviewed: true
   },
   {
     id: "hunt-uncountable",
@@ -295,7 +311,8 @@ export const huntCases: HuntCase[] = [
         correction: "information",
         explanation: "information 永远不加 -s。同类还有 news、homework、furniture、equipment。"
       }
-    ]
+    ],
+    reviewed: true
   },
   {
     id: "hunt-passive",
@@ -304,7 +321,7 @@ export const huntCases: HuntCase[] = [
     scene: "演出结束后的一条朋友圈",
     tokens: [
       "The", "song", "was", "sing", "by", "her", "at", "the", "party.",
-      "The", "people", "was", "very", "happy."
+      "People", "was", "very", "happy."
     ],
     errors: [
       {
@@ -315,13 +332,14 @@ export const huntCases: HuntCase[] = [
         explanation: "被动语态是 be + 过去分词：was sung。sing 的过去分词是 sung。"
       },
       {
-        tokenIndex: 11,
+        tokenIndex: 10,
         tag: "sv_agreement",
         original: "was",
         correction: "were",
-        explanation: "主语是 The people（复数），be 动词要用 were。"
+        explanation: "主语是 People（人们，复数），be 动词要用 were。泛指「人们」时不加 the。"
       }
-    ]
+    ],
+    reviewed: true
   },
   {
     id: "hunt-word-order",
@@ -347,7 +365,8 @@ export const huntCases: HuntCase[] = [
         correction: "an old house",
         explanation: "同样的位置问题：an old house。old 要放在 house 前面。"
       }
-    ]
+    ],
+    reviewed: true
   },
   {
     id: "hunt-new-phone",
@@ -373,7 +392,8 @@ export const huntCases: HuntCase[] = [
         correction: "an",
         explanation: "hour 的 h 不发音，词以元音音素开头，要用 an hour。"
       }
-    ]
+    ],
+    reviewed: true
   },
   // ── 以下第 13–20 案为 R06 内容扩量的 AI 初稿（2026-09-12），补齐 fragment / verb_form / missing_be /
   // run_on / word_order 短板罪名（扩量后 10 类罪名每类 ≥3）。上线前需按红线人工校验：
@@ -735,7 +755,8 @@ export const huntCases: HuntCase[] = [
     ],
     notes: [
       { word: "kitchen", zh: "厨房" }
-    ]
+    ],
+    reviewed: true
   },
   {
     // L14（can）配套案 · R24 螺旋混题：新错 verb_form（can 后动词变形）×2 + 旧错 article / plural ×2（旧错占 50%）
@@ -784,7 +805,8 @@ export const huntCases: HuntCase[] = [
     notes: [
       { word: "order", zh: "点单；订单" },
       { word: "juice", zh: "果汁" }
-    ]
+    ],
+    reviewed: true
   },
   {
     // L15（want to）配套案 · R24 螺旋混题：新错 verb_form（to 后动词变形）×2 + 旧错 plural / tense ×2（旧错占 50%）
@@ -831,7 +853,8 @@ export const huntCases: HuntCase[] = [
     ],
     notes: [
       { word: "beach", zh: "海滩" }
-    ]
+    ],
+    reviewed: true
   },
   {
     // L16（must / have to）配套案 · R24 螺旋混题：新错 verb_form（must 后动词变形）×2 + 旧错 plural / article ×2（旧错占 50%）
@@ -875,7 +898,8 @@ export const huntCases: HuntCase[] = [
         correction: "an",
         explanation: "apple 以元音开头，前面要用 an：an apple。"
       }
-    ]
+    ],
+    reviewed: true
   },
   {
     // L17（比较级）配套案 · R24 螺旋混题：新错 verb_form（比较级词形：双写 / 不规则 better）×2 + 旧错 article / plural ×2（旧错占 50%）
@@ -924,7 +948,8 @@ export const huntCases: HuntCase[] = [
     ],
     notes: [
       { word: "island", zh: "岛" }
-    ]
+    ],
+    reviewed: true
   },
   {
     // L18（介词 in/on/at）配套案 · R24 螺旋混题：新错 preposition（in/on/at 混用）×2 + 旧错 plural / article ×2（旧错占 50%）
@@ -968,7 +993,8 @@ export const huntCases: HuntCase[] = [
         correction: "an",
         explanation: "old 以元音开头，前面要用 an：an old box。"
       }
-    ]
+    ],
+    reviewed: true
   },
   {
     // L19（and / but）配套案 · R24 螺旋混题：新错 run_on（缺连词 / 并列误用转折）×2 + 旧错 tense / article ×2（旧错占 50%）
@@ -1012,7 +1038,8 @@ export const huntCases: HuntCase[] = [
         correction: "an",
         explanation: "orange 以元音开头，前面要用 an：an orange juice。"
       }
-    ]
+    ],
+    reviewed: true
   },
   {
     // L20（because / so）配套案 · R24 螺旋混题：新错 run_on（because…so 连用）+ fragment（because 半句独立）×2 + 旧错 tense / plural ×2（旧错占 50%）
@@ -1056,6 +1083,382 @@ export const huntCases: HuntCase[] = [
         original: "clock",
         correction: "clocks",
         explanation: "two 后面的可数名词要用复数：two alarm clocks。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第二批案件（析客规格书 §4）：每案 3–4 错 = 新错（verb_form/tense）1–2 + 旧错 1–2，全部单 token 可修 ──
+    // L21 配套 · 螺旋混题：新错 have do→done / eated→eaten + 旧错 say→said（tense, L10）/ sandwich→sandwiches（plural, L11）
+    id: "hunt-homework-note",
+    number: 29,
+    reviewed: true,
+    title: "书包里的字条",
+    scene: "妈妈清晨塞进书包的一张字条",
+    notes: [{ word: "packed", zh: "装好（pack 的昨天版）" }],
+    tokens: [
+      "Good", "morning!",
+      "Have", "you", "finished", "your", "homework?",
+      "I", "hope", "you", "have", "do", "it", "all.",
+      "Yesterday", "you", "say", "it", "was", "too", "much,", "and", "it", "was", "hard.",
+      "You", "have", "eated", "two", "sandwich", "for", "dinner.",
+      "I", "have", "packed", "your", "lunch", "box."
+    ],
+    errors: [
+      {
+        tokenIndex: 11,
+        tag: "verb_form",
+        original: "do",
+        correction: "done",
+        explanation: "have 后面要站做过版：do 的做过版是 done。I have done it all."
+      },
+      {
+        tokenIndex: 16,
+        tag: "tense",
+        original: "say",
+        correction: "said",
+        explanation: "Yesterday 说的是昨天的事，动词要换昨天版：say → said。"
+      },
+      {
+        tokenIndex: 27,
+        tag: "verb_form",
+        original: "eated",
+        correction: "eaten",
+        explanation: "eat 的做过版是 eaten，不走加 -ed 的路——没有 eated 这个形状。"
+      },
+      {
+        tokenIndex: 29,
+        tag: "plural",
+        original: "sandwich",
+        correction: "sandwiches",
+        explanation: "two 后面的可数名词要用复数：two sandwiches。"
+      }
+    ]
+  },
+  {
+    // L22 配套：新错 was→been（have 后错位）/ see→seen + 旧错 a→an（article, L04）/ We was→were（sv_agreement）
+    id: "hunt-photo-album",
+    number: 30,
+    reviewed: true,
+    title: "相册里的一页",
+    scene: "小美和外婆一起翻旧相册，念出照片背后的一行字",
+    notes: [{ word: "Beijing", zh: "北京（地名）" }, { word: "Grandma", zh: "外婆" }],
+    tokens: [
+      "Summer,", "2015.",
+      "This", "is", "me", "and", "Grandma.",
+      "I", "have", "was", "to", "Beijing", "with", "her,",
+      "and", "I", "have", "see", "the", "sea", "for", "the", "first", "time.",
+      "We", "was", "so", "happy", "that", "day.",
+      "On", "the", "way", "home,", "I", "ate", "a", "apple", "and", "shared", "it", "with", "her."
+    ],
+    errors: [
+      {
+        tokenIndex: 9,
+        tag: "verb_form",
+        original: "was",
+        correction: "been",
+        explanation: "be 的做过版是 been：I have been to Beijing。was 是昨天版，不能站在 have 后面。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "verb_form",
+        original: "see",
+        correction: "seen",
+        explanation: "have 后面站做过版：see 的做过版是 seen。"
+      },
+      {
+        tokenIndex: 25,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "主语是 We（我们），昨天版要用 were。"
+      },
+      {
+        tokenIndex: 36,
+        tag: "article",
+        original: "a",
+        correction: "an",
+        explanation: "apple 以元音开头，前面要穿 an：an apple。"
+      }
+    ]
+  },
+  {
+    // L23 配套：新错 losed→lost（杜撰形陷阱）/ broke→broken + 旧错 in home→at home（preposition, L18）/ glasses is→are（sv_agreement）
+    // 陷阱设计：句中两个 in——get in 是对的，waiting in home 是错的
+    id: "hunt-lost-key",
+    number: 31,
+    reviewed: true,
+    title: "门口的求助字条",
+    scene: "邻居贴在楼门口的一张寻钥匙字条",
+    notes: [{ word: "neighbors", zh: "邻居们" }, { word: "glasses", zh: "眼镜" }, { word: "handle", zh: "把手" }],
+    tokens: [
+      "To", "my", "neighbors:",
+      "I", "have", "losed", "my", "key.",
+      "Now", "I", "can't", "get", "in", "and", "I", "am", "waiting", "in", "home.",
+      "My", "glasses", "is", "in", "the", "same", "bag,",
+      "so", "I", "can't", "see", "clearly.",
+      "I", "have", "also", "broke", "my", "phone", "screen.",
+      "If", "you", "find", "my", "key,",
+      "please", "put", "it", "on", "my", "door", "handle.",
+      "Thank", "you!"
+    ],
+    errors: [
+      {
+        tokenIndex: 5,
+        tag: "verb_form",
+        original: "losed",
+        correction: "lost",
+        explanation: "lose 的做过版是 lost——没有 losed 这个形状。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "preposition",
+        original: "in",
+        correction: "at",
+        explanation: "「在家里」是 at home——home 是特例，前面不垫 in。（前面 get in 的 in 是对的，别看错）"
+      },
+      {
+        tokenIndex: 21,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "glasses（眼镜）永远是复数，要用 are。"
+      },
+      {
+        tokenIndex: 34,
+        tag: "verb_form",
+        original: "broke",
+        correction: "broken",
+        explanation: "have 后面站做过版：break 的做过版是 broken。"
+      }
+    ]
+  },
+  {
+    // L24 主配套 · 本批核心新错型：Yesterday 与做过版同台（seen→saw，tense）
+    id: "hunt-diary-mix",
+    number: 32,
+    reviewed: true,
+    title: "混了时间的日记",
+    scene: "一篇把两种时间搅在一起的周记",
+    notes: [{ word: "bowls", zh: "碗（bowl 的复数）" }],
+    tokens: [
+      "Sunday,", "sunny.",
+      "Yesterday", "I", "have", "seen", "that", "film", "with", "Dad,",
+      "and", "it", "was", "funny.",
+      "In", "the", "afternoon", "I", "go", "to", "school", "for", "the", "art", "class.",
+      "Mom", "made", "dinner,", "and", "I", "have", "eat", "two", "bowls", "of", "rice.",
+      "Before", "bed,", "I", "read", "three", "book", "about", "animals."
+    ],
+    errors: [
+      {
+        tokenIndex: 5,
+        tag: "tense",
+        original: "seen",
+        correction: "saw",
+        explanation: "Yesterday 已经站在句子里，动词要用昨天版：I saw that film。做过版和具体时间点不能同台。"
+      },
+      {
+        tokenIndex: 18,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "下午的美术课是昨天的事，go 要换昨天版 went。"
+      },
+      {
+        tokenIndex: 31,
+        tag: "verb_form",
+        original: "eat",
+        correction: "eaten",
+        explanation: "have 后面站做过版：eat 的做过版是 eaten。"
+      },
+      {
+        tokenIndex: 41,
+        tag: "plural",
+        original: "book",
+        correction: "books",
+        explanation: "three 后面是可数名词复数：three books。"
+      }
+    ]
+  },
+  {
+    // L24 第 2 案：新错 have did→done + 旧错 In Monday→on Monday（preposition）/ was→were（sv_agreement）/ must to go→must go（verb_form, L16）
+    id: "hunt-weekend-note",
+    number: 33,
+    reviewed: true,
+    title: "外婆的周末字条",
+    scene: "外婆贴在冰箱上的周末安排便条",
+    tokens: [
+      "A", "note", "for", "the", "weekend:",
+      "Our", "family", "have", "did", "a", "lot", "this", "weekend.",
+      "In", "Monday,", "we", "cleaned", "the", "house", "together,",
+      "and", "my", "little", "brother", "and", "I", "was", "tired", "but", "happy.",
+      "Dad", "said", "we", "must", "to", "go", "to", "bed", "early.",
+      "I", "have", "also", "done", "my", "homework,",
+      "so", "tomorrow", "we", "can", "go", "to", "the", "park."
+    ],
+    errors: [
+      {
+        tokenIndex: 8,
+        tag: "verb_form",
+        original: "did",
+        correction: "done",
+        explanation: "have 后面要站做过版：do 的做过版是 done。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "preposition",
+        original: "In",
+        correction: "On",
+        explanation: "说「在星期一」用 on Monday——星期前面垫 on。"
+      },
+      {
+        tokenIndex: 26,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "主语是 my little brother and I（两个人），昨天版要用 were。"
+      },
+      {
+        tokenIndex: 34,
+        tag: "verb_form",
+        original: "to",
+        correction: "去掉 to",
+        explanation: "must 后面的动词保持原样，中间不垫 to：must go。"
+      }
+    ]
+  },
+  {
+    // ── F5 第三季 · L25 三单 -s 案件（sv_agreement 主战场）──
+    id: "hunt-third-person-daily",
+    number: 34,
+    reviewed: true,
+    title: "同桌的日常记录",
+    scene: "小美在笔记本上记同桌的每日习惯",
+    tokens: [
+      "My", "deskmate", "have", "many", "habits.",
+      "He", "drink", "milk", "every", "day",
+      "and", "watch", "TV", "every", "night.",
+      "She", "like", "music,", "but", "he", "don't", "like", "coffee.",
+      "Does", "he", "likes", "sports?", "Yes,", "he", "plays", "football", "on", "Monday."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "sv_agreement",
+        original: "have",
+        correction: "has",
+        explanation: "My deskmate 是「他」，三单要用 has。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "sv_agreement",
+        original: "drink",
+        correction: "drinks",
+        explanation: "「他喝」是三单，动词加小尾巴 -s：drinks。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "sv_agreement",
+        original: "watch",
+        correction: "watches",
+        explanation: "watch 以 ch 结尾，三单加 es：watches。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "sv_agreement",
+        original: "like",
+        correction: "likes",
+        explanation: "「她喜欢」是三单，动词加 -s：likes。"
+      },
+      {
+        tokenIndex: 20,
+        tag: "sv_agreement",
+        original: "don't",
+        correction: "doesn't",
+        explanation: "「他不喜欢」，帮手换三单 doesn't。"
+      },
+      {
+        tokenIndex: 25,
+        tag: "verb_form",
+        original: "likes",
+        correction: "like",
+        explanation: "Does 一出场，动词打回原形 like——小尾巴由帮手扛。"
+      }
+    ]
+  },
+  {
+    // ── F5 第三季 · L26 there be 案件 ──
+    id: "hunt-there-be-room",
+    number: 35,
+    reviewed: true,
+    title: "新房间的清单",
+    scene: "小美帮妈妈列新房间里的东西",
+    tokens: [
+      "Look", "at", "my", "new", "room!",
+      "There", "have", "a", "bed", "and", "a", "desk.",
+      "There", "is", "three", "books", "on", "the", "desk,",
+      "and", "there", "are", "a", "lamp", "near", "the", "window.",
+      "Is", "there", "a", "chair?", "Yes,", "there", "is", "a", "blue", "chair", "in", "the", "corner."
+    ],
+    errors: [
+      {
+        tokenIndex: 6,
+        tag: "missing_be",
+        original: "have",
+        correction: "is",
+        explanation: "「某处有某物」用 There is / There are，不用 have。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "three books 是复数，用 There are。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "sv_agreement",
+        original: "are",
+        correction: "is",
+        explanation: "a lamp 是单数，用 There is。"
+      }
+    ]
+  },
+  {
+    // ── F5 第三季 · L27 疑问词案件 ──
+    id: "hunt-question-words",
+    number: 36,
+    reviewed: true,
+    title: "失物招领处的问答",
+    scene: "小美在失物招领处帮老师登记",
+    tokens: [
+      "The", "teacher", "asks:", "Where", "is", "this?",
+      "A", "boy", "says:", "It", "is", "a", "blue", "bag.",
+      "When", "you", "lost", "it?", "the", "teacher", "asks.",
+      "How", "is", "your", "name?", "she", "asks", "too.",
+      "The", "boy", "answers:", "My", "name", "is", "Tom."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "word_order",
+        original: "Where",
+        correction: "What",
+        explanation: "问「这是什么」用 What；Where 是问地方。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "word_order",
+        original: "lost",
+        correction: "did you lose",
+        explanation: "问过去的动作要请帮手 did：When did you lose it？动词打回原形。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "word_order",
+        original: "How",
+        correction: "What",
+        explanation: "问名字用 What（是什么）；How 是问方式或状况。"
       }
     ]
   }

@@ -124,8 +124,15 @@ const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m3",
     afterLesson: 24,
     title: "我能讲清楚已经发生和刚刚发生的事",
-    zh: "全剧终：完成时把「经历」和「影响」说清了——这就是进阶篇的收口。",
+    zh: "完成时把「经历」和「影响」说清了——这就是进阶篇的收口。",
     samples: ["I have finished my homework.", "I have been to Beijing.", "I have lost my key."]
+  },
+  {
+    id: "can-do-m4",
+    afterLesson: 27,
+    title: "我能说清楚他和她每天做什么",
+    zh: "三单、存在句、疑问词全拿下——最顽固的小毛病都改掉了，你的日常表达已经又稳又准。",
+    samples: ["He drinks milk every day.", "There is a book on the desk.", "Where is my key?"]
   }
 ];
 
@@ -224,7 +231,9 @@ function TelemetryExportCard() {
 /** R20：课程分组——第一季初级篇（1–12）/ 第二季进阶篇（13+），按课号自动划分。 */
 const LESSON_GROUPS: Array<{ id: string; label: string; hint: string; min: number; max: number }> = [
   { id: "season-1", label: "第一季 · 初级篇", hint: "从第一句英语，到把昨天和明天说清楚", min: 1, max: 12 },
-  { id: "season-2", label: "第二季 · 进阶篇", hint: "从「报句子」到「讲事情」：进行时、情态、比较、连句", min: 13, max: 999 }
+  { id: "season-2", label: "第二季 · 进阶篇", hint: "从「报句子」到「讲事情」：进行时、情态、比较、连句", min: 13, max: 24 },
+  // F5 第三季 · 巩固篇（2026-09-13）：补 A2 高频缺口——三单 -s、there be、疑问词系统
+  { id: "season-3", label: "第三季 · 巩固篇", hint: "把最顽固的小毛病改掉：三单、存在句、疑问词", min: 25, max: 999 }
 ];
 
 export default function GrammarPathPage() {
