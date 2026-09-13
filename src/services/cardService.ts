@@ -197,7 +197,7 @@ export const addOrUpdateWordWithResult = (data: AppData, input: WordInput): Word
     collectChangedField(mergedFields, "搭配", existingDetails.collocations, input.collocations);
     collectChangedField(mergedFields, "例句", existingDetails.sourceSentence, input.sourceSentence);
     collectChangedField(mergedFields, "备注", existingCard?.note, input.note);
-    if (input.unitId && input.unitId !== existingCard?.unitId) mergedFields.push("单元");
+    if (input.unitId && input.unitId !== existingCard?.unitId) mergedFields.push("词书");
     if (inputTags.some((tag) => !existingCard?.tags.includes(tag))) mergedFields.push("标签");
 
     const nextSource = compactLines([existingDetails.sourceSentence, input.sourceSentence]);
@@ -480,9 +480,17 @@ export const deleteCards = (data: AppData, cardIds: string[]): AppData => {
 
 export const togglePriority = (data: AppData, cardId: string): AppData => ({
   ...data,
-  cards: data.cards.map((card) =>
-    card.id === cardId ? { ...card, priority: !card.priority, updatedAt: nowIso() } : card
-  )
+  cards: data.cards.map((card) => {
+    if (card.id !== cardId) return card;
+    const priority = !card.priority;
+    const nextCard: Card = { ...card, priority, updatedAt: nowIso() };
+    if (priority) {
+      nextCard.prioritySource = "manual";
+    } else {
+      delete nextCard.prioritySource;
+    }
+    return nextCard;
+  })
 });
 
 export const setCardsPriority = (data: AppData, cardIds: string[], priority: boolean): AppData => {
@@ -490,9 +498,16 @@ export const setCardsPriority = (data: AppData, cardIds: string[], priority: boo
   const timestamp = nowIso();
   return {
     ...data,
-    cards: data.cards.map((card) =>
-      ids.has(card.id) && card.priority !== priority ? { ...card, priority, updatedAt: timestamp } : card
-    )
+    cards: data.cards.map((card) => {
+      if (!ids.has(card.id) || card.priority === priority) return card;
+      const nextCard: Card = { ...card, priority, updatedAt: timestamp };
+      if (priority) {
+        nextCard.prioritySource = "manual";
+      } else {
+        delete nextCard.prioritySource;
+      }
+      return nextCard;
+    })
   };
 };
 
@@ -501,9 +516,30 @@ export const setCardsStatus = (data: AppData, cardIds: string[], status: CardSta
   const timestamp = nowIso();
   return {
     ...data,
-    cards: data.cards.map((card) =>
-      ids.has(card.id) && card.status !== status ? { ...card, status, updatedAt: timestamp } : card
-    )
+    cards: data.cards.map((card) => {
+      if (!ids.has(card.id) || card.status === status) return card;
+      const nextCard: Card = { ...card, status, updatedAt: timestamp };
+      if (status === "suspended") {
+        nextCard.suspendedFrom = card.status;
+      } else {
+        delete nextCard.suspendedFrom;
+      }
+      return nextCard;
+    })
+  };
+};
+
+export const restoreCards = (data: AppData, cardIds: string[]): AppData => {
+  const ids = new Set(cardIds);
+  const timestamp = nowIso();
+  return {
+    ...data,
+    cards: data.cards.map((card) => {
+      if (!ids.has(card.id) || card.status !== "suspended") return card;
+      const nextCard: Card = { ...card, status: card.suspendedFrom ?? "review", updatedAt: timestamp };
+      delete nextCard.suspendedFrom;
+      return nextCard;
+    })
   };
 };
 
@@ -525,6 +561,26 @@ export const updateSentenceAudio = (data: AppData, cardId: string, audioUrl: str
 
 export const getWordDetails = (data: AppData, cardId: string) =>
   data.wordDetails.find((details) => details.cardId === cardId);
+
+// R13：通用卡片内容更新（释义/备注/标签），供短语等在 LibraryPage 内联编辑使用。
+export const updateCardContent = (
+  data: AppData,
+  cardId: string,
+  patch: { back?: string; note?: string; tags?: string[] }
+): AppData => ({
+  ...data,
+  cards: data.cards.map((card) =>
+    card.id === cardId
+      ? {
+          ...card,
+          back: patch.back ?? card.back,
+          note: patch.note ?? card.note,
+          tags: patch.tags ?? card.tags,
+          updatedAt: nowIso()
+        }
+      : card
+  )
+});
 
 export const getSentenceDetails = (data: AppData, cardId: string) =>
   data.sentenceDetails.find((details) => details.cardId === cardId);

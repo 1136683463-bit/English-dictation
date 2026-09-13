@@ -11,6 +11,7 @@ import {
   applyReviewWithUndo,
   getDueCards,
   getLearningStats,
+  getNewCardsForToday,
   getWeakCardInsights,
   getWeakStats,
   ReviewUndoSnapshot,
@@ -60,17 +61,38 @@ const parsePositiveLimit = (value: string | null, fallback: number) => {
   return Number.isFinite(parsed) && parsed > 0 ? Math.max(1, Math.floor(parsed)) : fallback;
 };
 
-const buildReviewQueue = (data: AppData, step: string | null, limit: number) => {
+// 与 SpellingPage 一致：`?cards=id1,id2` 指定定向训练的卡集。
+const parseCardIds = (value: string | null) =>
+  value
+    ? value
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean)
+    : [];
+
+const buildReviewQueue = (data: AppData, step: string | null, limit: number, cardIds: string[] = []) => {
+  // R5 定向训练：指定卡集时只练这些卡（按请求顺序，排除已暂停），不做到期/新卡混入。
+  if (cardIds.length > 0) {
+    const cardById = new Map(data.cards.map((card) => [card.id, card]));
+    return cardIds
+      .map((id) => cardById.get(id))
+      .filter((card): card is Card => Boolean(card) && card!.status !== "suspended")
+      .slice(0, limit);
+  }
+
   const dueCards = getDueCards(data);
   const activeCards = data.cards.filter((card) => card.status !== "suspended");
-  const queue =
-    step === "sentences"
-      ? dueCards.filter((card) => card.type === "sentence").length > 0
-        ? dueCards.filter((card) => card.type === "sentence")
-        : activeCards.filter((card) => card.type === "sentence")
-      : dueCards;
 
-  return queue.slice(0, limit);
+  // R1 到期口径拆分：真到期卡在前，今日新卡（New cards/day）混入在后，再截到 limit。
+  if (step === "sentences") {
+    const dueSentences = dueCards.filter((card) => card.type === "sentence");
+    const sentenceQueue = [...dueSentences, ...getNewCardsForToday(data, { type: "sentence" })];
+    // 保留现有回退：到期与新句子都为空时，回退到全部 active 句子卡。
+    const queue = sentenceQueue.length > 0 ? sentenceQueue : activeCards.filter((card) => card.type === "sentence");
+    return queue.slice(0, limit);
+  }
+
+  return [...dueCards, ...getNewCardsForToday(data)].slice(0, limit);
 };
 
 export default function ReviewPage() {
@@ -79,8 +101,14 @@ export default function ReviewPage() {
   const plan = searchParams.get("plan");
   const planStep = searchParams.get("step");
   const planLimit = parsePositiveLimit(searchParams.get("limit"), 999);
+  const targetedCardsParam = searchParams.get("cards") ?? "";
+  const isTargeted = targetedCardsParam.length > 0;
+  const fromLibrary = searchParams.get("from") === "library";
   const isTodayPlan = plan === "today";
-  const queue = useMemo(() => buildReviewQueue(data, planStep, planLimit), [data, planLimit, planStep]);
+  const queue = useMemo(
+    () => buildReviewQueue(data, planStep, planLimit, parseCardIds(targetedCardsParam)),
+    [data, planLimit, planStep, targetedCardsParam]
+  );
   const queueSignature = queue.map((item) => item.id).join(":");
   const learningStats = useMemo(() => getLearningStats(data), [data]);
   const weakStats = useMemo(() => getWeakStats(data), [data]);
@@ -91,6 +119,8 @@ export default function ReviewPage() {
   const [diff, setDiff] = useState<ReturnType<typeof compareText>>([]);
   const [lastAttempt, setLastAttempt] = useState<ReviewAttempt | null>(null);
   const [pendingLowRating, setPendingLowRating] = useState<1 | 2 | null>(null);
+  // R10：达 dailyReviewLimit 后的软劝导条，本次访问内可关闭。
+  const [limitNudgeDismissed, setLimitNudgeDismissed] = useState(false);
   const card = queue[index];
   const mode = card ? chooseMode(card) : "recognize";
 
@@ -220,13 +250,15 @@ export default function ReviewPage() {
     <div className="page review-page">
       <PageHeader
         eyebrow="Review"
-        title={isTodayPlan ? "今日计划 · 复习段" : "复习训练"}
+        title={isTargeted ? "定向训练" : isTodayPlan ? "今日计划 · 复习段" : "复习训练"}
         description={
-          isTodayPlan
-            ? planStep === "sentences"
-              ? `本段聚焦句子复盘，最多 ${queue.length} 题。`
-              : `本段清理到期复习，最多 ${queue.length} 题。`
-            : "先回忆，再看答案；错误会自动影响下一次出现时间。"
+          isTargeted
+            ? `只练从词库选出的 ${queue.length} 张卡，完成后可返回词库。`
+            : isTodayPlan
+              ? planStep === "sentences"
+                ? `本段聚焦句子复盘，最多 ${queue.length} 题。`
+                : `本段清理到期复习，最多 ${queue.length} 题。`
+              : "先回忆，再看答案；错误会自动影响下一次出现时间。"
         }
         action={
           <div className="header-actions">
@@ -256,7 +288,9 @@ export default function ReviewPage() {
           <Target size={20} />
           <div>
             <span>薄弱项</span>
-            <strong>{weakStats.weakWords} 个错词 · {weakStats.consecutiveErrorWords} 个连续错误</strong>
+            {/* R2：错词数迁移到权威源 learningStats.weakWords（与 StatsPage/TrainingPage 同源）；
+                连续错误是另一指标（insights 口径），保留 getWeakStats 不动。 */}
+            <strong>{learningStats.weakWords} 个错词 · {weakStats.consecutiveErrorWords} 个连续错误</strong>
           </div>
         </div>
         <div className="review-focus-list" aria-label="最近薄弱词">
@@ -273,9 +307,29 @@ export default function ReviewPage() {
         </div>
       </section>
 
+      {/* R10：达到每日复习上限时软劝导——不截断、不阻拦，只提示可以到此为止 */}
+      {card &&
+        !isTargeted &&
+        !limitNudgeDismissed &&
+        data.settings.dailyReviewLimit > 0 &&
+        learningStats.reviewedToday >= data.settings.dailyReviewLimit && (
+          <div className="review-limit-nudge" role="status">
+            <span>
+              已达今日复习上限（{data.settings.dailyReviewLimit} 次）。上限只是节奏参考——状态好可以继续，今天到这里也很好。
+            </span>
+            <div className="review-limit-nudge-actions">
+              <Link to={isTodayPlan ? "/stats" : "/today"} className="secondary-button">
+                今天到此为止
+              </Link>
+              <button type="button" className="secondary-button" onClick={() => setLimitNudgeDismissed(true)}>
+                继续复习
+              </button>
+            </div>
+          </div>
+        )}
+
       {!card ? (
-        <section className="review-complete-panel" aria-live="polite">
-          <CheckCircle2 size={38} />
+        <section className="review-complete-panel" aria-live="polite">          <CheckCircle2 size={38} />
           <div>
             <span className="eyebrow">Done</span>
             <h2>今日复习已清空</h2>
@@ -305,6 +359,11 @@ export default function ReviewPage() {
               <Flame size={17} />
               练错词
             </Link>
+            {fromLibrary && (
+              <Link to="/library" className="secondary-button">
+                返回词库
+              </Link>
+            )}
             <Link to="/today" className="secondary-button">
               回到今日
             </Link>
@@ -340,7 +399,7 @@ export default function ReviewPage() {
               </div>
               <div>
                 <span>薄弱词</span>
-                <strong>{weakStats.weakWords}</strong>
+                <strong>{learningStats.weakWords}</strong>
               </div>
               <div>
                 <span>下次到期</span>

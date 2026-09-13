@@ -3,6 +3,7 @@ import { ArrowRight, BookOpen, BookPlus, CheckCircle2, FilePlus, Library, ListCh
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
+import { Segmented } from "../components/Segmented";
 import PageHeader from "../components/PageHeader";
 import {
   addOrUpdateWordWithAudio,
@@ -533,14 +534,15 @@ export default function ImportPage() {
             <span className="eyebrow">Batch Words</span>
             <h2>批量导入单词</h2>
           </div>
-          <div className="segmented-control" aria-label="导入格式">
-            <button className={importMode === "text" ? "selected" : ""} onClick={() => setImportMode("text")}>
-              文本
-            </button>
-            <button className={importMode === "csv" ? "selected" : ""} onClick={() => setImportMode("csv")}>
-              CSV
-            </button>
-          </div>
+          <Segmented
+            ariaLabel="导入格式"
+            value={importMode}
+            onChange={(key) => setImportMode(key as "text" | "csv")}
+            items={[
+              { key: "text", label: "文本" },
+              { key: "csv", label: "CSV" },
+            ]}
+          />
         </div>
         <div className="import-batch-grid">
           <label>

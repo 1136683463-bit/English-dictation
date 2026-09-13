@@ -145,6 +145,108 @@ export const generateStructuredMistakeStoryWithModel = async (
   }
 };
 
+export interface WordExplanationInput {
+  word: string;
+  existingTranslation?: string;
+  sourceSentence?: string;
+}
+
+export interface WordExplanationResult {
+  translation: string;
+  mnemonic: string;
+  example: string;
+}
+
+const normalizeWordExplanation = (value: unknown): WordExplanationResult => {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error("模型返回格式不是对象。");
+  }
+
+  const record = value as Record<string, unknown>;
+  const result = {
+    translation: asString(record.translation),
+    mnemonic: asString(record.mnemonic),
+    example: asString(record.example)
+  };
+
+  if (!result.translation) {
+    throw new Error("模型返回缺少 translation。");
+  }
+
+  return result;
+};
+
+const buildWordExplanationSystemPrompt = () => [
+  "You are an English vocabulary tutor for Chinese learners.",
+  "Return JSON only: translation, mnemonic, example.",
+  "translation: concise Chinese meanings with part of speech, most common senses first, e.g. \"v. 坚持；n. 坚持\".",
+  "mnemonic: one short Chinese memory aid (association, root/affix breakdown, or a vivid scene), under 60 Chinese characters.",
+  "example: one short natural English sentence using the word, followed by its Chinese translation in parentheses.",
+  "Your entire reply must be one JSON object and nothing else: the first character is { and the last is }. No Markdown."
+].join(" ");
+
+export const generateWordExplanationWithModel = async (
+  provider: AiProviderSettings,
+  input: WordExplanationInput
+): Promise<WordExplanationResult> => {
+  if (!isAiProviderConfigured(provider)) {
+    throw new Error("AI 中转站配置不完整。");
+  }
+
+  const controller = new AbortController();
+  let timedOut = false;
+  const timeout = window.setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, provider.timeoutMs);
+
+  try {
+    const response = await requestFetch(normalizeChatCompletionsUrl(provider.baseUrl), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${provider.apiKey}`
+      },
+      body: JSON.stringify({
+        model: provider.model,
+        temperature: provider.temperature,
+        max_tokens: 400,
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: buildWordExplanationSystemPrompt() },
+          {
+            role: "user",
+            content: JSON.stringify({
+              task: "explain_word",
+              word: input.word,
+              existingTranslation: input.existingTranslation ?? "",
+              sourceSentence: input.sourceSentence ?? ""
+            })
+          }
+        ]
+      }),
+      signal: controller.signal
+    });
+
+    const json = await readResponsePayload<ChatCompletionResponse>(response);
+    if (!response.ok) {
+      throw new Error(json.error?.message || `模型请求失败：${response.status}`);
+    }
+
+    const content = json.choices?.[0]?.message?.content ?? json.content;
+    if (!content) throw new Error("模型响应没有内容。");
+
+    return normalizeWordExplanation(JSON.parse(extractJsonObject(content)));
+  } catch (error) {
+    if (timedOut || (error instanceof DOMException && error.name === "AbortError")) {
+      throw new Error(`模型请求超时（已等待 ${Math.round(provider.timeoutMs / 1000)} 秒）。`);
+    }
+    throw new Error(describeModelRequestError(error));
+  } finally {
+    window.clearTimeout(timeout);
+  }
+};
+
 export const testAiProviderConnection = async (provider: AiProviderSettings) => {
   const result = await generateStructuredMistakeStoryWithModel(provider, {
     dateKey: "test",

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { APP_SCHEMA_VERSION, markDataExported, migrateData, needsBackupReminder } from "./storage";
+import { APP_SCHEMA_VERSION, buildDiagnosis, markDataExported, markDataSyncedBackup, migrateData, needsBackupReminder, summarizeStartupRepairs } from "./storage";
 import { makeMistakeGeneration, makeTestData, makeWordCard } from "./testUtils";
 
 describe("storage migration helpers", () => {
@@ -206,6 +206,25 @@ describe("storage migration helpers", () => {
     expect(needsBackupReminder(markDataExported(data), 7)).toBe(false);
   });
 
+  it("treats a successful cloud sync as a valid backup (R03)", () => {
+    const data = makeTestData({
+      cards: [makeWordCard("card_1")],
+      settings: { lastExportedAt: "2026-01-01T00:00:00.000Z" }
+    });
+
+    // 导出早已过期，但刚完成一次云同步 → 不再误报"未备份"
+    expect(needsBackupReminder(data, 7)).toBe(true);
+    expect(needsBackupReminder(markDataSyncedBackup(data), 7)).toBe(false);
+
+    // 从未导出也从未同步 → 仍然提醒
+    const neverBackedUp = makeTestData({ cards: [makeWordCard("card_1")] });
+    expect(needsBackupReminder(neverBackedUp, 7)).toBe(true);
+
+    // 提醒取两者中较近的时间点：同步时间也过期后仍要提醒
+    const staleSync = markDataSyncedBackup(data, "2026-01-02T00:00:00.000Z");
+    expect(needsBackupReminder(staleSync, 1)).toBe(true);
+  });
+
   it("preserves card source ids and drops material segments with missing materials", () => {
     const migrated = migrateData({
       seededWordVersions: ["core-100-v1"],
@@ -243,5 +262,60 @@ describe("storage migration helpers", () => {
 
     expect(migrated.cards.find((card) => card.id === "card_1")?.sourceId).toBe("material_1");
     expect(migrated.materialSegments.map((segment) => segment.id)).toEqual(["segment_1"]);
+  });
+});
+
+describe("summarizeStartupRepairs + buildDiagnosis (R12)", () => {
+  it("reports nothing when the raw snapshot matches normalized data", () => {
+    const data = makeTestData({ cards: [makeWordCard("card_1")] });
+    const raw = JSON.stringify({
+      schemaVersion: APP_SCHEMA_VERSION,
+      cards: [{ id: "card_1" }],
+      reviews: [],
+      materials: [],
+      materialSegments: []
+    });
+
+    const repaired = summarizeStartupRepairs(raw, data);
+    expect(repaired).toEqual([]);
+
+    const diagnosis = buildDiagnosis(repaired, Math.round(raw.length / 1024), data.schemaVersion);
+    expect(diagnosis.ok).toBe(true);
+    expect(diagnosis.issues).toEqual([]);
+    expect(diagnosis.sizeKb).toBe(Math.round(raw.length / 1024));
+  });
+
+  it("reports old schema and orphan references as startup repairs", () => {
+    const data = makeTestData({ cards: [makeWordCard("card_1")] });
+    const raw = JSON.stringify({
+      schemaVersion: APP_SCHEMA_VERSION - 1,
+      cards: [{ id: "card_1" }],
+      reviews: [
+        { id: "review_ok", cardId: "card_1" },
+        { id: "review_orphan", cardId: "missing_card" }
+      ],
+      materials: [],
+      materialSegments: [{ id: "segment_orphan", materialId: "missing_material" }]
+    });
+
+    const repaired = summarizeStartupRepairs(raw, data);
+
+    expect(repaired.some((item) => item.includes("迁移"))).toBe(true);
+    expect(repaired.some((item) => item.includes("复习记录"))).toBe(true);
+    expect(repaired.some((item) => item.includes("句段"))).toBe(true);
+    expect(buildDiagnosis(repaired, 10, data.schemaVersion).ok).toBe(false);
+  });
+
+  it("reports an unparseable snapshot as a reset repair", () => {
+    const repaired = summarizeStartupRepairs("{ not valid json", makeTestData());
+
+    expect(repaired.some((item) => item.includes("损坏"))).toBe(true);
+  });
+
+  it("flags oversize local data as an issue requiring action", () => {
+    const diagnosis = buildDiagnosis([], 5000, APP_SCHEMA_VERSION);
+
+    expect(diagnosis.ok).toBe(false);
+    expect(diagnosis.issues.some((issue) => issue.includes("存储上限"))).toBe(true);
   });
 });

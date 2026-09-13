@@ -1,5 +1,5 @@
 import { AppData, DataSyncSettings } from "../types";
-import { restoreDataFromJson } from "./storage";
+import { parseBackupJson, restoreDataFromJson } from "./storage";
 import { requestFetch } from "./aiHttpClient";
 
 /**
@@ -95,6 +95,33 @@ export const pushDataSnapshot = async (sync: DataSyncSettings, data: AppData): P
   }
   if (!response.ok) throw new Error(json.error?.message || `云同步上传失败：${response.status}`);
   return typeof json.savedAt === "string" ? json.savedAt : "";
+};
+
+/**
+ * R02：只拉取并解析云端快照，不写 localStorage——供设置页"从云端恢复"
+ * 先展示预览、用户确认后再提交。要直接落盘请用 pullDataSnapshot。
+ */
+export const fetchRemoteSnapshot = async (
+  sync: DataSyncSettings
+): Promise<{ savedAt: string; data: AppData } | null> => {
+  if (!isDataSyncConfigured(sync)) throw new Error("云同步没有配置或未启用。");
+  const response = await requestFetch(normalizeSyncUrl(sync.baseUrl), {
+    method: "GET",
+    headers: authHeaders(sync)
+  });
+  if (response.status === 404) return null;
+  const text = await response.text();
+  let json: { savedAt?: unknown; payload?: unknown; error?: { message?: string } } = {};
+  try {
+    json = text ? JSON.parse(text) : {};
+  } catch {
+    throw new Error("云同步服务返回了无法解析的响应，请检查同步服务是否正常。");
+  }
+  if (!response.ok) throw new Error(json.error?.message || `云同步下载失败：${response.status}`);
+  if (!json.payload || typeof json.payload !== "object") return null;
+  // 与手动 JSON 备份同一条迁移管线，但不持久化。
+  const parsed = parseBackupJson(JSON.stringify(json.payload));
+  return { savedAt: typeof json.savedAt === "string" ? json.savedAt : "", data: parsed };
 };
 
 export const pullDataSnapshot = async (

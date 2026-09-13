@@ -23,6 +23,8 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import { groupAdventureSentences, getReadingProgress, splitAdventureSentences } from "../services/adventureReaderService";
 import { findDictionaryEntry, findDictionaryEntryAsync } from "../services/dictionaryService";
+import { translateSentencesWithDictionary } from "../services/adventureTranslationFallback";
+import { appendAdventureEvent } from "../services/adventureTelemetry";
 import {
   appendAdventureNode,
   getAdventureFavoriteWords,
@@ -238,6 +240,62 @@ const SentenceUnit = ({
   const isPaused = isPlaying && playbackState === "paused";
   const isActivelyPlaying = isPlaying && playbackState === "playing";
   const renderText = (value: string) => renderInteractiveEnglishText(value, onWordSelect, recommendedWords, favoriteWords);
+  const playButton = (
+    <button type="button" className="adventure-sentence-play-button" onClick={() => onPlay(index)} disabled={isLoading}>
+      <span className="icon-swap" data-state={isLoading ? "a" : isActivelyPlaying ? "b" : isPaused ? "c" : "d"} aria-hidden="true">
+        <span className="icon-slot" data-slot="a"><LoaderCircle size={15} className="spin" /></span>
+        <span className="icon-slot" data-slot="b"><Pause size={15} /></span>
+        <span className="icon-slot" data-slot="c"><Play size={15} /></span>
+        <span className="icon-slot" data-slot="d"><Volume2 size={15} /></span>
+      </span>
+      {isLoading ? "正在加载" : isActivelyPlaying ? "暂停" : isPaused ? "继续" : "播放这句"}
+    </button>
+  );
+
+  // 对照模式：每句独立成行，译文以弱化小字紧跟其下并左对齐缩进，逐句对应清晰，不插入卡片。
+  // 译文已常显，无需句级展开；交互从「对句子」改为「对单词」——英文逐词可点，直接弹出单词翻译。
+  if (isPaired) {
+    return (
+      <div
+        ref={cardRef}
+        id={`adventure-sentence-${index + 1}`}
+        className={`adventure-sentence-unit paired${isPlaying ? " playing" : ""}`}
+        aria-current={isPlaying ? "true" : undefined}
+      >
+        <span className="adventure-sentence-text" lang="en">
+          {renderText(text)}
+        </span>
+        {isPlaying && <span className="adventure-sentence-inline-status" aria-live="polite">{isLoading ? "加载中" : isPaused ? "已暂停" : "播放中"}</span>}
+        {isPlaying && <span className="adventure-sentence-inline-status" aria-live="polite">{isLoading ? "加载中" : isPaused ? "已暂停" : "播放中"}</span>}
+        <div
+          id={`adventure-sentence-detail-${index + 1}`}
+          className="adventure-sentence-detail paired-inline"
+          role="region"
+          aria-label={`第 ${index + 1} 句译文`}
+        >
+          {translation ? (
+            <span className="adventure-sentence-translation">{translation}</span>
+          ) : translationState === "loading" ? (
+            <span className="adventure-sentence-message"><LoaderCircle size={13} className="spin" /> 正在生成译文…</span>
+          ) : translationState === "error" ? (
+            <span className="adventure-sentence-error" role="alert">
+              <span>{translationError}</span>
+              <button type="button" className="text-button" onClick={onRetry}>重试</button>
+            </span>
+          ) : (
+            <span className="adventure-sentence-message">
+              <span>译文未生成。</span>
+              <button type="button" className="text-button" onClick={onRetry}>生成译文</button>
+            </span>
+          )}
+          <span className="adventure-sentence-actions">
+            {playButton}
+            {hasPlaybackError && <span className="adventure-sentence-audio-error" role="alert">在线发音暂不可用，请重试</span>}
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -281,10 +339,7 @@ const SentenceUnit = ({
               <span className="adventure-sentence-detail-label"><Languages size={14} /> 原文 · 译文</span>
               {isPopup && (
                 <div className="adventure-sentence-detail-heading-actions">
-                  <button type="button" className="adventure-sentence-play-button" onClick={() => onPlay(index)} disabled={isLoading}>
-                    {isLoading ? <LoaderCircle size={15} className="spin" /> : isActivelyPlaying ? <Pause size={15} /> : isPaused ? <Play size={15} /> : <Volume2 size={15} />}
-                    {isLoading ? "正在加载" : isActivelyPlaying ? "暂停" : isPaused ? "继续" : "播放这句"}
-                  </button>
+                  {playButton}
                   {hasPlaybackError && <span className="adventure-sentence-audio-error" role="alert">在线发音暂不可用</span>}
                   <button type="button" className="icon-button" onClick={onClose} aria-label="关闭句子译文" title="关闭"><X size={15} /></button>
                 </div>
@@ -309,10 +364,7 @@ const SentenceUnit = ({
           </div>
           {!isPopup && (
             <div className="adventure-sentence-actions">
-              <button type="button" className="adventure-sentence-play-button" onClick={() => onPlay(index)} disabled={isLoading}>
-                {isLoading ? <LoaderCircle size={15} className="spin" /> : isActivelyPlaying ? <Pause size={15} /> : isPaused ? <Play size={15} /> : <Volume2 size={15} />}
-                {isLoading ? "正在加载" : isActivelyPlaying ? "暂停" : isPaused ? "继续" : "播放这句"}
-              </button>
+              {playButton}
               {hasPlaybackError && <span className="adventure-sentence-audio-error" role="alert">在线发音暂不可用，请重试</span>}
             </div>
           )}
@@ -346,6 +398,8 @@ export default function AdventurePlayPage() {
   const [wordPopover, setWordPopover] = useState<AdventureWordPopover | null>(null);
   const [isFavoritePending, setIsFavoritePending] = useState(false);
   const [isVocabOpen, setIsVocabOpen] = useState(false);
+  // AI 失败诊断：持久展示最近一次失败原因，直到下次成功或切章。
+  const [lastAiError, setLastAiError] = useState("");
   const [fontScale, setFontScale] = useState<ReaderFontScale>(readStoredFontScale);
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const [isFontMenuOpen, setIsFontMenuOpen] = useState(false);
@@ -361,6 +415,11 @@ export default function AdventurePlayPage() {
   const isPreviewing = Boolean(previewNode && realCurrent && previewNode.id !== realCurrent.id);
   const currentNodeIdRef = useRef("");
   const translationRequestRef = useRef<Promise<string[]> | null>(null);
+  // R4 会话度量：session_start/end、nodesAdvanced、node_viewed 的共享状态。
+  const sessionIdRef = useRef("");
+  const sessionStartRef = useRef(0);
+  const nodesAdvancedRef = useRef(0);
+  const viewedNodeIdsRef = useRef<Set<string>>(new Set());
   const wordLookupRequestRef = useRef(0);
   const playbackRunRef = useRef(0);
   const playbackResolverRef = useRef<((result: boolean) => void) | null>(null);
@@ -446,6 +505,60 @@ export default function AdventurePlayPage() {
     playbackResolverRef.current?.(false);
     stopSpeaking();
   }, []);
+
+  // R4 session_start / session_end：每次进入阅读页（含切换路线）记一条会话。
+  useEffect(() => {
+    if (!adventureId || !adventure) return;
+    const todayKey = `adventure-session-days:${adventureId}:${new Date().toISOString().slice(0, 10)}`;
+    let isReplay = false;
+    try {
+      isReplay = Boolean(window.localStorage.getItem(todayKey));
+      window.localStorage.setItem(todayKey, "1");
+    } catch {
+      // 私密模式下重玩口径退化为 false，不影响主流程。
+    }
+    const sessionId = `sess-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    sessionIdRef.current = sessionId;
+    sessionStartRef.current = Date.now();
+    nodesAdvancedRef.current = 0;
+    viewedNodeIdsRef.current = new Set();
+    appendAdventureEvent({
+      kind: "session_start",
+      adventureId,
+      sessionId,
+      entrySource: "deep-link",
+      isReplay,
+      ts: new Date().toISOString()
+    });
+    return () => {
+      appendAdventureEvent({
+        kind: "session_end",
+        adventureId,
+        sessionId,
+        durationMs: Date.now() - sessionStartRef.current,
+        nodesAdvanced: nodesAdvancedRef.current,
+        gatesAttempted: 0,
+        endContext: nodesAdvancedRef.current > 0 ? "choice" : "idle",
+        ts: new Date().toISOString()
+      });
+    };
+  }, [adventureId]);
+
+  // R4 node_viewed：当前展示节点变化时记录（区分首看/回看）。
+  useEffect(() => {
+    if (!current || !adventureId) return;
+    const isFirstView = !viewedNodeIdsRef.current.has(current.id);
+    viewedNodeIdsRef.current.add(current.id);
+    appendAdventureEvent({
+      kind: "node_viewed",
+      adventureId,
+      sessionId: sessionIdRef.current || undefined,
+      nodeId: current.id,
+      chapter: current.chapter,
+      isFirstView,
+      ts: new Date().toISOString()
+    });
+  }, [current?.id, adventureId]);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -658,10 +771,25 @@ export default function AdventurePlayPage() {
 
   const ensureTranslations = async () => {
     if (hasCompleteTranslations) return sentenceTranslations;
+    // R1 离线兜底：无 AI 时用本地词典逐词直译（标注［词］，会话内生效，不落库），保证"读"不被配置阻断。
     if (!isAiConfigured) {
-      setTranslationState("error");
-      setTranslationError("此历史章节没有逐句译文。请先在设置中配置 AI，再生成译文。");
-      return null;
+      setTranslationState("loading");
+      setTranslationError("");
+      setStatus("正在用本地词典为本章生成粗略译文…");
+      try {
+        const fallback = await translateSentencesWithDictionary(data, readerSentences);
+        if (currentNodeIdRef.current !== current.id) return null;
+        setTranslationOverrides(fallback);
+        setTranslationState("ready");
+        setStatus("已生成本章词典级粗略译文（标注［词］，仅供参考）。配置 AI 后可重新生成正式译文。");
+        return fallback;
+      } catch {
+        if (currentNodeIdRef.current === current.id) {
+          setTranslationState("error");
+          setTranslationError("本地词典译文也没有生成，可以点击句子中的词语逐个查看释义。");
+        }
+        return null;
+      }
     }
     if (translationRequestRef.current) return translationRequestRef.current;
 
@@ -759,11 +887,17 @@ export default function AdventurePlayPage() {
       lifecycle: {
         onLoading: () => { if (runId === playbackRunRef.current) setPlaybackState("loading"); },
         onStart: () => { if (runId === playbackRunRef.current) setPlaybackState("playing"); },
-        onEnd: () => finishPlayback(runId, true, index),
+        onEnd: () => {
+          finishPlayback(runId, true, index);
+          appendAdventureEvent({ kind: "tts_played", adventureId, nodeId: currentNodeIdRef.current || undefined, voiceType: "online", ts: new Date().toISOString() });
+        },
         onPause: () => { if (runId === playbackRunRef.current) setPlaybackState("paused"); },
         onResume: () => { if (runId === playbackRunRef.current) setPlaybackState("playing"); },
         onSystemFallback: () => { if (runId === playbackRunRef.current) setStatus("在线发音暂不可用，已切换本机语音。"); },
-        onError: () => finishPlayback(runId, false, index)
+        onError: () => {
+          finishPlayback(runId, false, index);
+          appendAdventureEvent({ kind: "tts_failed", adventureId, nodeId: currentNodeIdRef.current || undefined, voiceType: "online", ts: new Date().toISOString() });
+        }
       }
     }).then((played) => {
       if (!played) finishPlayback(runId, false, index);
@@ -886,7 +1020,10 @@ export default function AdventurePlayPage() {
           if (attempt === 0) await new Promise((resolve) => window.setTimeout(resolve, 500));
         }
       }
-      if (lastError || !continuations) throw lastError instanceof Error ? lastError : new Error("批量预加载失败。");
+      if (lastError || !continuations) {
+        console.error("[adventure] 批量 AI 预加载失败：", lastError);
+        throw lastError instanceof Error ? lastError : new Error("批量预加载失败。");
+      }
       if (currentNodeIdRef.current !== nodeId) return;
       continuations.forEach(({ choiceId, node }) => {
         cachePreloadedNode(choiceId, node);
@@ -906,7 +1043,28 @@ export default function AdventurePlayPage() {
   const continueStory = async (choiceId?: string) => {
     if (isContinuing) return;
     cancelPlayback();
+    // R4：提交意图在请求前记录（自定义行动 outcome 待结果回填，见下方 setStatus 处）。
+    const submittedCustomAction = customAction.trim();
+    const choiceIndex = choiceId ? current.choices.findIndex((item) => item.id === choiceId) : -1;
+    if (choiceId && choiceIndex >= 0) {
+      appendAdventureEvent({
+        kind: "choice_selected",
+        adventureId,
+        sessionId: sessionIdRef.current || undefined,
+        nodeId: current.id,
+        choiceId,
+        choiceIndex,
+        isCustom: false,
+        ts: new Date().toISOString()
+      });
+    }
     const action = customAction.trim() || current.choices.find((item) => item.id === choiceId)?.promptHint || "Continue the adventure.";
+    // R2 打断语义：点击的选项若仍在预加载队列中，取消其预加载标记并强制走实时生成，
+    // 避免"预加载完成后用旧结果覆盖用户刚选的实时路线"。
+    if (choiceId && preloadingChoiceIdsRef.current.has(choiceId)) {
+      markPreloading([choiceId], false);
+      delete preloadedNodesRef.current[choiceId];
+    }
     const preloadedNode = choiceId ? preloadedNodesRef.current[choiceId] : undefined;
     setIsContinuing(true);
     setStatus(preloadedNode
@@ -944,6 +1102,8 @@ export default function AdventurePlayPage() {
             source = "ai";
           } catch (error) {
             aiError = error instanceof Error ? error.message : "未知错误";
+            // 诊断：AI 续章失败的真实原因打到控制台，便于定位"全部掉兜底"问题。
+            console.error("[adventure] AI 续章失败，已切换离线剧情：", error);
             if (!provider.fallbackToLocal) throw new Error(`AI 续章失败：${aiError}`);
             usedOffline = true;
           }
@@ -951,12 +1111,43 @@ export default function AdventurePlayPage() {
         const appended = appendAdventureNode(latest, adventureId, latestCurrent.id, { choiceId, customAction: customAction.trim(), source, node });
         return { ...appended, usedOffline, aiError };
       });
+      // R4：节点推进确认 + 自定义行动结果（adopted=AI 续章采用 / fallback=离线回退未采用）。
+      nodesAdvancedRef.current += 1;
+      const latestAdventure = getAdventure(result.data, adventureId);
+      const advancedNode = latestAdventure ? getCurrentAdventureNode(latestAdventure) : undefined;
+      if (advancedNode) {
+        appendAdventureEvent({
+          kind: "node_completed",
+          adventureId,
+          sessionId: sessionIdRef.current || undefined,
+          nodeId: advancedNode.id,
+          chapter: advancedNode.chapter,
+          source: result.usedOffline ? "offline" : "ai",
+          ts: new Date().toISOString()
+        });
+      }
+      if (submittedCustomAction) {
+        appendAdventureEvent({
+          kind: "custom_action_submitted",
+          adventureId,
+          sessionId: sessionIdRef.current || undefined,
+          nodeId: current.id,
+          textLength: submittedCustomAction.length,
+          outcome: result.usedOffline ? "fallback" : "adopted",
+          ts: new Date().toISOString()
+        });
+      }
       setCustomAction("");
       if (result.usedOffline) {
+        // R3 自定义行动诚实化：离线回退时必须点名用户写的行动没被采用，消灭"静默丢弃"。
+        const writtenAction = customAction.trim();
+        const honestyNote = writtenAction ? `你写的「${writtenAction}」这次没能用上，先跟着故事走。` : "";
+        if (result.aiError) setLastAiError(result.aiError);
         setStatus(result.aiError
-          ? `AI 续章失败：${result.aiError}，已切换离线剧情。`
-          : "AI 未启用或配置不完整，已使用离线剧情续章。请到设置检查并保存 AI 配置。");
+          ? `AI 续章失败：${result.aiError}，已切换离线剧情。${honestyNote}`
+          : `AI 未启用或配置不完整，已使用离线剧情续章。${honestyNote || "请到设置检查并保存 AI 配置。"}`);
       } else {
+        setLastAiError("");
         setStatus("AI 新章节已保存。");
       }
     } catch (error) {
@@ -984,6 +1175,20 @@ export default function AdventurePlayPage() {
       return;
     }
     const result = await updateDataAsync(async (latest) => saveAdventureVocabulary(latest, adventureId, current.id, selected));
+    // R4 vocab_collected：逐词记录，收词率与学习产出的分子。
+    const savedWords = selected.map((item, index) => ({ word: item.word, cardId: result.savedCardIds[index] }));
+    for (const saved of savedWords) {
+      if (!saved.cardId) continue;
+      appendAdventureEvent({
+        kind: "vocab_collected",
+        adventureId,
+        sessionId: sessionIdRef.current || undefined,
+        nodeId: current.id,
+        word: saved.word,
+        cardId: saved.cardId,
+        ts: new Date().toISOString()
+      });
+    }
     setSelectedVocabulary(new Set());
     setIsVocabOpen(false);
     setStatus(`已加入 ${result.created} 个词${result.merged ? `，合并 ${result.merged} 个已有词` : ""}。`);
@@ -1069,7 +1274,7 @@ export default function AdventurePlayPage() {
           </button>
           {isPlayingChapter ? (
             <>
-              <button type="button" className="secondary-button" onClick={() => playbackState === "paused" ? resumeSpeaking() : pauseSpeaking()} aria-label={playbackState === "paused" ? "继续播放" : "暂停播放"} title={playbackState === "paused" ? "继续" : "暂停"}>{playbackState === "paused" ? <Play size={16} /> : <Pause size={16} />}</button>
+              <button type="button" className="secondary-button" onClick={() => playbackState === "paused" ? resumeSpeaking() : pauseSpeaking()} aria-label={playbackState === "paused" ? "继续播放" : "暂停播放"} title={playbackState === "paused" ? "继续" : "暂停"}><span className="icon-swap" data-state={playbackState === "paused" ? "a" : "b"} aria-hidden="true"><span className="icon-slot" data-slot="a"><Play size={16} /></span><span className="icon-slot" data-slot="b"><Pause size={16} /></span></span></button>
               <button type="button" className="icon-button" onClick={cancelPlayback} aria-label="停止连续播放" title="停止"><Square size={15} /></button>
             </>
           ) : (
@@ -1162,8 +1367,8 @@ export default function AdventurePlayPage() {
           )}
           {!hasCompleteTranslations && (
             <div className={`adventure-translation-banner ${translationState}`} role="status">
-              <div><Languages size={17} /><span>{translationState === "loading" ? "正在生成本章逐句译文…" : translationState === "error" ? translationError : "本章还没有逐句译文。点击句子后可以生成并保存。"}</span></div>
-              {translationState !== "loading" && <button type="button" className="text-button" onClick={() => void ensureTranslations().catch(() => undefined)}>{translationState === "error" ? "重试" : "生成译文"}</button>}
+              <div><Languages size={17} /><span>{translationState === "loading" ? (isAiConfigured ? "正在生成本章逐句译文…" : "正在用本地词典为本章生成粗略译文…") : translationState === "error" ? translationError : "本章还没有逐句译文。点击句子后可以生成并保存。"}</span></div>
+              {translationState !== "loading" && <button type="button" className="text-button" onClick={() => void ensureTranslations().catch(() => undefined)}>{translationState === "error" ? "重试" : (isAiConfigured ? "生成译文" : "生成粗略译文")}</button>}
             </div>
           )}
           {!isHintDismissed && (
@@ -1228,12 +1433,22 @@ export default function AdventurePlayPage() {
             </span>
           </div>
           <div className="adventure-choice-list">
-            {current.choices.map((choice) => (
-              <button key={choice.id} type="button" className="adventure-choice" disabled={isPreviewing || isContinuing || preloadingChoiceIds.size > 0} onClick={() => void continueStory(choice.id)}><span><strong>{choice.label}</strong><small>{choice.description}</small></span><ChevronRight size={18} /></button>
-            ))}
+            {current.choices.map((choice) => {
+              // R2：预加载按选项粒度——已就绪立即可点；未就绪也可点，点击打断预加载走实时生成。
+              const isPreloadingThis = preloadingChoiceIds.has(choice.id);
+              return (
+                <button key={choice.id} type="button" className={`adventure-choice${isPreloadingThis ? " preloading" : ""}`} disabled={isPreviewing || isContinuing} onClick={() => void continueStory(choice.id)}><span><strong>{choice.label}</strong><small>{isPreloadingThis ? "正在预加载，点击直接走这条" : choice.description}</small></span>{isPreloadingThis ? <LoaderCircle size={16} className="spin" /> : <ChevronRight size={18} />}</button>
+              );
+            })}
           </div>
-          <div className="adventure-custom-action"><MessageCircle size={17} /><input value={customAction} disabled={isPreviewing} onChange={(event) => setCustomAction(event.target.value.slice(0, 100))} placeholder="或者写下你想做的事" maxLength={100} /><button type="button" className="icon-button" disabled={isPreviewing || !customAction.trim() || isContinuing || preloadingChoiceIds.size > 0} onClick={() => void continueStory()} aria-label="用自定义行动继续" title="继续"><ChevronRight size={18} /></button></div>
+          <div className="adventure-custom-action"><MessageCircle size={17} /><input value={customAction} disabled={isPreviewing} onChange={(event) => setCustomAction(event.target.value.slice(0, 100))} placeholder="或者写下你想做的事" maxLength={100} /><button type="button" className="icon-button" disabled={isPreviewing || !customAction.trim() || isContinuing} onClick={() => void continueStory()} aria-label="用自定义行动继续" title="继续"><ChevronRight size={18} /></button></div>
           <p className="adventure-live-status" aria-live="polite">{isContinuing && <RefreshCw size={15} className="spin" />}{status}</p>
+          {lastAiError && (
+            <p className="adventure-ai-error" role="alert">
+              AI 续章失败：{lastAiError}（已用离线剧情续章；配置或网络恢复后会自动回到 AI 路线）
+              <Link to="/settings" className="adventure-ai-error-link">去设置检查</Link>
+            </p>
+          )}
         </section>
         </main>
 
@@ -1243,7 +1458,13 @@ export default function AdventurePlayPage() {
         </aside>
       </div>
 
-      {isVocabOpen && <button type="button" className="adventure-vocab-backdrop" aria-label="关闭本章生词" onClick={() => setIsVocabOpen(false)} />}
+      <button
+        type="button"
+        className={`adventure-vocab-backdrop${isVocabOpen ? " visible" : ""}`}
+        aria-label="关闭本章生词"
+        aria-hidden={!isVocabOpen}
+        onClick={() => setIsVocabOpen(false)}
+      />
       <aside className={`adventure-vocab-drawer${isVocabOpen ? " visible" : ""}`} aria-label="本章词汇" aria-hidden={!isVocabOpen}>
         <div className="adventure-vocab-heading">
           <div>

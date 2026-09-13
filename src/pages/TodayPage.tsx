@@ -253,14 +253,14 @@ export default function TodayPage() {
             <span className="today-panel-icon" aria-hidden="true">
               <BookMarked size={19} />
             </span>
-            <h2>继续单元练习</h2>
-            <Link to="/library" className="today-panel-link">
-              查看词库
+            <h2>继续词书练习</h2>
+            <Link to="/units" className="today-panel-link">
+              查看词书
               <ChevronRight size={15} />
             </Link>
           </div>
           {units.length === 0 ? (
-            <p className="today-errors-empty">还没有词书单元，先去「添加」里创建内容吧。</p>
+            <p className="today-errors-empty">还没有词书，先去「添加」里创建内容吧。</p>
           ) : (
             <div className="today-unit-grid">
               {units.map((unit, index) => {

@@ -303,6 +303,16 @@ export interface LanguageGate {
   sampleAnswer: string;
   /** 三档提示（由小灯说出，hint3 可给完整答案）。 */
   hints: [string, string, string];
+  /**
+   * 骨架拆解（settle 阶段把句子拆给初学者看）：
+   * subject/verb 为句子的两段切面，subjectLabel/verbLabel 为对应的中文标注。
+   * 常规句："谁 + 做什么"；there be 句型："有什么 + 在哪里"类。
+   */
+  skeleton: { subject: string; verb: string; subjectLabel: string; verbLabel: string };
+  /** 反面例句（少了谓语/骨架塌掉的写法，settle 对比用——有对比才知道为什么对）。 */
+  counterExample: string;
+  /** 反例的中文点评（这句错在哪，如"两个元音撞在一起会黏住"）。 */
+  counterNote: string;
   /** 宽松接受正则（同义表达）。 */
   acceptRegex?: string;
   /** 误读支线集合，按 errorTag 匹配。 */
@@ -405,7 +415,8 @@ export type GrammarErrorTag =
   | "fragment"
   | "run_on"
   | "word_order"
-  | "verb_form";
+  | "verb_form"
+  | "comparison";
 
 /** 案件里植入的一处错误。tokenIndex 指向 HuntCase.tokens 的下标。 */
 export interface HuntError {

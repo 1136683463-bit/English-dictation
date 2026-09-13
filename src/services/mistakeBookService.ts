@@ -64,7 +64,9 @@ export const getLocalDateKey = (value: string | Date) => {
   return `${year}-${month}-${day}`;
 };
 
-export const isWrongReview = (review: Review) => review.rating <= 2;
+// R8：rating 判定唯一权威来源；此处再导出保持既有 API，调用方零改动。
+import { isWrongReview } from "./reviewRating";
+export { isWrongReview };
 
 export const formatMistakeDateLabel = (dateKey: string, now = new Date()) => {
   const todayKey = getLocalDateKey(now);

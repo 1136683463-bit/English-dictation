@@ -3,13 +3,16 @@ import type { AppData, DiaryEntry } from "../types";
 import {
   addDiarySentenceToReview,
   applyDiaryCorrection,
+  buildCorrectionMessages,
   listDiaryEntries,
+  listRecentDiaryQuestionIds,
   markDiaryCorrectionFailed,
   pickDailyDiaryQuestions,
   requestDiaryCorrection,
   saveDiaryEntry,
   summarizeDiaryProgress
 } from "./diaryService";
+import { diaryQuestions } from "../data/diaryQuestions";
 import { makeTestData } from "./testUtils";
 import { getLocalDateKey } from "./mistakeBookService";
 
@@ -39,6 +42,55 @@ describe("diaryService", () => {
     expect(dayA).toHaveLength(3);
     expect(dayAagain.map((item) => item.id)).toEqual(dayA.map((item) => item.id));
     expect(dayB.map((item) => item.id)).not.toEqual(dayA.map((item) => item.id));
+  });
+
+  it("R10 观察/如果类新题入池（题池 ≥48，两类各 ≥6，全部带 hint）", () => {
+    const observe = diaryQuestions.filter((item) => item.id.startsWith("d-observe-"));
+    const iffy = diaryQuestions.filter((item) => item.id.startsWith("d-if-"));
+    expect(diaryQuestions.length).toBeGreaterThanOrEqual(48);
+    expect(observe.length).toBeGreaterThanOrEqual(6);
+    expect(iffy.length).toBeGreaterThanOrEqual(6);
+    expect(diaryQuestions.every((item) => item.hint && item.hint.includes("______"))).toBe(true);
+  });
+
+  it("R10 下半：变体入库（36 基础题各 1 变体，题池 ≥84），且变体与原题不同屏", () => {
+    const variants = diaryQuestions.filter((item) => item.variantOf);
+    expect(diaryQuestions.length).toBeGreaterThanOrEqual(84);
+    expect(variants.length).toBeGreaterThanOrEqual(36);
+    // 每个变体的 variantOf 都指向存在的题
+    const ids = new Set(diaryQuestions.map((item) => item.id));
+    expect(variants.every((item) => ids.has(item.variantOf!))).toBe(true);
+    // 抽样多日验证：同屏（同一天）内任意两题不互为原题/变体
+    for (let day = 1; day <= 30; day += 1) {
+      const dateKey = `2026-09-${String(day).padStart(2, "0")}`;
+      const picked = pickDailyDiaryQuestions(dateKey, 3);
+      const baseIds = picked.map((item) => item.variantOf ?? item.id);
+      expect(new Set(baseIds).size, `${dateKey} 出现原题+变体同屏`).toBe(picked.length);
+    }
+  });
+
+  it("R10 跨天回避：近 7 天已出题被收集，连续 7 天每日 3 题不重复", () => {
+    // 模拟连续 7 天写日记：每天抽 3 题并记录，验证 7 天内无重复出题
+    let data = baseData();
+    const seen = new Set<string>();
+    for (let day = 0; day < 7; day += 1) {
+      const date = new Date(2026, 8, 7 + day, 10, 0, 0); // 2026-09-07 起连续 7 天
+      const dateKey = date.toISOString().slice(0, 10);
+      const avoidIds = listRecentDiaryQuestionIds(data, date);
+      const picked = pickDailyDiaryQuestions(dateKey, 3, avoidIds);
+      for (const q of picked) {
+        expect(seen.has(q.id), `第 ${day + 1} 天出题 ${q.id} 与之前重复`).toBe(false);
+        seen.add(q.id);
+        data = {
+          ...data,
+          diaryEntries: [
+            ...data.diaryEntries,
+            makeEntry({ id: `e-${day}-${q.id}`, dateKey, questionId: q.id, createdAt: date.toISOString() })
+          ]
+        };
+      }
+    }
+    expect(seen.size).toBe(21); // 7 天 × 3 题全不重样
   });
 
   it("保存日记：同一天同一问题覆盖更新，不同问题追加", () => {
@@ -148,5 +200,28 @@ describe("diaryService", () => {
     await expect(requestDiaryCorrection(makeTestData().settings.aiProvider, "问题", "I am happy.")).rejects.toThrow(
       /AI/
     );
+  });
+
+  it("R11 三档批改强度的 prompt 差异：温柔限 1 处、严格要全量+追问、recast 始终请求", () => {
+    const gentle = buildCorrectionMessages("问题", "I go yesterday.", "gentle")[0].content;
+    const standard = buildCorrectionMessages("问题", "I go yesterday.", "standard")[0].content;
+    const strict = buildCorrectionMessages("问题", "I go yesterday.", "strict")[0].content;
+
+    // 温柔档：最多指 1 处 + 先夸
+    expect(gentle).toContain("AT MOST 1 issue");
+    expect(gentle).toContain("praise");
+    // 标准档：全部清晰问题（1-3）
+    expect(standard).toContain("all clear grammar issues");
+    // 严格档：全量 + 追问
+    expect(strict).toContain("EVERY grammar issue");
+    expect(strict).toContain("follow-up question");
+    // 三档都请求 recast（更地道的写法）
+    for (const prompt of [gentle, standard, strict]) {
+      expect(prompt).toContain("recast");
+      expect(prompt).toContain("tense");
+    }
+    // 默认档 = standard
+    const fallback = buildCorrectionMessages("问题", "I go yesterday.")[0].content;
+    expect(fallback).toBe(standard);
   });
 });

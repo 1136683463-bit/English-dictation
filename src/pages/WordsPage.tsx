@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
+import AppSelect from "../components/AppSelect";
 import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
 import SpeakButton from "../components/SpeakButton";
@@ -433,13 +434,16 @@ export default function WordsPage() {
                 />
               </label>
               <label>
-                所属单元
-                <select value={input.unitId} onChange={(event) => setInput({ ...input, unitId: event.target.value })}>
-                  <option value="">不分配单元</option>
-                  {data.units.map((unit) => (
-                    <option key={unit.id} value={unit.id}>{unit.title}</option>
-                  ))}
-                </select>
+                所属词书
+                <AppSelect
+                  ariaLabel="所属词书"
+                  options={[
+                    { value: "", label: "不分配词书" },
+                    ...data.units.map((unit) => ({ value: unit.id, label: unit.title }))
+                  ]}
+                  value={input.unitId}
+                  onChange={(value) => setInput({ ...input, unitId: value })}
+                />
               </label>
               <label>
                 音标

@@ -1,5 +1,6 @@
 import { BookOpen, CalendarDays, PencilLine, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
@@ -8,6 +9,7 @@ import {
   applyDiaryCorrection,
   getTodayDiaryQuestions,
   listDiaryEntries,
+  listRecentDiaryQuestionIds,
   markDiaryCorrectionFailed,
   pickDailyDiaryQuestions,
   requestDiaryCorrection,
@@ -29,6 +31,8 @@ interface DraftState {
   status: DraftStatus;
   correctedEn?: string;
   issues?: DiaryIssue[];
+  /** R11：更地道的重述（recast）。 */
+  recast?: string;
   message?: string;
 }
 
@@ -66,10 +70,12 @@ export default function GrammarDiaryPage() {
   const { data, updateData, updateDataAsync } = useAppData();
   const dailyCount = data.settings.diaryDailyCount;
   const todayKey = useMemo(() => summarizeDiaryProgress(data).todayDateKey, [data]);
+  // R10：今日抽题带跨天回避——近 7 天写过的题优先不再出现（题池有限，新鲜度优先）
   const [groupQuestions, setGroupQuestions] = useState<PoolQuestion[]>(() =>
     pickDailyDiaryQuestions(
       new Date().toISOString().slice(0, 10),
-      data.settings.diaryDailyCount
+      data.settings.diaryDailyCount,
+      listRecentDiaryQuestionIds(data)
     )
   );
   const [drafts, setDrafts] = useState<Record<string, DraftState>>({});
@@ -122,17 +128,19 @@ export default function GrammarDiaryPage() {
       if (!aiReady) {
         updateDraft(question.id, {
           status: "done",
-          message: "已保存。在设置里配置 AI 后，写下即可自动批改。"
+          message: "已保存。去设置里配置 AI 后，写下即可自动批改。"
         });
         continue;
       }
 
       updateDraft(question.id, { status: "correcting" });
       try {
+        // R11：按设置传入批改强度（温柔/标准/严格），默认 standard
         const correction = await requestDiaryCorrection(
           data.settings.aiProvider,
           question.zh,
-          entry.answerEn
+          entry.answerEn,
+          data.settings.diaryCorrectionStyle ?? "standard"
         );
         await updateDataAsync(async (latest) => ({
           // R09：批改写回 + 带 tag 问题的句子自动进入复习队列（R03 规则）
@@ -157,6 +165,7 @@ export default function GrammarDiaryPage() {
           status: "done",
           correctedEn: correction.correctedEn,
           issues: correction.issues,
+          recast: correction.recast,
           message:
             correction.issues.length > 0 ? "批改完成——这句和它的问题点已排进复习队列。" : undefined
         });
@@ -294,6 +303,13 @@ export default function GrammarDiaryPage() {
               {settled && draft.correctedEn && draft.correctedEn !== draft.savedValue && (
                 <p className="diary-entry-corrected">{draft.correctedEn}</p>
               )}
+              {/* R11 recast：更地道的写法（与用户原句并排，只在地道版与修正版不同且存在时展示） */}
+              {settled && draft.recast && draft.recast !== draft.correctedEn && (
+                <p className="diary-entry-recast">
+                  <span className="diary-recast-label">更地道的写法</span>
+                  {draft.recast}
+                </p>
+              )}
               {settled && draft.issues && draft.issues.length > 0 && (
                 <ul className="diary-issue-list">
                   {draft.issues.map((issue, issueIndex) => (
@@ -322,10 +338,17 @@ export default function GrammarDiaryPage() {
         </div>
         {batchSummary && <p className="diary-batch-summary">{batchSummary}</p>}
         {moreHint && <p className="diary-note">{moreHint}</p>}
+        {/* P2-4：无 AI 用户的第一个动作入口升级为引导卡（不再是一行小字链接） */}
         {!aiReady && (
-          <p className="diary-note">
-            提示：在设置里配置 AI 后，写完即可自动批改；现在写下的句子都会保留。
-          </p>
+          <section className="diary-ai-guide" aria-label="开启自动批改">
+            <div className="diary-ai-guide-copy">
+              <strong>写下就会自动批改</strong>
+              <p>配置一次 AI，之后每写完一句就会收到批改和讲解。现在写下的句子都会先保留。</p>
+            </div>
+            <Link to="/settings" className="primary-button diary-ai-guide-cta">
+              去设置里配置 AI
+            </Link>
+          </section>
         )}
       </section>
 

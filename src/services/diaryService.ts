@@ -1,4 +1,4 @@
-import type { AiProviderSettings, AppData, DiaryEntry, DiaryIssue, GrammarErrorTag } from "../types";
+import type { AiProviderSettings, AppData, DiaryCorrectionResult, DiaryEntry, DiaryIssue, GrammarErrorTag } from "../types";
 import { diaryQuestions, type DiaryQuestion as PoolQuestion } from "../data/diaryQuestions";
 import { addSentence } from "./cardService";
 import { isAiProviderConfigured, normalizeChatCompletionsUrl, readResponsePayload, requestFetch } from "./aiHttpClient";
@@ -46,15 +46,32 @@ export const pickDailyDiaryQuestions = (
   }
   const excluded = new Set(excludeIds);
   const fresh = shuffled.filter((question) => !excluded.has(question.id));
-  const picked = fresh.slice(0, Math.max(1, Math.min(count, fresh.length)));
-  // 排除后不够时，从已出过的题里补齐（题库有限，重复无害）。
+  // R10 变体不同屏：已选中的题若其 variantOf 已被选，则跳过（同一句型不重复出现）。
+  const pickWithVariantRule = (pool: PoolQuestion[], limit: number): PoolQuestion[] => {
+    const result: PoolQuestion[] = [];
+    const usedBaseIds = new Set<string>();
+    for (const question of pool) {
+      if (result.length >= limit) break;
+      const baseId = question.variantOf ?? question.id;
+      if (usedBaseIds.has(baseId)) continue;
+      usedBaseIds.add(baseId);
+      result.push(question);
+    }
+    return result;
+  };
+  const target = Math.max(1, Math.min(count, fresh.length));
+  const picked = pickWithVariantRule(fresh, target);
+  // 排除后不够时，从已出过的题里补齐（题库有限，重复无害；仍遵守变体不同屏）。
   if (picked.length < count) {
     const pickedIds = new Set(picked.map((item) => item.id));
+    const usedBaseIds = new Set(picked.map((item) => item.variantOf ?? item.id));
     for (const question of shuffled) {
       if (picked.length >= count) break;
-      if (!pickedIds.has(question.id)) {
+      const baseId = question.variantOf ?? question.id;
+      if (!pickedIds.has(question.id) && !usedBaseIds.has(baseId)) {
         picked.push(question);
         pickedIds.add(question.id);
+        usedBaseIds.add(baseId);
       }
     }
   }
@@ -63,6 +80,27 @@ export const pickDailyDiaryQuestions = (
 
 export const getTodayDiaryQuestions = (count = 3): PoolQuestion[] =>
   pickDailyDiaryQuestions(localDateKey(), count);
+
+/** R10 跨天回避：近 7 天已出过的题 ID（从日记条目反查），抽取时优先排除，题目新鲜度撑得起「最强留存钩子」。 */
+const RECENT_AVOID_DAYS = 7;
+
+export const listRecentDiaryQuestionIds = (data: AppData, fromDate = new Date()): string[] => {
+  const cutoff = fromDate.getTime() - RECENT_AVOID_DAYS * 24 * 60 * 60 * 1000;
+  const ids = new Set<string>();
+  for (const entry of data.diaryEntries ?? []) {
+    const createdAt = new Date(entry.createdAt).getTime();
+    if (Number.isFinite(createdAt) && createdAt >= cutoff && entry.questionId) {
+      ids.add(entry.questionId);
+    }
+  }
+  return [...ids];
+};
+
+/** R10：今日抽题（带跨天回避）——优先避开近 7 天已出过的题；题不够时退化为普通抽题。 */
+export const getTodayDiaryQuestionsWithAvoid = (data: AppData, count = 3): PoolQuestion[] => {
+  const avoidIds = listRecentDiaryQuestionIds(data);
+  return pickDailyDiaryQuestions(localDateKey(), count, avoidIds);
+};
 
 export const listDiaryEntries = (data: AppData): DiaryEntry[] =>
   [...(data.diaryEntries ?? [])].sort(
@@ -163,7 +201,29 @@ export const markDiaryCorrectionFailed = (data: AppData, entryId: string, note: 
  * 每处问题顺带归因到 10 类罪名之一（R09 日记归因闭环的数据来源）；
  * 全部正确时原句返回。红线：不许出现「错误」等挫败性表述。
  */
-const buildCorrectionMessages = (questionZh: string, answerEn: string) => [
+/** R11 三档批改强度的差异化指令（追加在共性规则之后）。 */
+const STYLE_INSTRUCTIONS: Record<"gentle" | "standard" | "strict", string> = {
+  gentle: [
+    "Correction style: GENTLE. Start with one specific praise for what the learner got right.",
+    "Point out AT MOST 1 issue (the most important one). If there are more, stay silent about them.",
+    "If the sentence is correct, just praise it warmly."
+  ].join(" "),
+  standard: [
+    "Correction style: STANDARD. Point out all clear grammar issues (usually 1-3).",
+    "Be warm but honest — every real issue deserves a kind note."
+  ].join(" "),
+  strict: [
+    "Correction style: STRICT. Point out EVERY grammar issue, even small ones.",
+    "After the issues, add one follow-up question in Chinese that pushes the learner to say more (field: followUp)."
+  ].join(" ")
+};
+
+/** 导出供测试：三档批改强度的 prompt 构建（R11 差异验证）。 */
+export const buildCorrectionMessages = (
+  questionZh: string,
+  answerEn: string,
+  style: "gentle" | "standard" | "strict" = "standard"
+) => [
   {
     role: "system" as const,
     content: [
@@ -173,12 +233,15 @@ const buildCorrectionMessages = (questionZh: string, answerEn: string) => [
       "Keep the learner's own words and meaning. Never upgrade vocabulary or rewrite into advanced English.",
       "If the sentence is already correct, return it unchanged with an empty issues array.",
       "Each explanation must be one short sentence in Simplified Chinese, warm and encouraging.",
+      STYLE_INSTRUCTIONS[style],
       "For each issue, also classify it into exactly one tag from this list:",
       "tense (verb tense), sv_agreement (third-person -s), missing_be (missing am/is/are), article (a/an/the),",
       "plural (countable/singular-plural), preposition (wrong preposition), fragment (missing subject or verb),",
       "run_on (because...so / run-on sentence), word_order (adjective or phrase order), verb_form (verb form).",
       "Pick the closest tag; when unsure, use tense.",
-      "Return JSON only: {\"corrected\": string, \"issues\": [{\"original\": string, \"correction\": string, \"explanation\": string, \"tag\": string}]}.",
+      // R11 recast：在 corrected（只修语法）之外，给一个更地道的重述——低成本高感知价值。
+      "Also provide a \"recast\": a natural, native-sounding version of the SAME meaning, still within A2 vocabulary.",
+      "Return JSON only: {\"corrected\": string, \"recast\": string, \"issues\": [{\"original\": string, \"correction\": string, \"explanation\": string, \"tag\": string}], \"followUp\": string}.",
       "The first character of your reply is { and the last is }. Never write notes before or after."
     ].join(" ")
   },
@@ -195,12 +258,13 @@ const extractJsonObject = (text: string): Record<string, unknown> => {
   return JSON.parse(text.slice(start, end + 1)) as Record<string, unknown>;
 };
 
-/** 调用 AI 批改一条日记。未配置 AI 或请求失败都会抛错，由页面决定降级。 */
+/** 调用 AI 批改一条日记（R11：style 三档 + recast）。未配置 AI 或请求失败都会抛错，由页面决定降级。 */
 export const requestDiaryCorrection = async (
   provider: AiProviderSettings,
   questionZh: string,
-  answerEn: string
-): Promise<{ correctedEn: string; issues: DiaryIssue[] }> => {
+  answerEn: string,
+  style: "gentle" | "standard" | "strict" = "standard"
+): Promise<DiaryCorrectionResult> => {
   if (!isAiProviderConfigured(provider)) throw new Error("还没有配置 AI，先保存句子，稍后可以在设置里开启批改。");
 
   const controller = new AbortController();
@@ -216,7 +280,7 @@ export const requestDiaryCorrection = async (
           temperature: Math.min(provider.temperature, 0.4),
           max_tokens: 900,
           ...(withResponseFormat ? { response_format: { type: "json_object" } } : {}),
-          messages: buildCorrectionMessages(questionZh, answerEn)
+          messages: buildCorrectionMessages(questionZh, answerEn, style)
         }),
         signal: controller.signal
       });
@@ -246,7 +310,8 @@ export const requestDiaryCorrection = async (
           .filter((item) => item.original || item.correction)
       : [];
     if (!correctedEn) throw new Error("模型没有返回批改后的句子。");
-    return { correctedEn, issues };
+    const recast = typeof parsed.recast === "string" && parsed.recast.trim() ? parsed.recast.trim() : undefined;
+    return { correctedEn, issues, recast };
   } finally {
     window.clearTimeout(timeout);
   }

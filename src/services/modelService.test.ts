@@ -1,100 +1,110 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { generateStructuredMistakeStoryWithModel } from "./modelService";
+import { describe, expect, it, vi } from "vitest";
+import { generateWordExplanationWithModel } from "./modelService";
+import { aiService } from "./aiService";
 import type { AiProviderSettings } from "../types";
 
 const provider: AiProviderSettings = {
   enabled: true,
-  baseUrl: "https://proxy.example.com/v1",
-  apiKey: "test-key",
-  model: "story-model",
-  temperature: 0.7,
-  timeoutMs: 30000,
+  baseUrl: "https://relay.example.com/v1",
+  apiKey: "sk-test",
+  model: "test-model",
+  temperature: 0.3,
+  timeoutMs: 5000,
   fallbackToLocal: true
 };
 
-const input = {
-  dateKey: "2026-07-04",
-  level: "B1" as const,
-  scene: "daily" as const,
-  length: "short" as const,
-  tone: "natural" as const,
-  bilingual: true,
-  words: [
-    { word: "describe", translation: "描述", wrongAnswers: ["discribe"] }
-  ]
+const okResponse = (content: string) =>
+  ({
+    ok: true,
+    text: async () =>
+      JSON.stringify({
+        choices: [{ message: { content } }]
+      })
+  }) as unknown as Response;
+
+const stubFetch = (response: Response) => {
+  vi.stubGlobal("fetch", vi.fn(async () => response));
 };
 
-const responseBody = {
-  title: "Daily Review",
-  englishStory: "Mia used describe in a note.",
-  chineseTranslation: "Mia 在笔记里使用 describe。",
-  usedWords: ["describe"],
-  missingWords: [],
-  wordNotes: [{ word: "describe", translation: "描述", note: "用于表达描述。" }]
-};
+describe("generateWordExplanationWithModel（AI 补全预研）", () => {
+  it("配置不完整时直接报错，不发请求", async () => {
+    const fetchSpy = vi.fn();
+    vi.stubGlobal("fetch", fetchSpy);
 
-const jsonResponse = (body: unknown, ok = true, status = 200) => ({
-  ok,
-  status,
-  json: () => Promise.resolve(body)
+    await expect(
+      generateWordExplanationWithModel({ ...provider, apiKey: "" }, { word: "persist" })
+    ).rejects.toThrow("AI 中转站配置不完整");
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it("解析模型返回的 JSON（translation/mnemonic/example）", async () => {
+    stubFetch(
+      okResponse(
+        JSON.stringify({
+          translation: "v. 坚持；持续",
+          mnemonic: "per-（一直）+ sist（站）→ 一直站着不放弃。",
+          example: "She persisted with daily dictation. (她坚持每天听写。)"
+        })
+      )
+    );
+
+    const result = await generateWordExplanationWithModel(provider, { word: "persist" });
+    expect(result.translation).toBe("v. 坚持；持续");
+    expect(result.mnemonic).toContain("一直站着");
+    expect(result.example).toContain("persisted");
+  });
+
+  it("兼容 ```json 代码围栏包裹的返回", async () => {
+    stubFetch(
+      okResponse("```json\n{\"translation\": \"n. 例子\", \"mnemonic\": \"\", \"example\": \"\"}\n```")
+    );
+
+    const result = await generateWordExplanationWithModel(provider, { word: "example" });
+    expect(result.translation).toBe("n. 例子");
+  });
+
+  it("缺少 translation 视为失败", async () => {
+    stubFetch(okResponse(JSON.stringify({ mnemonic: "只有助记" })));
+
+    await expect(
+      generateWordExplanationWithModel(provider, { word: "persist" })
+    ).rejects.toThrow("模型返回缺少 translation");
+  });
+
+  it("HTTP 错误透传网关的 error.message", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({
+        ok: false,
+        status: 401,
+        text: async () => JSON.stringify({ error: { message: "invalid api key" } })
+      }) as unknown as Response)
+    );
+
+    await expect(
+      generateWordExplanationWithModel(provider, { word: "persist" })
+    ).rejects.toThrow("invalid api key");
+  });
 });
 
-describe("modelService", () => {
-  afterEach(() => {
-    vi.unstubAllGlobals();
-  });
-
-  it("calls an OpenAI-compatible chat completions endpoint", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({
-      choices: [{ message: { content: JSON.stringify(responseBody) } }]
-    }));
-    vi.stubGlobal("fetch", fetchMock);
-
-    const result = await generateStructuredMistakeStoryWithModel(provider, input);
-
-    expect(fetchMock).toHaveBeenCalledWith(
-      "https://proxy.example.com/v1/chat/completions",
-      expect.objectContaining({ method: "POST" })
+describe("aiService.explainWord", () => {
+  it("AI 未配置时返回 null（由 UI 引导去设置）", async () => {
+    const result = await aiService.explainWord(
+      { word: "persist" },
+      { aiProvider: { ...provider, enabled: false } } as never
     );
-    const requestBody = JSON.parse(fetchMock.mock.calls[0][1].body);
-    expect(requestBody.model).toBe("story-model");
-    expect(requestBody.max_tokens).toBe(600);
-    expect(requestBody.messages).toHaveLength(2);
-    expect(result.title).toBe("Daily Review");
-    expect(result.usedWords).toEqual(["describe"]);
+    expect(result).toBeNull();
   });
 
-  it("accepts a full chat completions URL", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({
-      choices: [{ message: { content: JSON.stringify(responseBody) } }]
-    }));
-    vi.stubGlobal("fetch", fetchMock);
+  it("AI 已配置时走模型通道返回释义", async () => {
+    stubFetch(
+      okResponse(JSON.stringify({ translation: "v. 坚持", mnemonic: "助记", example: "" }))
+    );
 
-    await generateStructuredMistakeStoryWithModel({
-      ...provider,
-      baseUrl: "https://proxy.example.com/v1/chat/completions/"
-    }, input);
-
-    expect(fetchMock.mock.calls[0][0]).toBe("https://proxy.example.com/v1/chat/completions");
-  });
-
-  it("extracts JSON from fenced model output", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({
-      choices: [{ message: { content: `\`\`\`json\n${JSON.stringify(responseBody)}\n\`\`\`` } }]
-    }));
-    vi.stubGlobal("fetch", fetchMock);
-
-    await expect(generateStructuredMistakeStoryWithModel(provider, input)).resolves.toMatchObject({
-      englishStory: responseBody.englishStory
-    });
-  });
-
-  it("surfaces provider error messages", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({
-      error: { message: "invalid api key" }
-    }, false, 401));
-    vi.stubGlobal("fetch", fetchMock);
-
-    await expect(generateStructuredMistakeStoryWithModel(provider, input)).rejects.toThrow("invalid api key");
+    const result = await aiService.explainWord(
+      { word: "persist" },
+      { aiProvider: provider } as never
+    );
+    expect(result?.translation).toBe("v. 坚持");
   });
 });

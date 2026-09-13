@@ -2,6 +2,7 @@ import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, ChevronDown, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
+import AppSelect from "../components/AppSelect";
 import EmptyState from "../components/EmptyState";
 import {
   MbAlert,
@@ -30,6 +31,7 @@ import {
   StoryTone
 } from "../services/aiService";
 import { compareLetters } from "../services/diffService";
+import { getMistakeBookUnit, syncMistakeBookUnit } from "../services/dynamicBookService";
 import { findDictionaryEntry, findDictionaryEntryAsync } from "../services/dictionaryService";
 import {
   getLocalDateKey,
@@ -343,6 +345,26 @@ export default function MistakeBookPage() {
   const [storyBilingual, setStoryBilingual] = useState(true);
   const [storyWordPopover, setStoryWordPopover] = useState<StoryWordPopover | null>(null);
   const [pendingStoryFocusId, setPendingStoryFocusId] = useState("");
+  // P1-1 动态错词书：生成/同步入口的反馈消息。
+  const [bookSyncMessage, setBookSyncMessage] = useState("");
+  const mistakeBookUnit = getMistakeBookUnit(data);
+
+  // P1-1：一键生成/同步「我的错词书」——实体 Unit（书架一等公民），毕业词自动移出。
+  const handleSyncMistakeBook = () => {
+    if (!mistakeBookUnit && groups.length === 0) {
+      setBookSyncMessage("还没有错词可以成书，先去学习产生一些错词吧。");
+      return;
+    }
+    const result = syncMistakeBookUnit(data);
+    updateData(() => result.data);
+    if (result.created) {
+      setBookSyncMessage(`已生成《我的错词书》，收编 ${result.added} 个错词。`);
+    } else if (result.added > 0 || result.graduated > 0) {
+      setBookSyncMessage(`已同步：新入 ${result.added} 个，毕业 ${result.graduated} 个。`);
+    } else {
+      setBookSyncMessage("错词书已是最新。");
+    }
+  };
   const dateListRef = useRef<HTMLDivElement | null>(null);
   const [dateListEdges, setDateListEdges] = useState({ top: false, bottom: false });
 
@@ -766,7 +788,10 @@ export default function MistakeBookPage() {
               onClick={() => toggleTranslation(generation.id)}
               aria-expanded={isTranslationExpanded}
             >
-              {isTranslationExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+              <span className="icon-swap" data-state={isTranslationExpanded ? "b" : "a"} aria-hidden="true">
+                <span className="icon-slot" data-slot="a"><ChevronRight size={16} /></span>
+                <span className="icon-slot" data-slot="b"><ChevronDown size={16} /></span>
+              </span>
               中文翻译
             </button>
             {isTranslationExpanded && (
@@ -909,10 +934,16 @@ export default function MistakeBookPage() {
           </div>
           <div className="mistake-generation-card-actions">
             <button className="icon-button" type="button" title={isExpanded ? "收起内容" : "展开内容"} onClick={() => toggleGeneration(generation.id)}>
-              {isExpanded ? <ChevronDown size={17} /> : <ChevronRight size={17} />}
+              <span className="icon-swap" data-state={isExpanded ? "b" : "a"} aria-hidden="true">
+                <span className="icon-slot" data-slot="a"><ChevronRight size={17} /></span>
+                <span className="icon-slot" data-slot="b"><ChevronDown size={17} /></span>
+              </span>
             </button>
             <button className="icon-button" type="button" title="复制内容" onClick={() => copyContent(generation.id, generation.content)}>
-              {copiedId === generation.id ? <MbCheck size={17} /> : <MbCopy size={17} />}
+              <span className="icon-swap" data-state={copiedId === generation.id ? "b" : "a"} aria-hidden="true">
+                <span className="icon-slot" data-slot="a"><MbCopy size={17} /></span>
+                <span className="icon-slot" data-slot="b"><MbCheck size={17} /></span>
+              </span>
             </button>
           </div>
         </div>
@@ -949,12 +980,23 @@ export default function MistakeBookPage() {
         description={todayGroup ? `今天已记录 ${todayGroup.attemptCount} 次错误，先处理未掌握词，再生成例句或故事巩固。` : "按日期复盘错词，快速重练，并把当天错词生成例句或英文小故事。"}
         action={
           <div className="mb-header-actions">
+            <button type="button" className="secondary-button compact-button" onClick={handleSyncMistakeBook}>
+              {mistakeBookUnit ? "同步错词书" : "生成错词书"}
+            </button>
             <Link to="/settings" className="mb-icon-button" aria-label="打开设置">
               <MbTune size={18} />
             </Link>
           </div>
         }
       />
+
+      {bookSyncMessage && (
+        <p className="mb-sync-notice" role="status">
+          {bookSyncMessage}
+          <Link to="/units">去书架看看</Link>
+          <button type="button" onClick={() => setBookSyncMessage("")} aria-label="关闭提示">×</button>
+        </p>
+      )}
 
       {todayGroup && (
         <section className="mb-focus" aria-label="今日错词焦点">
@@ -1119,11 +1161,12 @@ export default function MistakeBookPage() {
                     </div>
                     <label className="mistake-story-select">
                       <span>场景</span>
-                      <select value={storyScene} onChange={(event) => setStoryScene(event.target.value as StoryScene)}>
-                        {storySceneOptions.map((option) => (
-                          <option key={option.value} value={option.value}>{option.label}</option>
-                        ))}
-                      </select>
+                      <AppSelect
+                        ariaLabel="故事场景"
+                        options={storySceneOptions}
+                        value={storyScene}
+                        onChange={(value) => setStoryScene(value as StoryScene)}
+                      />
                     </label>
                     <div className="mistake-story-control-group">
                       <span>篇幅</span>
@@ -1143,11 +1186,12 @@ export default function MistakeBookPage() {
                     </div>
                     <label className="mistake-story-select">
                       <span>语气</span>
-                      <select value={storyTone} onChange={(event) => setStoryTone(event.target.value as StoryTone)}>
-                        {storyToneOptions.map((option) => (
-                          <option key={option.value} value={option.value}>{option.label}</option>
-                        ))}
-                      </select>
+                      <AppSelect
+                        ariaLabel="故事语气"
+                        options={storyToneOptions}
+                        value={storyTone}
+                        onChange={(value) => setStoryTone(value as StoryTone)}
+                      />
                     </label>
                     <label className="mistake-story-toggle">
                       <input
@@ -1205,6 +1249,10 @@ export default function MistakeBookPage() {
                 const diffRows = renderDiffRows(diffTokens);
                 const isDiffExpanded = expandedDiffIds.includes(entry.card.id);
                 const isExpanded = expandedWordIds.includes(entry.card.id);
+                // P1-1：毕业标记仅当 graduatedAt 不早于最近一次错误时有效（再次出错自动失效）。
+                const isGraduated = Boolean(
+                  entry.card.mistakeGraduatedAt && entry.card.mistakeGraduatedAt >= entry.latestWrongAt
+                );
 
                 return (
                   <article className={`mb-word${isExpanded ? " expanded" : ""}`} key={entry.card.id}>
@@ -1218,7 +1266,10 @@ export default function MistakeBookPage() {
                         {entry.card.front.charAt(0).toUpperCase()}
                       </span>
                       <span className="mb-word-main">
-                        <span className="mb-word-title">{entry.card.front}</span>
+                        <span className="mb-word-title">
+                          {entry.card.front}
+                          {isGraduated && <em className="mb-word-graduated">已毕业</em>}
+                        </span>
                         <span className="mb-word-desc">
                           {[
                             entry.card.back || entry.details?.chineseDefinition || "暂无释义",

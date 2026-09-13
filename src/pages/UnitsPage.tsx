@@ -1,19 +1,31 @@
 import { type CSSProperties, type DragEvent, FormEvent, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, CalendarDays, CheckCircle2, FileText, FileUp, Flame, Keyboard, Plus, Search, Settings2, Target, Trash2, Upload, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowLeft, ArrowRight, AlertTriangle, CalendarDays, CheckCircle2, FileText, FileUp, Flame, Keyboard, Plus, RotateCcw, Search, Settings2, Target, Trash2, Upload, X, Zap } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppData } from "../AppContext";
+import AppSelect from "../components/AppSelect";
 import EmptyState from "../components/EmptyState";
+import ConfirmDialog from "../components/ConfirmDialog";
+import { Segmented } from "../components/Segmented";
 import PageHeader from "../components/PageHeader";
 import {
+  applyWordExclusions,
   bookTitleFromFile,
+  bookWordExclusionKey,
   buildImportChapters,
   detectBookFileFormat,
   parseBookFileContent,
+  parseXlsxFileContent,
   readBookFileText,
-  type ParsedBookChapter
+  splitOversizedChapters,
+  type ParsedBookChapter,
+  type SkippedBookLine
 } from "../services/bookImportService";
 import { addWordsBatchWithAudio, getWordDetails, hydrateWordInput, WordInput } from "../services/cardService";
 import { getWeakCardInsights } from "../services/reviewService";
+import { buildDailyDirective, getDeadUnits } from "../services/dailyDirectiveService";
+import { builtinUnitIdFor, installBuiltinBook } from "../services/builtinBookService";
+import { BUILTIN_BOOK_PACKS, type BuiltinBookPack } from "../data/builtinBooks";
+import { dayKey } from "../services/statsService";
 import {
   assignCardIdsToUnit,
   createUnitGroup,
@@ -23,11 +35,16 @@ import {
   getUnitStats,
   getVocabularyGoalStats,
   moveUnitToGroup,
+  removeUnitFromGroup,
+  restoreUnitFromSnapshot,
+  snapshotUnitForDelete,
+  type UnitDeleteSnapshot,
   removeCardFromUnit,
   updateUnitGroup,
   updateUnit
 } from "../services/unitService";
 import { nowIso, uid } from "../services/storage";
+import { appendVocabEvent } from "../services/vocabTelemetry";
 
 const unitColors = ["#f06423", "#177e78", "#465366", "#d96a2f", "#0f766e", "#7a8493", "#3157d5", "#14845f", "#7c3aed", "#dc2626"];
 const unitCoverEndMap: Record<string, string> = {
@@ -45,6 +62,17 @@ const unitCoverEndMap: Record<string, string> = {
 const chapterLimitOptions = [15, 30, 50, 100, 200] as const;
 const unitDragMimeType = "application/x-unit-id";
 
+/** P0-1 导入成功引导卡状态：出现后 10 秒自动收起为横幅。 */
+interface ImportGuideState {
+  bookTitle: string;
+  fileName: string;
+  firstUnitId: string;
+  unitCount: number;
+  wordCount: number;
+  audioCount: number;
+  expanded: boolean;
+}
+
 type ChapterLimit = (typeof chapterLimitOptions)[number] | "custom";
 
 interface CustomChapter {
@@ -61,7 +89,8 @@ const createCustomChapter = (index: number): CustomChapter => ({
   content: ""
 });
 
-const createDefaultCustomChapters = () => Array.from({ length: 3 }, (_, index) => createCustomChapter(index));
+// P2-6 新建减负：默认空章 3→1，不够再加，降低新建心理成本。
+const createDefaultCustomChapters = () => Array.from({ length: 1 }, (_, index) => createCustomChapter(index));
 
 const parseCustomWords = (content: string) => {
   const seen = new Set<string>();
@@ -91,6 +120,7 @@ const getUnitCoverEnd = (color: string) => unitCoverEndMap[color.toLowerCase()] 
 
 export default function UnitsPage() {
   const { data, updateData, updateDataAsync } = useAppData();
+  const navigate = useNavigate();
   const [selectedUnitId, setSelectedUnitId] = useState("");
   const [isGroupFormOpen, setIsGroupFormOpen] = useState(false);
   const [assignQuery, setAssignQuery] = useState("");
@@ -98,6 +128,7 @@ export default function UnitsPage() {
   const [isUnitModalOpen, setIsUnitModalOpen] = useState(false);
   const [isCustomBookOpen, setIsCustomBookOpen] = useState(false);
   const [activeWordTab, setActiveWordTab] = useState<"current" | "assign">("current");
+  const [isWeakListOpen, setIsWeakListOpen] = useState(false);
   const [assignMode, setAssignMode] = useState<"search" | "bulk">("search");
   const [bulkImportText, setBulkImportText] = useState("");
   const [bulkImportMessage, setBulkImportMessage] = useState("");
@@ -115,7 +146,6 @@ export default function UnitsPage() {
   const [hasDraggedUnit, setHasDraggedUnit] = useState(false);
   const [customBookTitle, setCustomBookTitle] = useState("");
   const [customChapterLimit, setCustomChapterLimit] = useState<ChapterLimit>(15);
-  const [shareCustomBook, setShareCustomBook] = useState(false);
   const [isReorderingChapters, setIsReorderingChapters] = useState(false);
   const [customChapters, setCustomChapters] = useState<CustomChapter[]>(() => createDefaultCustomChapters());
   const [isImportBookOpen, setIsImportBookOpen] = useState(false);
@@ -124,14 +154,26 @@ export default function UnitsPage() {
   const [importSplitSize, setImportSplitSize] = useState<number | null>(null);
   const [importFileName, setImportFileName] = useState("");
   const [importChapters, setImportChapters] = useState<ParsedBookChapter[]>([]);
+  const [importSkippedLines, setImportSkippedLines] = useState(0);
+  // P1-3：错误行明细 + 单行剔除（剔除键基于源章节序号，改分章不影响）。
+  const [importSkippedDetails, setImportSkippedDetails] = useState<SkippedBookLine[]>([]);
+  const [importExcludedKeys, setImportExcludedKeys] = useState<ReadonlySet<string>>(new Set());
+  const [isImportWordListOpen, setIsImportWordListOpen] = useState(true);
   const [importWarning, setImportWarning] = useState("");
   const [importError, setImportError] = useState("");
   const [isReadingFile, setIsReadingFile] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [isImportDragOver, setIsImportDragOver] = useState(false);
   const [importResultMessage, setImportResultMessage] = useState("");
+  // P2-3：内置词书装入中状态（防重复点击）。
+  const [importGuide, setImportGuide] = useState<ImportGuideState | null>(null);
+  const [installingPackId, setInstallingPackId] = useState("");
+  // P2-5：ConfirmDialog 替代 window.confirm；词书删除 10s 可撤销（快照还原）。
+  const [confirmState, setConfirmState] = useState<{ kind: "group"; groupId: string } | { kind: "unit" } | null>(null);
+  const [unitDeleteUndo, setUnitDeleteUndo] = useState<{ snapshot: UnitDeleteSnapshot; title: string } | null>(null);
   const importFileInputRef = useRef<HTMLInputElement>(null);
-  const importSplitOptions = [15, 30, 50, 100] as const;
+  // P0-3：分章建议上限 200 词/本，档位从细到粗可选。
+  const importSplitOptions = [25, 50, 100, 200] as const;
 
   const units = useMemo(() => {
     return data.units.slice().sort((a, b) => a.order - b.order);
@@ -168,12 +210,41 @@ export default function UnitsPage() {
   const selectedStats = selectedUnit ? getUnitStats(data, selectedUnit) : undefined;
   const selectedCards = selectedUnit ? getCardsForUnit(data, selectedUnit.id) : [];
   const goalStats = useMemo(() => getVocabularyGoalStats(data), [data]);
-  const selectedWeakCount = useMemo(
-    () => (selectedUnit ? getWeakCardInsights(data, { type: "word", unitId: selectedUnit.id, limit: selectedCards.length }).length : 0),
+  // P0-4 书架每日指令卡：数字 = buildSpellingQueue 实际队列数字（口径在 dailyDirectiveService）。
+  const directive = useMemo(() => buildDailyDirective(data), [data]);
+  // P1-5 死卡唤醒条：与指令卡 wake 同口径（getDeadUnits），按 unitId 索引等待天数。
+  const deadUnitWaitMap = useMemo(() => new Map(getDeadUnits(data).map((entry) => [entry.unit.id, entry.waitedDays])), [data]);
+
+  // P2-5：撤销条 10 秒自动消失（仅隐藏提示，数据已在删除时落盘）。
+  useEffect(() => {
+    if (!unitDeleteUndo) return;
+    const timer = window.setTimeout(() => setUnitDeleteUndo(null), 10000);
+    return () => window.clearTimeout(timer);
+  }, [unitDeleteUndo]);
+
+  const undoUnitDelete = () => {
+    if (!unitDeleteUndo) return;
+    const snapshot = unitDeleteUndo.snapshot;
+    updateData((current) => restoreUnitFromSnapshot(current, snapshot));
+    setUnitDeleteUndo(null);
+  };
+
+  // P1-4 纯复习日临时档：写入/清除当天 dayKey，跨天自动失效。
+  const setReviewOnlyDay = (enabled: boolean) => {
+    updateData((current) => ({
+      ...current,
+      settings: { ...current.settings, reviewOnlyDayKey: enabled ? dayKey(new Date()) : undefined }
+    }));
+  };
+  // P0-5 薄弱词下钻：列表数据与计数同一份口径，下钻面板直接渲染 insights。
+  const selectedWeakInsights = useMemo(
+    () => (selectedUnit ? getWeakCardInsights(data, { type: "word", unitId: selectedUnit.id, limit: selectedCards.length }) : []),
     [data, selectedCards.length, selectedUnit?.id]
   );
+  const selectedWeakCount = selectedWeakInsights.length;
 
-  const availableCards = useMemo(() => {
+  // P2-4：完整匹配池（未截断），用于「还有 N 条未显示」提示；渲染仍只取前 24 条。
+  const availableCardPool = useMemo(() => {
     if (!selectedUnit) return [];
     const normalized = assignQuery.trim().toLowerCase();
     return data.cards
@@ -186,9 +257,20 @@ export default function UnitsPage() {
           card.tags.some((tag) => tag.toLowerCase().includes(normalized))
         );
       })
-      .sort((a, b) => Number(!b.unitId) - Number(!a.unitId) || a.front.localeCompare(b.front))
-      .slice(0, 24);
+      .sort((a, b) => Number(!b.unitId) - Number(!a.unitId) || a.front.localeCompare(b.front));
   }, [assignQuery, data.cards, selectedUnit]);
+  const availableCards = useMemo(() => availableCardPool.slice(0, 24), [availableCardPool]);
+  const availableTruncatedCount = Math.max(0, availableCardPool.length - availableCards.length);
+  // P2-4：未分配词计数驱动常驻「收纳未分配词」入口（不再依赖搜索框留空才发现）。
+  const unassignedWordCount = useMemo(
+    () => (selectedUnit ? data.cards.filter((card) => card.type === "word" && !card.unitId).length : 0),
+    [data.cards, selectedUnit]
+  );
+
+  // P2-1 学习范围锁定：undefined/空数组 = 未锁定（全部词书都在范围内）。
+  const studyScopeIds = data.settings.studyScopeUnitIds;
+  const isStudyScopeLocked = Boolean(studyScopeIds && studyScopeIds.length > 0);
+  const selectedInScope = !selectedUnit || !isStudyScopeLocked || studyScopeIds!.includes(selectedUnit.id);
 
   const bulkDraftLineCount = useMemo(
     () =>
@@ -218,9 +300,13 @@ export default function UnitsPage() {
   const customFilledChapters = customChapterDrafts.filter((chapter) => chapter.words.length > 0);
   const canCreateCustomBook = Boolean(customBookTitle.trim()) && customTotalWords > 0;
 
+  const visibleImportChapters = useMemo(
+    () => applyWordExclusions(importChapters, importExcludedKeys),
+    [importChapters, importExcludedKeys]
+  );
   const importChapterPreview = useMemo(
-    () => buildImportChapters(importChapters, importSplitSize),
-    [importChapters, importSplitSize]
+    () => splitOversizedChapters(buildImportChapters(visibleImportChapters, importSplitSize), 200),
+    [visibleImportChapters, importSplitSize]
   );
   const importTotalWords = importChapterPreview.reduce((sum, chapter) => sum + chapter.words.length, 0);
   const importWordStats = useMemo(() => {
@@ -290,6 +376,15 @@ export default function UnitsPage() {
     };
   }, [isCustomBookOpen, isImportBookOpen, isUnitModalOpen]);
 
+  // P0-1：引导卡展开 10 秒后自动收起为横幅（入口按钮保留，只缩小视觉占比）。
+  useEffect(() => {
+    if (!importGuide?.expanded) return;
+    const timer = window.setTimeout(() => {
+      setImportGuide((current) => (current ? { ...current, expanded: false } : current));
+    }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [importGuide?.expanded, importGuide?.firstUnitId]);
+
   const saveSelectedUnit = (event: FormEvent) => {
     event.preventDefault();
     if (!selectedUnit || !editTitle.trim()) return;
@@ -346,13 +441,16 @@ export default function UnitsPage() {
     });
   };
 
+  // P2-5：window.confirm → ConfirmDialog
   const removeGroup = (groupId: string) => {
-    const group = unitGroupMap.get(groupId);
-    if (!group) return;
-    const ok = window.confirm(`删除分组「${group.title}」？组内词书会移动到未分组。`);
-    if (!ok) return;
+    if (!unitGroupMap.has(groupId)) return;
+    setConfirmState({ kind: "group", groupId });
+  };
+
+  const confirmRemoveGroup = (groupId: string) => {
     updateData((current) => deleteUnitGroup(current, groupId));
     if (editingGroupId === groupId) setEditingGroupId(null);
+    setConfirmState(null);
   };
 
   const applySelectedGroupColor = () => {
@@ -364,9 +462,10 @@ export default function UnitsPage() {
     updateData((current) => moveUnitToGroup(current, unitId, groupId));
   };
 
+  // P2-6：全组词书均可拖拽换组（不再仅限未分组词书）。
   const handleUnitDragStart = (event: DragEvent<HTMLButtonElement>, unitId: string) => {
     const unit = data.units.find((item) => item.id === unitId);
-    if (!unit || !isUnitUngrouped(unit)) {
+    if (!unit) {
       event.preventDefault();
       return;
     }
@@ -392,7 +491,7 @@ export default function UnitsPage() {
   };
 
   const handleGroupDragOver = (event: DragEvent<HTMLElement>, groupId: string) => {
-    if ((!draggingUnitId && !Array.from(event.dataTransfer.types).includes(unitDragMimeType)) || !groupId) return;
+    if (!draggingUnitId && !Array.from(event.dataTransfer.types).includes(unitDragMimeType)) return;
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
     if (dropTargetGroupId !== groupId) {
@@ -409,23 +508,27 @@ export default function UnitsPage() {
   };
 
   const handleGroupDrop = (event: DragEvent<HTMLElement>, groupId: string) => {
-    if (!groupId) return;
     event.preventDefault();
     const unitId = draggingUnitId || event.dataTransfer.getData(unitDragMimeType) || event.dataTransfer.getData("text/plain");
     setDropTargetGroupId(null);
     setDraggingUnitId(null);
     if (!unitId) return;
-    moveUnitIntoGroup(unitId, groupId);
+    // groupId 为空 = 拖到「未分组」区 → 移出分组
+    if (groupId) moveUnitIntoGroup(unitId, groupId);
+    else updateData((current) => removeUnitFromGroup(current, unitId));
   };
 
   const openUnitModal = (unitId: string) => {
     setSelectedUnitId(unitId);
     setIsUnitModalOpen(true);
+    // P0-1 遥测：词书详情打开（选词/浏览漏斗中段）。
+    appendVocabEvent({ kind: "unit_detail_open", unitId, ts: nowIso() });
   };
 
   const closeUnitModal = () => {
     setIsUnitModalOpen(false);
     setIsEditing(false);
+    setIsWeakListOpen(false);
     setActiveWordTab("current");
     setAssignMode("search");
     setAssignQuery("");
@@ -446,13 +549,34 @@ export default function UnitsPage() {
   const resetCustomBookDraft = () => {
     setCustomBookTitle("");
     setCustomChapterLimit(15);
-    setShareCustomBook(false);
     setIsReorderingChapters(false);
     setCustomChapters(createDefaultCustomChapters());
   };
 
   const openImportBookModal = () => {
     setIsImportBookOpen(true);
+  };
+
+  // P2-3：一键装入内置精选词书（服务层幂等，装过自动跳过）。
+  const installBuiltinPack = async (pack: BuiltinBookPack) => {
+    if (installingPackId) return;
+    setInstallingPackId(pack.id);
+    try {
+      const result = await updateDataAsync((current) => installBuiltinBook(current, pack, current.settings.speechLang));
+      if (result.installed) {
+        appendVocabEvent({
+          kind: "unit_created",
+          unitId: builtinUnitIdFor(pack.id),
+          source: "builtin",
+          bookTitle: pack.title,
+          batchSize: 1,
+          wordCount: result.wordCount,
+          ts: nowIso()
+        });
+      }
+    } finally {
+      setInstallingPackId("");
+    }
   };
 
   const closeImportBookModal = () => {
@@ -465,8 +589,20 @@ export default function UnitsPage() {
     setImportSplitSize(null);
     setImportFileName("");
     setImportChapters([]);
+    setImportSkippedLines(0);
+    setImportSkippedDetails([]);
+    setImportExcludedKeys(new Set());
     setImportWarning("");
     setImportError("");
+  };
+
+  // P1-3 单行剔除：加入剔除键即可，预览/统计/提交全部经 visibleImportChapters 联动。
+  const excludeImportWord = (chapterIndex: number, word: string) => {
+    setImportExcludedKeys((current) => {
+      const next = new Set(current);
+      next.add(bookWordExclusionKey(chapterIndex, word));
+      return next;
+    });
   };
 
   const handleImportFile = async (file: File) => {
@@ -476,9 +612,14 @@ export default function UnitsPage() {
       return;
     }
     setIsReadingFile(true);
+    // P0-1 遥测：导入漏斗起点。
+    appendVocabEvent({ kind: "import_started", fileName: file.name, format: detectBookFileFormat(file.name), ts: nowIso() });
     try {
-      const text = await readBookFileText(file);
-      const parsed = parseBookFileContent(text, detectBookFileFormat(file.name));
+      const format = detectBookFileFormat(file.name);
+      const parsed =
+        format === "xlsx"
+          ? parseXlsxFileContent(await file.arrayBuffer())
+          : parseBookFileContent(await readBookFileText(file), format);
       const totalWords = parsed.chapters.reduce((sum, chapter) => sum + chapter.words.length, 0);
       if (totalWords === 0) {
         setImportFileName("");
@@ -489,9 +630,22 @@ export default function UnitsPage() {
       }
       setImportFileName(file.name);
       setImportChapters(parsed.chapters);
+      setImportSkippedLines(parsed.skippedLines);
+      setImportSkippedDetails(parsed.skippedLineDetails);
+      setImportExcludedKeys(new Set());
+      setIsImportWordListOpen(true);
       setImportWarning(parsed.warning ?? "");
       setImportBookTitle(bookTitleFromFile(file.name));
       setImportSplitSize(null);
+      // P0-1 遥测：导入漏斗中段（解析成功、预览可见）。
+      appendVocabEvent({
+        kind: "import_previewed",
+        fileName: file.name,
+        chapters: parsed.chapters.length,
+        words: totalWords,
+        failRows: parsed.skippedLines,
+        ts: nowIso()
+      });
     } catch (error) {
       setImportError(error instanceof Error ? error.message : "文件读取失败。");
     } finally {
@@ -506,6 +660,8 @@ export default function UnitsPage() {
     const bookTitle = importBookTitle.trim();
     const chaptersToCreate = importChapterPreview;
     const groupChoice = importGroupId;
+    const sourceFileName = importFileName;
+    const createdUnitIds: string[] = [];
 
     setIsImporting(true);
     const result = await updateDataAsync((current) => {
@@ -523,6 +679,7 @@ export default function UnitsPage() {
       const wordInputs: WordInput[] = [];
       chaptersToCreate.forEach((chapter, index) => {
         const unitId = uid("unit");
+        createdUnitIds.push(unitId);
         const timestamp = nowIso();
         const chapterTitle = chapter.title.trim() || `list${index + 1}`;
         const unitTitle = chaptersToCreate.length === 1 ? bookTitle : `${bookTitle} · ${chapterTitle}`;
@@ -559,10 +716,38 @@ export default function UnitsPage() {
     setIsImporting(false);
     closeImportBookModal();
     resetImportDraft();
-    const audioDetail = result.audioAttached ? `，附加真实发音 ${result.audioAttached} 个` : "";
-    setImportResultMessage(
-      `已从「${importFileName}」导入 ${chaptersToCreate.length} 本词书：新增 ${result.created} 词，合并 ${result.merged} 词${audioDetail}。`
-    );
+    // P0-1 遥测：导入漏斗终点 + 建书事件（每本一条）。
+    const importedWords = result.created + result.merged;
+    appendVocabEvent({
+      kind: "import_confirmed",
+      fileName: sourceFileName,
+      chapters: chaptersToCreate.length,
+      words: importedWords,
+      failRows: importSkippedLines,
+      ts: nowIso()
+    });
+    chaptersToCreate.forEach((chapter, index) => {
+      appendVocabEvent({
+        kind: "unit_created",
+        unitId: createdUnitIds[index] ?? "",
+        source: "file_import",
+        bookTitle,
+        batchSize: chaptersToCreate.length,
+        wordCount: chapter.words.length,
+        ts: nowIso()
+      });
+    });
+    // P0-1：导入成功 → 开学引导卡（首本书一键开始拼写），替代一次性横幅。
+    setImportResultMessage("");
+    setImportGuide({
+      bookTitle,
+      fileName: sourceFileName,
+      firstUnitId: createdUnitIds[0] ?? "",
+      unitCount: chaptersToCreate.length,
+      wordCount: importedWords,
+      audioCount: result.audioAttached ?? 0,
+      expanded: true
+    });
   };
 
   const updateCustomChapter = (chapterId: string, patch: Partial<Pick<CustomChapter, "title" | "content">>) => {
@@ -600,14 +785,16 @@ export default function UnitsPage() {
     const bookTitle = customBookTitle.trim();
     const chaptersToCreate = customFilledChapters;
     const limitLabel = customChapterLimit === "custom" ? "自定义章容量" : `每章 ${customChapterLimit} 词`;
+    const createdUnitIds: string[] = [];
 
-    await updateDataAsync((current) => {
+    const result = await updateDataAsync((current) => {
       let next = current;
       let maxOrder = current.units.reduce((max, unit) => Math.max(max, unit.order), 0);
       const wordInputs: WordInput[] = [];
 
       chaptersToCreate.forEach((chapter, index) => {
         const unitId = uid("unit");
+        createdUnitIds.push(unitId);
         const timestamp = nowIso();
         const chapterTitle = chapter.title.trim() || `list${index + 1}`;
         const unitTitle = chaptersToCreate.length === 1 ? bookTitle : `${bookTitle} · ${chapterTitle}`;
@@ -638,19 +825,69 @@ export default function UnitsPage() {
 
     closeCustomBookModal();
     resetCustomBookDraft();
+    // P0-1 遥测：自定义词书建书事件（每本一条）。
+    chaptersToCreate.forEach((chapter, index) => {
+      appendVocabEvent({
+        kind: "unit_created",
+        unitId: createdUnitIds[index] ?? "",
+        source: "custom_book",
+        bookTitle,
+        batchSize: chaptersToCreate.length,
+        wordCount: chapter.words.length,
+        ts: nowIso()
+      });
+    });
+    // P0-1：自定义词书（批量粘贴）同样给开学引导卡。
+    setImportResultMessage("");
+    setImportGuide({
+      bookTitle,
+      fileName: "",
+      firstUnitId: createdUnitIds[0] ?? "",
+      unitCount: chaptersToCreate.length,
+      wordCount: result.created + result.merged,
+      audioCount: result.audioAttached ?? 0,
+      expanded: true
+    });
   };
 
   const removeSelectedUnit = () => {
     if (!selectedUnit) return;
-    const ok = window.confirm(`删除「${selectedUnit.title}」？单词会保留，并变成未分配。`);
-    if (!ok) return;
+    setConfirmState({ kind: "unit" });
+  };
+
+  // P2-5：先快照再删除，10 秒内可完整撤销（词书 + 卡片归属）。
+  const confirmRemoveSelectedUnit = () => {
+    if (!selectedUnit) return;
+    const snapshot = snapshotUnitForDelete(data, selectedUnit.id);
+    const title = selectedUnit.title;
     updateData((current) => deleteUnit(current, selectedUnit.id));
     closeUnitModal();
+    setConfirmState(null);
+    if (snapshot) setUnitDeleteUndo({ snapshot, title });
   };
 
   const assignToSelected = (cardId: string) => {
     if (!selectedUnit) return;
     updateData((current) => assignCardIdsToUnit(current, [cardId], selectedUnit.id));
+  };
+
+  // P2-1：切换「纳入学习范围」。未锁定时取消勾选 = 锁定其余全部词书；
+  // 全部勾选或全部取消都回落为未锁定（studyScopeUnitIds: undefined）。
+  const toggleStudyScope = () => {
+    if (!selectedUnit) return;
+    const allIds = data.units.map((unit) => unit.id);
+    const current = isStudyScopeLocked ? new Set(studyScopeIds) : new Set(allIds);
+    if (current.has(selectedUnit.id)) {
+      current.delete(selectedUnit.id);
+    } else {
+      current.add(selectedUnit.id);
+    }
+    const next =
+      current.size === 0 || current.size === allIds.length ? undefined : allIds.filter((id) => current.has(id));
+    updateData((prev) => ({
+      ...prev,
+      settings: { ...prev.settings, studyScopeUnitIds: next }
+    }));
   };
 
   const importWordsToSelected = () => {
@@ -688,13 +925,138 @@ export default function UnitsPage() {
     updateData((current) => removeCardFromUnit(current, cardId));
   };
 
+  // P0-4 指令卡文案：按指令类型给出唯一学习对象与量化任务。
+  // directiveKind 提取为局部 const：DailyDirective 非判别联合，属性收窄不生效，事件 payload 需要收窄后的字面量类型。
+  const directiveKind = directive.kind;
+  const directiveCopy = (() => {
+    const taskDetail = `新词 ${directive.newCount} + 复习 ${directive.reviewCount} · 约 ${directive.minutes} 分钟`;
+    switch (directiveKind) {
+      case "backlog":
+        return {
+          label: "今日指令 · 先清积压",
+          title: directive.unitTitle ? `先清《${directive.unitTitle}》的积压` : "先清未分配词的积压",
+          detail: `全库 ${directive.backlogCount} 张到期词等了超过 2 天（最早 ${directive.backlogOldestDays} 天）· 本轮复习 ${directive.reviewCount} 张${directive.newCount > 0 ? ` + 新词 ${directive.newCount}` : ""} · 约 ${directive.minutes} 分钟`
+        };
+      case "wake":
+        return {
+          label: "今日指令 · 唤醒词书",
+          title: `《${directive.unitTitle}》等了 ${directive.waitedDays} 天`,
+          detail: `今天从它开始 · ${taskDetail}`
+        };
+      case "speedrun":
+        return {
+          label: "今日指令 · 3 天速通本",
+          title: `速通《${directive.unitTitle}》`,
+          detail: taskDetail
+        };
+      case "normal":
+        return {
+          label: "今日指令",
+          title: `今天学《${directive.unitTitle}》`,
+          detail: taskDetail
+        };
+      case "celebrate":
+        return {
+          label: "今日指令",
+          title: "今日任务已清空",
+          detail: "所有词书今天的队列都完成了。可以预习新内容，或去今日页看看其他任务。"
+        };
+      default:
+        return {
+          label: "今日指令",
+          title: "从第一本词书开始",
+          detail: "导入或自建一本词书，这里会每天告诉你：学哪本、学多少、多久。"
+        };
+    }
+  })();
+
   return (
     <div className="page units-page">
       <PageHeader
-        eyebrow="Units"
-        title="单元"
-        description="把单词按单元组织起来，再按单元进入拼写或复习。"
+        eyebrow="Word Books"
+        title="词书"
+        description="把单词按词书组织起来，再按词书进入拼写或复习。"
       />
+
+      <section className={`daily-directive is-${directive.kind}`} aria-label="今日学习指令">
+        <div className="daily-directive-main">
+          <span className="eyebrow">{directiveCopy.label}</span>
+          <h2>{directiveCopy.title}</h2>
+          <p>{directiveCopy.detail}</p>
+        </div>
+        <div className="daily-directive-side">
+          <div className="daily-directive-meta">
+            <span>
+              <CalendarDays size={13} />
+              本周学习日 {directive.weekLearnDays}/7
+            </span>
+            <span>
+              <Flame size={13} />
+              连续 {directive.streak} 天
+            </span>
+          </div>
+          {directiveKind === "empty" ? (
+            <div className="daily-directive-actions">
+              <button className="primary-button" type="button" onClick={openCustomBookModal}>自建词书</button>
+              <button className="secondary-button" type="button" onClick={openImportBookModal}>导入词书文件</button>
+              <div className="builtin-pack-row" role="group" aria-label="内置精选词书">
+                <span className="builtin-pack-label">或一键装入：</span>
+                {BUILTIN_BOOK_PACKS.map((pack) => (
+                  <button
+                    key={pack.id}
+                    className="builtin-pack-chip"
+                    type="button"
+                    disabled={Boolean(installingPackId)}
+                    title={pack.description}
+                    onClick={() => void installBuiltinPack(pack)}
+                  >
+                    {installingPackId === pack.id ? "装入中…" : pack.title}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : directiveKind === "celebrate" ? (
+            <Link className="primary-button" to="/today">去今日页看看</Link>
+          ) : (
+            <div className="daily-directive-actions">
+              <Link
+                className="primary-button"
+                to={directive.unitId ? `/spelling?unit=${directive.unitId}&from=units` : "/spelling?from=units"}
+                onClick={() =>
+                  appendVocabEvent({
+                    kind: "daily_directive_started",
+                    directiveKind,
+                    unitId: directive.unitId,
+                    cardsPlanned: directive.totalCards,
+                    ts: nowIso()
+                  })
+                }
+              >
+                开始今日学习
+              </Link>
+              {directive.reviewOnly ? (
+                <span className="review-only-chip">
+                  纯复习日 · 今天不安排新词
+                  <button type="button" onClick={() => setReviewOnlyDay(false)}>恢复</button>
+                </span>
+              ) : (
+                directiveKind === "backlog" && (
+                  <button className="secondary-button compact-button" type="button" onClick={() => setReviewOnlyDay(true)}>
+                    切换纯复习日
+                  </button>
+                )
+              )}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {unitDeleteUndo && (
+        <div className="unit-undo-bar" role="status">
+          <span>已删除「{unitDeleteUndo.title}」，单词已变为未分配。</span>
+          <button type="button" onClick={undoUnitDelete}>撤销</button>
+        </div>
+      )}
 
       <section className="vocab-goal-panel" aria-label="单词书目标">
         <div className="vocab-goal-main">
@@ -735,7 +1097,7 @@ export default function UnitsPage() {
 
       <section className="unit-library">
         {units.length === 0 && (
-          <EmptyState title="还没有单元" description="可以新建一个单元，或者刷新后使用内置核心100单元。" />
+          <EmptyState title="还没有词书" description="用上方按钮自建词书、导入文件，或一键装入内置精选词书，马上开始第一本。" />
         )}
 
         <div className="unit-group-toolbar">
@@ -790,16 +1152,16 @@ export default function UnitsPage() {
         {groupedUnitSections.map((section) => {
           const isUngrouped = !section.id;
           const isEditingGroup = Boolean(section.id && editingGroupId === section.id);
-          const isDropTarget = Boolean(section.id && draggingUnitId && dropTargetGroupId === section.id);
-          const canReceiveDrop = Boolean(section.id && draggingUnitId);
+          const isDropTarget = Boolean(draggingUnitId && dropTargetGroupId === section.id);
+          const canReceiveDrop = Boolean(draggingUnitId);
           return (
             <section
               className={`unit-group-section ${isUngrouped ? "unit-group-section-ungrouped" : ""} ${canReceiveDrop ? "is-droppable" : ""} ${isDropTarget ? "is-drop-target" : ""}`}
               key={section.id || "ungrouped"}
               style={{ "--group-color": section.color } as CSSProperties}
-              onDragOver={section.id ? (event) => handleGroupDragOver(event, section.id) : undefined}
-              onDragLeave={section.id ? (event) => handleGroupDragLeave(event, section.id) : undefined}
-              onDrop={section.id ? (event) => handleGroupDrop(event, section.id) : undefined}
+              onDragOver={(event) => handleGroupDragOver(event, section.id)}
+              onDragLeave={(event) => handleGroupDragLeave(event, section.id)}
+              onDrop={(event) => handleGroupDrop(event, section.id)}
             >
               {isEditingGroup ? (
                 <form className="unit-group-edit" onSubmit={saveGroupEdit}>
@@ -850,15 +1212,14 @@ export default function UnitsPage() {
                 <p className="unit-group-empty">这个分组还没有词书。可以在词书管理里把词书移动进来。</p>
               ) : (
                 <div className="unit-book-grid">
-                  {section.units.map((unit, index) => {
+                  {section.units.map((unit) => {
                     const stats = getUnitStats(data, unit);
                     const progress = stats.completionPercent;
                     const visibleProgress = stats.total === 0 ? 0 : Math.max(6, progress);
-                    const volume = String(unit.order || index + 1).padStart(2, "0");
                     const group = unit.groupId ? unitGroupMap.get(unit.groupId) : undefined;
                     const coverStart = unit.color || group?.color || section.color;
                     const coverEnd = getUnitCoverEnd(coverStart);
-                    const isDraggable = isUnitUngrouped(unit);
+                    const isDraggable = true; // P2-6：全组词书支持拖拽换组
                     return (
                       <button
                         type="button"
@@ -876,10 +1237,49 @@ export default function UnitsPage() {
                         } as CSSProperties}
                       >
                         <span className="unit-book-spine" aria-hidden="true" />
-                        <span className="unit-book-volume">Vol. {volume}</span>
+                        {unit.speedRun && (
+                          <span className="unit-book-badge" title="速通本：词量小、3 天可过一遍 · 第 1 天集中学新词，第 2-3 天滚动复习收尾">
+                            <Zap size={11} aria-hidden="true" />
+                            3天速通
+                          </span>
+                        )}
+                        {unit.dynamicKind === "mistakes" && (
+                          <span className="unit-book-badge is-dynamic" title="动态错词书：错词自动聚成，连续 2 天答对自动毕业移出">
+                            <Flame size={11} aria-hidden="true" />
+                            错词书
+                          </span>
+                        )}
                         <strong>{unit.title}</strong>
-                        <span className="unit-book-date">{formatUnitCoverDate(unit.createdAt)}</span>
-                        <span className="unit-book-number" aria-hidden="true">{volume}</span>
+                        {stats.due > 0 ? (
+                          <span className="unit-book-due" title="今天到期要复习的词数，与详情弹窗口径一致">
+                            今日到期 {stats.due}
+                          </span>
+                        ) : deadUnitWaitMap.has(unit.id) ? (
+                          // P1-5 死卡唤醒条：封面 button 内嵌 role=link，阻止冒泡避免触发弹窗
+                          <span
+                            className="unit-book-wake"
+                            role="link"
+                            tabIndex={0}
+                            title={`《${unit.title}》建书后一直没开始，点击直接开学`}
+                            aria-label={`《${unit.title}》等了 ${deadUnitWaitMap.get(unit.id)} 天，点击开始学习`}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              navigate(`/spelling?unit=${unit.id}&from=units`);
+                            }}
+                            onKeyDown={(event) => {
+                              if (event.key === "Enter" || event.key === " ") {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                navigate(`/spelling?unit=${unit.id}&from=units`);
+                              }
+                            }}
+                          >
+                            <Flame size={11} aria-hidden="true" />
+                            等了 {deadUnitWaitMap.get(unit.id)} 天 · 去开学
+                          </span>
+                        ) : (
+                          <span className="unit-book-date">{formatUnitCoverDate(unit.createdAt)}</span>
+                        )}
                         <div className="unit-book-progress">
                           <i style={{ width: `${visibleProgress}%` }} />
                         </div>
@@ -893,7 +1293,41 @@ export default function UnitsPage() {
           );
         })}
 
-        {importResultMessage && (
+        {importGuide && (
+          <div className={`unit-import-guide ${importGuide.expanded ? "" : "is-collapsed"}`} role="status">
+            <CheckCircle2 size={18} />
+            <div className="unit-import-guide-body">
+              <strong>
+                导入成功！《{importGuide.bookTitle}》共 {importGuide.unitCount} 本词书 · {importGuide.wordCount} 词
+              </strong>
+              <span>
+                {importGuide.expanded
+                  ? "从第一本开始，一次点击就能开学。"
+                  : "随时可以从「开始拼写本书」进入学习。"}
+                {importGuide.audioCount > 0 ? ` 已附加真实发音 ${importGuide.audioCount} 个。` : ""}
+              </span>
+            </div>
+            {importGuide.firstUnitId && (
+              <Link
+                to={`/spelling?unit=${importGuide.firstUnitId}&from=units`}
+                className="primary-button compact-button unit-import-guide-start"
+              >
+                <Keyboard size={14} />
+                开始拼写本书
+              </Link>
+            )}
+            <button
+              type="button"
+              className="unit-import-banner-close"
+              title="关闭提示"
+              onClick={() => setImportGuide(null)}
+            >
+              <X size={14} />
+            </button>
+          </div>
+        )}
+
+        {!importGuide && importResultMessage && (
           <div className="unit-import-banner" role="status">
             <CheckCircle2 size={16} />
             <span>{importResultMessage}</span>
@@ -955,7 +1389,7 @@ export default function UnitsPage() {
             <div className="unit-book-progress">
               <i />
             </div>
-            <em>txt / csv 文件</em>
+            <em>txt / csv / xlsx 文件</em>
           </button>
         </div>
       </section>
@@ -974,23 +1408,10 @@ export default function UnitsPage() {
                   id="custom-book-title"
                   value={customBookTitle}
                   onChange={(event) => setCustomBookTitle(event.target.value)}
-                  maxLength={9}
-                  placeholder="最多输入 9 个字"
+                  maxLength={20}
+                  placeholder="最多输入 20 个字"
                   autoFocus
                 />
-              </label>
-
-              <label className="custom-book-share">
-                <span>分享到社区</span>
-                <button
-                  className={`toggle-switch ${shareCustomBook ? "selected" : ""}`}
-                  type="button"
-                  role="switch"
-                  aria-checked={shareCustomBook}
-                  onClick={() => setShareCustomBook((current) => !current)}
-                >
-                  <i />
-                </button>
               </label>
 
               <div className="custom-book-limit">
@@ -1108,13 +1529,16 @@ export default function UnitsPage() {
 
               <label className="custom-book-share import-book-group">
                 <span>所属分组</span>
-                <select value={importGroupId} onChange={(event) => setImportGroupId(event.target.value)}>
-                  <option value="">未分组</option>
-                  <option value="__new__">新建分组（书名）</option>
-                  {unitGroups.map((group) => (
-                    <option key={group.id} value={group.id}>{group.title}</option>
-                  ))}
-                </select>
+                <AppSelect
+                  ariaLabel="所属分组"
+                  options={[
+                    { value: "", label: "未分组" },
+                    { value: "__new__", label: "新建分组（书名）" },
+                    ...unitGroups.map((group) => ({ value: group.id, label: group.title }))
+                  ]}
+                  value={importGroupId}
+                  onChange={setImportGroupId}
+                />
               </label>
 
               <div className="custom-book-limit">
@@ -1148,6 +1572,16 @@ export default function UnitsPage() {
                   <span>
                     {importChapterPreview.length} 本词书 · {importTotalWords} 词 · 新增 {importWordStats.newCount} / 合并 {importWordStats.existing}
                   </span>
+                  {importExcludedKeys.size > 0 && (
+                    <button
+                      className="text-action import-excluded-chip"
+                      type="button"
+                      title="点击还原全部被剔除的词"
+                      onClick={() => setImportExcludedKeys(new Set())}
+                    >
+                      已剔除 {importExcludedKeys.size} 词 · 还原
+                    </button>
+                  )}
                   <button className="text-action" type="button" onClick={() => importFileInputRef.current?.click()}>
                     重新选择
                   </button>
@@ -1156,7 +1590,7 @@ export default function UnitsPage() {
                   </button>
                 </>
               ) : (
-                <span>选择 txt / csv 文件，一行一个单词；用「# 章节名」或章节列划分多本词书。</span>
+                <span>选择 txt / csv / xlsx 文件，一行一个单词；用「# 章节名」、章节列或多个 sheet 划分多本词书。</span>
               )}
             </div>
 
@@ -1188,14 +1622,37 @@ export default function UnitsPage() {
                 >
                   <FileUp size={32} />
                   <strong>点击选择或拖入文件</strong>
-                  <p>支持 .txt / .csv / .tsv（UTF-8 或 GBK 编码），单次最多导入 5000 词</p>
+                  <p>支持 .txt / .csv / .tsv / .xlsx / .xls（文本文件 UTF-8 或 GBK 编码），单次最多导入 5000 词</p>
                   <p>TXT：一行一个单词，支持「单词 释义」「单词,释义」「单词[TAB]释义」「单词 /音标/ 词性. 释义」</p>
-                  <p>CSV：列头支持 word/单词、translation/释义、phonetic/音标、pos/词性、chapter/章节</p>
+                  <p>CSV / XLSX：列头支持 word/单词、translation/释义、phonetic/音标、pos/词性、chapter/章节；XLSX 无章节列时按 sheet 分章</p>
                   {isReadingFile && <p className="import-book-status">正在读取文件…</p>}
                   {!isReadingFile && importError && <p className="import-book-status is-error">{importError}</p>}
                 </div>
               ) : (
                 <>
+                  {importSkippedDetails.length > 0 && (
+                    <section className="import-skip-panel" aria-label="无法识别的行">
+                      <div className="import-skip-head">
+                        <AlertTriangle size={14} aria-hidden="true" />
+                        <strong>{importSkippedLines} 行无法识别，已自动跳过</strong>
+                        {importSkippedLines > importSkippedDetails.length && (
+                          <span>（仅展示前 {importSkippedDetails.length} 行）</span>
+                        )}
+                      </div>
+                      <ul className="import-skip-list">
+                        {importSkippedDetails.slice(0, 20).map((item) => (
+                          <li key={`${item.lineNumber}-${item.raw}`}>
+                            <span className="import-skip-line">第 {item.lineNumber} 行</span>
+                            <span className="import-skip-raw">{item.raw}</span>
+                            <span className="import-skip-reason">{item.reason}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      {importSkippedDetails.length > 20 && (
+                        <p className="import-skip-more">还有 {importSkippedDetails.length - 20} 行未显示，均不影响合法行导入。</p>
+                      )}
+                    </section>
+                  )}
                   <div className="custom-chapter-grid import-chapter-grid">
                     {importChapterPreview.map((chapter, index) => (
                       <section className="custom-chapter-card import-chapter-card" key={`${chapter.title}-${index}`}>
@@ -1209,6 +1666,42 @@ export default function UnitsPage() {
                         </p>
                       </section>
                     ))}
+                  </div>
+                  <div className="import-wordlist">
+                    <button
+                      className="import-wordlist-toggle"
+                      type="button"
+                      aria-expanded={isImportWordListOpen}
+                      onClick={() => setIsImportWordListOpen((current) => !current)}
+                    >
+                      全部单词（{importTotalWords}）
+                      <span>{isImportWordListOpen ? "收起" : "展开，可逐个剔除"}</span>
+                    </button>
+                    {isImportWordListOpen &&
+                      visibleImportChapters.map((chapter, chapterIndex) =>
+                        chapter.words.length === 0 ? null : (
+                          <section className="import-wordlist-chapter" key={`wordlist-${chapterIndex}`}>
+                            <h4>{chapter.title.trim() || `list${chapterIndex + 1}`} · {chapter.words.length} 词</h4>
+                            <ul className="import-word-rows">
+                              {chapter.words.map((word) => (
+                                <li key={`${chapterIndex}-${word.word}`}>
+                                  <span className="import-word-front">{word.word}</span>
+                                  <span className="import-word-back">{word.translation || "（无释义）"}</span>
+                                  <button
+                                    className="icon-button import-word-remove"
+                                    type="button"
+                                    title="剔除该词"
+                                    aria-label={`剔除 ${word.word}`}
+                                    onClick={() => excludeImportWord(chapterIndex, word.word)}
+                                  >
+                                    <X size={14} />
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          </section>
+                        )
+                      )}
                   </div>
                   {importWarning && <p className="import-book-status">{importWarning}</p>}
                 </>
@@ -1225,7 +1718,7 @@ export default function UnitsPage() {
             <input
               ref={importFileInputRef}
               type="file"
-              accept=".txt,.csv,.tsv,text/plain,text/csv"
+              accept=".txt,.csv,.tsv,.xlsx,.xls,text/plain,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
               hidden
               onChange={(event) => {
                 const file = event.target.files?.[0];
@@ -1254,7 +1747,7 @@ export default function UnitsPage() {
               <div>
                 <span className="eyebrow">Unit Words</span>
                 <h2 id="unit-modal-title">{selectedUnit.title}</h2>
-                <p>{selectedUnit.description || "自定义单元"}</p>
+                <p>{selectedUnit.description || "自定义词书"}</p>
               </div>
               <div className="unit-modal-head-side">
                 <div
@@ -1274,7 +1767,7 @@ export default function UnitsPage() {
               </div>
             </header>
 
-            <div className="unit-modal-progress" aria-label="单元学习数据">
+            <div className="unit-modal-progress" aria-label="词书学习数据">
               <div
                 className="unit-progress-track"
                 role="progressbar"
@@ -1307,22 +1800,100 @@ export default function UnitsPage() {
                 </div>
               </div>
               <p className="unit-substats">
-                正确率 {selectedStats.accuracy || 0}%
+                <button
+                  className="unit-substats-drilldown"
+                  type="button"
+                  onClick={() => setIsWeakListOpen((current) => !current)}
+                  aria-expanded={isWeakListOpen}
+                  title="点击查看薄弱词列表"
+                >
+                  正确率 {selectedStats.accuracy || 0}%
+                </button>
                 {selectedStats.reviewed > 0 && <> · 已测 {selectedStats.reviewed} 次</>}
                 {selectedStats.estimatedDays > 0 && <> · 预计 {selectedStats.estimatedDays} 天完成</>}
-                {selectedWeakCount > 0 && <> · 薄弱词 {selectedWeakCount}</>}
+                {selectedUnit.speedRun && (
+                  <span title="速通本 3 天安排">
+                    {" · "}
+                    速通安排：第 1 天学新词，第 2-3 天滚动复习
+                  </span>
+                )}
+                {selectedWeakCount > 0 && (
+                  <>
+                    {" · "}
+                    <button
+                      className="unit-substats-drilldown"
+                      type="button"
+                      onClick={() => setIsWeakListOpen((current) => !current)}
+                      aria-expanded={isWeakListOpen}
+                      title="点击查看薄弱词列表"
+                    >
+                      薄弱词 {selectedWeakCount}
+                    </button>
+                  </>
+                )}
+              </p>
+            </div>
+
+            {isWeakListOpen && (
+              <section className="unit-weak-panel" aria-label="薄弱词列表">
+                <div className="unit-weak-head">
+                  <span className="eyebrow">Weak Words</span>
+                  <h3>薄弱词 {selectedWeakCount} 个</h3>
+                </div>
+                {selectedWeakCount === 0 ? (
+                  <p className="unit-weak-empty">这本书暂时没有薄弱词，继续保持。</p>
+                ) : (
+                  <>
+                    <ul className="unit-weak-list">
+                      {selectedWeakInsights.slice(0, 20).map((insight) => (
+                        <li key={insight.card.id}>
+                          <span className="unit-weak-word">{insight.card.front}</span>
+                          <span className="unit-weak-meaning">{insight.card.back}</span>
+                          <span className="unit-weak-count">错 {insight.wrongCount} 次</span>
+                        </li>
+                      ))}
+                    </ul>
+                    {selectedWeakCount > 20 && <p className="unit-weak-more">还有 {selectedWeakCount - 20} 个未显示，错题拼写会全部覆盖。</p>}
+                    <div className="unit-weak-actions">
+                      <Link
+                        to={`/spelling?unit=${selectedUnit.id}&mode=mistakes&from=units`}
+                        className="primary-button"
+                        onClick={closeUnitModal}
+                      >
+                        <Flame size={16} />
+                        一键错题拼写
+                      </Link>
+                    </div>
+                  </>
+                )}
+              </section>
+            )}
+
+            <div className="unit-scope-row">
+              <label className="unit-scope-toggle">
+                <input type="checkbox" checked={selectedInScope} onChange={toggleStudyScope} />
+                <span>纳入学习范围</span>
+              </label>
+              <p className="unit-scope-hint">
+                {isStudyScopeLocked
+                  ? "已锁定范围：今日指令与智能拼写只出勾选词书的词（从词书直接进入学习不受限）。"
+                  : "当前全部词书都在学习范围内；取消勾选可锁定只学部分词书。"}
               </p>
             </div>
 
             <div className="unit-modal-actions">
               <div className="unit-learning-actions">
-                <Link to={`/spelling?unit=${selectedUnit.id}`} className="primary-button" onClick={closeUnitModal}>
+                <Link to={`/spelling?unit=${selectedUnit.id}&from=units`} className="primary-button" onClick={closeUnitModal}>
                   <Keyboard size={17} />
                   开始拼写
                 </Link>
-                <Link to={`/spelling?unit=${selectedUnit.id}&mode=mistakes`} className="secondary-button" onClick={closeUnitModal}>
+                <Link to={`/spelling?unit=${selectedUnit.id}&mode=mistakes&from=units`} className="secondary-button" onClick={closeUnitModal}>
                   <Flame size={17} />
                   错词专项
+                </Link>
+                <Link to={`/spelling?unit=${selectedUnit.id}&scope=all&from=units`} className="secondary-button" onClick={closeUnitModal} title="整本过一遍，包含已掌握的词">
+                  <RotateCcw size={17} />
+                  全量复刷
                 </Link>
                 <Link to={`/words?unit=${selectedUnit.id}`} className="secondary-button" onClick={closeUnitModal}>
                   查看单词
@@ -1358,20 +1929,19 @@ export default function UnitsPage() {
                   </label>
                   <label>
                     所属分组
-                    <select
+                    <AppSelect
+                      ariaLabel="所属分组"
+                      options={[
+                        { value: "", label: "未分组" },
+                        ...unitGroups.map((group) => ({ value: group.id, label: group.title }))
+                      ]}
                       value={editGroupId}
-                      onChange={(event) => {
-                        const nextGroupId = event.target.value;
+                      onChange={(nextGroupId) => {
                         setEditGroupId(nextGroupId);
                         const nextGroup = unitGroupMap.get(nextGroupId);
                         if (nextGroup) setEditColor(nextGroup.color);
                       }}
-                    >
-                      <option value="">未分组</option>
-                      {unitGroups.map((group) => (
-                        <option key={group.id} value={group.id}>{group.title}</option>
-                      ))}
-                    </select>
+                    />
                   </label>
                 </div>
                 <div className="unit-edit-footer">
@@ -1411,30 +1981,21 @@ export default function UnitsPage() {
             <div className="unit-tabs-header unit-modal-tabs">
               <div>
                 <span className="eyebrow">Words</span>
-                <h2>{activeWordTab === "current" ? "本单元单词" : "添加/导入单词"}</h2>
+                <h2>{activeWordTab === "current" ? "本词书单词" : "添加/导入单词"}</h2>
               </div>
-              <div className="segmented-tabs">
-                <button
-                  type="button"
-                  className={activeWordTab === "current" ? "selected" : ""}
-                  onClick={() => {
-                    setIsEditing(false);
-                    setActiveWordTab("current");
-                  }}
-                >
-                  本单元 {selectedCards.length}
-                </button>
-                <button
-                  type="button"
-                  className={activeWordTab === "assign" ? "selected" : ""}
-                  onClick={() => {
-                    setIsEditing(false);
-                    setActiveWordTab("assign");
-                  }}
-                >
-                  加入单词
-                </button>
-              </div>
+              <Segmented
+                variant="tabs"
+                ariaLabel="单词视图切换"
+                value={activeWordTab}
+                onChange={(key) => {
+                  setIsEditing(false);
+                  setActiveWordTab(key as "current" | "assign");
+                }}
+                items={[
+                  { key: "current", label: <>本词书 {selectedCards.length}</> },
+                  { key: "assign", label: "加入单词" },
+                ]}
+              />
             </div>
 
             <div className="unit-modal-body">
@@ -1461,7 +2022,7 @@ export default function UnitsPage() {
                             <span>{details?.phonetic}</span>
                             <p>{card.back}</p>
                           </div>
-                          <button className="icon-button word-remove" type="button" title="移出单元" onClick={() => removeFromSelected(card.id)}>
+                          <button className="icon-button word-remove" type="button" title="移出词书" onClick={() => removeFromSelected(card.id)}>
                             <X size={16} />
                           </button>
                         </article>
@@ -1472,24 +2033,15 @@ export default function UnitsPage() {
               ) : (
                 <div className="unit-assign-view">
                   <div className="unit-import-toolbar">
-                    <div className="segmented-control" aria-label="添加单词方式">
-                      <button
-                        type="button"
-                        className={assignMode === "search" ? "selected" : ""}
-                        onClick={() => setAssignMode("search")}
-                      >
-                        <Search size={15} />
-                        搜索加入
-                      </button>
-                      <button
-                        type="button"
-                        className={assignMode === "bulk" ? "selected" : ""}
-                        onClick={() => setAssignMode("bulk")}
-                      >
-                        <Upload size={15} />
-                        批量导入
-                      </button>
-                    </div>
+                    <Segmented
+                      ariaLabel="添加单词方式"
+                      value={assignMode}
+                      onChange={(key) => setAssignMode(key as "search" | "bulk")}
+                      items={[
+                        { key: "search", label: <><Search size={15} />搜索加入</> },
+                        { key: "bulk", label: <><Upload size={15} />批量导入</> },
+                      ]}
+                    />
                     {bulkImportMessage && <span className="unit-import-message">{bulkImportMessage}</span>}
                   </div>
 
@@ -1503,6 +2055,18 @@ export default function UnitsPage() {
                           placeholder="搜索单词；空白时显示未分配词"
                         />
                       </div>
+
+                      {unassignedWordCount > 0 && (
+                        <button
+                          className="assign-filter-chip"
+                          type="button"
+                          aria-pressed={!assignQuery.trim()}
+                          title="点击列出所有还没放进任何词书的单词"
+                          onClick={() => setAssignQuery("")}
+                        >
+                          收纳未分配词（{unassignedWordCount}）
+                        </button>
+                      )}
 
                       {availableCards.length === 0 ? (
                         <p className="muted">没有可加入的单词。可以切到「批量导入」，一行一个直接添加到「{selectedUnit.title}」。</p>
@@ -1524,6 +2088,11 @@ export default function UnitsPage() {
                             );
                           })}
                         </div>
+                      )}
+                      {availableTruncatedCount > 0 && (
+                        <p className="muted assign-truncated-hint">
+                          还有 {availableTruncatedCount} 条未显示，输入关键词可缩小范围。
+                        </p>
                       )}
                     </>
                   ) : (
@@ -1572,6 +2141,25 @@ export default function UnitsPage() {
           </section>
         </div>
       )}
+
+      <ConfirmDialog
+        open={confirmState?.kind === "group"}
+        title="删除分组"
+        message={`删除分组「${confirmState?.kind === "group" ? (unitGroupMap.get(confirmState.groupId)?.title ?? "") : ""}」？组内词书会移动到未分组。`}
+        confirmLabel="删除分组"
+        onConfirm={() => {
+          if (confirmState?.kind === "group") confirmRemoveGroup(confirmState.groupId);
+        }}
+        onCancel={() => setConfirmState(null)}
+      />
+      <ConfirmDialog
+        open={confirmState?.kind === "unit"}
+        title="删除词书"
+        message={`删除「${selectedUnit?.title ?? ""}」？单词会保留，并变成未分配。删除后 10 秒内可撤销。`}
+        confirmLabel="删除词书"
+        onConfirm={confirmRemoveSelectedUnit}
+        onCancel={() => setConfirmState(null)}
+      />
     </div>
   );
 }

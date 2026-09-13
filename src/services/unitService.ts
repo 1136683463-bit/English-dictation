@@ -1,4 +1,5 @@
 import { AppData, Card, Unit, UnitGroup } from "../types";
+import { estimateDaysToMaster } from "./completionEstimate";
 import { nowIso, uid } from "./storage";
 
 export const getCardsForUnit = (data: AppData, unitId: string) =>
@@ -29,7 +30,8 @@ export const getUnitStats = (data: AppData, unit: Unit) => {
   const completionPercent = total === 0 ? 0 : Math.round((mastered / total) * 100);
   const remaining = Math.max(0, total - mastered);
   const dailyNewWords = Math.max(1, data.settings.dailyNewWords || 10);
-  const estimatedDays = remaining === 0 ? 0 : Math.ceil(remaining / dailyNewWords);
+  // 新口径：纳入 SM-2 复习尾巴与每日复习容量（旧口径 remaining/dailyNew 严重低估）。
+  const estimatedDays = estimateDaysToMaster(remaining, dailyNewWords, data.settings.dailyReviewLimit);
 
   return {
     total,
@@ -68,7 +70,7 @@ export const getVocabularyGoalStats = (data: AppData) => {
     mastered,
     dueToday,
     completionPercent,
-    estimatedDays: remaining === 0 ? 0 : Math.ceil(remaining / dailyNewWords)
+    estimatedDays: estimateDaysToMaster(remaining, dailyNewWords, data.settings.dailyReviewLimit)
   };
 };
 
@@ -117,6 +119,20 @@ export const moveUnitToGroup = (data: AppData, unitId: string, groupId: string):
     ...data,
     units: data.units.map((unit) =>
       unit.id === unitId ? { ...unit, groupId: group.id, color: group.color, updatedAt: timestamp } : unit
+    )
+  };
+};
+
+/** P2-6：把词书移出分组回到「未分组」（保留当前颜色，已是未分组时原样返回）。 */
+export const removeUnitFromGroup = (data: AppData, unitId: string): AppData => {
+  const target = data.units.find((unit) => unit.id === unitId);
+  if (!target || !target.groupId) return data;
+  const timestamp = nowIso();
+
+  return {
+    ...data,
+    units: data.units.map((unit) =>
+      unit.id === unitId ? { ...unit, groupId: undefined, updatedAt: timestamp } : unit
     )
   };
 };
@@ -176,6 +192,39 @@ export const deleteUnit = (data: AppData, unitId: string): AppData => ({
   units: data.units.filter((unit) => unit.id !== unitId),
   cards: data.cards.map((card) => (card.unitId === unitId ? { ...card, unitId: undefined, updatedAt: nowIso() } : card))
 });
+
+/** P2-5 删除撤销：词书删除前的快照（词书本体 + 指向它的卡 id 列表）。 */
+export interface UnitDeleteSnapshot {
+  unit: Unit;
+  cardIds: string[];
+}
+
+export const snapshotUnitForDelete = (data: AppData, unitId: string): UnitDeleteSnapshot | null => {
+  const unit = data.units.find((item) => item.id === unitId);
+  if (!unit) return null;
+  return {
+    unit,
+    cardIds: data.cards.filter((card) => card.unitId === unitId).map((card) => card.id)
+  };
+};
+
+/**
+ * P2-5 删除撤销：按快照还原词书与卡片归属。
+ * 词书 id 已存在时不重复添加；撤销窗口内已被挪到别处的卡不强行拽回。
+ */
+export const restoreUnitFromSnapshot = (data: AppData, snapshot: UnitDeleteSnapshot): AppData => {
+  const units = data.units.some((unit) => unit.id === snapshot.unit.id)
+    ? data.units
+    : [...data.units, snapshot.unit].sort((a, b) => a.order - b.order);
+  const cardIdSet = new Set(snapshot.cardIds);
+  return {
+    ...data,
+    units,
+    cards: data.cards.map((card) =>
+      cardIdSet.has(card.id) && !card.unitId ? { ...card, unitId: snapshot.unit.id, updatedAt: nowIso() } : card
+    )
+  };
+};
 
 export const assignCardsToUnit = (data: AppData, cards: Card[], unitId: string): AppData => {
   const ids = new Set(cards.map((card) => card.id));

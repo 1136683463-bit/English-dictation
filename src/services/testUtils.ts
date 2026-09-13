@@ -1,34 +1,7 @@
 import type { AppData, Card, MistakeGeneration, Review, Schedule, Settings, Unit, UnitGroup } from "../types";
-import { APP_SCHEMA_VERSION } from "./storage";
+import { APP_SCHEMA_VERSION, defaultSettings } from "./storage";
 
 export const TEST_NOW = "2024-01-15T12:00:00.000Z";
-
-const defaultSettings: Settings = {
-  dailyNewWords: 10,
-  dailyReviewLimit: 30,
-  dailySentences: 5,
-  strictPunctuation: false,
-  speechVoice: "",
-  speechLang: "en-US",
-  speechRate: 0.9,
-  autoSpeakInSpelling: true,
-  lastExportedAt: "",
-  diaryDailyCount: 3,
-  aiProvider: {
-    enabled: false,
-    baseUrl: "",
-    apiKey: "",
-    model: "",
-    temperature: 0.7,
-    timeoutMs: 120000,
-    fallbackToLocal: true
-  },
-  dataSync: {
-    enabled: false,
-    baseUrl: "",
-    token: ""
-  }
-};
 
 type TestDataPatch = Omit<Partial<AppData>, "settings"> & {
   settings?: Partial<Settings>;
@@ -53,6 +26,9 @@ export const makeTestData = (patch: TestDataPatch = {}): AppData => ({
   schedules: [],
   dictionaryEntries: [],
   seededWordVersions: ["core-100-v1"],
+  languageGates: [],
+  gateAttempts: [],
+  runeStates: [],
   ...patch,
   settings: {
     ...defaultSettings,

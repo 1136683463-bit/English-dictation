@@ -10,6 +10,11 @@ export interface SpeakOptions {
   fallbackToSystem?: boolean;
   /** Skip the word-only dictionary fallback when speaking a full sentence. */
   fallbackToDictionary?: boolean;
+  /**
+   * 只走系统语音引擎，跳过所有在线音源。设置页「试听」验证的是
+   * 口音/语速/声音选择本身，经在线 TTS 会让预览延迟取决于网络而非语音设置。
+   */
+  systemOnly?: boolean;
   lifecycle?: SpeechLifecycleHandlers;
 }
 
@@ -58,6 +63,20 @@ let currentWebAudioLifecycle: SpeechLifecycleHandlers | undefined;
 
 export const isSpeechSupported = () =>
   typeof window !== "undefined" && "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
+
+export const DEFAULT_SPEECH_PREVIEW_TEXT = "This is your English pronunciation preview.";
+
+/**
+ * R11：试听文本对齐真实听写场景——从当前词库句段随机挑一句
+ *（含英文、8-140 字符）；词库为空时回退默认句。纯函数，可单测。
+ */
+export const pickSpeechPreviewText = (segmentTexts: string[]): { text: string; fromLibrary: boolean } => {
+  const pool = segmentTexts
+    .map((text) => text.trim())
+    .filter((text) => /[A-Za-z]/.test(text) && text.length >= 8 && text.length <= 140);
+  if (pool.length === 0) return { text: DEFAULT_SPEECH_PREVIEW_TEXT, fromLibrary: false };
+  return { text: pool[Math.floor(Math.random() * pool.length)], fromLibrary: true };
+};
 
 export const getSpeechVoices = () => {
   if (!isSpeechSupported()) return [];
@@ -535,6 +554,27 @@ export const preloadSpeechAudio = async (text: string, options: SpeakOptions = {
   return preloadAudioUrl(fallbackPronunciationAudioUrl);
 };
 
+const speakWithSystemVoice = (text: string, options: SpeakOptions, lifecycle?: SpeechLifecycleHandlers): boolean => {
+  if (!isSpeechSupported()) {
+    lifecycle?.onError?.();
+    return false;
+  }
+  const utterance = new SpeechSynthesisUtterance(text);
+  lifecycle?.onSystemFallback?.();
+  utterance.lang = options.lang ?? "en-US";
+  utterance.rate = options.rate ?? 0.9;
+  const voice = chooseVoice(options);
+  if (voice) {
+    utterance.voice = voice;
+  }
+
+  utterance.onstart = lifecycle?.onStart ?? null;
+  utterance.onend = lifecycle?.onEnd ?? null;
+  utterance.onerror = lifecycle?.onError ?? null;
+  window.speechSynthesis.speak(utterance);
+  return true;
+};
+
 export const speakText = async (text: string, options: SpeakOptions = {}) => {
   const trimmed = text.trim();
   if (!trimmed && !options.audioUrl) return false;
@@ -543,6 +583,11 @@ export const speakText = async (text: string, options: SpeakOptions = {}) => {
   lifecycle?.onLoading?.();
   stopSpeaking();
   unlockWebAudio();
+
+  // systemOnly：跳过全部在线音源，直接用系统语音引擎（设置页试听场景）。
+  if (options.systemOnly) {
+    return speakWithSystemVoice(trimmed, options, lifecycle);
+  }
 
   const shouldDeferProvidedAudio = isLegacyDictionaryApiAudioUrl(options.audioUrl);
 
@@ -583,25 +628,12 @@ export const speakText = async (text: string, options: SpeakOptions = {}) => {
     }
   }
 
-  if (options.fallbackToSystem === false || !isSpeechSupported()) {
+  if (options.fallbackToSystem === false) {
     lifecycle?.onError?.();
     return false;
   }
 
-  const utterance = new SpeechSynthesisUtterance(trimmed);
-  lifecycle?.onSystemFallback?.();
-  utterance.lang = options.lang ?? "en-US";
-  utterance.rate = options.rate ?? 0.9;
-  const voice = chooseVoice(options);
-  if (voice) {
-    utterance.voice = voice;
-  }
-
-  utterance.onstart = lifecycle?.onStart ?? null;
-  utterance.onend = lifecycle?.onEnd ?? null;
-  utterance.onerror = lifecycle?.onError ?? null;
-  window.speechSynthesis.speak(utterance);
-  return true;
+  return speakWithSystemVoice(trimmed, options, lifecycle);
 };
 
 export const speakTextWithLifecycle = (

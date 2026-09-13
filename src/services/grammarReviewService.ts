@@ -1,4 +1,5 @@
-import type { AppData, Card, Schedule } from "../types";
+import type { AppData, Card, Schedule, SentenceDetails } from "../types";
+import { compareText, diffScore } from "./diffService";
 import { normalizeLessonSentence } from "./lessonService";
 
 /**
@@ -11,6 +12,22 @@ import { normalizeLessonSentence } from "./lessonService";
 
 export const GRAMMAR_REVIEW_SESSION_LIMIT = 10;
 export const GRAMMAR_REVIEW_TIME_BUDGET_MS = 5 * 60 * 1000;
+
+/** R09 Step2 feature flag：语法卡第 3 次出现转自由输出（free_type）。默认开；
+ *  出问题时在 console 执行 localStorage.setItem("grammar-review-free-type","off") 即可回滚到 cloze/rebuild 两形态。 */
+const FREE_TYPE_FLAG_KEY = "grammar-review-free-type";
+
+export const isFreeTypeReviewEnabled = (): boolean => {
+  try {
+    if (typeof window === "undefined" || !window.localStorage) return true;
+    return window.localStorage.getItem(FREE_TYPE_FLAG_KEY) !== "off";
+  } catch {
+    return true;
+  }
+};
+
+/** R09 Step2：reviewCount≥2 的语法卡第 3 次（含）以后出现转自由输出——「输出才算会用」。 */
+export const FREE_TYPE_MIN_REVIEW_COUNT = 2;
 
 const isGrammarSentenceCard = (card: Card): boolean =>
   card.type === "sentence" && card.status !== "suspended" && card.tags.includes("语法");
@@ -66,14 +83,51 @@ export const buildGrammarReviewSession = (
   limit = GRAMMAR_REVIEW_SESSION_LIMIT
 ): GrammarReviewCard[] => interleaveBySource(listDueGrammarReviewCards(data)).slice(0, Math.max(1, limit));
 
+// ── R06 累计掌握视图 ─────────────────────────────────────────
+
+export interface GrammarMasterySummary {
+  /** 已掌握（card.status === "mastered"）。 */
+  mastered: number;
+  /** 进行中（在复习队列里，尚未 mastered）。 */
+  inProgress: number;
+  /** 未开始（新卡，还没复习过）。 */
+  notStarted: number;
+  /** 语法句子卡总数（含 suspended 之外的全部）。 */
+  total: number;
+}
+
+/**
+ * R06 累计掌握视图：把复习页从「本次会话视角」升级为「成长曲线视角」。
+ * 口径：已掌握 = mastered；未开始 = 从未复习（schedule.reviewCount === 0）；其余为进行中。
+ */
+export const summarizeGrammarMastery = (data: AppData): GrammarMasterySummary => {
+  const scheduleByCardId = new Map(data.schedules.map((schedule) => [schedule.cardId, schedule]));
+  let mastered = 0;
+  let inProgress = 0;
+  let notStarted = 0;
+  let total = 0;
+  for (const card of data.cards) {
+    if (card.type !== "sentence" || card.status === "suspended" || !card.tags.includes("语法")) continue;
+    total += 1;
+    if (card.status === "mastered") {
+      mastered += 1;
+      continue;
+    }
+    const reviewCount = scheduleByCardId.get(card.id)?.reviewCount ?? 0;
+    if (reviewCount === 0) notStarted += 1;
+    else inProgress += 1;
+  }
+  return { mastered, inProgress, notStarted, total };
+};
+
 // ── 任务生成 ───────────────────────────────────────────────
 
-export type GrammarReviewMode = "cloze" | "rebuild";
+export type GrammarReviewMode = "cloze" | "rebuild" | "free_type";
 
 export interface GrammarReviewTask {
   card: Card;
   mode: GrammarReviewMode;
-  /** cloze：挖空后的句子（空位为 ____）；rebuild：给操作提示。 */
+  /** cloze：挖空后的句子（空位为 ____）；rebuild：给操作提示；free_type：中文意图/提示。 */
   promptText: string;
   /** cloze 的正确答案词。 */
   answer: string;
@@ -150,12 +204,42 @@ const buildClozeOptions = (answer: string, tokens: string[]): string[] => {
 };
 
 /** 由一张卡生成一道产出型复习题。reviewCount 决定题型轮换与挖空位置（确定性，可回放）。 */
-export const buildGrammarReviewTask = (item: GrammarReviewCard): GrammarReviewTask => {
+export const buildGrammarReviewTask = (
+  item: GrammarReviewCard,
+  sentenceDetailsList: SentenceDetails[] = []
+): GrammarReviewTask => {
   const { card, schedule } = item;
   const sentence = card.front.trim();
   const tokens = sentence.split(/\s+/).filter(Boolean);
-  const note = card.note || "";
-  const mode: GrammarReviewMode = (schedule.reviewCount ?? 0) % 2 === 0 ? "cloze" : "rebuild";
+  // R02：反馈讲解优先取 SentenceDetails.grammarNote（hunt 来源卡的罪名讲解在这里），退回 card.note。
+  const details = sentenceDetailsList.find((item) => item.cardId === card.id);
+  const note = details?.grammarNote || card.note || "";
+  // R09 Step2：flag 开启且复习满 2 次后，第 3 次（含）以后出现转自由输出——复习的终点是「不用提示自己写出来」。
+  const mode: GrammarReviewMode =
+    isFreeTypeReviewEnabled() && (schedule.reviewCount ?? 0) >= FREE_TYPE_MIN_REVIEW_COUNT
+      ? "free_type"
+      : (schedule.reviewCount ?? 0) % 2 === 0
+        ? "cloze"
+        : "rebuild";
+
+  if (mode === "free_type") {
+    // P1-2：free_type 给「来源锚点」——cloze 有挖空句、rebuild 有词块，free_type 至少要让用户知道写哪句。
+    // 优先用 card.note（hunt 卡="找错案件：xxx"、lesson 卡="语法课核心句：xxx"、日记卡="我的英文日记·日期"），
+    // 没有 note 时给词数提示（比光秃秃的空白输入框多一个抓手）。
+    const sourceHint = card.note.trim()
+      ? `${card.note.trim()}——把那句话自己写出来`
+      : `把那句 ${tokens.length} 个词的句子自己写出来`;
+    return {
+      card,
+      mode,
+      promptText: sourceHint,
+      answer: "",
+      options: [],
+      scrambled: [],
+      sentence,
+      note
+    };
+  }
 
   if (mode === "rebuild") {
     const random = mulberry32(hashText(`${card.id}:${schedule.reviewCount}`));
@@ -202,3 +286,24 @@ export const judgeGrammarCloze = (picked: string, answer: string): boolean =>
 /** 重组判分（顺序与内容都对，标点与大小写宽容）。 */
 export const judgeGrammarRebuild = (built: string[], sentence: string): boolean =>
   normalizeLessonSentence(built.join(" ")) === normalizeLessonSentence(sentence);
+
+/** R09 Step2 free_type 判分：diffScore ≥ 90（与课内 output 段同口径，拼写接近算半对，非严格等值）。 */
+export const FREE_TYPE_PASS_SCORE = 90;
+
+export const judgeGrammarFreeType = (input: string, sentence: string): { passed: boolean; score: number } => {
+  const score = diffScore(compareText(sentence, input, false));
+  return { passed: score >= FREE_TYPE_PASS_SCORE, score };
+};
+
+/**
+ * R09 Step2 新掌握口径：自由输出「连续 2 次一次通过」才算掌握。
+ * 判定依据本卡历史 review 事件流（reviews 里 mode="recall" 的记录即 free_type 复习——
+ * reviewModeForTask 把 free_type 映射为 recall），取最近两条 free_type 结果。
+ * 返回 true 表示已达「输出连续 2 次通过」。
+ */
+export const isMasteredByOutput = (reviews: { cardId: string; mode: string; rating: number }[], cardId: string): boolean => {
+  const outputReviews = reviews.filter((review) => review.cardId === cardId && review.mode === "recall");
+  if (outputReviews.length < 2) return false;
+  const lastTwo = outputReviews.slice(-2);
+  return lastTwo.every((review) => review.rating === 4);
+};

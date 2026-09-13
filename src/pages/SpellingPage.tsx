@@ -9,15 +9,16 @@ import { getWordDetails } from "../services/cardService";
 import { compareLetters, normalizeSpelling } from "../services/diffService";
 import {
   applyReviewWithUndo,
-  getDueCards,
-  getMistakeCards,
   markCardsPriority,
   ReviewUndoSnapshot,
   undoReview
 } from "../services/reviewService";
-import { getMistakesByDate } from "../services/mistakeBookService";
+import { buildSpellingQueue, isReviewOnlyDay, SpellingQueueMode, SpellingUnitScope } from "../services/spellingQueueService";
+import { applyMistakeBookGraduation } from "../services/dynamicBookService";
 import { preloadSpeechAudio, speakText } from "../services/speechService";
-import { AppData, Card, LetterDiffToken } from "../types";
+import { nowIso, uid } from "../services/storage";
+import { appendVocabEvent } from "../services/vocabTelemetry";
+import { Card, LetterDiffToken } from "../types";
 
 interface SpellingResult {
   card: Card;
@@ -36,8 +37,6 @@ interface SpellingAttempt {
   index: number;
   appendedCount: number;
 }
-
-type SpellingQueueMode = "standard" | "mistakes";
 
 const CORRECT_AUTO_ADVANCE_MS = 850;
 const WRONG_AUTO_ADVANCE_MS = 120;
@@ -78,38 +77,15 @@ const reinsertWrongCardSoon = (queue: Card[], currentIndex: number, card: Card) 
   return nextQueue;
 };
 
-const buildQueue = (
-  data: AppData,
-  unitId: string | null,
-  queueMode: SpellingQueueMode,
-  limit = 30,
-  mistakeDate?: string | null,
-  cardIds: string[] = []
-) => {
-  const normalizedLimit = Math.max(1, limit);
-  const cardIdSet = new Set(cardIds);
-  const filterRequestedCards = (cards: Card[]) =>
-    cardIds.length === 0 ? cards : cards.filter((card) => cardIdSet.has(card.id));
+// P0-2：队列构建逻辑已抽至 spellingQueueService（纯函数，可单测）。
+const buildQueue = buildSpellingQueue;
 
-  if (queueMode === "mistakes") {
-    if (mistakeDate) {
-      return filterRequestedCards(getMistakesByDate(data, mistakeDate)
-        .filter((entry) => !unitId || entry.card.unitId === unitId)
-        .map((entry) => entry.card))
-        .slice(0, normalizedLimit);
-    }
-    return filterRequestedCards(getMistakeCards(data, { unitId, limit: normalizedLimit })).slice(0, normalizedLimit);
-  }
-  const dataCards = getDueCards(data);
-  const allCards = data.cards;
-  if (unitId) {
-    return allCards
-      .filter((card) => card.type === "word" && card.status !== "suspended" && card.unitId === unitId)
-      .slice(0, normalizedLimit);
-  }
-  const dueWords = dataCards.filter((card) => card.type === "word");
-  if (dueWords.length > 0) return dueWords.slice(0, normalizedLimit);
-  return allCards.filter((card) => card.type === "word" && card.status !== "suspended").slice(0, normalizedLimit);
+// R10：把起练卡置顶，其余相对顺序不变；卡不在队列中则原样返回。
+const prioritizeStartCard = (cards: Card[], startCardId: string | null) => {
+  if (!startCardId) return cards;
+  const startIndex = cards.findIndex((card) => card.id === startCardId);
+  if (startIndex <= 0) return cards;
+  return [cards[startIndex], ...cards.slice(0, startIndex), ...cards.slice(startIndex + 1)];
 };
 
 export default function SpellingPage() {
@@ -119,9 +95,17 @@ export default function SpellingPage() {
   const queueMode: SpellingQueueMode = searchParams.get("mode") === "mistakes" ? "mistakes" : "standard";
   const mistakeDate = searchParams.get("date");
   const cardIds = parseCardIds(searchParams.get("cards"));
+  // R10 错词深链：?cardId= 指定起练卡，队列整体不变、该卡置顶（完整专项会话从点选的词开始）。
+  const startCardId = searchParams.get("cardId");
+  const fromLibrary = searchParams.get("from") === "library";
+  const fromUnits = searchParams.get("from") === "units";
+  // P0-2：scope=all 为「全量复刷」手动入口（含 mastered），默认 smart 过滤。
+  const unitScope: SpellingUnitScope = searchParams.get("scope") === "all" ? "all" : "smart";
   const isTodayPlan = searchParams.get("plan") === "today";
   const planLimit = parsePositiveLimit(searchParams.get("limit"), 30);
-  const queueKey = `${unitId ?? "all"}:${queueMode}:${mistakeDate ?? "any-date"}:${cardIds.join("|") || "any-card"}:${planLimit}:${isTodayPlan ? "today" : "normal"}`;
+  // P1-4 纯复习日临时档：当日队列不安排新词（settings.reviewOnlyDayKey = 今天）。
+  const reviewOnly = isReviewOnlyDay(data.settings);
+  const queueKey = `${unitId ?? "all"}:${queueMode}:${mistakeDate ?? "any-date"}:${cardIds.join("|") || "any-card"}:${planLimit}:${isTodayPlan ? "today" : "normal"}:${startCardId ?? "no-start"}:${unitScope}:${reviewOnly ? "review-only" : "mixed"}`;
   const activeUnit = unitId ? data.units.find((unit) => unit.id === unitId) : undefined;
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -132,7 +116,7 @@ export default function SpellingPage() {
     if (element) element.setAttribute("readonly", "");
   }, []);
   const autoAdvanceTimerRef = useRef<number | null>(null);
-  const [queue, setQueue] = useState<Card[]>(() => buildQueue(data, unitId, queueMode, planLimit, mistakeDate, cardIds));
+  const [queue, setQueue] = useState<Card[]>(() => prioritizeStartCard(buildQueue(data, unitId, queueMode, planLimit, mistakeDate, cardIds, unitScope, reviewOnly), startCardId));
   const [index, setIndex] = useState(0);
   const [answer, setAnswer] = useState("");
   const [feedback, setFeedback] = useState<SpellingResult | null>(null);
@@ -141,6 +125,13 @@ export default function SpellingPage() {
   const [isPreviousDetailOpen, setIsPreviousDetailOpen] = useState(false);
   const [finished, setFinished] = useState(false);
   const [priorityNotice, setPriorityNotice] = useState("");
+  // P0-1 遥测：复习会话跟踪（started/completed 配对算中途退出率）。
+  const sessionIdRef = useRef<string>("");
+  const sessionStartedAtRef = useRef<number>(0);
+  const sessionPlannedRef = useRef<number>(0);
+  const sessionCompletedRef = useRef<boolean>(false);
+  // P0-1 遥测：本会话内已报过首学转化的 unit，避免同 unit 重复打点。
+  const firstLearningReportedRef = useRef<Set<string>>(new Set());
 
   const card = queue[index];
   const details = card ? getWordDetails(data, card.id) : undefined;
@@ -207,20 +198,43 @@ export default function SpellingPage() {
       : queueMode === "mistakes"
       ? `${activeUnit?.title ?? "全部词库"} · 错词专项`
       : `${activeUnit?.title ?? "核心词库"} · 拼写模式`;
-  const emptyTitle = queueMode === "mistakes" && mistakeDate ? "这一天没有可重练的错词" : queueMode === "mistakes" ? "暂时没有可专项训练的错词" : "没有可拼写的单词";
+  const emptyTitle =
+    queueMode === "mistakes" && mistakeDate
+      ? "这一天没有可重练的错词"
+      : queueMode === "mistakes"
+      ? "暂时没有可专项训练的错词"
+      : unitId && unitScope === "smart"
+      ? "本书今天没有要学的内容"
+      : "没有可拼写的单词";
   const emptyDescription =
     queueMode === "mistakes" && mistakeDate
       ? "这一天的错词可能已经被删除、停用，或者日期参数不在错词本记录里。"
       : queueMode === "mistakes"
       ? "拼写或复习中出现错误后，这里会按最近和连续错误自动生成队列。"
+      : unitId && unitScope === "smart"
+      ? "可能是本书已全部掌握，或今日新词配额已用完、没有到期复习。想整本过一遍可以用「全量复刷」。"
       : "先去单词本添加单词，或者导入材料收集生词。";
+  // P0-3 返回路径：按来源回跳——书架 / 词库 / 错词本 / 复习 / 今日计划，默认回今日。
+  // 来源显式化：UnitsPage 的开学入口带 from=units，TodayPage 入口不带 from（回今日，保持原心智）。
+  const backTarget = mistakeDate
+    ? { to: "/mistakes", label: "错词本" }
+    : fromUnits
+    ? { to: "/units", label: "词书架" }
+    : fromLibrary
+    ? { to: "/library", label: "词库" }
+    : queueMode === "mistakes"
+    ? { to: "/review", label: "复习" }
+    : isTodayPlan
+    ? { to: "/stats", label: "计划" }
+    : { to: "/today", label: "今日" };
 
   useEffect(() => {
     if (autoAdvanceTimerRef.current) {
       window.clearTimeout(autoAdvanceTimerRef.current);
       autoAdvanceTimerRef.current = null;
     }
-    setQueue(buildQueue(data, unitId, queueMode, planLimit, mistakeDate, cardIds));
+    const nextQueue = prioritizeStartCard(buildQueue(data, unitId, queueMode, planLimit, mistakeDate, cardIds, unitScope, reviewOnly), startCardId);
+    setQueue(nextQueue);
     setIndex(0);
     setAnswer("");
     setFeedback(null);
@@ -229,6 +243,21 @@ export default function SpellingPage() {
     setIsPreviousDetailOpen(false);
     setFinished(false);
     setPriorityNotice("");
+    // P0-1 遥测：新会话（队列非空才开始计数，空队列不构成学习意图）。
+    if (nextQueue.length > 0) {
+      sessionIdRef.current = uid("vsession");
+      sessionStartedAtRef.current = Date.now();
+      sessionPlannedRef.current = nextQueue.length;
+      sessionCompletedRef.current = false;
+      appendVocabEvent({
+        kind: "review_session_started",
+        sessionId: sessionIdRef.current,
+        mode: queueMode,
+        unitId,
+        cardsPlanned: nextQueue.length,
+        ts: nowIso()
+      });
+    }
   }, [queueKey]);
 
   useEffect(() => {
@@ -327,6 +356,21 @@ export default function SpellingPage() {
 
       if (index >= nextQueueLength - 1) {
         setFinished(true);
+        // P0-1 遥测：会话完成（与 started 配对，缺配对的 started 即中途退出）。
+        if (sessionIdRef.current && !sessionCompletedRef.current) {
+          sessionCompletedRef.current = true;
+          appendVocabEvent({
+            kind: "review_session_completed",
+            sessionId: sessionIdRef.current,
+            mode: queueMode,
+            unitId,
+            cardsPlanned: sessionPlannedRef.current,
+            cardsDone: attempts.length + 1,
+            abandoned: false,
+            durationMs: Date.now() - sessionStartedAtRef.current,
+            ts: nowIso()
+          });
+        }
       } else {
         setIndex((current) => Math.min(current + 1, nextQueueLength - 1));
       }
@@ -346,6 +390,26 @@ export default function SpellingPage() {
     const nextQueue = isCorrect ? queue : reinsertWrongCardSoon(queue, index, card);
     const nextQueueLength = nextQueue.length;
     const latestCard = data.cards.find((item) => item.id === card.id) ?? card;
+
+    // P0-1 遥测：首学转化——该 unit 任何卡片的历史首次学习（G1 验收口径 lagHours ≤72）。
+    if (latestCard.unitId && !firstLearningReportedRef.current.has(latestCard.unitId)) {
+      const unit = data.units.find((item) => item.id === latestCard.unitId);
+      if (unit) {
+        const unitCardIds = new Set(data.cards.filter((item) => item.unitId === unit.id).map((item) => item.id));
+        const hasPriorLearning = data.reviews.some((review) => unitCardIds.has(review.cardId));
+        firstLearningReportedRef.current.add(latestCard.unitId);
+        if (!hasPriorLearning) {
+          const lagMs = Date.now() - new Date(unit.createdAt).getTime();
+          appendVocabEvent({
+            kind: "first_learning_after_create",
+            unitId: unit.id,
+            lagHours: Math.round((lagMs / 3600000) * 10) / 10,
+            ts: nowIso()
+          });
+        }
+      }
+    }
+
     const reviewed = applyReviewWithUndo(
       data,
       latestCard,
@@ -355,8 +419,11 @@ export default function SpellingPage() {
       JSON.stringify(diff)
     );
 
+    // P1-1 动态错词书：连续全对（跨 2 个自然日）即时毕业移出，判定在服务层，这里只接线。
+    const graduation = applyMistakeBookGraduation(reviewed.data, latestCard.id);
+
     setIsPreviousDetailOpen(false);
-    setPriorityNotice("");
+    setPriorityNotice(graduation.graduated ? `「${card.front}」连续答对，已从《我的错词书》毕业 🎓` : "");
     playTone(isCorrect);
     if (isCorrect) {
       setFeedback(result);
@@ -370,7 +437,7 @@ export default function SpellingPage() {
         appendedCount: repeatCount
       }
     ]);
-    setData(reviewed.data);
+    setData(graduation.data);
 
     if (!isCorrect) {
       setQueue(nextQueue);
@@ -458,7 +525,7 @@ export default function SpellingPage() {
     return (
       <div className="spelling-page">
         <div className="spelling-topbar">
-          <Link to={mistakeDate ? "/mistakes" : "/review"} className="icon-button" title={mistakeDate ? "返回错词本" : "返回复习"}>
+          <Link to={backTarget.to} className="icon-button" title={`返回${backTarget.label}`}>
             <ArrowLeft size={17} />
           </Link>
           <strong>{pageTitle}</strong>
@@ -467,6 +534,13 @@ export default function SpellingPage() {
           </Link>
         </div>
         <EmptyState title={emptyTitle} description={emptyDescription} />
+        {unitId && unitScope === "smart" && (
+          <div className="button-row" style={{ justifyContent: "center", marginTop: 12 }}>
+            <Link to={`/spelling?unit=${unitId}&scope=all${fromUnits ? "&from=units" : ""}`} className="secondary-button">
+              全量复刷本书
+            </Link>
+          </div>
+        )}
       </div>
     );
   }
@@ -475,8 +549,8 @@ export default function SpellingPage() {
     return (
       <div className="spelling-page">
         <div className="spelling-topbar">
-          <Link to="/today" className="icon-button" title="返回今日">
-            <Home size={17} />
+          <Link to={backTarget.to} className="icon-button" title={`返回${backTarget.label}`}>
+            <ArrowLeft size={17} />
           </Link>
           <strong>拼写总结</strong>
           <span>{isTodayPlan ? "今日计划" : queueMode === "mistakes" ? "错词专项" : "拼写模式"} · {totalCount} 题</span>
@@ -533,8 +607,13 @@ export default function SpellingPage() {
                 撤销上一题评分
               </button>
             )}
-            <Link to={mistakeDate ? "/mistakes" : isTodayPlan ? "/stats" : queueMode === "mistakes" ? "/review" : "/today"} className="secondary-button">
-              {mistakeDate ? "回到错词本" : isTodayPlan ? "回到计划" : queueMode === "mistakes" ? "回到复习" : "回到今日"}
+            {fromLibrary && (
+              <Link to="/library" className="secondary-button">
+                返回词库
+              </Link>
+            )}
+            <Link to={backTarget.to} className="secondary-button">
+              回到{backTarget.label}
             </Link>
           </div>
           {priorityNotice && <p className="spelling-priority-notice" role="status">{priorityNotice}</p>}
@@ -571,7 +650,7 @@ export default function SpellingPage() {
   return (
     <div className={`spelling-page ${feedback ? (feedback.isCorrect ? "is-correct" : "is-wrong") : ""}`}>
       <div className="spelling-topbar">
-        <Link to={mistakeDate ? "/mistakes" : queueMode === "mistakes" ? "/review" : "/today"} className="icon-button" title={mistakeDate ? "返回错词本" : queueMode === "mistakes" ? "返回复习" : "返回今日"}>
+        <Link to={backTarget.to} className="icon-button" title={`返回${backTarget.label}`}>
           <ArrowLeft size={17} />
         </Link>
           <strong>{pageTitle}</strong>

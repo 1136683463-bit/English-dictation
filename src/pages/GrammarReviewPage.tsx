@@ -4,14 +4,17 @@ import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
-import { appendGrammarEvent, summarizeGrammarTelemetry } from "../services/grammarTelemetry";
+import { appendGrammarEvent, summarizeGrammarTelemetry, type CardMasteredEvent } from "../services/grammarTelemetry";
 import { nowIso } from "../services/storage";
 import {
   buildGrammarReviewSession,
   buildGrammarReviewTask,
   GRAMMAR_REVIEW_SESSION_LIMIT,
+  isMasteredByOutput,
   judgeGrammarCloze,
+  judgeGrammarFreeType,
   judgeGrammarRebuild,
+  summarizeGrammarMastery,
   type GrammarReviewCard,
   type GrammarReviewTask
 } from "../services/grammarReviewService";
@@ -30,6 +33,9 @@ const ratingForOutcome = (attempts: number, revealed: boolean): 1 | 2 | 3 | 4 =>
 export default function GrammarReviewPage() {
   const { data, updateData } = useAppData();
 
+  // R06：累计掌握视图（成长曲线视角）——随复习动作实时刷新
+  const mastery = useMemo(() => summarizeGrammarMastery(data), [data]);
+
   // 会话只在进入页面时组一次：复习过程中 data 变化不会重排队列
   const [session] = useState<GrammarReviewCard[]>(() => buildGrammarReviewSession(data));
   const [index, setIndex] = useState(0);
@@ -39,7 +45,7 @@ export default function GrammarReviewPage() {
 
   const current = session[index];
   const [task, setTask] = useState<GrammarReviewTask | null>(() =>
-    session.length > 0 ? buildGrammarReviewTask(session[0]) : null
+    session.length > 0 ? buildGrammarReviewTask(session[0], data.sentenceDetails) : null
   );
 
   // 作答状态（每张卡重置）
@@ -47,6 +53,9 @@ export default function GrammarReviewPage() {
   const [attempts, setAttempts] = useState(0);
   const [outcome, setOutcome] = useState<"idle" | "pass" | "revealed">("idle");
   const [usedClozeOption, setUsedClozeOption] = useState<string | null>(null);
+  // R09 Step2：free_type 自由输出态
+  const [freeTypeValue, setFreeTypeValue] = useState("");
+  const [freeTypeHint, setFreeTypeHint] = useState<string | null>(null);
 
   const total = session.length;
   const card: Card | undefined = current?.card;
@@ -56,12 +65,44 @@ export default function GrammarReviewPage() {
     setAttempts(0);
     setOutcome("idle");
     setUsedClozeOption(null);
+    setFreeTypeValue("");
+    setFreeTypeHint(null);
   };
 
   const finishCard = (finalAttempts: number, revealed: boolean) => {
     if (!current || !task) return;
     const rating = ratingForOutcome(finalAttempts, revealed);
-    updateData((latest) => applyReview(latest, current.card, reviewModeForTask(task), rating, task.sentence));
+    const wasMastered = current.card.status === "mastered";
+    updateData((latest) => {
+      let next = applyReview(latest, current.card, reviewModeForTask(task), rating, task.sentence);
+      // R09 Step2 新掌握口径：free_type 复习后，检查是否达「输出连续 2 次一次通过」——
+      // 旧的「rating4 且 reviewCount≥4」口径对 cloze/rebuild 仍生效；free_type 卡在连续 2 次输出通过时也置 mastered。
+      if (task.mode === "free_type" && !revealed && isMasteredByOutput(next.reviews, current.card.id)) {
+        const stamp = nowIso();
+        next = {
+          ...next,
+          cards: next.cards.map((item) =>
+            item.id === current.card.id && item.status !== "mastered"
+              ? { ...item, status: "mastered", masteredAt: item.masteredAt ?? stamp, updatedAt: stamp }
+              : item
+          )
+        };
+      }
+      // R06：卡首次跃迁 mastered 时上报 card_mastered——「我学会了」的正向确证（仅跃迁瞬间一次）
+      const nextCard = next.cards.find((item) => item.id === current.card.id);
+      if (!wasMastered && nextCard?.status === "mastered") {
+        const details = next.sentenceDetails.find((item) => item.cardId === current.card.id);
+        const tagMatch = details?.grammarNote.match(/^\[([a-z_]+)(?::[^\]]+)?\]/);
+        appendGrammarEvent({
+          kind: "card_mastered",
+          cardId: current.card.id,
+          sourceId: current.card.sourceId,
+          tag: (tagMatch?.[1] as CardMasteredEvent["tag"]) ?? null,
+          ts: nowIso()
+        });
+      }
+      return next;
+    });
     appendGrammarEvent({
       kind: "grammar_review_result",
       cardId: current.card.id,
@@ -97,6 +138,24 @@ export default function GrammarReviewPage() {
     }
   };
 
+  /** R09 Step2：free_type 提交——通过即 finishCard；未过给差异提示，可再试或看答案。 */
+  const handleFreeTypeSubmit = () => {
+    if (!task || outcome !== "idle" || !freeTypeValue.trim()) return;
+    const nextAttempts = attempts + 1;
+    setAttempts(nextAttempts);
+    const { passed, score } = judgeGrammarFreeType(freeTypeValue, task.sentence);
+    if (passed) {
+      setFreeTypeHint(null);
+      finishCard(nextAttempts, false);
+    } else {
+      setFreeTypeHint(
+        score === 0
+          ? "还没对上——回忆一下卡片来源的那句话，或者点「看答案」。"
+          : `已经对了一部分（${score}%）——再调整一下，或点「看答案」。`
+      );
+    }
+  };
+
   const handleReveal = () => {
     if (!task || outcome !== "idle") return;
     finishCard(attempts, true);
@@ -109,7 +168,7 @@ export default function GrammarReviewPage() {
     }
     const nextIndex = index + 1;
     setIndex(nextIndex);
-    setTask(buildGrammarReviewTask(session[nextIndex]));
+    setTask(buildGrammarReviewTask(session[nextIndex], data.sentenceDetails));
     resetCardState();
     window.scrollTo({ top: 0 });
   };
@@ -134,6 +193,23 @@ export default function GrammarReviewPage() {
           </div>
         }
       />
+
+      {/* R06 累计掌握视图：把「本次 X 张」放进「已掌握 N / 共 Y 句」的成长曲线里 */}
+      {mastery.total > 0 && (
+        <section className="grammar-mastery-bar" aria-label="语法句型掌握进度">
+          <div className="grammar-mastery-track" aria-hidden="true">
+            <i
+              className="grammar-mastery-fill"
+              style={{ width: `${mastery.total ? (mastery.mastered / mastery.total) * 100 : 0}%` }}
+            />
+          </div>
+          <p className="grammar-mastery-text">
+            语法句型 <strong>已掌握 {mastery.mastered}</strong> / 共 {mastery.total} 句
+            {mastery.inProgress > 0 && <span> · 进行中 {mastery.inProgress}</span>}
+            {mastery.notStarted > 0 && <span> · 未开始 {mastery.notStarted}</span>}
+          </p>
+        </section>
+      )}
 
       {finished || total === 0 ? (
         total === 0 ? (
@@ -171,10 +247,44 @@ export default function GrammarReviewPage() {
             <div className="lesson-quiz-card">
               <div className="lesson-quiz-head">
                 <span className="lesson-quiz-step">第 {index + 1} / {total} 张</span>
-                <span className="lesson-quiz-note">{task.mode === "cloze" ? "选词补全句子" : "把句子拼回去"}</span>
+                <span className="lesson-quiz-note">
+                  {task.mode === "cloze" ? "选词补全句子" : task.mode === "rebuild" ? "把句子拼回去" : "自己把句子写出来"}
+                </span>
               </div>
 
-              {task.mode === "cloze" ? (
+              {task.mode === "free_type" ? (
+                <>
+                  <p className="lesson-quiz-prompt">{task.promptText}</p>
+                  <div className="answer-box">
+                    <textarea
+                      className="large-textarea"
+                      value={freeTypeValue}
+                      onChange={(event) => setFreeTypeValue(event.target.value)}
+                      onKeyDown={(event) => {
+                        // 回车提交（Shift+Enter 换行；输入法组词态不触发）
+                        if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+                          event.preventDefault();
+                          if (freeTypeValue.trim()) handleFreeTypeSubmit();
+                        }
+                      }}
+                      placeholder="凭记忆写出整句…（回车提交）"
+                      rows={2}
+                      disabled={outcome !== "idle"}
+                      aria-label="自由输出复习"
+                    />
+                  </div>
+                  {freeTypeHint && outcome === "idle" && (
+                    <p className="lesson-saved-hint" role="status">{freeTypeHint}</p>
+                  )}
+                  {outcome === "idle" && (
+                    <div className="lesson-stage-actions center">
+                      <button type="button" className="primary-button" onClick={handleFreeTypeSubmit} disabled={!freeTypeValue.trim()}>
+                        提交
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : task.mode === "cloze" ? (
                 <>
                   <p className="lesson-quiz-prompt">{task.promptText}</p>
                   <div className="lesson-option-row">

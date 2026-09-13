@@ -1,7 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   clearSpeechAudioCacheForTests,
+  DEFAULT_SPEECH_PREVIEW_TEXT,
   isSpeechSupported,
+  pickSpeechPreviewText,
   preloadAudioUrl,
   preloadSpeechAudio,
   selectPreferredSpeechVoice,
@@ -370,5 +372,49 @@ describe("speechService", () => {
     expect((await import("./speechService")).resumeSpeaking()).toBe(true);
     expect(playMocks[0]).toHaveBeenCalledTimes(2);
     expect(speech.speak).not.toHaveBeenCalled();
+  });
+});
+
+describe("pickSpeechPreviewText (R11)", () => {
+  it("falls back to the default sentence when the library is empty", () => {
+    const preview = pickSpeechPreviewText([]);
+    expect(preview.fromLibrary).toBe(false);
+    expect(preview.text).toBe(DEFAULT_SPEECH_PREVIEW_TEXT);
+  });
+
+  it("picks a real library sentence when available", () => {
+    const preview = pickSpeechPreviewText(["The quick brown fox jumps over the lazy dog."]);
+    expect(preview.fromLibrary).toBe(true);
+    expect(preview.text).toBe("The quick brown fox jumps over the lazy dog.");
+  });
+
+  it("filters out non-English, too-short and too-long segments", () => {
+    const tooLong = `a ${"b".repeat(200)}`;
+    const preview = pickSpeechPreviewText(["你好，世界", "ok", tooLong]);
+    expect(preview.fromLibrary).toBe(false);
+  });
+});
+
+describe("speakText systemOnly", () => {
+  it("skips online audio sources and speaks via the system engine directly", async () => {
+    const { AudioMock } = installAudioMock();
+    const speech = installSpeechSynthesisMock();
+
+    const played = await speakText("Preview this library sentence.", { systemOnly: true });
+
+    expect(played).toBe(true);
+    expect(speech.speak).toHaveBeenCalledTimes(1);
+    expect(AudioMock).not.toHaveBeenCalled();
+  });
+
+  it("returns false when the system engine is unavailable", async () => {
+    const { AudioMock } = installAudioMock();
+    // @ts-expect-error ensure no engine
+    delete window.speechSynthesis;
+
+    const played = await speakText("Preview this library sentence.", { systemOnly: true });
+
+    expect(played).toBe(false);
+    expect(AudioMock).not.toHaveBeenCalled();
   });
 });

@@ -12,7 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import BannerHero from "../components/BannerHero";
-import { getLearningStats, getWeakStats } from "../services/reviewService";
+import { getLearningStats } from "../services/reviewService";
 import trainingHero from "../assets/training-hero.jpg";
 
 const estimateMinutes = (dueTotal: number, weakWords: number) => {
@@ -22,9 +22,9 @@ const estimateMinutes = (dueTotal: number, weakWords: number) => {
 
 export default function TrainingPage() {
   const { data } = useAppData();
+  // R2：薄弱词数字统一走权威源 getLearningStats（getWeakCards 口径），不再单独调 getWeakStats。
   const stats = getLearningStats(data);
-  const weakStats = getWeakStats(data);
-  const minutes = estimateMinutes(stats.dueTotal, weakStats.weakWords);
+  const minutes = estimateMinutes(stats.dueTotal, stats.weakWords);
 
   const modes = [
     {
@@ -38,7 +38,7 @@ export default function TrainingPage() {
     {
       title: "错词专项",
       description: "只处理最近错过、连续错过或标记重点的词。",
-      meta: `${weakStats.weakWords} 个薄弱词`,
+      meta: `${stats.weakWords} 个薄弱词`,
       to: "/spelling?mode=mistakes",
       icon: Flame,
       tone: "red"
@@ -60,9 +60,9 @@ export default function TrainingPage() {
       tone: "orange"
     },
     {
-      title: "单元训练",
-      description: "按词书或单元进入拼写，适合集中推进一组词。",
-      meta: `${data.units.length} 个词书单元`,
+      title: "词书训练",
+      description: "按词书进入拼写，适合集中推进一组词。",
+      meta: `${data.units.length} 本词书`,
       to: "/units",
       icon: BookOpenCheck,
       tone: "green"
@@ -124,7 +124,7 @@ export default function TrainingPage() {
           <span className="eyebrow">Recommended</span>
           <h2>今日训练</h2>
           <p>
-            预计 {minutes} 分钟，优先处理 {stats.dueTotal} 个到期复习和 {weakStats.weakWords} 个薄弱词。
+            预计 {minutes} 分钟，优先处理 {stats.dueTotal} 个到期复习和 {stats.weakWords} 个薄弱词。
           </p>
         </div>
         <div className="training-recommend-side">
@@ -135,7 +135,7 @@ export default function TrainingPage() {
             </div>
             <div className="ui-figure">
               <span>错词</span>
-              <strong>{weakStats.weakWords}</strong>
+              <strong>{stats.weakWords}</strong>
             </div>
             <div className="ui-figure">
               <span>今日已练</span>

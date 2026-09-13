@@ -683,7 +683,8 @@ const normalizeGrammarErrorTag = (value: unknown): GrammarErrorTag => {
     "fragment",
     "run_on",
     "word_order",
-    "verb_form"
+    "verb_form",
+    "comparison"
   ];
   const tag = asString(value).trim();
   return (allowed as string[]).includes(tag) ? (tag as GrammarErrorTag) : "tense";
@@ -786,6 +787,16 @@ const normalizeLanguageGates = (value: unknown): LanguageGate[] =>
         requiredPattern: asString(item.requiredPattern),
         sampleAnswer: asString(item.sampleAnswer),
         hints,
+        skeleton: isRecord(item.skeleton)
+          ? {
+              subject: asString(item.skeleton.subject),
+              verb: asString(item.skeleton.verb),
+              subjectLabel: asString(item.skeleton.subjectLabel),
+              verbLabel: asString(item.skeleton.verbLabel)
+            }
+          : { subject: "", verb: "", subjectLabel: "", verbLabel: "" },
+        counterExample: asString(item.counterExample),
+        counterNote: asString(item.counterNote),
         acceptRegex: asString(item.acceptRegex) || undefined,
         misreadBranches: normalizeMisreadBranches(item.misreadBranches)
       };

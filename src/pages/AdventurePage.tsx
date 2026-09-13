@@ -20,6 +20,7 @@ import {
   isAiProviderConfigured
 } from "../services/adventureModelService";
 import { ADVENTURE_THEME_LIBRARY, sampleAdventureThemes, type AdventureTheme } from "../services/adventureThemeLibrary";
+import { appendAdventureEvent } from "../services/adventureTelemetry";
 
 const ADVENTURE_THEME_COUNT = ADVENTURE_THEME_LIBRARY.length;
 import AdventureThemeArt, { AdventureArtwork } from "../components/AdventureThemeArt";
@@ -126,6 +127,8 @@ export default function AdventurePage() {
   const sortedAdventures = useMemo(() => sortAdventuresForList(data.adventures), [data.adventures]);
 
   const isCustomMode = selection.kind === "custom";
+  // R9：选中 AI 推荐卡时，推荐主题将覆盖线索——输入框必须提前明示，杜绝静默丢弃。
+  const isRecommendationMode = selection.kind === "ai";
   const isAiCardList = recommendations.length >= 2;
 
   const adventureProgress = (adventure: Adventure) => {
@@ -152,21 +155,39 @@ export default function AdventurePage() {
     }
   };
 
-  // 随机推荐 = 本地从 150 个内置主题里抽样：瞬时完成、不调 AI，
+  // 随机推荐 = 本地从 50 个内置主题里抽样：瞬时完成、不调 AI，
   // 且避开最近展示过的主题，同批 4 张插画场景互不重复。
+  // 注意：历史排除集只增不减，而每个场景桶仅 3~4 个主题。若严格按历史排除，
+  // 部分桶会被掏空，导致同批不足 4 张（出现只剩 2 张的情况）。因此凑不齐 4 张时
+  // 回退为「只排除当前这批」，保证始终给满 4 张且换一批新内容。
   const shuffleRecommendations = () => {
-    const items = sampleAdventureThemes(4, [
-      ...readShownThemeIds(),
-      ...recommendations.map((item) => item.id)
-    ]);
-    if (!items.length) return;
+    const startedAt = Date.now();
+    appendAdventureEvent({ kind: "recommendation_requested", ts: new Date().toISOString() });
+    const currentIds = recommendations.map((item) => item.id);
+    const historyIds = readShownThemeIds();
+    let items = sampleAdventureThemes(4, [...historyIds, ...currentIds]);
+    // 只有严格按历史排除凑齐 4 张时才把新主题累积进历史；
+    // 回退批次可能复用历史主题，不应再写入，否则历史被污染、下次仍触发回退。
+    const usedFallback = items.length < 4;
+    if (usedFallback) {
+      // 历史把场景桶掏空了：放宽为只避开当前这批，重新补足 4 张。
+      items = sampleAdventureThemes(4, currentIds);
+    }
+    if (!items.length) {
+      appendAdventureEvent({ kind: "recommendation_failed", errorType: "empty-sample", ts: new Date().toISOString() });
+      return;
+    }
+    appendAdventureEvent({ kind: "recommendation_generated", count: items.length, durationMs: Date.now() - startedAt, ts: new Date().toISOString() });
     updateRecommendations(items);
-    writeShownThemeIds([...readShownThemeIds(), ...items.map((item) => item.id)]);
+    if (!usedFallback) {
+      writeShownThemeIds([...historyIds, ...items.map((item) => item.id)]);
+    }
     setSelection({ kind: "ai", index: 0 });
     setCreateError("");
   };
 
   const restoreDefaultTemplates = () => {
+    appendAdventureEvent({ kind: "recommendation_restored_default", ts: new Date().toISOString() });
     updateRecommendations([]);
     setSelection({ kind: "offline", id: "city" });
   };
@@ -175,11 +196,15 @@ export default function AdventurePage() {
     event.preventDefault();
     setCreateError("");
     const isAiOpening = isAiOpeningMode(selection);
+    const createSource = selection.kind === "offline" ? "offline" : selection.kind === "ai" ? "ai" : "custom";
+    const startedAt = Date.now();
     let prompt = customPrompt.trim();
     if (selection.kind === "ai") {
       const item = recommendations[selection.index];
       if (!item) { setCreateError("这张推荐卡已经失效，请重新随机推荐。"); return; }
       prompt = `${item.title}：${item.description}`;
+      // R4 推荐采纳：选中推荐卡并真正开始创建时记录。
+      appendAdventureEvent({ kind: "recommendation_selected", themeId: item.id, position: selection.index + 1, ts: new Date().toISOString() });
     }
     if (selection.kind === "custom" && !prompt) {
       setCreateError("先写一句话或一个方向，AI 才能帮你补齐剧情。");
@@ -190,6 +215,13 @@ export default function AdventurePage() {
       return;
     }
 
+    appendAdventureEvent({
+      kind: "adventure_create_started",
+      template: selection.kind === "offline" ? selection.id : "custom",
+      level,
+      source: createSource,
+      ts: new Date().toISOString()
+    });
     setIsCreating(true);
     try {
       const initialNode = isAiOpening
@@ -219,9 +251,27 @@ export default function AdventurePage() {
         scene,
         themeId: selectedTheme?.id
       });
+      appendAdventureEvent({
+        kind: "adventure_created",
+        adventureId: result.adventure.id,
+        template: result.adventure.template,
+        level,
+        source: createSource,
+        hasCustomPrompt: Boolean(customPrompt.trim()),
+        nodeCount: result.adventure.nodes.length,
+        durationMs: Date.now() - startedAt,
+        ts: new Date().toISOString()
+      });
       updateData(() => result.data);
       navigate(`/adventure/${result.adventure.id}`);
     } catch (error) {
+      appendAdventureEvent({
+        kind: "adventure_create_failed",
+        stage: isAiOpening ? "request" : "save",
+        errorType: error instanceof Error ? error.name : "unknown",
+        durationMs: Date.now() - startedAt,
+        ts: new Date().toISOString()
+      });
       setCreateError(error instanceof Error ? error.message : "冒险没有生成，请重试。");
     } finally {
       setIsCreating(false);
@@ -305,6 +355,17 @@ export default function AdventurePage() {
       </section>
 
       <div className="adv-body">
+      <section className="adv-gate-entry" aria-label="语言之门">
+        <div className="adv-gate-entry-copy">
+          <span className="adv-eyebrow">语言之门 · 站台世界</span>
+          <h2>说错一句话，故事里会有人真的误解你</h2>
+          <p>雨夜的七号站台，售票员 Vera 在等你回答。每一道门都要你亲口说出那句英文才打得开——8 关，每关 2–4 分钟。</p>
+        </div>
+        <Link to="/adventure/worlds" className="adv-primary adv-gate-entry-cta">
+          <Sparkles size={16} /> 进入站台
+        </Link>
+      </section>
+
       <form className="adv-card adv-create" onSubmit={startAdventure}>
         <header className="adv-create-head">
           <div>
@@ -379,22 +440,32 @@ export default function AdventurePage() {
               ))}
             </div>
           </div>
-          <label className="adv-field adv-field-wide">
-            <span className="adv-label">{isCustomMode ? "告诉 AI 你的冒险方向" : "给故事一个线索（可选）"}</span>
-            <span className="adv-input">
-              <input
-                value={customPrompt}
-                onChange={(event) => { setCustomPrompt(event.target.value.slice(0, 180)); setCreateError(""); }}
-                placeholder={isCustomMode ? "例如：我想在会移动的城市里找回一封信" : "例如：我想找一只走失的猫"}
-                maxLength={180}
-                required={isCustomMode}
-              />
-              <Shuffle size={14} aria-hidden="true" />
-            </span>
-          </label>
+          {isRecommendationMode && selection.kind === "ai" ? (
+            <div className="adv-field adv-field-wide">
+              <span className="adv-label">本次冒险的线索</span>
+              <p className="adv-note" role="status">
+                <Sparkles size={16} />
+                <span>将以推荐主题为准：{recommendations[selection.index]?.title}——{recommendations[selection.index]?.description}。你已填写的线索本次不会使用。</span>
+              </p>
+            </div>
+          ) : (
+            <label className="adv-field adv-field-wide">
+              <span className="adv-label">{isCustomMode ? "告诉 AI 你的冒险方向" : "给故事一个线索（可选）"}</span>
+              <span className="adv-input">
+                <input
+                  value={customPrompt}
+                  onChange={(event) => { setCustomPrompt(event.target.value.slice(0, 180)); setCreateError(""); }}
+                  placeholder={isCustomMode ? "例如：我想在会移动的城市里找回一封信" : "例如：我想找一只走失的猫"}
+                  maxLength={180}
+                  required={isCustomMode}
+                />
+                <Shuffle size={14} aria-hidden="true" />
+              </span>
+            </label>
+          )}
         </div>
 
-        {!isCustomMode && (
+        {!isCustomMode && !isRecommendationMode && (
           <div className="adv-chips">
             <span>灵感：</span>
             {HINT_IDEAS.map((chip) => (
@@ -549,7 +620,19 @@ export default function AdventurePage() {
         title={`删除“${pendingDelete?.title ?? ""}”？`}
         message="这段路线的章节记录会一并删除，删除后无法恢复。"
         onConfirm={() => {
-          if (pendingDelete) updateData((latest) => deleteAdventure(latest, pendingDelete.id));
+          if (pendingDelete) {
+            // R4 adventure_deleted：删除时进度是"后悔信号"的代理指标。
+            const path = getAdventurePath(pendingDelete);
+            appendAdventureEvent({
+              kind: "adventure_deleted",
+              adventureId: pendingDelete.id,
+              nodeCount: pendingDelete.nodes.length,
+              completedNodeCount: path.length,
+              ageDays: Math.max(0, Math.round((Date.now() - new Date(pendingDelete.createdAt).getTime()) / 86400000)),
+              ts: new Date().toISOString()
+            });
+            updateData((latest) => deleteAdventure(latest, pendingDelete.id));
+          }
           setPendingDelete(null);
         }}
         onCancel={() => setPendingDelete(null)}

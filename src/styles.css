@@ -23903,31 +23903,124 @@ html {
   color: var(--ink-soft, var(--muted));
 }
 
-/* v1.x settle 因果链：块与块之间的承接箭头 */
+/* v1.x settle 因果链：纯箭头承接（减噪，无文字） */
 .gate-settle-link {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-left: 22px;
+  justify-content: center;
   color: var(--accent-deep, #d95a12);
-  font-size: 12.5px;
-  font-weight: 600;
+  line-height: 1;
+  margin: -6px 0;
 }
 
 .gate-settle-link-arrow {
+  font-size: 16px;
+}
+
+/* NPC 头像（角色感：一眼看出是角色在说话） */
+.gate-npc-identity {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gate-npc-avatar {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent-soft, #fff1e8);
+  color: var(--accent-deep, #d95a12);
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* 骨架拆解：把玩家的句子按"谁 + 做什么"切开 */
+.gate-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.gate-skeleton-part {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.gate-skeleton-part em {
+  font-style: normal;
+  font-weight: 600;
   font-size: 15px;
-  line-height: 1;
+  color: var(--accent-deep, #d95a12);
 }
 
-.gate-settle-link-text {
-  letter-spacing: 0.02em;
+.gate-skeleton-part small {
+  font-size: 11px;
+  color: var(--muted);
 }
 
-/* 符文卡里"用你的话当例句"的回声行 */
-.gate-rune-echo {
+.gate-skeleton-plus {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.gate-skeleton-note {
   margin-top: 6px;
   font-size: 12.5px;
-  color: var(--accent-deep, #d95a12);
+  color: var(--ink-soft, var(--muted));
+}
+
+/* 符文卡正/反例对比：有对比才知道为什么对 */
+.gate-rune-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.gate-rune-compare {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gate-rune-good,
+.gate-rune-bad {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.gate-rune-good {
+  background: rgba(72, 184, 120, 0.12);
+  color: var(--secondary, #48b878);
+}
+
+.gate-rune-bad {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* 只有英文反例划线，注释保持正常——避免"注释也像错的" */
+.gate-rune-bad-text {
+  text-decoration: line-through;
+  text-decoration-color: rgba(0, 0, 0, 0.35);
+}
+
+.gate-rune-bad small {
+  display: inline;
+  margin-left: 4px;
+  font-size: 11.5px;
 }
 
 .gate-rune-glyph {
@@ -24081,14 +24174,24 @@ html {
   white-space: nowrap;
 }
 
-.world-coming h2 {
+.world-coming-head {
+  margin-bottom: 14px;
+}
+
+.world-coming-head h2 {
   font-size: 17px;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
+}
+
+.world-coming-head p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
 }
 
 .world-coming-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 12px;
 }
 
@@ -24103,17 +24206,37 @@ html {
   color: var(--muted);
 }
 
+/* 世界序号 + 锁：一眼看出"这是第几段旅途" */
+.world-coming-order {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
 .world-coming-card strong {
   color: var(--ink);
-  font-size: 14.5px;
+  font-size: 15px;
+}
+
+/* 语法阶段（S1-S5）：和站台卡的"S0 句子骨架"对齐 */
+.world-coming-stage {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--accent-deep, #d95a12);
 }
 
 .world-coming-card p {
   font-size: 12.5px;
+  line-height: 1.55;
 }
 
 .world-coming-card small {
   font-size: 11.5px;
+  margin-top: auto;
 }
 
 /* 冒险入口页 · 语言之门入口卡 */
@@ -25901,4 +26024,16 @@ html {
 
 .stats-wrong-all:hover {
   background: var(--accent-soft);
+}
+
+/* 回声城世界卡（批 1） */
+.world-card.echo .world-card-head h2 {
+  color: var(--ink);
+}
+
+.world-more-hint {
+  margin: 10px 2px 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  font-style: italic;
 }

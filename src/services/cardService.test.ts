@@ -6,11 +6,14 @@ import {
   addWordsBatchWithAudio,
   getWordDetails,
   hydrateWordInput,
+  restoreCards,
+  setCardsStatus,
   setPronunciationAudioFetcherForTest,
+  updateCardContent,
   updateSentenceAudio,
   updateWordAudio
 } from "./cardService";
-import { makeTestData, makeWordCard } from "./testUtils";
+import { makeCard, makeTestData, makeWordCard } from "./testUtils";
 
 describe("cardService", () => {
   afterEach(() => {
@@ -276,5 +279,80 @@ describe("cardService", () => {
       "https://cdn.example.com/alpha.mp3"
     );
     expect(result.data.wordDetails.find((details) => details.word === "charlie")?.audioUrl).toBe("");
+  });
+});
+
+describe("suspend / restore lifecycle", () => {
+  it("records suspendedFrom when suspending and clears it for other status changes", () => {
+    const data = makeTestData({
+      cards: [makeCard({ id: "c1", status: "review" }), makeCard({ id: "c2", status: "new" })]
+    });
+
+    const suspended = setCardsStatus(data, ["c1", "c2"], "suspended");
+    expect(suspended.cards.find((card) => card.id === "c1")).toMatchObject({
+      status: "suspended",
+      suspendedFrom: "review"
+    });
+    expect(suspended.cards.find((card) => card.id === "c2")).toMatchObject({
+      status: "suspended",
+      suspendedFrom: "new"
+    });
+
+    const reprioritized = setCardsStatus(suspended, ["c1"], "review");
+    const restored = reprioritized.cards.find((card) => card.id === "c1");
+    expect(restored?.status).toBe("review");
+    expect(restored && "suspendedFrom" in restored).toBe(false);
+  });
+
+  it("restoreCards returns cards to their pre-suspend status and clears the marker", () => {
+    const data = makeTestData({
+      cards: [
+        makeCard({ id: "c1", status: "suspended", suspendedFrom: "learning" }),
+        makeCard({ id: "c2", status: "suspended" }),
+        makeCard({ id: "c3", status: "review" })
+      ]
+    });
+
+    const restored = restoreCards(data, ["c1", "c2", "c3"]);
+    const c1 = restored.cards.find((card) => card.id === "c1");
+    const c2 = restored.cards.find((card) => card.id === "c2");
+    const c3 = restored.cards.find((card) => card.id === "c3");
+
+    expect(c1?.status).toBe("learning");
+    expect(c1 && "suspendedFrom" in c1).toBe(false);
+    // 无 suspendedFrom 的历史数据回退到 review
+    expect(c2?.status).toBe("review");
+    expect(c2 && "suspendedFrom" in c2).toBe(false);
+    // 非 suspended 卡片不受 restore 影响
+    expect(c3?.status).toBe("review");
+    expect(c3?.updatedAt).toBe(data.cards.find((card) => card.id === "c3")?.updatedAt);
+  });
+});
+
+describe("updateCardContent（R13 短语内联编辑）", () => {
+  it("updates back/note/tags and refreshes updatedAt without touching other cards", () => {
+    const data = makeTestData({
+      cards: [
+        makeCard({ id: "p1", type: "phrase", front: "take off", back: "起飞", note: "", tags: ["travel"] }),
+        makeCard({ id: "w1", front: "approach", back: "方法" })
+      ]
+    });
+
+    const updated = updateCardContent(data, "p1", { back: "起飞；脱下", note: "机场景语", tags: ["travel", "airport"] });
+    const phrase = updated.cards.find((card) => card.id === "p1");
+    const untouched = updated.cards.find((card) => card.id === "w1");
+
+    expect(phrase).toMatchObject({ back: "起飞；脱下", note: "机场景语", tags: ["travel", "airport"] });
+    expect(phrase?.updatedAt).not.toBe(data.cards[0].updatedAt);
+    expect(untouched).toEqual(data.cards[1]);
+  });
+
+  it("keeps fields not included in the patch", () => {
+    const data = makeTestData({
+      cards: [makeCard({ id: "p1", type: "phrase", front: "take off", back: "起飞", note: "旧备注", tags: ["a"] })]
+    });
+
+    const updated = updateCardContent(data, "p1", { back: "新释义" });
+    expect(updated.cards[0]).toMatchObject({ back: "新释义", note: "旧备注", tags: ["a"] });
   });
 });

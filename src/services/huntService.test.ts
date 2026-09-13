@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  addHuntGapSentences,
   appendHuntAttempt,
   appendHuntResult,
   buildHintMessage,
@@ -7,9 +8,11 @@ import {
   computeStars,
   findErrorAt,
   GRAMMAR_ERROR_TAG_LABELS,
+  hasUnlockedHuntCase,
   HUNT_CLUE_BUDGET,
   judgeGuess,
   listHuntCases,
+  listHuntCasesWithLock,
   pickCorrectionWord,
   pickHintTarget,
   summarizeHuntProgress
@@ -177,6 +180,103 @@ describe("hunt service", () => {
   });
 });
 
+describe("R01 课程锁：listHuntCasesWithLock", () => {
+  it("零进度用户：全部案件锁定，解锁提示指向引用该案的课程", () => {
+    const infos = listHuntCasesWithLock(makeTestData({ grammarLessonsDone: [] }));
+    expect(infos).toHaveLength(huntCases.length);
+    expect(infos.every((info) => !info.unlocked)).toBe(true);
+    // 首案（被 lesson-01-am 引用）提示「学完第 1 课」
+    const first = infos.find((info) => info.caseItem.id === "hunt-call-mother");
+    expect(first?.unlockLesson?.id).toBe("lesson-01-am");
+    expect(first?.unlockLesson?.number).toBe(1);
+    expect(hasUnlockedHuntCase(makeTestData({ grammarLessonsDone: [] }))).toBe(false);
+  });
+
+  it("完成 lesson-01-am：仅其引用的案件解锁，其余仍锁定", () => {
+    const data = makeTestData({ grammarLessonsDone: ["lesson-01-am"] });
+    const infos = listHuntCasesWithLock(data);
+    const byId = new Map(infos.map((info) => [info.caseItem.id, info]));
+    expect(byId.get("hunt-call-mother")?.unlocked).toBe(true);
+    expect(byId.get("hunt-new-phone")?.unlocked).toBe(false); // lesson-04 的案
+    expect(byId.get("hunt-passive")?.unlocked).toBe(false); // lesson-11 的案
+    expect(hasUnlockedHuntCase(data)).toBe(true);
+  });
+
+  it("完成全部 24 课：33 案全部解锁", () => {
+    const allDone = grammarLessons.map((lesson) => lesson.id);
+    const infos = listHuntCasesWithLock(makeTestData({ grammarLessonsDone: allDone }));
+    expect(infos.every((info) => info.unlocked)).toBe(true);
+  });
+
+  it("番外案（未被课程引用）：完成第 12 课整体解锁，未达档位保持锁定", () => {
+    const infos = listHuntCasesWithLock(makeTestData({ grammarLessonsDone: [] }));
+    const orphans = infos.filter((info) => info.unlockLesson === null).map((info) => info.caseItem.id);
+    // 数据基线：当前有 5 个番外案（综合复习性质）
+    expect(orphans).toEqual(["hunt-white-cat", "hunt-sports-day", "hunt-pen-pal-letter", "hunt-fridge-note", "hunt-term-review"]);
+    // 完成第 11 课：番外案仍锁定
+    const beforeSeasonOneDone = grammarLessons.filter((l) => l.number <= 11).map((l) => l.id);
+    const lockedInfos = listHuntCasesWithLock(makeTestData({ grammarLessonsDone: beforeSeasonOneDone }));
+    for (const id of orphans) {
+      expect(lockedInfos.find((info) => info.caseItem.id === id)?.unlocked).toBe(false);
+    }
+    // 完成第 12 课（第一季）：番外案整体解锁
+    const seasonOneDone = grammarLessons.filter((l) => l.number <= 12).map((l) => l.id);
+    const unlockedInfos = listHuntCasesWithLock(makeTestData({ grammarLessonsDone: seasonOneDone }));
+    for (const id of orphans) {
+      expect(unlockedInfos.find((info) => info.caseItem.id === id)?.unlocked).toBe(true);
+    }
+  });
+});
+
+describe("R02 找错知识缺口 → SM-2 复习队列", () => {
+  it("只把缺口点（看过提示/罪名绕弯）生成句子卡，tags 为「语法」，sourceId 为 hunt:<caseId>", () => {
+    const caseItem = huntCases[0];
+    const gapTokens = [caseItem.errors[0].tokenIndex];
+    const { data, added } = addHuntGapSentences(makeTestData(), caseItem, gapTokens);
+
+    expect(added).toBe(1);
+    expect(data.cards).toHaveLength(1);
+    const card = data.cards[0];
+    expect(card.type).toBe("sentence");
+    expect(card.tags).toContain("语法");
+    expect(card.sourceId).toBe(`hunt:${caseItem.id}`);
+    expect(card.front).toBe(caseItem.tokens.join(" "));
+    // grammarNote 嵌入稳定罪名 token（[tag:原错词]，弱点回溯用）
+    const details = data.sentenceDetails.find((item) => item.cardId === card.id);
+    expect(details?.grammarNote).toContain(`[${caseItem.errors[0].tag}:${caseItem.errors[0].original}]`);
+    expect(details?.grammarNote).toContain(caseItem.errors[0].correction);
+    // 调度卡已创建（进入 SM-2 队列）
+    expect(data.schedules.some((schedule) => schedule.cardId === card.id)).toBe(true);
+  });
+
+  it("幂等：同一案件同一罪名重复结算不重复建卡", () => {
+    const caseItem = huntCases[0];
+    const gapTokens = [caseItem.errors[0].tokenIndex];
+    const once = addHuntGapSentences(makeTestData(), caseItem, gapTokens);
+    const twice = addHuntGapSentences(once.data, caseItem, gapTokens);
+
+    expect(twice.added).toBe(0);
+    expect(twice.data.cards).toHaveLength(1);
+  });
+
+  it("同案同罪名的多处不同错词各自成卡（幂等键含原错词）；无缺口零新增", () => {
+    // hunt-moving-day 有两处 tense（moved / helped）——同罪名不同错词，应各建一张
+    const caseItem = huntCases.find((item) => item.id === "hunt-moving-day")!;
+    const allGap = caseItem.errors.map((error) => error.tokenIndex);
+    const { data, added } = addHuntGapSentences(makeTestData(), caseItem, allGap);
+    expect(added).toBe(caseItem.errors.length);
+    const tenseCards = data.cards.filter((card) => {
+      const details = data.sentenceDetails.find((item) => item.cardId === card.id);
+      return details?.grammarNote.startsWith("[tense:");
+    });
+    expect(tenseCards).toHaveLength(2);
+
+    const { data: unchanged, added: zero } = addHuntGapSentences(makeTestData(), caseItem, []);
+    expect(zero).toBe(0);
+    expect(unchanged.cards).toHaveLength(0);
+  });
+});
+
 describe("hunt cases data integrity", () => {
   // 案件池随第二季进阶篇持续扩容（PRD-grammar-advanced R1–R8 每课配 1–2 案），
   // 故用下限守卫防意外丢数据，不再钉死精确总数（原快照：20 案 / 54 错）。
@@ -197,6 +297,15 @@ describe("hunt cases data integrity", () => {
       .filter((huntCase) => !referenced.has(huntCase.id) && !huntCase.reviewed)
       .map((huntCase) => huntCase.id);
     expect(unreviewed).toEqual([]);
+  });
+
+  // R13 红线：被课程引用的案件必须先过人工校验——未校验的案件直接配课会把错误内容带给玩家。
+  it("requires referenced cases to be human-reviewed (R13)", () => {
+    const referenced = new Set(grammarLessons.flatMap((lesson) => lesson.huntCaseIds));
+    const unreviewedReferenced = huntCases
+      .filter((huntCase) => referenced.has(huntCase.id) && !huntCase.reviewed)
+      .map((huntCase) => huntCase.id);
+    expect(unreviewedReferenced).toEqual([]);
   });
 
   // 案件 hunt-new-phone 的冠词下标曾错指 "hour"，修复后此处作为数据对齐回归守门。

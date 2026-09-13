@@ -1,5 +1,7 @@
 import type { Settings } from "../types";
-import { generateStructuredMistakeStoryWithModel } from "./modelService";
+import { isAiProviderConfigured } from "./aiHttpClient";
+import { generateStructuredMistakeStoryWithModel, generateWordExplanationWithModel } from "./modelService";
+import type { WordExplanationInput, WordExplanationResult } from "./modelService";
 
 export type StoryLevel = "A2" | "B1" | "B2";
 export type StoryScene = "daily" | "school" | "work" | "travel" | "adventure" | "exam";
@@ -390,8 +392,11 @@ export const buildStructuredMistakeStoryPrompt = (input: GenerateStructuredMista
   ].join(" ");
 
 export const aiService = {
-  async explainWord() {
-    return null;
+  // AI 补全（预研）：为单词卡生成释义/助记/例句；AI 未配置时返回 null，由 UI 引导去设置。
+  async explainWord(input: WordExplanationInput, settings?: Settings): Promise<WordExplanationResult | null> {
+    const provider = settings?.aiProvider;
+    if (!provider || !isAiProviderConfigured(provider)) return null;
+    return generateWordExplanationWithModel(provider, input);
   },
   async analyzeSentence() {
     return null;

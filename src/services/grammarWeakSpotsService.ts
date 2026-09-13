@@ -1,11 +1,12 @@
 import type { AppData, GrammarErrorTag } from "../types";
 import {
   listGrammarEventsByKind,
+  type CardMasteredEvent,
   type DiaryIssueTagEvent,
   type GrammarReviewResultEvent,
   type HuntVerdictEvent
 } from "./grammarTelemetry";
-import { GRAMMAR_ERROR_TAG_LABELS, GRAMMAR_ERROR_TAG_PLAIN, findErrorAt } from "./huntService";
+import { GRAMMAR_ERROR_TAG_LABELS, GRAMMAR_ERROR_TAG_PLAIN, findErrorAt, GRAMMAR_ERROR_TAGS } from "./huntService";
 import { huntCases } from "../data/huntCases";
 import { nowIso } from "./storage";
 
@@ -52,7 +53,27 @@ export interface WeakSpot {
   relatedCardIds: string[];
 }
 
-export const computeWeakSpots = (data: AppData, now = Date.now()): WeakSpot[] => {
+/** R06 确证治愈：某罪名下有卡首次跃迁 mastered，且此后未再犯——是「确证」，不是「遗忘」。 */
+export interface HealedSpot {
+  tag: GrammarErrorTag;
+  label: string;
+  plain: string;
+  /** 确证治愈时间（该罪名下最近一次 card_mastered）。 */
+  healedAt: string;
+  /** 治愈后该罪名是否又犯过（false = 已战胜；true = 回潮，回到活跃榜）。 */
+  relapsed: boolean;
+}
+
+export interface WeakSpotsReport {
+  /** 活跃弱点 Top N（当前反复犯的）。 */
+  active: WeakSpot[];
+  /** 已战胜的罪名（确证治愈且未回潮）——「我会了」的正向确证列表。 */
+  healed: HealedSpot[];
+}
+
+export const computeWeakSpots = (data: AppData, now = Date.now()): WeakSpot[] => computeWeakSpotsReport(data, now).active;
+
+export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpotsReport => {
   const stats = new Map<GrammarErrorTag, TagStat>();
   const statFor = (tag: GrammarErrorTag): TagStat => {
     let stat = stats.get(tag);
@@ -94,8 +115,8 @@ export const computeWeakSpots = (data: AppData, now = Date.now()): WeakSpot[] =>
 
   for (const event of listGrammarEventsByKind("grammar_review_result") as GrammarReviewResultEvent[]) {
     if (event.passed && event.attempts <= 1) continue;
-    const card = data.cards.find((item) => item.id === event.cardId);
-    // 复习卡没有结构化罪名；只有日记来源的卡片能通过 entry 的 issues 回溯到 tag——诚实归因，推不出的不计入
+    // 复习卡没有结构化罪名；可回溯来源：① diary: 卡片能通过 entry 的 issues 回溯 tag；
+    // ② hunt: 卡片（R02 起）在 grammarNote 里嵌入了稳定罪名 token [tag]。推不出的不计入（诚实归因）。
     if (event.sourceId?.startsWith("diary:")) {
       const entryId = event.sourceId.slice("diary:".length);
       const entry = data.diaryEntries?.find((item) => item.id === entryId);
@@ -104,12 +125,46 @@ export const computeWeakSpots = (data: AppData, now = Date.now()): WeakSpot[] =>
         const example = issue.correction ? `${issue.original} → ${issue.correction}` : issue.original;
         bump(issue.tag, 1.0, event.ts, example, event.cardId);
       }
+    } else if (event.sourceId?.startsWith("hunt:")) {
+      const card = data.cards.find((item) => item.id === event.cardId);
+      const details = card ? data.sentenceDetails.find((item) => item.cardId === card.id) : undefined;
+      // R02 罪名 token 形如 [tag] 或 [tag:原错词]（后者区分同案同罪名的多处错词）
+      const match = details?.grammarNote.match(/^\[([a-z_]+)(?::[^\]]+)?\]/);
+      const tag = match?.[1] as GrammarErrorTag | undefined;
+      if (tag && GRAMMAR_ERROR_TAGS.includes(tag)) {
+        const example = card?.front ?? undefined;
+        bump(tag, 1.0, event.ts, example, event.cardId);
+      }
     }
-    void card;
   }
 
-  return [...stats.entries()]
-    .map(([tag, stat]) => ({
+  // R06 确证治愈：按罪名归集 card_mastered 的最新时间；治愈后未再犯（该罪名最后犯错时间 < 治愈时间）才算「已战胜」。
+  const masteredEvents = listGrammarEventsByKind("card_mastered") as CardMasteredEvent[];
+  const healedAtByTag = new Map<GrammarErrorTag, number>();
+  for (const event of masteredEvents) {
+    if (!event.tag || !GRAMMAR_ERROR_TAGS.includes(event.tag)) continue;
+    const time = new Date(event.ts).getTime();
+    if (!Number.isFinite(time)) continue;
+    healedAtByTag.set(event.tag, Math.max(healedAtByTag.get(event.tag) ?? 0, time));
+  }
+
+  const active: WeakSpot[] = [];
+  const healed: HealedSpot[] = [];
+  for (const [tag, stat] of stats.entries()) {
+    const healedAt = healedAtByTag.get(tag);
+    // 治愈时间晚于该罪名最后一次犯错 → 确证治愈；之后又犯了（lastTs > healedAt）→ 回潮，回到活跃榜
+    const isHealed = healedAt !== undefined && stat.lastTs <= healedAt;
+    if (isHealed) {
+      healed.push({
+        tag,
+        label: GRAMMAR_ERROR_TAG_LABELS[tag],
+        plain: GRAMMAR_ERROR_TAG_PLAIN[tag],
+        healedAt: new Date(healedAt).toISOString(),
+        relapsed: false
+      });
+      continue;
+    }
+    active.push({
       tag,
       label: GRAMMAR_ERROR_TAG_LABELS[tag],
       plain: GRAMMAR_ERROR_TAG_PLAIN[tag],
@@ -118,9 +173,12 @@ export const computeWeakSpots = (data: AppData, now = Date.now()): WeakSpot[] =>
       totalCount: stat.totalCount,
       example: stat.examples[stat.examples.length - 1],
       relatedCardIds: [...stat.relatedCardIds]
-    }))
-    .sort((a, b) => b.score - a.score || b.recentCount - a.recentCount)
-    .slice(0, TOP_LIMIT);
+    });
+  }
+
+  active.sort((a, b) => b.score - a.score || b.recentCount - a.recentCount);
+  healed.sort((a, b) => b.healedAt.localeCompare(a.healedAt));
+  return { active: active.slice(0, TOP_LIMIT), healed };
 };
 
 /** 日记句子卡在复习队列里的定位方式与 addDiarySentenceToReview 一致：sourceId = diary:<entryId>。 */

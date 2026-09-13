@@ -10,6 +10,9 @@ import {
   getUnitStats,
   getVocabularyGoalStats,
   moveUnitToGroup,
+  removeUnitFromGroup,
+  restoreUnitFromSnapshot,
+  snapshotUnitForDelete,
   removeCardFromUnit,
   updateUnitGroup,
   updateUnit
@@ -71,7 +74,8 @@ describe("unitService", () => {
       reviewed: 2,
       accuracy: 50,
       completionPercent: 33,
-      estimatedDays: 1
+      // 新口径（含复习尾巴）：剩余 2 词、日新 2 → d1 投放，复习 2/5/12/27 天完成。
+      estimatedDays: 27
     });
   });
 
@@ -102,7 +106,8 @@ describe("unitService", () => {
       mastered: 1,
       dueToday: 2,
       completionPercent: 33,
-      estimatedDays: 1
+      // 新口径（含复习尾巴）：剩余 2 词、日新 2 → d1 投放，复习 2/5/12/27 天完成。
+      estimatedDays: 27
     });
   });
 
@@ -223,5 +228,78 @@ describe("unitService", () => {
     });
 
     expect(moveUnitToGroup(initial, "unit_free", "missing_group")).toBe(initial);
+  });
+
+  it("removes a grouped unit back to ungrouped, keeping its current color", () => {
+    const initial = createTestData({
+      unitGroups: [makeUnitGroup({ id: "group_a", title: "Group A" })],
+      units: [
+        makeUnit({ id: "unit_grouped", title: "Grouped", groupId: "group_a", color: "#f06423" }),
+        makeUnit({ id: "unit_free", title: "Free", groupId: undefined })
+      ]
+    });
+
+    const removed = removeUnitFromGroup(initial, "unit_grouped");
+    const target = removed.units.find((unit) => unit.id === "unit_grouped");
+    expect(target?.groupId).toBeUndefined();
+    expect(target?.color).toBe("#f06423");
+    expect(target?.updatedAt).toBe(TEST_NOW);
+
+    // 已是未分组 / 不存在的词书：原样返回
+    expect(removeUnitFromGroup(initial, "unit_free")).toBe(initial);
+    expect(removeUnitFromGroup(initial, "missing_unit")).toBe(initial);
+  });
+
+  it("P2-5 删除撤销：快照 → 删除 → 还原后词书与卡片归属完整恢复", () => {
+    const initial = createTestData({
+      units: [
+        makeUnit({ id: "unit_a", title: "A 书", order: 2 }),
+        makeUnit({ id: "unit_b", title: "B 书", order: 1 })
+      ],
+      cards: [
+        makeCard({ id: "c1", unitId: "unit_a", front: "a1" }),
+        makeCard({ id: "c2", unitId: "unit_a", front: "a2" }),
+        makeCard({ id: "c3", unitId: "unit_b", front: "b1" })
+      ]
+    });
+
+    const snapshot = snapshotUnitForDelete(initial, "unit_a");
+    expect(snapshot?.unit.title).toBe("A 书");
+    expect(snapshot?.cardIds.sort()).toEqual(["c1", "c2"]);
+    expect(snapshotUnitForDelete(initial, "missing")).toBeNull();
+
+    const deleted = deleteUnit(initial, "unit_a");
+    expect(deleted.units.some((unit) => unit.id === "unit_a")).toBe(false);
+    expect(deleted.cards.find((card) => card.id === "c1")?.unitId).toBeUndefined();
+
+    const restored = restoreUnitFromSnapshot(deleted, snapshot!);
+    expect(restored.units.some((unit) => unit.id === "unit_a")).toBe(true);
+    // 按 order 归位（unit_b order 1 在前）
+    expect(restored.units.map((unit) => unit.id)).toEqual(["unit_b", "unit_a"]);
+    expect(restored.cards.find((card) => card.id === "c1")?.unitId).toBe("unit_a");
+    expect(restored.cards.find((card) => card.id === "c2")?.unitId).toBe("unit_a");
+    // 别的词书的卡不受影响
+    expect(restored.cards.find((card) => card.id === "c3")?.unitId).toBe("unit_b");
+  });
+
+  it("P2-5 还原保护：词书 id 已存在不重复添加；窗口内被挪走的卡不拽回", () => {
+    const initial = createTestData({
+      units: [makeUnit({ id: "unit_a", title: "A 书" }), makeUnit({ id: "unit_b", title: "B 书" })],
+      cards: [makeCard({ id: "c1", unitId: "unit_a", front: "a1" })]
+    });
+    const snapshot = snapshotUnitForDelete(initial, "unit_a")!;
+    const deleted = deleteUnit(initial, "unit_a");
+
+    // 窗口内用户把 c1 挪进了 B 书，并同名重建了 A 书
+    const rebuilt = {
+      ...deleted,
+      units: [...deleted.units, makeUnit({ id: "unit_a", title: "A 书（重建）" })],
+      cards: deleted.cards.map((card) => (card.id === "c1" ? { ...card, unitId: "unit_b" } : card))
+    };
+    const restored = restoreUnitFromSnapshot(rebuilt, snapshot);
+
+    expect(restored.units.filter((unit) => unit.id === "unit_a")).toHaveLength(1);
+    expect(restored.units.find((unit) => unit.id === "unit_a")?.title).toBe("A 书（重建）");
+    expect(restored.cards.find((card) => card.id === "c1")?.unitId).toBe("unit_b");
   });
 });

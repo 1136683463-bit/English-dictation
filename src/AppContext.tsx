@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { AppData } from "./types";
-import { loadData, resetData, saveData } from "./services/storage";
+import { loadData, markDataSyncedBackup, resetData, saveData } from "./services/storage";
 import {
   describeSyncError,
   isDataSyncConfigured,
@@ -43,6 +43,14 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     dataRef.current = next;
     setDataState(next);
     saveData(next);
+  };
+
+  // R03：一次成功的云同步 = 一次有效备份。提交时写入 lastSyncedAt，
+  // 并把 lastSyncedJsonRef 对齐到写入后的快照，防止自动推送死循环。
+  const commitSyncedData = (synced: AppData, syncedAt?: string) => {
+    const marked = markDataSyncedBackup(synced, syncedAt);
+    commitData(marked);
+    lastSyncedJsonRef.current = JSON.stringify(marked);
   };
 
   const waitForQueuedUpdates = () => asyncUpdateQueueRef.current.catch(() => undefined);
@@ -100,21 +108,20 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         const remote = await pullDataSnapshot(sync);
         if (cancelled) return;
         if (!remote) {
-          await pushDataSnapshot(sync, dataRef.current);
+          const savedAt = await pushDataSnapshot(sync, dataRef.current);
           if (cancelled) return;
-          lastSyncedJsonRef.current = JSON.stringify(dataRef.current);
+          commitSyncedData(dataRef.current, savedAt || undefined);
           setDataSyncStatus({ state: "ok", message: "云端还没有数据，已把本地数据上传到云端。" });
           return;
         }
         if (resolveSyncDirection(dataRef.current, remote.savedAt) === "pull") {
-          commitData(remote.data);
+          commitSyncedData(remote.data, remote.savedAt || undefined);
           if (cancelled) return;
-          lastSyncedJsonRef.current = JSON.stringify(remote.data);
           setDataSyncStatus({ state: "ok", message: "已从云端恢复最新数据。" });
         } else {
-          await pushDataSnapshot(sync, dataRef.current);
+          const savedAt = await pushDataSnapshot(sync, dataRef.current);
           if (cancelled) return;
-          lastSyncedJsonRef.current = JSON.stringify(dataRef.current);
+          commitSyncedData(dataRef.current, savedAt || undefined);
           setDataSyncStatus({ state: "ok", message: "本地数据较新，已上传到云端。" });
         }
       } catch (error) {
@@ -141,8 +148,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     autoPushTimerRef.current = window.setTimeout(() => {
       setDataSyncStatus({ state: "syncing", message: "正在同步到云端..." });
       pushDataSnapshot(sync, dataRef.current)
-        .then(() => {
-          lastSyncedJsonRef.current = JSON.stringify(dataRef.current);
+        .then((savedAt) => {
+          commitSyncedData(dataRef.current, savedAt || undefined);
           setDataSyncStatus({ state: "ok", message: "已自动同步到云端。" });
         })
         .catch((error) => {

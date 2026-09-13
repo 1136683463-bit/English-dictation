@@ -1,12 +1,15 @@
 import type {
   AppData,
   GrammarErrorTag,
+  GrammarLesson,
   HuntAttempt,
   HuntCase,
   HuntError,
   HuntResult
 } from "../types";
 import { huntCases } from "../data/huntCases";
+import { grammarLessons } from "../data/grammarLessons";
+import { addSentence } from "./cardService";
 import { nowIso, uid } from "./storage";
 
 /** 罪名的正式中文名，用于罪名按钮与结算展示。 */
@@ -20,7 +23,8 @@ export const GRAMMAR_ERROR_TAG_LABELS: Record<GrammarErrorTag, string> = {
   fragment: "句子残缺",
   run_on: "连接词误用",
   word_order: "语序",
-  verb_form: "动词形式"
+  verb_form: "动词形式",
+  comparison: "比较级"
 };
 
 /** 罪名的人话版解释，零基础也能看懂，展示在罪名按钮的小字里。 */
@@ -34,7 +38,8 @@ export const GRAMMAR_ERROR_TAG_PLAIN: Record<GrammarErrorTag, string> = {
   run_on: "because 和 so 不能同时用，留一个",
   word_order: "形容词要放在名词前面",
   verb_form: "被动要用『be + 过去分词』",
-  fragment: "每个句子必须有主语和动词"
+  fragment: "每个句子必须有主语和动词",
+  comparison: "两个里比一个，形容词要带上 -er 或 more"
 };
 
 /** 每个案件的线索额度：误判达到这个数后只是不再提示，不会阻塞游戏。 */
@@ -57,6 +62,45 @@ export const pickCorrectionWord = (correction: string): string => {
 };
 
 export const listHuntCases = (): HuntCase[] => huntCases;
+
+// ── R01 课程锁：学会之后才解锁对应破案挑战 ──────────────────
+
+/** 案件 → 引用它的课程（huntCaseIds 反查）。 */
+const findUnlockLesson = (caseId: string): GrammarLesson | undefined =>
+  grammarLessons.find((lesson) => lesson.huntCaseIds.includes(caseId));
+
+export interface HuntCaseLockInfo {
+  caseItem: HuntCase;
+  unlocked: boolean;
+  /** 未解锁时，引用该案的课程（用于「学完第 X 课就来破案」提示）。 */
+  unlockLesson: GrammarLesson | null;
+}
+
+/** 番外案（未被任何课 huntCaseIds 引用）的解锁档位：完成第一季（前 12 课）即整体解锁（决策①，2026-09-14 拍板）。 */
+const EXTRA_CASES_UNLOCK_LESSON_NUMBER = 12;
+
+/**
+ * R01 课程锁：
+ * - 被课程引用的案件：该课完成后解锁；
+ * - 番外案（未被任何课引用）：完成第 12 课（第一季收官）后整体解锁——
+ *   番外案是综合复习性质，错误类型混合，需要第一季的知识点打底才不会越级撞墙。
+ */
+export const listHuntCasesWithLock = (data: AppData): HuntCaseLockInfo[] => {
+  const done = new Set(data.grammarLessonsDone ?? []);
+  const seasonOneDone =
+    grammarLessons.filter((lesson) => lesson.number <= EXTRA_CASES_UNLOCK_LESSON_NUMBER)
+      .every((lesson) => done.has(lesson.id)) &&
+    grammarLessons.some((lesson) => lesson.number <= EXTRA_CASES_UNLOCK_LESSON_NUMBER);
+  return huntCases.map((caseItem) => {
+    const unlockLesson = findUnlockLesson(caseItem.id) ?? null;
+    const unlocked = unlockLesson ? done.has(unlockLesson.id) : seasonOneDone;
+    return { caseItem, unlocked, unlockLesson };
+  });
+};
+
+/** 是否有任一案件已解锁（路径页判断「去侦探找错」入口是否可用）。 */
+export const hasUnlockedHuntCase = (data: AppData): boolean =>
+  listHuntCasesWithLock(data).some((info) => info.unlocked);
 
 /** 找出落在某个词上的错误；该词没问题则返回 undefined。 */
 export const findErrorAt = (caseItem: HuntCase, tokenIndex: number): HuntError | undefined =>
@@ -81,7 +125,8 @@ const tagHintForWrongGuess: Record<GrammarErrorTag, string> = {
   fragment: "这个句子还缺一块，看看缺的是主语还是动词。",
   run_on: "两个连接词不能同时出现，留一个就够。",
   word_order: "看看修饰词应该站在名词的前面还是后面。",
-  verb_form: "再想想这里需要动词的哪种形式。"
+  verb_form: "再想想这里需要动词的哪种形式。",
+  comparison: "两个东西比一比，看看形容词要不要加 -er 或 more。"
 };
 
 /**
@@ -212,6 +257,58 @@ export const appendHuntResult = (data: AppData, result: HuntResult): AppData => 
   ...data,
   huntResults: [...data.huntResults, result]
 });
+
+// ── R02 找错知识缺口 → SM-2 复习队列 ─────────────────────────
+
+/**
+ * 由案件原文构造「植错句 → 正确句」的对照卡正面文本。
+ * 每个植错点生成一张卡：正面 = 完整正确句（含本处修正语境），复习时按产出型任务复现。
+ * 返回空串表示该处错误不适合成卡（如「去掉 xx」的删词型修正）。
+ */
+const sentenceForError = (caseItem: HuntCase, error: HuntError): string => {
+  if (error.correction.trim().startsWith("去掉")) return "";
+  return caseItem.tokens.join(" ");
+};
+
+/**
+ * R02：结案后把本局暴露的知识缺口生成句子卡进入 SM-2 复习队列（tags「语法」，sourceId=hunt:<caseId>）。
+ * 缺口判定：hintedTokens（看过提示才找到）∪ wrongTagTokens（罪名归错）——
+ * 这两处都是「知道有错但没真正掌握」的信号；一次到位的错误说明本就敏锐，不必重复进队列。
+ * 幂等：同一案件 + 同一罪名只收一次（重玩同案不会重复建卡）。
+ */
+export const addHuntGapSentences = (
+  data: AppData,
+  caseItem: HuntCase,
+  gapTokenIndexes: number[]
+): { data: AppData; added: number } => {
+  const gapSet = new Set(gapTokenIndexes);
+  let next = data;
+  let added = 0;
+  for (const error of caseItem.errors) {
+    if (!gapSet.has(error.tokenIndex)) continue;
+    const sentence = sentenceForError(caseItem, error);
+    if (!sentence) continue;
+    // 幂等键 = 案件 + 罪名 + 原错词（同案同罪名可能有多处不同错词，如两个不同的过去式，需各自成卡）
+    const gapKey = `[${error.tag}:${error.original}]`;
+    const duplicated = next.cards.some((card) => {
+      if (card.type !== "sentence" || card.sourceId !== `hunt:${caseItem.id}`) return false;
+      const details = next.sentenceDetails.find((item) => item.cardId === card.id);
+      return details?.grammarNote.includes(gapKey) ?? false;
+    });
+    if (duplicated) continue;
+    next = addSentence(next, {
+      sentence,
+      translation: "",
+      keywords: "",
+      grammarNote: `[${error.tag}:${error.original}] ${GRAMMAR_ERROR_TAG_LABELS[error.tag]}：${error.original} → ${error.correction}。${error.explanation}`,
+      sourceId: `hunt:${caseItem.id}`,
+      note: `找错案件：${caseItem.title}（${GRAMMAR_ERROR_TAG_LABELS[error.tag]}）`,
+      tags: "语法"
+    });
+    added += 1;
+  }
+  return { data: next, added };
+};
 
 export interface HuntTagStat {
   tag: GrammarErrorTag;

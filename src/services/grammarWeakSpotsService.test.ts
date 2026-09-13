@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { appendGrammarEvent, clearGrammarTelemetry } from "./grammarTelemetry";
-import { computeWeakSpots, scheduleCardsForToday } from "./grammarWeakSpotsService";
+import { computeWeakSpots, computeWeakSpotsReport, scheduleCardsForToday } from "./grammarWeakSpotsService";
 import type { AppData, Card, DiaryEntry, Schedule } from "../types";
 
 const iso = (offsetDays: number) =>
@@ -43,7 +43,7 @@ const makeDiaryEntry = (id: string, tag: "tense" | "sv_agreement", original: str
 });
 
 const baseData = (overrides: Partial<AppData>): AppData =>
-  ({ cards: [], schedules: [], diaryEntries: [], ...overrides }) as unknown as AppData;
+  ({ cards: [], schedules: [], diaryEntries: [], sentenceDetails: [], ...overrides }) as unknown as AppData;
 
 beforeEach(() => {
   clearGrammarTelemetry();
@@ -121,5 +121,120 @@ describe("grammarWeakSpotsService（R08 弱点档案）", () => {
     const c2 = next.schedules.find((schedule) => schedule.cardId === "c2");
     expect(new Date(c1!.nextReviewAt).getTime()).toBeLessThanOrEqual(Date.now());
     expect(new Date(c2!.nextReviewAt).getTime()).toBeGreaterThan(Date.now());
+  });
+
+  it("R02：复习失败经 hunt 来源卡的 [tag] token 回溯罪名，且关联卡可一键复习", () => {
+    appendGrammarEvent({
+      kind: "grammar_review_result",
+      cardId: "c-hunt",
+      mode: "cloze",
+      attempts: 2,
+      passed: false,
+      sourceId: "hunt:hunt-tense-jump",
+      ts: iso(0)
+    });
+
+    const data = baseData({
+      cards: [makeCard("c-hunt", "Yesterday I went to the park.", "hunt:hunt-tense-jump")],
+      sentenceDetails: [
+        {
+          cardId: "c-hunt",
+          sentence: "Yesterday I went to the park.",
+          translation: "",
+          keywords: [],
+          grammarNote: "[tense:go] 时态变形：go → went。过去的时间要用过去式。",
+          audioUrl: ""
+        }
+      ]
+    });
+
+    const spots = computeWeakSpots(data);
+    const tenseSpot = spots.find((spot) => spot.tag === "tense");
+    expect(tenseSpot).toBeDefined();
+    expect(tenseSpot?.relatedCardIds).toContain("c-hunt");
+    expect(tenseSpot?.totalCount).toBe(1);
+  });
+
+  it("R02：lesson 来源卡无结构化罪名 token，诚实不计入（回归保护）", () => {
+    appendGrammarEvent({
+      kind: "grammar_review_result",
+      cardId: "c-lesson",
+      mode: "cloze",
+      attempts: 1,
+      passed: false,
+      sourceId: "lesson:lesson-01-am",
+      ts: iso(0)
+    });
+
+    const data = baseData({
+      cards: [makeCard("c-lesson", "I am Xiaomei.", "lesson:lesson-01-am")],
+      sentenceDetails: [
+        {
+          cardId: "c-lesson",
+          sentence: "I am Xiaomei.",
+          translation: "",
+          keywords: [],
+          grammarNote: "I am 是一对固定搭档。",
+          audioUrl: ""
+        }
+      ]
+    });
+
+    expect(computeWeakSpots(data)).toEqual([]);
+  });
+
+  it("R06：罪名下有卡跃迁 mastered 且此后未再犯 → 进「已战胜」而非活跃榜", () => {
+    // 先犯错（-3 天），后治愈（-1 天 mastered）
+    appendGrammarEvent({ kind: "diary_issue_tag", entryId: "d1", issueIndex: 0, tag: "tense", ts: iso(-3) });
+    appendGrammarEvent({ kind: "card_mastered", cardId: "c1", sourceId: "diary:d1", tag: "tense", ts: iso(-1) });
+
+    const data = baseData({
+      diaryEntries: [makeDiaryEntry("d1", "tense", "I go yesterday", "I went yesterday")]
+    });
+
+    const report = computeWeakSpotsReport(data);
+    expect(report.active).toEqual([]);
+    expect(report.healed).toHaveLength(1);
+    expect(report.healed[0].tag).toBe("tense");
+    expect(report.healed[0].relapsed).toBe(false);
+  });
+
+  it("R06：治愈后又犯同一罪名 → 回潮回到活跃榜，不算已战胜", () => {
+    // 先治愈（-3 天 mastered），后又犯（-1 天）
+    appendGrammarEvent({ kind: "card_mastered", cardId: "c1", sourceId: "diary:d1", tag: "tense", ts: iso(-3) });
+    appendGrammarEvent({ kind: "diary_issue_tag", entryId: "d2", issueIndex: 0, tag: "tense", ts: iso(-1) });
+
+    const data = baseData({
+      diaryEntries: [makeDiaryEntry("d2", "tense", "I see him yesterday", "I saw him yesterday")]
+    });
+
+    const report = computeWeakSpotsReport(data);
+    expect(report.healed).toEqual([]);
+    expect(report.active).toHaveLength(1);
+    expect(report.active[0].tag).toBe("tense");
+  });
+
+  it("R06：活跃榜与已战胜并存时各就各位；computeWeakSpots 向后兼容只返回活跃榜", () => {
+    // tense 治愈（mastered 在最后），article 仍活跃
+    appendGrammarEvent({ kind: "diary_issue_tag", entryId: "d1", issueIndex: 0, tag: "tense", ts: iso(-3) });
+    appendGrammarEvent({ kind: "card_mastered", cardId: "c1", sourceId: "diary:d1", tag: "tense", ts: iso(-1) });
+    appendGrammarEvent({
+      kind: "hunt_verdict",
+      caseId: "case-1",
+      tokenIndex: 0,
+      verdictKind: "wrongTag",
+      guessedTag: "article",
+      ts: iso(0)
+    });
+
+    const data = baseData({
+      diaryEntries: [makeDiaryEntry("d1", "tense", "I go", "I went")]
+    });
+
+    const report = computeWeakSpotsReport(data);
+    expect(report.healed.map((spot) => spot.tag)).toEqual(["tense"]);
+    expect(report.active.map((spot) => spot.tag)).toEqual(["article"]);
+    // 向后兼容：computeWeakSpots 只返回活跃榜
+    expect(computeWeakSpots(data).map((spot) => spot.tag)).toEqual(["article"]);
   });
 });
