@@ -1,16 +1,31 @@
 import { Check, GraduationCap, PlayCircle, RotateCcw, Sparkles, TrendingDown } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import AdventureScene from "../components/AdventureScene";
 import PageHeader from "../components/PageHeader";
 import type { AdventureSceneId } from "../components/AdventureScene";
 import type { GrammarLesson } from "../types";
-import { listGrammarLessons, summarizeLessonProgress } from "../services/lessonService";
+import { backfillLessonCoreSentences, getLessonStageLock, listGrammarLessons, summarizeLessonProgress, type LessonStageIndex } from "../services/lessonService";
 import { buildGrammarReviewSession, GRAMMAR_REVIEW_SESSION_LIMIT } from "../services/grammarReviewService";
-import { computeWeakSpots, scheduleCardsForToday, type WeakSpot } from "../services/grammarWeakSpotsService";
-import { appendGrammarEvent, buildGrammarTelemetryExport, getGrammarTelemetryStats } from "../services/grammarTelemetry";
+import { computeWeakSpotsReport, scheduleCardsForToday, type HealedSpot, type WeakSpot } from "../services/grammarWeakSpotsService";
+import { appendGrammarEvent, buildGrammarTelemetryExport, getGrammarTelemetryStats, listGrammarEventsByKind } from "../services/grammarTelemetry";
+import { buildLastWeekReport, type WeeklyReport } from "../services/grammarOutputService";
 import { downloadTextFile, nowIso } from "../services/storage";
+
+/** R06：已战胜的弱点——确证治愈（不是 7 天没犯被遗忘，而是有卡跃迁 mastered 且此后未再犯）。 */
+function HealedSpotsRow({ spots }: { spots: HealedSpot[] }) {
+  if (spots.length === 0) return null;
+  return (
+    <div className="healed-spots-row" aria-label="已战胜的弱点">
+      <Check size={15} aria-hidden="true" />
+      <p>
+        已战胜：{spots.map((spot) => spot.label).join("、")}
+        <span className="healed-spots-hint">——这些错你有卡片真正练会了，不是最近没遇到。</span>
+      </p>
+    </div>
+  );
+}
 
 /** R08：本周反复犯的语法错 Top 3——频率×新近加权，一键排进今日复习。 */
 function WeakSpotsCard({ spots }: { spots: WeakSpot[] }) {
@@ -89,20 +104,28 @@ interface CanDoMilestone {
   samples: string[];
 }
 
+/** R07：can-do 锚点与 24 课对齐——12（第一季收口）/ 18（进阶过半）/ 24（全剧终）。 */
 const CAN_DO_MILESTONES: CanDoMilestone[] = [
   {
     id: "can-do-m1",
-    afterLesson: 16,
-    title: "我能说出我想要什么、我必须做什么",
-    zh: "小美替你数了数：点餐、请假、开口求助——你的句子开始办正事了。",
-    samples: ["Can I have a milk tea?", "I want to travel.", "I must finish it today."]
+    afterLesson: 12,
+    title: "我能把昨天和明天都说清楚",
+    zh: "从现在到过去再到打算——第一季收官，你的句子已经能办日常的正事了。",
+    samples: ["I went to the park yesterday.", "I will call my mom tonight.", "I like reading because it is fun."]
   },
   {
     id: "can-do-m2",
-    afterLesson: 20,
-    title: "我能讲清楚今天发生了什么",
-    zh: "把一天连成一段话，不再是一串孤零零的句子——这就是进阶篇的收口。",
-    samples: ["I was busy and happy.", "It rained, so I stayed at home.", "I was late because the bus was late."]
+    afterLesson: 18,
+    title: "我能说出我想要什么、我必须做什么",
+    zh: "点餐、请假、开口求助——进阶过半，情态和比较让你的句子更灵活。",
+    samples: ["Can I have a milk tea?", "I want to travel.", "This one is better than that one."]
+  },
+  {
+    id: "can-do-m3",
+    afterLesson: 24,
+    title: "我能讲清楚已经发生和刚刚发生的事",
+    zh: "全剧终：完成时把「经历」和「影响」说清了——这就是进阶篇的收口。",
+    samples: ["I have finished my homework.", "I have been to Beijing.", "I have lost my key."]
   }
 ];
 
@@ -137,6 +160,28 @@ function CanDoCard({ milestone, onConfirm }: { milestone: CanDoMilestone; onConf
       </div>
       <button type="button" className="can-do-confirm" onClick={() => onConfirm(milestone.id)}>
         <Sparkles size={14} /> 小美替你盖章：我做到了
+      </button>
+    </section>
+  );
+}
+
+/** R14 周报卡：每周首次进入时展示上周一句话结论（不催不焦虑，看完即收起）。 */
+const WEEKLY_REPORT_KEY = "grammar-weekly-report-v1";
+
+function WeeklyReportCard({ report, onDismiss }: { report: WeeklyReport; onDismiss: () => void }) {
+  return (
+    <section className="can-do-card weekly-report-card" aria-label="上周小结">
+      <header className="can-do-head">
+        <span className="can-do-icon" aria-hidden="true">
+          <Sparkles size={17} />
+        </span>
+        <div className="can-do-heading">
+          <h2>上周小结</h2>
+          <p>{report.sentence}</p>
+        </div>
+      </header>
+      <button type="button" className="can-do-confirm" onClick={onDismiss}>
+        知道了，继续
       </button>
     </section>
   );
@@ -183,12 +228,38 @@ const LESSON_GROUPS: Array<{ id: string; label: string; hint: string; min: numbe
 ];
 
 export default function GrammarPathPage() {
-  const { data } = useAppData();
+  const { data, updateData } = useAppData();
   const lessons = useMemo(() => listGrammarLessons(), []);
+
+  // R05：漏斗第一环埋点——每次进入语法页记一条（lessonsDone 区分首访/继续态）。
+  // StrictMode 下 effect 会双跑，用 ref 保证一次挂载只记一条。
+  const pathViewTracked = useRef(false);
+  useEffect(() => {
+    if (pathViewTracked.current) return;
+    pathViewTracked.current = true;
+    appendGrammarEvent({
+      kind: "grammar_path_viewed",
+      lessonsDone: (data.grammarLessonsDone ?? []).length,
+      ts: nowIso()
+    });
+    // lessonsDone 取进入时的快照即可，不随完成动作重复上报
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // R04 存量回填：核心句没入队的已完成课，进语法页时静默补齐（幂等，空跑零成本）。
+  const backfillRan = useRef(false);
+  useEffect(() => {
+    if (backfillRan.current) return;
+    backfillRan.current = true;
+    updateData((latest) => backfillLessonCoreSentences(latest).data);
+  }, [updateData]);
+
   const summary = useMemo(() => summarizeLessonProgress(data), [data]);
   const nextId = summary.nextLesson?.id ?? null;
   const dueReviewCount = useMemo(() => buildGrammarReviewSession(data, GRAMMAR_REVIEW_SESSION_LIMIT).length, [data]);
-  const weakSpots = useMemo(() => computeWeakSpots(data), [data]);
+  const weakSpotsReport = useMemo(() => computeWeakSpotsReport(data), [data]);
+  const weakSpots = weakSpotsReport.active;
+  const healedSpots = weakSpotsReport.healed;
 
   // R23：里程碑达成 = 截至该课号的所有课都完成；已确认的存在独立 localStorage 键，不进 AppData。
   const [confirmedCanDos, setConfirmedCanDos] = useState<string[]>(readConfirmedCanDos);
@@ -211,40 +282,102 @@ export default function GrammarPathPage() {
     appendGrammarEvent({ kind: "can_do_confirmed", milestoneId, ts: nowIso() });
   };
 
+  // R14 周报：每周首次进入且上周有可说的内容时展示一次；已展示过的周不再出现。
+  const [weeklyReport, setWeeklyReport] = useState<WeeklyReport | null>(() => {
+    const report = buildLastWeekReport(data);
+    if (!report) return null;
+    try {
+      const shown = window.localStorage.getItem(WEEKLY_REPORT_KEY);
+      if (shown === report.weekStart) return null;
+    } catch {
+      // 忽略
+    }
+    return report;
+  });
+  const dismissWeeklyReport = () => {
+    if (weeklyReport) {
+      try {
+        window.localStorage.setItem(WEEKLY_REPORT_KEY, weeklyReport.weekStart);
+      } catch {
+        // 忽略
+      }
+    }
+    setWeeklyReport(null);
+  };
+
+  // F1 三关卡：关 1 完成时间读取器（取遥测最近一次 completed 事件，用于关 2 次日窗判定）。
+  const readCompletedAt = (lessonId: string): string | null => {
+    const events = listGrammarEventsByKind("grammar_lesson_completed").filter((e) => e.lessonId === lessonId);
+    return events.length > 0 ? events[events.length - 1].completedAt : null;
+  };
+
+  /** F1 三节点链：正课 → 次日回访 → 旧案重审（内嵌卡片下方，24 卡不膨胀为 72 平铺卡）。 */
+  const renderStageChain = (lesson: GrammarLesson) => {
+    const stage1Done = data.grammarLessonsDone.includes(lesson.id);
+    // 仅关 1 完成的课才显示后续两关（未学课只显示正课节点，保持路径简洁）
+    if (!stage1Done) return null;
+    const stages: Array<{ stage: LessonStageIndex; label: string; to: string }> = [
+      { stage: 1, label: "正课", to: `/grammar/lesson/${lesson.id}` },
+      { stage: 2, label: "回访", to: `/grammar/lesson/${lesson.id}/revisit` },
+      { stage: 3, label: "重审", to: `/grammar/lesson/${lesson.id}/reaudit` }
+    ];
+    return (
+      <div className="lesson-stage-chain" aria-label={`第 ${lesson.number} 课三关卡`}>
+        {stages.map(({ stage, label, to }, i) => {
+          const lock = getLessonStageLock(data, lesson.id, stage, readCompletedAt);
+          const stateClass = lock.state === "done" ? "done" : lock.state === "unlocked" ? "open" : "locked";
+          const node = (
+            <span className={`lesson-stage-node ${stateClass}`} key={stage}>
+              {lock.state === "done" ? "●" : lock.state === "unlocked" ? "○" : "🔒"} {label}
+            </span>
+          );
+          return (
+            <span className="lesson-stage-chain-item" key={stage}>
+              {i > 0 && <span className="lesson-stage-chain-sep" aria-hidden="true">─</span>}
+              {lock.state === "locked" ? node : <Link to={to} className="lesson-stage-link">{node}</Link>}
+            </span>
+          );
+        })}
+      </div>
+    );
+  };
+
   const renderLessonCard = (lesson: GrammarLesson) => {
     const isDone = data.grammarLessonsDone.includes(lesson.id);
     const isNext = lesson.id === nextId;
     return (
-      <Link
-        to={`/grammar/lesson/${lesson.id}`}
-        key={lesson.id}
-        className={`lesson-path-card${isDone ? " done" : ""}${isNext ? " next" : ""}`}
-      >
-        <div className="lesson-path-art" aria-hidden="true">
-          {lesson.cover ? (
-            <img src={lesson.cover} alt="" loading="lazy" />
-          ) : (
-            <AdventureScene scene={lesson.scene as AdventureSceneId} />
-          )}
-        </div>
-        <div className="lesson-path-body">
-          <div className="lesson-path-head">
-            <span className="lesson-path-episode">{lesson.episode}</span>
-            <span className="lesson-path-grammar" title={lesson.grammarLabel}>{lesson.grammarLabel}</span>
-            {isDone && <span className="lesson-path-done">已完成</span>}
-            {isNext && !isDone && <span className="lesson-path-next">下一课</span>}
+      <div key={lesson.id} className={`lesson-path-card-wrap${isDone ? " done" : ""}${isNext ? " next" : ""}`}>
+        <Link
+          to={`/grammar/lesson/${lesson.id}`}
+          className={`lesson-path-card${isDone ? " done" : ""}${isNext ? " next" : ""}`}
+        >
+          <div className="lesson-path-art" aria-hidden="true">
+            {lesson.cover ? (
+              <img src={lesson.cover} alt="" loading="lazy" />
+            ) : (
+              <AdventureScene scene={lesson.scene as AdventureSceneId} />
+            )}
           </div>
-          <strong>第 {lesson.number} 课 · {lesson.title}</strong>
-          <p>{lesson.sceneSetupZh}</p>
-          <span className="lesson-path-cta">
-            {isDone ? "再学一遍" : isNext ? (
-              <>
-                <PlayCircle size={14} /> 开始这一课
-              </>
-            ) : "去学习"}
-          </span>
-        </div>
-      </Link>
+          <div className="lesson-path-body">
+            <div className="lesson-path-head">
+              <span className="lesson-path-episode">{lesson.episode}</span>
+              <span className="lesson-path-grammar" title={lesson.grammarLabel}>{lesson.grammarLabel}</span>
+              {isDone && <span className="lesson-path-done">已完成</span>}
+              {isNext && !isDone && <span className="lesson-path-next">下一课</span>}
+            </div>
+            <strong>第 {lesson.number} 课 · {lesson.title}</strong>
+            <p>{lesson.sceneSetupZh}</p>
+            <span className="lesson-path-cta">
+              {isDone ? "再学一遍" : isNext ? (
+                <>
+                  <PlayCircle size={14} /> 开始这一课
+                </>
+              ) : "去学习"}
+            </span>
+          </div>
+        </Link>
+        {renderStageChain(lesson)}
+      </div>
     );
   };
 
@@ -264,24 +397,61 @@ export default function GrammarPathPage() {
         }
       />
 
-      <div className="lesson-path-entry">
-        <p>已经学过的语法点，可以去侦探那里找一找漏洞来复习。</p>
-        <div className="lesson-path-entry-actions">
-          <Link to="/grammar/diary" className="primary-button">
-            写今日日记
-          </Link>
-          <Link to="/grammar/hunt" className="secondary-button">
-            去侦探找错
-          </Link>
-          {dueReviewCount > 0 && (
-            <Link to="/grammar/review" className="secondary-button">
-              <RotateCcw size={14} /> 语法复习 · {dueReviewCount} 张到期
-            </Link>
-          )}
+      {/* R03 首访引导分态：零进度时主线「第 1 课」是唯一主 CTA，日记/找错降级；
+          有进度后主 CTA 是「继续第 N 课」。文案随进度出现，不对零基础说「已经学过的」。 */}
+      {summary.done === 0 ? (
+        <div className="lesson-path-entry">
+          <p>一切从这 6 分钟开始：先看小美怎么说，再跟着试一试。</p>
+          <div className="lesson-path-entry-actions">
+            {summary.nextLesson && (
+              <Link to={`/grammar/lesson/${summary.nextLesson.id}`} className="primary-button">
+                <PlayCircle size={16} /> 从第 1 课开始 · 小美的一天
+              </Link>
+            )}
+          </div>
+          {/* P2-1：两个次级入口拆成独立小卡，避免「写日记和侦探找错」被误读为一件事 */}
+          <div className="lesson-path-entry-secondary">
+            <span className="lesson-path-entry-secondary-lead">学完第 1 课后，这两个会更轻松：</span>
+            <Link to="/grammar/diary" className="lesson-path-mini-card">写日记</Link>
+            <Link to="/grammar/hunt" className="lesson-path-mini-card">侦探找错</Link>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="lesson-path-entry">
+          {/* P2-3：1-3 课进度时引导语口语化（「已经学过的语法点」对刚学一两课的人偏文绉绉） */}
+          <p>{summary.done <= 3 ? "学过的地方，可以去侦探那里找找漏洞来复习。" : "已经学过的语法点，可以去侦探那里找一找漏洞来复习。"}</p>
+          <div className="lesson-path-entry-actions">
+            {summary.nextLesson ? (
+              <Link to={`/grammar/lesson/${summary.nextLesson.id}`} className="primary-button">
+                <PlayCircle size={16} /> 继续第 {summary.nextLesson.number} 课 · {summary.nextLesson.title}
+              </Link>
+            ) : (
+              <Link to="/grammar/review" className="primary-button">
+                <RotateCcw size={15} /> 全部课程已完成 · 去复习巩固
+              </Link>
+            )}
+            <Link to="/grammar/diary" className="secondary-button">
+              写今日日记
+            </Link>
+            <Link to="/grammar/hunt" className="secondary-button">
+              去侦探找错
+            </Link>
+            {dueReviewCount > 0 && summary.nextLesson && (
+              <Link to="/grammar/review" className="secondary-button">
+                <RotateCcw size={14} /> 语法复习 · {dueReviewCount} 张到期
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
 
       {weakSpots.length > 0 && <WeakSpotsCard spots={weakSpots} />}
+
+      {/* R06：确证治愈列表——独立于活跃弱点榜，活跃榜为空也展示「已战胜」 */}
+      {healedSpots.length > 0 && <HealedSpotsRow spots={healedSpots} />}
+
+      {/* R14：每周首次进入的上周小结（一句话，看完即收起） */}
+      {weeklyReport && <WeeklyReportCard report={weeklyReport} onDismiss={dismissWeeklyReport} />}
 
       {pendingCanDo && <CanDoCard milestone={pendingCanDo} onConfirm={confirmCanDo} />}
 
@@ -302,7 +472,8 @@ export default function GrammarPathPage() {
         );
       })}
 
-      <TelemetryExportCard />
+      {/* R03：导出卡偏技术化，首访（零进度）不展示，避免稀释主线 */}
+      {summary.done > 0 && <TelemetryExportCard />}
     </div>
   );
 }

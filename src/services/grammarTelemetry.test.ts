@@ -93,6 +93,35 @@ describe("grammarTelemetry（R01 数据基建）", () => {
     expect(summary.diaryTagCounts.tense).toBe(1);
   });
 
+  it("R20：段级停留事件按段聚合（totalMs + samples）", () => {
+    appendGrammarEvent({
+      kind: "section_dwell",
+      lessonId: "lesson-21-have-done",
+      section: "watch",
+      dwellMs: 120000,
+      ts: "2026-09-13T00:00:00.000Z"
+    });
+    appendGrammarEvent({
+      kind: "section_dwell",
+      lessonId: "lesson-21-have-done",
+      section: "watch",
+      dwellMs: 30000,
+      ts: "2026-09-13T00:01:00.000Z"
+    });
+    appendGrammarEvent({
+      kind: "section_dwell",
+      lessonId: "lesson-21-have-done",
+      section: "challenge",
+      dwellMs: 95000,
+      ts: "2026-09-13T00:02:00.000Z"
+    });
+
+    const summary = summarizeGrammarTelemetry();
+    expect(summary.sectionDwell.watch).toEqual({ totalMs: 150000, samples: 2 });
+    expect(summary.sectionDwell.challenge).toEqual({ totalMs: 95000, samples: 1 });
+    expect(summary.sectionDwell.practice).toBeUndefined();
+  });
+
   it("清空后回到空态", () => {
     appendGrammarEvent({ kind: "deep_dive_expanded", lessonId: "lesson-01-am", ts: "2026-09-12T00:00:00.000Z" });
     expect(listGrammarEvents()).toHaveLength(1);
@@ -101,5 +130,28 @@ describe("grammarTelemetry（R01 数据基建）", () => {
     const summary = summarizeGrammarTelemetry();
     expect(summary.totalEvents).toBe(0);
     expect(summary.huntFalsePositiveRate).toBe(0);
+  });
+
+  it("R05：漏斗第一环——进入路径页后 7 天内进课才计入转化", () => {
+    // 首访进入（lessonsDone=0），3 天后进首课 → 计入
+    appendGrammarEvent({ kind: "grammar_path_viewed", lessonsDone: 0, ts: "2026-09-07T10:00:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_lesson_started", lessonId: "lesson-01-am", ts: "2026-09-10T10:00:00.000Z" });
+    // 再次进入（已有进度），之后没进课 → 不计入
+    appendGrammarEvent({ kind: "grammar_path_viewed", lessonsDone: 3, ts: "2026-09-12T10:00:00.000Z" });
+
+    const summary = summarizeGrammarTelemetry();
+    expect(summary.pathFunnel.views).toBe(2);
+    expect(summary.pathFunnel.firstVisitViews).toBe(1);
+    expect(summary.pathFunnel.pathToLessonWithin7d).toBe(1);
+    expect(summary.pathFunnel.pathToLessonRate7d).toBeCloseTo(0.5);
+  });
+
+  it("R05：进课发生在进入路径页之前或超过 7 天，都不算转化", () => {
+    appendGrammarEvent({ kind: "grammar_lesson_started", lessonId: "lesson-01-am", ts: "2026-09-01T10:00:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_path_viewed", lessonsDone: 0, ts: "2026-09-10T10:00:00.000Z" });
+
+    const summary = summarizeGrammarTelemetry();
+    expect(summary.pathFunnel.pathToLessonWithin7d).toBe(0);
+    expect(summary.pathFunnel.pathToLessonRate7d).toBe(0);
   });
 });

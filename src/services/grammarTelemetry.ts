@@ -33,6 +33,28 @@ export interface GrammarLessonStartedEvent {
   ts: string;
 }
 
+/** F1 关 2 回访关进入事件（F4 口径）：次日回访率的核心分子。hoursSinceStage1 衡量回访时效性。 */
+export interface GrammarRevisitStartedEvent {
+  kind: "grammar_revisit_started";
+  lessonId: string;
+  /** 距关 1 完成的小时数（严格次日窗 20–28h 为有效回访）。 */
+  hoursSinceStage1: number;
+  ts: string;
+}
+
+/** F1 关 2 回访关完成事件（F4 口径）：G1 提取摩擦指标——一次通过率目标 50–70%。 */
+export interface GrammarRevisitCompletedEvent {
+  kind: "grammar_revisit_completed";
+  lessonId: string;
+  /** 一次提取成功题数（无提示凭记忆即对）。 */
+  firstTryCount: number;
+  totalCount: number;
+  /** 回马枪题一次是否通过（无回马枪时为 null）。 */
+  ambushFirstTry: boolean | null;
+  durationMs: number;
+  ts: string;
+}
+
 /** can-do 能力里程碑确证（R23）：完整感收口的记录，验收「确证仪式」被使用。 */
 export interface CanDoConfirmedEvent {
   kind: "can_do_confirmed";
@@ -187,7 +209,9 @@ export type GrammarTelemetryEvent =
   | SectionDwellEvent
   | GrammarPathViewedEvent
   | CardMasteredEvent
-  | GrammarAmbushResultEvent;
+  | GrammarAmbushResultEvent
+  | GrammarRevisitStartedEvent
+  | GrammarRevisitCompletedEvent;
 
 const memoryEvents: GrammarTelemetryEvent[] = [];
 

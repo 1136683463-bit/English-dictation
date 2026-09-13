@@ -33,11 +33,17 @@ import SettingsPage from "./pages/SettingsPage";
 import UnitsPage from "./pages/UnitsPage";
 import AdventurePage from "./pages/AdventurePage";
 import AdventurePlayPage from "./pages/AdventurePlayPage";
+import AdventureWorldsPage from "./pages/AdventureWorldsPage";
+import GatePlayPage from "./pages/GatePlayPage";
 import GrammarPathPage from "./pages/GrammarPathPage";
 import GrammarReviewPage from "./pages/GrammarReviewPage";
 import GrammarLessonPage from "./pages/GrammarLessonPage";
+import GrammarRevisitPage from "./pages/GrammarRevisitPage";
+import GrammarReauditPage from "./pages/GrammarReauditPage";
 import GrammarHuntPage from "./pages/GrammarHuntPage";
 import GrammarDiaryPage from "./pages/GrammarDiaryPage";
+import OnboardingGuide from "./components/OnboardingGuide";
+import MilestoneCelebration from "./components/MilestoneCelebration";
 
 const navItems = [
   { to: "/today", label: "首页", icon: Home, group: "训练台" },
@@ -158,10 +164,14 @@ const AppLayout = () => {
           <Route path="/today" element={<TodayPage />} />
           <Route path="/training" element={<TrainingPage />} />
           <Route path="/adventure" element={<AdventurePage />} />
+          <Route path="/adventure/worlds" element={<AdventureWorldsPage />} />
+          <Route path="/adventure/gate/:gateId" element={<GatePlayPage />} />
           <Route path="/adventure/:adventureId" element={<AdventurePlayPage />} />
           <Route path="/grammar" element={<GrammarPathPage />} />
           <Route path="/grammar/review" element={<GrammarReviewPage />} />
           <Route path="/grammar/lesson/:lessonId" element={<GrammarLessonPage />} />
+          <Route path="/grammar/lesson/:lessonId/revisit" element={<GrammarRevisitPage />} />
+          <Route path="/grammar/lesson/:lessonId/reaudit" element={<GrammarReauditPage />} />
           <Route path="/grammar/hunt" element={<GrammarHuntPage />} />
           <Route path="/grammar/diary" element={<GrammarDiaryPage />} />
           <Route path="/mistakes" element={<MistakeBookPage />} />
@@ -177,6 +187,8 @@ const AppLayout = () => {
           <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </main>
+      <OnboardingGuide />
+      <MilestoneCelebration />
     </div>
   );
 };
