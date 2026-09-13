@@ -133,6 +133,13 @@ const CAN_DO_MILESTONES: CanDoMilestone[] = [
     title: "我能说清楚他和她每天做什么",
     zh: "三单、存在句、疑问词全拿下——最顽固的小毛病都改掉了，你的日常表达已经又稳又准。",
     samples: ["He drinks milk every day.", "There is a book on the desk.", "Where is my key?"]
+  },
+  {
+    id: "can-do-m5",
+    afterLesson: 34,
+    title: "我能把时间和数量都说利索",
+    zh: "频率、打算、数量、最、命令、远近、过去进行——巩固篇全通关，日常对话里你几乎不会再卡壳。",
+    samples: ["I am going to watch a movie this weekend.", "How many books do you have?", "I was drawing at three."]
   }
 ];
 
@@ -233,7 +240,7 @@ const LESSON_GROUPS: Array<{ id: string; label: string; hint: string; min: numbe
   { id: "season-1", label: "第一季 · 初级篇", hint: "从第一句英语，到把昨天和明天说清楚", min: 1, max: 12 },
   { id: "season-2", label: "第二季 · 进阶篇", hint: "从「报句子」到「讲事情」：进行时、情态、比较、连句", min: 13, max: 24 },
   // F5 第三季 · 巩固篇（2026-09-13）：补 A2 高频缺口——三单 -s、there be、疑问词系统
-  { id: "season-3", label: "第三季 · 巩固篇", hint: "把最顽固的小毛病改掉：三单、存在句、疑问词", min: 25, max: 999 }
+  { id: "season-3", label: "第三季 · 巩固篇", hint: "把最顽固的小毛病改掉：三单、存在句、疑问词、频率、打算、数量……全部拿下", min: 25, max: 999 }
 ];
 
 export default function GrammarPathPage() {

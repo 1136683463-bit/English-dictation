@@ -1461,5 +1461,319 @@ export const huntCases: HuntCase[] = [
         explanation: "问名字用 What（是什么）；How 是问方式或状况。"
       }
     ]
+  },
+  {
+    // ── F5 第三季 · L28 频率副词案件 ──
+    id: "hunt-frequency-habit",
+    number: 37,
+    reviewed: true,
+    title: "习惯调查表",
+    scene: "小美帮老师统计全班的习惯",
+    tokens: [
+      "We", "asked", "everyone", "about", "their", "habits.",
+      "Lily", "go", "always", "to", "the", "library", "after", "class.",
+      "Tom", "is", "never", "late,", "and", "he", "often", "play", "football.",
+      "The", "girls", "are", "often", "happy", "after", "the", "game."
+    ],
+    errors: [
+      {
+        tokenIndex: 7,
+        tag: "word_order",
+        original: "go",
+        correction: "always goes",
+        explanation: "频率副词站在动词前面：always goes；三单还要加 -s。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "sv_agreement",
+        original: "play",
+        correction: "plays",
+        explanation: "he 是三单，动词加 -s：often plays。"
+      }
+    ]
+  },
+  {
+    // ── F5 第三季 · L29 be going to 案件 ──
+    id: "hunt-going-to-plan",
+    number: 38,
+    reviewed: true,
+    title: "周末计划板",
+    scene: "教室后墙贴着全班的周末计划",
+    tokens: [
+      "Our", "weekend", "plans:",
+      "I", "going", "to", "visit", "my", "grandma.",
+      "She", "are", "going", "to", "watch", "a", "movie.",
+      "We", "am", "going", "to", "play", "football", "on", "Sunday.",
+      "It", "will", "rains", "tomorrow,", "so", "bring", "an", "umbrella!"
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "missing_be",
+        original: "going",
+        correction: "am going",
+        explanation: "be going to 里的 be 不能丢：I am going to。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "sv_agreement",
+        original: "are",
+        correction: "is",
+        explanation: "She 是单数，be 用 is：She is going to。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "sv_agreement",
+        original: "am",
+        correction: "are",
+        explanation: "We 是一伙的，be 用 are：We are going to。"
+      },
+      {
+        tokenIndex: 26,
+        tag: "verb_form",
+        original: "rains",
+        correction: "rain",
+        explanation: "will 后面的动词穿原样：will rain——be going to 也一样后面是原形。"
+      }
+    ]
+  },
+  {
+    // ── F5 第三季 · L30 some/any/much/many 案件 ──
+    id: "hunt-some-any-fridge",
+    number: 39,
+    reviewed: true,
+    title: "冰箱盘点清单",
+    scene: "小美列了一张冰箱库存单",
+    tokens: [
+      "A", "list", "for", "the", "fridge:",
+      "There", "are", "some", "milk", "in", "the", "fridge.",
+      "Do", "we", "have", "some", "eggs?",
+      "I", "don't", "have", "some", "juice,",
+      "and", "there", "isn't", "many", "bread."
+    ],
+    errors: [
+      {
+        tokenIndex: 6,
+        tag: "sv_agreement",
+        original: "are",
+        correction: "is",
+        explanation: "milk 数不清，用 There is——数不清的东西当单数看。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "article",
+        original: "some",
+        correction: "any",
+        explanation: "疑问句里「一些」换 any：Do we have any eggs？"
+      },
+      {
+        tokenIndex: 20,
+        tag: "article",
+        original: "some",
+        correction: "any",
+        explanation: "否定句里也用 any：don't have any juice。"
+      },
+      {
+        tokenIndex: 25,
+        tag: "article",
+        original: "many",
+        correction: "much",
+        explanation: "bread 数不清，用 much：isn't much bread。"
+      }
+    ]
+  },
+  {
+    // ── F5 第三季 · L31 最高级案件 ──
+    id: "hunt-superlative-market",
+    number: 40,
+    reviewed: true,
+    title: "水果摊的招牌",
+    scene: "水果摊挂出了一块新招牌",
+    tokens: [
+      "Welcome", "to", "our", "shop!",
+      "This", "is", "biggest", "apple", "in", "town.",
+      "That", "one", "is", "the", "most", "cheapest,",
+      "and", "this", "is", "the", "goodest", "orange.",
+      "Our", "fruit", "is", "the", "freshest", "than", "anywhere", "else."
+    ],
+    errors: [
+      {
+        tokenIndex: 6,
+        tag: "article",
+        original: "biggest",
+        correction: "the biggest",
+        explanation: "最高级前必须站 the：the biggest。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "article",
+        original: "most",
+        correction: "去掉 most",
+        explanation: "most 和 -est 只能用一个：the cheapest。"
+      },
+      {
+        tokenIndex: 20,
+        tag: "article",
+        original: "goodest",
+        correction: "best",
+        explanation: "good 的最高级是 best，不是 goodest——不规则要单独记。"
+      },
+      {
+        tokenIndex: 27,
+        tag: "run_on",
+        original: "than",
+        correction: "in",
+        explanation: "最高级用 in（在……里），than 是比较级的搭档。"
+      }
+    ]
+  },
+  {
+    // ── F5 第三季 · L32 祈使句案件 ──
+    id: "hunt-imperative-signs",
+    number: 41,
+    reviewed: true,
+    title: "图书馆的告示牌",
+    scene: "小美看图书馆新贴的告示牌",
+    tokens: [
+      "Library", "rules:",
+      "You", "keep", "quiet,", "please.",
+      "Closing", "the", "door", "when", "you", "leave.",
+      "Don't", "eating", "in", "the", "reading", "room.",
+      "Returns", "your", "books", "before", "Friday."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "word_order",
+        original: "You",
+        correction: "去掉 You",
+        explanation: "祈使句动词直接开头，省掉 You：Keep quiet, please。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "verb_form",
+        original: "Closing",
+        correction: "Close",
+        explanation: "祈使句动词穿原样：Close the door——-ing 是进行时的打扮。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "verb_form",
+        original: "eating",
+        correction: "eat",
+        explanation: "Don't + 动词原形：Don't eat。"
+      },
+      {
+        tokenIndex: 18,
+        tag: "verb_form",
+        original: "Returns",
+        correction: "Return",
+        explanation: "祈使句动词不加三单 -s：Return your books——没有主语就没有三单。"
+      }
+    ]
+  },
+  {
+    // ── F5 第三季 · L33 指示代词案件 ──
+    id: "hunt-pronoun-umbrella",
+    number: 42,
+    reviewed: true,
+    title: "失物招领的牌子",
+    scene: "下雨天，失物招领处立了块新牌子",
+    tokens: [
+      "Lost", "and", "Found:",
+      "This", "umbrella", "is", "me.",
+      "Those", "one", "is", "the", "teacher's,",
+      "and", "these", "gloves", "are", "her.",
+      "That", "one", "over", "there", "is", "your,"
+    ],
+    errors: [
+      {
+        tokenIndex: 6,
+        tag: "missing_be",
+        original: "me",
+        correction: "mine",
+        explanation: "「我的（东西）」是 mine；me 是「我」这个人。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "sv_agreement",
+        original: "one",
+        correction: "ones",
+        explanation: "Those 配复数：Those ones（那些个）。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "Those ones 是复数，用 are。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "missing_be",
+        original: "her",
+        correction: "hers",
+        explanation: "句尾「她的（东西）」用 hers——her 要贴在名词前面（her gloves）。"
+      },
+      {
+        tokenIndex: 22,
+        tag: "missing_be",
+        original: "your",
+        correction: "yours",
+        explanation: "句尾「你的（东西）」用 yours。"
+      }
+    ]
+  },
+  {
+    // ── F5 第三季 · L34 过去进行时案件 ──
+    id: "hunt-past-rainy-day",
+    number: 43,
+    reviewed: true,
+    title: "雨天的日记",
+    scene: "小美翻开上周的日记",
+    tokens: [
+      "Last", "Sunday,", "it", "was", "rain", "hard.",
+      "I", "was", "draw", "at", "home", "all", "afternoon.",
+      "Mom", "were", "cooking", "in", "the", "kitchen,",
+      "and", "my", "brother", "was", "play", "games.",
+      "What", "was", "you", "doing", "then?"
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "verb_form",
+        original: "rain",
+        correction: "raining",
+        explanation: "过去正在下雨：was raining——be 后面的动词要穿 -ing 外套。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "verb_form",
+        original: "draw",
+        correction: "drawing",
+        explanation: "was drawing——-ing 外套不能丢。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "sv_agreement",
+        original: "were",
+        correction: "was",
+        explanation: "Mom 是单数，过去版 be 用 was。"
+      },
+      {
+        tokenIndex: 23,
+        tag: "verb_form",
+        original: "play",
+        correction: "playing",
+        explanation: "was playing——进行时的动词必须穿 -ing。"
+      },
+      {
+        tokenIndex: 26,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "you 的过去版 be 是 were。"
+      }
+    ]
   }
 ];

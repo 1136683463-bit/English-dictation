@@ -4972,6 +4972,1289 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "问「正在找什么」：What are you looking for？are 后面动词穿 -ing 外套。"
     },
     huntCaseIds: ["hunt-question-words"]
+  },
+  {
+    // ── 第三季巩固篇 · R4（L28 频率副词）：always/often/never 与三单天然同季连排（一般现在时习惯）──
+    id: "lesson-28-frequency",
+    number: 28,
+    title: "我总是早到",
+    grammarLabel: "频率副词 · always / often / never",
+    episode: "小美的一天 ㉘",
+    scene: "campus",
+    cover: cover1,
+    sceneSetupZh: "周一早上，小美发现自己总是第一个到教室。",
+    dialogueEn: "You are always early!",
+    dialogueZh: "同桌惊讶地说。",
+    intentZh: "我总是早到。",
+    targetSentence: "I always arrive early.",
+    blocks: [
+      { text: "I", role: "我" },
+      { text: "always", role: "总是（小标签）" },
+      { text: "arrive", role: "到" },
+      { text: "early", role: "早" }
+    ],
+    oneLineRule: "说「总是、经常、从不」用频率副词，它站在普通动词前面、be 动词后面：I always go / She is always happy。",
+    examples: [
+      { en: "I always arrive early.", zh: "我总是早到。" },
+      { en: "She often reads at night.", zh: "她经常晚上看书。" },
+      { en: "He never eats candy.", zh: "他从不吃糖。" },
+      { en: "They are always happy.", zh: "他们总是很开心。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "You are always early!", zh: "同桌惊讶地说。" },
+      { who: "npc", en: "Do you ever come late?", zh: "她又好奇地问：你迟到过吗？" },
+      { who: "me", en: "I always arrive early.", zh: "轮到你说了——我总是早到。" }
+    ],
+    contrast: [
+      {
+        wrong: "I go always to school early.",
+        wrongMark: "go always",
+        correct: "I always go to school early.",
+        whyZh: "频率副词站在普通动词前面：always go。它不能跑到动词后面去。"
+      },
+      {
+        wrong: "She always is happy.",
+        wrongMark: "always is",
+        correct: "She is always happy.",
+        whyZh: "be 动词前面反过来：频率副词站在 be 后面——is always，不是 always is。"
+      },
+      {
+        wrong: "He never doesn't eat candy.",
+        wrongMark: "doesn't",
+        correct: "He never eats candy.",
+        whyZh: "never 本身就是「从不」，再加 don't 就双重否定了——英语一个否定就够，never 出场动词照样肯定形。"
+      },
+      {
+        wrong: "He play often football.",
+        wrongMark: "play often",
+        correct: "He often plays football.",
+        whyZh: "两个错：频率副词站在动词前（often plays），三单动词加 -s（plays）。"
+      },
+      {
+        wrong: "I am always arrive early.",
+        wrongMark: "am",
+        correct: "I always arrive early.",
+        whyZh: "「总是早到」是习惯动作，动词 arrive 本身就够，不用加 be——be 后面接形容词，不接动作。"
+      },
+      {
+        wrong: "They often are late.",
+        wrongMark: "often are",
+        correct: "They are often late.",
+        whyZh: "be 动词的特殊规矩：频率副词跟在 be 后面——are often，不是 often are。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I always arrive early.", zh: "我总是早到。" },
+      { label: "否定", en: "He never eats candy.", zh: "他从不吃糖。", noteZh: "never 就是否定，动词照样肯定形（eats），不再加 don't。" },
+      { label: "疑问", en: "Do you often read at night?", zh: "你经常晚上看书吗？", noteZh: "问句请 do 帮忙，often 站在动词 read 前面。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说你的阅读习惯", en: "I often read at night.", zh: "我经常晚上看书。" },
+      { sceneZh: "说同桌从不吃糖", en: "He never eats candy.", zh: "他从不吃糖。" },
+      { sceneZh: "形容你们班的气氛", en: "They are always happy.", zh: "他们总是很开心。" }
+    ],
+    deepDive: {
+      title: "频率副词的位置：动词前、be 后，为什么？",
+      paragraphs: [
+        "普通动词（go、read、play）：频率副词站在它前面——I always go、She often reads。",
+        "be 动词（am/is/are）反过来：频率副词站在它后面——She is always happy、They are often late。",
+        "一句话记：「动作前，be 后」。be 是特例，跟它换个位置就行。",
+        "频率从高到低：always（总是）→ usually（通常）→ often（经常）→ sometimes（有时）→ never（从不）。",
+        "never 自带否定：He never eats，不再加 don't——一个否定就够。"
+      ]
+    },
+    summary: {
+      rule: "频率副词：动作前，be 后；never 自带否定不加 don't。",
+      points: [
+        "I always go. —— 动词前",
+        "She is always happy. —— be 后",
+        "He never eats. —— never 自带否定"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我总是早到。",
+        before: "I",
+        after: "arrive early.",
+        options: ["always", "am always", "go always"],
+        answer: "always",
+        explain: "频率副词站在动词 arrive 前面：always arrive。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：她经常晚上看书。",
+        tokens: ["She", "often", "reads", "at", "night."],
+        answer: "She often reads at night.",
+        explain: "often 站在动词 reads 前面，三单 reads 加 -s。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：他从不吃糖。",
+        tokens: ["He", "never", "eats", "candy."],
+        answer: "He never eats candy.",
+        explain: "never 自带否定，动词 eats 照样肯定形。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["She", "always", "is", "happy."],
+        wrongToken: "always",
+        answer: "always",
+        correctionZh: "be 后面才是频率副词的位置：She is always happy。",
+        explain: "be 动词的特殊规矩：频率副词跟在 be 后面。"
+      },
+      {
+        // R8 跨课复现：上一课（L27 疑问词）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我的钥匙在哪？",
+        tokens: ["Where", "is", "my", "key?"],
+        answer: "Where is my key?",
+        explain: "复现第 27 课：问地方用 Where + be。"
+      },
+      {
+        // R9 变形/替换：换动词类型（动作→be），频率副词位置跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I always arrive early.」把「早到」换成「开心（happy）」，always 的位置要怎么变？",
+        replaceBase: "I always arrive early.",
+        replaceTarget: "换成「我总是开心」（用 be）",
+        options: ["am always", "always am", "always is"],
+        answer: "am always",
+        explain: "happy 是形容词，要用 be；频率副词跟在 be 后面：I am always happy。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我总是早到。",
+        tokens: ["I", "always", "arrive", "early."],
+        distractors: ["am"],
+        answer: "I always arrive early."
+      },
+      {
+        promptZh: "你想说：他经常踢足球。",
+        tokens: ["He", "often", "plays", "football."],
+        distractors: ["play"],
+        answer: "He often plays football."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡一致的否定变体题
+        promptZh: "你想说：他从不吃糖。",
+        tokens: ["He", "never", "eats", "candy."],
+        distractors: ["doesn't", "don't"],
+        answer: "He never eats candy."
+      },
+      {
+        promptZh: "你想说：他们总是很开心。",
+        tokens: ["They", "are", "always", "happy."],
+        distractors: ["always are"],
+        answer: "They are always happy."
+      }
+    ],
+    recall: {
+      promptZh: "朋友问你怎么总是第一个到教室。凭记忆，写出那句英文。",
+      intentZh: "我总是早到。",
+      answer: "I always arrive early.",
+      noteZh: "频率副词站在动词前面：always arrive。"
+    },
+    huntCaseIds: ["hunt-frequency-habit"]
+  },
+  {
+    // ── 第三季巩固篇 · R5（L29 be going to）：S2 列出，与 L12 will 形成对比对，复用对比课模板 ──
+    id: "lesson-29-be-going-to",
+    number: 29,
+    title: "我打算去看电影",
+    grammarLabel: "将来时 · be going to",
+    episode: "小美的一天 ㉙",
+    scene: "city",
+    cover: cover12,
+    sceneSetupZh: "周五放学，小美和同学约周末的计划。",
+    dialogueEn: "What are you going to do this weekend?",
+    dialogueZh: "同学问你。",
+    intentZh: "我打算去看电影。",
+    targetSentence: "I am going to watch a movie.",
+    blocks: [
+      { text: "I am going to", role: "我打算" },
+      { text: "watch", role: "看（原样）" },
+      { text: "a movie", role: "一场电影" }
+    ],
+    oneLineRule: "说「打算做、就要做」用 be going to + 动词原形：I am going to watch。be 跟着主语变（am/is/are），going to 不变。",
+    examples: [
+      { en: "I am going to watch a movie.", zh: "我打算去看电影。" },
+      { en: "She is going to visit her grandma.", zh: "她打算去看外婆。" },
+      { en: "We are going to play football.", zh: "我们打算去踢足球。" },
+      { en: "It is going to rain.", zh: "（看这天）要下雨了。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What are you going to do this weekend?", zh: "同学问你。" },
+      { who: "npc", en: "The new movie is really good.", zh: "她补了一句：那部新电影很不错。" },
+      { who: "me", en: "I am going to watch a movie.", zh: "轮到你说了——你打算去看电影。" }
+    ],
+    contrast: [
+      {
+        wrong: "I going to watch a movie.",
+        wrongMark: null,
+        correct: "I am going to watch a movie.",
+        whyZh: "be going to 里的 be 不能丢——I am going to。be 跟着主语变（am/is/are），少了它句子就塌了。"
+      },
+      {
+        wrong: "I am going to watching.",
+        wrongMark: "watching",
+        correct: "I am going to watch a movie.",
+        whyZh: "going to 后面的动词穿原样，不穿 -ing 外套：going to watch。和 will 后面的动词一个规矩。"
+      },
+      {
+        wrong: "She are going to visit her grandma.",
+        wrongMark: "are",
+        correct: "She is going to visit her grandma.",
+        whyZh: "be 跟着主语变：She 是单数用 is。going to 不变，变的是前面的 be。"
+      },
+      {
+        wrong: "I will going to watch a movie.",
+        wrongMark: "will going",
+        correct: "I am going to watch a movie.",
+        whyZh: "will 和 be going to 都说「将来」，但两个不能挤一起——选一个：I will watch 或 I am going to watch。"
+      },
+      {
+        wrong: "Are you going to watch?",
+        wrongMark: null,
+        correct: "You are going to watch.",
+        whyZh: "告诉别人「你打算看」用陈述句 You are。Are you 开头是问句——这里要答，不是要问。"
+      },
+      {
+        wrong: "It will rains tomorrow.",
+        wrongMark: "rains",
+        correct: "It is going to rain tomorrow.",
+        whyZh: "两个错：will 后动词要原形（rain 不是 rains）；说「看迹象要发生」，be going to 比 will 更贴切。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I am going to watch a movie.", zh: "我打算去看电影。" },
+      { label: "否定", en: "I am not going to watch a movie.", zh: "我不打算去看电影。", noteZh: "在 be 后面加 not：am not going to。" },
+      { label: "疑问", en: "Are you going to watch a movie?", zh: "你打算去看电影吗？", noteZh: "把 be 搬到句首：Are you going to……？" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说周末计划", en: "I am going to visit my grandma.", zh: "我打算去看外婆。" },
+      { sceneZh: "看乌云说要下雨", en: "It is going to rain.", zh: "要下雨了。" },
+      { sceneZh: "问同学的打算", en: "What are you going to do?", zh: "你打算做什么？" }
+    ],
+    deepDive: {
+      title: "be going to 和 will 都是「将来」，怎么选？",
+      paragraphs: [
+        "be going to：早有打算、计划好的事，或看迹象就要发生——I am going to watch a movie（早计划好了）/ It is going to rain（看乌云就知道）。",
+        "will：说话那一刻才决定的、或承诺——I will call you tonight（刚决定的）。",
+        "初学者不用纠结：很多情况下两个能互换。先记住一个倾向——「有计划用 be going to，临时决定用 will」。",
+        "形状上：will 永不变形（will go）；be going to 的 be 跟着主语变（am/is/are going to），going to 不变。"
+      ]
+    },
+    summary: {
+      rule: "打算/就要 = be going to + 动词原形，be 跟着主语变。",
+      points: [
+        "I am going to watch. —— be + going to + 原形",
+        "She is going to visit. —— be 跟着主语变 is",
+        "Are you going to watch? —— 问句：be 搬句首"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我打算去看电影。",
+        before: "I",
+        after: "going to watch a movie.",
+        options: ["am", "is", "are"],
+        answer: "am",
+        explain: "I 的 be 搭档是 am：I am going to watch。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：她打算去看外婆。",
+        tokens: ["She", "is", "going", "to", "visit", "her", "grandma."],
+        answer: "She is going to visit her grandma.",
+        explain: "She 的 be 是 is，going to 后面的动词穿原样 visit。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想问：周末你打算做什么？",
+        tokens: ["What", "are", "you", "going", "to", "do", "this", "weekend?"],
+        answer: "What are you going to do this weekend?",
+        explain: "问句把 be（are）搬到主语 you 前面。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "going", "to", "watch", "a", "movie."],
+        wrongToken: "going",
+        answer: "going",
+        correctionZh: "going to 前面要有 be：I am going to watch a movie。",
+        explain: "be going to 里的 be 不能丢。"
+      },
+      {
+        // R8 跨课复现：上一课（L28 频率副词）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：他总是很开心。",
+        tokens: ["He", "is", "always", "happy."],
+        answer: "He is always happy.",
+        explain: "复现第 28 课：频率副词跟在 be 后面。"
+      },
+      {
+        // R9 变形/替换：换主语 I→She，be 跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I am going to watch a movie.」把主语 I 换成 She，am 要怎么变？",
+        replaceBase: "I am going to watch a movie.",
+        replaceTarget: "把 I 换成 She",
+        options: ["is", "am", "are"],
+        answer: "is",
+        explain: "be 跟着主语变：She is going to。going to 不变，变的是 be。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我打算去看电影。",
+        tokens: ["I", "am", "going", "to", "watch", "a", "movie."],
+        distractors: ["will"],
+        answer: "I am going to watch a movie."
+      },
+      {
+        promptZh: "你想说：我们打算去踢足球。",
+        tokens: ["We", "are", "going", "to", "play", "football."],
+        distractors: ["is"],
+        answer: "We are going to play football."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡一致的否定变体题
+        promptZh: "你想说：我不打算去看电影。",
+        tokens: ["I", "am", "not", "going", "to", "watch", "a", "movie."],
+        distractors: ["don't"],
+        answer: "I am not going to watch a movie."
+      },
+      {
+        promptZh: "看乌云，你想说：要下雨了。",
+        tokens: ["It", "is", "going", "to", "rain."],
+        distractors: ["rains", "will"],
+        answer: "It is going to rain."
+      }
+    ],
+    recall: {
+      promptZh: "同学问你周末打算做什么。凭记忆，写出那句英文。",
+      intentZh: "我打算去看电影。",
+      answer: "I am going to watch a movie.",
+      noteZh: "打算 = be going to + 动词原形，be 跟着主语变。"
+    },
+    huntCaseIds: ["hunt-going-to-plan"]
+  },
+  {
+    // ── 第三季巩固篇 · R6（L30 some/any/much/many）：S1 列出，名词复数（L11）已建 ──
+    id: "lesson-30-some-any",
+    number: 30,
+    title: "桌上有一些苹果",
+    grammarLabel: "数量词 · some / any / much / many",
+    episode: "小美的一天 ㉚",
+    scene: "mansion",
+    cover: cover11,
+    sceneSetupZh: "周末大扫除，小美帮你数家里的东西。",
+    dialogueEn: "Are there any apples on the table?",
+    dialogueZh: "你问她。",
+    intentZh: "桌上有一些苹果。",
+    targetSentence: "There are some apples on the table.",
+    blocks: [
+      { text: "There are", role: "有" },
+      { text: "some", role: "一些（肯定）" },
+      { text: "apples", role: "苹果（复数）" },
+      { text: "on the table", role: "在桌上" }
+    ],
+    oneLineRule: "「一些」：肯定句用 some，疑问句和否定句换 any。数得清的用 many，数不清的用 much。",
+    examples: [
+      { en: "There are some apples on the table.", zh: "桌上有一些苹果。" },
+      { en: "Are there any apples?", zh: "有苹果吗？" },
+      { en: "I don't have any candy.", zh: "我没有糖。" },
+      { en: "How many books do you have?", zh: "你有多少本书？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Are there any apples on the table?", zh: "你问她。" },
+      { who: "npc", en: "I am hungry.", zh: "她摸了摸肚子说。" },
+      { who: "me", en: "There are some apples on the table.", zh: "轮到你说了——桌上有一些苹果。" }
+    ],
+    contrast: [
+      {
+        wrong: "Are there some apples on the table?",
+        wrongMark: "some",
+        correct: "Are there any apples on the table?",
+        whyZh: "疑问句里「一些」要换 any，不用 some——some 是肯定句的搭档，疑问和否定要换 any。"
+      },
+      {
+        wrong: "I don't have some candy.",
+        wrongMark: "some",
+        correct: "I don't have any candy.",
+        whyZh: "否定句里也用 any 不用 some——don't have any。some 只在肯定句里用。"
+      },
+      {
+        wrong: "How much books do you have?",
+        wrongMark: "much",
+        correct: "How many books do you have?",
+        whyZh: "books 数得清，用 How many 问数量；much 问数不清的（水、牛奶、时间）。"
+      },
+      {
+        wrong: "How many milk is there?",
+        wrongMark: "many",
+        correct: "How much milk is there?",
+        whyZh: "milk 数不清，用 How much 问；many 只问数得清的一个一个的东西。"
+      },
+      {
+        wrong: "There are any apples on the table.",
+        wrongMark: "any",
+        correct: "There are some apples on the table.",
+        whyZh: "肯定句里用 some 不用 any——any 是疑问句和否定句的搭档，别把两家搞混。"
+      },
+      {
+        wrong: "I have much friends.",
+        wrongMark: "much",
+        correct: "I have many friends.",
+        whyZh: "friends 数得清，用 many；much 只配数不清的东西（much time、much water）。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "There are some apples on the table.", zh: "桌上有一些苹果。" },
+      { label: "否定", en: "There aren't any apples.", zh: "没有苹果。", noteZh: "否定句用 any：aren't any。" },
+      { label: "疑问", en: "Are there any apples?", zh: "有苹果吗？", noteZh: "疑问句也用 any：Are there any……？" }
+    ],
+    sceneSwings: [
+      { sceneZh: "看冰箱里的牛奶", en: "There is some milk in the fridge.", zh: "冰箱里有一些牛奶。" },
+      { sceneZh: "问有没有糖", en: "Do you have any candy?", zh: "你有糖吗？" },
+      { sceneZh: "问家里有几本书", en: "How many books do you have?", zh: "你有多少本书？" }
+    ],
+    deepDive: {
+      title: "some/any 是一家，much/many 是一家，怎么分？",
+      paragraphs: [
+        "some 和 any 都是「一些」：肯定句用 some（There are some apples），疑问句和否定句换 any（Are there any? / don't have any）。",
+        "much 和 many 都是「多」：数得清的用 many（many books、many friends），数不清的用 much（much milk、much time）。",
+        "问数量也是这个规矩：How many + 数得清（How many books），How much + 数不清（How much milk）。",
+        "一句话记：「肯定 some 疑问 any，数得清 many 数不清 much」。"
+      ]
+    },
+    summary: {
+      rule: "肯定用 some，疑问/否定用 any；数得清用 many，数不清用 much。",
+      points: [
+        "some apples —— 肯定句用 some",
+        "any apples? —— 疑问/否定用 any",
+        "many books / much milk —— 数得清 many，数不清 much"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想问：有苹果吗？",
+        before: "Are there",
+        after: "apples?",
+        options: ["any", "some", "much"],
+        answer: "any",
+        explain: "疑问句里「一些」用 any。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：桌上有一些苹果。",
+        tokens: ["There", "are", "some", "apples", "on", "the", "table."],
+        answer: "There are some apples on the table.",
+        explain: "肯定句里「一些」用 some。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想问：你有多少本书？",
+        tokens: ["How", "many", "books", "do", "you", "have?"],
+        answer: "How many books do you have?",
+        explain: "books 数得清，用 How many 问。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "don't", "have", "some", "candy."],
+        wrongToken: "some",
+        answer: "some",
+        correctionZh: "否定句用 any：I don't have any candy。",
+        explain: "some 只在肯定句，否定和疑问换 any。"
+      },
+      {
+        // R8 跨课复现：上一课（L29 be going to）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：要下雨了。",
+        tokens: ["It", "is", "going", "to", "rain."],
+        answer: "It is going to rain.",
+        explain: "复现第 29 课：看迹象要发生用 be going to。"
+      },
+      {
+        // R9 变形/替换：换句式（肯定→疑问），some 换 any（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「There are some apples.」把它改成疑问句「有苹果吗」，some 要怎么变？",
+        replaceBase: "There are some apples.",
+        replaceTarget: "改成疑问句",
+        options: ["any", "some", "much"],
+        answer: "any",
+        explain: "疑问句里 some 换 any：Are there any apples？"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：桌上有一些苹果。",
+        tokens: ["There", "are", "some", "apples", "on", "the", "table."],
+        distractors: ["any"],
+        answer: "There are some apples on the table."
+      },
+      {
+        promptZh: "你想问：有苹果吗？",
+        tokens: ["Are", "there", "any", "apples?"],
+        distractors: ["some"],
+        answer: "Are there any apples?"
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡一致的否定变体题
+        promptZh: "你想说：我没有糖。",
+        tokens: ["I", "don't", "have", "any", "candy."],
+        distractors: ["some", "much"],
+        answer: "I don't have any candy."
+      },
+      {
+        promptZh: "你想问：有多少牛奶？",
+        tokens: ["How", "much", "milk", "is", "there?"],
+        distractors: ["many"],
+        answer: "How much milk is there?"
+      }
+    ],
+    recall: {
+      promptZh: "妈妈问冰箱里有什么，你说有牛奶。凭记忆，写出那句英文。",
+      intentZh: "桌上有一些苹果。",
+      answer: "There are some apples on the table.",
+      noteZh: "肯定句「一些」用 some；疑问和否定换 any。"
+    },
+    huntCaseIds: ["hunt-some-any-fridge"]
+  },
+  {
+    // ── 第三季巩固篇 · R7（L31 最高级）：L17 比较级已建且标注「暂不涉」，顺势收尾 ──
+    id: "lesson-31-superlative",
+    number: 31,
+    title: "这是最大的苹果",
+    grammarLabel: "形容词最高级 · -est / most",
+    episode: "小美的一天 ㉛",
+    scene: "island",
+    cover: cover17,
+    sceneSetupZh: "水果摊前，小美挑三个苹果里最大的那个。",
+    dialogueEn: "Which one do you want?",
+    dialogueZh: "摊主问你。",
+    intentZh: "我要最大的那个。",
+    targetSentence: "I want the biggest apple.",
+    blocks: [
+      { text: "I want", role: "我要" },
+      { text: "the biggest", role: "最大的（the + -est）" },
+      { text: "apple", role: "苹果" }
+    ],
+    oneLineRule: "「最……」：短词加 -est（biggest），长词用 most（most beautiful），前面必须站 the——the biggest。",
+    examples: [
+      { en: "I want the biggest apple.", zh: "我要最大的那个苹果。" },
+      { en: "She is the tallest in our class.", zh: "她是全班最高的。" },
+      { en: "This is the most beautiful flower.", zh: "这是最漂亮的花。" },
+      { en: "It is the best movie this year.", zh: "这是今年最好的电影。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Which one do you want?", zh: "摊主问你。" },
+      { who: "npc", en: "Big or small?", zh: "他又补了一句：大的还是小的？" },
+      { who: "me", en: "I want the biggest apple.", zh: "轮到你说了——你要最大的那个。" }
+    ],
+    contrast: [
+      {
+        wrong: "I want biggest apple.",
+        wrongMark: null,
+        correct: "I want the biggest apple.",
+        whyZh: "「最……」前面必须站 the：the biggest。丢了 the，最大的那个就没归属了。"
+      },
+      {
+        wrong: "She is more taller than me.",
+        wrongMark: "more",
+        correct: "She is taller than me.",
+        whyZh: "比较级 more 和 -er 只能用一个——这句是复习：taller 已带 -er，most/more 不用来了。"
+      },
+      {
+        wrong: "She is the tallest than me.",
+        wrongMark: "than",
+        correct: "She is the tallest in our class.",
+        whyZh: "最高级比的是一群里挑一个，用 in（在……里）；than 是比较级（两者比）的搭档，别混。"
+      },
+      {
+        wrong: "This is the most biggest apple.",
+        wrongMark: "most",
+        correct: "This is the biggest apple.",
+        whyZh: "most 和 -est 只能用一个：biggest 已经带了 -est，most 就不用来了——和比较级 more/-er 一个规矩。"
+      },
+      {
+        wrong: "He is the most tall in our class.",
+        wrongMark: "most tall",
+        correct: "He is the tallest in our class.",
+        whyZh: "tall 是短词，自己加 -est：tallest，不请 most 帮忙——most 只配长词。"
+      },
+      {
+        wrong: "This is the goodest apple.",
+        wrongMark: "goodest",
+        correct: "This is the best apple.",
+        whyZh: "good 的「最好」是 best，不是 goodest——它和 good→better 一样不守规矩，要单独记。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I want the biggest apple.", zh: "我要最大的那个苹果。" },
+      { label: "否定", en: "This is not the best one.", zh: "这不是最好的那个。", noteZh: "not 放回 be 后面，the best 不变。" },
+      { label: "疑问", en: "Is this the biggest one?", zh: "这是最大的那个吗？", noteZh: "把 Is 搬到句首，the biggest 留在原地。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说班里谁最高", en: "She is the tallest in our class.", zh: "她是全班最高的。" },
+      { sceneZh: "夸花店里最好看的花", en: "This is the most beautiful flower.", zh: "这是最漂亮的花。" },
+      { sceneZh: "聊今年最好的电影", en: "It is the best movie this year.", zh: "这是今年最好的电影。" }
+    ],
+    deepDive: {
+      title: "比较级是「更」，最高级是「最」——形状是一对双胞胎",
+      paragraphs: [
+        "短词：比较级加 -er（bigger），最高级加 -est（biggest）——双写 g 的规矩一模一样。",
+        "长词：比较级用 more（more beautiful），最高级用 most（most beautiful）。",
+        "不守规矩的：good → better → best，bad → worse → worst——比较级和最高级都要单独记。",
+        "最大的差别：最高级前面必须站 the（the biggest），因为「最」的那一个是独一无二的；比较级后面用 than 接对手（bigger than）。"
+      ]
+    },
+    summary: {
+      rule: "最……= the + 短词 -est / the + most 长词，the 不能丢。",
+      points: [
+        "the biggest —— 短词：双写加 -est",
+        "the most beautiful —— 长词：most 站前面",
+        "good → the best —— 不规则，单独记"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：她是全班最高的。",
+        before: "She is",
+        after: "in our class.",
+        options: ["the tallest", "tallest", "the most tall"],
+        answer: "the tallest",
+        explain: "最高级前必须站 the，tall 是短词加 -est。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我要最大的那个苹果。",
+        tokens: ["I", "want", "the", "biggest", "apple."],
+        answer: "I want the biggest apple.",
+        explain: "the + biggest，the 不能丢。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：这是最漂亮的花。",
+        tokens: ["This", "is", "the", "most", "beautiful", "flower."],
+        answer: "This is the most beautiful flower.",
+        explain: "长词用 most，前面站 the。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["He", "is", "the", "most", "tallest", "in", "our", "class."],
+        wrongToken: "most",
+        answer: "most",
+        correctionZh: "most 和 -est 只能用一个：He is the tallest。",
+        explain: "tallest 已经带了 -est，most 不用来了。"
+      },
+      {
+        // R8 跨课复现：上一课（L30 some/any）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：我没有糖。",
+        tokens: ["I", "don't", "have", "any", "candy."],
+        answer: "I don't have any candy.",
+        explain: "复现第 30 课：否定句用 any。"
+      },
+      {
+        // R9 变形/替换：换形容词（短词最高→长词最高），形状跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I want the biggest apple.」把「大」换成「漂亮（beautiful）」，the biggest 要怎么变？",
+        replaceBase: "I want the biggest apple.",
+        replaceTarget: "把 biggest 换成「最漂亮」",
+        options: ["the most beautiful", "the beautifulest", "most beautiful"],
+        answer: "the most beautiful",
+        explain: "beautiful 是长词，用 the most beautiful——the 不能丢。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我要最大的那个苹果。",
+        tokens: ["I", "want", "the", "biggest", "apple."],
+        distractors: ["bigger"],
+        answer: "I want the biggest apple."
+      },
+      {
+        promptZh: "你想说：她是全班最高的。",
+        tokens: ["She", "is", "the", "tallest", "in", "our", "class."],
+        distractors: ["taller"],
+        answer: "She is the tallest in our class."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡一致的否定变体题
+        promptZh: "你想说：这不是最好的那个。",
+        tokens: ["This", "is", "not", "the", "best", "one."],
+        distractors: ["goodest"],
+        answer: "This is not the best one."
+      },
+      {
+        promptZh: "聊电影，你想说：这是今年最好的电影。",
+        tokens: ["It", "is", "the", "best", "movie", "this", "year."],
+        distractors: ["better"],
+        answer: "It is the best movie this year."
+      }
+    ],
+    recall: {
+      promptZh: "摊主问你要哪个苹果。凭记忆，写出那句英文。",
+      intentZh: "我要最大的那个。",
+      answer: "I want the biggest apple.",
+      noteZh: "最高级前必须站 the：the biggest。"
+    },
+    huntCaseIds: ["hunt-superlative-market"]
+  },
+  {
+    // ── 第三季巩固篇 · R8（L32 祈使句）：零术语叙事最友好的点（指令场景）──
+    id: "lesson-32-imperative",
+    number: 32,
+    title: "把门关上",
+    grammarLabel: "祈使句 · 动词开头",
+    episode: "小美的一天 ㉜",
+    scene: "mansion",
+    cover: cover18,
+    sceneSetupZh: "起风了，外婆朝屋里喊。",
+    dialogueEn: "Close the door, please!",
+    dialogueZh: "外婆朝你喊。",
+    intentZh: "把门关上。",
+    targetSentence: "Close the door.",
+    blocks: [
+      { text: "Close", role: "关（动词开头）" },
+      { text: "the door", role: "门" }
+    ],
+    oneLineRule: "请人做事：动词直接开头——Close the door。不说 You close（省掉主语），加 please 更礼貌。",
+    examples: [
+      { en: "Close the door.", zh: "把门关上。" },
+      { en: "Open your book.", zh: "打开书。" },
+      { en: "Please sit down.", zh: "请坐。" },
+      { en: "Don't be late!", zh: "别迟到！" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Close the door, please!", zh: "外婆朝你喊。" },
+      { who: "npc", en: "The wind is too strong.", zh: "她又补了一句：风太大了。" },
+      { who: "me", en: "OK! I will close it.", zh: "你应了一声——这就去关。" }
+    ],
+    contrast: [
+      {
+        wrong: "You close the door, please.",
+        wrongMark: "You",
+        correct: "Close the door, please.",
+        whyZh: "请人做事，动词直接开头，不说 You——省掉主语才是地道的请求。"
+      },
+      {
+        wrong: "Closing the door!",
+        wrongMark: "Closing",
+        correct: "Close the door!",
+        whyZh: "祈使句的动词穿原样（Close），不穿 -ing 外套——-ing 是进行时的打扮。"
+      },
+      {
+        wrong: "Please you open the book.",
+        wrongMark: "you",
+        correct: "Please open the book.",
+        whyZh: "please 后面直接跟动词原形，不用加 you——请人做事不需要点名主语。"
+      },
+      {
+        wrong: "Don't closing the door.",
+        wrongMark: "closing",
+        correct: "Don't close the door.",
+        whyZh: "「别做」是 Don't + 动词原形：Don't close。-ing 外套在祈使句里也不穿。"
+      },
+      {
+        wrong: "Not be late!",
+        wrongMark: "Not be",
+        correct: "Don't be late!",
+        whyZh: "「别……」用 Don't 开头：Don't be late。光 Not 不够劲，请 don't 来扛。"
+      },
+      {
+        wrong: "Closes the door, please.",
+        wrongMark: "Closes",
+        correct: "Close the door, please.",
+        whyZh: "祈使句的动词穿原样，不加三单 -s——没有主语，就没有三单这一说。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "Close the door, please.", zh: "请把门关上。" },
+      { label: "否定", en: "Don't open the window.", zh: "别开窗。", noteZh: "「别做」= Don't + 动词原形。" },
+      { label: "疑问", en: "Close the door, will you?", zh: "把门关上，好吗？", noteZh: "句尾加 will you? 更客气，还是祈使句。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "上课时老师喊", en: "Open your book.", zh: "打开书。" },
+      { sceneZh: "请客人坐", en: "Please sit down.", zh: "请坐。" },
+      { sceneZh: "提醒自己别迟到", en: "Don't be late!", zh: "别迟到！" }
+    ],
+    deepDive: {
+      title: "为什么祈使句不说 You？",
+      paragraphs: [
+        "请人做事时，「你」是明摆着的——英语干脆把 You 省掉，动词直接开头：Close the door（你，关门）。",
+        "礼貌三档：Close the door（直白）→ Close the door, please（加 please）→ Could you close the door?（最客气，变成问句）。",
+        "「别做」在前面垫 Don't：Don't open / Don't be late——Don't + 动词原形。",
+        "标语、说明书的句子全是祈使句：Push（推）、Pull（拉）、Turn left（左转）——看到动词裸开头，就是让你做事。"
+      ]
+    },
+    summary: {
+      rule: "请人做事：动词原形开头（省 You）；别做 = Don't + 原形。",
+      points: [
+        "Close the door. —— 动词开头",
+        "Please sit down. —— 加 please 更礼貌",
+        "Don't be late. —— Don't + 原形"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：把门关上。",
+        before: "",
+        after: "the door, please.",
+        options: ["Close", "You close", "Closing"],
+        answer: "Close",
+        explain: "祈使句动词直接开头，省掉 You。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：请坐下。",
+        tokens: ["Please", "sit", "down."],
+        answer: "Please sit down.",
+        explain: "please 后面直接跟动词原形。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：别开窗。",
+        tokens: ["Don't", "open", "the", "window."],
+        answer: "Don't open the window.",
+        explain: "「别做」= Don't + 动词原形。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["You", "open", "the", "book,", "please."],
+        wrongToken: "You",
+        answer: "You",
+        correctionZh: "省掉 You，动词直接开头：Open the book, please。",
+        explain: "请人做事不用点名主语。"
+      },
+      {
+        // R8 跨课复现：上一课（L31 最高级）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：她是全班最高的。",
+        tokens: ["She", "is", "the", "tallest", "in", "our", "class."],
+        answer: "She is the tallest in our class.",
+        explain: "复现第 31 课：最高级前站 the。"
+      },
+      {
+        // R9 变形/替换：换语气（请求→禁止），开头跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「Open the window.」想改成「别开窗」，开头要怎么变？",
+        replaceBase: "Open the window.",
+        replaceTarget: "改成「别开窗」",
+        options: ["Don't open", "Not open", "No open"],
+        answer: "Don't open",
+        explain: "「别做」= Don't + 动词原形：Don't open the window。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：把门关上。",
+        tokens: ["Close", "the", "door."],
+        distractors: ["You"],
+        answer: "Close the door."
+      },
+      {
+        promptZh: "上课了，老师说：打开书。",
+        tokens: ["Open", "your", "book."],
+        distractors: ["Opens"],
+        answer: "Open your book."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡一致的否定变体题
+        promptZh: "风大，你想说：别开窗。",
+        tokens: ["Don't", "open", "the", "window."],
+        distractors: ["Not", "No"],
+        answer: "Don't open the window."
+      },
+      {
+        promptZh: "提醒自己，你想说：别迟到。",
+        tokens: ["Don't", "be", "late!"],
+        distractors: ["Not"],
+        answer: "Don't be late!"
+      }
+    ],
+    recall: {
+      promptZh: "外婆在等你关门。凭记忆，写出那句英文。",
+      intentZh: "把门关上。",
+      answer: "Close the door.",
+      noteZh: "祈使句动词直接开头，省掉 You。"
+    },
+    huntCaseIds: ["hunt-imperative-signs"]
+  },
+  {
+    // ── 第三季巩固篇 · R9（L33 代词系统）：this/that/someone，my/her（L8）已建 ──
+    id: "lesson-33-pronouns",
+    number: 33,
+    title: "这是谁的伞",
+    grammarLabel: "指示代词 · this / that / these / those",
+    episode: "小美的一天 ㉝",
+    scene: "mystery",
+    cover: cover9,
+    sceneSetupZh: "放学下雨，小美在失物堆里发现两把伞。",
+    dialogueEn: "Whose umbrellas are these?",
+    dialogueZh: "她指着伞堆问你。",
+    intentZh: "这把是我的。",
+    targetSentence: "This one is mine.",
+    blocks: [
+      { text: "This", role: "这个（近的）" },
+      { text: "one", role: "那个（东西）" },
+      { text: "is mine", role: "是我的" }
+    ],
+    oneLineRule: "指近处用 this（这个）/ these（这些），指远处用 that（那个）/ those（那些）；「我的（东西）」是 mine。",
+    examples: [
+      { en: "This one is mine.", zh: "这个是我的。" },
+      { en: "That one is yours.", zh: "那个是你的。" },
+      { en: "These are my books.", zh: "这些是我的书。" },
+      { en: "Those are hers.", zh: "那些是她的。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Whose umbrellas are these?", zh: "她指着伞堆问你。" },
+      { who: "npc", en: "Someone left them here.", zh: "她补了一句：有人把它们落这儿了。" },
+      { who: "me", en: "This one is mine.", zh: "轮到你说了——这把是你的。" }
+    ],
+    contrast: [
+      {
+        wrong: "This ones are mine.",
+        wrongMark: "ones",
+        correct: "This one is mine.",
+        whyZh: "this 是「这一个」，配单数 one 和 is；ones 是复数，要换 these——This one is。"
+      },
+      {
+        wrong: "These one are mine.",
+        wrongMark: "one",
+        correct: "These are mine.",
+        whyZh: "these 是「这些」，配复数；后面要么直接 These are mine，要么 These ones are——单数 one 搭不上。"
+      },
+      {
+        wrong: "This umbrella is my.",
+        wrongMark: "my",
+        correct: "This umbrella is mine.",
+        whyZh: "my 是贴在名词前的小标签（my umbrella）；句尾「是我的」要用 mine——它自己就能当主角。"
+      },
+      {
+        wrong: "That one is me.",
+        wrongMark: "me",
+        correct: "That one is mine.",
+        whyZh: "me 是「我」这个人；「我的（东西）」是 mine。东西归东西，人归人。"
+      },
+      {
+        wrong: "This is mine umbrella.",
+        wrongMark: "mine",
+        correct: "This is my umbrella.",
+        whyZh: "mine 后面不能再跟名词——贴在 umbrella 前面的小标签是 my：my umbrella。"
+      },
+      {
+        wrong: "Those one is hers.",
+        wrongMark: "Those one is",
+        correct: "Those are hers.",
+        whyZh: "those 是「那些」（复数），要配 are：Those are hers。单数才配 is。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "This one is mine.", zh: "这个是我的。" },
+      { label: "否定", en: "That one is not mine.", zh: "那个不是我的。", noteZh: "not 放回 be 后面，mine 不变。" },
+      { label: "疑问", en: "Is this one yours?", zh: "这个是你的吗？", noteZh: "把 Is 搬到句首；「你的（东西）」是 yours。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "指近处的东西", en: "This is my book.", zh: "这是我的书。" },
+      { sceneZh: "指远处的东西", en: "That is your umbrella.", zh: "那是你的伞。" },
+      { sceneZh: "指一堆东西", en: "These are hers.", zh: "这些是她的。" }
+    ],
+    deepDive: {
+      title: "this/that/these/those 和 my/mine 有什么不一样？",
+      paragraphs: [
+        "远近四兄弟：this（这个，近）→ that（那个，远）→ these（这些，近+复数）→ those（那些，远+复数）。一对近远、一对单复。",
+        "my 和 mine 都是「我的」：my 是小标签，必须贴在名词前面（my umbrella）；mine 自己就能当主角，站句尾（is mine）。",
+        "一家人都这样：your/yours、her/hers、our/ours——带 s 的那个独立用，不带的贴名词。",
+        "these/those 配复数名词或 are（These are mine），this/that 配单数或 is（This is mine）——单复别配错。"
+      ]
+    },
+    summary: {
+      rule: "近 this/这些 these，远 that/那些 those；贴名词 my，句尾 mine。",
+      points: [
+        "This one is mine. —— 近处单个",
+        "Those are hers. —— 远处多个",
+        "my umbrella / is mine —— 贴名词用 my，独立用 mine"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：这个是我的。（指手里这把伞）",
+        before: "",
+        after: "one is mine.",
+        options: ["This", "These", "Those"],
+        answer: "This",
+        explain: "近处单个用 This。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：那些是她的。",
+        tokens: ["Those", "are", "hers."],
+        answer: "Those are hers.",
+        explain: "远处多个用 Those，配 are。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想问：这个是你的吗？",
+        tokens: ["Is", "this", "one", "yours?"],
+        answer: "Is this one yours?",
+        explain: "Is 搬到句首，「你的（东西）」是 yours。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["These", "is", "my", "books."],
+        wrongToken: "is",
+        answer: "is",
+        correctionZh: "books 是复数，要配 are：These are my books。",
+        explain: "these 配复数，动词用 are。"
+      },
+      {
+        // R8 跨课复现：上一课（L32 祈使句）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：别迟到。",
+        tokens: ["Don't", "be", "late!"],
+        answer: "Don't be late!",
+        explain: "复现第 32 课：Don't + 动词原形。"
+      },
+      {
+        // R9 变形/替换：换数量（单个→多个），指示词跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「This one is mine.」把「这一把」换成「这些（书）」，This 要怎么变？",
+        replaceBase: "This one is mine.",
+        replaceTarget: "把 This one 换成「这些书」",
+        options: ["These", "Those ones is", "This"],
+        answer: "These",
+        explain: "多个用 These，配 are：These are my books。this/that 只管单个。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：这把伞是我的。",
+        tokens: ["This", "umbrella", "is", "mine."],
+        distractors: ["me"],
+        answer: "This umbrella is mine."
+      },
+      {
+        promptZh: "你想说：那个是你的。",
+        tokens: ["That", "one", "is", "yours."],
+        distractors: ["you"],
+        answer: "That one is yours."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡一致的否定变体题
+        promptZh: "你想说：那个不是我的。",
+        tokens: ["That", "one", "is", "not", "mine."],
+        distractors: ["my"],
+        answer: "That one is not mine."
+      },
+      {
+        promptZh: "指远处那堆书，你想说：那些是她的。",
+        tokens: ["Those", "are", "her", "books."],
+        distractors: ["is"],
+        answer: "Those are her books."
+      }
+    ],
+    recall: {
+      promptZh: "同学问失物堆里哪把伞是你的。凭记忆，写出那句英文。",
+      intentZh: "这个是我的。",
+      answer: "This one is mine.",
+      noteZh: "近处单个用 This；句尾「我的」用 mine。"
+    },
+    huntCaseIds: ["hunt-pronoun-umbrella"]
+  },
+  {
+    // ── 第三季巩固篇 · R10（L34 过去进行时）：依赖 L13 现在进行 + L10 一般过去，故排最后 ──
+    id: "lesson-34-past-continuous",
+    number: 34,
+    title: "那时我正在画画",
+    grammarLabel: "过去进行时 · was/were + V-ing",
+    episode: "小美的一天 ㉞",
+    scene: "campus",
+    cover: cover13,
+    sceneSetupZh: "放学后，朋友问你昨天下午三点在干嘛。",
+    dialogueEn: "What were you doing at three yesterday?",
+    dialogueZh: "朋友问。",
+    intentZh: "我正在画画。",
+    targetSentence: "I was drawing at three.",
+    blocks: [
+      { text: "I was", role: "我（过去式 be）" },
+      { text: "drawing", role: "画画（-ing）" },
+      { text: "at three", role: "在三点" }
+    ],
+    oneLineRule: "说「过去某时正在做」：was/were + 动词ing——I was drawing。be 用过去版（was/were），动词照样穿 -ing 外套。",
+    examples: [
+      { en: "I was drawing at three.", zh: "三点时我正在画画。" },
+      { en: "She was reading last night.", zh: "昨晚她正在看书。" },
+      { en: "They were playing football.", zh: "（那时）他们正在踢足球。" },
+      { en: "What were you doing?", zh: "你（那时）在干嘛？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What were you doing at three yesterday?", zh: "朋友问。" },
+      { who: "npc", en: "I called you but no answer.", zh: "她补了一句：我打了电话没人接。" },
+      { who: "me", en: "I was drawing at three.", zh: "轮到你说了——你当时正在画画。" }
+    ],
+    contrast: [
+      {
+        wrong: "I was draw at three.",
+        wrongMark: "draw",
+        correct: "I was drawing at three.",
+        whyZh: "进行时的动词必须穿 -ing 外套：was drawing。be 后面直接跟原形就塌了。"
+      },
+      {
+        wrong: "I am drawing at three yesterday.",
+        wrongMark: "am",
+        correct: "I was drawing at three yesterday.",
+        whyZh: "昨天的事要用过去版的 be：was。am 是「现在」的搭档，装不下昨天。"
+      },
+      {
+        wrong: "They was playing football.",
+        wrongMark: "was",
+        correct: "They were playing football.",
+        whyZh: "They 是一伙的，过去版 be 用 were——和 are 换 were 一个道理。"
+      },
+      {
+        wrong: "She were reading last night.",
+        wrongMark: "were",
+        correct: "She was reading last night.",
+        whyZh: "She 是单数，过去版 be 用 was——were 只配 you/we/they。"
+      },
+      {
+        wrong: "What was you doing?",
+        wrongMark: "was",
+        correct: "What were you doing?",
+        whyZh: "you 的过去版 be 是 were——was 只配 I/he/she/it。疑问句里 be 也要搬句首。"
+      },
+      {
+        wrong: "I drawing at three.",
+        wrongMark: null,
+        correct: "I was drawing at three.",
+        whyZh: "-ing 外套自己站不住，前面必须有 be 搭着：was drawing。丢了 was，句子就塌了。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I was drawing at three.", zh: "三点时我正在画画。" },
+      { label: "否定", en: "I wasn't sleeping at three.", zh: "三点时我没在睡觉。", noteZh: "was 加 not：wasn't（were 加 not 是 weren't）。" },
+      { label: "疑问", en: "Were you drawing at three?", zh: "三点时你正在画画吗？", noteZh: "把 Were 搬到句首，-ing 外套不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说昨晚正在看书", en: "She was reading last night.", zh: "昨晚她正在看书。" },
+      { sceneZh: "说他们当时正在踢球", en: "They were playing football.", zh: "（那时）他们正在踢足球。" },
+      { sceneZh: "问对方当时在干嘛", en: "What were you doing?", zh: "你（那时）在干嘛？" }
+    ],
+    deepDive: {
+      title: "过去进行时 = 过去版的「正在」",
+      paragraphs: [
+        "现在进行时：am/is/are + V-ing（I am drawing——现在正在画）。",
+        "过去进行时：把 be 换成过去版 was/were，-ing 外套不动（I was drawing——那时正在画）。",
+        "be 的过去版搭档：I/he/she/it 用 was，you/we/they 用 were——和 am/is/are 的分工一一对应。",
+        "最常用的场景：过去某时正在做什么（at three yesterday）+ 讲故事背景（It was raining——当时正下着雨）。"
+      ]
+    },
+    summary: {
+      rule: "过去某时正在做 = was/were + V-ing，be 用过去版。",
+      points: [
+        "I was drawing. —— was + -ing",
+        "They were playing. —— 一伙人用 were",
+        "Were you drawing? —— 问句 Were 搬句首"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：三点时我正在画画。",
+        before: "I",
+        after: "drawing at three.",
+        options: ["was", "am", "were"],
+        answer: "was",
+        explain: "I 的过去版 be 是 was：was drawing。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：昨晚她正在看书。",
+        tokens: ["She", "was", "reading", "last", "night."],
+        answer: "She was reading last night.",
+        explain: "She 用 was，动词穿 -ing 外套。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想问：三点时你正在做什么？",
+        tokens: ["What", "were", "you", "doing", "at", "three?"],
+        answer: "What were you doing at three?",
+        explain: "you 的过去版 be 是 were，搬到句首。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["They", "was", "playing", "football."],
+        wrongToken: "was",
+        answer: "was",
+        correctionZh: "They 是一伙的，用 were：They were playing football。",
+        explain: "过去版 be：单数 was，一伙 were。"
+      },
+      {
+        // R8 跨课复现：上一课（L33 指示代词）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：那些是她的。",
+        tokens: ["Those", "are", "hers."],
+        answer: "Those are hers.",
+        explain: "复现第 33 课：远处多个用 Those。"
+      },
+      {
+        // R9 变形/替换：换时间（现在→过去），be 跟着换（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I am drawing.」加上「昨天三点（at three yesterday）」这个过去时间，am 要怎么变？",
+        replaceBase: "I am drawing.",
+        replaceTarget: "加上过去的時間 at three yesterday",
+        options: ["was", "am", "were"],
+        answer: "was",
+        explain: "过去的事用过去版 be：I was drawing at three yesterday。-ing 外套不动。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：三点时我正在画画。",
+        tokens: ["I", "was", "drawing", "at", "three."],
+        distractors: ["am"],
+        answer: "I was drawing at three."
+      },
+      {
+        promptZh: "你想说：他们当时正在踢足球。",
+        tokens: ["They", "were", "playing", "football."],
+        distractors: ["was"],
+        answer: "They were playing football."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡一致的否定变体题
+        promptZh: "你想说：三点时我没在睡觉。",
+        tokens: ["I", "wasn't", "sleeping", "at", "three."],
+        distractors: ["am not"],
+        answer: "I wasn't sleeping at three."
+      },
+      {
+        promptZh: "讲故事，你想说：当时正下着雨。",
+        tokens: ["It", "was", "raining."],
+        distractors: ["is"],
+        answer: "It was raining."
+      }
+    ],
+    recall: {
+      promptZh: "朋友问你昨天下午三点在干嘛。凭记忆，写出那句英文。",
+      intentZh: "我正在画画。",
+      answer: "I was drawing at three.",
+      noteZh: "过去正在做 = was/were + 动词ing。"
+    },
+    huntCaseIds: ["hunt-past-rainy-day"]
   }
 ];
 
