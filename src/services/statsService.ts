@@ -324,3 +324,25 @@ const buildNextWeekSuggestions = ({
 
   return suggestions.slice(0, 4);
 };
+
+export const dayKey = (date: Date) =>
+  date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
+
+export const computeStreak = (reviews: { reviewedAt: string }[]) => {
+  const days = new Set(reviews.map((review) => dayKey(new Date(review.reviewedAt))));
+  const offsetKey = (offset: number) => {
+    const date = new Date();
+    date.setDate(date.getDate() - offset);
+    return dayKey(date);
+  };
+
+  let cursor = days.has(offsetKey(0)) ? 0 : days.has(offsetKey(1)) ? 1 : -1;
+  if (cursor === -1) return 0;
+
+  let streak = 0;
+  while (days.has(offsetKey(cursor))) {
+    streak += 1;
+    cursor += 1;
+  }
+  return streak;
+};

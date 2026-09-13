@@ -1,4 +1,4 @@
-import { ArrowLeft, BookPlus, CheckCircle2, RotateCcw, Search } from "lucide-react";
+import { ArrowLeft, BookPlus, CheckCircle2, Lightbulb, RotateCcw, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
@@ -12,6 +12,7 @@ import { nowIso } from "../services/storage";
 import {
   appendHuntAttempt,
   appendHuntResult,
+  buildHintMessage,
   buildHuntResult,
   GRAMMAR_ERROR_TAG_LABELS,
   GRAMMAR_ERROR_TAG_PLAIN,
@@ -19,6 +20,7 @@ import {
   judgeGuess,
   listHuntCases,
   pickCorrectionWord,
+  pickHintTarget,
   summarizeHuntProgress
 } from "../services/huntService";
 import type { HuntVerdict } from "../services/huntService";
@@ -46,6 +48,11 @@ export default function GrammarHuntPage() {
   const [settledResult, setSettledResult] = useState<HuntResult | null>(null);
   const [highlightCaseId, setHighlightCaseId] = useState<string | null>(null);
   const [wordsAdded, setWordsAdded] = useState(false);
+  // 提示与复盘：提示消耗线索额度；wrongTag / 提示过的词在复盘里如实标注
+  const [hintsUsed, setHintsUsed] = useState(0);
+  const [hintMessage, setHintMessage] = useState<string | null>(null);
+  const [hintedTokens, setHintedTokens] = useState<number[]>([]);
+  const [wrongTagTokens, setWrongTagTokens] = useState<number[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [deepLinkHandled, setDeepLinkHandled] = useState(false);
 
@@ -69,6 +76,10 @@ export default function GrammarHuntPage() {
     setStartedAt(Date.now());
     setSettledResult(null);
     setWordsAdded(false);
+    setHintsUsed(0);
+    setHintMessage(null);
+    setHintedTokens([]);
+    setWrongTagTokens([]);
   };
 
   const backToList = () => {
@@ -89,12 +100,46 @@ export default function GrammarHuntPage() {
     if (found.includes(tokenIndex)) return;
     setSelectedToken(tokenIndex);
     setFeedback(null);
+    setHintMessage(null);
+  };
+
+  /** 用户主动请求提示：消耗 1 条线索额度，只给「罪名 + 大概位置」，不给答案。 */
+  const handleHint = () => {
+    if (!activeCase || settledResult) return;
+    const target = pickHintTarget(activeCase, found);
+    if (!target) return;
+    if (HUNT_CLUE_BUDGET - misses - hintsUsed <= 0) return;
+    setHintsUsed((current) => current + 1);
+    setHintedTokens((current) =>
+      current.includes(target.tokenIndex) ? current : [...current, target.tokenIndex]
+    );
+    setHintMessage(buildHintMessage(activeCase, target));
+    setFeedback(null);
+    appendGrammarEvent({
+      kind: "hunt_hint_used",
+      caseId: activeCase.id,
+      tag: target.tag,
+      tokenIndex: target.tokenIndex,
+      ts: nowIso()
+    });
   };
 
   const settleCase = (caseItem: HuntCase, currentMisses: number) => {
     const result = buildHuntResult(caseItem, currentMisses, Date.now() - startedAt, new Date(startedAt).toISOString());
     setSettledResult(result);
     updateData((latest) => appendHuntResult(latest, result));
+    // R19：结算埋点——破案率与单案耗时的唯一来源（此前不可测）
+    appendGrammarEvent({
+      kind: "hunt_case_settled",
+      caseId: result.caseId,
+      found: result.found,
+      total: result.total,
+      misses: result.misses,
+      stars: result.stars,
+      durationMs: result.durationMs,
+      solved: result.found >= result.total,
+      ts: nowIso()
+    });
   };
 
   const handleTagPick = (tag: GrammarErrorTag) => {
@@ -102,6 +147,7 @@ export default function GrammarHuntPage() {
 
     const verdict = judgeGuess(activeCase, selectedToken, tag, found);
     setFeedback(verdict);
+    setHintMessage(null);
     // R01④：一次裁决记录（verdictKind 用于误报率与罪名命中率统计）
     appendGrammarEvent({
       kind: "hunt_verdict",
@@ -127,6 +173,9 @@ export default function GrammarHuntPage() {
     }
 
     if (verdict.kind === "wrongTag") {
+      setWrongTagTokens((current) =>
+        current.includes(selectedToken) ? current : [...current, selectedToken]
+      );
       updateData((latest) =>
         appendHuntAttempt(latest, { caseId: activeCase.id, tokenIndex: selectedToken, guessedTag: tag, hit: false })
       );
@@ -246,8 +295,9 @@ export default function GrammarHuntPage() {
     );
   }
 
-  const remainingClues = Math.max(0, HUNT_CLUE_BUDGET - misses);
+  const remainingClues = Math.max(0, HUNT_CLUE_BUDGET - misses - hintsUsed);
   const isSolvedNow = found.length === activeCase.errors.length;
+  const cleanSolves = activeCase.errors.length - new Set([...hintedTokens, ...wrongTagTokens]).size;
 
   return (
     <div className="page hunt-page">
@@ -345,11 +395,25 @@ export default function GrammarHuntPage() {
         </p>
         <div className="hunt-token-tools">
           <SpeakButton text={activeCase.tokens.join(" ")} />
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={handleHint}
+            disabled={remainingClues <= 0 || settledResult !== null || found.length >= activeCase.errors.length}
+          >
+            <Lightbulb size={15} /> 用 1 条线索提示一处
+          </button>
           <span className="hunt-token-tools-hint">
             觉得哪个词有问题，就点它。注意：也有些词看着可疑，其实没有问题。
           </span>
         </div>
       </section>
+
+      {hintMessage && !settledResult && (
+        <section className="hunt-verdict-card info" aria-live="polite">
+          <p className="hunt-verdict-message">💡 {hintMessage}</p>
+        </section>
+      )}
 
       {feedback && !settledResult && (
         <section
@@ -410,6 +474,68 @@ export default function GrammarHuntPage() {
               <dd>{formatDuration(settledResult.durationMs)}</dd>
             </div>
           </dl>
+
+          {/* 案件复盘：逐条解析每个修改的原因（含本局绕弯/用提示的地方，如实标注） */}
+          <div className="hunt-review" aria-label="案件复盘" style={{ textAlign: "left", display: "grid", gap: 10, marginTop: 16 }}>
+            <p style={{ margin: 0, fontWeight: 650 }}>案件复盘 · 每个修改背后的原因</p>
+            <p style={{ margin: 0, fontSize: 13, opacity: 0.75 }}>
+              本局 {cleanSolves} 处一次到位
+              {hintedTokens.length > 0 && ` · ${hintedTokens.length} 处看过提示`}
+              {wrongTagTokens.length > 0 && ` · ${wrongTagTokens.length} 处罪名绕了弯`}
+              。复盘看懂原因，比一次找全更重要。
+            </p>
+            {activeCase.errors.map((error, index) => {
+              const usedHint = hintedTokens.includes(error.tokenIndex);
+              const wrongTagged = wrongTagTokens.includes(error.tokenIndex);
+              return (
+                <div key={error.tokenIndex} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      flexShrink: 0,
+                      width: 22,
+                      height: 22,
+                      borderRadius: 999,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 12,
+                      border: "1px solid rgba(0,0,0,0.14)"
+                    }}
+                  >
+                    {index + 1}
+                  </span>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ margin: 0, display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+                      <strong>{error.original}</strong>
+                      <span>→</span>
+                      <strong>{error.correction}</strong>
+                      <span
+                        title={GRAMMAR_ERROR_TAG_PLAIN[error.tag]}
+                        style={{
+                          padding: "1px 8px",
+                          borderRadius: 999,
+                          border: "1px solid rgba(0,0,0,0.14)",
+                          fontSize: 11,
+                          whiteSpace: "nowrap"
+                        }}
+                      >
+                        {GRAMMAR_ERROR_TAG_LABELS[error.tag]}
+                      </span>
+                      {usedHint && (
+                        <span style={{ fontSize: 11, opacity: 0.7, whiteSpace: "nowrap" }}>看过提示</span>
+                      )}
+                      {wrongTagged && (
+                        <span style={{ fontSize: 11, opacity: 0.7, whiteSpace: "nowrap" }}>罪名绕了弯</span>
+                      )}
+                    </p>
+                    <p style={{ margin: 0, fontSize: 13, opacity: 0.8 }}>{error.explanation}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
           <div className="hunt-settle-actions">
             <button type="button" className="secondary-button" onClick={addCorrectionsToMistakeBook} disabled={wordsAdded}>
               <BookPlus size={16} />

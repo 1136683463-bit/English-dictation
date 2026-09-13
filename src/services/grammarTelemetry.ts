@@ -1,5 +1,6 @@
 import type { GrammarErrorTag } from "../types";
 import type { HuntVerdictKind } from "./huntService";
+import { nowIso } from "./storage";
 
 /**
  * 语法模块遥测（R01 数据基建）。
@@ -12,8 +13,25 @@ import type { HuntVerdictKind } from "./huntService";
 
 const TELEMETRY_KEY = "grammar-telemetry-events-v1";
 const MAX_EVENTS = 3000;
+/** R16：溢出归档键——主键写满后，被挤出的旧事件挪到这里长期留存（导出复盘用）。 */
+const TELEMETRY_ARCHIVE_KEY = "grammar-telemetry-archive-v1";
+const ARCHIVE_MAX_EVENTS = 12000;
 
-export type LessonSection = "watch" | "pretest" | "guided" | "practice" | "output";
+export type LessonSection = "watch" | "pretest" | "guided" | "recall" | "practice" | "output";
+
+/** 进课事件（R21）：漏斗的起点——没有它无法计算「进入 → 完课」流失。每次进入课程记一条。 */
+export interface GrammarLessonStartedEvent {
+  kind: "grammar_lesson_started";
+  lessonId: string;
+  ts: string;
+}
+
+/** can-do 能力里程碑确证（R23）：完整感收口的记录，验收「确证仪式」被使用。 */
+export interface CanDoConfirmedEvent {
+  kind: "can_do_confirmed";
+  milestoneId: string;
+  ts: string;
+}
 
 /** 完课事件：北极星与漏斗的分子来源。 */
 export interface GrammarLessonCompletedEvent {
@@ -77,13 +95,40 @@ export interface GrammarReviewResultEvent {
   ts: string;
 }
 
+/** 侦探案件结算事件（R19）：破案率与单案耗时的来源——此前只有逐次 verdict，破案率无法计算。 */
+export interface HuntCaseSettledEvent {
+  kind: "hunt_case_settled";
+  caseId: string;
+  found: number;
+  total: number;
+  misses: number;
+  stars: number;
+  durationMs: number;
+  /** 是否破案（找齐全部错误）。 */
+  solved: boolean;
+  ts: string;
+}
+
+/** 找错案件使用一次提示：衡量「卡壳点」，未来可用于内容难度校准。 */
+export interface HuntHintUsedEvent {
+  kind: "hunt_hint_used";
+  caseId: string;
+  tag: GrammarErrorTag;
+  tokenIndex: number;
+  ts: string;
+}
+
 export type GrammarTelemetryEvent =
+  | GrammarLessonStartedEvent
   | GrammarLessonCompletedEvent
+  | CanDoConfirmedEvent
   | LessonStepResultEvent
   | DeepDiveExpandedEvent
   | HuntVerdictEvent
+  | HuntCaseSettledEvent
   | DiaryIssueTagEvent
-  | GrammarReviewResultEvent;
+  | GrammarReviewResultEvent
+  | HuntHintUsedEvent;
 
 const memoryEvents: GrammarTelemetryEvent[] = [];
 
@@ -120,11 +165,44 @@ const writeEvents = (events: GrammarTelemetryEvent[]) => {
   }
 };
 
-/** 追加一条遥测事件（超出上限丢弃最旧的）。 */
+/** 读取归档事件（R16）：主键溢出后长期留存的历史。 */
+const readArchivedEvents = (): GrammarTelemetryEvent[] => {
+  if (!hasLocalStorage()) return [];
+  try {
+    const raw = window.localStorage.getItem(TELEMETRY_ARCHIVE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as { events?: unknown };
+    return Array.isArray(parsed.events) ? (parsed.events as GrammarTelemetryEvent[]) : [];
+  } catch {
+    return [];
+  }
+};
+
+/** 把被挤出的旧事件追加进归档键（归档自身也有上限，滚动丢弃最旧，防止存储无限增长）。 */
+const archiveEvents = (overflow: GrammarTelemetryEvent[]): void => {
+  if (overflow.length === 0) return;
+  if (!hasLocalStorage()) return;
+  try {
+    const archived = [...readArchivedEvents(), ...overflow];
+    const kept = archived.length > ARCHIVE_MAX_EVENTS ? archived.slice(archived.length - ARCHIVE_MAX_EVENTS) : archived;
+    window.localStorage.setItem(TELEMETRY_ARCHIVE_KEY, JSON.stringify({ version: 1, events: kept }));
+  } catch {
+    // 存储满 / 隐私模式：归档失败静默，不影响主流程。
+  }
+};
+
+/** 追加一条遥测事件（超出主键上限时，最旧的事件移入归档键，不丢数据）。 */
 export const appendGrammarEvent = (event: GrammarTelemetryEvent): void => {
   const events = readEvents();
   events.push(event);
-  writeEvents(events.length > MAX_EVENTS ? events.slice(events.length - MAX_EVENTS) : events);
+  if (events.length > MAX_EVENTS) {
+    const overflow = events.slice(0, events.length - MAX_EVENTS);
+    const kept = events.slice(events.length - MAX_EVENTS);
+    archiveEvents(overflow);
+    writeEvents(kept);
+    return;
+  }
+  writeEvents(events);
 };
 
 export const listGrammarEvents = (): GrammarTelemetryEvent[] => [...readEvents()];
@@ -141,9 +219,50 @@ export const clearGrammarTelemetry = (): void => {
   }
   try {
     window.localStorage.removeItem(TELEMETRY_KEY);
+    window.localStorage.removeItem(TELEMETRY_ARCHIVE_KEY);
   } catch {
     // 忽略
   }
+};
+
+/** R16：遥测存量统计——语法地图展示「可导出」状态，也为上限策略提供依据。 */
+export interface GrammarTelemetryStats {
+  activeEvents: number;
+  maxEvents: number;
+  archivedEvents: number;
+  archiveMax: number;
+  /** 当前主键是否已接近上限（≥80%），提示先导出归档。 */
+  nearCapacity: boolean;
+}
+
+export const getGrammarTelemetryStats = (): GrammarTelemetryStats => {
+  const activeEvents = listGrammarEvents().length;
+  const archivedEvents = readArchivedEvents().length;
+  return {
+    activeEvents,
+    maxEvents: MAX_EVENTS,
+    archivedEvents,
+    archiveMax: ARCHIVE_MAX_EVENTS,
+    nearCapacity: activeEvents >= MAX_EVENTS * 0.8
+  };
+};
+
+/** R16：导出快照（JSON 字符串）——含归档，供基线与 W4/D1 复盘使用。 */
+export const buildGrammarTelemetryExport = (): string => {
+  const events = listGrammarEvents();
+  const archived = readArchivedEvents();
+  const lastEventAt = events.length > 0 ? (events[events.length - 1] as { ts?: string }).ts ?? null : null;
+  return JSON.stringify(
+    {
+      version: 1,
+      exportedAt: nowIso(),
+      stats: { ...getGrammarTelemetryStats(), lastEventAt },
+      events,
+      archivedEvents: archived
+    },
+    null,
+    2
+  );
 };
 
 export interface GrammarTelemetrySummary {
@@ -157,6 +276,8 @@ export interface GrammarTelemetrySummary {
   huntVerdicts: { hit: number; wrongTag: number; notError: number; alreadyFound: number };
   /** 误报率：点在没问题的词上的比例（分母 = hit + wrongTag + notError）。 */
   huntFalsePositiveRate: number;
+  /** R19：侦探结算汇总——破案率终于可算（此前只有 verdict，无结算）。 */
+  huntSettled: { cases: number; solved: number; solveRate: number };
   diaryTagCounts: Partial<Record<GrammarErrorTag, number>>;
 }
 
@@ -188,6 +309,9 @@ export const summarizeGrammarTelemetry = (): GrammarTelemetrySummary => {
     }
   }
 
+  const settled = events.filter((event): event is HuntCaseSettledEvent => event.kind === "hunt_case_settled");
+  const solvedCount = settled.filter((event) => event.solved).length;
+
   return {
     totalEvents: events.length,
     completions: completions.length,
@@ -196,6 +320,11 @@ export const summarizeGrammarTelemetry = (): GrammarTelemetrySummary => {
     expandedDeepDiveLessonIds: [...expandedLessonIds],
     huntVerdicts,
     huntFalsePositiveRate: judged === 0 ? 0 : huntVerdicts.notError / judged,
+    huntSettled: {
+      cases: settled.length,
+      solved: solvedCount,
+      solveRate: settled.length === 0 ? 0 : solvedCount / settled.length
+    },
     diaryTagCounts
   };
 };

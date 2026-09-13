@@ -2,6 +2,7 @@ import {
   BookOpenCheck,
   BookMarked,
   FileText,
+  Flame,
   GraduationCap,
   Home,
   Library,
@@ -14,7 +15,8 @@ import {
 import { useEffect, useState } from "react";
 import { NavLink, Route, Routes, useLocation } from "react-router-dom";
 import BrandMark from "./components/BrandMark";
-import { AppProvider } from "./AppContext";
+import { AppProvider, useAppData } from "./AppContext";
+import { computeStreak } from "./services/statsService";
 import EntryPage from "./pages/EntryPage";
 import TodayPage from "./pages/TodayPage";
 import TrainingPage from "./pages/TrainingPage";
@@ -57,6 +59,7 @@ const mobileMoreItems = navItems.filter((item) => !mobilePrimaryNavPaths.has(ite
 
 const AppLayout = () => {
   const location = useLocation();
+  const { data } = useAppData();
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
 
   useEffect(() => {
@@ -64,6 +67,7 @@ const AppLayout = () => {
   }, [location.pathname]);
 
   const isMobileMoreActive = mobileMoreItems.some((item) => location.pathname.startsWith(item.to));
+  const streak = computeStreak(data.reviews);
 
   return (
     <div className="app-shell">
@@ -114,10 +118,6 @@ const AppLayout = () => {
             <span>更多</span>
           </button>
         </nav>
-        <div className="sidebar-footer">
-          <strong>每天进步一点点</strong>
-          <span>遇见更好的自己</span>
-        </div>
         {isMobileMoreOpen && (
           <>
             <button
@@ -139,6 +139,19 @@ const AppLayout = () => {
             </div>
           </>
         )}
+        <div className="sidebar-streak" aria-label={`连续打卡 ${streak} 天`}>
+          <span className="sidebar-streak-label">
+            <Flame size={14} aria-hidden="true" />
+            连续打卡
+          </span>
+          <strong>
+            {streak} <small>天</small>
+          </strong>
+          <span className="sidebar-streak-note">继续加油！</span>
+          <span className="sidebar-streak-bar">
+            <span style={{ width: `${Math.min(100, Math.max(8, streak * 10))}%` }} />
+          </span>
+        </div>
       </aside>
       <main className="main">
         <Routes>

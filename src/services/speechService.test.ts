@@ -11,10 +11,13 @@ import {
 
 const installAudioMock = (playResults: Array<Promise<void> | Error | undefined> = [undefined]) => {
   const playMocks: ReturnType<typeof vi.fn>[] = [];
+  const audioAttributes: Array<Record<string, string>> = [];
   const AudioMock = vi.fn().mockImplementation(() => {
     const result = playResults.shift();
     let paused = false;
     const listeners = new Map<string, () => void>();
+    const attributes: Record<string, string> = {};
+    audioAttributes.push(attributes);
     const play = vi.fn(() => {
       paused = false;
       if (result instanceof Error) {
@@ -40,12 +43,15 @@ const installAudioMock = (playResults: Array<Promise<void> | Error | undefined> 
       play,
       preload: "",
       removeAttribute: vi.fn(),
-      removeEventListener: vi.fn((eventName: string) => listeners.delete(eventName))
+      removeEventListener: vi.fn((eventName: string) => listeners.delete(eventName)),
+      setAttribute: vi.fn((name: string, value: string) => {
+        attributes[name] = value;
+      })
     };
   });
 
   vi.stubGlobal("Audio", AudioMock);
-  return { AudioMock, playMocks };
+  return { AudioMock, playMocks, audioAttributes };
 };
 
 const installSpeechSynthesisMock = () => {
@@ -236,6 +242,23 @@ describe("speechService", () => {
     expect(AudioMock).toHaveBeenCalledTimes(1);
     expect(AudioMock).toHaveBeenCalledWith();
     expect(playMocks[0]).toHaveBeenCalledTimes(1);
+    expect(speech.speak).not.toHaveBeenCalled();
+  });
+
+  // Baidu gettts / Youdao dictvoice answer "200 OK" with an empty body when the
+  // request carries a Referer, so the player silently fell back to the slow
+  // system voice. Every audio request must therefore be referrer-free.
+  it("requests online audio with no Referer", async () => {
+    const { audioAttributes } = installAudioMock();
+    const speech = installSpeechSynthesisMock();
+    const fetchPronunciationAudio = vi.fn().mockResolvedValue("https://cdn.example.com/hello.mp3");
+    setPronunciationAudioFetcherForTest(fetchPronunciationAudio);
+
+    await expect(preloadSpeechAudio("hello", { lang: "en-US" })).resolves.toBe(true);
+    await expect(speakText("hello", { lang: "en-US" })).resolves.toBe(true);
+
+    expect(audioAttributes.length).toBeGreaterThan(0);
+    expect(audioAttributes.every((attributes) => attributes.referrerpolicy === "no-referrer")).toBe(true);
     expect(speech.speak).not.toHaveBeenCalled();
   });
 

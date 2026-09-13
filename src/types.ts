@@ -315,6 +315,8 @@ export interface HuntCase {
   errors: HuntError[];
   /** 案件里超出核心词汇门槛、必须保留的生词提示（页面展示为「生词提示」）。 */
   notes?: { word: string; zh: string }[];
+  /** R15：人工校验标记——true 表示语法、罪名标注与讲解已人工核对；未被课程引用的案件须校验后方可上线。 */
+  reviewed?: boolean;
 }
 
 /** 一次点选记录，用于统计误判率与高频错因。 */
@@ -370,11 +372,23 @@ export interface LessonGuidedStep {
   explain: string;
 }
 
-/** 自由练习（第③段「自己来」）：给中文意思，点词成句，无干扰项。 */
+/** 自由练习（第③段「自己来」）：给中文意思，点词成句。 */
 export interface LessonPracticeStep {
   promptZh: string;
   tokens: string[];
+  /** R4：干扰项词块（与 tokens 合并进词块库打乱展示）；缺省＝无干扰项，向后兼容。 */
+  distractors?: string[];
   answer: string;
+}
+
+/** R5「忆」段：遮盖回忆型——给中文/场景、不给选项，凭记忆写出整句。 */
+export interface LessonRecall {
+  promptZh: string;
+  /** D8：中文意图句（你要说的话）——缺了它用户不知道要回忆哪一句，必然卡关。 */
+  intentZh: string;
+  answer: string;
+  /** 答错/看答案时给的一句人话解释（缺省回退 oneLineRule）。 */
+  noteZh?: string;
 }
 
 /** 小剧场的一句台词：who 为 "me" 表示轮到小美说的那句。 */
@@ -430,6 +444,8 @@ export interface GrammarLesson {
   episode: string;
   /** 场景插画 ID（AdventureSceneId），用于图文小剧场。 */
   scene: string;
+  /** 课程地图卡片封面（AI 生成的剧情插画，缺省时回退 scene SVG）。 */
+  cover?: string;
   sceneSetupZh: string;
   dialogueEn: string;
   dialogueZh: string;
@@ -455,6 +471,8 @@ export interface GrammarLesson {
   deepDive?: LessonDeepDive;
   /** 完课页迷你小结卡。 */
   summary?: LessonSummary;
+  /** R5「忆」段（新增六段式第③段）：缺省＝该课跳过忆段，向后兼容。 */
+  recall?: LessonRecall;
 }
 
 /** 日记批改指出的一处问题（语气必须温和，不出现「错误」字样）。 */

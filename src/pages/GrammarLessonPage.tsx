@@ -15,29 +15,108 @@ import {
   addLessonMistakeSentence,
   checkLessonTokens,
   createGuidedState,
+  describeOutputGap,
   detectThirdPersonMiss,
   firstMismatchIndex,
   getGrammarLesson,
   judgeGuidedStep,
-  markLessonDone
+  markLessonDone,
+  shuffleTokenOrder
 } from "../services/lessonService";
 
-type LessonStage = "pretest" | "watch" | "guided" | "practice" | "challenge";
+type LessonStage = "pretest" | "watch" | "guided" | "recall" | "practice" | "challenge";
 
 /** R02：课前测试题。复用引导题（choose）与正误对比（contrast 判断）做「先试后学」。 */
 type PretestQuestion =
   | { kind: "choose"; prompt: string; options: string[]; answer: string; reviewSentence: string; reviewNote: string }
   | { kind: "contrast"; sentence: string; reviewSentence: string; reviewNote: string };
 
-const stageTabs: Array<{ id: LessonStage; label: string; hint: string }> = [
+/**
+ * 前测「拿不准」的一条记录（R02 反馈补强）：结果页要能说清
+ * 「哪一题、你的判断是什么、正确是什么、为什么」——只说「有 N 处拿不准」等于让用户带着疑问进讲解。
+ */
+interface PretestWrongRecord {
+  order: number;
+  kind: "choose" | "contrast";
+  promptZh: string;
+  /** contrast 题展示的原句 */
+  sentence?: string;
+  userPick: string;
+  correctPick: string;
+  /** contrast 题的正确说法（完整句子） */
+  correctSentence?: string;
+  whyZh: string;
+}
+
+/** R10 六段式段标：有 recall 数据的课显示「③ 忆」，否则回退四段（向后兼容）。 */
+const getStageTabs = (hasRecall: boolean): Array<{ id: LessonStage; label: string; hint: string }> => [
   { id: "watch", label: "① 看", hint: "情景讲解" },
   { id: "guided", label: "② 跟", hint: "试一试" },
-  { id: "practice", label: "③ 练", hint: "自己来" },
-  { id: "challenge", label: "④ 破", hint: "侦探挑战" }
+  ...(hasRecall ? [{ id: "recall" as LessonStage, label: "③ 忆", hint: "凭记忆写" }] : []),
+  { id: "practice", label: hasRecall ? "④ 练" : "③ 练", hint: "自己来" },
+  { id: "challenge", label: hasRecall ? "⑤ 破" : "④ 破", hint: "侦探挑战" }
 ];
 
 /** 第①段内部的 3 步子步进：剧场 → 搭装与对错 → 变奏。 */
 const watchStepNames = ["剧场", "搭装与对错", "变奏"];
+
+/**
+ * R04 第 2 级提示：保留开头两词 + 词数骨架，只给结构不给答案。
+ * 「I am drawing a picture.」→「I am ___ ___ ___.」
+ */
+const outputSkeleton = (sentence: string): string => {
+  const words = sentence.split(/\s+/).filter(Boolean);
+  if (words.length === 0) return "";
+  if (words.length <= 2) return `${words[0]} ___`;
+  const lastWord = words[words.length - 1];
+  const punctuation = /[.!?]$/.test(lastWord) ? lastWord.slice(-1) : "";
+  const blanks = words.slice(2).map((_word, index, list) => (index === list.length - 1 ? `___${punctuation}` : "___"));
+  return [...words.slice(0, 2), ...blanks].join(" ");
+};
+
+/**
+ * R23：跨重启累计每课学习时长——修复 durationMs 被课中重启截断的问题
+ * （L06 真实首轮 285.7s，旧口径只记了末段 100.5s）。应用会话内有效；完课后清零。
+ */
+const lessonTimeAccumulator = new Map<string, number>();
+const lessonSessionStart = new Map<string, number>();
+
+const accumulateLessonTime = (lessonId: string) => {
+  const startedAt = lessonSessionStart.get(lessonId);
+  if (startedAt === undefined) return;
+  lessonTimeAccumulator.set(lessonId, (lessonTimeAccumulator.get(lessonId) ?? 0) + Math.max(0, Date.now() - startedAt));
+  lessonSessionStart.delete(lessonId);
+};
+
+/** R2：深挖卡展开偏好——默认展开（试玩实证 3/3 主动展开）；用户折叠/展开后记住偏好，后续课沿用。 */
+const DEEP_DIVE_PREF_KEY = "grammar-deepdive-v1";
+
+const readDeepDiveDefaultOpen = (): boolean => {
+  try {
+    const raw = window.localStorage.getItem(DEEP_DIVE_PREF_KEY);
+    if (!raw) return true;
+    const parsed = JSON.parse(raw) as { open?: boolean };
+    return typeof parsed?.open === "boolean" ? parsed.open : true;
+  } catch {
+    return true;
+  }
+};
+
+const writeDeepDiveDefaultOpen = (open: boolean) => {
+  try {
+    window.localStorage.setItem(DEEP_DIVE_PREF_KEY, JSON.stringify({ version: 1, open }));
+  } catch {
+    // 存储满 / 隐私模式：偏好写不进就每次按默认展开，不影响主流程。
+  }
+};
+
+/** R4：点词成句的展示词块 = 正确词 + 干扰项（干扰项可选，向后兼容）。判题按展示下标取词。 */
+const arrangeTokensOf = (step: { tokens?: string[]; distractors?: string[] } | undefined): string[] =>
+  step ? [...(step.tokens ?? []), ...(step.distractors ?? [])] : [];
+
+/** 答案的词数（去标点）——arrange 摆满该词数即触发判题（有干扰项时不等于词块库总数）。 */
+const answerWordCount = (answer: string): number =>
+  answer.replace(/[.,!?;:]/g, "").split(/\s+/).filter(Boolean).length;
 
 /**
  * 正误对比揭示卡（R07「先判断再揭示」）：
@@ -89,12 +168,58 @@ function LessonContrastCard({
       {!revealed ? (
         <>
           <p className="lesson-contrast-hint">两句话只有一句是对的——点出你认为对的那句：</p>
-          <div className="lesson-option-row">
-            <button type="button" className="lesson-option" onClick={() => judge("first")}>
-              上句：{first}
+          <div style={{ display: "grid", gap: 12 }}>
+            <button
+              type="button"
+              className="lesson-option"
+              style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, textAlign: "left", padding: "12px 16px" }}
+              onClick={() => judge("first")}
+            >
+              <span
+                aria-hidden="true"
+                style={{
+                  flexShrink: 0,
+                  width: 26,
+                  height: 26,
+                  borderRadius: 999,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "var(--accent, #f06423)",
+                  color: "#fff",
+                  fontSize: 14,
+                  fontWeight: 700
+                }}
+              >
+                A
+              </span>
+              <span style={{ fontSize: 17, fontWeight: 600 }}>{first}</span>
             </button>
-            <button type="button" className="lesson-option" onClick={() => judge("second")}>
-              下句：{second}
+            <button
+              type="button"
+              className="lesson-option"
+              style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, textAlign: "left", padding: "12px 16px" }}
+              onClick={() => judge("second")}
+            >
+              <span
+                aria-hidden="true"
+                style={{
+                  flexShrink: 0,
+                  width: 26,
+                  height: 26,
+                  borderRadius: 999,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "var(--accent, #f06423)",
+                  color: "#fff",
+                  fontSize: 14,
+                  fontWeight: 700
+                }}
+              >
+                B
+              </span>
+              <span style={{ fontSize: 17, fontWeight: 600 }}>{second}</span>
             </button>
           </div>
         </>
@@ -107,10 +232,10 @@ function LessonContrastCard({
           </p>
           <div className="lesson-contrast-reveal">
             <p className="lesson-contrast-correct">
-              <CheckCircle2 size={15} /> {item.correct}
+              <CheckCircle2 size={17} /> {item.correct}
             </p>
             <p className="lesson-contrast-why">{item.whyZh}</p>
-            <p className="lesson-contrast-why">
+            <p className="lesson-contrast-judge">
               {((picked === "first") === correctFirst)
                 ? "你判断对了，眼光很准。"
                 : "这次没看出没关系——现在知道差在哪了。"}
@@ -122,9 +247,9 @@ function LessonContrastCard({
   );
 }
 
-/** 「想知道为什么？」深挖折叠卡：默认收起，选学内容，不展开完全无感。展开时上报事件（R01③）。 */
+/** 「为什么？」深挖卡（R2）：默认展开（用户可折叠，偏好被记住）；展开时上报事件（R01③）。 */
 function LessonDeepDiveCard({ dive, onExpand }: { dive: LessonDeepDive; onExpand?: () => void }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(readDeepDiveDefaultOpen);
   return (
     <div className={`lesson-deepdive${open ? " open" : ""}`}>
       <button
@@ -134,6 +259,7 @@ function LessonDeepDiveCard({ dive, onExpand }: { dive: LessonDeepDive; onExpand
           const next = !open;
           if (next) onExpand?.();
           setOpen(next);
+          writeDeepDiveDefaultOpen(next);
         }}
         aria-expanded={open}
       >
@@ -166,7 +292,7 @@ export default function GrammarLessonPage() {
   const [pretestIndex, setPretestIndex] = useState(0);
   const [pretestPicked, setPretestPicked] = useState<string | null>(null);
   const [pretestWrongCount, setPretestWrongCount] = useState(0);
-  const [pretestWrongNotes, setPretestWrongNotes] = useState<string[]>([]);
+  const [pretestWrongRecords, setPretestWrongRecords] = useState<PretestWrongRecord[]>([]);
   const [pretestFinished, setPretestFinished] = useState(false);
 
   // R04 无提示输出状态：练习段末尾的「说出来」，隐藏中文句意提示
@@ -176,6 +302,16 @@ export default function GrammarLessonPage() {
   const [outputAttempts, setOutputAttempts] = useState(0);
   const [outputOutcome, setOutputOutcome] = useState<"idle" | "pass" | "revealed">("idle");
   const [outputHint, setOutputHint] = useState<string | null>(null);
+  /** 提示阶梯档位：0 = 无提示（首答），1 = 给「这句要说什么」，2 = 给开头骨架，3 = 看答案。 */
+  const [outputHintLevel, setOutputHintLevel] = useState(0);
+  /** R6/R11：产出两档——0 = 半提示（变体句 + 句型框），1 = 无提示（核心句）。 */
+  const [outputStep, setOutputStep] = useState(0);
+
+  // R5「忆」段状态：给中文/场景，不给选项，凭记忆写整句
+  const [recallValue, setRecallValue] = useState("");
+  const [recallAttempts, setRecallAttempts] = useState(0);
+  const [recallOutcome, setRecallOutcome] = useState<"idle" | "pass" | "revealed">("idle");
+  const [recallHint, setRecallHint] = useState<string | null>(null);
 
   // R05 完课确证：本课进了复习队列的知识点（完课小结卡「还差什么」的数据）
   const [reviewNotes, setReviewNotes] = useState<string[]>([]);
@@ -205,14 +341,26 @@ export default function GrammarLessonPage() {
   const guidedFirstTryRef = useRef(true);
   const practiceFirstTryRef = useRef(true);
   const lessonKey = lesson?.id ?? "";
+  /** R22：进课埋点去重——React 严格模式会双调用 effect，同一课只记一次。 */
+  const startedLessonRef = useRef<string>("");
   useEffect(() => {
+    // R21：进课埋点——漏斗起点，每次进入课程记一条
+    if (lessonKey && startedLessonRef.current !== lessonKey) {
+      startedLessonRef.current = lessonKey;
+      appendGrammarEvent({ kind: "grammar_lesson_started", lessonId: lessonKey, ts: nowIso() });
+    }
+    // R23：重进同一课时，先结算上一段的时长（跨重启累计，不再截断）
+    if (lessonKey) {
+      accumulateLessonTime(lessonKey);
+      lessonSessionStart.set(lessonKey, Date.now());
+    }
     lessonStartRef.current = Date.now();
     guidedFirstTryRef.current = true;
     practiceFirstTryRef.current = true;
     setPretestIndex(0);
     setPretestPicked(null);
     setPretestWrongCount(0);
-    setPretestWrongNotes([]);
+    setPretestWrongRecords([]);
     setPretestFinished(false);
     setOutputActive(false);
     setOutputValue("");
@@ -220,7 +368,17 @@ export default function GrammarLessonPage() {
     setOutputAttempts(0);
     setOutputOutcome("idle");
     setOutputHint(null);
+    setOutputHintLevel(0);
+    setOutputStep(0);
+    setRecallValue("");
+    setRecallAttempts(0);
+    setRecallOutcome("idle");
+    setRecallHint(null);
     setReviewNotes([]);
+    // R23：离开课程（卸载/切课）时结算本段时长，累计进该课的总时长
+    return () => {
+      if (lessonKey) accumulateLessonTime(lessonKey);
+    };
   }, [lessonKey]);
 
   // R02：课前测试题——choose 复用引导题第 1 题，contrast 复用第一组正误对比
@@ -294,7 +452,28 @@ export default function GrammarLessonPage() {
     recordStepResult("pretest", question.kind, pretestIndex, correct ? 0 : 1, correct);
     if (!correct) {
       setPretestWrongCount((current) => current + 1);
-      setPretestWrongNotes((notes) => [...notes, question.reviewNote]);
+      setPretestWrongRecords((records) => [
+        ...records,
+        question.kind === "choose"
+          ? {
+              order: pretestIndex + 1,
+              kind: "choose",
+              promptZh: question.prompt,
+              userPick: option,
+              correctPick: question.answer,
+              whyZh: question.reviewNote
+            }
+          : {
+              order: pretestIndex + 1,
+              kind: "contrast",
+              promptZh: "有人是这样说的，你觉得这句话有问题吗？",
+              sentence: question.sentence,
+              userPick: option,
+              correctPick: "有问题",
+              correctSentence: question.reviewSentence,
+              whyZh: question.reviewNote
+            }
+      ]);
       setReviewNotes((notes) => (notes.includes(question.reviewNote) ? notes : [...notes, question.reviewNote]));
       updateData((latest) => addLessonMistakeSentence(latest, lesson, question.reviewSentence, question.reviewNote));
     }
@@ -345,6 +524,13 @@ export default function GrammarLessonPage() {
     setStage(next);
     if (next === "guided") resetGuided();
     if (next === "watch") setWatchStep(0);
+    if (next === "recall") {
+      // R5「忆」段：进入时重置状态
+      setRecallValue("");
+      setRecallAttempts(0);
+      setRecallOutcome("idle");
+      setRecallHint(null);
+    }
     if (next === "practice") {
       setPracticeIndex(0);
       setPracticePicked([]);
@@ -358,6 +544,8 @@ export default function GrammarLessonPage() {
       setOutputAttempts(0);
       setOutputOutcome("idle");
       setOutputHint(null);
+      setOutputHintLevel(0);
+      setOutputStep(0);
     }
     window.scrollTo({ top: 0 });
   };
@@ -366,7 +554,8 @@ export default function GrammarLessonPage() {
   const judgeArrange = (stage: "guided" | "practice", order: number[]) => {
     if (stage === "guided") {
       if (!guidedStep || guidedStep.kind !== "arrange") return;
-      const pickedTokens = order.map((index) => guidedStep.tokens?.[index]).filter(Boolean) as string[];
+      const displayTokens = arrangeTokensOf(guidedStep);
+      const pickedTokens = order.map((index) => displayTokens[index]).filter(Boolean) as string[];
       const passed = checkLessonTokens(pickedTokens, guidedStep.answer);
       if (!passed) {
         setGuidedMisses((current) => current + 1);
@@ -380,7 +569,8 @@ export default function GrammarLessonPage() {
       return;
     }
     if (!practiceStep) return;
-    const pickedTokens = order.map((index) => practiceStep.tokens?.[index]).filter(Boolean) as string[];
+    const displayTokens = arrangeTokensOf(practiceStep);
+    const pickedTokens = order.map((index) => displayTokens[index]).filter(Boolean) as string[];
     const passed = checkLessonTokens(pickedTokens, practiceStep.answer);
     if (!passed) {
       setPracticeMisses((current) => current + 1);
@@ -397,7 +587,8 @@ export default function GrammarLessonPage() {
     const order = stage === "guided" ? guidedOrder : practiceOrder;
     const setOrder = stage === "guided" ? setGuidedOrder : setPracticeOrder;
     const step = stage === "guided" ? guidedStep : practiceStep;
-    if (!step || step.tokens?.[tokenIndex] == null) return;
+    const displayTokens = arrangeTokensOf(step);
+    if (!step || displayTokens[tokenIndex] == null) return;
     if (order.includes(tokenIndex)) return;
     const next = [...order];
     if (at == null || at >= next.length) next.push(tokenIndex);
@@ -411,7 +602,8 @@ export default function GrammarLessonPage() {
       setPracticeFeedback("idle");
       setPracticeHint(null);
     }
-    if (next.length === (step.tokens?.length ?? 0)) judgeArrange(stage, next);
+    // R4：摆满「答案词数」即判题（有干扰项时 ≠ 词块库总数）
+    if (next.length === answerWordCount(step.answer)) judgeArrange(stage, next);
   };
 
   const arrangeRemove = (stage: "guided" | "practice") => (pos: number) => {
@@ -445,7 +637,7 @@ export default function GrammarLessonPage() {
       setPracticeFeedback("idle");
       setPracticeHint(null);
     }
-    if (next.length === (step.tokens?.length ?? 0)) judgeArrange(stage, next);
+    if (next.length === answerWordCount(step.answer)) judgeArrange(stage, next);
   };
 
   const arrangeUndoLast = (stage: "guided" | "practice") => () => {
@@ -485,7 +677,8 @@ export default function GrammarLessonPage() {
 
   const guidedNext = () => {
     if (guided.index + 1 >= lesson.guided.length) {
-      gotoStage("practice");
+      // R10 六段式：跟段之后进「忆」段（无 recall 数据的旧课直接进练段）
+      gotoStage(lesson.recall ? "recall" : "practice");
       return;
     }
     setGuided({ index: guided.index + 1, picked: [], checked: false, passed: false });
@@ -499,25 +692,89 @@ export default function GrammarLessonPage() {
   // ── 自由练习交互 ─────────────────────────────────────────
   const practiceUndo = () => arrangeUndoLast("practice")();
 
-  // ── R04：无提示输出 ─────────────────────────────────────
+  /** R12 阶梯提示：错 2 次后可「照着拼一遍」——不阻断流程，诚实记为非一次通过。 */
+  const revealPractice = () => {
+    if (!practiceStep) return;
+    const displayTokens = arrangeTokensOf(practiceStep);
+    const answerWords = practiceStep.answer
+      .replace(/[.,!?;:]/g, "")
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((word) => word.toLowerCase());
+    const used = new Set<number>();
+    const correctOrder: number[] = [];
+    for (const word of answerWords) {
+      const index = displayTokens.findIndex(
+        (token, position) => !used.has(position) && token.replace(/[.,!?;:]/g, "").toLowerCase() === word
+      );
+      if (index >= 0) {
+        used.add(index);
+        correctOrder.push(index);
+      }
+    }
+    setPracticeOrder(correctOrder);
+    saveMistakeIfNeeded(practiceMisses, practiceStep.answer, lesson.oneLineRule);
+    recordStepResult("practice", "arrange", practiceIndex, practiceMisses + 1, true);
+    setPracticeFeedback("pass");
+  };
+
+  // ── R04/R6/R11：两档产出（半提示 → 无提示） ─────────────────
   const OUTPUT_PASS_SCORE = 90;
+
+  /** R6：产出计划——第 1 题用本课变体句（带句型框），第 2 题核心句（无提示）；无变体的旧课回退单题。 */
+  const halfPromptSentence =
+    lesson?.variants?.find((variant) => variant.label === "疑问")?.en ??
+    lesson?.variants?.find((variant) => variant.label === "否定")?.en ??
+    null;
+  const halfPromptIntentZh =
+    lesson?.variants?.find((variant) => variant.label === "疑问")?.zh ??
+    lesson?.variants?.find((variant) => variant.label === "否定")?.zh ??
+    lesson?.intentZh ??
+    "";
+  const outputPlan = useMemo(
+    () => [
+      ...(halfPromptSentence ? [{ sentence: halfPromptSentence, skeleton: true }] : []),
+      { sentence: lesson?.targetSentence ?? "", skeleton: false }
+    ],
+    [halfPromptSentence, lesson?.targetSentence]
+  );
+  const currentOutput = outputPlan[Math.min(outputStep, outputPlan.length - 1)];
+
+  const advanceOutputStep = () => {
+    setOutputStep((current) => Math.min(current + 1, outputPlan.length - 1));
+    setOutputValue("");
+    setOutputTokens(null);
+    setOutputAttempts(0);
+    setOutputOutcome("idle");
+    setOutputHint(null);
+    setOutputHintLevel(0);
+  };
 
   const submitOutput = () => {
     if (outputOutcome !== "idle" || !outputValue.trim()) return;
-    const tokens = compareText(lesson.targetSentence, outputValue, false);
+    const tokens = compareText(currentOutput.sentence, outputValue, false);
     const score = diffScore(tokens);
     const nextAttempts = outputAttempts + 1;
     setOutputAttempts(nextAttempts);
     setOutputTokens(tokens);
     const passed = score >= OUTPUT_PASS_SCORE;
-    recordStepResult("output", "free_type", 0, nextAttempts - 1, passed);
+    // 用没用过提示分开记录：无提示通过才是 R04 真正要度量的「掌握」。
+    recordStepResult("output", outputHintLevel > 0 ? "free_type_hint" : "free_type", outputStep, nextAttempts - 1, passed);
     if (passed) {
+      if (outputStep < outputPlan.length - 1) {
+        advanceOutputStep();
+        return;
+      }
       setOutputOutcome("pass");
       setOutputHint(null);
     } else {
-      setOutputHint(
-        detectThirdPersonMiss(outputValue) ?? `已经对了 ${score}%——对照下面的彩色提示，再试一次。`
-      );
+      // 反馈要说清「差在哪」：先给具体差异，再兜底通用文案（只给颜色等于让用户猜）。
+      const gap = describeOutputGap(outputValue, currentOutput.sentence);
+      const fallback =
+        score === 0
+          ? "这句和核心句还没对上——要不要先要个提示？"
+          : `已经对了一部分（${score}%）。下面是逐词对照：绿色对上了，红色还没。`;
+      setOutputHint([detectThirdPersonMiss(outputValue) ?? fallback, gap].filter(Boolean).join(" "));
     }
   };
 
@@ -526,14 +783,51 @@ export default function GrammarLessonPage() {
     if (outputOutcome !== "idle") return;
     const nextAttempts = outputAttempts + 1;
     setOutputAttempts(nextAttempts);
-    recordStepResult("output", "free_type", 0, nextAttempts - 1, false);
-    updateData((latest) => addLessonMistakeSentence(latest, lesson, lesson.targetSentence, lesson.oneLineRule));
+    recordStepResult("output", outputHintLevel > 0 ? "free_type_hint" : "free_type", outputStep, nextAttempts - 1, false);
+    updateData((latest) =>
+      addLessonMistakeSentence(latest, lesson, currentOutput.sentence, lesson.oneLineRule)
+    );
     setReviewNotes((notes) =>
       notes.includes(lesson.oneLineRule) ? notes : [...notes, lesson.oneLineRule]
     );
-    setOutputTokens(compareText(lesson.targetSentence, lesson.targetSentence, false));
+    setOutputTokens(compareText(currentOutput.sentence, currentOutput.sentence, false));
     setOutputOutcome("revealed");
     setOutputHint(null);
+  };
+
+  // ── R5：「忆」段——遮盖回忆，凭记忆写整句 ─────────────────
+  const RECALL_PASS_SCORE = 70;
+
+  const submitRecall = () => {
+    const target = lesson.recall?.answer;
+    if (!target || recallOutcome !== "idle" || !recallValue.trim()) return;
+    const tokens = compareText(target, recallValue, false);
+    const score = diffScore(tokens);
+    const nextAttempts = recallAttempts + 1;
+    setRecallAttempts(nextAttempts);
+    const passed = score >= RECALL_PASS_SCORE;
+    recordStepResult("recall", "free_recall", 0, nextAttempts - 1, passed);
+    if (passed) {
+      setRecallOutcome("pass");
+      setRecallHint(null);
+    } else {
+      setRecallHint(
+        detectThirdPersonMiss(recallValue) ??
+          describeOutputGap(recallValue, target) ??
+          "这句和核心句还没对上——先对照中文意思，把结构想清楚。"
+      );
+    }
+  };
+
+  const revealRecall = () => {
+    const target = lesson.recall?.answer;
+    if (!target || recallOutcome !== "idle") return;
+    recordStepResult("recall", "free_recall", 0, recallAttempts, false);
+    updateData((latest) =>
+      addLessonMistakeSentence(latest, lesson, target, lesson.recall?.noteZh ?? lesson.oneLineRule)
+    );
+    setRecallOutcome("revealed");
+    setRecallHint(null);
   };
 
   const practiceNext = () => {
@@ -545,18 +839,30 @@ export default function GrammarLessonPage() {
         return;
       }
       if (outputOutcome === "idle") return;
-      // R01①：完课埋点（旁路，先记后置完成状态）
+      // R6/R11：两档产出——第 1 题完成后进入无提示题
+      if (outputStep < outputPlan.length - 1) {
+        advanceOutputStep();
+        return;
+      }
+      // R01①：完课埋点（旁路，先记后置完成状态）；R23：时长 = 历史累计 + 本段（跨重启不再截断）
+      const sessionStart = lessonSessionStart.get(lesson.id) ?? lessonStartRef.current;
+      const totalDurationMs =
+        (lessonTimeAccumulator.get(lesson.id) ?? 0) + Math.max(0, Date.now() - sessionStart);
       appendGrammarEvent({
         kind: "grammar_lesson_completed",
         lessonId: lesson.id,
         completedAt: nowIso(),
         guidedFirstTry: guidedFirstTryRef.current,
         practiceFirstTry: practiceFirstTryRef.current,
-        durationMs: Math.max(0, Date.now() - lessonStartRef.current)
+        durationMs: totalDurationMs
       });
+      lessonTimeAccumulator.delete(lesson.id);
+      lessonSessionStart.delete(lesson.id);
       lessonStartRef.current = Date.now();
       updateData((latest) => markLessonDone(latest, lesson.id));
       setPracticeDone(true);
+      // R10 六段式：完课即进 ⑥ 破段（侦探挑战），小结同屏、破案后再离开
+      gotoStage("challenge");
       return;
     }
     setPracticeIndex((current) => current + 1);
@@ -579,9 +885,15 @@ export default function GrammarLessonPage() {
   const renderArrangeArea = (stage: "guided" | "practice") => {
     const step = stage === "guided" ? guidedStep : practiceStep;
     if (!step) return null;
-    const tokens = step.tokens ?? [];
+    // R4：展示词块 = 正确词 + 干扰项（打乱后的顺序）；点击/拖拽记录展示下标
+    const tokens = arrangeTokensOf(step);
     const order = stage === "guided" ? guidedOrder : practiceOrder;
     const passed = stage === "guided" ? guidedFeedback === "pass" : practiceFeedback === "pass";
+    // 词块库防作弊打乱：数据里的 tokens 常按答案顺序写，直接渲染会让「点词成句」变成顺着点一遍。
+    const bankIndexes = shuffleTokenOrder(
+      tokens,
+      `${lesson.id}:${stage}:${stage === "guided" ? guided.index : practiceIndex}`
+    );
     const add = arrangeAdd(stage);
     const remove = arrangeRemove(stage);
     const move = arrangeMove(stage);
@@ -657,8 +969,9 @@ export default function GrammarLessonPage() {
             finishDrag();
           }}
         >
-          {/* 多邻国式词块库：选中后原地变灰禁用，位置不消失、布局不跳 */}
-          {tokens.map((token, tokenIndex) => {
+          {/* 多邻国式词块库：选中后原地变灰禁用，位置不消失、布局不跳；展示顺序经确定性打乱 */}
+          {bankIndexes.map((tokenIndex) => {
+            const token = tokens[tokenIndex] ?? "";
             const selected = order.includes(tokenIndex);
             return (
               <button
@@ -690,6 +1003,10 @@ export default function GrammarLessonPage() {
     );
   };
 
+  // R10：段标按本课是否有「忆」段动态生成（必须在 early return 之前调用 hook）
+  const hasRecallStage = Boolean(lesson?.recall);
+  const stageTabs = useMemo(() => getStageTabs(hasRecallStage), [hasRecallStage]);
+
   const stageIndex = stageTabs.findIndex((tab) => tab.id === stage);
 
   return (
@@ -709,7 +1026,7 @@ export default function GrammarLessonPage() {
                 : stageTabs[stageIndex]?.hint ?? ""}
           </span>
         </div>
-        <div className="lesson-stage-dots" aria-label={stage === "pretest" ? "课前试一试" : `第 ${stageIndex + 1} / 4 段`}>
+        <div className="lesson-stage-dots" aria-label={stage === "pretest" ? "课前试一试" : `第 ${stageIndex + 1} / ${stageTabs.length} 段`}>
           {stageTabs.map((tab, index) => (
             <span key={tab.id} className={index === stageIndex ? "on" : ""} />
           ))}
@@ -736,8 +1053,29 @@ export default function GrammarLessonPage() {
                   <h2>直觉不准？正好</h2>
                   <p>
                     前测里有 <strong>{pretestWrongCount}</strong> 处拿不准——这一课就是讲它们的。
-                    拿不准的句子已经排进明天的复习队列。
+                    拿不准的句子已经排进明天的复习队列。先看看是哪几处：
                   </p>
+                  <div className="lesson-pretest-review">
+                    {pretestWrongRecords.map((record) => (
+                      <div className="lesson-summary-card" key={`${record.order}-${record.kind}`}>
+                        <p className="lesson-summary-grammar">第 {record.order} 题 · {record.promptZh}</p>
+                        {record.sentence && (
+                          <p className="lesson-summary-rule">
+                            <span className="lesson-rule-label">原句</span>
+                            {record.sentence}
+                          </p>
+                        )}
+                        <ul className="lesson-summary-points">
+                          <li>
+                            你的{record.kind === "choose" ? "选择" : "判断"}：{record.userPick}　·　正确
+                            {record.kind === "choose" ? "选择" : "判断"}：{record.correctPick}
+                          </li>
+                          {record.correctSentence && <li>正确说法：{record.correctSentence}</li>}
+                          <li>{record.whyZh}</li>
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
                   <div className="lesson-stage-actions">
                     <button type="button" className="primary-button" onClick={() => gotoStage("watch")}>
                       开始上课
@@ -774,7 +1112,7 @@ export default function GrammarLessonPage() {
                   {question.kind === "choose" ? (
                     <>
                       <p className="lesson-quiz-prompt">{question.prompt}</p>
-                      <div className="lesson-option-row">
+                      <div className="lesson-option-row" style={{ marginTop: 20 }}>
                         {question.options.map((option) => (
                           <button
                             type="button"
@@ -791,10 +1129,10 @@ export default function GrammarLessonPage() {
                   ) : (
                     <>
                       <p className="lesson-quiz-prompt">有人是这样说的，你觉得这句话有问题吗？</p>
-                      <p className="lesson-choose-sentence">
+                      <p className="lesson-choose-sentence" style={{ margin: "16px 0 0" }}>
                         <span>{question.sentence}</span>
                       </p>
-                      <div className="lesson-option-row">
+                      <div className="lesson-option-row" style={{ marginTop: 20 }}>
                         {["没问题", "有问题"].map((option) => (
                           <button
                             type="button"
@@ -845,7 +1183,11 @@ export default function GrammarLessonPage() {
             <>
               <div className="lesson-hero">
                 <div className="lesson-hero-art" aria-hidden="true">
-                  <AdventureScene scene={lesson.scene as AdventureSceneId} />
+                  {lesson.cover ? (
+                    <img src={lesson.cover} alt="" />
+                  ) : (
+                    <AdventureScene scene={lesson.scene as AdventureSceneId} />
+                  )}
                 </div>
                 <div className="lesson-hero-overlay">
                   <p className="lesson-scene-setup">{lesson.sceneSetupZh}</p>
@@ -1051,7 +1393,7 @@ export default function GrammarLessonPage() {
                 {guidedFeedback === "retry" && <p className="lesson-spot-hint">这一块看起来没问题，再点点别的词块。</p>}
               </div>
             ) : guidedStep.kind === "choose" ? (
-              <div className="lesson-choose">
+              <div className="lesson-choose" style={{ display: "grid", gap: 20 }}>
                 <p className="lesson-choose-sentence">
                   <span>{guidedStep.before}</span>
                   <span className="lesson-choose-blank">
@@ -1105,13 +1447,93 @@ export default function GrammarLessonPage() {
         </section>
       )}
 
-      {/* ───────────────── ③ 练 · 自己来 ───────────────── */}
+      {/* ───────────────── ③ 忆 · 遮盖回忆（R5，六段式新增段） ───────────────── */}
+      {stage === "recall" && lesson.recall && (
+        <section className="lesson-stage" aria-label="凭记忆写">
+          <div className="lesson-quiz-card">
+            <div className="lesson-quiz-head">
+              <span className="lesson-quiz-step">凭记忆写出来</span>
+              <span className="lesson-quiz-note">没有选项，全靠自己——写错了也没关系</span>
+            </div>
+            <p className="lesson-quiz-prompt">{lesson.recall.promptZh}</p>
+            <p className="lesson-quiz-note" style={{ margin: "8px 0 0", lineHeight: 1.8 }}>
+              这句要说的是：<strong>{lesson.recall.intentZh}</strong>
+            </p>
+
+            {recallOutcome === "idle" ? (
+              <>
+                <div className="answer-box">
+                  <textarea
+                    className="large-textarea"
+                    value={recallValue}
+                    onChange={(event) => setRecallValue(event.target.value)}
+                    onKeyDown={(event) => {
+                      // R5 忆段：回车直接提交（Shift+Enter 换行；输入法组词态的回车不触发）
+                      if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+                        event.preventDefault();
+                        if (recallValue.trim()) submitRecall();
+                      }
+                    }}
+                    placeholder="Type in English…（回车提交）"
+                    rows={2}
+                    aria-label="英文输入区"
+                  />
+                </div>
+                <div className="lesson-stage-actions center">
+                  <button type="button" className="primary-button" onClick={submitRecall} disabled={!recallValue.trim()}>
+                    提交
+                  </button>
+                </div>
+                {recallAttempts > 0 && recallHint && (
+                  <div className="lesson-feedback retry" aria-live="polite">
+                    <p>{recallHint}</p>
+                    {recallAttempts >= 2 && (
+                      <div className="lesson-stage-actions center">
+                        <button type="button" className="ghost-link" onClick={revealRecall}>
+                          想不起来，看答案
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="lesson-feedback pass" aria-live="polite">
+                <p>
+                  <CheckCircle2 size={16} />
+                  {recallOutcome === "pass" ? "凭记忆写出来了——这就是真的记住！" : "正确说法："}{" "}
+                  <strong>{lesson.recall.answer}</strong>
+                  {recallOutcome === "revealed" && (
+                    <span className="lesson-saved-hint">（这句已排进明天的复习队列）</span>
+                  )}
+                </p>
+                <p className="lesson-contrast-why">{lesson.recall.noteZh ?? lesson.oneLineRule}</p>
+                <button type="button" className="primary-button" onClick={() => gotoStage("practice")}>
+                  进入练习
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="lesson-stage-actions center">
+            <button type="button" className="ghost-link" onClick={() => gotoStage("watch")}>
+              回去再看一眼讲解
+            </button>
+          </div>
+        </section>
+      )}
+
+      {/* ───────────────── ④ 练 · 自己来 ───────────────── */}
       {stage === "practice" && practiceStep && !practiceDone && !outputActive && (
         <section className="lesson-stage" aria-label="自己来">
           <div className="lesson-quiz-card">
             <div className="lesson-quiz-head">
               <span className="lesson-quiz-step">第 {practiceIndex + 1} / {lesson.practice.length} 题</span>
-              <span className="lesson-quiz-note">这次没有干扰项，全靠自己</span>
+              <span className="lesson-quiz-note">
+                {practiceStep.distractors?.length
+                  ? "词块库里混进了干扰项——只挑你要用的词"
+                  : "这次没有干扰项，全靠自己"}
+              </span>
             </div>
             <p className="lesson-quiz-prompt">{practiceStep.promptZh}</p>
 
@@ -1131,6 +1553,13 @@ export default function GrammarLessonPage() {
             {practiceFeedback === "retry" && (
               <div className="lesson-feedback retry" aria-live="polite">
                 <p>{practiceHint ?? "顺序还差一点。提示：先说「谁」，再说「怎么样 / 做什么」。"}</p>
+                {practiceMisses >= 2 && (
+                  <div className="lesson-stage-actions center">
+                    <button type="button" className="ghost-link" onClick={revealPractice}>
+                      想不起来了，照着拼一遍
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -1143,17 +1572,28 @@ export default function GrammarLessonPage() {
         </section>
       )}
 
-      {/* ───────────────── ③+ · 无提示输出（R04） ───────────────── */}
+      {/* ───────────────── ⑤ 产 · 两档产出（R6/R11：半提示 → 无提示） ───────────────── */}
       {stage === "practice" && outputActive && !practiceDone && (
         <section className="lesson-stage" aria-label="说出来">
           <div className="lesson-quiz-card">
             <div className="lesson-quiz-head">
-              <span className="lesson-quiz-step">最后一步 · 说出来</span>
-              <span className="lesson-quiz-note">没有中文提示，全靠自己</span>
+              <span className="lesson-quiz-step">
+                最后一步 · 说出来（{outputStep + 1} / {outputPlan.length}）
+              </span>
+              <span className="lesson-quiz-note">
+                {currentOutput.skeleton ? "给你句型框，把句子补完整" : "没有中文提示，全靠自己"}
+              </span>
             </div>
             <p className="lesson-quiz-prompt">
-              {lesson.sceneSwings?.[0]?.sceneZh ?? lesson.sceneSetupZh}——用这一课学会的说法，把这句话打出来。
+              这一幕里轮到小美说话。凭记忆，按这一课的句型写出她要说的那句话——不是同学问她的那一句。
             </p>
+            {currentOutput.skeleton && (
+              <p className="lesson-quiz-note" style={{ margin: "8px 0 0", lineHeight: 1.8 }}>
+                这句要说的是：<strong>{halfPromptIntentZh}</strong>
+                <br />
+                句型框：<strong>{outputSkeleton(currentOutput.sentence)}</strong>
+              </p>
+            )}
 
             {outputOutcome === "idle" ? (
               <>
@@ -1162,7 +1602,14 @@ export default function GrammarLessonPage() {
                     className="large-textarea"
                     value={outputValue}
                     onChange={(event) => setOutputValue(event.target.value)}
-                    placeholder="Type in English…"
+                    onKeyDown={(event) => {
+                      // 回车直接提交（Shift+Enter 换行；输入法组词态的回车不触发）
+                      if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+                        event.preventDefault();
+                        if (outputValue.trim()) submitOutput();
+                      }
+                    }}
+                    placeholder="Type in English…（回车提交）"
                     rows={2}
                     aria-label="英文输入区"
                   />
@@ -1172,10 +1619,58 @@ export default function GrammarLessonPage() {
                     提交
                   </button>
                 </div>
+
+                {/* 提示阶梯：首答仍然无提示（保住「无提示首次通过」的度量），想不起来才逐级给台阶 */}
+                {outputHintLevel === 0 && (
+                  <div className="lesson-stage-actions center">
+                    <button type="button" className="ghost-link" onClick={() => setOutputHintLevel(1)}>
+                      想不起来？给我一点提示
+                    </button>
+                  </div>
+                )}
+                {outputHintLevel === 1 && (
+                  <div className="lesson-feedback retry" aria-live="polite">
+                    <p>
+                      这句要说的是：{outputStep === 0 ? halfPromptIntentZh : lesson.intentZh}
+                      <br />
+                      按这一课的核心句写，一共 {currentOutput.sentence.split(/\s+/).filter(Boolean).length} 个词。
+                    </p>
+                    <div className="lesson-stage-actions center">
+                      <button type="button" className="ghost-link" onClick={() => setOutputHintLevel(2)}>
+                        还是想不起来，再看一点
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {outputHintLevel === 2 && (
+                  <div className="lesson-feedback retry" aria-live="polite">
+                    <p>
+                      开头和词数给你：<strong>{outputSkeleton(currentOutput.sentence)}</strong>
+                    </p>
+                    <div className="lesson-stage-actions center">
+                      <button type="button" className="ghost-link" onClick={() => setOutputHintLevel(3)}>
+                        还是想不起来，直接看答案
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {outputHintLevel >= 3 && (
+                  <div className="lesson-feedback retry" aria-live="polite">
+                    <p>
+                      正确答案：<strong>{currentOutput.sentence}</strong>
+                    </p>
+                    <div className="lesson-stage-actions center">
+                      <button type="button" className="ghost-link" onClick={revealOutput}>
+                        照着打一遍（会排进复习队列）
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 {outputAttempts > 0 && outputHint && (
                   <div className="lesson-feedback retry" aria-live="polite">
                     <p>{outputHint}</p>
-                    {outputTokens && (
+                    {outputTokens && outputTokens.some((token) => token.status === "match" || token.status === "spelling") && (
                       <p className="lesson-output-diff">
                         {outputTokens.map((token, index) => (
                           <span key={index} className={`diff-token ${token.status}`}>
@@ -1184,11 +1679,13 @@ export default function GrammarLessonPage() {
                         ))}
                       </p>
                     )}
-                    <div className="lesson-stage-actions center">
-                      <button type="button" className="ghost-link" onClick={revealOutput}>
-                        想不起来了，看答案
-                      </button>
-                    </div>
+                    {outputHintLevel >= 1 && (
+                      <div className="lesson-stage-actions center">
+                        <button type="button" className="ghost-link" onClick={revealOutput}>
+                          想不起来了，看答案
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </>
@@ -1197,13 +1694,13 @@ export default function GrammarLessonPage() {
                 <p>
                   <CheckCircle2 size={16} />
                   {outputOutcome === "pass" ? "完全是自己写出来的！" : "没关系，先看正确说法："}{" "}
-                  <strong>{lesson.targetSentence}</strong>
+                  <strong>{currentOutput.sentence}</strong>
                   {outputOutcome === "revealed" && (
                     <span className="lesson-saved-hint">（这句已排进明天的复习队列）</span>
                   )}
                 </p>
                 <button type="button" className="primary-button" onClick={practiceNext}>
-                  完成这一课
+                  {outputStep < outputPlan.length - 1 ? "下一句（这次没有提示）" : "完成这一课"}
                 </button>
               </div>
             )}
@@ -1218,7 +1715,7 @@ export default function GrammarLessonPage() {
       )}
 
       {/* ───────────────── 完课 · 确证仪式（R05 价值收据） ───────────────── */}
-      {stage === "practice" && practiceDone && (
+      {practiceDone && (stage === "practice" || stage === "challenge") && (
         <section className="lesson-stage" aria-label="课程完成">
           <div className="lesson-complete">
             <CheckCircle2 size={28} />
@@ -1287,10 +1784,10 @@ export default function GrammarLessonPage() {
             </div>
 
             <p className="lesson-complete-sub">
-              学完 12 课，你就能用 40 多个句子介绍自己、讲昨天的事、说明天的计划。
+              学完这 20 课，你就能用 60 多个句子介绍自己、讲正在做的事、说明天的计划。
             </p>
             <div className="lesson-stage-actions">
-              {lesson.huntCaseIds.length > 0 ? (
+              {lesson.huntCaseIds.length > 0 && stage === "practice" ? (
                 <button type="button" className="primary-button" onClick={() => gotoStage("challenge")}>
                   <Sparkles size={16} /> 去挑战：找一找漏洞
                 </button>

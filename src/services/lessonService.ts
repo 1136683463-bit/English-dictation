@@ -103,6 +103,45 @@ export const judgePracticeStep = (step: LessonPracticeStep, picked: string[]): b
   checkLessonTokens(picked, step.answer);
 
 /**
+ * 词块库展示顺序（点词成句的防作弊打乱）：
+ * 数据里的 tokens 常常是顺手按答案顺序写的，若直接渲染，「点词成句」就退化成「顺着点一遍」。
+ * 这里用种子化 PRNG 做确定性打乱——同一题每次进入顺序一致（可回放、不跳变），但一定不等于原顺序。
+ * 返回的是 token 下标排列；点击/拖拽仍以原始下标记录，不影响判题与既有状态。
+ */
+const mulberry32 = (seed: number) => {
+  let state = seed >>> 0;
+  return () => {
+    state = (state + 0x6d2b79f5) | 0;
+    let t = Math.imul(state ^ (state >>> 15), 1 | state);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+};
+
+const hashText = (text: string): number => {
+  let hash = 2166136261;
+  for (let index = 0; index < text.length; index += 1) {
+    hash ^= text.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+};
+
+export const shuffleTokenOrder = (tokens: string[], seedText: string): number[] => {  const indexes = tokens.map((_token, index) => index);
+  if (indexes.length <= 2) return indexes;
+  const random = mulberry32(hashText(seedText));
+  for (let i = indexes.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(random() * (i + 1));
+    [indexes[i], indexes[j]] = [indexes[j], indexes[i]];
+  }
+  // 极小概率打乱后仍是原顺序：首尾互换，保证一定不是「顺着点就行」。
+  if (indexes.every((value, position) => value === position)) {
+    [indexes[0], indexes[indexes.length - 1]] = [indexes[indexes.length - 1], indexes[0]];
+  }
+  return indexes;
+};
+
+/**
  * 三单常驻检查（R04）：he / she / it 后面跟动词原形时温和提醒（不算错，只提示）。
  * 中文动词不变形，漏 -s 是初学者最高频的顽固错，所以在所有输出场景常驻。
  */
@@ -112,6 +151,51 @@ const THIRD_PERSON_BASE_VERBS =
 export const detectThirdPersonMiss = (input: string): string | null => {
   const pattern = new RegExp(`\\b(he|she|it)\\s+(${THIRD_PERSON_BASE_VERBS})\\b`, "i");
   return pattern.test(input) ? "他 / 她 / 它做事，动词要加 s——检查一下动词有没有小尾巴。" : null;
+};
+
+const outputWords = (value: string): string[] =>
+  value
+    .replace(/[.,!?;:]/g, "")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => word.toLowerCase());
+
+/**
+ * R04 输出题的差异说明：告诉用户「多了哪个词 / 少了词 / 哪个位置不一样」，
+ * 而不是只给红绿颜色让用户自己猜（2026-09-13 试玩发现后新增）。
+ * 返回 null 表示无明显词集差异（如仅标点大小写差异）。
+ */
+export const describeOutputGap = (userText: string, target: string): string | null => {
+  const userWords = outputWords(userText);
+  const targetWords = outputWords(target);
+  if (userWords.length === 0 || targetWords.length === 0) return null;
+  if (userWords.join(" ") === targetWords.join(" ")) return null;
+
+  if (userWords.length > targetWords.length) {
+    const counts = new Map<string, number>();
+    for (const word of targetWords) counts.set(word, (counts.get(word) ?? 0) + 1);
+    const extras: string[] = [];
+    for (const word of userWords) {
+      const left = counts.get(word) ?? 0;
+      if (left > 0) counts.set(word, left - 1);
+      else extras.push(word);
+    }
+    if (extras.length > 0) {
+      const shown = extras.slice(0, 2).map((word) => `「${word}」`).join("、");
+      const countZh = extras.length === 1 ? "一个词" : `${extras.length} 个词`;
+      return `多了${countZh} ${shown}——这一课的核心句是 ${targetWords.length} 个词。`;
+    }
+    const extraCount = userWords.length - targetWords.length;
+    return `比核心句多了 ${extraCount} 个词——对比一下多出的位置。`;
+  }
+
+  if (userWords.length < targetWords.length) {
+    const missing = targetWords.length - userWords.length;
+    const countZh = missing === 1 ? "一个词" : `${missing} 个词`;
+    return `少了${countZh}——这一课的核心句是 ${targetWords.length} 个词，再补上试试。`;
+  }
+
+  return "词的个数对上了，但顺序或个别词和核心句不太一样——看下面的对照。";
 };
 
 export interface LessonProgressSummary {

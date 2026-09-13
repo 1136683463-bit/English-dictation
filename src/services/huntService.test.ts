@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   appendHuntAttempt,
   appendHuntResult,
+  buildHintMessage,
   buildHuntResult,
   computeStars,
   findErrorAt,
@@ -10,9 +11,11 @@ import {
   judgeGuess,
   listHuntCases,
   pickCorrectionWord,
+  pickHintTarget,
   summarizeHuntProgress
 } from "./huntService";
 import { huntCases } from "../data/huntCases";
+import { grammarLessons } from "../data/grammarLessons";
 import { makeTestData } from "./testUtils";
 
 const firstCase = listHuntCases()[0];
@@ -175,14 +178,25 @@ describe("hunt service", () => {
 });
 
 describe("hunt cases data integrity", () => {
-  it("has 20 cases with 54 errors in total", () => {
-    expect(huntCases).toHaveLength(20);
-    expect(huntCases.reduce((sum, huntCase) => sum + huntCase.errors.length, 0)).toBe(54);
+  // 案件池随第二季进阶篇持续扩容（PRD-grammar-advanced R1–R8 每课配 1–2 案），
+  // 故用下限守卫防意外丢数据，不再钉死精确总数（原快照：20 案 / 54 错）。
+  it("keeps the case pool at or above the season-1 baseline (20 cases / 54 errors)", () => {
+    expect(huntCases.length).toBeGreaterThanOrEqual(20);
+    expect(huntCases.reduce((sum, huntCase) => sum + huntCase.errors.length, 0)).toBeGreaterThanOrEqual(54);
   });
 
   it("keeps case ids and numbers unique", () => {
     expect(new Set(huntCases.map((huntCase) => huntCase.id)).size).toBe(huntCases.length);
     expect(new Set(huntCases.map((huntCase) => huntCase.number)).size).toBe(huntCases.length);
+  });
+
+  // R15：未被任何课程引用的案件必须经过人工校验（reviewed），防止 AI 初稿静默上线。
+  it("requires unreferenced cases to be human-reviewed (R15)", () => {
+    const referenced = new Set(grammarLessons.flatMap((lesson) => lesson.huntCaseIds));
+    const unreviewed = huntCases
+      .filter((huntCase) => !referenced.has(huntCase.id) && !huntCase.reviewed)
+      .map((huntCase) => huntCase.id);
+    expect(unreviewed).toEqual([]);
   });
 
   // 案件 hunt-new-phone 的冠词下标曾错指 "hour"，修复后此处作为数据对齐回归守门。
@@ -205,4 +219,21 @@ describe("hunt cases data integrity", () => {
       expect(huntCase.tokens.length).toBeGreaterThan(errorIndexes.size);
     }
   });
+
+  it("pickHintTarget：按词序返回第一个未找到的错误，已找到的跳过", () => {
+    const [first, second] = firstCase.errors;
+    expect(pickHintTarget(firstCase, [])?.tokenIndex).toBe(first.tokenIndex);
+    expect(pickHintTarget(firstCase, [first.tokenIndex])?.tokenIndex).toBe(second.tokenIndex);
+    const allFound = firstCase.errors.map((error) => error.tokenIndex);
+    expect(pickHintTarget(firstCase, allFound)).toBeUndefined();
+  });
+
+  it("buildHintMessage：只给罪名与方位，不泄露答案词", () => {
+    const message = buildHintMessage(firstCase, firstError);
+    expect(message).toContain(GRAMMAR_ERROR_TAG_LABELS[firstError.tag]);
+    expect(message).toMatch(/前半段|后半段/);
+    expect(message).not.toContain(firstError.original);
+    expect(message).not.toContain(firstError.correction);
+  });
 });
+

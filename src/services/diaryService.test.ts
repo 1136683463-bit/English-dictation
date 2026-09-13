@@ -11,6 +11,7 @@ import {
   summarizeDiaryProgress
 } from "./diaryService";
 import { makeTestData } from "./testUtils";
+import { getLocalDateKey } from "./mistakeBookService";
 
 const baseData = (): AppData => makeTestData();
 
@@ -97,15 +98,21 @@ describe("diaryService", () => {
   });
 
   it("进度汇总：条数、天数、今日条数、已批改数", () => {
+    // 用真实的「今天 / 昨天」日期键，避免测试跨天失效
+    const today = new Date();
+    const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+    const todayKey = getLocalDateKey(today);
+    const yesterdayKey = getLocalDateKey(yesterday);
+
     let data = baseData();
-    data = saveDiaryEntry(data, { dateKey: "2026-09-12", question, answerEn: "I am happy." }).data;
+    data = saveDiaryEntry(data, { dateKey: todayKey, question, answerEn: "I am happy." }).data;
     data = saveDiaryEntry(data, {
-      dateKey: "2026-09-12",
+      dateKey: todayKey,
       question: { id: "d-like-food", zh: "你最喜欢吃什么？" },
       answerEn: "I like noodles."
     }).data;
     data = saveDiaryEntry(data, {
-      dateKey: "2026-09-11",
+      dateKey: yesterdayKey,
       question: { id: "d-like-food", zh: "你最喜欢吃什么？" },
       answerEn: "I like rice."
     }).data;

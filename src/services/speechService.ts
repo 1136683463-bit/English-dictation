@@ -34,7 +34,10 @@ type PronunciationServiceModule = {
 
 const MAX_AUDIO_ELEMENT_CACHE_SIZE = 60;
 const MAX_PRONUNCIATION_URL_CACHE_SIZE = 300;
-const AUDIO_START_TIMEOUT_MS = 6000;
+// A healthy online clip starts in a few hundred milliseconds. Anything slower
+// than this is a dead source, so bail out early instead of leaving the user in
+// silence while the fallback chain waits.
+const AUDIO_START_TIMEOUT_MS = 2500;
 
 const pronunciationServiceLoaders = (
   import.meta as ImportMeta & {
@@ -203,7 +206,9 @@ const playDecodedAudioUrl = async (audioUrl: string, lifecycle?: SpeechLifecycle
   if (!context || typeof fetch !== "function") return false;
 
   try {
-    const response = await fetch(audioUrl, { credentials: "omit" });
+    // The upstream TTS hosts reject requests that carry a page Referer (they
+    // answer "200 OK" with an empty body), so never send one.
+    const response = await fetch(audioUrl, { credentials: "omit", referrerPolicy: "no-referrer" });
     if (!response.ok) return false;
     const arrayBuffer = await response.arrayBuffer();
     const audioBuffer = await context.decodeAudioData(arrayBuffer.slice(0));
@@ -273,6 +278,10 @@ const getCachedAudioElement = (audioUrl?: string | null) => {
   }
 
   const audio = new Audio();
+  // Online TTS endpoints (Baidu gettts in particular) answer with an empty
+  // 200 when the request carries a Referer, which stalls the media element and
+  // forces the slow system-voice fallback. Suppress the Referer header.
+  audio.setAttribute?.("referrerpolicy", "no-referrer");
   audio.src = audioUrlKey;
   audio.setAttribute?.("playsinline", "true");
   audio.setAttribute?.("webkit-playsinline", "true");

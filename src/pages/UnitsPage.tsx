@@ -1,9 +1,17 @@
-import { type CSSProperties, type DragEvent, FormEvent, useEffect, useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, CalendarDays, Flame, Keyboard, Plus, Search, Settings2, Target, Trash2, Upload, X } from "lucide-react";
+import { type CSSProperties, type DragEvent, FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, CalendarDays, CheckCircle2, FileText, FileUp, Flame, Keyboard, Plus, Search, Settings2, Target, Trash2, Upload, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
+import {
+  bookTitleFromFile,
+  buildImportChapters,
+  detectBookFileFormat,
+  parseBookFileContent,
+  readBookFileText,
+  type ParsedBookChapter
+} from "../services/bookImportService";
 import { addWordsBatchWithAudio, getWordDetails, hydrateWordInput, WordInput } from "../services/cardService";
 import { getWeakCardInsights } from "../services/reviewService";
 import {
@@ -110,6 +118,20 @@ export default function UnitsPage() {
   const [shareCustomBook, setShareCustomBook] = useState(false);
   const [isReorderingChapters, setIsReorderingChapters] = useState(false);
   const [customChapters, setCustomChapters] = useState<CustomChapter[]>(() => createDefaultCustomChapters());
+  const [isImportBookOpen, setIsImportBookOpen] = useState(false);
+  const [importBookTitle, setImportBookTitle] = useState("");
+  const [importGroupId, setImportGroupId] = useState("");
+  const [importSplitSize, setImportSplitSize] = useState<number | null>(null);
+  const [importFileName, setImportFileName] = useState("");
+  const [importChapters, setImportChapters] = useState<ParsedBookChapter[]>([]);
+  const [importWarning, setImportWarning] = useState("");
+  const [importError, setImportError] = useState("");
+  const [isReadingFile, setIsReadingFile] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
+  const [isImportDragOver, setIsImportDragOver] = useState(false);
+  const [importResultMessage, setImportResultMessage] = useState("");
+  const importFileInputRef = useRef<HTMLInputElement>(null);
+  const importSplitOptions = [15, 30, 50, 100] as const;
 
   const units = useMemo(() => {
     return data.units.slice().sort((a, b) => a.order - b.order);
@@ -196,6 +218,28 @@ export default function UnitsPage() {
   const customFilledChapters = customChapterDrafts.filter((chapter) => chapter.words.length > 0);
   const canCreateCustomBook = Boolean(customBookTitle.trim()) && customTotalWords > 0;
 
+  const importChapterPreview = useMemo(
+    () => buildImportChapters(importChapters, importSplitSize),
+    [importChapters, importSplitSize]
+  );
+  const importTotalWords = importChapterPreview.reduce((sum, chapter) => sum + chapter.words.length, 0);
+  const importWordStats = useMemo(() => {
+    const existingWords = new Set(data.wordDetails.map((details) => details.word.toLowerCase()));
+    const seen = new Set<string>();
+    let existing = 0;
+    importChapterPreview.forEach((chapter) => {
+      chapter.words.forEach((word) => {
+        const key = word.word.trim().toLowerCase();
+        if (!key || seen.has(key)) return;
+        seen.add(key);
+        if (existingWords.has(key)) existing += 1;
+      });
+    });
+    return { existing, newCount: Math.max(0, seen.size - existing) };
+  }, [importChapterPreview, data.wordDetails]);
+  const canImportBook =
+    Boolean(importBookTitle.trim()) && importChapterPreview.length > 0 && !isImporting && !isReadingFile;
+
   useEffect(() => {
     if (!selectedUnitId && sortedUnits[0]) {
       setSelectedUnitId(sortedUnits[0].id);
@@ -223,13 +267,15 @@ export default function UnitsPage() {
   }, [selectedUnit?.id]);
 
   useEffect(() => {
-    if (!isUnitModalOpen && !isCustomBookOpen) return;
+    if (!isUnitModalOpen && !isCustomBookOpen && !isImportBookOpen) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        if (isCustomBookOpen) {
+        if (isImportBookOpen) {
+          setIsImportBookOpen(false);
+        } else if (isCustomBookOpen) {
           setIsCustomBookOpen(false);
         } else {
           setIsUnitModalOpen(false);
@@ -242,7 +288,7 @@ export default function UnitsPage() {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isCustomBookOpen, isUnitModalOpen]);
+  }, [isCustomBookOpen, isImportBookOpen, isUnitModalOpen]);
 
   const saveSelectedUnit = (event: FormEvent) => {
     event.preventDefault();
@@ -403,6 +449,120 @@ export default function UnitsPage() {
     setShareCustomBook(false);
     setIsReorderingChapters(false);
     setCustomChapters(createDefaultCustomChapters());
+  };
+
+  const openImportBookModal = () => {
+    setIsImportBookOpen(true);
+  };
+
+  const closeImportBookModal = () => {
+    setIsImportBookOpen(false);
+  };
+
+  const resetImportDraft = () => {
+    setImportBookTitle("");
+    setImportGroupId("");
+    setImportSplitSize(null);
+    setImportFileName("");
+    setImportChapters([]);
+    setImportWarning("");
+    setImportError("");
+  };
+
+  const handleImportFile = async (file: File) => {
+    setImportError("");
+    if (file.size > 5 * 1024 * 1024) {
+      setImportError("文件超过 5MB，请拆分后再导入。");
+      return;
+    }
+    setIsReadingFile(true);
+    try {
+      const text = await readBookFileText(file);
+      const parsed = parseBookFileContent(text, detectBookFileFormat(file.name));
+      const totalWords = parsed.chapters.reduce((sum, chapter) => sum + chapter.words.length, 0);
+      if (totalWords === 0) {
+        setImportFileName("");
+        setImportChapters([]);
+        setImportWarning("");
+        setImportError("没有解析到有效单词，请检查文件内容。");
+        return;
+      }
+      setImportFileName(file.name);
+      setImportChapters(parsed.chapters);
+      setImportWarning(parsed.warning ?? "");
+      setImportBookTitle(bookTitleFromFile(file.name));
+      setImportSplitSize(null);
+    } catch (error) {
+      setImportError(error instanceof Error ? error.message : "文件读取失败。");
+    } finally {
+      setIsReadingFile(false);
+    }
+  };
+
+  const importBookFromFile = async (event: FormEvent) => {
+    event.preventDefault();
+    if (!canImportBook) return;
+
+    const bookTitle = importBookTitle.trim();
+    const chaptersToCreate = importChapterPreview;
+    const groupChoice = importGroupId;
+
+    setIsImporting(true);
+    const result = await updateDataAsync((current) => {
+      let next = current;
+      let maxOrder = current.units.reduce((max, unit) => Math.max(max, unit.order), 0);
+      let targetGroupId = "";
+
+      if (groupChoice === "__new__") {
+        next = createUnitGroup(next, bookTitle, unitColors[current.unitGroups.length % unitColors.length]);
+        targetGroupId = next.unitGroups[next.unitGroups.length - 1]?.id ?? "";
+      } else if (current.unitGroups.some((group) => group.id === groupChoice)) {
+        targetGroupId = groupChoice;
+      }
+
+      const wordInputs: WordInput[] = [];
+      chaptersToCreate.forEach((chapter, index) => {
+        const unitId = uid("unit");
+        const timestamp = nowIso();
+        const chapterTitle = chapter.title.trim() || `list${index + 1}`;
+        const unitTitle = chaptersToCreate.length === 1 ? bookTitle : `${bookTitle} · ${chapterTitle}`;
+        const unit = {
+          id: unitId,
+          title: unitTitle,
+          description: `文件导入 · ${chapter.words.length} 词`,
+          order: ++maxOrder,
+          color: unitColors[index % unitColors.length],
+          groupId: targetGroupId || undefined,
+          createdAt: timestamp,
+          updatedAt: timestamp
+        };
+
+        next = { ...next, units: [...next.units, unit] };
+
+        chapter.words.forEach((word) => {
+          const hydrated = hydrateWordInput(next, word.word);
+          wordInputs.push({
+            ...hydrated,
+            translation: word.translation.trim() || hydrated.translation,
+            phonetic: word.phonetic.trim() || hydrated.phonetic,
+            partOfSpeech: word.partOfSpeech.trim() || hydrated.partOfSpeech,
+            unitId,
+            note: `词书：${bookTitle}${chaptersToCreate.length > 1 ? ` / ${chapterTitle}` : ""}`,
+            tags: "文件导入"
+          });
+        });
+      });
+
+      return addWordsBatchWithAudio(next, wordInputs, current.settings.speechLang, { maxAudioLookups: 30 });
+    });
+
+    setIsImporting(false);
+    closeImportBookModal();
+    resetImportDraft();
+    const audioDetail = result.audioAttached ? `，附加真实发音 ${result.audioAttached} 个` : "";
+    setImportResultMessage(
+      `已从「${importFileName}」导入 ${chaptersToCreate.length} 本词书：新增 ${result.created} 词，合并 ${result.merged} 词${audioDetail}。`
+    );
   };
 
   const updateCustomChapter = (chapterId: string, patch: Partial<Pick<CustomChapter, "title" | "content">>) => {
@@ -733,6 +893,16 @@ export default function UnitsPage() {
           );
         })}
 
+        {importResultMessage && (
+          <div className="unit-import-banner" role="status">
+            <CheckCircle2 size={16} />
+            <span>{importResultMessage}</span>
+            <button type="button" className="unit-import-banner-close" title="关闭提示" onClick={() => setImportResultMessage("")}>
+              <X size={14} />
+            </button>
+          </div>
+        )}
+
         <div className="unit-book-grid unit-create-grid">
           <button
             className="unit-book-card unit-create-card unit-create-vocab"
@@ -769,6 +939,24 @@ export default function UnitsPage() {
             </div>
             <em>导入材料</em>
           </Link>
+          <button
+            className="unit-book-card unit-create-card unit-create-import"
+            type="button"
+            title="从文件导入词书"
+            aria-label="从文件导入词书"
+            onClick={openImportBookModal}
+          >
+            <span className="unit-book-spine" aria-hidden="true" />
+            <span className="unit-create-badge"><Upload size={16} /> 导入</span>
+            <span className="unit-book-volume">New</span>
+            <strong>导入词书</strong>
+            <span className="unit-book-date">IMPORT BOOK</span>
+            <span className="unit-book-number" aria-hidden="true">↑</span>
+            <div className="unit-book-progress">
+              <i />
+            </div>
+            <em>txt / csv 文件</em>
+          </button>
         </div>
       </section>
 
@@ -889,6 +1077,162 @@ export default function UnitsPage() {
               <button className="secondary-button" type="button" onClick={closeCustomBookModal}>取消</button>
               <button className="primary-button" type="submit" disabled={!canCreateCustomBook}>确定</button>
             </footer>
+          </form>
+        </div>
+      )}
+
+      {isImportBookOpen && (
+        <div className="custom-book-layer" role="presentation">
+          <form
+            className="custom-book-modal import-book-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="导入词书"
+            onSubmit={importBookFromFile}
+          >
+            <button className="custom-book-close" type="button" title="关闭弹窗" onClick={closeImportBookModal}>
+              <X size={20} />
+            </button>
+
+            <header className="custom-book-header import-book-header">
+              <label className="custom-book-name">
+                <span><b>*</b> 词书名称</span>
+                <input
+                  value={importBookTitle}
+                  onChange={(event) => setImportBookTitle(event.target.value)}
+                  maxLength={20}
+                  placeholder="默认使用文件名"
+                  autoFocus
+                />
+              </label>
+
+              <label className="custom-book-share import-book-group">
+                <span>所属分组</span>
+                <select value={importGroupId} onChange={(event) => setImportGroupId(event.target.value)}>
+                  <option value="">未分组</option>
+                  <option value="__new__">新建分组（书名）</option>
+                  {unitGroups.map((group) => (
+                    <option key={group.id} value={group.id}>{group.title}</option>
+                  ))}
+                </select>
+              </label>
+
+              <div className="custom-book-limit">
+                <span>自动分章</span>
+                <div className="chapter-limit-control" aria-label="自动分章">
+                  <button
+                    type="button"
+                    className={importSplitSize === null ? "selected" : ""}
+                    onClick={() => setImportSplitSize(null)}
+                  >
+                    按文件
+                  </button>
+                  {importSplitOptions.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className={importSplitSize === option ? "selected" : ""}
+                      onClick={() => setImportSplitSize(option)}
+                    >
+                      {option}个
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </header>
+
+            <div className="custom-book-toolbar import-book-toolbar">
+              {importFileName ? (
+                <>
+                  <span className="import-file-chip"><FileText size={14} /> {importFileName}</span>
+                  <span>
+                    {importChapterPreview.length} 本词书 · {importTotalWords} 词 · 新增 {importWordStats.newCount} / 合并 {importWordStats.existing}
+                  </span>
+                  <button className="text-action" type="button" onClick={() => importFileInputRef.current?.click()}>
+                    重新选择
+                  </button>
+                  <button className="text-action" type="button" onClick={resetImportDraft}>
+                    清除
+                  </button>
+                </>
+              ) : (
+                <span>选择 txt / csv 文件，一行一个单词；用「# 章节名」或章节列划分多本词书。</span>
+              )}
+            </div>
+
+            <div className="import-book-body">
+              {!importFileName ? (
+                <div
+                  className={`import-dropzone ${isImportDragOver ? "is-dragover" : ""}`}
+                  role="button"
+                  tabIndex={0}
+                  aria-label="选择或拖入词书文件"
+                  onClick={() => importFileInputRef.current?.click()}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      importFileInputRef.current?.click();
+                    }
+                  }}
+                  onDragOver={(event) => {
+                    event.preventDefault();
+                    setIsImportDragOver(true);
+                  }}
+                  onDragLeave={() => setIsImportDragOver(false)}
+                  onDrop={(event) => {
+                    event.preventDefault();
+                    setIsImportDragOver(false);
+                    const file = event.dataTransfer.files?.[0];
+                    if (file) void handleImportFile(file);
+                  }}
+                >
+                  <FileUp size={32} />
+                  <strong>点击选择或拖入文件</strong>
+                  <p>支持 .txt / .csv / .tsv（UTF-8 或 GBK 编码），单次最多导入 5000 词</p>
+                  <p>TXT：一行一个单词，支持「单词 释义」「单词,释义」「单词[TAB]释义」「单词 /音标/ 词性. 释义」</p>
+                  <p>CSV：列头支持 word/单词、translation/释义、phonetic/音标、pos/词性、chapter/章节</p>
+                  {isReadingFile && <p className="import-book-status">正在读取文件…</p>}
+                  {!isReadingFile && importError && <p className="import-book-status is-error">{importError}</p>}
+                </div>
+              ) : (
+                <>
+                  <div className="custom-chapter-grid import-chapter-grid">
+                    {importChapterPreview.map((chapter, index) => (
+                      <section className="custom-chapter-card import-chapter-card" key={`${chapter.title}-${index}`}>
+                        <div className="import-chapter-head">
+                          <input value={chapter.title.trim() || `list${index + 1}`} readOnly aria-label={`第 ${index + 1} 本词书名称`} />
+                          <span className="chapter-count">{chapter.words.length} 词</span>
+                        </div>
+                        <p className="import-chapter-words">
+                          {chapter.words.slice(0, 6).map((word) => word.word).join(" · ")}
+                          {chapter.words.length > 6 ? ` …等 ${chapter.words.length} 词` : ""}
+                        </p>
+                      </section>
+                    ))}
+                  </div>
+                  {importWarning && <p className="import-book-status">{importWarning}</p>}
+                </>
+              )}
+            </div>
+
+            <footer className="custom-book-footer">
+              <button className="secondary-button" type="button" onClick={closeImportBookModal}>取消</button>
+              <button className="primary-button" type="submit" disabled={!canImportBook}>
+                {isImporting ? "导入中…" : "导入词书"}
+              </button>
+            </footer>
+
+            <input
+              ref={importFileInputRef}
+              type="file"
+              accept=".txt,.csv,.tsv,text/plain,text/csv"
+              hidden
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                event.target.value = "";
+                if (file) void handleImportFile(file);
+              }}
+            />
           </form>
         </div>
       )}

@@ -12,6 +12,10 @@ import type { HuntCase } from "../types";
  *
  * 新增案件时只需追加数组项：tokens 是原文按空格切好的词表（标点跟在前一个词后面），
  * errors[].tokenIndex 指向 tokens 的下标。
+ *
+ * R15 人工校验记录（2026-09-12）：3 号案 + 13–20 号案（原 AI 初稿、未被任何课引用）逐案核对——
+ * 语法正确性、罪名标注、讲解话术、tokenIndex 全部通过；修正 13 号案未标注的时态错（stay → stayed）。
+ * 标记 reviewed: true。被课程引用的案件在配课时校验，新增案件若暂未配课须先校验并标记 reviewed。
  */
 export const huntCases: HuntCase[] = [
   {
@@ -85,6 +89,7 @@ export const huntCases: HuntCase[] = [
   {
     id: "hunt-my-sister",
     number: 3,
+    reviewed: true,
     title: "我的妹妹",
     scene: "写给新同学的一封自我介绍",
     tokens: [
@@ -376,10 +381,11 @@ export const huntCases: HuntCase[] = [
   {
     id: "hunt-mom-note",
     number: 13,
+    reviewed: true,
     title: "妈妈的留言条",
     scene: "贴在门上的一张便条，妈妈出门前留的",
     tokens: [
-      "Because", "rainy,", "we", "stay", "at", "home", "all", "day.",
+      "Because", "rainy,", "we", "stayed", "at", "home", "all", "day.",
       "Very", "happy", "today.",
       "She", "very", "happy", "with", "the", "cake.",
       "My", "brother", "likes", "it", "too."
@@ -411,6 +417,7 @@ export const huntCases: HuntCase[] = [
   {
     id: "hunt-school-show",
     number: 14,
+    reviewed: true,
     title: "学校演出",
     scene: "演出第二天写在笔记本上的回忆",
     tokens: [
@@ -445,6 +452,7 @@ export const huntCases: HuntCase[] = [
   {
     id: "hunt-weekend-plan",
     number: 15,
+    reviewed: true,
     title: "周末计划",
     scene: "写在日历边上的一份小计划",
     tokens: [
@@ -479,6 +487,7 @@ export const huntCases: HuntCase[] = [
   {
     id: "hunt-white-cat",
     number: 16,
+    reviewed: true,
     title: "朋友的白猫",
     scene: "跟同学聊天时说到的一只猫",
     tokens: [
@@ -517,6 +526,7 @@ export const huntCases: HuntCase[] = [
   {
     id: "hunt-sports-day",
     number: 17,
+    reviewed: true,
     title: "运动会",
     scene: "运动会结束当晚写的日记",
     tokens: [
@@ -561,6 +571,7 @@ export const huntCases: HuntCase[] = [
   {
     id: "hunt-pen-pal-letter",
     number: 18,
+    reviewed: true,
     title: "写给笔友的信",
     scene: "英语课上写了一半的一封信",
     tokens: [
@@ -599,6 +610,7 @@ export const huntCases: HuntCase[] = [
   {
     id: "hunt-fridge-note",
     number: 19,
+    reviewed: true,
     title: "冰箱上的便条",
     scene: "厨房冰箱门上贴着的家里留言",
     tokens: [
@@ -640,6 +652,7 @@ export const huntCases: HuntCase[] = [
   {
     id: "hunt-term-review",
     number: 20,
+    reviewed: true,
     title: "学期总结",
     scene: "期末写给自己的三行总结",
     tokens: [
@@ -675,6 +688,375 @@ export const huntCases: HuntCase[] = [
       { word: "advice", zh: "建议（不可数，没有 -s）" },
       { word: "term", zh: "学期" },
       { word: "scores", zh: "分数；成绩" }
+    ]
+  },
+  {
+    // L13（现在进行时）配套案 · R24 螺旋混题：新错 verb_form ×2 + 旧错 sv_agreement / plural ×2（旧错占 50%）
+    id: "hunt-kitchen-note",
+    number: 21,
+    title: "冰箱上的便条",
+    scene: "周六中午，家里冰箱上贴的一张便条",
+    tokens: [
+      "Mom", "is", "cook", "in", "the", "kitchen.",
+      "Dad", "is", "watch", "TV", "with", "my", "brother.",
+      "My", "sister", "do", "her", "homework", "every", "evening.",
+      "Please", "buy", "two", "egg", "and", "some", "milk.",
+      "We", "are", "waiting", "for", "dinner!"
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "verb_form",
+        original: "cook",
+        correction: "cooking",
+        explanation: "Mom is 正在做这件事，cook 要穿上 -ing 外套：is cooking。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "verb_form",
+        original: "watch",
+        correction: "watching",
+        explanation: "Dad is 后面的动词也要 -ing：is watching。be 不能丢，-ing 也不能丢。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "sv_agreement",
+        original: "do",
+        correction: "does",
+        explanation: "every evening 说的是每天都做的事，My sister 是三单，动词要加 -s：does。"
+      },
+      {
+        tokenIndex: 23,
+        tag: "plural",
+        original: "egg",
+        correction: "eggs",
+        explanation: "two 后面的可数名词要用复数：two eggs。"
+      }
+    ],
+    notes: [
+      { word: "kitchen", zh: "厨房" }
+    ]
+  },
+  {
+    // L14（can）配套案 · R24 螺旋混题：新错 verb_form（can 后动词变形）×2 + 旧错 article / plural ×2（旧错占 50%）
+    id: "hunt-cafe-order",
+    number: 22,
+    title: "奶茶店的小票",
+    scene: "街角奶茶店台面上的一张手写小票",
+    tokens: [
+      "Order", "for", "Xiaomei:",
+      "I", "can", "making", "milk", "tea,",
+      "and", "she", "cans", "make", "coffee.",
+      "Please", "give", "me", "a", "ice", "tea",
+      "and", "three", "kind", "of", "juice.",
+      "Thank", "you!"
+    ],
+    errors: [
+      {
+        tokenIndex: 5,
+        tag: "verb_form",
+        original: "making",
+        correction: "make",
+        explanation: "can 后面的动词穿原样，不变形：can make。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "verb_form",
+        original: "cans",
+        correction: "can",
+        explanation: "can 从不换衣服：不管主语是谁都是 can，没有 cans 这种形状。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "article",
+        original: "a",
+        correction: "an",
+        explanation: "ice 以元音开头，前面要用 an：an ice tea——看发音，不看字母。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "plural",
+        original: "kind",
+        correction: "kinds",
+        explanation: "three 后面的可数名词要用复数：three kinds。"
+      }
+    ],
+    notes: [
+      { word: "order", zh: "点单；订单" },
+      { word: "juice", zh: "果汁" }
+    ]
+  },
+  {
+    // L15（want to）配套案 · R24 螺旋混题：新错 verb_form（to 后动词变形）×2 + 旧错 plural / tense ×2（旧错占 50%）
+    id: "hunt-travel-plan",
+    number: 23,
+    title: "暑假计划单",
+    scene: "笔记本上写了一半的暑假计划",
+    tokens: [
+      "Summer", "plan:",
+      "I", "want", "to", "goes", "to", "the", "beach.",
+      "My", "brother", "wants", "to", "swimming", "every", "day.",
+      "We", "will", "take", "two", "bag", "of", "clothes.",
+      "Last", "summer", "we", "stay", "at", "home."
+    ],
+    errors: [
+      {
+        tokenIndex: 5,
+        tag: "verb_form",
+        original: "goes",
+        correction: "go",
+        explanation: "to 后面的动词穿原样：want to go。变形的事已经由 want 做完了。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "verb_form",
+        original: "swimming",
+        correction: "swim",
+        explanation: "wants to 后面跟动词原形：wants to swim，-ing 外套要脱掉。"
+      },
+      {
+        tokenIndex: 20,
+        tag: "plural",
+        original: "bag",
+        correction: "bags",
+        explanation: "two 后面的可数名词要用复数：two bags。"
+      },
+      {
+        tokenIndex: 26,
+        tag: "tense",
+        original: "stay",
+        correction: "stayed",
+        explanation: "Last summer 是过去的时间，动词要换昨天版：stayed。"
+      }
+    ],
+    notes: [
+      { word: "beach", zh: "海滩" }
+    ]
+  },
+  {
+    // L16（must / have to）配套案 · R24 螺旋混题：新错 verb_form（must 后动词变形）×2 + 旧错 plural / article ×2（旧错占 50%）
+    id: "hunt-desk-rules",
+    number: 24,
+    title: "课桌上的提醒",
+    scene: "教室课桌上贴的一张自律小纸条",
+    tokens: [
+      "My", "rules", "for", "today:",
+      "I", "must", "going", "to", "bed", "early.",
+      "She", "musts", "clean", "her", "room.",
+      "Read", "two", "page", "every", "night.",
+      "Eat", "a", "apple", "after", "dinner."
+    ],
+    errors: [
+      {
+        tokenIndex: 6,
+        tag: "verb_form",
+        original: "going",
+        correction: "go",
+        explanation: "must 后面的动词穿原形：must go。going 的 -ing 外套 must 不认。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "verb_form",
+        original: "musts",
+        correction: "must",
+        explanation: "must 和 can 一样从不变形：不管主语是谁都是 must，没有 musts。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "plural",
+        original: "page",
+        correction: "pages",
+        explanation: "two 后面的可数名词要用复数：two pages。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "article",
+        original: "a",
+        correction: "an",
+        explanation: "apple 以元音开头，前面要用 an：an apple。"
+      }
+    ]
+  },
+  {
+    // L17（比较级）配套案 · R24 螺旋混题：新错 verb_form（比较级词形：双写 / 不规则 better）×2 + 旧错 article / plural ×2（旧错占 50%）
+    id: "hunt-photo-compare",
+    number: 25,
+    title: "两张旧照片",
+    scene: "相册里并排贴着的两张海边照片",
+    tokens: [
+      "Two", "photos", "from", "last", "summer:",
+      "In", "the", "first", "one,",
+      "I", "look", "younger,", "and", "my", "hair", "is", "shorter.",
+      "The", "sea", "was", "hoter", "than", "today.",
+      "This", "photo", "is", "more", "good", "than", "that.",
+      "There", "is", "a", "island", "in", "it,",
+      "and", "two", "boat", "on", "the", "water."
+    ],
+    errors: [
+      {
+        tokenIndex: 20,
+        tag: "verb_form",
+        original: "hoter",
+        correction: "hotter",
+        explanation: "比「更热」要用 -er 形状，hot 是短促有力的词，先双写 t 再加 -er：hotter。"
+      },
+      {
+        tokenIndex: 26,
+        tag: "verb_form",
+        original: "more good",
+        correction: "better",
+        explanation: "good 的比较级是不规则形状 better——像 go 的昨天版是 went 一样，要单独记住。"
+      },
+      {
+        tokenIndex: 32,
+        tag: "article",
+        original: "a",
+        correction: "an",
+        explanation: "island 以元音开头，前面要用 an：an island。"
+      },
+      {
+        tokenIndex: 38,
+        tag: "plural",
+        original: "boat",
+        correction: "boats",
+        explanation: "two 后面的可数名词要用复数：two boats。"
+      }
+    ],
+    notes: [
+      { word: "island", zh: "岛" }
+    ]
+  },
+  {
+    // L18（介词 in/on/at）配套案 · R24 螺旋混题：新错 preposition（in/on/at 混用）×2 + 旧错 plural / article ×2（旧错占 50%）
+    id: "hunt-grandma-box",
+    number: 26,
+    title: "外婆的箱子",
+    scene: "外婆家老房子里，周末整理时翻出的一只旧箱子",
+    tokens: [
+      "Grandma", "keeps", "old", "photos", "in", "a", "box.",
+      "The", "box", "is", "in", "the", "table.",
+      "We", "open", "it", "at", "Sunday.",
+      "There", "are", "three", "photo", "inside.",
+      "It", "is", "a", "old", "box."
+    ],
+    errors: [
+      {
+        tokenIndex: 10,
+        tag: "preposition",
+        original: "in",
+        correction: "on",
+        explanation: "在桌子上（表面）用 on：on the table。in 是「在里面」。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "preposition",
+        original: "at",
+        correction: "on",
+        explanation: "具体某一天前面用 on：on Sunday。at 留给时间点（at six）。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "plural",
+        original: "photo",
+        correction: "photos",
+        explanation: "three 后面的可数名词要用复数：three photos。"
+      },
+      {
+        tokenIndex: 25,
+        tag: "article",
+        original: "a",
+        correction: "an",
+        explanation: "old 以元音开头，前面要用 an：an old box。"
+      }
+    ]
+  },
+  {
+    // L19（and / but）配套案 · R24 螺旋混题：新错 run_on（缺连词 / 并列误用转折）×2 + 旧错 tense / article ×2（旧错占 50%）
+    id: "hunt-snow-day",
+    number: 27,
+    title: "雪天的日记",
+    scene: "写了一半的雪天日记",
+    tokens: [
+      "Snow", "day!",
+      "It", "snowed", "all", "day,", "we", "were", "very", "happy.",
+      "Yesterday", "I", "play", "in", "the", "snow", "all", "day.",
+      "My", "sister", "but", "I", "played", "outside.",
+      "Mom", "gave", "us", "a", "orange", "juice."
+    ],
+    errors: [
+      {
+        tokenIndex: 6,
+        tag: "run_on",
+        original: "we",
+        correction: "and we",
+        explanation: "逗号连不住两个句子，中间要站一个连词：……all day, and we were very happy."
+      },
+      {
+        tokenIndex: 12,
+        tag: "tense",
+        original: "play",
+        correction: "played",
+        explanation: "Yesterday 是过去的时间，动词要换昨天版：played。"
+      },
+      {
+        tokenIndex: 20,
+        tag: "run_on",
+        original: "but",
+        correction: "and",
+        explanation: "My sister 和 I 是并列的两件事，用 and 连：My sister and I played outside."
+      },
+      {
+        tokenIndex: 27,
+        tag: "article",
+        original: "a",
+        correction: "an",
+        explanation: "orange 以元音开头，前面要用 an：an orange juice。"
+      }
+    ]
+  },
+  {
+    // L20（because / so）配套案 · R24 螺旋混题：新错 run_on（because…so 连用）+ fragment（because 半句独立）×2 + 旧错 tense / plural ×2（旧错占 50%）
+    id: "hunt-late-note",
+    number: 28,
+    title: "迟到的解释",
+    scene: "塞给老师的一张道歉小纸条",
+    tokens: [
+      "To", "my", "teacher:",
+      "I", "was", "late", "because", "the", "bus", "was", "late,", "so",
+      "please", "don't", "be", "angry.",
+      "It", "was", "cold", "yesterday,", "so", "I", "wear", "my", "coat.",
+      "Because", "the", "alarm", "was", "broken.",
+      "Tomorrow", "I", "will", "use", "two", "alarm", "clock."
+    ],
+    errors: [
+      {
+        tokenIndex: 11,
+        tag: "run_on",
+        original: "so",
+        correction: "去掉 so",
+        explanation: "because 和 so 只能来一个：I was late because the bus was late. Please don't be angry."
+      },
+      {
+        tokenIndex: 22,
+        tag: "tense",
+        original: "wear",
+        correction: "wore",
+        explanation: "yesterday 说的是昨天的事，动词要换昨天版：wore。"
+      },
+      {
+        tokenIndex: 25,
+        tag: "fragment",
+        original: "Because",
+        correction: "去掉 Because，并入上一句",
+        explanation: "because 开头的半句只是原因，不能自己站住：要和结果连在一起，或直接说 The alarm was broken."
+      },
+      {
+        tokenIndex: 36,
+        tag: "plural",
+        original: "clock",
+        correction: "clocks",
+        explanation: "two 后面的可数名词要用复数：two alarm clocks。"
+      }
     ]
   }
 ];

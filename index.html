@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Online TTS hosts (Baidu gettts / Youdao dictvoice) return an empty 200
+         when a Referer is present, which stalls audio playback. Never send one. -->
+    <meta name="referrer" content="no-referrer" />
     <title>听写工坊</title>
   </head>
   <body>

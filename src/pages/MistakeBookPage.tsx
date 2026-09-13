@@ -343,6 +343,30 @@ export default function MistakeBookPage() {
   const [storyBilingual, setStoryBilingual] = useState(true);
   const [storyWordPopover, setStoryWordPopover] = useState<StoryWordPopover | null>(null);
   const [pendingStoryFocusId, setPendingStoryFocusId] = useState("");
+  const dateListRef = useRef<HTMLDivElement | null>(null);
+  const [dateListEdges, setDateListEdges] = useState({ top: false, bottom: false });
+
+  // 左侧计划栏独立滚动：仅在真的可滚动时，于两端显示渐隐提示
+  useEffect(() => {
+    const list = dateListRef.current;
+    if (!list) return;
+    const sync = () => {
+      const scrollable = list.scrollHeight > list.clientHeight + 2;
+      const next = {
+        top: scrollable && list.scrollTop > 4,
+        bottom: scrollable && list.scrollTop + list.clientHeight < list.scrollHeight - 4
+      };
+      setDateListEdges((prev) => (prev.top === next.top && prev.bottom === next.bottom ? prev : next));
+    };
+    sync();
+    list.addEventListener("scroll", sync, { passive: true });
+    const observer = new ResizeObserver(sync);
+    observer.observe(list);
+    return () => {
+      list.removeEventListener("scroll", sync);
+      observer.disconnect();
+    };
+  }, [groups.length]);
 
   useEffect(() => {
     if (groups.length === 0) {
@@ -990,7 +1014,8 @@ export default function MistakeBookPage() {
             </div>
             <span className="mb-panel-count">{groups.length} 天</span>
           </div>
-          <div className="mb-date-list">
+          <div className="mb-date-list" ref={dateListRef}>
+            <span className={`mb-date-fade top${dateListEdges.top ? " on" : ""}`} aria-hidden="true" />
             {groups.map((group) => {
               const progress = groupProgress.get(group.dateKey);
               const active = group.dateKey === selectedGroup?.dateKey;
@@ -1027,6 +1052,7 @@ export default function MistakeBookPage() {
                 </button>
               );
             })}
+            <span className={`mb-date-fade bottom${dateListEdges.bottom ? " on" : ""}`} aria-hidden="true" />
           </div>
         </aside>
 
@@ -1270,27 +1296,26 @@ export default function MistakeBookPage() {
               })}
             </div>
           </section>
-        </div>
-      </section>
 
-
-      <section className="ui-surface mb-gen-panel">
-        <div className="ui-section-head">
-          <div>
-            <span className="eyebrow">Generated</span>
-            <h2>生成内容</h2>
-          </div>
-          <span className="ui-quiet">{generations.length} 条</span>
+          <section className="ui-surface mb-gen-panel">
+            <div className="ui-section-head">
+              <div>
+                <span className="eyebrow">Generated</span>
+                <h2>生成内容</h2>
+              </div>
+              <span className="ui-quiet">{generations.length} 条</span>
+            </div>
+            {generations.length === 0 ? (
+              <p className="muted mb-gen-empty">还没有为这一天生成内容。可以先生成逐词例句，再把全部错词串成一个英文小故事。</p>
+            ) : lowerGenerations.length === 0 ? (
+              <p className="muted mb-gen-empty">当前故事已显示在上方 Story Builder 下方。</p>
+            ) : (
+              <div className="mistake-generation-list">
+                {lowerGenerations.map((generation) => renderGenerationCard(generation))}
+              </div>
+            )}
+          </section>
         </div>
-        {generations.length === 0 ? (
-          <p className="muted mb-gen-empty">还没有为这一天生成内容。可以先生成逐词例句，再把全部错词串成一个英文小故事。</p>
-        ) : lowerGenerations.length === 0 ? (
-          <p className="muted mb-gen-empty">当前故事已显示在上方 Story Builder 下方。</p>
-        ) : (
-          <div className="mistake-generation-list">
-            {lowerGenerations.map((generation) => renderGenerationCard(generation))}
-          </div>
-        )}
       </section>
     </div>
   );

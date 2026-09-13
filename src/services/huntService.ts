@@ -138,6 +138,22 @@ export const computeStars = (misses: number): number => {
   return 1;
 };
 
+/**
+ * 提示目标（用户请求提示时）：按词序返回第一个尚未找到的错误；全部找到返回 undefined。
+ * 只提示「罪名 + 大概位置」，不直接给词——方向由我们指，答案让玩家自己找。
+ */
+export const pickHintTarget = (
+  caseItem: HuntCase,
+  foundIndexes: number[]
+): HuntError | undefined =>
+  caseItem.errors.find((error) => !foundIndexes.includes(error.tokenIndex));
+
+/** 提示文案：罪名 + 前半段 / 后半段的大致方位。 */
+export const buildHintMessage = (caseItem: HuntCase, error: HuntError): string => {
+  const position = error.tokenIndex < caseItem.tokens.length / 2 ? "前半段" : "后半段";
+  return `还藏着一处「${GRAMMAR_ERROR_TAG_LABELS[error.tag]}」漏洞，就在这段话的${position}附近——再仔细读读看。`;
+};
+
 export interface HuntResultInput {
   caseId: string;
   found: number;

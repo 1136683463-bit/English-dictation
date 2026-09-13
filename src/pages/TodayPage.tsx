@@ -2,23 +2,25 @@ import {
   AlertTriangle,
   ArrowRight,
   BookMarked,
-  CheckCircle2,
+  CalendarDays,
   ChevronRight,
   Clock,
-  GraduationCap,
   Target,
   Zap
 } from "lucide-react";
 import type { CSSProperties } from "react";
-import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
-import BannerHero from "../components/BannerHero";
 import { getLearningStats, getRecentErrorReviews } from "../services/reviewService";
-import { summarizeLessonProgress } from "../services/lessonService";
 import { getUnitStats } from "../services/unitService";
+import { computeStreak } from "../services/statsService";
 import { CardType, ReviewMode } from "../types";
-import todayHero from "../assets/today-hero.jpg";
+import BannerHero from "../components/BannerHero";
+import todayBanner from "../assets/today-banner.jpg";
+import unitIllust1 from "../assets/today-unit-1.png";
+import unitIllust2 from "../assets/today-unit-2.png";
+import unitIllust3 from "../assets/today-unit-3.png";
+import unitIllust4 from "../assets/today-unit-4.png";
 
 const modeLabel: Record<ReviewMode, string> = {
   recognize: "识别",
@@ -47,35 +49,9 @@ const formatDateTime = (value: string | null) => {
   }).format(date);
 };
 
-const goalPercent = (current: number, target: number) => {
-  if (target <= 0) return current > 0 ? 100 : 0;
-  return Math.min(100, Math.round((current / target) * 100));
-};
-
 const estimateMinutes = (dueTotal: number, weakWords: number) => {
   if (dueTotal === 0 && weakWords === 0) return 6;
   return Math.max(8, Math.min(28, Math.ceil(dueTotal * 0.1 + weakWords * 0.5)));
-};
-
-const dayKey = (date: Date) => date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
-
-const computeStreak = (reviews: { reviewedAt: string }[]) => {
-  const days = new Set(reviews.map((review) => dayKey(new Date(review.reviewedAt))));
-  const offsetKey = (offset: number) => {
-    const date = new Date();
-    date.setDate(date.getDate() - offset);
-    return dayKey(date);
-  };
-
-  let cursor = days.has(offsetKey(0)) ? 0 : days.has(offsetKey(1)) ? 1 : -1;
-  if (cursor === -1) return 0;
-
-  let streak = 0;
-  while (days.has(offsetKey(cursor))) {
-    streak += 1;
-    cursor += 1;
-  }
-  return streak;
 };
 
 const greetingByHour = () => {
@@ -92,6 +68,7 @@ export default function TodayPage() {
   const recentErrors = getRecentErrorReviews(data, 4);
   const units = data.units.slice().sort((a, b) => a.order - b.order).slice(0, 4);
   const minutes = estimateMinutes(stats.dueTotal, stats.weakWords);
+  const streak = computeStreak(data.reviews);
   const primaryTask =
     stats.dueTotal > 0
       ? "先清到期复习"
@@ -100,14 +77,18 @@ export default function TodayPage() {
         : stats.availableNewWords > 0
           ? "可以推进新词"
           : "今天轻量保持";
-  const streak = computeStreak(data.reviews);
-  const lessonSummary = useMemo(() => summarizeLessonProgress(data), [data]);
-  const todayPercent = Math.min(100, Math.round((stats.reviewedToday / Math.max(1, stats.dueReviewGoal)) * 100));
   const today = new Date();
   const dateLabel = [
     new Intl.DateTimeFormat("zh-CN", { month: "long", day: "numeric" }).format(today),
     new Intl.DateTimeFormat("zh-CN", { weekday: "long" }).format(today)
   ].join(" ");
+
+  const stripStats = [
+    { label: "到期复习", value: stats.dueTotal, unit: "词 · 句" },
+    { label: "已练习", value: stats.reviewedCardsToday, unit: "张卡片" },
+    { label: "薄弱词", value: stats.weakWords, unit: "词卡" },
+    { label: "连续打卡", value: streak, unit: "天" }
+  ];
 
   const tasks = [
     {
@@ -117,10 +98,10 @@ export default function TodayPage() {
       icon: Clock,
       title: "到期复习",
       desc: `${stats.dueWords} 个单词 · ${stats.dueSentences} 个句子到期`,
-      current: stats.reviewedToday,
+      value: stats.reviewedToday,
       target: stats.dueReviewGoal,
-      percent: todayPercent,
-      active: true
+      arc: Math.min(100, Math.round((stats.reviewedToday / Math.max(1, stats.dueReviewGoal)) * 100)),
+      highlight: true
     },
     {
       key: "mistakes",
@@ -129,232 +110,188 @@ export default function TodayPage() {
       icon: AlertTriangle,
       title: "错词专项",
       desc: `${stats.weakWords} 个薄弱词 · 今日错 ${stats.wrongToday}`,
-      current: stats.wrongCards,
-      target: null,
-      percent: null,
-      active: false
+      value: stats.wrongCards,
+      target: 0,
+      arc: 0,
+      highlight: false
     },
     {
       key: "new",
-      to: "/spelling",
+      to: "/training",
       tone: "blue",
       icon: Target,
       title: "新词目标",
       desc: `${stats.availableNewWords} 个新词还在队列里`,
-      current: stats.newWordsToday,
+      value: stats.newWordsToday,
       target: stats.newWordGoal,
-      percent: goalPercent(stats.newWordsToday, stats.newWordGoal),
-      active: false
+      arc: Math.min(100, Math.round((stats.newWordsToday / Math.max(1, stats.newWordGoal)) * 100)),
+      highlight: false
     },
     {
-      key: "grammar",
-      to: "/grammar",
-      tone: "amber",
-      icon: GraduationCap,
-      title: "语法 10 分钟",
-      desc:
-        lessonSummary.nextLesson != null
-          ? `已完成 ${lessonSummary.done}/${lessonSummary.total} 课 · 下一课：${lessonSummary.nextLesson.title}`
-          : `12 课全部完成，去侦探找错巩固一下`,
-      current: lessonSummary.done,
-      target: lessonSummary.total,
-      percent: lessonSummary.percent,
-      active: false
-    },
-    {
-      key: "sentences",
-      to: null,
+      key: "sentence",
+      to: "/sentences",
       tone: "green",
       icon: BookMarked,
       title: "句子目标",
       desc: `今天已碰到 ${stats.reviewedSentencesToday} 个句子`,
-      current: stats.reviewedSentencesToday,
+      value: stats.reviewedSentencesToday,
       target: stats.sentenceGoal,
-      percent: goalPercent(stats.reviewedSentencesToday, stats.sentenceGoal),
-      active: false
+      arc: Math.min(100, Math.round((stats.reviewedSentencesToday / Math.max(1, stats.sentenceGoal)) * 100)),
+      highlight: false
     }
   ];
 
   return (
-    <div className="page today-page">
+    <div className="today-v2">
       <BannerHero
         eyebrow="Next Best Action"
-        title={`${greetingByHour()}，继续今天的练习`}
+        title={`${greetingByHour()}，继续今天的练习 👋`}
         description={`${dateLabel} · 建议${primaryTask}，先练 ${minutes} 分钟`}
-        image={todayHero}
-        position="72% 10%"
-        action={
-          <>
+        image={todayBanner}
+        position="68% 30%"
+      />
+
+      <div className="today-v2-inner">
+        <section className="today-strip" aria-label="今日摘要">
+          <span className="today-strip-icon" aria-hidden="true">
+            <CalendarDays size={26} />
+          </span>
+          {stripStats.map((item) => (
+            <div className="today-strip-stat" key={item.label}>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+              <small>{item.unit}</small>
+            </div>
+          ))}
+          <div className="today-strip-actions">
             <Link to="/training" className="primary-button">
               开始今日训练
               <ArrowRight size={18} />
             </Link>
             <Link to="/mistakes" className="secondary-button">
-              <Zap size={17} />
+              <Zap size={16} />
               错词本
             </Link>
-          </>
-        }
-      />
-
-      <div className="today-content">
-      <section className="ui-surface ui-figures" aria-label="今日摘要">
-        <div className="ui-figure">
-          <span>到期</span>
-          <strong>{stats.dueTotal}</strong>
-          <small>{stats.dueWords} 词 · {stats.dueSentences} 句</small>
-        </div>
-        <div className="ui-figure">
-          <span>已练</span>
-          <strong>{stats.reviewedToday}</strong>
-          <small>{stats.reviewedCardsToday} 张卡</small>
-        </div>
-        <div className="ui-figure">
-          <span>薄弱</span>
-          <strong>{stats.weakWords}</strong>
-          <small>错卡 {stats.wrongCards}</small>
-        </div>
-        {streak > 0 && (
-          <div className="ui-figure">
-            <span>连续打卡</span>
-            <strong>{streak}</strong>
-            <small>天</small>
           </div>
-        )}
-      </section>
+        </section>
 
-      <section className="today-cols">
-        <div>
-          <div className="ui-section-head">
-            <div>
-              <span className="eyebrow">Queue</span>
+        <section className="today-columns">
+          <div className="today-panel">
+            <div className="today-panel-head">
+              <span className="today-panel-icon" aria-hidden="true">
+                <Target size={19} />
+              </span>
               <h2>今日任务队列</h2>
             </div>
-            <Link to="/training" className="ui-quiet">
-              选择模式 ›
-            </Link>
-          </div>
-          <div className="ui-surface">
-            {tasks.map((task) => {
-              const Icon = task.icon;
-              const hasGoal = typeof task.percent === "number";
-              const row = (
-                <>
-                  {hasGoal ? (
-                    <span
-                      className={`ui-ring ui-ring--${task.tone}`}
-                      style={{ "--pct": task.percent } as CSSProperties}
-                      role="img"
-                      aria-label={`${task.title}完成度 ${task.percent}%`}
-                    >
-                      <Icon size={18} />
-                    </span>
-                  ) : (
-                    <span className={`ui-icon ui-icon--${task.tone}`}>
-                      <Icon size={20} />
-                    </span>
-                  )}
-                  <div>
-                    <span className="ui-row-title">{task.title}</span>
-                    <span className="ui-row-desc">{task.desc}</span>
-                  </div>
-                  <span className="ui-row-metric">
-                    <span className="ui-row-metric-num">
-                      <b>{task.current}</b>
-                      {task.target != null && <i>/{task.target}</i>}
-                    </span>
-                  </span>
-                  <span className="ui-row-arrow" aria-hidden="true">
-                    <ChevronRight size={17} />
-                  </span>
-                </>
-              );
-
-              return task.to ? (
-                <Link key={task.key} to={task.to} className={`ui-row${task.active ? " on" : ""}`}>
-                  {row}
-                </Link>
-              ) : (
-                <div key={task.key} className="ui-row">
-                  {row}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        <div>
-          <div className="ui-section-head">
-            <div>
-              <span className="eyebrow">Mistakes</span>
-              <h2>最近错误</h2>
-            </div>
-            <Link to="/mistakes" className="ui-quiet">
-              全部 ›
-            </Link>
-          </div>
-          {recentErrors.length === 0 ? (
-            <div className="ui-empty">
-              <span className="ui-empty-icon">
-                <CheckCircle2 size={24} />
-              </span>
-              <span className="ui-empty-title">还没有错误记录</span>
-              <p>今天练错的词会自动留在这里，方便下一轮优先攻克。</p>
-            </div>
-          ) : (
-            <div className="ui-surface">
-              {recentErrors.map((item) => {
-                const meta = [
-                  item.description,
-                  `${cardTypeLabel[item.type]} · ${modeLabel[item.review.mode]} · 评分 ${item.review.rating}`,
-                  `下次 ${formatDateTime(item.nextReviewAt)}`
-                ]
-                  .filter(Boolean)
-                  .join(" · ");
-
+            <div className="today-task-list">
+              {tasks.map((task) => {
+                const Icon = task.icon;
                 return (
-                  <Link key={item.review.id} to="/mistakes" className="ui-row">
-                    <span className="ui-icon ui-icon--red ui-icon--letter" aria-hidden="true">
-                      {item.title.charAt(0).toUpperCase()}
+                  <Link
+                    key={task.key}
+                    to={task.to}
+                    className={`today-task-row${task.highlight ? " highlight" : ""}`}
+                  >
+                    <span
+                      className={`today-task-icon tone-${task.tone}`}
+                      style={task.target > 0 ? ({ "--arc": task.arc } as CSSProperties) : undefined}
+                      aria-hidden="true"
+                    >
+                      <Icon size={21} />
                     </span>
-                    <div>
-                      <span className="ui-row-title">{item.title}</span>
-                      <span className="ui-row-desc">{meta}</span>
-                    </div>
-                    <span className="ui-row-tail">
-                      <span>{formatDateTime(item.review.reviewedAt)}</span>
+                    <span className="today-task-main">
+                      <strong>{task.title}</strong>
+                      <span>{task.desc}</span>
                     </span>
-                    <span className="ui-row-arrow" aria-hidden="true">
-                      <ChevronRight size={17} />
+                    <span className="today-task-value">
+                      <strong>{task.value}</strong>
+                      {task.target > 0 && <small>/{task.target}</small>}
                     </span>
+                    <ChevronRight size={18} className="today-task-chevron" aria-hidden="true" />
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="today-panel">
+            <div className="today-panel-head">
+              <span className="today-panel-emoji" aria-hidden="true">🐷</span>
+              <h2>最近错误</h2>
+              <Link to="/mistakes" className="today-panel-link">
+                查看全部
+                <ChevronRight size={15} />
+              </Link>
+            </div>
+            {recentErrors.length === 0 ? (
+              <p className="today-errors-empty">还没有错误记录。今天的错题会留在这里，方便下一轮优先处理。</p>
+            ) : (
+              <div className="today-error-list">
+                {recentErrors.map((item) => (
+                  <Link to="/mistakes" className="today-error-row" key={item.review.id}>
+                    <span className="today-error-avatar" aria-hidden="true">
+                      {(item.title[0] ?? "?").toUpperCase()}
+                    </span>
+                    <span className="today-error-main">
+                      <strong>{item.title}</strong>
+                      <span>
+                        {item.description ? `${item.description} · ` : ""}
+                        {cardTypeLabel[item.type]} · {modeLabel[item.review.mode]} · 评分 {item.review.rating}
+                      </span>
+                    </span>
+                    <span className="today-error-time">{formatDateTime(item.review.reviewedAt)}</span>
+                    <ChevronRight size={16} className="today-task-chevron" aria-hidden="true" />
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        <section className="today-panel today-units">
+          <div className="today-panel-head">
+            <span className="today-panel-icon" aria-hidden="true">
+              <BookMarked size={19} />
+            </span>
+            <h2>继续单元练习</h2>
+            <Link to="/library" className="today-panel-link">
+              查看词库
+              <ChevronRight size={15} />
+            </Link>
+          </div>
+          {units.length === 0 ? (
+            <p className="today-errors-empty">还没有词书单元，先去「添加」里创建内容吧。</p>
+          ) : (
+            <div className="today-unit-grid">
+              {units.map((unit, index) => {
+                const unitStats = getUnitStats(data, unit);
+                const percent = unitStats.total > 0
+                  ? Math.max(0, Math.min(100, Math.round(((unitStats.total - unitStats.due) / unitStats.total) * 100)))
+                  : 0;
+                return (
+                  <Link
+                    key={unit.id}
+                    to={`/spelling?unit=${unit.id}`}
+                    className={`today-unit-card tint-${(index % 4) + 1}`}
+                  >
+                    <strong>{unit.title}</strong>
+                    <span>{unitStats.total} 词 · 到期 {unitStats.due}</span>
+                    <span className="today-unit-progress" aria-label={`完成度 ${percent}%`}>
+                      <span style={{ width: `${percent}%` }} />
+                    </span>
+                    <img
+                      src={[unitIllust1, unitIllust2, unitIllust3, unitIllust4][index % 4]}
+                      alt=""
+                      aria-hidden="true"
+                      className="today-unit-illust"
+                      loading="lazy"
+                    />
                   </Link>
                 );
               })}
             </div>
           )}
-        </div>
-      </section>
-
-      <section className="panel unit-overview-panel">
-        <div className="panel-header">
-          <div>
-            <span className="eyebrow">Units</span>
-            <h2>继续单元练习</h2>
-          </div>
-          <Link to="/library" className="secondary-button">查看词库</Link>
-        </div>
-        <div className="unit-strip">
-          {units.map((unit) => {
-            const unitStats = getUnitStats(data, unit);
-            return (
-              <Link key={unit.id} to={`/spelling?unit=${unit.id}`} className="unit-strip-card">
-                <strong>{unit.title}</strong>
-                <span>{unitStats.total} 词 · 到期 {unitStats.due}</span>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+        </section>
       </div>
     </div>
   );

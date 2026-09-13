@@ -115,14 +115,23 @@ const recommendationStopWords = new Set([
 
 const renderInteractiveEnglishText = (
   text: string,
-  onWordSelect: (word: string, target: HTMLElement) => void
+  onWordSelect: (word: string, target: HTMLElement) => void,
+  recommendedWords?: Set<string>,
+  favoriteWords?: Set<string>
 ) => text.split(/([A-Za-z]+(?:['’-][A-Za-z]+)*)/g).map((part, index) => {
   if (!englishWordPattern.test(part)) return part;
+  const key = part.toLowerCase();
+  // 弹窗原文里的高亮与正文一致：收藏词（紫）优先于推荐词（橙）。
+  const highlightClass = favoriteWords?.has(key)
+    ? " adventure-favorite-word"
+    : recommendedWords?.has(key)
+      ? " adventure-recommended-word"
+      : "";
   return (
     <button
       key={`${part}-${index}`}
       type="button"
-      className="adventure-word-button"
+      className={`adventure-word-button${highlightClass}`}
       data-adventure-word="true"
       onClick={(event) => {
         event.stopPropagation();
@@ -136,10 +145,15 @@ const renderInteractiveEnglishText = (
   );
 });
 
-const renderHighlightedEnglishText = (text: string, highlightedWords: Set<string>) =>
+const renderHighlightedEnglishText = (text: string, recommendedWords: Set<string>, favoriteWords: Set<string>) =>
   text.split(/([A-Za-z]+(?:['’-][A-Za-z]+)*)/g).map((part, index) => {
     if (!englishWordPattern.test(part)) return part;
-    return highlightedWords.has(part.toLowerCase())
+    const key = part.toLowerCase();
+    // 收藏词（紫色）优先于推荐词（橙色），两种高亮互不覆盖。
+    if (favoriteWords.has(key)) {
+      return <mark key={`${part}-${index}`} className="adventure-favorite-word">{part}</mark>;
+    }
+    return recommendedWords.has(key)
       ? <mark key={`${part}-${index}`} className="adventure-recommended-word">{part}</mark>
       : part;
   });
@@ -156,6 +170,7 @@ type SentenceUnitProps = {
   translationState: SentenceTranslationState;
   translationError: string;
   recommendedWords: Set<string>;
+  favoriteWords: Set<string>;
   onSelect: (index: number, target?: HTMLElement) => void;
   onWordSelect: (word: string, target: HTMLElement) => void;
   onClose: () => void;
@@ -208,6 +223,7 @@ const SentenceUnit = ({
   translationState,
   translationError,
   recommendedWords,
+  favoriteWords,
   onSelect,
   onWordSelect,
   onClose,
@@ -221,7 +237,7 @@ const SentenceUnit = ({
   const isLoading = isPlaying && playbackState === "loading";
   const isPaused = isPlaying && playbackState === "paused";
   const isActivelyPlaying = isPlaying && playbackState === "playing";
-  const renderText = (value: string) => renderInteractiveEnglishText(value, onWordSelect);
+  const renderText = (value: string) => renderInteractiveEnglishText(value, onWordSelect, recommendedWords, favoriteWords);
 
   return (
     <>
@@ -247,7 +263,7 @@ const SentenceUnit = ({
           aria-expanded={showDetail}
           aria-controls={`adventure-sentence-detail-${index + 1}`}
         >
-          {renderHighlightedEnglishText(text, recommendedWords)}
+          {renderHighlightedEnglishText(text, recommendedWords, favoriteWords)}
         </span>
         {isPlaying && <span className="adventure-sentence-inline-status" aria-live="polite">{isLoading ? "加载中" : isPaused ? "已暂停" : "播放中"}</span>}
       </span>{" "}
@@ -356,22 +372,28 @@ export default function AdventurePlayPage() {
   const sentenceGroups = useMemo(() => groupAdventureSentences(readerSentences), [readerSentences]);
   const currentVocabulary = useMemo(() => current?.vocabulary ?? [], [current]);
   const favoriteWords = useMemo(() => new Set(getAdventureFavoriteWords(data)), [data]);
+  // 收藏词高亮：只取正文中出现过的收藏词，紫色标记，与推荐词（橙色）区分。
+  const favoriteHighlightWords = useMemo(() => {
+    if (!favoriteWords.size || !current?.englishText) return new Set<string>();
+    const wordsInText = new Set(getEnglishWords(current.englishText).map((word) => word.toLowerCase()));
+    return new Set(Array.from(favoriteWords).filter((word) => wordsInText.has(word)));
+  }, [current?.englishText, favoriteWords]);
   const recommendedWords = useMemo(() => {
     const articleWords = getEnglishWords(current?.englishText ?? "").map((word) => word.toLowerCase());
     const wordsInText = new Set(articleWords);
-    const candidates = [
-      ...Array.from(favoriteWords),
-      ...currentVocabulary.map((item) => item.word.trim().toLowerCase())
-    ];
+    // 已收藏的词走紫色高亮，不再占用推荐词名额。
+    const candidates = currentVocabulary
+      .map((item) => item.word.trim().toLowerCase())
+      .filter((word) => !favoriteHighlightWords.has(word));
     const selected = candidates.filter((word, index) => wordsInText.has(word) && candidates.indexOf(word) === index).slice(0, 7);
     if (selected.length < 3) {
       for (const word of articleWords) {
-        if (selected.length >= 3 || selected.includes(word) || word.length < 4 || recommendationStopWords.has(word)) continue;
+        if (selected.length >= 3 || selected.includes(word) || favoriteHighlightWords.has(word) || word.length < 4 || recommendationStopWords.has(word)) continue;
         selected.push(word);
       }
     }
     return new Set(selected.slice(0, 7));
-  }, [current?.englishText, currentVocabulary, favoriteWords]);
+  }, [current?.englishText, currentVocabulary, favoriteHighlightWords]);
   const sentenceTranslations = translationOverrides ?? current?.sentenceTranslations ?? [];
   const hasCompleteTranslations = readerSentences.length > 0 && sentenceTranslations.length === readerSentences.length && sentenceTranslations.every((item) => item.trim());
   const isAiConfigured = isAiProviderConfigured(data.settings.aiProvider);
@@ -1181,6 +1203,7 @@ export default function AdventurePlayPage() {
                         translationState={translationState}
                         translationError={translationError}
                         recommendedWords={recommendedWords}
+                        favoriteWords={favoriteHighlightWords}
                         onSelect={handleSentenceSelect}
                         onWordSelect={(word, target) => openDictionaryPopover(word, target.getBoundingClientRect())}
                         onClose={() => { setExpandedSentenceIndex(null); setSentencePopupPosition(null); }}

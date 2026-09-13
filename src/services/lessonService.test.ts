@@ -5,6 +5,7 @@ import {
   checkLessonChoice,
   checkLessonTokens,
   createGuidedState,
+  describeOutputGap,
   detectThirdPersonMiss,
   firstMismatchIndex,
   getCompletedLessonIds,
@@ -16,6 +17,7 @@ import {
   listGrammarLessons,
   markLessonDone,
   normalizeLessonSentence,
+  shuffleTokenOrder,
   summarizeLessonProgress
 } from "./lessonService";
 import type { AppData, GrammarLesson, LessonGuidedStep } from "../types";
@@ -169,5 +171,80 @@ describe("lessonService · 三单常驻检查（R04）", () => {
     expect(detectThirdPersonMiss("He goes to school.")).toBeNull();
     expect(detectThirdPersonMiss("I like reading.")).toBeNull();
     expect(detectThirdPersonMiss("They go to school.")).toBeNull();
+  });
+});
+
+describe("lessonService · 词块库防作弊打乱（点词成句）", () => {
+  const identity = (length: number) => Array.from({ length }, (_value, index) => index);
+
+  it("同一 seed 结果确定（可回放、不跳变）", () => {
+    const tokens = ["She", "can", "sing", "very", "well."];
+    expect(shuffleTokenOrder(tokens, "lesson-14-can:guided:2")).toEqual(
+      shuffleTokenOrder(tokens, "lesson-14-can:guided:2")
+    );
+  });
+
+  it("返回的是合法排列（不增不减、不重不漏）", () => {
+    const tokens = ["I", "am", "drawing", "a", "picture."];
+    const shuffled = shuffleTokenOrder(tokens, "lesson-13-now:practice:0");
+    expect([...shuffled].sort((a, b) => a - b)).toEqual(identity(tokens.length));
+  });
+
+  it("词块 ≤2 个时保持原样（无可打乱空间）", () => {
+    expect(shuffleTokenOrder(["It", "rained."], "seed")).toEqual([0, 1]);
+    expect(shuffleTokenOrder(["rain."], "seed")).toEqual([0]);
+  });
+
+  it("所有课程的 arrange 题：展示顺序一定不等于答案顺序", () => {
+    let checked = 0;
+    for (const lesson of listGrammarLessons()) {
+      const steps: Array<{ tokens: string[]; seed: string }> = [];
+      lesson.guided.forEach((step: LessonGuidedStep, index: number) => {
+        if (step.kind === "arrange" && step.tokens) {
+          steps.push({ tokens: step.tokens, seed: `${lesson.id}:guided:${index}` });
+        }
+      });
+      lesson.practice.forEach((step, index) => {
+        steps.push({ tokens: step.tokens, seed: `${lesson.id}:practice:${index}` });
+      });
+      for (const { tokens, seed } of steps) {
+        if (tokens.length <= 2) continue;
+        const shuffled = shuffleTokenOrder(tokens, seed);
+        expect(
+          shuffled,
+          `${lesson.id}（${seed}）的词块顺序与答案一致——「点词成句」会退化成顺序点选`
+        ).not.toEqual(identity(tokens.length));
+        checked += 1;
+      }
+    }
+    // 全部 20 课都应被扫描到（防止课程数据被清空后测试变成空转）
+    expect(checked).toBeGreaterThan(100);
+  });
+});
+
+describe("lessonService · 输出题差异说明（R04 反馈说人话）", () => {
+  const target = "I want to travel.";
+
+  it("多了一个词：点名是哪个词，并给出核心句词数", () => {
+    const message = describeOutputGap("I want to go travel", target);
+    expect(message).toContain("go");
+    expect(message).toContain("4 个词");
+  });
+
+  it("少了一个词：提示补齐方向", () => {
+    expect(describeOutputGap("I want travel", target)).toContain("少了一个词");
+  });
+
+  it("词数相同但不一样：指向顺序或个别词", () => {
+    expect(describeOutputGap("I want to walk.", target)).toContain("顺序或个别词");
+  });
+
+  it("完全一致或仅标点/大小写差异：不产生干扰说明", () => {
+    expect(describeOutputGap("I want to travel.", target)).toBeNull();
+    expect(describeOutputGap("i want to travel", target)).toBeNull();
+  });
+
+  it("空输入安全返回", () => {
+    expect(describeOutputGap("   ", target)).toBeNull();
   });
 });
