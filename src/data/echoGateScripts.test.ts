@@ -19,6 +19,15 @@ const ALL_NPC_LINES = ECHO_GATES.flatMap((gate) => [
 ]);
 
 describe("回声城关卡脚本 · 红线校验", () => {
+  it("每关 canDo 文案齐备且不含术语（PRD-learning-goal-visibility FR-3）", () => {
+    for (const gate of ECHO_GATES) {
+      expect(gate.canDo, `canDo 缺失: ${gate.id}`).toBeTruthy();
+      expect(gate.canDo.length, `canDo 过长: ${gate.id}`).toBeLessThanOrEqual(30);
+      expect(gate.canDo.startsWith("补全")).toBe(false);
+      expect(gate.canDo).not.toMatch(/S[0-5]\b|topicId/);
+    }
+  });
+
   it("全量 10 关，且每关都要求玩家自己写英文（红线 1）", () => {
     expect(ECHO_GATES).toHaveLength(10);
     for (const gate of ECHO_GATES) {

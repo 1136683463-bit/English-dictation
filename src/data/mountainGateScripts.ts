@@ -23,6 +23,7 @@ export const MOUNTAIN_GATES: LanguageGate[] = [
     npcLine: "The fog is thick at the trailhead. A guide ropes himself to the post. \"Before we climb—describe the path. How is it?\"",
     npcLineZh: "登山口的雾很浓。向导把自己拴在木桩上。“出发前——描述一下这条路。它怎么样？”",
     zhIntent: "说这条路很陡。",
+    canDo: "描述「这条路很陡」——描样的词站在 is 后面",
     requiredPattern: "The path is steep.",
     sampleAnswer: "The path is steep.",
     hints: [
@@ -53,6 +54,7 @@ export const MOUNTAIN_GATES: LanguageGate[] = [
     npcLine: "Two trails split at the fork. The guide points at the left one. \"The right one is easy. Finish what I say about the left: this path is ___ (steep) than that one.\"",
     npcLineZh: "岔路口分出两条小径。向导指着左边那条。“右边的好走。替我把左边这句说完：this path is ___ (steep) than that one。”",
     zhIntent: "补全这句话：This path is ___ (steep) than that one.",
+    canDo: "比较「这条路比那条更陡」",
     requiredPattern: "This path is steeper than that one.",
     sampleAnswer: "This path is steeper than that one.",
     hints: [
@@ -83,6 +85,7 @@ export const MOUNTAIN_GATES: LanguageGate[] = [
     npcLine: "The guide taps the map. \"Up here, prepositions are knots—tie a stray one, and the path slides off the mountain. Where are you right now?\"",
     npcLineZh: "向导敲了敲地图。“在这山上，介词就是绳结——打错一个，路就从山上滑下去。你现在在哪儿？”",
     zhIntent: "说你现在在小路上。",
+    canDo: "说清「我正在这条路上」——在路上用 on",
     requiredPattern: "I am on the path.",
     sampleAnswer: "I am on the path.",
     hints: [
@@ -113,6 +116,7 @@ export const MOUNTAIN_GATES: LanguageGate[] = [
     npcLine: "Halfway up, the guide laughs at the view. \"You should tell me how you feel about this climb. Not just 'like'—how much?\"",
     npcLineZh: "爬到半山腰，向导对着景色笑。“你该告诉我你觉得这趟攀登怎么样。别只说『喜欢』——有多喜欢？”",
     zhIntent: "说你非常喜欢这条路。",
+    canDo: "说清「我非常喜欢这条路」——程度词站动词前",
     requiredPattern: "I really like this path.",
     sampleAnswer: "I really like this path.",
     hints: [
@@ -143,6 +147,7 @@ export const MOUNTAIN_GATES: LanguageGate[] = [
     npcLine: "At the summit, a wooden sign sways in the wind. \"The innkeeper carved it for the last stretch,\" the guide says. \"Finish the sign, and the door opens: this is the ___ (high) inn on the mountain.\"",
     npcLineZh: "到了山顶，一块木招牌在风里晃。“客栈老板刻给最后一段路的，”向导说，“替他把招牌补完，门就开：this is the ___ (high) inn on the mountain。”",
     zhIntent: "补全这句话：This is the ___ (high) inn on the mountain.",
+    canDo: "说清「这是山上最高的客栈」",
     requiredPattern: "This is the highest inn on the mountain.",
     sampleAnswer: "This is the highest inn on the mountain.",
     hints: [
@@ -173,6 +178,7 @@ export const MOUNTAIN_GATES: LanguageGate[] = [
     npcLine: "Past the inn, the trail narrows: a stream on the left, a cliff on the right. \"Tell me how we walk it,\" the guide says. \"Which way do we go along the stream?\"",
     npcLineZh: "过了客栈，路变窄了：左边是溪，右边是崖。“告诉我怎么走，”向导说，“我们沿着溪走哪一边？”",
     zhIntent: "说我们沿着溪边走。",
+    canDo: "说清「我们沿着溪走」——顺着线用 along",
     requiredPattern: "We walk along the stream.",
     sampleAnswer: "We walk along the stream.",
     hints: [
@@ -203,6 +209,7 @@ export const MOUNTAIN_GATES: LanguageGate[] = [
     npcLine: "The fog grows so thick the far cliff disappears. The guide ties the rope tighter. \"Describe it. Finish the line: the fog is so thick ___ we can barely see.\"",
     npcLineZh: "雾越来越浓，远处的崖壁都消失了。向导把绳子系得更紧。“描述一下它。补全这句：the fog is so thick ___ we can barely see。”",
     zhIntent: "补全这句话：The fog is so thick ___ we can barely see.",
+    canDo: "说清「雾浓到我们几乎看不见」",
     requiredPattern: "The fog is so thick that we can barely see.",
     sampleAnswer: "The fog is so thick that we can barely see.",
     hints: [
@@ -233,6 +240,7 @@ export const MOUNTAIN_GATES: LanguageGate[] = [
     npcLine: "At the summit post, the guide unties the rope. Below, the whole trail winds through the clearing fog. \"Last thing before we go down. Look at this path—tell me everything: how is it, and how much do you like it?\"",
     npcLineZh: "在山顶的木桩旁，向导解开了绳子。山下，整条小径在散开的雾里蜿蜒。“下山前最后一件事。看看这条路——全告诉我：它怎么样，你有多喜欢它？”",
     zhIntent: "说这条路很美，你非常喜欢它。",
+    canDo: "一口气说「这条路很美，我非常喜欢它」",
     requiredPattern: "The path is beautiful. I really love it.",
     sampleAnswer: "The path is beautiful. I really love it.",
     hints: [

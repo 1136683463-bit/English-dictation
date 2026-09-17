@@ -323,7 +323,7 @@ export default function AdventurePage() {
         <span className="adv-hero-photo" aria-hidden="true" />
         <div className="adv-hero-inner">
           <div className="adv-hero-copy">
-            <span className="adv-eyebrow">Adventure</span>
+            <span className="adv-eyebrow">故事冒险 · 阅读收词</span>
             <h1>冒险学习</h1>
             <p>读一段故事，做一次选择，把真正想记住的词收进词库。</p>
           </div>
@@ -357,12 +357,13 @@ export default function AdventurePage() {
       <div className="adv-body">
       <section className="adv-gate-entry" aria-label="语言之门">
         <div className="adv-gate-entry-copy">
-          <span className="adv-eyebrow">语言之门 · 站台世界</span>
+          <span className="adv-eyebrow">语言之门 · 语法课</span>
           <h2>说错一句话，故事里会有人真的误解你</h2>
-          <p>雨夜的七号站台，售票员 Vera 在等你回答。每一道门都要你亲口说出那句英文才打得开——8 关，每关 2–4 分钟。</p>
+          <p>语言之门是这里的语法课——你把英文说给 NPC 听，说错了他会当真，故事用结果让你记住对的句子。</p>
+          <p>六段旅途＝六步语法：站台（把句子搭完整）→ 集市（名词与数量）→ 回声城（时态）→ 山径（修饰）→ 图书馆（长句）→ 灯塔（情态语气）。共 50 关，每关 2–4 分钟。</p>
         </div>
         <Link to="/adventure/worlds" className="adv-primary adv-gate-entry-cta">
-          <Sparkles size={16} /> 进入站台
+          <Sparkles size={16} /> 进入第一世界
         </Link>
       </section>
 

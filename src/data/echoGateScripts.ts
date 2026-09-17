@@ -26,6 +26,7 @@ export const ECHO_GATES: LanguageGate[] = [
     npcLine: "The walls repeat what you said at the station. Tell me—where do you live?",
     npcLineZh: "城墙在复读你在站台说过的话。告诉我——你住在哪儿？",
     zhIntent: "说你住在老钟楼附近。",
+    canDo: "说清「我住在老钟楼附近」——每天都做的事用原形",
     requiredPattern: "I live near the old clock tower.",
     sampleAnswer: "I live near the old clock tower.",
     hints: [
@@ -56,6 +57,7 @@ export const ECHO_GATES: LanguageGate[] = [
     npcLine: "The Echoers repeat what they hear. They say your sister works here. Finish their line: she ___ (go).",
     npcLineZh: "复读市民复读着听到的一切。他们说你妹妹在这儿工作。补全他们那句：she ___ (go)。",
     zhIntent: "补全这句话：She ___ (go) to work by tram.",
+    canDo: "讲清「她坐电车上班」——她后面动词带小刺",
     requiredPattern: "She goes to work by tram.",
     sampleAnswer: "She goes to work by tram.",
     hints: [
@@ -86,6 +88,7 @@ export const ECHO_GATES: LanguageGate[] = [
     npcLine: "Listen—the whole square is answering for you: your friends, where do they live?",
     npcLineZh: "听——整个广场在替你回答：你的朋友们，他们住在哪儿？",
     zhIntent: "说你的朋友们住在河对岸。",
+    canDo: "说清「我的朋友们住在河对岸」——一群人配素面的动词",
     requiredPattern: "My friends live across the river.",
     sampleAnswer: "My friends live across the river.",
     hints: [
@@ -116,6 +119,7 @@ export const ECHO_GATES: LanguageGate[] = [
     npcLine: "Listen—the bells cannot stop today. Finish Cora's line: the bells ___ (ring) again.",
     npcLineZh: "听——今天的钟停不下来。补全珂拉那句：the bells ___ (ring) again。",
     zhIntent: "补全这句话：The bells ___ (ring) again.",
+    canDo: "说清「钟声又在响了」——正在发生要请 be 推动",
     requiredPattern: "The bells are ringing again.",
     sampleAnswer: "The bells are ringing again.",
     hints: [
@@ -146,6 +150,7 @@ export const ECHO_GATES: LanguageGate[] = [
     npcLine: "The archive opens its ledger. When did you arrive in this city?",
     npcLineZh: "档案馆翻开了登记簿。你是什么时候到这座城的？",
     zhIntent: "说你昨天晚上到的。",
+    canDo: "讲清「我昨晚到的」——过去的事动词留痕",
     requiredPattern: "I arrived yesterday evening.",
     sampleAnswer: "I arrived yesterday evening.",
     hints: [
@@ -176,6 +181,7 @@ export const ECHO_GATES: LanguageGate[] = [
     npcLine: "Cora points down the street. Finish the old song: she ___ (go) home last night.",
     npcLineZh: "珂拉指向街道那头。补全这首老歌：she ___ (go) home last night。",
     zhIntent: "补全这句话：She ___ (go) home last night.",
+    canDo: "讲清「她昨晚回家了」——go 的旧方言是 went",
     requiredPattern: "She went home last night.",
     sampleAnswer: "She went home last night.",
     hints: [
@@ -206,6 +212,7 @@ export const ECHO_GATES: LanguageGate[] = [
     npcLine: "The night-market elder holds up three fingers. \"Last week. The night train. Tell me — what did we do?\"",
     npcLineZh: "夜市老人竖起三根手指。“上周。夜班车。告诉我——我们做了什么？”",
     zhIntent: "说你们上周坐了夜班车。",
+    canDo: "讲清「我们上周坐的夜班车」——take 的亲戚是 took",
     requiredPattern: "We took the night train last week.",
     sampleAnswer: "We took the night train last week.",
     hints: [
@@ -236,6 +243,7 @@ export const ECHO_GATES: LanguageGate[] = [
     npcLine: "The east gate is only half here. Tell me—when will it show itself? Say what the gate will do at dawn.",
     npcLineZh: "城东门只有一半在这里。告诉我——它什么时候才会现身？说说黎明时这扇门会做什么。",
     zhIntent: "说这扇门在黎明时会打开。",
+    canDo: "说清「这扇门会在黎明打开」——will 开路",
     requiredPattern: "The gate will open at dawn.",
     sampleAnswer: "The gate will open at dawn.",
     hints: [
@@ -266,6 +274,7 @@ export const ECHO_GATES: LanguageGate[] = [
     npcLine: "Omar from the station kiosk waves—he has plans. Tomorrow, the market... He points at his schedule board. Finish it: I ___ (be) going to visit the clock tower.",
     npcLineZh: "站台小卖部的 Omar 挥着手——他带着计划来的。明天，市集……他指指日程板。补全它：I ___ (be) going to visit the clock tower。",
     zhIntent: "补全这句话：I ___ (be) going to visit the clock tower.",
+    canDo: "说清「我打算去钟楼」——计划用 be going to",
     requiredPattern: "I am going to visit the clock tower.",
     sampleAnswer: "I am going to visit the clock tower.",
     hints: [
@@ -296,6 +305,7 @@ export const ECHO_GATES: LanguageGate[] = [
     npcLine: "The great bell rings. Cora stands below it, looking up. One last thing. This city—you have lived inside it for days now. Tell me what you have experienced. What have you seen?",
     npcLineZh: "大钟敲响。珂拉站在钟下，仰头看着。最后一件事。这座城市——你已经在里面生活了好几天。告诉我你经历过什么。你见到过什么？",
     zhIntent: "说你从没见过一座会说话的城市。",
+    canDo: "说出经历「我从没见过会说话的城市」",
     requiredPattern: "I have never seen a talking city.",
     sampleAnswer: "I have never seen a talking city.",
     hints: [

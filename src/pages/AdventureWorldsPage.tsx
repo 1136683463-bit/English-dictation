@@ -9,7 +9,7 @@ import { MARKET_GATES } from "../data/marketGateScripts";
 import { MOUNTAIN_GATES } from "../data/mountainGateScripts";
 import { LIBRARY_GATES } from "../data/libraryGateScripts";
 import { LIGHTHOUSE_GATES } from "../data/lighthouseGateScripts";
-import { isWorldUnlocked } from "../data/worldGateIndex";
+import { WORLDS, isWorldUnlocked } from "../data/worldGateIndex";
 import { ALL_RUNES, RUNE_SLOTS_TOTAL } from "../data/runes";
 import { findPassedAttempt } from "../services/languageGateService";
 import { getRuneState } from "../services/runeService";
@@ -51,9 +51,9 @@ export default function AdventureWorldsPage() {
   return (
     <div className="page worlds-page">
       <PageHeader
-        eyebrow="语言之门"
+        eyebrow="语言之门 · 语法课"
         title="六段旅途"
-        description="每一道门，都要你亲口说出那句话才打得开。说对了剧情往前走；说错了，NPC 会当真——然后故事用最温和的方式，让你自己把句子改对。"
+        description="六段旅途，是六步语法课：站台（把句子搭完整）→ 集市（名词与数量）→ 回声城（时态）→ 山径（修饰）→ 图书馆（长句）→ 灯塔（情态语气）。共 50 关，每关 2–4 分钟，从上往下就是顺序。"
         action={
           <div className="lesson-progress-pill" aria-label="符文进度">
             <Sparkles size={16} />
@@ -62,10 +62,31 @@ export default function AdventureWorldsPage() {
         }
       />
 
+      {/* 六世界总览（PRD FR-2b）：首屏可见全部六世界——名称 + 一句 can-do + 状态 */}
+      <section className="world-overview" aria-label="六个世界总览">
+        <h2>六个世界，各学什么</h2>
+        <ol className="world-overview-list">
+          {WORLDS.map((world, index) => {
+            const unlocked = isWorldUnlocked(world.id, hasPassed);
+            const passedCount = world.gates.filter((gate) => findPassedAttempt(data, gate.id)).length;
+            const cleared = passedCount === world.gates.length;
+            return (
+              <li key={world.id} className={`world-overview-item${unlocked ? "" : " locked"}${cleared ? " cleared" : ""}`}>
+                <span className="world-overview-name">{world.name}</span>
+                <span className="world-overview-cando">{world.canDo}</span>
+                <span className="world-overview-status">
+                  {cleared ? "已走完" : unlocked ? (passedCount > 0 ? `${passedCount}/${world.gates.length} 关` : "现在就能开始") : world.unlockHint}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+
       <section className="world-card station" aria-label="站台世界">
         <header className="world-card-head">
           <div>
-            <span className="eyebrow">第一世界 · S0 句子骨架</span>
+            <span className="eyebrow">第一世界 · 把句子搭完整</span>
             <h2>雨夜站台</h2>
             <p>雨夜的火车站，所有人都急着说话——你说话，别人才能听懂。</p>
           </div>
@@ -90,7 +111,7 @@ export default function AdventureWorldsPage() {
                   <span className="gate-row-index">{passed ? <Check size={15} /> : locked ? <Lock size={14} /> : index + 1}</span>
                   <span className="gate-row-body">
                     <strong>{gate.npcLineZh}</strong>
-                    <small>{gate.zhIntent}{rune ? ` · 符文「${rune.name}」` : ""}</small>
+                    <small>{gate.canDo}{rune ? ` · 符文「${rune.name}」` : ""}</small>
                   </span>
                   {isNext && <span className="gate-row-next">下一关</span>}
                   <ChevronRight size={16} />
@@ -105,7 +126,7 @@ export default function AdventureWorldsPage() {
         <section className="world-card market" aria-label="集市世界">
           <header className="world-card-head">
             <div>
-              <span className="eyebrow">第二世界 · S1 名词与限定</span>
+              <span className="eyebrow">第二世界 · 说清数量和特指</span>
               <h2>清晨集市</h2>
               <p>要什么得说清楚——名字说不对，摊主就把错的东西递到你手里。</p>
             </div>
@@ -125,7 +146,7 @@ export default function AdventureWorldsPage() {
                     <span className="gate-row-index">{passed ? <Check size={15} /> : index + 1}</span>
                     <span className="gate-row-body">
                       <strong>{gate.npcLineZh}</strong>
-                      <small>{gate.zhIntent}{rune ? ` · 符文「${rune.name}」` : ""}</small>
+                      <small>{gate.canDo}{rune ? ` · 符文「${rune.name}」` : ""}</small>
                     </span>
                     {isNext && <span className="gate-row-next">下一关</span>}
                     <ChevronRight size={16} />
@@ -141,7 +162,7 @@ export default function AdventureWorldsPage() {
         <section className="world-card echo" aria-label="回声城世界">
           <header className="world-card-head">
             <div>
-              <span className="eyebrow">第三世界 · S2 谓语动词</span>
+              <span className="eyebrow">第三世界 · 把时间说准</span>
               <h2>回声城</h2>
               <p>这座城会复读你说过的每句话，时间线会错乱——说错时间，城市会把你拉进错误的一天。</p>
             </div>
@@ -161,7 +182,7 @@ export default function AdventureWorldsPage() {
                     <span className="gate-row-index">{passed ? <Check size={15} /> : index + 1}</span>
                     <span className="gate-row-body">
                       <strong>{gate.npcLineZh}</strong>
-                      <small>{gate.zhIntent}{rune ? ` · 符文「${rune.name}」` : ""}</small>
+                      <small>{gate.canDo}{rune ? ` · 符文「${rune.name}」` : ""}</small>
                     </span>
                     {isNext && <span className="gate-row-next">下一关</span>}
                     <ChevronRight size={16} />
@@ -177,7 +198,7 @@ export default function AdventureWorldsPage() {
         <section className="world-card mountain" aria-label="山径世界">
           <header className="world-card-head">
             <div>
-              <span className="eyebrow">第四世界 · S3 修饰与扩展</span>
+              <span className="eyebrow">第四世界 · 给一句话加细节</span>
               <h2>雾中山径</h2>
               <p>雾中盘山路，要描述路况才能前进——形容词、比较、介词、语序，说错一样，雾就把路藏起来。</p>
             </div>
@@ -197,7 +218,7 @@ export default function AdventureWorldsPage() {
                     <span className="gate-row-index">{passed ? <Check size={15} /> : index + 1}</span>
                     <span className="gate-row-body">
                       <strong>{gate.npcLineZh}</strong>
-                      <small>{gate.zhIntent}{rune ? ` · 符文「${rune.name}」` : ""}</small>
+                      <small>{gate.canDo}{rune ? ` · 符文「${rune.name}」` : ""}</small>
                     </span>
                     {isNext && <span className="gate-row-next">下一关</span>}
                     <ChevronRight size={16} />
@@ -213,7 +234,7 @@ export default function AdventureWorldsPage() {
         <section className="world-card library" aria-label="图书馆世界">
           <header className="world-card-head">
             <div>
-              <span className="eyebrow">第五世界 · S4 句子变长</span>
+              <span className="eyebrow">第五世界 · 把短句连成长句</span>
               <h2>静默图书馆</h2>
               <p>有些书只有说出完整长句才会打开——句子缺一块，书页就纹丝不动。</p>
             </div>
@@ -233,7 +254,7 @@ export default function AdventureWorldsPage() {
                     <span className="gate-row-index">{passed ? <Check size={15} /> : index + 1}</span>
                     <span className="gate-row-body">
                       <strong>{gate.npcLineZh}</strong>
-                      <small>{gate.zhIntent}{rune ? ` · 符文「${rune.name}」` : ""}</small>
+                      <small>{gate.canDo}{rune ? ` · 符文「${rune.name}」` : ""}</small>
                     </span>
                     {isNext && <span className="gate-row-next">下一关</span>}
                     <ChevronRight size={16} />
@@ -249,7 +270,7 @@ export default function AdventureWorldsPage() {
         <section className="world-card lighthouse" aria-label="灯塔世界">
           <header className="world-card-head">
             <div>
-              <span className="eyebrow">第六世界 · S5 特殊与语用</span>
+              <span className="eyebrow">第六世界 · 情态与语用</span>
               <h2>终章灯塔</h2>
               <p>终章——塔顶的守灯人在等一句道别。灯只对「有分量的话」保持明亮。</p>
             </div>
@@ -269,7 +290,7 @@ export default function AdventureWorldsPage() {
                     <span className="gate-row-index">{passed ? <Check size={15} /> : index + 1}</span>
                     <span className="gate-row-body">
                       <strong>{gate.npcLineZh}</strong>
-                      <small>{gate.zhIntent}{rune ? ` · 符文「${rune.name}」` : ""}</small>
+                      <small>{gate.canDo}{rune ? ` · 符文「${rune.name}」` : ""}</small>
                     </span>
                     {isNext && <span className="gate-row-next">下一关</span>}
                     <ChevronRight size={16} />

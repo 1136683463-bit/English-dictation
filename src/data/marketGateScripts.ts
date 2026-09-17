@@ -22,6 +22,7 @@ export const MARKET_GATES: LanguageGate[] = [
     npcLine: "Morning! The stall is full of fruit. What would you like—how many?",
     npcLineZh: "早上好！摊子上全是水果。想要点什么——要几个？",
     zhIntent: "说想要两个苹果。",
+    canDo: "说清「我想要两个苹果」——不止一个要带尾巴",
     requiredPattern: "I want two apples.",
     sampleAnswer: "I want two apples.",
     hints: [
@@ -52,6 +53,7 @@ export const MARKET_GATES: LanguageGate[] = [
     npcLine: "Taste this—the pears arrived this morning. Finish the vendor's line: the pears ___ (be) sweet.",
     npcLineZh: "尝尝这个——梨是今早到的。补全摊主那句：the pears ___ (be) sweet。",
     zhIntent: "补全这句话：The pears ___ (be) sweet.",
+    canDo: "说清「这些梨是甜的」——不止一个，动词跟着换",
     requiredPattern: "The pears are sweet.",
     sampleAnswer: "The pears are sweet.",
     hints: [
@@ -82,6 +84,7 @@ export const MARKET_GATES: LanguageGate[] = [
     npcLine: "You changed your mind? Fine, fine—one piece. What would you like, just one?",
     npcLineZh: "改主意了？行，行——就一件。想要什么，只要一个？",
     zhIntent: "说想要一个苹果。",
+    canDo: "说清「我想要一个苹果」——a 和 apple 之间要垫 n",
     requiredPattern: "I want an apple.",
     sampleAnswer: "I want an apple.",
     hints: [
@@ -112,6 +115,7 @@ export const MARKET_GATES: LanguageGate[] = [
     npcLine: "The vendor waves at two piles—one close, one far. Point with your words: which pile do you mean?",
     npcLineZh: "摊主朝两堆水果扬了扬下巴——一堆近，一堆远。用话指给我看：你要哪一堆？",
     zhIntent: "说近处的这些苹果是新鲜的。",
+    canDo: "指着近处说清「这些苹果是新鲜的」",
     requiredPattern: "These apples are fresh.",
     sampleAnswer: "These apples are fresh.",
     hints: [
@@ -142,6 +146,7 @@ export const MARKET_GATES: LanguageGate[] = [
     npcLine: "The vendor notices the girl in the green coat waiting behind you. \"Buying for someone else, too?\" Finish: these pears are for ___ (she).",
     npcLineZh: "摊主注意到你身后等着的绿大衣女孩。“也替别人买？”补全：these pears are for ___ (she)。",
     zhIntent: "补全这句话：These pears are for ___ (she).",
+    canDo: "说清「这些梨是给她的」——代词的换装",
     requiredPattern: "These pears are for her.",
     sampleAnswer: "These pears are for her.",
     hints: [
@@ -172,6 +177,7 @@ export const MARKET_GATES: LanguageGate[] = [
     npcLine: "The vendor sets the bag on the scale. \"Now—ask me the price. Say it right, and I will round it down.\"",
     npcLineZh: "摊主把袋子放上秤。“现在——问我价钱。说对了，我给你抹零。”",
     zhIntent: "问这些梨一共多少钱。",
+    canDo: "问清「这些梨多少钱」——价钱用 much",
     requiredPattern: "How much are these pears?",
     sampleAnswer: "How much are these pears?",
     hints: [
@@ -202,6 +208,7 @@ export const MARKET_GATES: LanguageGate[] = [
     npcLine: "The vendor lifts the bag you already chose. \"You remember this bag? Then ask for it—the one we agreed on.\" Finish: I will take ___ bag.",
     npcLineZh: "摊主提起你刚才选好的那袋。“还记得这袋吗？那就指名要它——我们说好的那一袋。”补全：I will take ___ bag。",
     zhIntent: "补全这句话：I will take ___ bag.（哪一袋？）",
+    canDo: "说清「我就要那一袋」——说好的那个用 the",
     requiredPattern: "I will take the bag.",
     sampleAnswer: "I will take the bag.",
     hints: [
@@ -232,6 +239,7 @@ export const MARKET_GATES: LanguageGate[] = [
     npcLine: "The vendor wipes the counter and smiles. \"Last order of the morning. Tell me everything: what, how many, and how much—in one breath.\"",
     npcLineZh: "摊主擦了擦柜台，笑了。“早上的最后一单。一口气告诉我：要什么、要几个、多少钱。”",
     zhIntent: "说你要三个橘子，然后问一共多少钱。",
+    canDo: "一口气说清「要三个橘子，多少钱」",
     requiredPattern: "I want three oranges. How much is it?",
     sampleAnswer: "I want three oranges. How much is it?",
     hints: [

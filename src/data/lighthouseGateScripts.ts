@@ -26,6 +26,7 @@ export const LIGHTHOUSE_GATES: LanguageGate[] = [
     npcLine: "At the foot of the lighthouse, an old keeper studies the dark sea. \"First question of the night—what can you see from here? Tell me about the light.\"",
     npcLineZh: "灯塔脚下，年迈的守灯人望着黑沉沉的海。“今晚第一个问题——从这儿你能看见什么？跟我说说那道光。”",
     zhIntent: "说你能看见那道灯光。",
+    canDo: "说清「我能看见那道光」——can 后面用原形",
     requiredPattern: "I can see the light.",
     sampleAnswer: "I can see the light.",
     hints: [
@@ -56,6 +57,7 @@ export const LIGHTHOUSE_GATES: LanguageGate[] = [
     npcLine: "The keeper climbs the spiral stairs with you. \"A ship leaves at midnight. Finish the thought: we ___ (must) say goodbye soon.\"",
     npcLineZh: "守灯人跟你一起爬旋转楼梯。“半夜有一班船走。把这句补完：we ___ (must) say goodbye soon。”",
     zhIntent: "补全这句话：We ___ (must) say goodbye soon.",
+    canDo: "说清「我们必须道别了」",
     requiredPattern: "We must say goodbye soon.",
     sampleAnswer: "We must say goodbye soon.",
     hints: [
@@ -86,6 +88,7 @@ export const LIGHTHOUSE_GATES: LanguageGate[] = [
     npcLine: "At the top, the keeper pulls up a stool for you. \"You have climbed all night,\" he says. \"What should a tired traveler do? Tell me.\"",
     npcLineZh: "到了塔顶，守灯人给你拉来一张凳子。“你爬了一整夜，”他说，“一个累了的旅人应该做什么？告诉我。”",
     zhIntent: "说你该休息一下。",
+    canDo: "说清「我该休息了」——should 的分量",
     requiredPattern: "I should rest.",
     sampleAnswer: "I should rest.",
     hints: [
@@ -116,6 +119,7 @@ export const LIGHTHOUSE_GATES: LanguageGate[] = [
     npcLine: "The keeper wipes the great lens with a cloth. \"People ask who lights it, and I say: it is not important. Finish the line the way I do: the lamp ___ (light) every night.\"",
     npcLineZh: "守灯人用布擦拭巨大的透镜。“人们总问是谁点的灯，我说：不重要。按我的方式把这句补完：the lamp ___ (light) every night。”",
     zhIntent: "补全这句话：The lamp ___ (light) every night.（谁点的不重要）",
+    canDo: "说清「这盏灯每晚都被点亮」——谁点的不重要",
     requiredPattern: "The lamp is lit every night.",
     sampleAnswer: "The lamp is lit every night.",
     hints: [
@@ -146,6 +150,7 @@ export const LIGHTHOUSE_GATES: LanguageGate[] = [
     npcLine: "The keeper points at the horizon: gray clouds are rolling in. \"The ships only sail on quiet water. Tell me—what happens if the storm comes?\"",
     npcLineZh: "守灯人指着海平线：灰云正在压过来。“船们只在平静的水面上走。告诉我——如果风暴来了，会怎么样？”",
     zhIntent: "说如果风暴来了，船会停下来。",
+    canDo: "说清「如果风暴来了，船就会停下」",
     requiredPattern: "If the storm comes, the ships will stop.",
     sampleAnswer: "If the storm comes, the ships will stop.",
     hints: [
@@ -176,6 +181,7 @@ export const LIGHTHOUSE_GATES: LanguageGate[] = [
     npcLine: "Dawn. The lamp dims itself, its long night's work done. The keeper stands at the door, looking at you the way people look at a journey's end. \"The boat for the mainland leaves in an hour,\" he says. \"Before you go—say it in the words people really use. It was nice to have met me, wasn't it?\"",
     npcLineZh: "黎明。灯自己暗了下来，一夜的活干完了。守灯人站在门口，用看一段旅程尽头的眼神看着你。“去大陆的船一小时后走，”他说，“走之前——用人们真正会说的话。认识我，是件好事，对吧？”",
     zhIntent: "用日常的说法道别：说很高兴认识他。",
+    canDo: "用地道的说法道别「很高兴认识你」",
     requiredPattern: "It was nice to meet you.",
     sampleAnswer: "It was nice to meet you.",
     hints: [

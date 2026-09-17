@@ -1,6 +1,6 @@
 import type { AiProviderSettings } from "../types";
 import type { GenerateStructuredMistakeStoryInput, StructuredMistakeStoryResult } from "./aiService";
-import { describeModelRequestError, isAiProviderConfigured, normalizeChatCompletionsUrl, readResponsePayload, requestFetch } from "./aiHttpClient";
+import { buildAiRequestHeaders, describeModelRequestError, isAiProviderConfigured, normalizeChatCompletionsUrl, readResponsePayload, requestFetch } from "./aiHttpClient";
 
 interface ChatCompletionResponse {
   choices?: Array<{
@@ -109,10 +109,7 @@ export const generateStructuredMistakeStoryWithModel = async (
   try {
     const response = await requestFetch(normalizeChatCompletionsUrl(provider.baseUrl), {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${provider.apiKey}`
-      },
+      headers: buildAiRequestHeaders(provider.apiKey),
       body: JSON.stringify({
         model: provider.model,
         temperature: provider.temperature,
@@ -203,10 +200,7 @@ export const generateWordExplanationWithModel = async (
   try {
     const response = await requestFetch(normalizeChatCompletionsUrl(provider.baseUrl), {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${provider.apiKey}`
-      },
+      headers: buildAiRequestHeaders(provider.apiKey),
       body: JSON.stringify({
         model: provider.model,
         temperature: provider.temperature,

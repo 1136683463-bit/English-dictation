@@ -19,6 +19,10 @@ export interface WorldMeta {
   eyebrow: string;
   /** 顶栏面包屑文案（如「站台 · 第 2 关」）。 */
   crumb: string;
+  /** 这个世界教什么（一句 can-do，地图页展示；PRD-learning-goal-visibility FR-2b）。 */
+  canDo: string;
+  /** 解锁条件的人话（未解锁时展示）。 */
+  unlockHint: string;
 }
 
 export const WORLDS: WorldMeta[] = [
@@ -26,43 +30,55 @@ export const WORLDS: WorldMeta[] = [
     id: "station",
     gates: STATION_GATES,
     name: "雨夜站台",
-    eyebrow: "第一世界 · S0 句子骨架",
-    crumb: "站台"
+    eyebrow: "第一世界 · 把句子搭完整",
+    crumb: "站台",
+    canDo: "把句子搭完整——谁 + 做什么，一句话立得住",
+    unlockHint: "现在就能开始"
   },
   {
     id: "market",
     gates: MARKET_GATES,
     name: "清晨集市",
-    eyebrow: "第二世界 · S1 名词与限定",
-    crumb: "集市"
+    eyebrow: "第二世界 · 说清数量和特指",
+    crumb: "集市",
+    canDo: "说清数量和特指——一个还是两个、这一个还是那一个",
+    unlockHint: "通过站台第 8 关后开启"
   },
   {
     id: "echo-city",
     gates: ECHO_GATES,
     name: "回声城",
-    eyebrow: "第三世界 · S2 谓语动词",
-    crumb: "回声城"
+    eyebrow: "第三世界 · 把时间说准",
+    crumb: "回声城",
+    canDo: "把时间说准——昨天、每天、正在、将要",
+    unlockHint: "通过站台第 8 关后开启"
   },
   {
     id: "mountain",
     gates: MOUNTAIN_GATES,
     name: "雾中山径",
-    eyebrow: "第四世界 · S3 修饰与扩展",
-    crumb: "山径"
+    eyebrow: "第四世界 · 给一句话加细节",
+    crumb: "山径",
+    canDo: "给一句话加细节——多陡、比什么更怎么样、在哪儿",
+    unlockHint: "通过站台第 8 关后开启"
   },
   {
     id: "library",
     gates: LIBRARY_GATES,
     name: "静默图书馆",
-    eyebrow: "第五世界 · S4 句子变长",
-    crumb: "图书馆"
+    eyebrow: "第五世界 · 把短句连成长句",
+    crumb: "图书馆",
+    canDo: "把两句话连成一句，把长句拆回短句",
+    unlockHint: "通过站台第 8 关后开启"
   },
   {
     id: "lighthouse",
     gates: LIGHTHOUSE_GATES,
     name: "终章灯塔",
-    eyebrow: "第六世界 · S5 特殊与语用",
-    crumb: "灯塔"
+    eyebrow: "第六世界 · 情态与语用",
+    crumb: "灯塔",
+    canDo: "说出「能、该、必须」，也说出「假如」",
+    unlockHint: "通过站台第 8 关后开启"
   }
 ];
 

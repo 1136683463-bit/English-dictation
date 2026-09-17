@@ -34,6 +34,23 @@ export const requestFetch = async (input: string, init: RequestInit): Promise<Re
   return globalThis.fetch(input, init);
 };
 
+/**
+ * Headers for every OpenAI-compatible chat request.
+ *
+ * The wb2api local gateway rewrites outbound system prompts and injects
+ * DeepSeek thinking by default (both tuned for CLI clients). This app needs
+ * its own system prompt kept verbatim and a thinking-free token budget, so all
+ * model traffic opts into passthrough prompt + disabled thinking via the two
+ * X-WB2A-* opt-in headers. Other relays ignore unknown X-headers by HTTP
+ * convention, so they are safe to send everywhere.
+ */
+export const buildAiRequestHeaders = (apiKey: string): Record<string, string> => ({
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${apiKey}`,
+  "X-WB2A-Prompt-Mode": "passthrough",
+  "X-WB2A-Thinking": "disabled"
+});
+
 export const describeModelRequestError = (error: unknown) => {
   if (error instanceof Error) {
     if (/load failed|failed to fetch|networkerror|network request failed/i.test(error.message)) {

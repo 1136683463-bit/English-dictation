@@ -784,6 +784,7 @@ const normalizeLanguageGates = (value: unknown): LanguageGate[] =>
         npcLine: asString(item.npcLine),
         npcLineZh: asString(item.npcLineZh),
         zhIntent: asString(item.zhIntent),
+        canDo: asString(item.canDo) || asString(item.zhIntent),
         requiredPattern: asString(item.requiredPattern),
         sampleAnswer: asString(item.sampleAnswer),
         hints,

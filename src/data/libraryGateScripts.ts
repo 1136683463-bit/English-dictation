@@ -23,6 +23,7 @@ export const LIBRARY_GATES: LanguageGate[] = [
     npcLine: "The librarian holds a book that will not open. \"It is waiting for a reason,\" she says. \"Finish the line on its cover: I stayed home ___ it rained.\"",
     npcLineZh: "图书管理员捧着一本打不开的书。“它在等一个理由，”她说，“把封面上的句子补完：I stayed home ___ it rained。”",
     zhIntent: "补全这句话：I stayed home ___ it rained.（为什么待在家？）",
+    canDo: "说清原因「下雨了，所以我待在家里」",
     requiredPattern: "I stayed home because it rained.",
     sampleAnswer: "I stayed home because it rained.",
     hints: [
@@ -53,6 +54,7 @@ export const LIBRARY_GATES: LanguageGate[] = [
     npcLine: "A second book slides forward. On its cover: a raincloud and a sunny hill. \"Two halves that pull apart,\" the librarian says. \"Tell me—the book was long. What about the story?\"",
     npcLineZh: "第二本书滑了出来。封面上：一朵雨云和一座阳光下的山丘。“互相拉扯的两半，”管理员说，“告诉我——书很长。那故事呢？”",
     zhIntent: "说书很长，但是故事很有趣。",
+    canDo: "说清转折「书很长，但故事很有趣」",
     requiredPattern: "The book was long, but the story was interesting.",
     sampleAnswer: "The book was long, but the story was interesting.",
     hints: [
@@ -83,6 +85,7 @@ export const LIBRARY_GATES: LanguageGate[] = [
     npcLine: "Deeper in the stacks, a book floats at eye level, its pages rustling like leaves. \"This one opens for wishes,\" the librarian whispers. \"Tell it what you want to do here.\"",
     npcLineZh: "到了书架深处，一本书悬在视线的高度轻轻翻动，书页像叶子一样沙沙响。“这本为愿望而开，”管理员低声说，“告诉它你想在这儿做什么。”",
     zhIntent: "说你想读这本书。",
+    canDo: "说出愿望「我想读这本书」——愿望带 to 的芽",
     requiredPattern: "I want to read this book.",
     sampleAnswer: "I want to read this book.",
     hints: [
@@ -113,6 +116,7 @@ export const LIBRARY_GATES: LanguageGate[] = [
     npcLine: "The librarian sets down her stamp and looks at the clock. \"The reading room closes at dusk. Finish your thought on the slip: I ___ (decide) to finish this chapter tonight.\"",
     npcLineZh: "管理员放下印章，看了看挂钟。“阅览室黄昏关门。把借书条上这句补完：I ___ (decide) to finish this chapter tonight。”",
     zhIntent: "补全这句话：I ___ (decide) to finish this chapter tonight.",
+    canDo: "说出决定「我决定今晚读完这一章」",
     requiredPattern: "I decided to finish this chapter tonight.",
     sampleAnswer: "I decided to finish this chapter tonight.",
     hints: [
@@ -143,6 +147,7 @@ export const LIBRARY_GATES: LanguageGate[] = [
     npcLine: "The inner reading room. A book lies open on a lectern, its title blank. \"This one asks for a subject,\" the librarian says. \"Tell it what you like doing best.\"",
     npcLineZh: "最里面的阅览室。一本书摊在讲台上，标题是空白的。“这本要一个『主角』，”管理员说，“告诉它你最喜欢做什么。”",
     zhIntent: "说最喜欢读书。",
+    canDo: "说出喜欢「我喜欢读书」——动词的叶子",
     requiredPattern: "I enjoy reading.",
     sampleAnswer: "I enjoy reading.",
     hints: [
@@ -173,6 +178,7 @@ export const LIBRARY_GATES: LanguageGate[] = [
     npcLine: "The librarian slides a stamped card across the desk. \"For helping me sort the shelves. Write on the card—finish this: thank you for ___ (help) me.\"",
     npcLineZh: "管理员把一张盖好章的卡片推过桌面。“谢谢你帮我整理书架。在卡片上写完这句：thank you for ___ (help) me。”",
     zhIntent: "补全这句话：Thank you for ___ (help) me.",
+    canDo: "说出感谢「谢谢你帮我」",
     requiredPattern: "Thank you for helping me.",
     sampleAnswer: "Thank you for helping me.",
     hints: [
@@ -203,6 +209,7 @@ export const LIBRARY_GATES: LanguageGate[] = [
     npcLine: "A narrow book with a clasp stands apart on the shelf. \"It only opens for descriptions,\" the librarian says. \"Tell it about the man who fixed the shelves—describe him with a hook.\"",
     npcLineZh: "一本带扣环的窄书单独立在架上。“它只为描述而开，”管理员说，“跟它说说修书架的那位师傅——用一个钩子把他扣住。”",
     zhIntent: "说那位帮你的师傅很善良。",
+    canDo: "用 who 描述「帮我的那个人很善良」",
     requiredPattern: "The man who helped me is kind.",
     sampleAnswer: "The man who helped me is kind.",
     hints: [
@@ -233,6 +240,7 @@ export const LIBRARY_GATES: LanguageGate[] = [
     npcLine: "The floating book returns, this time pointing at a shelf you tidied. \"Describe a book,\" the librarian says. \"Finish the line on the spine: this is the book ___ I read last week.\"",
     npcLineZh: "会飘的那本书回来了，这次指着你整理过的那排架。“描述一本书，”管理员说，“把书脊上的句子补完：this is the book ___ I read last week。”",
     zhIntent: "补全这句话：This is the book ___ I read last week.",
+    canDo: "用 which 说清「这就是我上周读的那本书」",
     requiredPattern: "This is the book which I read last week.",
     sampleAnswer: "This is the book which I read last week.",
     hints: [
@@ -263,6 +271,7 @@ export const LIBRARY_GATES: LanguageGate[] = [
     npcLine: "At the very back, a black book sits inside a glass case. \"This one only opens for thoughts about others,\" the librarian says. \"Tell it what you think about your friend—the friend from the city of bells.\"",
     npcLineZh: "最深处，一本黑皮书装在玻璃匣里。“这本只为『关于别人的想法』而开，”管理员说，“告诉它你怎么看你的朋友——钟声之城的那位。”",
     zhIntent: "说你认为她是对的。",
+    canDo: "说出想法「我认为她是对的」——想法装进匣子",
     requiredPattern: "I think that she is right.",
     sampleAnswer: "I think that she is right.",
     hints: [
@@ -293,6 +302,7 @@ export const LIBRARY_GATES: LanguageGate[] = [
     npcLine: "The librarian closes the ledger and stands. The lamps dim, one by one, down the long hall. \"Last book of the night,\" she says. \"It opens only for a whole story—use everything you have built here. Why did you come, and what did you find?\"",
     npcLineZh: "管理员合上账本，站起身。长廊里的灯一盏盏暗下去。“今晚最后一本，”她说，“它只为完整的故事打开——用上你在这儿搭起来的一切。你为什么来，又找到了什么？”",
     zhIntent: "说你因为想读书而来，发现读书很有趣。",
+    canDo: "搭一句长的「我来是因为想读书，我发现读书很有趣」",
     requiredPattern: "I came here because I wanted to read, and I found that reading is fun.",
     sampleAnswer: "I came here because I wanted to read, and I found that reading is fun.",
     hints: [

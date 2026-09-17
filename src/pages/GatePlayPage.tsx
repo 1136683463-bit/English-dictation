@@ -78,6 +78,12 @@ type PlayPhase = "story" | "gate" | "settle";
 
 export default function GatePlayPage() {
   const { gateId = "" } = useParams();
+  // key 强制换关重建：从结算页点「下一关」时 gateId 变化但路由不重建组件，
+  // 曾导致上一关的 answer/phase/judgement 被带进新关卡（settle 页显示张冠李戴的句子与骨架）。
+  return <GatePlaySession key={gateId} gateId={gateId} />;
+}
+
+function GatePlaySession({ gateId }: { gateId: string }) {
   const { data, updateDataAsync } = useAppData();
   const gate = getGateById(gateId);
   const world = getWorldOfGate(gateId);
@@ -291,9 +297,10 @@ export default function GatePlayPage() {
           </div>
 
           <div className="gate-brief-card" aria-label="任务预告">
+            <p className="gate-brief-goal">本关学会：{gate.canDo}</p>
             <p className="gate-brief-intent">
               <Lightbulb size={15} />
-              <span>小灯想让你说：<strong>{gate.zhIntent}</strong></span>
+              <span>{gate.mode === "complete" ? "小灯想让你补全这句话：" : "小灯想让你说："}<strong>{gate.zhIntent}</strong></span>
             </p>
             <div className="gate-brief-body">
               <div className="gate-brief-skeleton">
@@ -350,7 +357,7 @@ export default function GatePlayPage() {
           </div>
 
           <div className="gate-brief-inline" aria-label="任务参照">
-            <p className="gate-intent">你想说：<strong>{gate.zhIntent}</strong></p>
+            <p className="gate-intent">本关学会：<strong>{gate.canDo}</strong></p>
             <code className="gate-brief-skeleton-line" lang="en">{gate.hints[0]}</code>
           </div>
 
@@ -425,7 +432,7 @@ export default function GatePlayPage() {
 
           <div className="gate-settle-link" aria-hidden="true"><span className="gate-settle-link-arrow">↓</span></div>
 
-          {/* ② NPC 回应：带头像，一眼看出是角色在说话 */}
+          {/* ② NPC 回应：带头像 +「听到你说…」承接行，让这句话明确挂回玩家的句子 */}
           <div className="gate-npc-card pass">
             <div className="gate-npc-head">
               <span className="gate-npc-identity">
@@ -433,6 +440,7 @@ export default function GatePlayPage() {
                 <span className="gate-npc-name">{story.passSpeaker}</span>
               </span>
             </div>
+            <p className="gate-npc-heard">听到你说“<span lang="en">{answer}</span>”，{story.passSpeaker}回应：</p>
             <p className="gate-npc-line" lang="en">{story.passLine}</p>
             <p className="gate-npc-line-zh">{story.passLineZh}</p>
           </div>

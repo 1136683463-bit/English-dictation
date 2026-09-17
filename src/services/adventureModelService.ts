@@ -1,6 +1,6 @@
 import type { AdventureChoice, AdventureLevel, AdventureNode, AdventureTemplate, AdventureVocabulary, AiProviderSettings } from "../types";
 import { splitAdventureSentences } from "./adventureReaderService";
-import { describeModelRequestError, isAiProviderConfigured, normalizeChatCompletionsUrl, readResponsePayload, reassembleStreamText, requestFetch } from "./aiHttpClient";
+import { buildAiRequestHeaders, describeModelRequestError, isAiProviderConfigured, normalizeChatCompletionsUrl, readResponsePayload, reassembleStreamText, requestFetch } from "./aiHttpClient";
 
 export { isAiProviderConfigured };
 
@@ -456,7 +456,7 @@ const requestModelJson = async (
     const endpoint = normalizeChatCompletionsUrl(provider.baseUrl);
     const request = (withResponseFormat: boolean) => requestFetch(endpoint, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${provider.apiKey}` },
+      headers: buildAiRequestHeaders(provider.apiKey),
       body: JSON.stringify({
         model: provider.model,
         temperature: provider.temperature,
@@ -539,7 +539,7 @@ const requestModelJson = async (
         const useResponseFormat = attempt === 0;
         const retryResponse = await requestFetch(endpoint, {
           method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${provider.apiKey}` },
+          headers: buildAiRequestHeaders(provider.apiKey),
           body: JSON.stringify({
             model: provider.model,
             temperature: Math.min(provider.temperature, 0.4),

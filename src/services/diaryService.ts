@@ -1,7 +1,7 @@
 import type { AiProviderSettings, AppData, DiaryCorrectionResult, DiaryEntry, DiaryIssue, GrammarErrorTag } from "../types";
 import { diaryQuestions, type DiaryQuestion as PoolQuestion } from "../data/diaryQuestions";
 import { addSentence } from "./cardService";
-import { isAiProviderConfigured, normalizeChatCompletionsUrl, readResponsePayload, requestFetch } from "./aiHttpClient";
+import { buildAiRequestHeaders, isAiProviderConfigured, normalizeChatCompletionsUrl, readResponsePayload, requestFetch } from "./aiHttpClient";
 import { GRAMMAR_ERROR_TAGS } from "./huntService";
 import { nowIso, uid } from "./storage";
 
@@ -274,7 +274,7 @@ export const requestDiaryCorrection = async (
     const buildRequest = (withResponseFormat: boolean) =>
       requestFetch(endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${provider.apiKey}` },
+        headers: buildAiRequestHeaders(provider.apiKey),
         body: JSON.stringify({
           model: provider.model,
           temperature: Math.min(provider.temperature, 0.4),
