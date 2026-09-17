@@ -151,7 +151,7 @@ export interface RevisitQuestion {
 
 /** 抽句子的「语法关键词」做 cloze 空位：优先 be 动词/助动词/谓语动词（本课语法点所在），抽不到用第 2 词。 */
 const pickClozeWord = (sentence: string): { clozeText: string; clozeAnswer: string } => {
-  const GRAMMAR_WORDS = /^(am|is|are|was|were|will|did|does|do|have|has|can|must|went|go|drawing|playing|reading|listening|doing|ate|saw|watched)$/i;
+  const GRAMMAR_WORDS = /^(am|is|are|was|were|will|did|does|do|have|has|can|must|should|went|go|drawing|playing|reading|listening|doing|ate|saw|watched)$/i;
   const words = sentence.split(/\s+/).filter(Boolean);
   const grammarIndex = words.findIndex((w) => GRAMMAR_WORDS.test(w.replace(/[.,!?;:]$/g, "")));
   const index = grammarIndex >= 0 ? grammarIndex : Math.min(1, words.length - 1);

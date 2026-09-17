@@ -185,14 +185,19 @@ function LessonContrastCard({
   const judge = (choice: "first" | "second") => {
     if (picked) return;
     setPicked(choice);
-    onJudge?.((choice === "first") === correctFirst);
+    // 双正解条（that 可选件）：两句都对，选哪句都判通过。
+    onJudge?.(item.bothRight ? true : (choice === "first") === correctFirst);
   };
 
   return (
     <div className="lesson-contrast-card">
       {!revealed ? (
         <>
-          <p className="lesson-contrast-hint">两句话只有一句是对的——点出你认为对的那句：</p>
+          <p className="lesson-contrast-hint">
+            {item.bothRight
+              ? "挑一句你更顺眼的——今天这组有惊喜："
+              : "两句话只有一句是对的——点出你认为对的那句："}
+          </p>
           <div style={{ display: "grid", gap: 12 }}>
             <button
               type="button"
@@ -248,6 +253,17 @@ function LessonContrastCard({
             </button>
           </div>
         </>
+      ) : item.bothRight ? (
+        <div className="lesson-contrast-reveal">
+          <p className="lesson-contrast-correct">
+            <CheckCircle2 size={17} /> {item.correct}
+          </p>
+          <p className="lesson-contrast-correct">
+            <CheckCircle2 size={17} /> {item.wrong}
+          </p>
+          <p className="lesson-contrast-why">{item.whyZh}</p>
+          <p className="lesson-contrast-judge">两句都对——这就是今天的反转。</p>
+        </div>
       ) : (
         <>
           <p className="lesson-contrast-wrong">
@@ -1865,7 +1881,7 @@ export default function GrammarLessonPage() {
               </span>
               <h2>第 {lesson.number} 课完成</h2>
               <p className="complete-hero-sub">
-                学完这 20 课，你就能用 60 多个句子介绍自己、讲正在做的事、说明天的计划。
+                一课一课积累，你已经能用英语介绍自己、讲正在做的事、说明天的计划。
               </p>
             </header>
 

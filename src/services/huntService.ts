@@ -36,8 +36,8 @@ export const GRAMMAR_ERROR_TAG_PLAIN: Record<GrammarErrorTag, string> = {
   plural: "两个以上要加 s，有些词永远不加",
   preposition: "固定搭配记整块，不能按中文直译",
   run_on: "because 和 so 不能同时用，留一个",
-  word_order: "形容词要放在名词前面",
-  verb_form: "被动要用『be + 过去分词』",
+  word_order: "词语站错了位置——英语的语序和中文不太一样",
+  verb_form: "动词要穿对形式——原形 / -ing / 过去式，看位置定",
   fragment: "每个句子必须有主语和动词",
   comparison: "两个里比一个，形容词要带上 -er 或 more"
 };
@@ -46,7 +46,7 @@ export const GRAMMAR_ERROR_TAG_PLAIN: Record<GrammarErrorTag, string> = {
 export const HUNT_CLUE_BUDGET = 5;
 
 /** 挑选收进错词本的词时要跳过的功能词。 */
-const NON_CONTENT_WORDS = new Set(["a", "an", "the", "is", "are"]);
+const NON_CONTENT_WORDS = new Set(["a", "an", "the", "is", "are", "to"]);
 
 /**
  * 从改正结果里挑一个值得收进错词本的词（如 "moved"；短语取第一个实词）。
@@ -124,7 +124,7 @@ const tagHintForWrongGuess: Record<GrammarErrorTag, string> = {
   preposition: "这个小词是固定搭配，试着整块记住它。",
   fragment: "这个句子还缺一块，看看缺的是主语还是动词。",
   run_on: "两个连接词不能同时出现，留一个就够。",
-  word_order: "看看修饰词应该站在名词的前面还是后面。",
+  word_order: "看看这句里哪个词站错了位置。",
   verb_form: "再想想这里需要动词的哪种形式。",
   comparison: "两个东西比一比，看看形容词要不要加 -er 或 more。"
 };

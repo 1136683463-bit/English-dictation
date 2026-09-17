@@ -140,6 +140,27 @@ const CAN_DO_MILESTONES: CanDoMilestone[] = [
     title: "我能把时间和数量都说利索",
     zh: "频率、打算、数量、最、命令、远近、过去进行——巩固篇全通关，日常对话里你几乎不会再卡壳。",
     samples: ["I am going to watch a movie this weekend.", "How many books do you have?", "I was drawing at three."]
+  },
+  {
+    id: "can-do-m6",
+    afterLesson: 41,
+    title: "我能一句话说两件事",
+    zh: "话中话（我知道他在哪）+ 挂尾巴（戴眼镜的男生）——第四季收官，你的句子能装下别人的话和事物的样子了。",
+    samples: ["I know where he is.", "The boy who wears glasses is my brother.", "This is the book which I read."]
+  },
+  {
+    id: "can-do-m7",
+    afterLesson: 46,
+    title: "我能说清喜欢做的事和想做的事",
+    zh: "名字版（like/enjoy + reading）+ 小垫板（want to travel）——动词后面跟什么，你已经有手感了。",
+    samples: ["I like reading.", "I enjoy reading.", "I want to travel."]
+  },
+  {
+    id: "can-do-m8",
+    afterLesson: 49,
+    title: "我能给人建议、说条件",
+    zh: "三兄弟（能/必须/应该）+ 条件句（如果下雨就…）——给建议、说打算，日常对话里的语用工具齐了。",
+    samples: ["You should sleep early.", "If it rains, I will stay at home.", "You should take an umbrella if it rains."]
   }
 ];
 
@@ -235,12 +256,18 @@ function TelemetryExportCard() {
   );
 }
 
-/** R20：课程分组——第一季初级篇（1–12）/ 第二季进阶篇（13+），按课号自动划分。 */
+/** R20：课程分组——按季划分（2026-09-14 第四批上线：season-3 收口至 34，新增 season-4 从句篇）。 */
 const LESSON_GROUPS: Array<{ id: string; label: string; hint: string; min: number; max: number }> = [
   { id: "season-1", label: "第一季 · 初级篇", hint: "从第一句英语，到把昨天和明天说清楚", min: 1, max: 12 },
   { id: "season-2", label: "第二季 · 进阶篇", hint: "从「报句子」到「讲事情」：进行时、情态、比较、连句", min: 13, max: 24 },
   // F5 第三季 · 巩固篇（2026-09-13）：补 A2 高频缺口——三单 -s、there be、疑问词系统
-  { id: "season-3", label: "第三季 · 巩固篇", hint: "把最顽固的小毛病改掉：三单、存在句、疑问词、频率、打算、数量……全部拿下", min: 25, max: 999 }
+  { id: "season-3", label: "第三季 · 巩固篇", hint: "把最顽固的小毛病改掉：三单、存在句、疑问词、频率、打算、数量……全部拿下", min: 25, max: 34 },
+  // 第四批 · 句子变长（2026-09-14）：宾从「话中话」+ 定从「挂尾巴」
+  { id: "season-4", label: "第四季 · 句子变长", hint: "从一句一件事，到一句话说两件事：话中话、给名词挂尾巴", min: 35, max: 41 },
+  // 第五批 · 动词的两件新搭档（2026-09-16）：-ing 名字版 + 目的 to 小垫板
+  { id: "season-5", label: "第五季 · 动词的两件新搭档", hint: "喜欢做、享受做、去做、想做：like/enjoy + reading；go … to buy", min: 42, max: 46 },
+  // 第六批 · 语用入门（2026-09-17）：S5 首兑——should 建议 + if 条件句
+  { id: "season-6", label: "第六季 · 建议与条件", hint: "给人建议、说条件：should 应该 / if 如果……就……", min: 47, max: 49 }
 ];
 
 export default function GrammarPathPage() {

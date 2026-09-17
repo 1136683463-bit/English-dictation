@@ -2079,7 +2079,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I will drawing.",
         wrongMark: "drawing",
         correct: "I will draw.",
-        whyZh: "will 后面的动词穿原样，不穿 -ing 外套：will draw。外套只在进行时里才穿。"
+        whyZh: "will 后面的动词穿原样：will draw。-ing 要 be 搭着才是「正在做」；这里没有 be，就不用它。"
       },
       {
         wrong: "She wills draw.",
@@ -2445,7 +2445,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I can swimming.",
         wrongMark: "swimming",
         correct: "I can swim.",
-        whyZh: "can 后面的动词穿原样，不穿 -ing 外套：can swim。外套只在进行时里才穿。"
+        whyZh: "can 后面的动词穿原样：can swim。-ing 要 be 搭着才是「正在做」；这里没有 be，就不用它。"
       },
       {
         wrong: "Can he plays football?",
@@ -2635,7 +2635,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I want to going home.",
         wrongMark: "going",
         correct: "I want to go home.",
-        whyZh: "to 后面的动词穿原样，不穿 -ing 外套：want to go。外套只在进行时里才穿。"
+        whyZh: "to 后面的动词穿原样：want to go。-ing 要 be 搭着才是「正在做」；这里没有 be，就不用它。"
       },
       {
         wrong: "I don't want go.",
@@ -5200,7 +5200,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am going to watching.",
         wrongMark: "watching",
         correct: "I am going to watch a movie.",
-        whyZh: "going to 后面的动词穿原样，不穿 -ing 外套：going to watch。和 will 后面的动词一个规矩。"
+        whyZh: "going to 后面的动词穿原样：going to watch。-ing 要 be 搭着才是「正在做」；和 will 后面的动词一个规矩。"
       },
       {
         wrong: "She are going to visit her grandma.",
@@ -5749,7 +5749,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Closing the door!",
         wrongMark: "Closing",
         correct: "Close the door!",
-        whyZh: "祈使句的动词穿原样（Close），不穿 -ing 外套——-ing 是进行时的打扮。"
+        whyZh: "祈使句的动词穿原样（Close）——-ing 是「正在做」或「当名字」的打扮，祈使句两样都不用。"
       },
       {
         wrong: "Please you open the book.",
@@ -6139,7 +6139,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I drawing at three.",
         wrongMark: null,
         correct: "I was drawing at three.",
-        whyZh: "-ing 外套自己站不住，前面必须有 be 搭着：was drawing。丢了 was，句子就塌了。"
+        whyZh: "-ing 想说「正在做」，前面必须有 be 搭着：was drawing。丢了 was，句子就塌了。"
       }
     ],
     variants: [
@@ -6255,6 +6255,2791 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "过去正在做 = was/were + 动词ing。"
     },
     huntCaseIds: ["hunt-past-rainy-day"]
+  },
+  {
+    // ── 第四批 · L35 宾语从句①（wh- 语序）：疑问句住进句子里要换鞋，续写 L27「I don't know where it is」种子 ──
+    id: "lesson-35-know-where",
+    number: 35,
+    title: "我知道它在哪",
+    grammarLabel: "话中话 · 疑问句回家换鞋",
+    episode: "小美的一天 ㉟",
+    scene: "city",
+    cover: cover9,
+    sceneSetupZh: "早上出门前，妈妈在门口找不到钥匙，问你知不知道它在哪儿。",
+    dialogueEn: "Do you know where my key is?",
+    dialogueZh: "妈妈在门口问你。",
+    intentZh: "我知道它在哪。",
+    targetSentence: "I know where it is.",
+    blocks: [
+      { text: "I know", role: "我知道" },
+      { text: "where", role: "在哪（问地方）" },
+      { text: "it is", role: "它在（换好鞋的顺序）" }
+    ],
+    oneLineRule: "疑问句住进句子里，要换鞋：Where is it? 变成 I know where it is——is 要退回 it 后面，不站主语前面。",
+    examples: [
+      { en: "I know where it is.", zh: "我知道它在哪。" },
+      { en: "I know where he is.", zh: "我知道他在哪。" },
+      { en: "I don't know where my key is.", zh: "我不知道我的钥匙在哪。" },
+      { en: "Do you know where the school is?", zh: "你知道学校在哪吗？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Do you know where my key is?", zh: "妈妈在门口问你。" },
+      { who: "npc", en: "It is not on the desk.", zh: "她补了一句：它不在书桌上。" },
+      { who: "me", en: "I know where it is.", zh: "轮到你说了——你知道它在哪。" }
+    ],
+    contrast: [
+      {
+        wrong: "I know where is it.",
+        wrongMark: "is",
+        correct: "I know where it is.",
+        whyZh: "话中话要换鞋：is 退回 it 后面——I know where it is。问句的站法搬进句子里就塌了。"
+      },
+      {
+        wrong: "I know where is he.",
+        wrongMark: "is",
+        correct: "I know where he is.",
+        whyZh: "主语换成 he 也一样：where he is。疑问句住进句子里，谁都得换鞋。"
+      },
+      {
+        wrong: "I know where it.",
+        wrongMark: null,
+        correct: "I know where it is.",
+        whyZh: "少了 is，句子就塌了——「它在哪」里的 is 不能省，换鞋不是脱鞋。"
+      },
+      {
+        wrong: "I don't know where is my key.",
+        wrongMark: "is",
+        correct: "I don't know where my key is.",
+        whyZh: "主语长一点也一样换鞋：where my key is——is 站到整条主语的后面。"
+      },
+      {
+        wrong: "Do you know where is it?",
+        wrongMark: "is",
+        correct: "Do you know where it is?",
+        whyZh: "问别人「你知不知道」：外面的 Do 站句首，里面的 it is 照样换好鞋。"
+      },
+      {
+        wrong: "I not know where it is.",
+        wrongMark: "not",
+        correct: "I don't know where it is.",
+        whyZh: "「不知道」要请帮手：I don't know——not 不能自己站，配上 do 才有力气（第 10 课学过的搭档）。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I know where it is.", zh: "我知道它在哪。" },
+      { label: "否定", en: "I don't know where it is.", zh: "我不知道它在哪。", noteZh: "「不知道」用 don't know；里面的话照样换鞋：where it is。" },
+      { label: "疑问", en: "Do you know where it is?", zh: "你知道它在哪吗？", noteZh: "问别人：Do 站句首，里面的 where it is 不变。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说你知道他在哪", en: "I know where he is.", zh: "我知道他在哪。" },
+      { sceneZh: "说不知道包在哪", en: "I don't know where my bag is.", zh: "我不知道我的包在哪。" },
+      { sceneZh: "问同学知不知道图书馆在哪", en: "Do you know where the library is?", zh: "你知道图书馆在哪吗？" }
+    ],
+    deepDive: {
+      title: "疑问句住进句子，为什么要换鞋？",
+      paragraphs: [
+        "英语问问题要把 be 搬到前面：Where is it?（它在哪？）。但只要这句话被「我知道」「你不知道」包住，它就不是在问了，是话里的内容——be 要退回原位：I know where it is。",
+        "判断方法：句首是 I know / I don't know / Do you know 的时候，后面就按「换好鞋」的顺序说：where + 主语 + is。",
+        "中文不用换：『它在哪』和『我知道它在哪』里，『它在哪』长得一模一样。英语的疑问句和话中话是两套站法——这是按中文直译最容易踩的一个坑。",
+        "这课只管 where 一家的换鞋。以后你会见到 when / what / how 也来这一套：I know what it is、I know when it starts。"
+      ]
+    },
+    summary: {
+      rule: "疑问句住进句子里要换鞋：Where is it? → I know where it is。",
+      points: [
+        "I know where it is. —— 我知道它在哪：where + 主语 + is",
+        "I don't know where it is. —— 不知道：don't know + 换好鞋的话",
+        "Do you know where it is? —— 问别人：Do 站句首，里面不变"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我知道它在哪。",
+        before: "I know",
+        after: "it is.",
+        options: ["where", "when", "what"],
+        answer: "where",
+        explain: "问地方用 where：「在哪」。话中话里，疑问词还是站这句的开头。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我知道它在哪。",
+        tokens: ["I", "know", "where", "it", "is."],
+        answer: "I know where it is.",
+        explain: "换好鞋的顺序：where it is——is 退回主语后面。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "妈妈问你钥匙在哪，你想说：我不知道它在哪。",
+        tokens: ["I", "don't", "know", "where", "it", "is."],
+        answer: "I don't know where it is.",
+        explain: "don't know 后面照样换鞋：where it is。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "know", "where", "is", "it."],
+        wrongToken: "is",
+        answer: "is",
+        correctionZh: "is 要退回 it 后面：I know where it is。",
+        explain: "话中话里 is 不站主语前面。"
+      },
+      {
+        // R8 跨课复现：上一课（L34 过去进行）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：三点时我正在画画。",
+        tokens: ["I", "was", "drawing", "at", "three."],
+        answer: "I was drawing at three.",
+        explain: "复现第 34 课：过去正在做 = was + 动词ing。"
+      },
+      {
+        // R9 变形/替换：把 L27 的问句装进 I know 后面（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子搬家：「Where is my key?」住进 I know 后面，里面的词要怎么站？",
+        replaceBase: "Where is my key?",
+        replaceTarget: "住进 I know 后面",
+        options: ["where my key is", "where is my key", "where my key"],
+        answer: "where my key is",
+        explain: "换好鞋的顺序：where my key is。整句是 I know where my key is。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我知道它在哪。",
+        tokens: ["I", "know", "where", "it", "is."],
+        distractors: ["is it"],
+        answer: "I know where it is."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "妈妈问你钥匙在哪，你想说：我不知道它在哪。",
+        tokens: ["I", "don't", "know", "where", "it", "is."],
+        distractors: ["where is it"],
+        answer: "I don't know where it is."
+      },
+      {
+        promptZh: "你想问：你知道它在哪吗？",
+        tokens: ["Do", "you", "know", "where", "it", "is?"],
+        distractors: ["When"],
+        answer: "Do you know where it is?"
+      },
+      {
+        // R8 跨课复现（L33 指示代词）：旧句式混入产出段
+        promptZh: "先复习一小步——第 33 课学过：这把是我的。",
+        tokens: ["This", "one", "is", "mine."],
+        distractors: ["me"],
+        answer: "This one is mine."
+      }
+    ],
+    recall: {
+      promptZh: "出门前，妈妈问你知道钥匙在哪吗。凭记忆，写出你那句回答。",
+      intentZh: "我知道它在哪。",
+      answer: "I know where it is.",
+      noteZh: "话中话要换鞋：where it is——is 退回主语后面。"
+    },
+    huntCaseIds: ["hunt-key-clue"]
+  },
+  {
+    // ── 第四批 · L36 宾语从句②（that 可选件）：说想法用 I think + 一句话；that 挂不挂都行，漏 that 不设错 ──
+    id: "lesson-36-think-that",
+    number: 36,
+    title: "我觉得她累了",
+    grammarLabel: "话中话 · 小挂件 that",
+    episode: "小美的一天 ㊱",
+    scene: "campus",
+    cover: cover16,
+    sceneSetupZh: "课间休息，同桌趴在桌上没精神，同学凑过来问你。",
+    dialogueEn: "Is she tired?",
+    dialogueZh: "同学转头问你。",
+    intentZh: "我觉得她累了。",
+    targetSentence: "I think she is tired.",
+    blocks: [
+      { text: "I think", role: "我觉得（说想法的引子）" },
+      { text: "(that)", role: "小挂件·可有可无" },
+      { text: "she is", role: "她（是）" },
+      { text: "tired", role: "累的" }
+    ],
+    oneLineRule: "说想法 = I think + 一句话；that 是可拆的小挂件：挂上 I think that she is tired.、不挂 I think she is tired.，都对——漏 that 不算错。",
+    examples: [
+      { en: "I think she is tired.", zh: "我觉得她累了。" },
+      { en: "I think he is at home.", zh: "我觉得他在家。" },
+      { en: "I think the book is good.", zh: "我觉得这本书不错。" },
+      { en: "I think that she is happy.", zh: "我觉得她很开心。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Lily is so quiet today.", zh: "同学小声说：莉莉今天好安静。" },
+      { who: "npc", en: "Is she tired?", zh: "她又问你：她是不是累了？" },
+      { who: "me", en: "I think she is tired.", zh: "轮到你说了——你觉得她累了。" }
+    ],
+    contrast: [
+      {
+        wrong: "I think she tired.",
+        wrongMark: null,
+        correct: "I think she is tired.",
+        whyZh: "话装进 I think 后面，该有的 is 不能省——I think she is tired。中文「我觉得她累」不用动词，英语少了 is 句子就塌了。"
+      },
+      {
+        wrong: "I think that she is tired.",
+        wrongMark: null,
+        correct: "I think she is tired.",
+        bothRight: true,
+        whyZh: "两句都对——that 是可拆的拉链小挂件：挂上和拿掉，意思一模一样。这课的特权：that 可有可无，不用纠结。"
+      },
+      {
+        wrong: "I think is she tired.",
+        wrongMark: "is",
+        correct: "I think she is tired.",
+        whyZh: "话里不换鞋的老规矩：I think 后面是 she is，不是 is she——上一课学的换鞋，到这课照样管用。"
+      },
+      {
+        wrong: "I thinks she is tired.",
+        wrongMark: "thinks",
+        correct: "I think she is tired.",
+        whyZh: "I 是「我」，think 不用加 s——加 -s 是 he / she / it 的待遇（第 25 课学过的三单）。"
+      },
+      {
+        wrong: "I think she is a tired.",
+        wrongMark: "a",
+        correct: "I think she is tired.",
+        whyZh: "tired 是形容词，直接跟在 is 后面：she is tired。形容词前面不加 a——a 是给可数名词戴的帽子。"
+      },
+      {
+        wrong: "Do you think is he tired?",
+        wrongMark: "is",
+        correct: "Do you think he is tired?",
+        whyZh: "问别人的想法：外面 Do 站句首，里面的 he is 不换位——里面还是话，话就按话的规矩站。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I think she is tired.", zh: "我觉得她累了。" },
+      { label: "否定", en: "I don't think she is tired.", zh: "我觉得她不累。", noteZh: "「不」要放在 think 前面说：I don't think……英语的习惯说法，先照说。" },
+      { label: "疑问", en: "Do you think she is tired?", zh: "你觉得她累吗？", noteZh: "问别人的想法：Do 站句首，后面的话不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说觉得他在家", en: "I think he is at home.", zh: "我觉得他在家。" },
+      { sceneZh: "说觉得这本书不错", en: "I think the book is good.", zh: "我觉得这本书不错。" },
+      { sceneZh: "说觉得今天很冷", en: "I think it is cold today.", zh: "我觉得今天很冷。" }
+    ],
+    deepDive: {
+      title: "小挂件 that，和「那个」that 长得像？",
+      paragraphs: [
+        "说想法有个固定引子：I think + 一句话。这句话自己必须是完整的——she is tired（她累了），不能缺 is。",
+        "中间可以插一个小挂件 that：I think that she is tired. 挂上和拿掉，意思完全一样。它可有可无——所以说话也好、做题也好，漏掉 that 从来不算错。",
+        "你以前学过的 that 是「那个」：that book（那本书）、I like that.（我喜欢那个）。同一个词，两个岗位——看它后面跟的是什么：后面跟名词，它是「那个」；后面跟一整句话，它是小挂件。",
+        "不用背规则，记住手感：I think + 一句话。中间想加 that 就加，不加也行。"
+      ]
+    },
+    summary: {
+      rule: "说想法 = I think + 一句话；that 是可拆的小挂件，挂不挂都对。",
+      points: [
+        "I think she is tired. —— 我 + 觉得 + 一句话",
+        "I think that she is tired. —— 挂了 that，两句都对",
+        "I don't think she is tired. —— 「不」放 think 前面"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我觉得她累了。",
+        before: "I",
+        after: "she is tired.",
+        options: ["think", "thinks", "thinking"],
+        answer: "think",
+        explain: "说想法用 I think；I 不用加 s，也不用 -ing。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我觉得她累了。",
+        tokens: ["I", "think", "she", "is", "tired."],
+        answer: "I think she is tired.",
+        explain: "I think + 一句话：引子后面跟着完整的 she is tired。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你还想练一句挂上小挂件的：我觉得她累了（带 that）。",
+        tokens: ["I", "think", "that", "she", "is", "tired."],
+        answer: "I think that she is tired.",
+        explain: "挂上 that 也对：I think that she is tired。小挂件挂不挂都行。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "think", "she", "tired."],
+        wrongToken: "tired.",
+        answer: "tired.",
+        correctionZh: "少了 is：I think she is tired。",
+        explain: "话装进 I think 后面，该有的 is 不能省。"
+      },
+      {
+        // R8 跨课复现：上一课（L34 过去进行）的句子混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——第 34 课学过：昨晚她正在看书。",
+        tokens: ["She", "was", "reading", "last", "night."],
+        answer: "She was reading last night.",
+        explain: "复现第 34 课：was + 动词ing = 过去正在做。"
+      },
+      {
+        // R9 变形/替换：否定转移种子的构造迁移（复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变装：「I think she is tired.」想说「我『不』觉得她累了」，「不」要放在哪里？",
+        replaceBase: "I think she is tired.",
+        replaceTarget: "想说「不」觉得她累了",
+        options: ["don't think", "think not", "not think"],
+        answer: "don't think",
+        explain: "「不」放在 think 前面：I don't think she is tired。英语习惯把否定放前面。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我觉得她累了。",
+        tokens: ["I", "think", "she", "is", "tired."],
+        distractors: ["thinks"],
+        answer: "I think she is tired."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：我觉得她不累。",
+        tokens: ["I", "don't", "think", "she", "is", "tired."],
+        distractors: ["not"],
+        answer: "I don't think she is tired."
+      },
+      {
+        // R8 跨课复现（L25 三单）：旧知识点放进从句内部
+        promptZh: "你想说：我觉得他每天喝牛奶。",
+        tokens: ["I", "think", "he", "drinks", "milk", "every", "day."],
+        distractors: ["drink"],
+        answer: "I think he drinks milk every day."
+      },
+      {
+        promptZh: "你想说：我觉得她累了（带上小挂件 that）。",
+        tokens: ["I", "think", "that", "she", "is", "tired."],
+        distractors: ["what"],
+        answer: "I think that she is tired."
+      }
+    ],
+    recall: {
+      promptZh: "课间同桌趴在桌上，你想跟同学说你的想法。凭记忆，写出那句英文。",
+      intentZh: "我觉得她累了。",
+      answer: "I think she is tired.",
+      noteZh: "说想法 = I think + 一句话；that 可挂可不挂。"
+    },
+    huntCaseIds: ["hunt-homework-guess"]
+  },
+  {
+    // ── 第四批 · L37 宾语从句③（引子可以换人）：know/think/forget 后面装同一句话；按开放问题②降级，不引入 hear ──
+    id: "lesson-37-where-he-is",
+    number: 37,
+    title: "我不知道他在哪",
+    grammarLabel: "话中话 · 引子可以换人",
+    episode: "小美的一天 ㊲",
+    scene: "city",
+    cover: cover6,
+    sceneSetupZh: "小区门口，邻居阿姨拦住小美，打听一个同学在哪里。",
+    dialogueEn: "Do you know where Xiaoming is?",
+    dialogueZh: "小区门口，邻居阿姨问你。",
+    intentZh: "我不知道他在哪。",
+    targetSentence: "I don't know where he is.",
+    blocks: [
+      { text: "I don't know", role: "我不知道（引子）" },
+      { text: "where", role: "在哪" },
+      { text: "he is", role: "他在（换好鞋的顺序）" }
+    ],
+    oneLineRule: "引子可以换人：I know / I think / I forget 后面都能装同一句话；里面永远是 where + 主语 + is——换鞋的规矩不变。",
+    examples: [
+      { en: "I don't know where he is.", zh: "我不知道他在哪。" },
+      { en: "I think he is at school.", zh: "我觉得他在学校。" },
+      { en: "Do you know where he is?", zh: "你知道他在哪吗？" },
+      { en: "I forget where he is.", zh: "我忘了他在哪。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Do you know where Xiaoming is?", zh: "小区门口，邻居阿姨问你。" },
+      { who: "npc", en: "His mother is looking for him.", zh: "她补了一句：他妈妈在找他。" },
+      { who: "me", en: "I don't know where he is.", zh: "轮到你说了——你不知道他在哪。" }
+    ],
+    contrast: [
+      {
+        wrong: "I don't know where is he.",
+        wrongMark: "is",
+        correct: "I don't know where he is.",
+        whyZh: "换鞋的规矩到哪都一样：where he is——is 退回 he 后面。上一课学的手感，这课接着用。"
+      },
+      {
+        wrong: "I think is he at school.",
+        wrongMark: "is",
+        correct: "I think he is at school.",
+        whyZh: "引子从 know 换成 think，里面照样是 he is——引子换人，话的规矩不换。"
+      },
+      {
+        wrong: "I don't know he is.",
+        wrongMark: null,
+        correct: "I don't know where he is.",
+        whyZh: "「我不知道他在哪」，where 是话的头，不能丢：I don't know where he is。丢了头，话就没了方向。"
+      },
+      {
+        wrong: "Do you know where is he?",
+        wrongMark: "is",
+        correct: "Do you know where he is?",
+        whyZh: "问别人时：外面 Do 站句首，里面的话照样换好鞋——两套规矩同时在场，各站各的。"
+      },
+      {
+        wrong: "We don't know where is Coco.",
+        wrongMark: "is",
+        correct: "We don't know where Coco is.",
+        whyZh: "主语换成名字也一样：where Coco is。换鞋说的是顺序，不是词的长短。"
+      },
+      {
+        wrong: "I think he at school.",
+        wrongMark: null,
+        correct: "I think he is at school.",
+        whyZh: "话装进引子后面，该有的 is 不能省——I think he is at school。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I know where he is.", zh: "我知道他在哪。" },
+      { label: "否定", en: "I don't know where he is.", zh: "我不知道他在哪。", noteZh: "「不知道」用 don't know；里面的话照样换鞋：where he is。" },
+      { label: "疑问", en: "Do you know where he is?", zh: "你知道他在哪吗？", noteZh: "问别人：Do 站句首，里面的 where he is 不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说不知道他在哪", en: "I don't know where he is.", zh: "我不知道他在哪。" },
+      { sceneZh: "说觉得他在学校", en: "I think he is at school.", zh: "我觉得他在学校。" },
+      { sceneZh: "问对方知不知道", en: "Do you know where he is?", zh: "你知道他在哪吗？" }
+    ],
+    deepDive: {
+      title: "引子可以换人——know / think / forget",
+      paragraphs: [
+        "说「话中话」的引子不止一个：I know（我知道）、I don't know（我不知道）、I think（我觉得）、I forget（我忘了）——后面都能装同一句话。",
+        "forget 你见过它：第 16 课组长的「Don't forget your homework!」（别忘了作业）。它站到引子位，一样能装话：I forget where he is（我忘了他在哪）。",
+        "规矩只有一条，从头到尾没变过：不管引子是谁，里面永远是 where + 主语 + is（where he is）。引子换人，话不换鞋。",
+        "以后遇到别的引子（比如别人跟你说话里带的），先找这条：话里的话，按换好鞋的顺序站。"
+      ]
+    },
+    summary: {
+      rule: "引子（I know / I don't know / I think / I forget）+ 换好鞋的一句话：where + 主语 + is。",
+      points: [
+        "I don't know where he is. —— 不知道：don't know + where he is",
+        "I think he is at school. —— 引子换人，话不变",
+        "Do you know where he is? —— 问别人：Do 站句首，里面不动"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我不知道他在哪。",
+        before: "I",
+        after: "know where he is.",
+        options: ["don't", "doesn't", "isn't"],
+        answer: "don't",
+        explain: "「不知道」用 don't know——not 要请帮手 do 一起站。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "帮小美说一句：我们不知道 Coco 在哪。",
+        tokens: ["We", "don't", "know", "where", "Coco", "is."],
+        answer: "We don't know where Coco is.",
+        explain: "主语换成一伙的 We、后面换成名字，顺序还是 where + 主语 + is。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我觉得他在学校。",
+        tokens: ["I", "think", "he", "is", "at", "school."],
+        answer: "I think he is at school.",
+        explain: "引子从 know 换成 think，话照样按换好鞋的顺序站。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "don't", "know", "where", "is", "he."],
+        wrongToken: "is",
+        answer: "is",
+        correctionZh: "is 要退回 he 后面：I don't know where he is。",
+        explain: "话中话里 is 不站主语前面。"
+      },
+      {
+        // R8 跨课复现：第 30 课（some/any）的句子混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——第 30 课学过：桌上有一些苹果。",
+        tokens: ["There", "are", "some", "apples", "on", "the", "table."],
+        answer: "There are some apples on the table.",
+        explain: "复现第 30 课：复数用 There are，apples 加 s。"
+      },
+      {
+        // R9 变形/替换：上一个问句搬进引子后面（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子搬家：「Where is he?」住进 I don't know 后面，里面的词要怎么站？",
+        replaceBase: "Where is he?",
+        replaceTarget: "住进 I don't know 后面",
+        options: ["where he is", "where is he", "where he"],
+        answer: "where he is",
+        explain: "换好鞋的顺序：where he is。整句是 I don't know where he is。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我知道他在哪。",
+        tokens: ["I", "know", "where", "he", "is."],
+        distractors: ["is he"],
+        answer: "I know where he is."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "阿姨问你知不知道他在哪，你想说：我不知道他在哪。",
+        tokens: ["I", "don't", "know", "where", "he", "is."],
+        distractors: ["where is he"],
+        answer: "I don't know where he is."
+      },
+      {
+        // R8 跨课复现（L26 there be）：原句复现，抗遗忘
+        promptZh: "先复习一小步——第 26 课学过：桌上有一本书。",
+        tokens: ["There", "is", "a", "book", "on", "the", "desk."],
+        distractors: ["are"],
+        answer: "There is a book on the desk."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你知道他在哪吗？",
+        tokens: ["Do", "you", "know", "where", "he", "is?"],
+        distractors: ["When"],
+        answer: "Do you know where he is?"
+      }
+    ],
+    recall: {
+      promptZh: "小区门口，阿姨打听小明住哪儿。凭记忆，写出你那句回答。",
+      intentZh: "我不知道他在哪。",
+      answer: "I don't know where he is.",
+      noteZh: "引子（don't know）+ 换好鞋的话：where he is。"
+    },
+    huntCaseIds: ["hunt-lost-dog"]
+  },
+  {
+    // ── 第四批 · L38 宾语从句④（转述 + 否定转移）：She says + 原话照装；「不」搬到主句说 ──
+    id: "lesson-38-she-says",
+    number: 38,
+    title: "她说她会来",
+    grammarLabel: "话中话 · 转述别人的话",
+    episode: "小美的一天 ㊳",
+    scene: "campus",
+    cover: cover2,
+    sceneSetupZh: "接力赛前，教练在跑道边问小美：Lily 会不会来？小美把 Lily 的原话转告给教练。",
+    dialogueEn: "Will Lily come to the race?",
+    dialogueZh: "教练在跑道边问你。",
+    intentZh: "她说她会来。",
+    targetSentence: "She says she will come.",
+    blocks: [
+      { text: "She says", role: "她说（转述的引子）" },
+      { text: "she will come", role: "她会来（原话照装）" }
+    ],
+    oneLineRule: "转述别人的话：She says + 原话照装（she will come）；想说「我觉得她不会来」，「不」要搬到前面说：I don't think she will come。",
+    examples: [
+      { en: "She says she will come.", zh: "她说她会来。" },
+      { en: "She says she is busy.", zh: "她说她很忙。" },
+      { en: "I don't think she will come.", zh: "我觉得她不会来。" },
+      { en: "Do you think she will come?", zh: "你觉得她会来吗？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Will Lily come to the race?", zh: "教练在跑道边问你。" },
+      { who: "npc", en: "The race is on Friday.", zh: "他补了一句：比赛在周五。" },
+      { who: "me", en: "She says she will come.", zh: "轮到你说了——她说她会来。" }
+    ],
+    contrast: [
+      {
+        wrong: "She says she will comes.",
+        wrongMark: "comes",
+        correct: "She says she will come.",
+        whyZh: "will 后面的动词穿原样：will come。第 12 课学的老规矩，转述里照样管用。"
+      },
+      {
+        wrong: "I think she will not come.",
+        wrongMark: "not",
+        correct: "I don't think she will come.",
+        whyZh: "「不」要搬到前面说：I don't think she will come——英语的习惯是让主句替她说「不」，别放在后面的话里。"
+      },
+      {
+        wrong: "She says she come.",
+        wrongMark: "come",
+        correct: "She says she will come.",
+        whyZh: "说将来的事要带上 will：she will come——光一个 come 站不住，也没说清是将来。"
+      },
+      {
+        wrong: "She say she will come.",
+        wrongMark: "say",
+        correct: "She says she will come.",
+        whyZh: "主语 She 是三单，say 要加 -s：She says。"
+      },
+      {
+        wrong: "Do you think she will comes?",
+        wrongMark: "comes",
+        correct: "Do you think she will come?",
+        whyZh: "问别人的想法：外面 Do 站句首，里面的 will come 还是原样，哪儿都不变。"
+      },
+      {
+        wrong: "She says she will coming.",
+        wrongMark: "coming",
+        correct: "She says she will come.",
+        whyZh: "will 后面永远穿原样——comes、came、coming 都不对，就是 come。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "She says she will come.", zh: "她说她会来。" },
+      { label: "否定", en: "I don't think she will come.", zh: "我觉得她不会来。", noteZh: "「不」放在主句说：I don't think……英语的习惯说法，别放进后面的话里。" },
+      { label: "疑问", en: "Do you think she will come?", zh: "你觉得她会来吗？", noteZh: "问别人的想法：Do 站句首，里面的话不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "转述她的原话", en: "She says she will come.", zh: "她说她会来。" },
+      { sceneZh: "说觉得她不会来", en: "I don't think she will come.", zh: "我觉得她不会来。" },
+      { sceneZh: "问别人觉得", en: "Do you think she will come?", zh: "你觉得她会来吗？" }
+    ],
+    deepDive: {
+      title: "「不」为什么跑到前面去了？",
+      paragraphs: [
+        "转述就是「引子 + 原话照装」：She says + she will come。Lily 怎么说，装进去就怎么说。",
+        "但有一个习惯你要认识：想说「我觉得她不会来」，英语不说 I think she will not come，而是 I don't think she will come——「不」跑到前面 think 那里去了。",
+        "这叫「否定搬家」：中文的「不」在后面（我觉得她【不】会来），英语的习惯是让主句替她说「不」（I 【don't】think……）。两边习惯不同，记住英语的站法。",
+        "先记最常用的这一句就行：I don't think……（我觉得不……）。以后见到 I don't think he can come 这种，你就认识它了。"
+      ]
+    },
+    summary: {
+      rule: "转述 = She says + 原话照装；「不」放前面说：I don't think she will come。",
+      points: [
+        "She says she will come. —— 引子 + 原话",
+        "I don't think she will come. —— 「不」搬到前面",
+        "Do you think she will come? —— 问别人：Do 站句首"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：她说她会来。",
+        before: "",
+        after: "she will come.",
+        options: ["She says", "She say", "She said"],
+        answer: "She says",
+        explain: "主语 She 是三单，say 加 -s：She says。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：她说她会来。",
+        tokens: ["She", "says", "she", "will", "come."],
+        answer: "She says she will come.",
+        explain: "转述 = 引子 + 原话照装：She says + she will come。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我觉得她不会来。",
+        tokens: ["I", "don't", "think", "she", "will", "come."],
+        answer: "I don't think she will come.",
+        explain: "「不」搬到前面说：I don't think she will come。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["She", "says", "she", "will", "comes."],
+        wrongToken: "comes.",
+        answer: "comes.",
+        correctionZh: "will 后面的动词穿原样：will come。",
+        explain: "will 后面永远穿原样，comes 要换回 come。"
+      },
+      {
+        // R8 跨课复现：第 29 课（be going to）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——第 29 课学过：我打算去看电影。",
+        tokens: ["I", "am", "going", "to", "watch", "a", "movie."],
+        answer: "I am going to watch a movie.",
+        explain: "复现第 29 课：be going to + 动词原形。"
+      },
+      {
+        // R9 变形/替换：否定搬家（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变装：「I think she will come.」想说「我觉得她不会来」，「不」要放在哪里？",
+        replaceBase: "I think she will come.",
+        replaceTarget: "想说「我觉得她不会来」",
+        options: ["don't think", "think not", "not think"],
+        answer: "don't think",
+        explain: "「不」搬到前面：I don't think she will come。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：她说她会来。",
+        tokens: ["She", "says", "she", "will", "come."],
+        distractors: ["say"],
+        answer: "She says she will come."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：我觉得她不会来。",
+        tokens: ["I", "don't", "think", "she", "will", "come."],
+        distractors: ["not"],
+        answer: "I don't think she will come."
+      },
+      {
+        promptZh: "把第 29 课的句子装进转述里——你想说：她说她打算去跑步。",
+        tokens: ["She", "says", "she", "is", "going", "to", "run."],
+        distractors: ["goes"],
+        answer: "She says she is going to run."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你觉得她会来吗？",
+        tokens: ["Do", "you", "think", "she", "will", "come?"],
+        distractors: ["Does"],
+        answer: "Do you think she will come?"
+      }
+    ],
+    recall: {
+      promptZh: "接力赛前，教练问你 Lily 会不会来。凭记忆，写出你那句转述。",
+      intentZh: "她说她会来。",
+      answer: "She says she will come.",
+      noteZh: "转述 = She says + 原话照装。"
+    },
+    huntCaseIds: ["hunt-team-message"]
+  },
+  {
+    // ── 第四批 · L39 定语从句①（who 指人）：给名词挂尾巴，先叫人再挂尾巴；本批最长课，arrange 拆段 token≤8 ──
+    id: "lesson-39-who-glasses",
+    number: 39,
+    title: "那个戴眼镜的男生",
+    grammarLabel: "给名词挂尾巴 · who",
+    episode: "小美的一天 ㊴",
+    scene: "campus",
+    cover: cover7,
+    sceneSetupZh: "放学时在校门口接人，同学问你哪个是你哥哥。",
+    dialogueEn: "Who is your brother?",
+    dialogueZh: "同学在东张西望。",
+    intentZh: "那个戴眼镜的男生是我哥哥。",
+    targetSentence: "The boy who wears glasses is my brother.",
+    blocks: [
+      { text: "The boy", role: "那个男生（先叫人）" },
+      { text: "who wears glasses", role: "戴眼镜的（挂在他后面的尾巴）" },
+      { text: "is my brother", role: "是我哥哥" }
+    ],
+    oneLineRule: "给名词挂尾巴：先说出人（the boy），再把「戴眼镜的」这条尾巴挂他后面（who wears glasses）——中文的「的」住前面，英语的尾巴住后面。",
+    examples: [
+      { en: "The boy who wears glasses is my brother.", zh: "那个戴眼镜的男生是我哥哥。" },
+      { en: "The girl who plays football is my friend.", zh: "那个踢足球的女生是我的朋友。" },
+      { en: "The teacher who helps us is kind.", zh: "帮我们的那位老师很亲切。" },
+      { en: "I know the boy who is tall.", zh: "我认识那个高个子男生。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Who is your brother?", zh: "同学在东张西望。" },
+      { who: "npc", en: "Is he the tall boy?", zh: "她又猜：是那个高个子的男生吗？" },
+      { who: "me", en: "The boy who wears glasses is my brother.", zh: "轮到你说了——那个戴眼镜的男生是你哥哥。" }
+    ],
+    contrast: [
+      {
+        wrong: "The boy wears glasses is my brother.",
+        wrongMark: null,
+        correct: "The boy who wears glasses is my brother.",
+        whyZh: "两条句子直接拼在一起，没人当钩子。要挂尾巴：the boy 【who wears glasses】is my brother——who 就是把尾巴钩到 boy 上的那个钩子。"
+      },
+      {
+        wrong: "The boy is my brother who wears glasses.",
+        wrongMark: "who wears glasses",
+        correct: "The boy who wears glasses is my brother.",
+        whyZh: "尾巴挂错了地方——它挂到句尾去了，好像「我哥哥戴眼镜」是顺带说的。尾巴要贴着它修饰的人站：the boy who wears glasses。"
+      },
+      {
+        wrong: "The boy who he wears glasses is my brother.",
+        wrongMark: "he",
+        correct: "The boy who wears glasses is my brother.",
+        whyZh: "一个萝卜一个坑：who 已经替「他」站好了位置，再冒出一个 he 就挤了——who wears glasses，不许再有 he。"
+      },
+      {
+        wrong: "The boy who wear glasses is my brother.",
+        wrongMark: "wear",
+        correct: "The boy who wears glasses is my brother.",
+        whyZh: "尾巴里的人 who 也是「他」，动词要加 -s：who wears——三单的规矩进了尾巴照样管用。"
+      },
+      {
+        wrong: "The boy who is wears glasses is my brother.",
+        wrongMark: "is wears",
+        correct: "The boy who wears glasses is my brother.",
+        whyZh: "wear 自己就是动词，前面不用再垫 is——is 和 wears 不能叠在一起站。"
+      },
+      {
+        wrong: "The girl who play football is my friend.",
+        wrongMark: "play",
+        correct: "The girl who plays football is my friend.",
+        whyZh: "who 指 the girl（她），动词加 -s：who plays football。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "The boy who wears glasses is my brother.", zh: "那个戴眼镜的男生是我哥哥。" },
+      { label: "否定", en: "The boy who wears glasses is not my brother.", zh: "那个戴眼镜的男生不是我哥哥。", noteZh: "not 放 is 后面；尾巴 who wears glasses 原地不动。" },
+      { label: "疑问", en: "Is the boy who wears glasses your brother?", zh: "那个戴眼镜的男生是你哥哥吗？", noteZh: "把 Is 搬到句首，尾巴留在主语后面。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说踢足球的女生是你朋友", en: "The girl who plays football is my friend.", zh: "那个踢足球的女生是我的朋友。" },
+      { sceneZh: "说帮你们的老师很亲切", en: "The teacher who helps us is kind.", zh: "帮我们的那位老师很亲切。" },
+      { sceneZh: "说认识那个高个子男生", en: "I know the boy who is tall.", zh: "我认识那个高个子男生。" }
+    ],
+    deepDive: {
+      title: "中文的「的」在前，英语的尾巴在后",
+      paragraphs: [
+        "中文说「戴眼镜的男生」，「戴眼镜的」住在前面的；英语倒过来：先说 the boy，再把 who wears glasses 这条尾巴挂到后面。顺序不同，位置感是这课唯一的难点。",
+        "who 是干什么的？它是「这个人」的替身兼钩子：把尾巴钩在人物身上，同时在尾巴里替他做事（wears glasses）。",
+        "尾巴挂错位置会改变意思：The boy is my brother who wears glasses 听起来像「我哥哥戴眼镜」；The boy who wears glasses is my brother 才是「戴眼镜的那个是我哥哥」——先认人，再认关系。",
+        "一个萝卜一个坑：who 已经替了人，尾巴里不能再有 he / she；who 是「他/她」的意思，动词该加 -s 照样加（who wears）。"
+      ]
+    },
+    summary: {
+      rule: "给名词挂尾巴：先叫人（the boy），再挂 who + 他说的事（who wears glasses）。",
+      points: [
+        "The boy who wears glasses is my brother. —— 先叫人，再挂尾巴",
+        "The girl who plays football is my friend. —— 尾巴里的动词照加 -s",
+        "Is the boy who wears glasses your brother? —— 问句把 Is 搬句首，尾巴不动"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：那个戴眼镜的男生是我哥哥。",
+        before: "The boy",
+        after: "wears glasses is my brother.",
+        options: ["who", "he", "which"],
+        answer: "who",
+        explain: "指人用 who 当钩子：the boy who wears glasses。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：那个戴眼镜的男生是我哥哥。（先拼主句）",
+        tokens: ["The", "boy", "is", "my", "brother."],
+        answer: "The boy is my brother.",
+        explain: "先拼出主句：The boy is my brother——这是句子的骨架。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "现在把尾巴挂上去：那个戴眼镜的男生是我哥哥。",
+        tokens: ["The", "boy", "who", "wears", "glasses", "is", "my", "brother."],
+        answer: "The boy who wears glasses is my brother.",
+        explain: "尾巴贴着 boy 站：who wears glasses。先叫人，再挂尾巴。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["The", "boy", "wears", "glasses", "is", "my", "brother."],
+        wrongToken: "wears",
+        answer: "wears",
+        correctionZh: "缺了个钩子：The boy who wears glasses is my brother。",
+        explain: "两条句子直接拼在一起，要用 who 把尾巴钩住。"
+      },
+      {
+        // R8 跨课复现：第 25 课（三单 -s）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——第 25 课学过：他每天喝牛奶。",
+        tokens: ["He", "drinks", "milk", "every", "day."],
+        answer: "He drinks milk every day.",
+        explain: "复现第 25 课：三单动词加 -s，drinks。"
+      },
+      {
+        // R9 变形/替换：换成女生（who 不变、动词形式要跟着走）
+        kind: "replace",
+        promptZh: "句子变身：「The boy who wears glasses is my brother.」换成女生（The girl…），尾巴里的动词怎么变？",
+        replaceBase: "The boy who wears glasses is my brother.",
+        replaceTarget: "把 The boy 换成 The girl",
+        options: ["wears", "wear", "wearing"],
+        answer: "wears",
+        explain: "who 指 the girl（她），动词照样加 -s：who wears glasses。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：那个踢足球的女生是我的朋友。",
+        tokens: ["The", "girl", "who", "plays", "football", "is", "my", "friend."],
+        distractors: ["play"],
+        answer: "The girl who plays football is my friend."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题（8 token，守 L39 token≤8 摩擦上限）
+        promptZh: "你想问：那个戴眼镜的男生是你哥哥吗？",
+        tokens: ["Is", "the", "boy", "who", "wears", "glasses", "your", "brother?"],
+        distractors: ["he", "which"],
+        answer: "Is the boy who wears glasses your brother?"
+      },
+      {
+        // R8 跨课复现（L25 三单）：旧知识点装进尾巴
+        promptZh: "把第 25 课的句子改成「那个踢球的男生是谁」——你想说：那个踢足球的男生是我的哥哥。",
+        tokens: ["The", "boy", "who", "plays", "football", "is", "my", "brother."],
+        distractors: ["play", "he"],
+        answer: "The boy who plays football is my brother."
+      },
+      {
+        promptZh: "你想说：我认识那个高个子男生。",
+        tokens: ["I", "know", "the", "boy", "who", "is", "tall."],
+        distractors: ["are"],
+        answer: "I know the boy who is tall."
+      }
+    ],
+    recall: {
+      promptZh: "放学在校门口，同学问你哪个是你哥哥。凭记忆，写出你那句英文。",
+      intentZh: "那个戴眼镜的男生是我哥哥。",
+      answer: "The boy who wears glasses is my brother.",
+      noteZh: "先叫人（the boy），再挂尾巴（who wears glasses）。"
+    },
+    huntCaseIds: ["hunt-family-photo"]
+  },
+  {
+    // ── 第四批 · L40 定语从句②（which 指物）：which 是 it 的替身，本尊退场；与 L39 who 成对 ──
+    id: "lesson-40-which-book",
+    number: 40,
+    title: "我读过的那本书",
+    grammarLabel: "给名词挂尾巴 · which",
+    episode: "小美的一天 ㊵",
+    scene: "campus",
+    cover: cover10,
+    sceneSetupZh: "课桌分享会上，同桌问你有什么好书推荐。",
+    dialogueEn: "Which book is good?",
+    dialogueZh: "同桌凑过来问你。",
+    intentZh: "这是我读过的那本书。",
+    targetSentence: "This is the book which I read.",
+    blocks: [
+      { text: "This is the book", role: "这是那本书（先说出东西）" },
+      { text: "which I read", role: "我读过的（挂在后面的尾巴）" }
+    ],
+    oneLineRule: "给东西挂尾巴：which 是 it 的替身——「我读过它」的 it 搬走，which 上场：the book which I read。",
+    examples: [
+      { en: "This is the book which I read.", zh: "这是我读过的那本书。" },
+      { en: "These are the books which I like.", zh: "这些是我喜欢的书。" },
+      { en: "I know the book which she likes.", zh: "我知道她喜欢的那本书。" },
+      { en: "The book which I read is good.", zh: "我读过的那本书很不错。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Which book is good?", zh: "同桌凑过来问你。" },
+      { who: "npc", en: "I need a book for the weekend.", zh: "她补了一句：周末我想找本书看。" },
+      { who: "me", en: "This is the book which I read.", zh: "轮到你说了——这是你读过的那本书。" }
+    ],
+    contrast: [
+      {
+        wrong: "This is the book which I read it.",
+        wrongMark: "it.",
+        correct: "This is the book which I read.",
+        whyZh: "尾巴里多留了一个 it：which 已经替它站好了位置，本尊就要退场——the book which I read。"
+      },
+      {
+        wrong: "This is the book I read it.",
+        wrongMark: null,
+        correct: "This is the book which I read.",
+        whyZh: "这条有两个毛病：缺了钩子（which），还多留了 it。把 it 换成 which 挂上去：the book which I read。"
+      },
+      {
+        wrong: "This is the book who I read.",
+        wrongMark: "who",
+        correct: "This is the book which I read.",
+        whyZh: "钩子拿错了：人用 who（第 39 课），东西用 which——书是东西，请 which 上场。"
+      },
+      {
+        wrong: "This is the book which I reads.",
+        wrongMark: "reads",
+        correct: "This is the book which I read.",
+        whyZh: "I 后面的动词不加 -s——加 -s 是 he / she / it 的待遇。"
+      },
+      {
+        wrong: "These are the book which I like.",
+        wrongMark: "book",
+        correct: "These are the books which I like.",
+        whyZh: "These 是「这些」，后面的东西要用复数：books——复数配复数，第 11 课的老规矩。"
+      },
+      {
+        wrong: "This is the book which I don't like it.",
+        wrongMark: "it.",
+        correct: "This is the book which I don't like.",
+        whyZh: "否定句里 it 照样要搬走：which I don't like——钩子替了它，尾巴里不再留 it。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "This is the book which I read.", zh: "这是我读过的那本书。" },
+      { label: "否定", en: "This is the book which I don't like.", zh: "这是我不喜欢的那本书。", noteZh: "「不」放动词前面：which I don't like——尾巴里照常说 don't。" },
+      { label: "疑问", en: "Is this the book which you read?", zh: "这是你读过的那本书吗？", noteZh: "把 Is 搬到句首，尾巴 which you read 原地不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说这些是你喜欢的书", en: "These are the books which I like.", zh: "这些是我喜欢的书。" },
+      { sceneZh: "说知道她喜欢的那本书", en: "I know the book which she likes.", zh: "我知道她喜欢的那本书。" },
+      { sceneZh: "说读过的书很不错", en: "The book which I read is good.", zh: "我读过的那本书很不错。" }
+    ],
+    deepDive: {
+      title: "it 去哪儿了？",
+      paragraphs: [
+        "中文说「我读过它」，英语把这句话挂到书后面时，it 要「搬家」：I read it（我读过它）→ the book which I read（我读过的那本书）。it 本尊退场，which 替身上场。",
+        "who 管人、which 管东西：上一课 the boy who wears glasses（戴眼镜的男生）；这一课 the book which I read（我读过的那本书）。两个钩子分工不同，看它拴的是人还是东西。",
+        "尾巴里的语序和普通句子一样：which I read、which I like——就是「主语 + 动词」，跟别处没两样。",
+        "最容易犯的错是舍不得那个 it：中文「我读过它」说惯了，尾巴里就会多留一个 it。记住：钩子替了它，它就不许再出现。"
+      ]
+    },
+    summary: {
+      rule: "给东西挂尾巴：which 替 it 上场——the book which I read。",
+      points: [
+        "This is the book which I read. —— which = it 的替身",
+        "These are the books which I like. —— 多个东西一样挂",
+        "the book which I don't like —— 尾巴里否定照常说 don't"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：这是我读过的那本书。",
+        before: "This is the book",
+        after: "I read.",
+        options: ["which", "who", "it"],
+        answer: "which",
+        explain: "指东西用 which 当钩子：the book which I read。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：这是我读过的那本书。",
+        tokens: ["This", "is", "the", "book", "which", "I", "read."],
+        answer: "This is the book which I read.",
+        explain: "先说出东西（the book），再挂尾巴（which I read）。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "同桌问你有好书推荐吗，你想说：这些是我喜欢的书。",
+        tokens: ["These", "are", "the", "books", "which", "I", "like."],
+        answer: "These are the books which I like.",
+        explain: "多个东西一样挂：books 配 are，后面跟 which I like。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["This", "is", "the", "book", "which", "I", "read", "it."],
+        wrongToken: "it.",
+        answer: "it.",
+        correctionZh: "it 要搬走：the book which I read——which 已经替了它。",
+        explain: "钩子替了它，尾巴里不许再留 it。"
+      },
+      {
+        // R8 跨课复现：上一课（L39 who 指人）的句式混入，与 which 形成对偶
+        kind: "arrange",
+        promptZh: "先复习一小步——上一课学过：那个戴眼镜的男生是我哥哥。",
+        tokens: ["The", "boy", "who", "wears", "glasses", "is", "my", "brother."],
+        answer: "The boy who wears glasses is my brother.",
+        explain: "复现第 39 课：who 管人；这课 which 管东西。"
+      },
+      {
+        // R9 变形/替换：否定进尾巴（复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变装：「This is the book which I read.」想说「这是我『不』喜欢的那本书」，「不」要放在哪里？",
+        replaceBase: "This is the book which I read.",
+        replaceTarget: "想说「不」喜欢",
+        options: ["don't like", "like not", "not like"],
+        answer: "don't like",
+        explain: "「不」放动词前面：which I don't like——尾巴里照常说 don't。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：这是我读过的那本书。",
+        tokens: ["This", "is", "the", "book", "which", "I", "read."],
+        distractors: ["who"],
+        answer: "This is the book which I read."
+      },
+      {
+        // R8 跨课复现（L33 指示代词 × L11 复数）：旧句式装进 which 尾巴
+        promptZh: "先复习一小步——把第 33 课的「这些是我的书」装进尾巴：这些是我喜欢的书。",
+        tokens: ["These", "are", "the", "books", "which", "I", "like."],
+        distractors: ["book"],
+        answer: "These are the books which I like."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：这是我不喜欢的那本书。",
+        tokens: ["This", "is", "the", "book", "which", "I", "don't", "like."],
+        distractors: ["it"],
+        answer: "This is the book which I don't like."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：这是你读过的那本书吗？",
+        tokens: ["Is", "this", "the", "book", "which", "you", "read?"],
+        distractors: ["do"],
+        answer: "Is this the book which you read?"
+      }
+    ],
+    recall: {
+      promptZh: "课桌分享会上轮到你推荐一本书。凭记忆，写出你那句英文。",
+      intentZh: "这是我读过的那本书。",
+      answer: "This is the book which I read.",
+      noteZh: "which 替 it 上场：the book which I read。"
+    },
+    huntCaseIds: ["hunt-book-swap"]
+  },
+  {
+    // ── 第四批 · L41 收口课：零新知全对比，宾从 + 定从混排；「钩子可以省」只做深挖卡认读 ──
+    id: "lesson-41-two-things",
+    number: 41,
+    title: "一句话说两件事",
+    grammarLabel: "收口 · 两句话拼一句",
+    episode: "小美的一天 ㊶",
+    scene: "campus",
+    cover: cover22,
+    sceneSetupZh: "期末班会，小美向新老师介绍同学和班级的事。",
+    dialogueEn: "Can you tell me about your class?",
+    dialogueZh: "新老师微笑着问你。",
+    intentZh: "我认识那个戴眼镜的男生。",
+    targetSentence: "I know the boy who wears glasses.",
+    blocks: [
+      { text: "I know", role: "我知道（话中话的引子）" },
+      { text: "the boy", role: "那个男生（先叫人）" },
+      { text: "who wears glasses", role: "戴眼镜的（挂在他后面的尾巴）" }
+    ],
+    oneLineRule: "两句话拼一句：话中话（I know where he is）和挂尾巴（the boy who wears glasses）合用——先认人，再说你认识他。",
+    examples: [
+      { en: "I know the boy who wears glasses.", zh: "我认识那个戴眼镜的男生。" },
+      { en: "I know where he is.", zh: "我知道他在哪。" },
+      { en: "She says she likes the book which I read.", zh: "她说她喜欢我读过的那本书。" },
+      { en: "Do you know the girl who plays football?", zh: "你认识那个踢足球的女生吗？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Can you tell me about your class?", zh: "新老师微笑着问你。" },
+      { who: "npc", en: "Who is the boy over there?", zh: "她指了指窗边。" },
+      { who: "me", en: "I know the boy who wears glasses.", zh: "轮到你说了——你认识那个戴眼镜的男生。" }
+    ],
+    contrast: [
+      {
+        wrong: "I know where is he.",
+        wrongMark: "is",
+        correct: "I know where he is.",
+        whyZh: "话中话换鞋的老规矩：where he is——第 35 课学的，到今天照样管用。"
+      },
+      {
+        wrong: "I know the boy who he wears glasses.",
+        wrongMark: "he",
+        correct: "I know the boy who wears glasses.",
+        whyZh: "一个萝卜一个坑：who 已经替了他，不许再有 he——第 39 课学的，收口课再站一次。"
+      },
+      {
+        wrong: "I like the boy is tall.",
+        wrongMark: null,
+        correct: "I know the boy who is tall.",
+        whyZh: "两条句子直接拼在一起，没人当钩子——要给 the boy 挂尾巴：who is tall。"
+      },
+      {
+        wrong: "I know the boy which wears glasses.",
+        wrongMark: "which",
+        correct: "I know the boy who wears glasses.",
+        whyZh: "人用 who、东西用 which——男生是人，请 who 上场（第 40 课的分工表）。"
+      },
+      {
+        wrong: "I know the boy who wear glasses.",
+        wrongMark: "wear",
+        correct: "I know the boy who wears glasses.",
+        whyZh: "who 也是「他」，动词加 -s：who wears——尾巴里的三单规矩不变。"
+      },
+      {
+        wrong: "Do you know where is he?",
+        wrongMark: "is",
+        correct: "Do you know where he is?",
+        whyZh: "两套规矩同台：外面 Do 站句首，里面的话换好鞋——各站各的。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I know the boy who wears glasses.", zh: "我认识那个戴眼镜的男生。" },
+      { label: "否定", en: "I don't know the boy who wears glasses.", zh: "我不认识那个戴眼镜的男生。", noteZh: "「不知道」用 don't know；尾巴 who wears glasses 原地不动。" },
+      { label: "疑问", en: "Do you know the boy who wears glasses?", zh: "你认识那个戴眼镜的男生吗？", noteZh: "问别人：Do 站句首，里面照常。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说认识那个戴眼镜的男生", en: "I know the boy who wears glasses.", zh: "我认识那个戴眼镜的男生。" },
+      { sceneZh: "说知道他在哪", en: "I know where he is.", zh: "我知道他在哪。" },
+      { sceneZh: "说她说她喜欢我读过的书", en: "She says she likes the book which I read.", zh: "她说她喜欢我读过的那本书。" }
+    ],
+    deepDive: {
+      title: "钩子还能省？（认读级，别急着用）",
+      paragraphs: [
+        "老外说话有时把钩子省掉：the people we met（我们见过的人）——which/who 不见了，尾巴照样挂着。这是更进阶的用法，你现在只需要看得懂，不用主动说。",
+        "怎么认？看到「名词 + 一整句话」（the people we met）就是省了钩子的尾巴。等用得多了，它自己会顺出来。",
+        "本课的主线还是两件旧本事：话中话（where he is）和挂尾巴（who wears glasses）——收口课不学新的，把这两样用熟。",
+        "复盘一下这一批你拿到的两句万能句式：I know + 话（我知道……）；the + 名词 + who/which + 尾巴（……的那个）。日常表达大半都从这里长出来。"
+      ]
+    },
+    summary: {
+      rule: "话中话（I know where he is）+ 挂尾巴（the boy who wears glasses）——两样合起来，一句话说两件事。",
+      points: [
+        "I know the boy who wears glasses. —— 引子 + 带尾巴的主语",
+        "I know where he is. —— 话中话照旧换鞋",
+        "She says she likes the book which I read. —— 转述 + 尾巴同台"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我认识那个戴眼镜的男生。",
+        before: "I know the boy",
+        after: "wears glasses.",
+        options: ["who", "which", "he"],
+        answer: "who",
+        explain: "指人用 who 当钩子——第 39 课学的，还记得吧。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "先复习一小步——第 35 课学过：我知道他在哪。",
+        tokens: ["I", "know", "where", "he", "is."],
+        answer: "I know where he is.",
+        explain: "复现第 35 课：话中话要换鞋，where he is。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "现在拼合体句：我认识那个戴眼镜的男生。",
+        tokens: ["I", "know", "the", "boy", "who", "wears", "glasses."],
+        answer: "I know the boy who wears glasses.",
+        explain: "引子（I know）+ 带尾巴的主语（the boy who wears glasses）。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "know", "the", "boy", "which", "wears", "glasses."],
+        wrongToken: "which",
+        answer: "which",
+        correctionZh: "人用 who：the boy who wears glasses。",
+        explain: "钩子拿错了——书用 which、人用 who。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "先复习一小步——第 40 课学过：这是我读过的那本书。",
+        tokens: ["This", "is", "the", "book", "which", "I", "read."],
+        answer: "This is the book which I read.",
+        explain: "复现第 40 课：which 替 it 上场。"
+      },
+      {
+        // R9 变形/替换：两种钩子各就各位（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I know the boy who wears glasses.」把 the boy 换成 the book，钩子要怎么换？",
+        replaceBase: "I know the boy who wears glasses.",
+        replaceTarget: "把 the boy 换成 the book",
+        options: ["which", "who", "it"],
+        answer: "which",
+        explain: "人换人就留 who；人换成东西，钩子换成 which——the book which……"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我认识那个戴眼镜的男生。",
+        tokens: ["I", "know", "the", "boy", "who", "wears", "glasses."],
+        distractors: ["which"],
+        answer: "I know the boy who wears glasses."
+      },
+      {
+        // R8 跨课复现（L35 宾从）
+        promptZh: "先复习一小步——第 35 课学过：我知道他在哪。",
+        tokens: ["I", "know", "where", "he", "is."],
+        distractors: ["is he"],
+        answer: "I know where he is."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你认识那个戴眼镜的男生吗？",
+        tokens: ["Do", "you", "know", "the", "boy", "who", "wears", "glasses?"],
+        distractors: ["which"],
+        answer: "Do you know the boy who wears glasses?"
+      },
+      {
+        // 收口总复现（L40）：which 尾巴复现
+        promptZh: "最后一小步——第 40 课的句子再走一遍：这是我不喜欢的那本书。",
+        tokens: ["This", "is", "the", "book", "which", "I", "don't", "like."],
+        distractors: ["it"],
+        answer: "This is the book which I don't like."
+      }
+    ],
+    recall: {
+      promptZh: "期末班会上，新老师指着一个男生问你认不认识。凭记忆，写出你那句英文。",
+      intentZh: "我认识那个戴眼镜的男生。",
+      answer: "I know the boy who wears glasses.",
+      noteZh: "引子 + 带尾巴的主语：I know + the boy who wears glasses。"
+    },
+    huntCaseIds: ["hunt-class-intro"]
+  },
+  {
+    // ── 第五批 · L42 动名词①（doing 本体）：-ing 的第二份工作——光 -ing 当名字用；踩 L5 种子转正 ──
+    id: "lesson-42-like-reading",
+    number: 42,
+    title: "我喜欢读书",
+    grammarLabel: "动词的第二份工作 · -ing",
+    episode: "小美的一天 ㊷",
+    scene: "sparkle",
+    cover: cover5,
+    sceneSetupZh: "周末兴趣角，新同桌问小美平时喜欢做什么。",
+    dialogueEn: "What do you like?",
+    dialogueZh: "新同桌问她周末喜欢做什么。",
+    intentZh: "我喜欢读书。",
+    targetSentence: "I like reading.",
+    blocks: [
+      { text: "I", role: "我" },
+      { text: "like", role: "喜欢" },
+      { text: "reading", role: "读书（名字版）" }
+    ],
+    oneLineRule: "-ing 是动词的第二份工作：有 be 搭着＝正在做（I am reading）；没有 be、跟在 like 后面＝当名字用（I like reading）。",
+    examples: [
+      { en: "I like reading.", zh: "我喜欢读书。" },
+      { en: "I like drawing.", zh: "我喜欢画画。" },
+      { en: "She likes reading.", zh: "她喜欢读书。" },
+      { en: "Do you like reading?", zh: "你喜欢读书吗？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What do you like?", zh: "新同桌问她周末喜欢做什么。" },
+      { who: "npc", en: "Do you like sports?", zh: "她又问：喜欢运动吗？" },
+      { who: "me", en: "I like reading.", zh: "轮到你说了——你喜欢读书。" }
+    ],
+    contrast: [
+      {
+        wrong: "I like read.",
+        wrongMark: "read",
+        correct: "I like reading.",
+        whyZh: "喜欢的是「做的事」：动词要换名字版——read 变成 reading，才能跟在 like 后面。"
+      },
+      {
+        wrong: "I am reading.",
+        wrongMark: null,
+        correct: "I like reading.",
+        bothRight: true,
+        whyZh: "两句都对——同一件 -ing，两个岗位：有 be 搭着＝正在做（I am reading）；光 -ing＝当名字用（I like reading）。"
+      },
+      {
+        wrong: "I don't like read.",
+        wrongMark: "read",
+        correct: "I don't like reading.",
+        whyZh: "否定句里名字版也不动：don't 挡住的是 like，做的事照样用 reading。"
+      },
+      {
+        wrong: "She like reading.",
+        wrongMark: "like",
+        correct: "She likes reading.",
+        whyZh: "主语 She 是三单，like 要加 -s：She likes reading。"
+      },
+      {
+        wrong: "You like reading?",
+        wrongMark: null,
+        correct: "Do you like reading?",
+        whyZh: "问句要请帮手：Do 站句首——You like reading? 是在说，不是在问。"
+      },
+      {
+        wrong: "I not like reading.",
+        wrongMark: "not",
+        correct: "I don't like reading.",
+        whyZh: "「不」要请帮手一起站：I don't like reading——not 自己站不住，配上 do 才有力气。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I like reading.", zh: "我喜欢读书。" },
+      { label: "否定", en: "I don't like reading.", zh: "我不喜欢读书。", noteZh: "don't 挡住的是 like；reading 是名字版，原地不动。" },
+      { label: "疑问", en: "Do you like reading?", zh: "你喜欢读书吗？", noteZh: "问别人：Do 站句首，reading 不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说喜欢画画", en: "I like drawing.", zh: "我喜欢画画。" },
+      { sceneZh: "说她喜欢读书", en: "She likes reading.", zh: "她喜欢读书。" },
+      { sceneZh: "问对方喜欢读书吗", en: "Do you like reading?", zh: "你喜欢读书吗？" }
+    ],
+    deepDive: {
+      title: "-ing 的第二份工作",
+      paragraphs: [
+        "你在第 13 课见过 -ing：I am reading（我正在读）——前面站着 be（am/is/are），它就在说「正在做」。",
+        "现在它换了第二份工作：没有 be 的时候，-ing 当「名字牌」用——把做一件事变成「那件事」本身：I like reading（我喜欢「读书」这件事）。",
+        "怎么分？看有没有 be 搭着：有 be＝正在做（I am reading）；光 -ing、跟在 like 后面＝当名字用。同一件工装，两班岗。",
+        "中文不用变：「我喜欢读书」里的「读书」原样不动；英语要把 read 换成名字版 reading。这是中文直译最容易漏的一步。"
+      ]
+    },
+    summary: {
+      rule: "-ing 是动词的第二份工作：有 be 搭着＝正在做；光 -ing＝当名字用。",
+      points: [
+        "I like reading. —— 喜欢「读书」这件事",
+        "I am reading. —— 正在读：be 搭着",
+        "Do you like reading? —— 问别人：Do 站句首"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我喜欢读书。",
+        before: "I",
+        after: "reading.",
+        options: ["like", "likes", "am"],
+        answer: "like",
+        explain: "I 用 like——不用加 s，也不用垫 am。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我喜欢读书。",
+        tokens: ["I", "like", "reading."],
+        answer: "I like reading.",
+        explain: "读书是「做的事」：动词换名字版 reading。"
+      },
+      {
+        // R8 跨课复现：第 5 课（like + 名词）原句
+        kind: "arrange",
+        promptZh: "先复习一小步——第 5 课学过：我喜欢音乐。",
+        tokens: ["I", "like", "music."],
+        answer: "I like music.",
+        explain: "复现第 5 课：喜欢一类东西，直接用名字。"
+      },
+      {
+        // R8 跨课复现：第 13 课（现在进行时）的对照句
+        kind: "arrange",
+        promptZh: "再对照一下——第 13 课学过：我正在读一本书。",
+        tokens: ["I", "am", "reading", "a", "book."],
+        answer: "I am reading a book.",
+        explain: "复现第 13 课：有 be 搭着才是「正在做」。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "like", "read."],
+        wrongToken: "read.",
+        answer: "read.",
+        correctionZh: "read 要换名字版：I like reading。",
+        explain: "喜欢的是「做的事」，动词要变 reading。"
+      },
+      {
+        // R9 变形/替换：名词换「做的事」（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I like music.」想说「我喜欢读书」，music 要换成什么？",
+        replaceBase: "I like music.",
+        replaceTarget: "把 music 换成「读书」",
+        options: ["reading", "read", "to read"],
+        answer: "reading",
+        explain: "做的事要用名字版：I like reading。"
+      }
+    ],
+    practice: [
+      {
+        // L5 practice 原题回收（种子转正）
+        promptZh: "你想说：我喜欢读书。",
+        tokens: ["I", "like", "reading."],
+        distractors: ["read"],
+        answer: "I like reading."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：我不喜欢读书。",
+        tokens: ["I", "don't", "like", "reading."],
+        distractors: ["read"],
+        answer: "I don't like reading."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你喜欢读书吗？",
+        tokens: ["Do", "you", "like", "reading?"],
+        distractors: ["Does"],
+        answer: "Do you like reading?"
+      },
+      {
+        // R8 跨课复现（L13 进行时）：同词换岗对照
+        promptZh: "先复习一小步——第 13 课学过：她正在画画。",
+        tokens: ["She", "is", "drawing."],
+        distractors: ["draw"],
+        answer: "She is drawing."
+      }
+    ],
+    recall: {
+      promptZh: "周末兴趣角，新同桌问小美喜欢做什么。凭记忆，写出那句英文。",
+      intentZh: "我喜欢读书。",
+      answer: "I like reading.",
+      noteZh: "喜欢的是「做的事」：动词换名字版 reading。"
+    },
+    huntCaseIds: ["hunt-interest-day"]
+  },
+  {
+    // ── 第五批 · L43 动名词②（V-ing 当主角）：句首说「做某事」也要名字版；踩 L32 命令句跨课对撞，零新词 ──
+    id: "lesson-43-swimming-fun",
+    number: 43,
+    title: "游泳真好玩",
+    grammarLabel: "让事情当主角 · -ing 开头",
+    episode: "小美的一天 ㊸",
+    scene: "island",
+    cover: cover17,
+    sceneSetupZh: "夏令营水上活动日结束，小美回家跟妈妈汇报。",
+    dialogueEn: "How was the water day?",
+    dialogueZh: "妈妈在门口问她。",
+    intentZh: "游泳真好玩。",
+    targetSentence: "Swimming is fun.",
+    blocks: [
+      { text: "Swimming", role: "游泳这件事（当主角，名字版）" },
+      { text: "is", role: "是" },
+      { text: "fun", role: "好玩" }
+    ],
+    oneLineRule: "这件事当句子的主角时也穿名字版：Swimming is fun——句首不放 Swim（那是命令口气），放 Swimming。",
+    examples: [
+      { en: "Swimming is fun.", zh: "游泳真好玩。" },
+      { en: "Drawing is fun.", zh: "画画真好玩。" },
+      { en: "Reading is fun.", zh: "读书真好玩。" },
+      { en: "Swimming is not easy.", zh: "游泳不容易。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "How was the water day?", zh: "妈妈在门口问她。" },
+      { who: "npc", en: "Did you have fun?", zh: "她又问：玩得开心吗？" },
+      { who: "me", en: "Swimming is fun.", zh: "轮到你说了——游泳真好玩。" }
+    ],
+    contrast: [
+      {
+        wrong: "Swim is fun.",
+        wrongMark: "Swim",
+        correct: "Swimming is fun.",
+        whyZh: "句首的 Swim 光着身子，像在下命令（回想第 32 课：Close the door 那种口气）。说「游泳这件事」，要给动词上名字版：Swimming。"
+      },
+      {
+        wrong: "I am swimming.",
+        wrongMark: null,
+        correct: "Swimming is fun.",
+        bothRight: true,
+        whyZh: "两句都对——有 be 搭着＝正在游（I am swimming）；当名字＝「游泳这件事」（Swimming is fun）。名字牌还是那件名字牌。"
+      },
+      {
+        wrong: "Swim is not easy.",
+        wrongMark: "Swim",
+        correct: "Swimming is not easy.",
+        whyZh: "否定句里主角照样用名字版：Swimming is not easy——not 管的是 is，名字牌不动。"
+      },
+      {
+        wrong: "Swimming are fun.",
+        wrongMark: "are",
+        correct: "Swimming is fun.",
+        whyZh: "「游泳」是一件事，算单个，用 is：Swimming is fun。"
+      },
+      {
+        wrong: "Swimming is a fun.",
+        wrongMark: "a",
+        correct: "Swimming is fun.",
+        whyZh: "fun 直接跟在 is 后面就行，前面不加 a——a 是给可数名词戴的帽子（第 4 课学过的）。"
+      },
+      {
+        wrong: "Swimming fun.",
+        wrongMark: null,
+        correct: "Swimming is fun.",
+        whyZh: "少了 is，句子就塌了——「件事 + 是 + 评价」三块都要到齐。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "Swimming is fun.", zh: "游泳真好玩。" },
+      { label: "否定", en: "Swimming is not fun.", zh: "游泳不好玩。", noteZh: "not 放 is 后面；主角 swimming 不动。" },
+      { label: "疑问", en: "Is swimming fun?", zh: "游泳好玩吗？", noteZh: "把 Is 搬到句首，swimming 留在原地。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说画画真好玩", en: "Drawing is fun.", zh: "画画真好玩。" },
+      { sceneZh: "说读书真好玩", en: "Reading is fun.", zh: "读书真好玩。" },
+      { sceneZh: "说游泳不容易", en: "Swimming is not easy.", zh: "游泳不容易。" }
+    ],
+    deepDive: {
+      title: "句首的动词，为什么不能光着身子？",
+      paragraphs: [
+        "第 32 课你学过命令句：Close the door（把门关上）——动词光着身子开头，是在请人做事。",
+        "所以句首直接说 Swim is fun，听起来像在喊「游泳！很好玩！」，口气不对。要说「游泳这件事」，动词要上名字版：Swimming is fun。",
+        "名字牌还是那件名字牌（第 42 课学的）：跟在 like 后面当「做的事」，站到句首当「主角」——都是把动作变成「那件事」。",
+        "顺便认识一个词：fun 是「好玩、有意思」。Swimming is fun 就是「游泳这件事很好玩」。"
+      ]
+    },
+    summary: {
+      rule: "事情当主角也用名字版：Swimming is fun。句首不放光身子的动词。",
+      points: [
+        "Swimming is fun. —— 游泳这件事：名字版站句首",
+        "Swimming is not fun. —— 否定：not 放 is 后面",
+        "Is swimming fun? —— 问句：把 Is 搬句首"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：游泳真好玩。",
+        before: "",
+        after: "is fun.",
+        options: ["Swimming", "Swim", "Swims"],
+        answer: "Swimming",
+        explain: "事情当主角用名字版：Swimming。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：游泳真好玩。",
+        tokens: ["Swimming", "is", "fun."],
+        answer: "Swimming is fun.",
+        explain: "名字版站句首当主角：Swimming + is + fun。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你还想跟妈妈说：画画也很好玩。",
+        tokens: ["Drawing", "is", "fun", "too."],
+        answer: "Drawing is fun too.",
+        explain: "同一个句式换个主角：Drawing is fun too。"
+      },
+      {
+        // R8 跨课复现：第 14 课（can）原句
+        kind: "arrange",
+        promptZh: "先复习一小步——第 14 课学过：我会游泳。",
+        tokens: ["I", "can", "swim."],
+        answer: "I can swim.",
+        explain: "复现第 14 课：can 后面的动词穿原样。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["Swim", "is", "fun."],
+        wrongToken: "Swim",
+        answer: "Swim",
+        correctionZh: "主角要上名字版：Swimming is fun。",
+        explain: "句首光身子的 Swim 像在下命令，要说「游泳这件事」得用 Swimming。"
+      },
+      {
+        // R9 变形/替换：命令句变主角句（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I am swimming.」想说「游泳真好玩」，开头要换成什么？",
+        replaceBase: "I am swimming.",
+        replaceTarget: "把「我在游泳」换成「游泳这件事」",
+        options: ["Swimming", "Swim", "am swimming"],
+        answer: "Swimming",
+        explain: "当主角用名字版：Swimming is fun。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：游泳真好玩。",
+        tokens: ["Swimming", "is", "fun."],
+        distractors: ["Swim"],
+        answer: "Swimming is fun."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：游泳不好玩。",
+        tokens: ["Swimming", "is", "not", "fun."],
+        distractors: ["are"],
+        answer: "Swimming is not fun."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：游泳好玩吗？",
+        tokens: ["Is", "swimming", "fun?"],
+        distractors: ["Do"],
+        answer: "Is swimming fun?"
+      },
+      {
+        // R8 跨课复现（L13 进行时）：同词换岗对照
+        promptZh: "先复习一小步——第 13 课学过：我正在画画。",
+        tokens: ["I", "am", "drawing."],
+        distractors: ["draw"],
+        answer: "I am drawing."
+      }
+    ],
+    recall: {
+      promptZh: "夏令营水上活动日结束，妈妈问你玩得怎么样。凭记忆，写出那句英文。",
+      intentZh: "游泳真好玩。",
+      answer: "Swimming is fun.",
+      noteZh: "事情当主角用名字版：Swimming 站句首。"
+    },
+    huntCaseIds: ["hunt-swim-day"]
+  },
+  {
+    // ── 第五批 · L44 目的 to（小垫板延伸）：两个动作要垫板才缝得上；全批 token 最长课（≤8 强制） ──
+    id: "lesson-44-shop-to-buy",
+    number: 44,
+    title: "去商店买牛奶",
+    grammarLabel: "小垫板新用法 · to + 去做什么",
+    episode: "小美的一天 ㊹",
+    scene: "city",
+    cover: cover4,
+    sceneSetupZh: "放学路上，妈妈打电话让小美顺路去商店买东西。",
+    dialogueEn: "Can you go to the shop?",
+    dialogueZh: "妈妈在电话里问你。",
+    intentZh: "我去商店买牛奶。",
+    targetSentence: "I go to the shop to buy milk.",
+    blocks: [
+      { text: "I go to the shop", role: "去商店（to 带路到地方）" },
+      { text: "to buy", role: "买（垫板·说明去干嘛）" },
+      { text: "milk", role: "牛奶" }
+    ],
+    oneLineRule: "两个动作要垫板才缝得上：go to the shop「to buy」milk——到地方垫一块 to（带路），去做什么再垫一块 to（说明目的）。",
+    examples: [
+      { en: "I go to the shop to buy milk.", zh: "我去商店买牛奶。" },
+      { en: "I go to the library to read books.", zh: "我去图书馆看书。" },
+      { en: "She goes to the park to play.", zh: "她去公园玩。" },
+      { en: "I want to buy bread.", zh: "我想买面包。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Can you go to the shop?", zh: "妈妈在电话里问你。" },
+      { who: "npc", en: "We need milk.", zh: "她补了一句：家里要牛奶。" },
+      { who: "me", en: "I go to the shop to buy milk.", zh: "轮到你说了——你去商店买牛奶。" }
+    ],
+    contrast: [
+      {
+        wrong: "I go to the shop buy milk.",
+        wrongMark: "buy",
+        correct: "I go to the shop to buy milk.",
+        whyZh: "两个动作直接撞一起站不住——中间垫上 to 才缝得住：go to the shop 【to buy】milk。"
+      },
+      {
+        wrong: "I go to the shop.",
+        wrongMark: null,
+        correct: "I go to the shop to buy milk.",
+        bothRight: true,
+        whyZh: "两句都对——只说腿儿，到商店就完了；多说一层「去干嘛」，就把 to buy 垫上。垫板可以只垫一块，也可以垫两块。"
+      },
+      {
+        wrong: "I go to the shop to buying milk.",
+        wrongMark: "buying",
+        correct: "I go to the shop to buy milk.",
+        whyZh: "垫板 to 后面永远穿原样：to buy——买东西说 buy，不说 buying。"
+      },
+      {
+        wrong: "I go shop to buy milk.",
+        wrongMark: "shop",
+        correct: "I go to the shop to buy milk.",
+        whyZh: "去地方的第一块垫板别丢：go 【to】the shop——商店是地方，要用 to 带路。"
+      },
+      {
+        wrong: "She go to the shop to buy milk.",
+        wrongMark: "go",
+        correct: "She goes to the shop to buy milk.",
+        whyZh: "主语 She 是三单，go 要加 -es：goes。"
+      },
+      {
+        wrong: "I go to the shop to buy milks.",
+        wrongMark: "milks",
+        correct: "I go to the shop to buy milk.",
+        whyZh: "牛奶数不清，永远不加 s：buy milk（第 30 课学过的不朋友）。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I go to the shop to buy milk.", zh: "我去商店买牛奶。" },
+      { label: "否定", en: "I don't go to the shop.", zh: "我不去商店。", noteZh: "「不去」用 don't go；整句保持短句，不带目的尾。" },
+      { label: "疑问", en: "Do you go to the shop?", zh: "你去商店吗？", noteZh: "问别人：Do 站句首。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说去图书馆看书", en: "I go to the library to read books.", zh: "我去图书馆看书。" },
+      { sceneZh: "说她去公园玩", en: "She goes to the park to play.", zh: "她去公园玩。" },
+      { sceneZh: "说想买面包", en: "I want to buy bread.", zh: "我想买面包。" }
+    ],
+    deepDive: {
+      title: "一块垫板，两个车站",
+      paragraphs: [
+        "第 9 课你见过第一块小垫板：go to the library（去图书馆）——to 带路，把你送到地方。",
+        "今天垫板能垫第二块：到了商店要干嘛？把「买牛奶」也垫上——to buy milk。合起来：I go to the shop to buy milk。",
+        "为什么中文不用垫？「去商店买牛奶」一口气说完了，中间不用任何标记；英语不行，两个动作要一块垫板缝着，不然听着像两个句子硬拼。",
+        "记住手感：到地方 = to + 地方（to the shop）；去做什么 = to + 原形动词（to buy）。同一个 to，两块工牌。"
+      ]
+    },
+    summary: {
+      rule: "两个动作用垫板缝：go to the shop【to buy】milk——第一块带路，第二块说去干嘛。",
+      points: [
+        "I go to the shop to buy milk. —— 两块垫板：to the shop / to buy",
+        "to buy 后面穿原样 —— 不写 buying",
+        "She goes to the park to play. —— 三单的 -es 别忘"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我去商店买牛奶。",
+        before: "I go to the shop",
+        after: "milk.",
+        options: ["to buy", "buy", "buying"],
+        answer: "to buy",
+        explain: "去干嘛要垫一块 to：to buy milk。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我去商店买牛奶。",
+        tokens: ["I", "go", "to", "the", "shop", "to", "buy", "milk."],
+        answer: "I go to the shop to buy milk.",
+        explain: "两块垫板：to the shop 带路 + to buy 说目的。"
+      },
+      {
+        // R8 跨课复现：第 9 课（go to）原句
+        kind: "arrange",
+        promptZh: "先复习一小步——第 9 课学过：我去图书馆。",
+        tokens: ["I", "go", "to", "the", "library."],
+        answer: "I go to the library.",
+        explain: "复现第 9 课：to 带路到地方。"
+      },
+      {
+        // R8 跨课复现：第 9 课 + 本课扩展合体
+        kind: "arrange",
+        promptZh: "给第 9 课的句子加上目的——我去图书馆看书。",
+        tokens: ["I", "go", "to", "the", "library", "to", "read", "books."],
+        answer: "I go to the library to read books.",
+        explain: "同样的骨架：到地方（to the library）+ 去干嘛（to read books）。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "go", "to", "the", "shop", "buy", "milk."],
+        wrongToken: "buy",
+        answer: "buy",
+        correctionZh: "中间垫一块 to：go to the shop to buy milk。",
+        explain: "两个动作硬撞了，垫板没垫。"
+      },
+      {
+        // R9 变形/替换：同词换岗（want 门口的垫板）
+        kind: "replace",
+        promptZh: "句子变身：「I go to the shop to buy milk.」想说「我想去旅行」——第 15 课的桌子，这里怎么垫？",
+        replaceBase: "I want to travel.",
+        replaceTarget: "把 travel 换成「买面包」",
+        options: ["to buy bread", "buy bread", "buying bread"],
+        answer: "to buy bread",
+        explain: "want 后面照样垫 to：I want to buy bread。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我去商店买牛奶。",
+        tokens: ["I", "go", "to", "the", "shop", "to", "buy", "milk."],
+        distractors: ["buying"],
+        answer: "I go to the shop to buy milk."
+      },
+      {
+        // R8 跨课复现（L9 扩展）
+        promptZh: "先复习一小步——把第 9 课的句子加上目的：我去图书馆看书。",
+        tokens: ["I", "go", "to", "the", "library", "to", "read", "books."],
+        distractors: ["reading"],
+        answer: "I go to the library to read books."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：我不去商店。",
+        tokens: ["I", "don't", "go", "to", "the", "shop."],
+        distractors: ["not"],
+        answer: "I don't go to the shop."
+      },
+      {
+        // R8 跨课复现（L15 want to）：同块垫板
+        promptZh: "先复习一小步——第 15 课学过：我想旅行。",
+        tokens: ["I", "want", "to", "travel."],
+        distractors: ["traveling"],
+        answer: "I want to travel."
+      }
+    ],
+    recall: {
+      promptZh: "妈妈打电话让你顺路买东西。凭记忆，写出你要说的那句英文。",
+      intentZh: "我去商店买牛奶。",
+      answer: "I go to the shop to buy milk.",
+      noteZh: "两块垫板：to the shop 带路 + to buy 说目的。"
+    },
+    huntCaseIds: ["hunt-shop-note"]
+  },
+  {
+    // ── 第五批 · L45 动名词③（enjoy 的门）：有的动词只开一扇门——enjoy 只认名字版；全批唯一新词 enjoy ──
+    id: "lesson-45-enjoy-drawing",
+    number: 45,
+    title: "我享受读书",
+    grammarLabel: "enjoy 的门 · 只认 -ing",
+    episode: "小美的一天 ㊺",
+    scene: "magic",
+    cover: cover12,
+    sceneSetupZh: "美术兴趣班的报名表上要写自己的爱好，小美认真填。",
+    dialogueEn: "What do you enjoy?",
+    dialogueZh: "同桌探头看你填表。",
+    intentZh: "我享受读书。",
+    targetSentence: "I enjoy reading.",
+    blocks: [
+      { text: "I enjoy", role: "我享受（enjoy = 很享受）" },
+      { text: "reading", role: "读书（名字版）" }
+    ],
+    oneLineRule: "enjoy 的门只开一扇：只认名字版 enjoy reading，不认 enjoy to read——enjoy 后面不垫 to。",
+    examples: [
+      { en: "I enjoy reading.", zh: "我享受读书。" },
+      { en: "I enjoy drawing.", zh: "我享受画画。" },
+      { en: "She enjoys reading.", zh: "她享受读书。" },
+      { en: "Do you enjoy reading?", zh: "你享受读书吗？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What do you enjoy?", zh: "同桌探头看你填表。" },
+      { who: "npc", en: "I enjoy drawing. What about you?", zh: "她先说了自己的：我享受画画。你呢？" },
+      { who: "me", en: "I enjoy reading.", zh: "轮到你说了——你享受读书。" }
+    ],
+    contrast: [
+      {
+        wrong: "I enjoy to read.",
+        wrongMark: "to",
+        correct: "I enjoy reading.",
+        whyZh: "enjoy 的门只开一扇——它不认 to，只认名字版：enjoy reading。垫板在 enjoy 门口用不上。"
+      },
+      {
+        wrong: "She enjoy reading.",
+        wrongMark: "enjoy",
+        correct: "She enjoys reading.",
+        whyZh: "主语 She 是三单，enjoy 要加 -s：enjoys。名字版 reading 不动。"
+      },
+      {
+        wrong: "I enjoy read.",
+        wrongMark: "read",
+        correct: "I enjoy reading.",
+        whyZh: "enjoy 后面跟着的是「做的事」，要用名字版：reading。第 42 课学的手感，这里照样用。"
+      },
+      {
+        wrong: "I enjoy reading books.",
+        wrongMark: null,
+        correct: "I enjoy reading.",
+        bothRight: true,
+        whyZh: "两句都对——reading 后面想加 books 就加，不想加也完整。名字版（reading）是必须的，books 是添头。"
+      },
+      {
+        wrong: "Do you enjoy read?",
+        wrongMark: "read",
+        correct: "Do you enjoy reading?",
+        whyZh: "问句里名字版也不动：Do you enjoy reading？Do 站句首，reading 原位。"
+      },
+      {
+        wrong: "I don't enjoy to draw.",
+        wrongMark: "to",
+        correct: "I don't enjoy drawing.",
+        whyZh: "否定句里 enjoy 的门还是只开一扇：don't enjoy drawing——to 照样进不去。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I enjoy reading.", zh: "我享受读书。" },
+      { label: "否定", en: "I don't enjoy reading.", zh: "我不享受读书。", noteZh: "don't 挡住 enjoy；reading 是名字版，原地不动。" },
+      { label: "疑问", en: "Do you enjoy reading?", zh: "你享受读书吗？", noteZh: "问别人：Do 站句首，reading 不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说她享受读书", en: "She enjoys reading.", zh: "她享受读书。" },
+      { sceneZh: "说享受画画", en: "I enjoy drawing.", zh: "我享受画画。" },
+      { sceneZh: "问对方享不享受读书", en: "Do you enjoy reading?", zh: "你享受读书吗？" }
+    ],
+    deepDive: {
+      title: "enjoy 为什么不要 to？",
+      paragraphs: [
+        "第 44 课你学过：两个动作用垫板缝——go to the shop to buy milk。但不是所有动词门口都垫板。",
+        "enjoy 的门只开一扇：它后面只认名字版（enjoy reading），不认 to（enjoy to read 进不去）。每个动词的门口规矩不一样，遇到就记这一句。",
+        "enjoy 本身是什么意思？「享受、很喜欢」——比 like 多一点投入。I enjoy reading 就是「我读书读得很享受」。",
+        "这课只用记一个动词的门口：enjoy 只认名字版。别的动词以后一个一个遇。"
+      ]
+    },
+    summary: {
+      rule: "enjoy 的门只开一扇：只认名字版 enjoy reading，不认 to。",
+      points: [
+        "I enjoy reading. —— enjoy + 名字版",
+        "She enjoys reading. —— 三单的 -s 别忘",
+        "reading 后加 books 也行 —— 名字版必须，添头随意"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我享受读书。",
+        before: "I",
+        after: "reading.",
+        options: ["enjoy", "enjoys", "enjoy to"],
+        answer: "enjoy",
+        explain: "I 用 enjoy；enjoy 后面直接跟名字版，不垫 to。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我享受读书。",
+        tokens: ["I", "enjoy", "reading."],
+        answer: "I enjoy reading.",
+        explain: "enjoy 的门只开一扇：enjoy + reading。"
+      },
+      {
+        // R8 跨课复现：第 5 课原句（like reading 同源）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 5 课学过：我喜欢读书。",
+        tokens: ["I", "like", "reading."],
+        answer: "I like reading.",
+        explain: "复现第 5 课/第 42 课：like 后面也是名字版。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "enjoy", "to", "read."],
+        wrongToken: "to",
+        answer: "to",
+        correctionZh: "enjoy 的门不认 to：I enjoy reading。",
+        explain: "enjoy 后面不垫板，只认名字版。"
+      },
+      {
+        // R8 跨课复现：第 25 课（三单）的句式混入
+        kind: "arrange",
+        promptZh: "先复习一小步——第 25 课学过：他每天喝牛奶。",
+        tokens: ["He", "drinks", "milk", "every", "day."],
+        answer: "He drinks milk every day.",
+        explain: "复现第 25 课：三单动词加 -s。"
+      },
+      {
+        // R9 变形/替换：换做的事（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I enjoy reading.」想说「我享受画画」，reading 要换成什么？",
+        replaceBase: "I enjoy reading.",
+        replaceTarget: "把阅读换成「画画」",
+        options: ["drawing", "to draw", "draw"],
+        answer: "drawing",
+        explain: "enjoy 只认名字版：enjoy drawing。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我享受读书。",
+        tokens: ["I", "enjoy", "reading."],
+        distractors: ["to read"],
+        answer: "I enjoy reading."
+      },
+      // R8 跨课复现（L25 三单）+ 本课新词：她享受读书
+      {
+        promptZh: "先复习一小步——把第 25 课的三单和今天的 enjoy 合起来：她享受读书。",
+        tokens: ["She", "enjoys", "reading."],
+        distractors: ["enjoy", "to read"],
+        answer: "She enjoys reading."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：我不享受读书。",
+        tokens: ["I", "don't", "enjoy", "reading."],
+        distractors: ["to read"],
+        answer: "I don't enjoy reading."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你享受读书吗？",
+        tokens: ["Do", "you", "enjoy", "reading?"],
+        distractors: ["enjoys"],
+        answer: "Do you enjoy reading?"
+      }
+    ],
+    recall: {
+      promptZh: "兴趣班报名表要写爱好。凭记忆，写出你说的那句英文。",
+      intentZh: "我享受读书。",
+      answer: "I enjoy reading.",
+      noteZh: "enjoy 的门只开一扇：只认名字版 reading。"
+    },
+    huntCaseIds: ["hunt-club-poster"]
+  },
+  {
+    // ── 第五批 · L46 收口课（零新知全复现）：两搭档同台——名字版 + 小垫板；深挖卡认读「都行，默认 doing」──
+    id: "lesson-46-two-partners",
+    number: 46,
+    title: "一句话，两种搭档",
+    grammarLabel: "收口 · 名字版 + 小垫板",
+    episode: "小美的一天 ㊻",
+    scene: "mansion",
+    cover: cover24,
+    sceneSetupZh: "期末兴趣分享会，小美介绍自己的爱好和暑假打算。",
+    dialogueEn: "What do you enjoy?",
+    dialogueZh: "同学们围过来问你。",
+    intentZh: "我享受读书，我还想去旅行。",
+    targetSentence: "I enjoy reading and I want to travel.",
+    blocks: [
+      { text: "I enjoy reading", role: "名字版搭档（enjoy）" },
+      { text: "and", role: "和" },
+      { text: "I want to travel", role: "小垫板搭档（want to）" }
+    ],
+    oneLineRule: "两样搭档同台：enjoy/like 后面跟名字版（reading）；want 门口垫 to（to travel）——两个动词，两种搭法。",
+    examples: [
+      { en: "I enjoy reading and I want to travel.", zh: "我享受读书，我还想去旅行。" },
+      { en: "I like reading.", zh: "我喜欢读书。" },
+      { en: "I want to travel.", zh: "我想去旅行。" },
+      { en: "She likes drawing and she wants to dance.", zh: "她喜欢画画，她还想去跳舞。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What do you enjoy?", zh: "同学们围过来问你。" },
+      { who: "npc", en: "Any plans for the summer?", zh: "又有人问：暑假有什么打算？" },
+      { who: "me", en: "I enjoy reading and I want to travel.", zh: "轮到你说了——你享受读书，还想去旅行。" }
+    ],
+    contrast: [
+      {
+        wrong: "I enjoy to read.",
+        wrongMark: "to",
+        correct: "I enjoy reading.",
+        whyZh: "enjoy 的门只开一扇：enjoy reading——to 进不去。对照记：同一块 read，want 门口却要垫板（want to read）。"
+      },
+      {
+        wrong: "I know where is he.",
+        wrongMark: "is",
+        correct: "I know where he is.",
+        whyZh: "旧线温习——话中话要换鞋：where he is。第 35 课学的，收口课再站一次。"
+      },
+      {
+        wrong: "I like read.",
+        wrongMark: "read",
+        correct: "I like reading.",
+        whyZh: "名字版的老规矩：喜欢「做的事」用 reading——第 42 课学的手感。"
+      },
+      {
+        wrong: "I want to traveling.",
+        wrongMark: "traveling",
+        correct: "I want to travel.",
+        whyZh: "垫板 to 后面永远穿原样：to travel——不写 traveling。"
+      },
+      {
+        wrong: "I enjoy reading and I want travel.",
+        wrongMark: "want travel",
+        correct: "I enjoy reading and I want to travel.",
+        whyZh: "want 门口的垫板别丢：want 【to】travel——两个动作中间要缝一块板。"
+      },
+      {
+        wrong: "She like drawing and she want to dance.",
+        wrongMark: "like",
+        correct: "She likes drawing and she wants to dance.",
+        whyZh: "两个动词的主语都是 She（三单），like 加 -s、want 也加 -s：likes / wants。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I enjoy reading and I want to travel.", zh: "我享受读书，我还想去旅行。" },
+      { label: "否定", en: "I don't enjoy reading.", zh: "我不享受读书。", noteZh: "don't 挡住 enjoy；reading 是名字版，原地不动。" },
+      { label: "疑问", en: "Do you enjoy reading?", zh: "你享受读书吗？", noteZh: "问别人：Do 站句首，reading 不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说喜欢读书（名字版搭档）", en: "I like reading.", zh: "我喜欢读书。" },
+      { sceneZh: "说想去旅行（小垫板搭档）", en: "I want to travel.", zh: "我想去旅行。" },
+      { sceneZh: "说她喜欢画画还想跳舞", en: "She likes drawing and she wants to dance.", zh: "她喜欢画画，她还想去跳舞。" }
+    ],
+    deepDive: {
+      title: "搭档地图 —— 还有一句悄悄话",
+      paragraphs: [
+        "这一批你认识了两样搭档：名字版（reading）——跟着 like / enjoy 出场；小垫板（to + 原形）——跟着 want 出场，也帮「去干什么」缝句（go to the shop to buy milk）。",
+        "「搭档地图」不用背：遇到动词就往门口看一眼——enjoy 的门只开一扇（只认名字版），want 的门口有垫板（认 to）。",
+        "悄悄话一句：其实「喜欢」两类搭法都能说——like reading 和 like to read 都对，意思几乎一样。你不用纠结，默认用名字版就行。",
+        "至此，你会说「喜欢做、享受做、去做、想做」——动词后面跟什么，你已经有一套自己的手感了。"
+      ]
+    },
+    summary: {
+      rule: "两种搭档：like / enjoy + 名字版（reading）；want + 小垫板（to travel）。",
+      points: [
+        "I enjoy reading. —— 名字版搭档",
+        "I want to travel. —— 小垫板搭档",
+        "I enjoy reading and I want to travel. —— 两样同台"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我享受读书（名字版搭档）。",
+        before: "I enjoy",
+        after: ".",
+        options: ["reading", "to read", "read"],
+        answer: "reading",
+        explain: "enjoy 的门只开一扇：只认名字版 reading。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我想去旅行（小垫板搭档）。",
+        tokens: ["I", "want", "to", "travel."],
+        answer: "I want to travel.",
+        explain: "want 门口垫 to：want to travel。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "两样同台——你想说：我享受读书，我还想去旅行。",
+        tokens: ["I", "enjoy", "reading", "and", "I", "want", "to", "travel."],
+        answer: "I enjoy reading and I want to travel.",
+        explain: "两个动词两种搭法：enjoy reading + want to travel。"
+      },
+      {
+        // R8 跨课复现：第 35 课（宾从）旧线
+        kind: "arrange",
+        promptZh: "先复习一小步——第 35 课学过：我知道他在哪。",
+        tokens: ["I", "know", "where", "he", "is."],
+        answer: "I know where he is.",
+        explain: "复现第 35 课：话中话要换鞋。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "enjoy", "to", "read."],
+        wrongToken: "to",
+        answer: "to",
+        correctionZh: "enjoy 的门不认 to：I enjoy reading。",
+        explain: "enjoy 只认名字版，to 进不去。"
+      },
+      {
+        // R9 变形/替换：换搭档（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I like reading.」换成 want——「我想读书」，后面的词要怎么搭？",
+        replaceBase: "I like reading.",
+        replaceTarget: "把 like 换成 want",
+        options: ["to read", "reading", "read"],
+        answer: "to read",
+        explain: "want 门口有垫板：want to read。"
+      }
+    ],
+    practice: [
+      {
+        // R8 复现（L42 型）
+        promptZh: "你想说：我喜欢读书。",
+        tokens: ["I", "like", "reading."],
+        distractors: ["read"],
+        answer: "I like reading."
+      },
+      {
+        // R8 复现（L44 型）
+        promptZh: "先复习一小步——第 44 课学过：我去商店买牛奶。",
+        tokens: ["I", "go", "to", "the", "shop", "to", "buy", "milk."],
+        distractors: ["buying"],
+        answer: "I go to the shop to buy milk."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你享受读书吗？",
+        tokens: ["Do", "you", "enjoy", "reading?"],
+        distractors: ["enjoys"],
+        answer: "Do you enjoy reading?"
+      },
+      {
+        // 全批总句
+        promptZh: "全批收官——你想说：我享受读书，我还想去旅行。",
+        tokens: ["I", "enjoy", "reading", "and", "I", "want", "to", "travel."],
+        distractors: ["traveling"],
+        answer: "I enjoy reading and I want to travel."
+      }
+    ],
+    recall: {
+      promptZh: "期末兴趣分享会上，同学们围过来问你。凭记忆，写出你那句英文。",
+      intentZh: "我享受读书，我还想去旅行。",
+      answer: "I enjoy reading and I want to travel.",
+      noteZh: "两样搭档同台：enjoy reading + want to travel。"
+    },
+    huntCaseIds: ["hunt-partner-show"]
+  },
+  {
+    // ── 第六批 · L47 should（情态家族收口）：should 也进「不变词家族」，增量=分寸（建议比 must 轻）──
+    id: "lesson-47-should",
+    number: 47,
+    title: "你应该早点睡",
+    grammarLabel: "情态三兄弟 · should",
+    episode: "小美的一天 ㊼",
+    scene: "mansion",
+    cover: cover3,
+    sceneSetupZh: "期末复习夜，小美还在熬夜写作业，妈妈端着一杯热牛奶走过来。",
+    dialogueEn: "You should sleep early.",
+    dialogueZh: "妈妈把牛奶放在桌上，轻声说。",
+    intentZh: "我应该早点睡。",
+    targetSentence: "You should sleep early.",
+    blocks: [
+      { text: "You should", role: "你应该（should 也是不变词）" },
+      { text: "sleep", role: "睡觉（穿原样）" },
+      { text: "early", role: "早一点" }
+    ],
+    oneLineRule: "should 也进「不变词家族」：can / must / should 从来不变形，后面动词穿原样；不一样的是口气——can 能、must 必须、should 应该（给建议，比 must 轻）。",
+    examples: [
+      { en: "You should sleep early.", zh: "你应该早点睡。" },
+      { en: "She should go to bed.", zh: "她该去睡了。" },
+      { en: "Should I rest now?", zh: "我现在该休息一下吗？" },
+      { en: "You shouldn't sleep late.", zh: "你不该熬夜。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "It is eleven o'clock.", zh: "妈妈看了眼钟。" },
+      { who: "npc", en: "You should sleep early.", zh: "她把牛奶放在桌上：你应该早点睡。" },
+      { who: "me", en: "You should sleep early.", zh: "轮到你复述这句建议——应该早点睡。" }
+    ],
+    contrast: [
+      {
+        wrong: "You should to sleep early.",
+        wrongMark: "to",
+        correct: "You should sleep early.",
+        whyZh: "should 是家族成员，不垫板——should sleep early。垫板是 want 的待遇（第 15 课 / 第 44 课），别串门。"
+      },
+      {
+        wrong: "She should goes to bed.",
+        wrongMark: "goes",
+        correct: "She should go to bed.",
+        whyZh: "家族里动词穿原样：should go——goes 的三单尾巴要脱下来（must 后面也一样）。"
+      },
+      {
+        wrong: "You must sleep early.",
+        wrongMark: null,
+        correct: "You should sleep early.",
+        bothRight: true,
+        whyZh: "两句都对——一句是建议（should，像关心）、一句是必须（must，像命令），口气不同。这课的特权：分寸没有标准答案，看你想怎么说。"
+      },
+      {
+        wrong: "I should to helping her.",
+        wrongMark: "to helping",
+        correct: "I should help her.",
+        whyZh: "should 后面既不垫 to、也不换 helping——动词就穿原样：should help。"
+      },
+      {
+        wrong: "Should I to rest now?",
+        wrongMark: "to",
+        correct: "Should I rest now?",
+        whyZh: "问句把 Should 搬到句首，动词照原样：Should I rest？不垫 to。"
+      },
+      {
+        wrong: "You don't should sleep late.",
+        wrongMark: "don't should",
+        correct: "You shouldn't sleep late.",
+        whyZh: "「不」跟着 should 走，缩成一个词 shouldn't：You shouldn't sleep late。（不是 don't should。）"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "You should sleep early.", zh: "你应该早点睡。" },
+      { label: "否定", en: "You shouldn't sleep late.", zh: "你不该熬夜。", noteZh: "not 跟着 should 走，缩成一个词 shouldn't。" },
+      { label: "疑问", en: "Should I rest now?", zh: "我现在该休息一下吗？", noteZh: "Should 搬句首，动词照原样。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说她该去睡了", en: "She should go to bed.", zh: "她该去睡了。" },
+      { sceneZh: "说你不该熬夜", en: "You shouldn't sleep late.", zh: "你不该熬夜。" },
+      { sceneZh: "问自己现在该不该休息", en: "Should I rest now?", zh: "我现在该休息一下吗？" }
+    ],
+    deepDive: {
+      title: "三兄弟的分寸：can / must / should",
+      paragraphs: [
+        "家族里现在有三兄弟：can（能）、must（必须）、should（应该）。形态都一样——从来不变形，后面动词穿原样。",
+        "不一样的是口气：must 最硬（必须，非做不可）；should 最软（应该，给建议）；can 说的是能力（能）。",
+        "同样是「早点睡」：You must sleep early.（必须，像命令）/ You should sleep early.（应该，像关心）——两句语法都对，看你想要哪种口气。",
+        "求别人给建议，还能把它搬句首：Should I rest now?（我该休息一下吗？）——把 Should 放最前面就行。"
+      ]
+    },
+    summary: {
+      rule: "should 进「不变词家族」：后面动词穿原样；口气是「应该」——给建议，比 must 轻。",
+      points: [
+        "You should sleep early. —— 应该：建议口气",
+        "She should go to bed. —— 家族里动词穿原样",
+        "Should I rest now? —— 问句：Should 搬句首"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：你应该早点睡。",
+        before: "You",
+        after: "sleep early.",
+        options: ["should", "should to", "shoulds"],
+        answer: "should",
+        explain: "should 不垫板、不变形：You should sleep early。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：你应该早点睡。",
+        tokens: ["You", "should", "sleep", "early."],
+        answer: "You should sleep early.",
+        explain: "家族句式：should + 动词原样。"
+      },
+      {
+        // R8 跨课复现：第 16 课（must）原句——family 对照
+        kind: "arrange",
+        promptZh: "先复习一小步——第 16 课学过：我今天必须完成作业。",
+        tokens: ["I", "must", "finish", "my", "homework", "today."],
+        answer: "I must finish my homework today.",
+        explain: "复现第 16 课：must 也是家族成员，后面穿原样。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["You", "should", "to", "sleep", "early."],
+        wrongToken: "to",
+        answer: "to",
+        correctionZh: "should 不垫板：去掉 to——You should sleep early。",
+        explain: "should 是家族成员，不垫板（want 才垫）。"
+      },
+      {
+        // R9 变形/替换：求建议（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「You should sleep early.」想求建议——「我该休息一下吗」，开头要换成什么？",
+        replaceBase: "You should sleep early.",
+        replaceTarget: "把「你应该早睡」变成「我该休息一下吗」",
+        options: ["Should I", "Do I", "Am I"],
+        answer: "Should I",
+        explain: "求建议把 Should 搬句首：Should I rest now？"
+      },
+      {
+        // R8 跨课复现：第 25 课（三单 -s）的句式混入，抗遗忘
+        kind: "arrange",
+        promptZh: "先复习一小步——第 25 课学过：他每天喝牛奶。",
+        tokens: ["He", "drinks", "milk", "every", "day."],
+        answer: "He drinks milk every day.",
+        explain: "复现第 25 课：三单动词加 -s。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：你应该早点睡。",
+        tokens: ["You", "should", "sleep", "early."],
+        distractors: ["should to"],
+        answer: "You should sleep early."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：你不该熬夜。",
+        tokens: ["You", "shouldn't", "sleep", "late."],
+        distractors: ["don't should"],
+        answer: "You shouldn't sleep late."
+      },
+      {
+        // R8 跨课复现（L14 can）：家族第三员收口
+        promptZh: "先复习一小步——第 14 课学过：我会游泳。",
+        tokens: ["I", "can", "swim."],
+        distractors: ["can to"],
+        answer: "I can swim."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：我现在该休息一下吗？",
+        tokens: ["Should", "I", "rest", "now?"],
+        distractors: ["Do"],
+        answer: "Should I rest now?"
+      }
+    ],
+    recall: {
+      promptZh: "期末复习夜，妈妈让你早点睡。凭记忆，写出那句建议的英文。",
+      intentZh: "你应该早点睡。",
+      answer: "You should sleep early.",
+      noteZh: "should 进家族：后面动词穿原样；口气是「应该」。"
+    },
+    huntCaseIds: ["hunt-advice-note"]
+  },
+  {
+    // ── 第六批 · L48 if 真实条件句（负迁移核心课）：if 里说现在（It rains），主句说将来（will stay）──
+    id: "lesson-48-if-rain",
+    number: 48,
+    title: "如果下雨就不去",
+    grammarLabel: "条件句 · if 里说现在",
+    episode: "小美的一天 ㊽",
+    scene: "city",
+    cover: cover8,
+    sceneSetupZh: "周末早晨，小美趴在窗边看天色，妈妈在厨房问她今天怎么安排。",
+    dialogueEn: "What will you do today?",
+    dialogueZh: "妈妈在厨房问她。",
+    intentZh: "如果下雨，我就待在家。",
+    targetSentence: "If it rains, I will stay at home.",
+    blocks: [
+      { text: "If it rains", role: "如果下雨（说现在）" },
+      { text: "I will stay", role: "我就待着（说将来）" },
+      { text: "at home", role: "在家" }
+    ],
+    oneLineRule: "说「如果…就…」：if 里说现在（If it rains），主句说将来（I will stay）——if 里不用 will，「如果的路面用现在时铺」。",
+    examples: [
+      { en: "If it rains, I will stay at home.", zh: "如果下雨，我就待在家。" },
+      { en: "If it rains, I won't go out.", zh: "如果下雨，我就不出门。" },
+      { en: "Will you go out if it rains?", zh: "如果下雨，你还出门吗？" },
+      { en: "If it is sunny, we will play outside.", zh: "如果天晴，我们就去外面玩。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What will you do today?", zh: "妈妈在厨房问她。" },
+      { who: "npc", en: "The sky looks dark.", zh: "她看了眼窗外：天阴着呢。" },
+      { who: "me", en: "If it rains, I will stay at home.", zh: "轮到你说了——如果下雨就待在家。" }
+    ],
+    contrast: [
+      {
+        wrong: "If it will rain, I will stay at home.",
+        wrongMark: "will rain",
+        correct: "If it rains, I will stay at home.",
+        whyZh: "if 里说现在，不用 will：If it rains——「如果的路面用现在时铺」。中文说「如果**会**下雨」，英语的 if 里不带 will。"
+      },
+      {
+        wrong: "If it rains, I stay at home.",
+        wrongMark: "stay",
+        correct: "If it rains, I will stay at home.",
+        whyZh: "「就…」说的是将来，要带上 will：I will stay——前半句现在，后半句将来。"
+      },
+      {
+        wrong: "Because it rains, I stay at home.",
+        wrongMark: null,
+        correct: "If it rains, I will stay at home.",
+        bothRight: true,
+        whyZh: "两句都对——if 管「还没发生」（如果下雨，就待着）；because 管「已经这样」（因为下雨，所以待着）。两套连词，各管一摊。"
+      },
+      {
+        wrong: "If it rain, I will stay.",
+        wrongMark: "rain",
+        correct: "If it rains, I will stay.",
+        whyZh: "it 是三单，动词加 -s：it rains——if 里的小句子也要站直。"
+      },
+      {
+        wrong: "If rains, I will stay.",
+        wrongMark: null,
+        correct: "If it rains, I will stay.",
+        whyZh: "if 里要有完整的小句子（谁 + 动作）：it rains——主语 it 不能丢。"
+      },
+      {
+        wrong: "If it rains, I will staying at home.",
+        wrongMark: "staying",
+        correct: "If it rains, I will stay at home.",
+        whyZh: "will 后面穿原样：will stay——staying 的 -ing 要脱下来。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "If it rains, I will stay at home.", zh: "如果下雨，我就待在家。" },
+      { label: "否定", en: "If it rains, I won't go out.", zh: "如果下雨，我就不出门。", noteZh: "won't = will not：将来的「不」。" },
+      { label: "疑问", en: "Will you go out if it rains?", zh: "如果下雨，你还出门吗？", noteZh: "条件句也可以挂后面：Will you go out if it rains？" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说不下雨就出去玩", en: "If it is sunny, we will play outside.", zh: "如果天晴，我们就去外面玩。" },
+      { sceneZh: "说下雨就不出门", en: "If it rains, I won't go out.", zh: "如果下雨，我就不出门。" },
+      { sceneZh: "问对方下雨还出不出门", en: "Will you go out if it rains?", zh: "如果下雨，你还出门吗？" }
+    ],
+    deepDive: {
+      title: "if 里说现在，主句说将来",
+      paragraphs: [
+        "中文说「如果明天**会**下雨，我就不去」，那个「会」字会跟着跑进英语——\*If it will rain。不对。英语的 if 里说现在：If it rains。",
+        "为什么？if 里的「下雨」是假设；假设还没发生，就按「现在的事实」来铺——这是英语的老习惯，记住句子形状就行：if + it rains（现在），I will stay（将来）。",
+        "「如果的路面，用现在时铺」——if 是路面，铺好了，主句的车（will）才开得过去。",
+        "和 because 对照着记：Because it rains, I stay.（因为下雨，所以我待着——事情已经在发生）/ If it rains, I will stay.（如果下雨就待着——还没发生）。if 管「如果」，because 管「因为」。"
+      ]
+    },
+    summary: {
+      rule: "如果…就…：if 里说现在（If it rains），主句说将来（I will stay）——if 里不用 will。",
+      points: [
+        "If it rains, I will stay at home. —— 现在 + 将来",
+        "If it rains, I won't go out. —— 将来的「不」用 won't",
+        "Will you go out if it rains? —— 条件句挂后面也行"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：如果下雨，我就待在家。",
+        before: "If it",
+        after: ", I will stay at home.",
+        options: ["rains", "will rain", "raining"],
+        answer: "rains",
+        explain: "if 里说现在：it rains——不用 will。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：如果下雨，我就待在家。",
+        tokens: ["If", "it", "rains,", "I", "will", "stay", "at", "home."],
+        answer: "If it rains, I will stay at home.",
+        explain: "前半现在（it rains）、后半将来（will stay）。"
+      },
+      {
+        // R8 跨课复现：第 12 课（will）原句——把天气句装进 if
+        kind: "arrange",
+        promptZh: "先复习一小步——第 12 课学过：明天会下雨。",
+        tokens: ["It", "will", "rain."],
+        answer: "It will rain.",
+        explain: "复现第 12 课：will + 原形。放进 if 里它要变：If it rains…"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["If", "it", "will", "rain,", "I", "will", "stay."],
+        wrongToken: "will",
+        answer: "will",
+        correctionZh: "if 里说现在：去掉第一个 will——If it rains, I will stay。",
+        explain: "if 里不用 will。"
+      },
+      {
+        // R8 跨课复现：第 20 课（because）句式对照
+        kind: "arrange",
+        promptZh: "再对照一句——第 20 课学过：因为下雨，我待在家。",
+        tokens: ["Because", "it", "rains,", "I", "stay", "at", "home."],
+        answer: "Because it rains, I stay at home.",
+        explain: "复现第 20 课：because 管「已经这样」——和 if 管「如果」对撞记。"
+      },
+      {
+        // R9 变形/替换：把陈述句改问句（条件句挂后面）
+        kind: "replace",
+        promptZh: "句子变身：「If it rains, I will stay at home.」想问对方——「如果下雨，你还出门吗」，最前面换成什么？",
+        replaceBase: "If it rains, I will stay at home.",
+        replaceTarget: "把「我就待在家」换成「你还出门吗」",
+        options: ["Will you go out", "Do you go out", "Are you go out"],
+        answer: "Will you go out",
+        explain: "问将来的打算用 Will 开头：Will you go out if it rains？"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：如果下雨，我就待在家。",
+        tokens: ["If", "it", "rains,", "I", "will", "stay", "at", "home."],
+        distractors: ["will rains"],
+        answer: "If it rains, I will stay at home."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：如果下雨，我就不出门。",
+        tokens: ["If", "it", "rains,", "I", "won't", "go", "out."],
+        distractors: ["will not go out"],
+        answer: "If it rains, I won't go out."
+      },
+      {
+        // R8 跨课复现（L12）：天气原句
+        promptZh: "先复习一小步——第 12 课学过：明天会下雨。",
+        tokens: ["It", "will", "rain."],
+        distractors: ["rains"],
+        answer: "It will rain."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：如果下雨，你还出门吗？",
+        tokens: ["Will", "you", "go", "out", "if", "it", "rains?"],
+        distractors: ["Do"],
+        answer: "Will you go out if it rains?"
+      }
+    ],
+    recall: {
+      promptZh: "周末早晨看天色，妈妈问你今天怎么安排。凭记忆，写出你那句英文。",
+      intentZh: "如果下雨，我就待在家。",
+      answer: "If it rains, I will stay at home.",
+      noteZh: "if 里说现在（rains），主句说将来（will stay）。"
+    },
+    huntCaseIds: ["hunt-weather-plan"]
+  },
+  {
+    // ── 第六批 · L49 收口课（零新知全复现）：建议 + 条件同台——You should… if…──
+    id: "lesson-49-advice-if",
+    number: 49,
+    title: "你应该试试",
+    grammarLabel: "收口 · 建议 + 条件",
+    episode: "小美的一天 ㊾",
+    scene: "campus",
+    cover: cover15,
+    sceneSetupZh: "出门前妈妈叮嘱小美带上伞，到学校她把这句提醒转告给同学。",
+    dialogueEn: "Any tips for the weekend?",
+    dialogueZh: "同学在班群里问。",
+    intentZh: "如果下雨，你应该带把伞。",
+    targetSentence: "You should take an umbrella if it rains.",
+    blocks: [
+      { text: "You should take", role: "你应该带（建议先走）" },
+      { text: "an umbrella", role: "一把伞" },
+      { text: "if it rains", role: "如果下雨（条件挂后面）" }
+    ],
+    oneLineRule: "建议加条件：主建议用 should（You should take an umbrella），条件用 if 挂后面（if it rains）——should 不垫板、if 里说现在。",
+    examples: [
+      { en: "You should take an umbrella if it rains.", zh: "如果下雨，你应该带把伞。" },
+      { en: "You shouldn't go out if it rains.", zh: "如果下雨，你不该出门。" },
+      { en: "Should I take an umbrella if it rains?", zh: "如果下雨，我该带伞吗？" },
+      { en: "She should sleep early if she is tired.", zh: "如果她累了，应该早点睡。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Any tips for the weekend?", zh: "同学在班群里问。" },
+      { who: "npc", en: "It looks like rain.", zh: "有人补了一句：看着要下雨。" },
+      { who: "me", en: "You should take an umbrella if it rains.", zh: "轮到你说了——如果下雨，应该带把伞。" }
+    ],
+    contrast: [
+      {
+        wrong: "You should to take an umbrella if it rains.",
+        wrongMark: "to",
+        correct: "You should take an umbrella if it rains.",
+        whyZh: "should 是家族成员，不垫板——should take（第 47 课学过）。"
+      },
+      {
+        wrong: "If it will rain, you should take an umbrella.",
+        wrongMark: "will rain",
+        correct: "If it rains, you should take an umbrella.",
+        whyZh: "if 里说现在，不用 will：If it rains（第 48 课学过）——「如果的路面用现在时铺」。"
+      },
+      {
+        wrong: "You must take an umbrella if it rains.",
+        wrongMark: null,
+        correct: "You should take an umbrella if it rains.",
+        bothRight: true,
+        whyZh: "两句都对——一句是建议（应该带伞）、一句是必须（必须带伞），口气不同。分寸没有标准答案，看你想怎么说。"
+      },
+      {
+        wrong: "Should I to go now?",
+        wrongMark: "to",
+        correct: "Should I go now?",
+        whyZh: "问句里 should 也不垫板：Should I go now？——Should 搬句首，动词照原样。"
+      },
+      {
+        wrong: "If it rain, you should stay.",
+        wrongMark: "rain",
+        correct: "If it rains, you should stay.",
+        whyZh: "it 是三单，动词加 -s：it rains——if 里的小句子也要站直。"
+      },
+      {
+        wrong: "You shouldn't to worry.",
+        wrongMark: "to",
+        correct: "You shouldn't worry.",
+        whyZh: "否定形也不垫板：shouldn't worry——「不」跟着 should 走，动词照原样。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "You should take an umbrella if it rains.", zh: "如果下雨，你应该带把伞。" },
+      { label: "否定", en: "You shouldn't go out if it rains.", zh: "如果下雨，你不该出门。", noteZh: "not 跟 should 走：shouldn't；if 尾巴照挂。" },
+      { label: "疑问", en: "Should I take an umbrella if it rains?", zh: "如果下雨，我该带伞吗？", noteZh: "Should 搬句首，if 尾巴照挂。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说下雨不该出门", en: "You shouldn't go out if it rains.", zh: "如果下雨，你不该出门。" },
+      { sceneZh: "问下雨该不该带伞", en: "Should I take an umbrella if it rains?", zh: "如果下雨，我该带伞吗？" },
+      { sceneZh: "说她累了就该早睡", en: "She should sleep early if she is tired.", zh: "如果她累了，应该早点睡。" }
+    ],
+    deepDive: {
+      title: "建议 + 条件：一句话办两件事",
+      paragraphs: [
+        "这一批你学了两样工具：should（给建议）和 if（说条件）。现在它们同台：You should take an umbrella if it rains。",
+        "组装顺序有讲究：主建议走在前面（You should take an umbrella），条件用 if 挂在后面（if it rains）——先说你要干嘛，再补一句「什么情况下」。",
+        "两个规矩同时在场：should 后面动词穿原样（不垫板）；if 里说现在（不用 will）。哪边松了都不对。",
+        "回顾这一批的三兄弟加条件句：can 能 / must 必须 / should 应该；if 管「如果」、because 管「因为」。日常对话里给建议、说条件，你现在都能接住了。"
+      ]
+    },
+    summary: {
+      rule: "建议 + 条件：主建议 You should…（不垫板）+ 条件 if…（说现在）挂后面。",
+      points: [
+        "You should take an umbrella if it rains. —— 建议先走，条件挂后",
+        "You shouldn't go out if it rains. —— 否定：not 跟 should",
+        "Should I take an umbrella if it rains? —— 问句：Should 搬句首"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：如果下雨，你应该带把伞。",
+        before: "You should",
+        after: "an umbrella if it rains.",
+        options: ["take", "to take", "taking"],
+        answer: "take",
+        explain: "should 后面动词穿原样：should take。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：如果下雨，你应该带把伞。",
+        tokens: ["You", "should", "take", "an", "umbrella", "if", "it", "rains."],
+        answer: "You should take an umbrella if it rains.",
+        explain: "建议先走（should take）、条件挂后（if it rains）。"
+      },
+      {
+        // R8 跨课复现：第 47 课（should）原句
+        kind: "arrange",
+        promptZh: "先复习一小步——第 47 课学过：你应该早点睡。",
+        tokens: ["You", "should", "sleep", "early."],
+        answer: "You should sleep early.",
+        explain: "复现第 47 课：should 后面穿原样。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["You", "should", "to", "take", "an", "umbrella."],
+        wrongToken: "to",
+        answer: "to",
+        correctionZh: "should 不垫板：去掉 to——You should take an umbrella。",
+        explain: "should 是家族成员，不垫板。"
+      },
+      {
+        // R8 跨课复现：第 48 课（if）原句
+        kind: "arrange",
+        promptZh: "再复习一句——第 48 课学过：如果下雨，我就待在家。",
+        tokens: ["If", "it", "rains,", "I", "will", "stay", "at", "home."],
+        answer: "If it rains, I will stay at home.",
+        explain: "复现第 48 课：if 里说现在，主句说将来。"
+      },
+      {
+        // R9 变形/替换：求建议（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「You should take an umbrella if it rains.」想问对方——「如果下雨，我该带伞吗」，最前面换成什么？",
+        replaceBase: "You should take an umbrella if it rains.",
+        replaceTarget: "把「你应该带」变成「我该带吗」",
+        options: ["Should I take", "Do I take", "Am I take"],
+        answer: "Should I take",
+        explain: "求建议把 Should 搬句首：Should I take an umbrella if it rains？"
+      }
+    ],
+    practice: [
+      {
+        // R8 复现（L47 型）
+        promptZh: "你想说：你应该早点睡。",
+        tokens: ["You", "should", "sleep", "early."],
+        distractors: ["should to"],
+        answer: "You should sleep early."
+      },
+      {
+        // R8 复现（L48 型）
+        promptZh: "先复习一小步——第 48 课学过：如果下雨，我就待在家。",
+        tokens: ["If", "it", "rains,", "I", "will", "stay", "at", "home."],
+        distractors: ["will rains"],
+        answer: "If it rains, I will stay at home."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：如果下雨，你不该出门。",
+        tokens: ["You", "shouldn't", "go", "out", "if", "it", "rains."],
+        distractors: ["don't should"],
+        answer: "You shouldn't go out if it rains."
+      },
+      {
+        // 全批总句
+        promptZh: "全批收官——你想说：如果下雨，你应该带把伞。",
+        tokens: ["You", "should", "take", "an", "umbrella", "if", "it", "rains."],
+        distractors: ["to take"],
+        answer: "You should take an umbrella if it rains."
+      }
+    ],
+    recall: {
+      promptZh: "出门前妈妈叮嘱你带伞，到学校你把这句提醒转告给同学。凭记忆，写出那句英文。",
+      intentZh: "如果下雨，你应该带把伞。",
+      answer: "You should take an umbrella if it rains.",
+      noteZh: "建议先走（should take），条件挂后（if it rains）。"
+    },
+    huntCaseIds: ["hunt-weekend-tip"]
   }
 ];
 

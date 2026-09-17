@@ -1775,5 +1775,680 @@ export const huntCases: HuntCase[] = [
         explanation: "you 的过去版 be 是 were。"
       }
     ]
+  },
+  {
+    // ── 第四批 · L35 话中话案件（规格：deliverables/product-strategy/prd-grammar-clauses-2026-09-14.md §4）──
+    id: "hunt-key-clue",
+    number: 44,
+    title: "门卫的字条",
+    scene: "门卫大叔留在门上的字条",
+    tokens: [
+      "Hi,", "Xiaomei!", "I", "saw", "two", "key", "on", "the", "desk.",
+      "I", "don't", "know", "where", "is", "it.",
+      "Do", "you", "know", "where", "is", "the", "key?",
+      "Please", "look", "on", "your", "bag."
+    ],
+    errors: [
+      {
+        tokenIndex: 5,
+        tag: "plural",
+        original: "key",
+        correction: "keys",
+        explanation: "two 后面是可数名词复数：two keys。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "word_order",
+        original: "is it",
+        correction: "it is",
+        explanation: "话中话要换鞋：I don't know where it is——is 退回 it 后面，不站主语前。"
+      },
+      {
+        tokenIndex: 19,
+        tag: "word_order",
+        original: "is the key",
+        correction: "the key is",
+        explanation: "Do you know 后面也是话中话：where the key is——is 退回主语后面。"
+      },
+      {
+        tokenIndex: 24,
+        tag: "preposition",
+        original: "on",
+        correction: "in",
+        explanation: "看包里面用 look in：look in your bag——in 是「在里面」，on 是「在上面」。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第四批 · L36 话中话案件（规格：prd-grammar-clauses-2026-09-14.md §4）──
+    id: "hunt-homework-guess",
+    number: 45,
+    title: "作业本上的猜测",
+    scene: "课间，小美在同桌摊开的作业本上读到的几句话",
+    tokens: [
+      "Tom", "is", "not", "here", "today.",
+      "I", "think", "he", "tired.",
+      "I", "think", "he", "at", "home", "now.",
+      "Two", "boy", "is", "playing", "football", "in", "the", "park."
+    ],
+    errors: [
+      {
+        tokenIndex: 8,
+        tag: "missing_be",
+        original: "tired",
+        correction: "is tired",
+        explanation: "「我觉得他累了」少了 is：I think he is tired——话装进 I think 后面，该有的 is 不能省。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "missing_be",
+        original: "at",
+        correction: "is at",
+        explanation: "「我觉得他在家」同样少了 is：I think he is at home。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "plural",
+        original: "boy",
+        correction: "boys",
+        explanation: "Two 后面是可数名词复数：two boys。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "主语是 Two boys（复数），be 动词用 are。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第四批 · L37 话中话案件（规格：prd-grammar-clauses-2026-09-14.md §4）──
+    id: "hunt-lost-dog",
+    number: 46,
+    title: "找狗启事",
+    scene: "小区布告栏上贴着的一张手写启事",
+    tokens: [
+      "Our", "dog", "Coco", "is", "lost.",
+      "We", "don't", "know", "where", "is", "he.",
+      "My", "sister", "think", "he", "at", "the", "school.",
+      "We", "walk", "him", "on", "eight", "every", "morning."
+    ],
+    errors: [
+      {
+        tokenIndex: 13,
+        tag: "sv_agreement",
+        original: "think",
+        correction: "thinks",
+        explanation: "主语 My sister 是三单，动词加 -s：thinks。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "word_order",
+        original: "is he",
+        correction: "he is",
+        explanation: "话中话要换鞋：We don't know where he is——is 退回 he 后面。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "missing_be",
+        original: "at",
+        correction: "is at",
+        explanation: "话里不能缺 is：My sister thinks he is at the school。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "preposition",
+        original: "on",
+        correction: "at",
+        explanation: "「在八点」用 at eight——at 管钟点，on 管某一天。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第四批 · L38 话中话案件（规格：prd-grammar-clauses-2026-09-14.md §4）──
+    id: "hunt-team-message",
+    number: 47,
+    title: "接力赛的留言",
+    scene: "接力赛前，队友留在白板上的一段话",
+    tokens: [
+      "Hi,", "this", "is", "Anna.",
+      "Lily", "say", "she", "will", "comes", "to", "the", "race.",
+      "She", "ready", "at", "eight.",
+      "I", "think", "she", "will", "not", "be", "late."
+    ],
+    errors: [
+      {
+        tokenIndex: 5,
+        tag: "sv_agreement",
+        original: "say",
+        correction: "says",
+        explanation: "主语 Lily 是三单，动词加 -s：says。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "verb_form",
+        original: "comes",
+        correction: "come",
+        explanation: "will 后面的动词穿原样：will come。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "missing_be",
+        original: "ready",
+        correction: "is ready",
+        explanation: "句子里少了 is：She is ready at eight。"
+      },
+      {
+        tokenIndex: 20,
+        tag: "word_order",
+        original: "think she will not",
+        correction: "don't think she will",
+        explanation: "「不」要搬到前面说：I don't think she will be late——英语习惯让主句替她把「不」说了。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第四批 · L39 定语从句案件（规格：prd-grammar-clauses-2026-09-14.md §4）──
+    id: "hunt-family-photo",
+    number: 48,
+    title: "一张全家福",
+    scene: "外婆相册里的一张全家福，旁边有手写的说明",
+    tokens: [
+      "This", "is", "a", "photo", "of", "my", "family.",
+      "The", "woman", "wears", "red", "is", "my", "aunt.",
+      "My", "aunt", "have", "two", "children.",
+      "My", "uncle", "tall", "and", "kind.",
+      "The", "boy", "in", "the", "left", "is", "my", "brother."
+    ],
+    errors: [
+      {
+        tokenIndex: 9,
+        tag: "fragment",
+        original: "wears",
+        correction: "who wears",
+        explanation: "两条句子直接拼在一起，缺了个钩子：「穿红衣服的女士」要说成 The woman who wears red。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "sv_agreement",
+        original: "have",
+        correction: "has",
+        explanation: "主语 My aunt 是三单，have 要变 has。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "missing_be",
+        original: "tall",
+        correction: "is tall",
+        explanation: "句子少了 is：My uncle is tall and kind。"
+      },
+      {
+        tokenIndex: 26,
+        tag: "preposition",
+        original: "in",
+        correction: "on",
+        explanation: "「在左边」用 on the left——on 管方位。"
+      }
+    ],
+    notes: [
+      { word: "aunt", zh: "姑姑 / 阿姨" },
+      { word: "uncle", zh: "叔叔 / 舅舅" },
+      { word: "family", zh: "家庭" }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第四批 · L40 定语从句案件（规格：prd-grammar-clauses-2026-09-14.md §4）──
+    id: "hunt-book-swap",
+    number: 49,
+    title: "图书交换角",
+    scene: "教室图书角贴着一张交换登记的纸条",
+    tokens: [
+      "Welcome", "to", "our", "book", "corner!",
+      "This", "is", "the", "book", "which", "I", "read", "it.",
+      "My", "sister", "want", "the", "books", "which", "I", "read.",
+      "They", "are", "on", "the", "box", "near", "the", "door.",
+      "Two", "books", "very", "good."
+    ],
+    errors: [
+      {
+        tokenIndex: 12,
+        tag: "fragment",
+        original: "it.",
+        correction: "去掉 it",
+        explanation: "which 已经替它站好了位置，尾巴里不许再有 it：the book which I read。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "sv_agreement",
+        original: "want",
+        correction: "wants",
+        explanation: "主语 My sister 是三单，want 要加 -s。"
+      },
+      {
+        tokenIndex: 23,
+        tag: "preposition",
+        original: "on",
+        correction: "in",
+        explanation: "书在箱子里面用 in：in the box。"
+      },
+      {
+        tokenIndex: 31,
+        tag: "missing_be",
+        original: "very",
+        correction: "are very",
+        explanation: "句子少了 are：Two books are very good——主语是两本，用 are。"
+      }
+    ],
+    notes: [{ word: "corner", zh: "角落" }],
+    reviewed: true
+  },
+  {
+    // ── 第四批 · L41 收口案件（规格：prd-grammar-clauses-2026-09-14.md §4；开放问题①默认：不用双谓语）──
+    id: "hunt-class-intro",
+    number: 50,
+    title: "班级介绍卡",
+    scene: "新老师贴在教室墙上的一张班级介绍卡",
+    tokens: [
+      "Welcome", "to", "our", "class!",
+      "I", "know", "where", "is", "he.",
+      "The", "boy", "wears", "glasses", "is", "Tom.",
+      "He", "live", "near", "the", "school.",
+      "See", "you", "in", "the", "school", "gate!"
+    ],
+    errors: [
+      {
+        tokenIndex: 7,
+        tag: "word_order",
+        original: "is he",
+        correction: "he is",
+        explanation: "话中话要换鞋：I know where he is——is 退回 he 后面。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "fragment",
+        original: "wears",
+        correction: "who wears",
+        explanation: "两条句子直接拼在一起，缺了个钩子：The boy who wears glasses is Tom。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "sv_agreement",
+        original: "live",
+        correction: "lives",
+        explanation: "主语 He 是三单，live 要加 -s：lives。"
+      },
+      {
+        tokenIndex: 22,
+        tag: "preposition",
+        original: "in",
+        correction: "at",
+        explanation: "在学校门口用 at：at the school gate——at 管具体的点（门、车站）。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第五批 · L42 案件（规格：prd-grammar-infinitive-2026-09-16.md §6；-ing 名字版首案）──
+    id: "hunt-interest-day",
+    number: 51,
+    title: "兴趣日打卡卡",
+    scene: "小美贴在书桌前的一张兴趣日打卡卡",
+    tokens: [
+      "My", "weekend", "card:",
+      "I", "like", "read", "books.",
+      "My", "sister", "reading", "a", "book", "now.",
+      "She", "likes", "dog", "and", "cats.",
+      "Does", "you", "like", "reading?"
+    ],
+    errors: [
+      {
+        tokenIndex: 5,
+        tag: "verb_form",
+        original: "read",
+        correction: "reading",
+        explanation: "喜欢的是「做的事」——动词要换名字版：I like reading books。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "missing_be",
+        original: "reading",
+        correction: "is reading",
+        explanation: "「正看着呢」少了 is：My sister is reading a book now——有 be 搭着才是「正在做」。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "plural",
+        original: "dog",
+        correction: "dogs",
+        explanation: "两个以上要加 s：She likes dogs and cats。"
+      },
+      {
+        tokenIndex: 18,
+        tag: "sv_agreement",
+        original: "Does",
+        correction: "Do",
+        explanation: "问「你」用 do：Do you like reading？Does 是给 he / she / it 的。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第五批 · L43 案件（规格：prd-grammar-infinitive-2026-09-16.md §6；-ing 当主角）──
+    id: "hunt-swim-day",
+    number: 52,
+    title: "泳池边的光荣榜",
+    scene: "夏令营泳池边贴出的一张光荣榜",
+    tokens: [
+      "Swim", "is", "fun.",
+      "Everyone", "says", "swimming", "fun.",
+      "My", "sister", "swim", "fast.",
+      "We", "meet", "in", "the", "station.",
+      "See", "you", "there!"
+    ],
+    errors: [
+      {
+        tokenIndex: 0,
+        tag: "verb_form",
+        original: "Swim",
+        correction: "Swimming",
+        explanation: "「游泳」这件事当主角，动词要上名字版：Swimming is fun。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "missing_be",
+        original: "fun",
+        correction: "is fun",
+        explanation: "「大家都说游泳好玩」少了 is：Everyone says swimming is fun。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "sv_agreement",
+        original: "swim",
+        correction: "swims",
+        explanation: "主语 My sister 是三单，swim 要加 -s：swims。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "preposition",
+        original: "in",
+        correction: "at",
+        explanation: "碰头的地方用 at：at the station——at 管具体的点。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第五批 · L44 案件（规格：prd-grammar-infinitive-2026-09-16.md §6；目的 to 首案，依赖 P0-c 词表）──
+    id: "hunt-shop-note",
+    number: 53,
+    title: "冰箱上的便条",
+    scene: "家里冰箱门上贴着一张妈妈留的便条",
+    tokens: [
+      "Hi,", "Xiaomei!",
+      "I", "go", "the", "shop", "buy", "milk.",
+      "Two", "egg", "in", "the", "fridge,",
+      "and", "I", "want", "buy", "bread", "too."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "preposition",
+        original: "the",
+        correction: "to the",
+        explanation: "「去商店」中间要垫 to：go to the shop——to 带路到地方。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "verb_form",
+        original: "buy",
+        correction: "to buy",
+        explanation: "两个动作不能硬撞：去商店「买」牛奶，中间再垫一块 to——go to the shop to buy milk。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "plural",
+        original: "egg",
+        correction: "eggs",
+        explanation: "Two 后面是可数名词复数：Two eggs in the fridge。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "verb_form",
+        original: "buy",
+        correction: "to buy",
+        explanation: "want 的门口有垫板：want to buy——想做某事，中间垫 to。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第五批 · L45 案件（规格：prd-grammar-infinitive-2026-09-16.md §6；enjoy 门只开一扇）──
+    id: "hunt-club-poster",
+    number: 54,
+    title: "社团招新海报",
+    scene: "美术社团贴在走廊上的一张招新海报",
+    tokens: [
+      "Art", "Club", "is", "fun!",
+      "We", "enjoy", "to", "draw", "pictures.",
+      "Lily", "draw", "very", "well.",
+      "Two", "picture", "are", "on", "the", "wall."
+    ],
+    errors: [
+      {
+        tokenIndex: 6,
+        tag: "verb_form",
+        original: "to",
+        correction: "去掉 to",
+        explanation: "enjoy 的门只开一扇，它不认 to——enjoy drawing：只认名字版。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "verb_form",
+        original: "draw",
+        correction: "drawing",
+        explanation: "名字版要穿上：enjoy drawing——喜欢「画画」这件事，动词换名字牌。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "sv_agreement",
+        original: "draw",
+        correction: "draws",
+        explanation: "主语 Lily 是三单，draw 要加 -s：draws。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "plural",
+        original: "picture",
+        correction: "pictures",
+        explanation: "Two 后面是可数名词复数：Two pictures are on the wall。"
+      }
+    ],
+    notes: [{ word: "enjoy", zh: "享受 / 很喜欢" }],
+    reviewed: true
+  },
+  {
+    // ── 第五批 · L46 收官案件（规格：prd-grammar-infinitive-2026-09-16.md §6；两搭档混排收口）──
+    id: "hunt-partner-show",
+    number: 55,
+    title: "班会节目单",
+    scene: "期末班会贴在教室后面的节目单",
+    tokens: [
+      "Show", "time", "in", "Monday!",
+      "I", "like", "read", "stories.",
+      "My", "classmate", "want", "to", "watch", "a", "show.",
+      "We", "go", "to", "the", "hall", "watch", "it."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "preposition",
+        original: "in",
+        correction: "on",
+        explanation: "「在周一」用 on：on Monday——on 管某一天（第 6 课学过）。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "verb_form",
+        original: "read",
+        correction: "reading",
+        explanation: "like 后面跟着「做的事」，要用名字版：like reading stories。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "sv_agreement",
+        original: "want",
+        correction: "wants",
+        explanation: "主语 My classmate 是三单，want 要加 -s：wants。"
+      },
+      {
+        tokenIndex: 20,
+        tag: "verb_form",
+        original: "watch",
+        correction: "to watch",
+        explanation: "两个动作要垫板缝：去礼堂「看」演出，中间垫一块 to——go to the hall to watch it。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第六批 · L47 案件（规格：prd-grammar-s5-pragmatics-2026-09-17.md §6；should 家族首案）──
+    id: "hunt-advice-note",
+    number: 56,
+    title: "同桌的便签",
+    scene: "同桌留在一张小便签上的话，压在课桌角",
+    tokens: [
+      "You", "should", "to", "sleep", "early.",
+      "I", "should", "rests", "more.",
+      "My", "mother", "give", "me", "some", "advices.",
+      "I", "feel", "tired", "today."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "verb_form",
+        original: "to",
+        correction: "去掉 to",
+        explanation: "should 是家族成员，不垫板——should sleep early。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "verb_form",
+        original: "rests",
+        correction: "rest",
+        explanation: "家族里动词穿原样：should rest——rests 的三单尾巴要脱下来。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "sv_agreement",
+        original: "give",
+        correction: "gives",
+        explanation: "主语 My mother 是三单，动词加 -s：gives。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "plural",
+        original: "advices",
+        correction: "advice",
+        explanation: "advice 不可数，永远不加 s：some advice。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第六批 · L48 案件（规格：prd-grammar-s5-pragmatics-2026-09-17.md §6；if+will 负迁移首案）──
+    id: "hunt-weather-plan",
+    number: 57,
+    title: "周末计划单",
+    scene: "教室后墙贴着的周末活动计划单",
+    tokens: [
+      "Weekend", "plan:",
+      "If", "it", "will", "rain,", "we", "will", "stay", "at", "home.",
+      "We", "will", "stays", "together",
+      "and", "take", "two", "umbrella.",
+      "See", "you", "in", "Sunday", "morning!"
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "verb_form",
+        original: "will",
+        correction: "去掉 will",
+        explanation: "if 里说现在，不用 will：If it rains——「如果的路面用现在时铺」。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "verb_form",
+        original: "stays",
+        correction: "stay",
+        explanation: "will 后面穿原样：will stay——stays 的三单尾巴要脱下来。"
+      },
+      {
+        tokenIndex: 18,
+        tag: "plural",
+        original: "umbrella",
+        correction: "umbrellas",
+        explanation: "two 后面是可数名词复数：two umbrellas。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "preposition",
+        original: "in",
+        correction: "on",
+        explanation: "「在周日早上」用 on：on Sunday morning——on 管某一天（第 6 课 / 第 18 课学过）。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第六批 · L49 收官案件（规格：prd-grammar-s5-pragmatics-2026-09-17.md §6；建议+条件混排收口）──
+    id: "hunt-weekend-tip",
+    number: 58,
+    title: "班群消息",
+    scene: "班级群里发的一条温馨提示",
+    tokens: [
+      "Hi,", "classmates!",
+      "You", "should", "to", "bring", "an", "umbrella.",
+      "If", "it", "will", "snow,", "stay", "at", "home.",
+      "Two", "umbrella", "are", "at", "the", "door.",
+      "See", "you", "on", "the", "morning!"
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "verb_form",
+        original: "to",
+        correction: "去掉 to",
+        explanation: "should 是家族成员，不垫板——should bring an umbrella。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "verb_form",
+        original: "will",
+        correction: "去掉 will",
+        explanation: "if 里说现在，不用 will：If it snows——「如果的路面用现在时铺」。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "plural",
+        original: "umbrella",
+        correction: "umbrellas",
+        explanation: "Two 后面是可数名词复数：Two umbrellas are at the door。"
+      },
+      {
+        tokenIndex: 23,
+        tag: "preposition",
+        original: "on",
+        correction: "in",
+        explanation: "「在早上」用 in：in the morning——in 管一天里的时段（第 18 课学过）。"
+      }
+    ],
+    notes: [{ word: "tip", zh: "提示" }],
+    reviewed: true
   }
 ];

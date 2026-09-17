@@ -296,8 +296,14 @@ export interface LanguageGate {
   /** NPC 的英文台词与中文对照。 */
   npcLine: string;
   npcLineZh: string;
-  /** 中文意图（"告诉她你从北京来，昨晚到的"）。 */
+  /** 中文意图（门内任务指令："告诉她你从北京来，昨晚到的"）。 */
   zhIntent: string;
+  /**
+   * 学完能说什么（门外能力声明，PRD-learning-goal-visibility FR-3）：
+   * 统一句式「说清/讲清/问清『…』」，用于地图关卡行与门内「本关学会」。
+   * 与 zhIntent 分离：任务句与能力句是两种语域。
+   */
+  canDo: string;
   /** 期望句式（结构描述，如 "I + 过去式 + …"）。 */
   requiredPattern: string;
   sampleAnswer: string;
@@ -534,6 +540,8 @@ export interface LessonContrast {
   wrongMark?: string | null;
   correct: string;
   whyZh: string;
+  /** 双正解条（L36 that 可选件）：两句都对——选哪句都判对，揭示时两句并排展示。 */
+  bothRight?: boolean;
 }
 
 /** 句式变体：肯定 / 否定 / 疑问三种口气。 */
