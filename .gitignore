@@ -6,3 +6,13 @@ src-tauri/target/
 *.log
 .workbuddy/
 src-tauri/gen/
+
+# 临时验证/过程产物（脚本输出与浏览器会话快照，勿提交）
+.playwright-cli/
+scripts/smoke-*.png
+/gate-v1-*.png
+/theme-art-preview-*.png
+/*-preview*.png
+
+# 同步备份（含个人学习数据，勿提交）
+deliverables/sync/
