@@ -13,6 +13,9 @@ scripts/smoke-*.png
 /gate-v1-*.png
 /theme-art-preview-*.png
 /*-preview*.png
+/goal-visibility-*.png
+/next-gate-*.png
+/settle-with-*.png
 
 # 同步备份（含个人学习数据，勿提交）
 deliverables/sync/
