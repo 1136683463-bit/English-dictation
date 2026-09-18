@@ -50,6 +50,16 @@ const isLessonOutputPass = (event: LessonStepResultEvent): boolean =>
   event.section === "output" && event.passed && event.stepKind.startsWith("free_type");
 
 /**
+ * W0 口径修复：去重键优先用事件携带的句面哈希（sentenceHash）。
+ * 此前只用「课 + 题序 + 时间戳（分钟）」近似，同一句隔天重练会被重复计数；
+ * 老事件没有哈希时回退旧键，历史数据不被追溯改写。
+ */
+const lessonOutputKey = (event: LessonStepResultEvent): string =>
+  event.sentenceHash
+    ? `lesson:#${event.sentenceHash}`
+    : `lesson:${event.lessonId}:${event.stepIndex}:${event.ts.slice(0, 16)}`;
+
+/**
  * 计算每周有效输出句数（含空周省略——只返回有产出的周）。
  * weeks 上限参数用于看板（如最近 8 周）；不传返回全部。
  */
@@ -60,8 +70,7 @@ export const computeWeeklyEffectiveOutput = (
   // 按周收集去重句集：weekStart -> Set<来源|归一化句>
   const buckets = new Map<string, Set<string>>();
 
-  // ① 课程产出段：事件本身不带句子原文，lesson_step_result 的产出粒度是「一次通过」。
-  //    事件负载无句面，按 lessonId+stepIndex+ts 近似去重（同一课的同一题在同一分钟内重复通过只计一次）。
+  // ① 课程产出段：按句面哈希去重（新的写入侧已带 sentenceHash）。
   for (const event of listGrammarEvents()) {
     if (event.kind !== "lesson_step_result") continue;
     if (!isLessonOutputPass(event)) continue;
@@ -69,7 +78,7 @@ export const computeWeeklyEffectiveOutput = (
     if (!ts) continue;
     const weekStart = weekStartKeyOf(ts);
     const bucket = buckets.get(weekStart) ?? new Set<string>();
-    bucket.add(`lesson:${event.lessonId}:${event.stepIndex}:${event.ts.slice(0, 16)}`);
+    bucket.add(lessonOutputKey(event));
     buckets.set(weekStart, bucket);
   }
 

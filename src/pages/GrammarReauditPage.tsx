@@ -1,5 +1,5 @@
 import { CheckCircle2, Lock } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
@@ -52,6 +52,8 @@ export default function GrammarReauditPage() {
   const [ambushAttempts, setAmbushAttempts] = useState(0);
   const [ambushDone, setAmbushDone] = useState(false);
   const [startedAt] = useState(() => Date.now());
+  /** W0 补齐：关 3 进入事件——此前关 3 只有完成态、没有进入事件，到达率在数据上不可见。 */
+  const startedLoggedRef = useRef(false);
 
   if (!lesson) {
     return (
@@ -66,6 +68,12 @@ export default function GrammarReauditPage() {
   }
 
   const lock = getLessonStageLock(data, lessonId, 3, readCompletedAt);
+
+  // 关 3 进入埋点（W0）：未锁且未完成时记一条（StrictMode 双跑保护）。
+  if (lock.state === "unlocked" && !startedLoggedRef.current) {
+    startedLoggedRef.current = true;
+    appendGrammarEvent({ kind: "grammar_reaudit_started", lessonId, ts: nowIso() });
+  }
 
   if (lock.state === "locked") {
     return (
@@ -93,6 +101,22 @@ export default function GrammarReauditPage() {
             </p>
             <div className="lesson-stage-actions">
               <Link to="/grammar" className="primary-button">返回课程地图</Link>
+              {/* R-B5 软入口：承接「关 3 做完然后呢」——不做按钮，只一行文本链。 */}
+              <Link
+                to={`/grammar/boost/${lesson.id}?from=reaudit`}
+                className="ghost-link"
+                onClick={() =>
+                  appendGrammarEvent({
+                    kind: "grammar_boost_offered",
+                    lessonId: lesson.id,
+                    entryPoint: "reaudit",
+                    recommendedTier: 3,
+                    ts: nowIso()
+                  })
+                }
+              >
+                这一课还能：趁热练一遍
+              </Link>
             </div>
           </div>
         </section>
@@ -236,11 +260,13 @@ export default function GrammarReauditPage() {
             {activeCase.tokens.map((token, ti) => {
               const isFound = playState.found.includes(ti);
               const isSelected = selectedToken === ti;
+              // 2026-09-17 排版修复：类名对齐侦探页词块三态（found / inspecting / idle），
+              // 样式见 styles.css 的 .hunt-token 强化规则（原先 selected 类无对应规则）。
               return (
                 <button
                   type="button"
                   key={ti}
-                  className={`hunt-token${isFound ? " found" : ""}${isSelected ? " selected" : ""}`}
+                  className={isFound ? "hunt-token found" : isSelected ? "hunt-token inspecting" : "hunt-token idle"}
                   onClick={() => pickToken(ti)}
                   disabled={playState.settled}
                 >

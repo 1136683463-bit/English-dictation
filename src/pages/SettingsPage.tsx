@@ -24,6 +24,7 @@ import AppSelect from "../components/AppSelect";
 import VoicePicker from "../components/VoicePicker";
 import { getDictionaryStats } from "../services/dictionaryService";
 import { exportAnkiCsv, exportJson, exportMarkdown } from "../services/exportService";
+import { clearBoostAiCache } from "../services/grammarBoostAiService";
 import { testAdventureProviderConnection } from "../services/adventureModelService";
 import { describeSyncError, fetchRemoteSnapshot, pushDataSnapshot } from "../services/syncService";
 import { GOAL_PRESETS } from "../services/goalPresets";
@@ -807,6 +808,21 @@ export default function SettingsPage() {
                 </div>
               </details>
               <p className="field-hint">兼容 OpenAI Chat Completions 格式的中转站。开启后冒险续章和错词故事都会请求真实模型；API Key 只保存在本机。如果模型较慢，建议在高级设置里把超时调到 120-180 秒。更改会自动保存。</p>
+              {/* 「趁热练」的 AI 批改与生成题缓存在本机（30 天或课程内容变化即失效）。
+                  换模型会自动失效；想立即重算时用这个按钮。 */}
+              <div className="settings-ai-cache-row">
+                <button
+                  className="secondary-button"
+                  type="button"
+                  onClick={() => {
+                    clearBoostAiCache();
+                    setAiTestStatus({ tone: "success", text: "已清除「趁热练」的 AI 批改与生成题缓存，下次进入会重新请求。" });
+                  }}
+                >
+                  清除趁热练 AI 缓存
+                </button>
+                <span className="field-hint">批改结果与生成的题会缓存复用；清掉后下次重新生成。</span>
+              </div>
               {aiTestStatus && (
                 <div className={`audio-message ${aiTestStatus.tone}`} role="status">
                   {aiTestStatus.text}

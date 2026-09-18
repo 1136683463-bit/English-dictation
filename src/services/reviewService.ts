@@ -8,6 +8,35 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 // R2：priority 康复摘星阈值——系统置位的卡连续 2 次 rating>=3 视为康复，自动摘除。
 export const PRIORITY_RECOVERY_THRESHOLD = 2;
 
+/**
+ * 掌握判定与写入的唯一权威（W0 口径统一，2026-09-18 PRD 前置项）。
+ *
+ * 历史上 mastered 有两处独立写入：① 本文件的 SM-2 达标（rating=4 且累计复习 ≥4 次）；
+ * ② 语法复习页的 free_type「连续两次输出通过」。两处各写一遍 status/masteredAt，
+ * 掌握度分布会因路径不同而漂移（见 data-audit-grammar-boost-2026-09-18 洞察 2）。
+ * 现在判定分两个判据函数、写入统一走 applyMasteredStatus。
+ */
+export const CARD_MASTERED_MIN_REVIEW_COUNT = 4;
+
+export const isMasteredBySpacedRepetition = (rating: Rating, nextReviewCount: number): boolean =>
+  rating === 4 && nextReviewCount >= CARD_MASTERED_MIN_REVIEW_COUNT;
+
+/**
+ * 把一张卡置为 mastered（幂等；已在 mastered 时保留原 masteredAt）。
+ * 两条掌握路径共用此写入，保证 status 与 masteredAt 语义一致。
+ */
+export const applyMasteredStatus = (data: AppData, cardId: string): AppData => {
+  const timestamp = nowIso();
+  return {
+    ...data,
+    cards: data.cards.map((card) =>
+      card.id === cardId && card.status !== "mastered"
+        ? { ...card, status: "mastered" as const, masteredAt: card.masteredAt ?? timestamp, updatedAt: timestamp }
+        : card
+    )
+  };
+};
+
 const addMinutes = (minutes: number) => new Date(Date.now() + minutes * 60 * 1000).toISOString();
 const addDays = (days: number) => new Date(Date.now() + days * DAY_MS).toISOString();
 
@@ -450,7 +479,7 @@ export const applyReviewWithUndo = (
     ...(participatesRecovery ? { recoveryCount: recovered ? 0 : nextRecoveryCount } : {})
   };
 
-  const nextStatus = rating === 4 && nextSchedule.reviewCount >= 4 ? "mastered" : "review";
+  const nextStatus = isMasteredBySpacedRepetition(rating, nextSchedule.reviewCount) ? "mastered" : "review";
   // R2：康复摘星必须真正写入 priority:false 并清除 prioritySource。
   // R2 修复（QA 对抗发现）：lapseCount 是终身累计值，自动置位只在「本次产生新 lapse 且
   // 累计≥3」时触发；若沿用 lapseCount>=3 恒真条件，摘星后下一次复习会被历史 lapse 立即

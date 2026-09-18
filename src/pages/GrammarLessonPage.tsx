@@ -1,4 +1,4 @@
-import { ArrowLeft, CheckCircle2, Eraser, Flag, Search, Sparkles, Volume2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Eraser, Flag, Flame, Search, Sparkles, Volume2 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
@@ -19,6 +19,7 @@ import {
   detectThirdPersonMiss,
   firstMismatchIndex,
   getGrammarLesson,
+  hashGrammarSentence,
   judgeGuidedStep,
   markLessonDone,
   shuffleTokenOrder
@@ -386,6 +387,8 @@ export default function GrammarLessonPage() {
   const lessonKey = lesson?.id ?? "";
   /** R22：进课埋点去重——React 严格模式会双调用 effect，同一课只记一次。 */
   const startedLessonRef = useRef<string>("");
+  /** R-B7：结算页「趁热练」曝光只记一次（stage 切换会重渲染，防抖避免污染参与率分母）。 */
+  const settlementBoostOfferedRef = useRef(false);
   useEffect(() => {
     // R21：进课埋点——漏斗起点，每次进入课程记一条
     if (lessonKey && startedLessonRef.current !== lessonKey) {
@@ -573,7 +576,9 @@ export default function GrammarLessonPage() {
     stepKind: string,
     stepIndex: number,
     misses: number,
-    passed = true
+    passed = true,
+    /** 产出句原文（仅 output/recall 段传）：北极星按句去重要用它算句面哈希。 */
+    producedSentence?: string
   ) => {
     appendGrammarEvent({
       kind: "lesson_step_result",
@@ -583,6 +588,7 @@ export default function GrammarLessonPage() {
       stepIndex,
       attempts: misses + 1,
       passed,
+      ...(producedSentence ? { sentenceHash: hashGrammarSentence(producedSentence) } : {}),
       ts: nowIso()
     });
     if ((!passed || misses > 0) && (section === "guided" || section === "practice")) {
@@ -830,7 +836,14 @@ export default function GrammarLessonPage() {
     setOutputTokens(tokens);
     const passed = score >= OUTPUT_PASS_SCORE;
     // 用没用过提示分开记录：无提示通过才是 R04 真正要度量的「掌握」。
-    recordStepResult("output", outputHintLevel > 0 ? "free_type_hint" : "free_type", outputStep, nextAttempts - 1, passed);
+    recordStepResult(
+      "output",
+      outputHintLevel > 0 ? "free_type_hint" : "free_type",
+      outputStep,
+      nextAttempts - 1,
+      passed,
+      currentOutput.sentence
+    );
     if (passed) {
       if (outputStep < outputPlan.length - 1) {
         advanceOutputStep();
@@ -854,7 +867,14 @@ export default function GrammarLessonPage() {
     if (outputOutcome !== "idle") return;
     const nextAttempts = outputAttempts + 1;
     setOutputAttempts(nextAttempts);
-    recordStepResult("output", outputHintLevel > 0 ? "free_type_hint" : "free_type", outputStep, nextAttempts - 1, false);
+    recordStepResult(
+      "output",
+      outputHintLevel > 0 ? "free_type_hint" : "free_type",
+      outputStep,
+      nextAttempts - 1,
+      false,
+      currentOutput.sentence
+    );
     updateData((latest) =>
       addLessonMistakeSentence(latest, lesson, currentOutput.sentence, lesson.oneLineRule)
     );
@@ -877,7 +897,7 @@ export default function GrammarLessonPage() {
     const nextAttempts = recallAttempts + 1;
     setRecallAttempts(nextAttempts);
     const passed = score >= RECALL_PASS_SCORE;
-    recordStepResult("recall", "free_recall", 0, nextAttempts - 1, passed);
+    recordStepResult("recall", "free_recall", 0, nextAttempts - 1, passed, target);
     if (passed) {
       setRecallOutcome("pass");
       setRecallHint(null);
@@ -893,7 +913,7 @@ export default function GrammarLessonPage() {
   const revealRecall = () => {
     const target = lesson.recall?.answer;
     if (!target || recallOutcome !== "idle") return;
-    recordStepResult("recall", "free_recall", 0, recallAttempts, false);
+    recordStepResult("recall", "free_recall", 0, recallAttempts, false, target);
     updateData((latest) =>
       addLessonMistakeSentence(latest, lesson, target, lesson.recall?.noteZh ?? lesson.oneLineRule)
     );
@@ -1091,7 +1111,7 @@ export default function GrammarLessonPage() {
 
   return (
     <div className="page lesson-page">
-      <div className="lesson-topbar">
+      <div className="lesson-topbar lesson-topbar-sticky">
         <button type="button" className="icon-button" onClick={() => navigate("/grammar")} aria-label="返回课程地图" title="返回课程地图">
           <ArrowLeft size={17} />
         </button>
@@ -1994,16 +2014,36 @@ export default function GrammarLessonPage() {
             )}
 
             <div className="lesson-stage-actions">
+              {/* R-B5：「趁热练」是完课当下的唯一推荐位——此处情绪最高、且有"还差什么"的未闭合块。
+                  原有「去挑战 / 下一课」降为次级（仍可达），避免 4 个平级动作互相稀释。 */}
+              <Link
+                to={`/grammar/boost/${lesson.id}?tier=1&from=receipt`}
+                className="primary-button"
+                onClick={() => {
+                  if (!settlementBoostOfferedRef.current) {
+                    settlementBoostOfferedRef.current = true;
+                    appendGrammarEvent({
+                      kind: "grammar_boost_offered",
+                      lessonId: lesson.id,
+                      entryPoint: "settlement",
+                      recommendedTier: 1,
+                      ts: nowIso()
+                    });
+                  }
+                }}
+              >
+                <Flame size={16} /> 趁热再练 2 分钟
+              </Link>
               {lesson.huntCaseIds.length > 0 && stage === "practice" ? (
-                <button type="button" className="primary-button" onClick={() => gotoStage("challenge")}>
+                <button type="button" className="secondary-button" onClick={() => gotoStage("challenge")}>
                   <Sparkles size={16} /> 去挑战：找一找漏洞
                 </button>
               ) : (
-                <Link to="/grammar" className="primary-button">
+                <Link to="/grammar" className="secondary-button">
                   下一课
                 </Link>
               )}
-              <Link to="/grammar" className="secondary-button">
+              <Link to="/grammar" className="ghost-link">
                 返回课程地图
               </Link>
             </div>

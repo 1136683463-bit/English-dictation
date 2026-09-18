@@ -19,3 +19,7 @@ scripts/smoke-*.png
 
 # 同步备份（含个人学习数据，勿提交）
 deliverables/sync/
+
+# 本地产物（ZCode 会话计划与封面处理临时目录）
+.zcode/
+.covers-tmp/

@@ -18,7 +18,7 @@ import {
   type GrammarReviewCard,
   type GrammarReviewTask
 } from "../services/grammarReviewService";
-import { applyReview } from "../services/reviewService";
+import { applyMasteredStatus, applyReview } from "../services/reviewService";
 import type { Card, ReviewMode } from "../types";
 
 const reviewModeForTask = (task: GrammarReviewTask): ReviewMode =>
@@ -77,16 +77,9 @@ export default function GrammarReviewPage() {
       let next = applyReview(latest, current.card, reviewModeForTask(task), rating, task.sentence);
       // R09 Step2 新掌握口径：free_type 复习后，检查是否达「输出连续 2 次一次通过」——
       // 旧的「rating4 且 reviewCount≥4」口径对 cloze/rebuild 仍生效；free_type 卡在连续 2 次输出通过时也置 mastered。
+      // W0：写入统一走 applyMasteredStatus（掌握判定与写入的唯一权威，此前这里自己写了一遍 status/masteredAt）。
       if (task.mode === "free_type" && !revealed && isMasteredByOutput(next.reviews, current.card.id)) {
-        const stamp = nowIso();
-        next = {
-          ...next,
-          cards: next.cards.map((item) =>
-            item.id === current.card.id && item.status !== "mastered"
-              ? { ...item, status: "mastered", masteredAt: item.masteredAt ?? stamp, updatedAt: stamp }
-              : item
-          )
-        };
+        next = applyMasteredStatus(next, current.card.id);
       }
       // R06：卡首次跃迁 mastered 时上报 card_mastered——「我学会了」的正向确证（仅跃迁瞬间一次）
       const nextCard = next.cards.find((item) => item.id === current.card.id);

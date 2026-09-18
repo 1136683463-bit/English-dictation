@@ -17,10 +17,27 @@ import { nowIso } from "./storage";
  * - hunt_verdict：wrongTag=1.0（罪名归错），notError=0.5（对语法点困惑）
  * - grammar_review_result：复习失败=1.5，反复尝试后通过=0.5
  * 新近度按半衰期 7 天衰减：越久远的错越不像「当前弱点」。
+ *
+ * W0 修正（2026-09-18）：注释声明的权重此前与代码不符（复习失败按 1.0 计入）；
+ * 现按声明落地——复习失败 1.5 / 反复通过 0.5，hunt wrongTag 1.0 / notError 0.5。
  */
 
 const HALF_LIFE_DAYS = 7;
 const TOP_LIMIT = 3;
+
+/** 权重表（唯一来源，注释与代码共用同一组常量，防止再次漂移）。 */
+export const WEAK_SPOT_WEIGHTS = {
+  /** 自由输出犯错：最接近「真实使用中的短板」，权重最高。 */
+  diaryIssue: 1.5,
+  /** 复习失败（卡壳或看过答案）——说明尚未内化。 */
+  reviewLapse: 1.5,
+  /** 复习多次尝试后通过——有摩擦但最终取出。 */
+  reviewStruggle: 0.5,
+  /** 侦探里罪名归错。 */
+  huntWrongTag: 1.0,
+  /** 侦探里把没问题的词当成错（对语法点的困惑）。 */
+  huntNotError: 0.5
+} as const;
 
 const decay = (ts: string, now: number): number => {
   const time = new Date(ts).getTime();
@@ -96,7 +113,8 @@ export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpo
 
   for (const event of listGrammarEventsByKind("hunt_verdict") as HuntVerdictEvent[]) {
     if (event.verdictKind === "hit" || event.verdictKind === "alreadyFound") continue;
-    const weight = event.verdictKind === "wrongTag" ? 1.0 : 0.5;
+    const weight =
+      event.verdictKind === "wrongTag" ? WEAK_SPOT_WEIGHTS.huntWrongTag : WEAK_SPOT_WEIGHTS.huntNotError;
     let example: string | undefined;
     if (event.guessedTag) {
       const huntCase = huntCases.find((item) => item.id === event.caseId);
@@ -110,11 +128,13 @@ export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpo
     const entry = data.diaryEntries?.find((item) => item.id === event.entryId);
     const issue = entry?.issues[event.issueIndex];
     const example = issue ? `${issue.original} → ${issue.correction}` : undefined;
-    bump(event.tag, 1.5, event.ts, example, entry ? cardIdForDiary(data, entry.id) : undefined);
+    bump(event.tag, WEAK_SPOT_WEIGHTS.diaryIssue, event.ts, example, entry ? cardIdForDiary(data, entry.id) : undefined);
   }
 
   for (const event of listGrammarEventsByKind("grammar_review_result") as GrammarReviewResultEvent[]) {
     if (event.passed && event.attempts <= 1) continue;
+    // 复习没一次过：看过答案 = 尚未内化（1.5）；试几次才通过 = 有摩擦（0.5）。
+    const reviewWeight = event.passed ? WEAK_SPOT_WEIGHTS.reviewStruggle : WEAK_SPOT_WEIGHTS.reviewLapse;
     // 复习卡没有结构化罪名；可回溯来源：① diary: 卡片能通过 entry 的 issues 回溯 tag；
     // ② hunt: 卡片（R02 起）在 grammarNote 里嵌入了稳定罪名 token [tag]。推不出的不计入（诚实归因）。
     if (event.sourceId?.startsWith("diary:")) {
@@ -123,7 +143,7 @@ export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpo
       for (const issue of entry?.issues ?? []) {
         if (!issue.tag) continue;
         const example = issue.correction ? `${issue.original} → ${issue.correction}` : issue.original;
-        bump(issue.tag, 1.0, event.ts, example, event.cardId);
+        bump(issue.tag, reviewWeight, event.ts, example, event.cardId);
       }
     } else if (event.sourceId?.startsWith("hunt:")) {
       const card = data.cards.find((item) => item.id === event.cardId);
@@ -133,7 +153,7 @@ export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpo
       const tag = match?.[1] as GrammarErrorTag | undefined;
       if (tag && GRAMMAR_ERROR_TAGS.includes(tag)) {
         const example = card?.front ?? undefined;
-        bump(tag, 1.0, event.ts, example, event.cardId);
+        bump(tag, reviewWeight, event.ts, example, event.cardId);
       }
     }
   }

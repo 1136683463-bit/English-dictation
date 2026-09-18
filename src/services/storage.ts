@@ -150,6 +150,12 @@ const normalizeLessonStagesDone = (value: unknown): Record<string, number[]> => 
   return result;
 };
 
+/**
+ * 「趁热练」档位完成态归一化（R-B1）：与关卡完成态同型（1/2/3 合法值、去重、升序）。
+ * 抽成同一实现，避免两套口径各自演化。
+ */
+const normalizeLessonTiersDone = normalizeLessonStagesDone;
+
 const knownAppDataKeys = [
   "schemaVersion",
   "unitGroups",
@@ -166,6 +172,7 @@ const knownAppDataKeys = [
   "huntResults",
   "grammarLessonsDone",
   "grammarLessonStagesDone",
+  "grammarBoostsDone",
   "diaryEntries",
   "schedules",
   "dictionaryEntries",
@@ -955,6 +962,7 @@ export const migrateData = (raw: unknown): AppData => {  const parsed = typeof r
     huntResults: normalizeHuntResults(parsed.huntResults),
     grammarLessonsDone: asStringArray(parsed.grammarLessonsDone),
     grammarLessonStagesDone: normalizeLessonStagesDone(parsed.grammarLessonStagesDone),
+    grammarBoostsDone: normalizeLessonTiersDone(parsed.grammarBoostsDone),
     diaryEntries: normalizeDiaryEntries(parsed.diaryEntries),
     schedules: normalizeSchedules(parsed.schedules, cards),
     dictionaryEntries: normalizeDictionaryEntries(parsed.dictionaryEntries),

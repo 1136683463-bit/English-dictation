@@ -1,7 +1,7 @@
 import type { AiProviderSettings, AppData, DiaryCorrectionResult, DiaryEntry, DiaryIssue, GrammarErrorTag } from "../types";
 import { diaryQuestions, type DiaryQuestion as PoolQuestion } from "../data/diaryQuestions";
 import { addSentence } from "./cardService";
-import { buildAiRequestHeaders, isAiProviderConfigured, normalizeChatCompletionsUrl, readResponsePayload, requestFetch } from "./aiHttpClient";
+import { buildAiThinkingParams, isAiProviderConfigured, normalizeChatCompletionsUrl, postChatCompletion } from "./aiHttpClient";
 import { GRAMMAR_ERROR_TAGS } from "./huntService";
 import { nowIso, uid } from "./storage";
 
@@ -271,28 +271,24 @@ export const requestDiaryCorrection = async (
   const timeout = window.setTimeout(() => controller.abort(), Math.max(15000, provider.timeoutMs));
   try {
     const endpoint = normalizeChatCompletionsUrl(provider.baseUrl);
-    const buildRequest = (withResponseFormat: boolean) =>
-      requestFetch(endpoint, {
-        method: "POST",
-        headers: buildAiRequestHeaders(provider.apiKey),
-        body: JSON.stringify({
-          model: provider.model,
-          temperature: Math.min(provider.temperature, 0.4),
-          max_tokens: 900,
-          ...(withResponseFormat ? { response_format: { type: "json_object" } } : {}),
-          messages: buildCorrectionMessages(questionZh, answerEn, style)
-        }),
-        signal: controller.signal
-      });
-
-    let response = await buildRequest(true);
-    let payload = await readResponsePayload<{ choices?: Array<{ message?: { content?: string } }>; error?: { message?: string } }>(response);
-    const errorMessage = payload.error?.message || `批改请求失败：${response.status}`;
-    if (!response.ok && response.status === 400 && /response.?format|json.?object|unsupported|不支持/i.test(errorMessage)) {
-      response = await buildRequest(false);
-      payload = await readResponsePayload(response);
+    const { response, json: payload } = await postChatCompletion<{
+      choices?: Array<{ message?: { content?: string } }>;
+      error?: { message?: string };
+    }>(
+      endpoint,
+      provider.apiKey,
+      (withOptionalFields) => ({
+        model: provider.model,
+        temperature: Math.min(provider.temperature, 0.4),
+        max_tokens: 900,
+        ...(withOptionalFields ? { response_format: { type: "json_object" }, ...buildAiThinkingParams() } : {}),
+        messages: buildCorrectionMessages(questionZh, answerEn, style)
+      }),
+      controller.signal
+    );
+    if (!response.ok) {
+      throw new Error(payload.error?.message || `批改请求失败：${response.status}`);
     }
-    if (!response.ok) throw new Error(errorMessage);
 
     const content = payload.choices?.[0]?.message?.content ?? "";
     const parsed = extractJsonObject(content);

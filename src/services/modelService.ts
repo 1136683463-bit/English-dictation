@@ -1,6 +1,6 @@
 import type { AiProviderSettings } from "../types";
 import type { GenerateStructuredMistakeStoryInput, StructuredMistakeStoryResult } from "./aiService";
-import { buildAiRequestHeaders, describeModelRequestError, isAiProviderConfigured, normalizeChatCompletionsUrl, readResponsePayload, requestFetch } from "./aiHttpClient";
+import { buildAiThinkingParams, describeModelRequestError, isAiProviderConfigured, normalizeChatCompletionsUrl, postChatCompletion } from "./aiHttpClient";
 
 interface ChatCompletionResponse {
   choices?: Array<{
@@ -107,23 +107,22 @@ export const generateStructuredMistakeStoryWithModel = async (
   }, provider.timeoutMs);
 
   try {
-    const response = await requestFetch(normalizeChatCompletionsUrl(provider.baseUrl), {
-      method: "POST",
-      headers: buildAiRequestHeaders(provider.apiKey),
-      body: JSON.stringify({
+    const { response, json } = await postChatCompletion<ChatCompletionResponse>(
+      normalizeChatCompletionsUrl(provider.baseUrl),
+      provider.apiKey,
+      (withOptionalFields) => ({
         model: provider.model,
         temperature: provider.temperature,
         max_tokens: maxTokensForLength(input.length),
-        response_format: { type: "json_object" },
+        ...(withOptionalFields ? { response_format: { type: "json_object" }, ...buildAiThinkingParams() } : {}),
         messages: [
           { role: "system", content: buildSystemPrompt() },
           { role: "user", content: buildUserPrompt(input) }
         ]
       }),
-      signal: controller.signal
-    });
+      controller.signal
+    );
 
-    const json = await readResponsePayload<ChatCompletionResponse>(response);
     if (!response.ok) {
       throw new Error(json.error?.message || `模型请求失败：${response.status}`);
     }
@@ -198,14 +197,14 @@ export const generateWordExplanationWithModel = async (
   }, provider.timeoutMs);
 
   try {
-    const response = await requestFetch(normalizeChatCompletionsUrl(provider.baseUrl), {
-      method: "POST",
-      headers: buildAiRequestHeaders(provider.apiKey),
-      body: JSON.stringify({
+    const { response, json } = await postChatCompletion<ChatCompletionResponse>(
+      normalizeChatCompletionsUrl(provider.baseUrl),
+      provider.apiKey,
+      (withOptionalFields) => ({
         model: provider.model,
         temperature: provider.temperature,
         max_tokens: 400,
-        response_format: { type: "json_object" },
+        ...(withOptionalFields ? { response_format: { type: "json_object" }, ...buildAiThinkingParams() } : {}),
         messages: [
           { role: "system", content: buildWordExplanationSystemPrompt() },
           {
@@ -219,10 +218,9 @@ export const generateWordExplanationWithModel = async (
           }
         ]
       }),
-      signal: controller.signal
-    });
+      controller.signal
+    );
 
-    const json = await readResponsePayload<ChatCompletionResponse>(response);
     if (!response.ok) {
       throw new Error(json.error?.message || `模型请求失败：${response.status}`);
     }

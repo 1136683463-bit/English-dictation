@@ -1,6 +1,6 @@
 import type { AdventureChoice, AdventureLevel, AdventureNode, AdventureTemplate, AdventureVocabulary, AiProviderSettings } from "../types";
 import { splitAdventureSentences } from "./adventureReaderService";
-import { buildAiRequestHeaders, describeModelRequestError, isAiProviderConfigured, normalizeChatCompletionsUrl, readResponsePayload, reassembleStreamText, requestFetch } from "./aiHttpClient";
+import { buildAiRequestHeaders, buildAiThinkingParams, describeModelRequestError, isAiProviderConfigured, normalizeChatCompletionsUrl, postChatCompletion, readResponsePayload, reassembleStreamText, requestFetch } from "./aiHttpClient";
 
 export { isAiProviderConfigured };
 
@@ -454,28 +454,17 @@ const requestModelJson = async (
 
   try {
     const endpoint = normalizeChatCompletionsUrl(provider.baseUrl);
-    const request = (withResponseFormat: boolean) => requestFetch(endpoint, {
-      method: "POST",
-      headers: buildAiRequestHeaders(provider.apiKey),
-      body: JSON.stringify({
-        model: provider.model,
-        temperature: provider.temperature,
-        max_tokens: maxTokens,
-        ...(withResponseFormat ? { response_format: { type: "json_object" } } : {}),
-        messages
-      }),
-      signal: controller.signal
+    const buildBody = (withOptionalFields: boolean) => ({
+      model: provider.model,
+      temperature: provider.temperature,
+      max_tokens: maxTokens,
+      ...(withOptionalFields ? { response_format: { type: "json_object" }, ...buildAiThinkingParams() } : {}),
+      messages
     });
 
-    let response = await request(true);
-    let json = await readResponsePayload<ChatCompletionResponse>(response);
-    const errorMessage = json.error?.message || `模型请求失败：${response.status}`;
-    // A number of OpenAI-compatible gateways reject response_format even though
-    // they support the chat-completions endpoint. Retry once without it.
-    if (!response.ok && response.status === 400 && /response.?format|json.?object|unsupported|不支持/i.test(errorMessage)) {
-      response = await request(false);
-      json = await readResponsePayload<ChatCompletionResponse>(response);
-    }
+    let { response, json } = await postChatCompletion<ChatCompletionResponse>(
+      endpoint, provider.apiKey, buildBody, controller.signal
+    );
     if (!response.ok) throw new Error(json.error?.message || `模型请求失败：${response.status}`);
     const parseCandidates = (payload: ChatCompletionResponse) => {
       const candidates = extractResponseCandidates(payload);
@@ -509,16 +498,24 @@ const requestModelJson = async (
       return { value: tagged, candidates, lastParseError };
     };
 
+    const finishReason = json.choices?.[0]?.finish_reason;
     let parsed = parseCandidates(json);
     if (!parsed.candidates.length) {
-      const finishReason = json.choices?.[0]?.finish_reason;
       throw new Error(finishReason
         ? `模型响应没有内容（finish_reason=${finishReason}，可能是输出被截断或模型不支持当前请求格式）。`
         : "模型响应没有内容（中转站返回了空的 content）。");
     }
 
-    if (parsed.value !== undefined) return unwrapAdventurePayload(parsed.value);
+    // A reply cut off at the token cap is not a chapter-shape problem, but the
+    // parser can still salvage a trailing fragment (often just one choice
+    // object) and hand it to validation, which then blames the chapter. Report
+    // the truncation itself so the cause is not mistaken for the model
+    // ignoring the format.
+    if (finishReason === "length" && !isAdventurePayload(parsed.value)) {
+      throw new Error(`模型输出被截断（finish_reason=length，已用满本次请求的 ${maxTokens} 个 token），章节 JSON 没有写完。中转站把预算花在隐藏推理上时就会这样，重试或换一个更快的模型即可。`);
+    }
 
+    if (parsed.value !== undefined) return unwrapAdventurePayload(parsed.value);
     // Some models occasionally ignore the JSON-only instruction and answer with
     // task analysis instead. These failures are probabilistic rather than
     // systematic, so retry the request with an explicit format reminder before
@@ -545,6 +542,7 @@ const requestModelJson = async (
             temperature: Math.min(provider.temperature, 0.4),
             max_tokens: maxTokens,
             ...(useResponseFormat ? { response_format: { type: "json_object" } } : {}),
+            ...buildAiThinkingParams(),
             messages: fallbackMessages
           }),
           signal: controller.signal

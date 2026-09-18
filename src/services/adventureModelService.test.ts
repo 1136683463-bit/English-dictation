@@ -138,6 +138,65 @@ describe("adventure model service", () => {
     vi.unstubAllGlobals();
   });
 
+  it("asks the relay to answer without hidden reasoning, which would eat the token budget", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({ choices: [{ message: { content: JSON.stringify(validNode) } }] })
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await generateAdventureContinuationWithModel(provider, {
+      template: "city", title: "City", level: "A2", customPrompt: "", action: "Walk on", path: [], targetWords: []
+    });
+
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body).thinking).toEqual({ type: "disabled" });
+    vi.unstubAllGlobals();
+  });
+
+  it("drops the optional fields when a strict relay rejects thinking by name", async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce({ ok: false, status: 400, json: async () => ({ error: { message: "Unrecognized request argument supplied: thinking" } }) })
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ choices: [{ message: { content: JSON.stringify(validNode) } }] }) });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(generateAdventureContinuationWithModel(provider, {
+      template: "city", title: "City", level: "A2", customPrompt: "", action: "Walk on", path: [], targetWords: []
+    })).resolves.toMatchObject({ title: "The Next Clue" });
+
+    const retriedBody = JSON.parse(fetchMock.mock.calls[1][1].body);
+    expect(retriedBody).not.toHaveProperty("thinking");
+    expect(retriedBody).not.toHaveProperty("response_format");
+    vi.unstubAllGlobals();
+  });
+
+  it("reports a token-cap truncation instead of blaming the chapter shape", async () => {
+    // What a reasoning-heavy reply looks like when the budget runs out mid-JSON:
+    // the outer object never closes, so only a trailing fragment can be parsed.
+    const truncated = '{"title":"The Blue Key","englishText":"Mia finds a green box.","chineseText":"米娅找到一个绿盒子。","choices":[{"id":"open_box","label":"Open the green box","description":"Lift the lid.","promptHint":"What do you hope to find?"}],';
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        choices: [{ message: { content: truncated, reasoning_content: "thinking...".repeat(300) }, finish_reason: "length" }]
+      })
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    let message = "";
+    try {
+      await generateAdventureContinuationWithModel(provider, {
+        template: "city", title: "City", level: "A2", customPrompt: "", action: "Open the box", path: [], targetWords: []
+      });
+    } catch (error) {
+      message = error instanceof Error ? error.message : "";
+    }
+
+    expect(message).toContain("输出被截断");
+    expect(message).not.toContain("模型续章内容不完整");
+    vi.unstubAllGlobals();
+  });
+
   it("accepts content-part arrays from compatible gateways", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,

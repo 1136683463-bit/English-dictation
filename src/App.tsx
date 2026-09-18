@@ -40,6 +40,7 @@ import GrammarReviewPage from "./pages/GrammarReviewPage";
 import GrammarLessonPage from "./pages/GrammarLessonPage";
 import GrammarRevisitPage from "./pages/GrammarRevisitPage";
 import GrammarReauditPage from "./pages/GrammarReauditPage";
+import GrammarBoostPage from "./pages/GrammarBoostPage";
 import GrammarHuntPage from "./pages/GrammarHuntPage";
 import GrammarDiaryPage from "./pages/GrammarDiaryPage";
 import OnboardingGuide from "./components/OnboardingGuide";
@@ -172,6 +173,7 @@ const AppLayout = () => {
           <Route path="/grammar/lesson/:lessonId" element={<GrammarLessonPage />} />
           <Route path="/grammar/lesson/:lessonId/revisit" element={<GrammarRevisitPage />} />
           <Route path="/grammar/lesson/:lessonId/reaudit" element={<GrammarReauditPage />} />
+          <Route path="/grammar/boost/:lessonId" element={<GrammarBoostPage />} />
           <Route path="/grammar/hunt" element={<GrammarHuntPage />} />
           <Route path="/grammar/diary" element={<GrammarDiaryPage />} />
           <Route path="/mistakes" element={<MistakeBookPage />} />

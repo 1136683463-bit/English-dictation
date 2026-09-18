@@ -11,6 +11,20 @@ export const normalizeLessonSentence = (value: string): string =>
     .replace(/\s+/g, " ")
     .trim();
 
+/**
+ * 句面哈希（FNV-1a，32 位）：北极星「周有效输出句数」按句去重的稳定标识。
+ * 用归一化文本做输入——同句的大小写/标点差异不影响去重结果。
+ */
+export const hashGrammarSentence = (sentence: string): string => {
+  const text = normalizeLessonSentence(sentence);
+  let hash = 2166136261;
+  for (let index = 0; index < text.length; index += 1) {
+    hash ^= text.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(36);
+};
+
 /** 点词成句判分：顺序与内容都对才算通过（标点与大小写宽容）。 */
 export const checkLessonTokens = (selected: string[], answer: string): boolean =>
   normalizeLessonSentence(selected.join(" ")) === normalizeLessonSentence(answer);

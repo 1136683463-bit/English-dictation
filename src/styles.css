@@ -1471,8 +1471,7 @@ button:disabled {
 }
 
 .mistake-date-list,
-.mistake-word-list,
-.mistake-generation-list {
+.mistake-word-list {
   display: grid;
   gap: 10px;
 }
@@ -2051,37 +2050,6 @@ button:disabled {
 
 .mistake-story-current .mistake-generation-card {
   margin: 0;
-}
-
-.mistake-story-secondary-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.mistake-story-secondary-actions .text-button {
-  min-height: 32px;
-  border: 0;
-  background: transparent;
-  color: var(--secondary);
-  padding: 0 2px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 850;
-}
-
-.mistake-story-secondary-actions .text-button:hover {
-  color: var(--accent-strong);
-}
-
-.mistake-story-secondary-actions .text-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.54;
-}
-
-.mistake-story-secondary-actions .text-button:disabled svg {
-  animation: spin 0.9s linear infinite;
 }
 
 .mistake-word-item {
@@ -17090,6 +17058,98 @@ html {
   color: var(--muted);
 }
 
+/* 2026-09-17 排版优化：筛选条收折——「更多课程」toggle 与前排 chip 同形，
+   虚线边 + chevron 提示可展开；展开后文案变「收起到已解锁」。 */
+.hunt-filter-more {
+  border-style: dashed;
+  color: var(--ink-soft);
+}
+
+.hunt-filter-more-chevron {
+  transition: transform 0.18s ease;
+}
+
+.hunt-filter-more-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+/* 2026-09-17 排版优化：案件按季分组（与路径页季折叠同套语言） */
+.hunt-case-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+  scroll-margin-top: 56px;
+}
+
+.hunt-case-group-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.hunt-case-group-head:hover {
+  border-color: var(--line-strong);
+}
+
+.hunt-case-group.is-closed .hunt-case-group-head {
+  border-style: dashed;
+  background: transparent;
+}
+
+.hunt-case-group.is-closed .hunt-case-group-head:hover {
+  background: var(--surface-muted);
+}
+
+.hunt-case-group-chevron {
+  flex-shrink: 0;
+  color: var(--ink-soft);
+  transition: transform 0.18s ease;
+}
+
+.hunt-case-group.is-closed .hunt-case-group-chevron {
+  transform: rotate(-90deg);
+}
+
+.hunt-case-group-head h2 {
+  margin: 0;
+  font-size: 16px;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hunt-case-group-count {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  color: var(--ink-soft);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* 2026-09-17 排版优化：新增动效遵循全库惯例补 reduced-motion 分支 */
+@media (prefers-reduced-motion: reduce) {
+  .hunt-filter-more-chevron,
+  .hunt-case-group-chevron,
+  .hunt-case-group-head {
+    transition: none;
+  }
+}
+
 .hunt-stat {
   display: grid;
   gap: 2px;
@@ -17695,23 +17755,99 @@ html {
   gap: 16px;
 }
 
-/* R20：第一季 / 第二季分组标题 */
+/* R20：季分组（2026-09-17 排版优化：整行可点折叠头 + 展开态吸顶）。
+   长页的方位治理（当时 49 课 6.8 屏，现 75 课 11 季）：默认只展开「下一课」所在季，其余折叠为摘要行；
+   展开季的头部吸顶（照 adventure-reader-toolbar 先例：半透明底 + blur），
+   长滚动中始终知道「我在哪一季」。 */
 .lesson-path-section {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 32px;
+  scroll-margin-top: 64px;
+}
+
+.lesson-path-section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.lesson-path-section-head:hover {
+  border-color: var(--line-strong);
+}
+
+/* 展开态吸顶：半透明 + blur，滚动时内容从下方透出（不遮内容，见 scroll-margin-top） */
+.lesson-path-section.is-open .lesson-path-section-head {
+  position: sticky;
+  top: 12px;
+  z-index: 6;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 4px 16px rgba(31, 43, 58, 0.06);
+  backdrop-filter: blur(12px);
+}
+
+/* 折叠态：虚线边框、透明底——视觉上退后一级，与展开态（实体卡）区分 */
+.lesson-path-section.is-closed .lesson-path-section-head {
+  border-style: dashed;
+  background: transparent;
+}
+
+.lesson-path-section.is-closed .lesson-path-section-head:hover {
+  background: var(--surface-muted);
+}
+
+.lesson-path-section-chevron {
+  flex-shrink: 0;
+  color: var(--ink-soft);
+  transition: transform 0.18s ease;
+}
+
+.lesson-path-section.is-closed .lesson-path-section-chevron {
+  transform: rotate(-90deg);
 }
 
 .lesson-path-section-head h2 {
   margin: 0;
-  font-size: 17px;
+  font-size: 20px;
+  flex-shrink: 0;
 }
 
-.lesson-path-section-head p {
-  margin: 4px 0 0;
+/* 分组 hint：桌面端显示在标题右侧，超长省略；窄屏隐藏（进度计数保留） */
+.lesson-path-section-hint {
+  flex: 1;
+  min-width: 0;
   color: var(--ink-soft);
   font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lesson-path-section-count {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  color: var(--ink-soft);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.lesson-path-section-count.is-complete {
+  color: var(--success, #16a34a);
+  background: color-mix(in srgb, var(--success, #16a34a) 10%, var(--surface));
 }
 
 /* R23：can-do 能力里程碑卡（纯剧情确证） */
@@ -17857,6 +17993,331 @@ html {
 
 .lesson-stage-link:hover .lesson-stage-node.open {
   background: var(--accent-soft, rgba(99, 102, 241, 0.12));
+}
+
+/* R-B6「趁热练」档位条（三节点链下一行，比节点链更轻——不新增第 4 个平级节点） */
+.lesson-boost-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px 12px 10px;
+  border: 1px solid var(--line);
+  border-top: none;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  background: var(--surface);
+  font-size: 11.5px;
+  color: var(--text-dim);
+}
+
+.lesson-boost-bar-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--accent-strong, #c2410c);
+  font-weight: 700;
+}
+
+.lesson-boost-tier {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 8px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--surface-subtle, rgba(148, 163, 184, 0.12));
+  color: var(--text-dim);
+  font-size: 11.5px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.lesson-boost-tier:hover,
+.lesson-boost-tier:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+}
+
+.lesson-boost-tier.done {
+  color: var(--success, #16a34a);
+  font-weight: 600;
+}
+
+.lesson-boost-progress {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* 「趁热练」档位选择 */
+.boost-tier-list {
+  display: grid;
+  gap: 10px;
+  padding: 4px 0 12px;
+}
+
+.boost-tier-card {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.boost-tier-card:hover,
+.boost-tier-card:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.boost-tier-card.suggest {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.boost-tier-card.done {
+  border-color: var(--success, #16a34a);
+}
+
+.boost-tier-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.boost-tier-head strong {
+  font-size: 15px;
+}
+
+.boost-tier-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--success, #16a34a);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.boost-tier-suggest {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.boost-tier-summary {
+  color: var(--text-dim);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.boost-tier-note {
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+/* 「趁热练」题内交互 */
+.boost-choice-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.boost-choice {
+  padding: 9px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.boost-choice:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.boost-choice.picked {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.boost-choice:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.boost-hint-box {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-subtle, rgba(148, 163, 184, 0.12));
+  font-size: 12.5px;
+  color: var(--text-dim);
+}
+
+.boost-hint-box p {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+}
+
+.boost-check-note {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* 答对/答错都给的「为什么」——只给答案学不到下次怎么用 */
+.boost-why {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  color: var(--text-dim);
+  font-size: 12.5px;
+  line-height: 1.65;
+}
+
+.boost-why svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--accent-strong, #c2410c);
+}
+
+/* 选择/变形题：替换说明与空位样式 */
+.boost-replace-target {
+  margin-left: 6px;
+  color: var(--accent-strong, #c2410c);
+  font-size: 12.5px;
+}
+
+.boost-blank {
+  display: inline-block;
+  min-width: 42px;
+  padding: 0 6px;
+  border-bottom: 2px solid var(--accent);
+  text-align: center;
+  color: var(--text-dim);
+}
+
+/* 改错题：点中的词块（含答错时的标记） */
+.lesson-chip.picked {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+/* 自评（每档完成后 1 题，只记录不追加动作） */
+.boost-self-eval {
+  margin: 0 0 14px;
+  padding: 14px 16px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-md);
+}
+
+.boost-self-eval-title {
+  margin: 0 0 8px;
+  color: var(--text-dim);
+  font-size: 12.5px;
+}
+
+.boost-self-eval-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.boost-self-eval-btn {
+  padding: 7px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 12.5px;
+  cursor: pointer;
+}
+
+.boost-self-eval-btn.picked {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+/* AI 批改卡（档 3，整档结束后一次性提交） */
+.boost-ai-card {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.boost-ai-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--accent-strong);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.boost-ai-line {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+/* 一句一块：整档多句批改时，句与句之间留出可扫读的分隔 */
+.boost-ai-entry {
+  display: grid;
+  gap: 4px;
+  padding: 10px 0;
+  border-top: 1px dashed var(--line);
+}
+
+.boost-ai-entry:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.boost-ai-entry em {
+  font-style: normal;
+  color: var(--text);
+}
+
+.boost-ai-notice {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-subtle, rgba(148, 163, 184, 0.12));
+  color: var(--text-dim);
+  font-size: 12.5px;
 }
 
 .lesson-path-card:hover {
@@ -18420,6 +18881,97 @@ html {
 .diary-entry-list {
   display: grid;
   gap: 12px;
+  /* 2026-09-17 排版优化（二）：定高滚动区——日记写到几百条，页面高度也不再增长。
+     max-height 用 vh 参与自适应；窄屏在下方媒体查询里降为较小上限。 */
+  max-height: min(660px, calc(100vh - 260px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px 6px 16px 0;
+  margin: -4px -6px -16px 0;
+  scrollbar-width: thin;
+  scrollbar-color: #dde2e8 transparent;
+}
+
+/* 两端渐隐提示（照错词本 mb-date-fade 先例，仅可滚动且未到端时出现） */
+.diary-history-fade {
+  position: sticky;
+  left: 0;
+  display: block;
+  height: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.diary-history-fade::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 6px;
+  height: 26px;
+}
+
+.diary-history-fade.top {
+  top: 0;
+  margin-bottom: -12px;
+}
+
+.diary-history-fade.top::after {
+  top: 0;
+  background: linear-gradient(var(--bg) 34%, transparent);
+}
+
+.diary-history-fade.bottom {
+  bottom: 0;
+  margin-top: -12px;
+}
+
+.diary-history-fade.bottom::after {
+  bottom: 0;
+  background: linear-gradient(transparent, var(--bg) 66%);
+}
+
+.diary-history-fade.on {
+  opacity: 1;
+}
+
+/* 2026-09-17 排版优化：历史计数与「加载更多」 */
+.diary-history-count {
+  margin-left: auto;
+  align-self: center;
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.diary-history-more {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 4px;
+  padding: 10px 14px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--accent-strong);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.diary-history-more:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+/* 2026-09-17 排版优化：新增动效遵循全库惯例补 reduced-motion 分支 */
+@media (prefers-reduced-motion: reduce) {
+  .diary-history-fade {
+    transition: none;
+  }
 }
 
 .diary-entry-card {
@@ -18572,6 +19124,12 @@ html {
   .diary-stat-bar {
     grid-template-columns: 1fr;
   }
+
+  /* 窄屏保留较小的滚动上限：既避免整页无限增长，也不做大段嵌套滚动
+     （照 import-review-stack 的 420px 先例）。 */
+  .diary-entry-list {
+    max-height: min(480px, calc(100vh - 220px));
+  }
 }
 
 /* ── 课程内页 ─────────────────────────────────────────── */
@@ -18582,6 +19140,19 @@ html {
   gap: 12px;
   align-items: center;
   margin-bottom: 18px;
+}
+
+/* 2026-09-17 排版优化：顶栏吸顶——分段页滚动一两屏后返回键仍常驻
+   （与既有 .lesson-dock 底部吸顶对称；背景模糊照 adventure-reader-toolbar 先例）。 */
+.lesson-topbar-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 7;
+  padding: 10px 12px;
+  margin: -10px -12px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
 }
 
 .lesson-topbar-title strong {
@@ -19301,6 +19872,42 @@ html {
   .lesson-stage-dots {
     display: none;
   }
+
+  /* 2026-09-17 排版优化：窄屏折叠头收紧——hint 让位给标题与计数，吸顶偏移减小 */
+  .lesson-path-section-hint {
+    display: none;
+  }
+
+  .lesson-path-section-head {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .lesson-path-section-head h2 {
+    flex: 1;
+    min-width: 0;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .lesson-path-section.is-open .lesson-path-section-head {
+    top: 8px;
+  }
+
+  .lesson-path-section {
+    margin-top: 24px;
+    scroll-margin-top: 56px;
+  }
+}
+
+/* 2026-09-17 排版优化：新增动效遵循全库惯例补 reduced-motion 分支 */
+@media (prefers-reduced-motion: reduce) {
+  .lesson-path-section-chevron,
+  .lesson-path-section-head {
+    transition: none;
+  }
 }
 
 /* =====================================================================
@@ -19499,8 +20106,7 @@ html {
 
 .mistake-book-page .mistake-date-panel,
 .mistake-book-page .mistake-word-panel,
-.mistake-book-page .mb-story-panel,
-.mistake-book-page .mb-gen-panel {
+.mistake-book-page .mb-story-panel {
   border: none;
   box-shadow: var(--shadow-sm);
 }
@@ -19515,13 +20121,11 @@ html {
   margin: 20px 20px 12px;
 }
 
-.mistake-book-page .mb-story-panel,
-.mistake-book-page .mb-gen-panel {
+.mistake-book-page .mb-story-panel {
   padding: 22px 24px;
 }
 
-.mistake-book-page .mb-story-panel .ui-section-head,
-.mistake-book-page .mb-gen-panel .ui-section-head {
+.mistake-book-page .mb-story-panel .ui-section-head {
   margin: 0 0 4px;
 }
 
@@ -20068,11 +20672,6 @@ html {
   font-weight: 700;
 }
 
-.mistake-book-page .mistake-generation-list {
-  gap: 0;
-  margin-top: 8px;
-}
-
 .mistake-book-page .mistake-generation-card {
   border: none;
   border-bottom: 1px solid var(--line);
@@ -20091,12 +20690,6 @@ html {
 }
 
 .mistake-book-page .mistake-generation-preview {
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.mistake-book-page .mb-gen-empty {
-  margin: 6px 0 0;
   color: var(--muted);
   font-size: 13px;
 }
@@ -20155,8 +20748,7 @@ html {
     padding: 2px 16px 16px 16px;
   }
 
-  .mistake-book-page .mb-story-panel,
-  .mistake-book-page .mb-gen-panel {
+  .mistake-book-page .mb-story-panel {
     padding: 18px 16px;
   }
 
@@ -20276,29 +20868,35 @@ html {
   font-size: 12px;
 }
 
-.hunt-page .hunt-token {
+/* 2026-09-17 排版修复：词块强化规则由 .hunt-page 作用域放开为全局——
+   本类仅侦探页与重审页使用，重审页宿主是 .lesson-page，此前拿不到强化样式，
+   token 渲染成默认按钮观感。放开后两页共用同一套三态（idle / inspecting / found）。
+   同时补 button 重置（重审页词块是真 button，侦探页是 span[role=button]）。 */
+.hunt-token {
   border: 1px solid transparent;
   border-radius: 7px;
   padding: 3px 7px;
   margin: 0 1px;
   font-size: 16px;
+  background: transparent;
+  color: inherit;
   transition: background-color 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
 }
 
-.hunt-page .hunt-token.idle:hover {
+.hunt-token.idle:hover {
   border-color: var(--accent);
   background: var(--accent-soft);
   text-decoration: none;
   transform: translateY(-1px);
 }
 
-.hunt-page .hunt-token.inspecting {
+.hunt-token.inspecting {
   border-color: var(--amber);
   background: var(--amber-soft);
   box-shadow: inset 0 -2px 0 var(--amber);
 }
 
-.hunt-page .hunt-token.found {
+.hunt-token.found {
   border-color: var(--secondary);
   background: var(--green-soft);
   box-shadow: inset 0 -2px 0 var(--secondary);
@@ -20306,6 +20904,73 @@ html {
 
 .hunt-token-panel {
   max-width: 100%;
+}
+
+/* 2026-09-17 排版修复：重审页此前 5 个类名在 CSS 中零规则（hunt-tokens / hunt-tag-picker /
+   hunt-tag-row / hunt-settle-detail / hunt-settle-line），页面渲染成默认控件观感。
+   此处补齐，视觉与侦探页的对应用法对齐（词块容器 = 词流；罪名行 = 胶囊 chip 流）。 */
+.hunt-tokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 4px;
+  align-items: baseline;
+  font-size: 17px;
+  line-height: 2.1;
+  color: var(--ink);
+}
+
+.hunt-tag-picker {
+  display: grid;
+  gap: 8px;
+}
+
+.hunt-tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hunt-tag {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.hunt-tag:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.hunt-settle-detail {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.hunt-settle-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.hunt-settle-line strong {
+  color: var(--ink);
+}
+
+/* 重审页结算后词块 disabled：found 态保留绿色供复盘（非 found 仍按全局 0.55 淡化） */
+.hunt-token.found:disabled {
+  opacity: 1;
+  cursor: default;
 }
 
 @media (max-width: 720px) {
@@ -21010,7 +21675,8 @@ html {
   position: relative;
   width: 100%;
   padding: 15px 44px 14px 18px;
-  border: 1px solid transparent;
+  /* 未选中态也保留淡描边，避免在白色面板上"隐入背景" */
+  border: 1px solid var(--line);
   border-radius: 14px;
   background: transparent;
   color: inherit;
@@ -21021,6 +21687,7 @@ html {
 }
 
 .mb-date-card:hover {
+  border-color: var(--line-strong);
   background: #f8f9fb;
 }
 
@@ -21488,16 +22155,6 @@ html {
   margin: 8px 0 16px;
 }
 
-/* 生成内容 */
-.mistake-book-page .mb-gen-panel {
-  padding: 22px 24px;
-  border: none;
-}
-
-.mistake-book-page .mb-gen-panel .ui-section-head {
-  margin: 0 0 8px;
-}
-
 /* ---------- 响应式 ---------- */
 @media (max-width: 1240px) {
   .mistake-book-page .mistake-book-layout {
@@ -21529,8 +22186,7 @@ html {
   }
 
   .mistake-book-page .mistake-word-panel,
-  .mistake-book-page .mistake-date-panel,
-  .mistake-book-page .mb-gen-panel {
+  .mistake-book-page .mistake-date-panel {
     padding: 16px;
   }
 
@@ -21981,15 +22637,6 @@ html {
 
 .mistake-book-page .mb-date-list::-webkit-scrollbar-thumb:hover {
   background: #ccd3db;
-}
-
-/* 生成内容并入右列（按天归属），顺带补满右列高度 */
-.mistake-book-page .mistake-book-main .mb-gen-panel {
-  padding: 20px 24px 22px;
-}
-
-.mistake-book-page .mistake-book-main .mb-gen-panel .mistake-generation-list {
-  margin-top: 10px;
 }
 
 /* 窄屏回到单列：取消吸顶与内部滚动 */
@@ -26120,4 +26767,199 @@ html {
   font-weight: 600;
   color: var(--accent-deep, #d95a12);
   margin-bottom: 2px;
+}
+
+/* =====================================================================
+   错词本 · 故事工坊（Story Builder）空态强化
+   目标：未生成故事时把「错词小故事」从浅灰工具块升级为暖色入口卡，
+   用圆形徽章 + 动机文案 + 待用错词 chips + 强化 CTA 提升可发现性。
+   色板全部取自现有 token（--accent / --accent-ink / --accent-soft），
+   文字色额外校验过对比度（≥4.5:1，测试底 #fdeedd）。
+   ===================================================================== */
+.mistake-book-page .mb-story {
+  background: linear-gradient(135deg, #fff7ef 0%, #fdeedd 58%, #fdf3e3 100%);
+  border: 1px solid rgba(242, 106, 27, 0.22);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(242, 148, 66, 0.1);
+  padding: 18px 20px 20px;
+}
+
+/* 头部：44px 圆形图标徽章 + 胶囊眉标 + 加大标题 */
+.mb-story-head-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.mb-story-head-icon {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(242, 106, 27, 0.14);
+  color: var(--accent-ink);
+}
+
+.mistake-book-page .mb-story-head .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(242, 106, 27, 0.14);
+  /* 胶囊底上的小号文字需 ≥4.5:1，比 --accent-ink 再深一档 */
+  color: #9a3a08;
+  white-space: nowrap;
+}
+
+.mistake-book-page .mb-story-head h3 {
+  margin: 6px 0 0;
+  font-size: 20px;
+}
+
+/* 窄屏下头部加入图标徽章后，设置按钮不再换行 */
+.mistake-book-page .mb-story-head .compact-button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.mistake-book-page .mb-story-summary {
+  margin-top: 10px;
+  color: #7a5c44;
+  font-size: 13px;
+}
+
+/* 未生成：动机文案 + 待用错词 chips */
+.mb-story-invite {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.mb-story-invite-text {
+  margin: 0;
+  color: #7a5c44;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.mb-story-invite-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mb-story-invite-words span {
+  border: 1px solid rgba(242, 106, 27, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  color: #b45309;
+  padding: 5px 12px;
+  font-size: 12.5px;
+  font-weight: 800;
+}
+
+.mb-story-invite-words span.more {
+  border-style: dashed;
+  border-color: rgba(242, 106, 27, 0.34);
+  background: transparent;
+  color: #7a5c44;
+}
+
+/* 底部行动行：虚线分隔 + 加深状态文案 + 强化 CTA */
+.mistake-book-page .mb-story-footer {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(242, 106, 27, 0.28);
+}
+
+.mistake-book-page .mb-story-footer > span {
+  color: #7a5c44;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.mistake-book-page .mb-story-footer .primary-button {
+  min-height: 44px;
+  padding: 0 24px;
+  font-size: 14.5px;
+  box-shadow: 0 6px 16px rgba(242, 106, 27, 0.28);
+}
+
+/* 已生成：内衬故事卡在暖底上改为半透明白，避免生硬贴片 */
+.mistake-book-page .mb-story .mistake-story-current {
+  border: 1px solid rgba(242, 106, 27, 0.14);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+/* 设置面板在暖底上的分隔线与输入控件 */
+.mistake-book-page .mb-story .mistake-story-settings-body {
+  border-top-color: rgba(242, 106, 27, 0.18);
+}
+
+@media (max-width: 720px) {
+  .mb-story-head-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .mistake-book-page .mb-story-head h3 {
+    font-size: 18px;
+  }
+
+  .mistake-book-page .mb-story-footer {
+    flex-wrap: wrap;
+  }
+}
+
+/* 档 3 的 variant / fix：先给出「已知的样例句」，任务边界才清楚 */
+.boost-shaped-block {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-subtle, rgba(148, 163, 184, 0.12));
+}
+
+.boost-shaped-label {
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+.boost-shaped-sentence {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* 弱点命中的混题：让「这道题冲我短板来的」看得见 */
+.boost-weak-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 0;
+  padding: 7px 11px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  color: var(--accent-strong, #c2410c);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+/* AI 设置里的缓存清理行 */
+.settings-ai-cache-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
 }

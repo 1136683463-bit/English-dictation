@@ -154,4 +154,57 @@ describe("grammarTelemetry（R01 数据基建）", () => {
     expect(summary.pathFunnel.pathToLessonWithin7d).toBe(0);
     expect(summary.pathFunnel.pathToLessonRate7d).toBe(0);
   });
+
+  it("R-B7：趁热练参与率 / 入口拆分 / 分层漏斗可算", () => {
+    appendGrammarEvent({ kind: "grammar_boost_offered", lessonId: "lesson-13-now", entryPoint: "settlement", recommendedTier: 1, ts: "2026-09-18T10:00:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_offered", lessonId: "lesson-13-now", entryPoint: "settlement", recommendedTier: 1, ts: "2026-09-18T11:00:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_offered", lessonId: "lesson-14-is", entryPoint: "card", recommendedTier: 1, ts: "2026-09-18T12:00:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_started", lessonId: "lesson-13-now", tier: 1, questionCount: 4, entryPoint: "settlement", ts: "2026-09-18T10:01:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_started", lessonId: "lesson-13-now", tier: 2, questionCount: 5, entryPoint: "settlement", ts: "2026-09-18T10:10:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_completed", lessonId: "lesson-13-now", tier: 1, total: 4, firstTryCount: 4, durationMs: 120000, aiUsed: false, hoursSinceStage1: 0.2, ts: "2026-09-18T10:05:00.000Z" });
+
+    const summary = summarizeGrammarTelemetry().boost;
+    expect(summary.offered).toBe(3);
+    expect(summary.offeredByEntry.settlement).toBe(2);
+    expect(summary.offeredByEntry.card).toBe(1);
+    expect(summary.started).toBe(2);
+    expect(summary.startRate).toBeCloseTo(2 / 3);
+    // 两次进入都从结算页发起（档 2 是完成档 1 后在同一会话里继续，入口不变）
+    expect(summary.startedByEntry.settlement).toBe(2);
+    expect(summary.startedByEntry.card).toBe(0);
+    expect(summary.completedByTier[1]).toBe(1);
+    // 档 1 完成 1 次 → 档 2 进入率 = 1/1
+    expect(summary.funnel.tier1ToTier2).toBe(1);
+    // 档 1 一次通过率 = 4/4
+    expect(summary.firstTryRateByTier[1]).toBe(1);
+  });
+
+  it("R-B7：放弃率 / AI 使用率 / 降级率 / 素材重复率口径正确", () => {
+    appendGrammarEvent({ kind: "grammar_boost_started", lessonId: "lesson-13-now", tier: 3, questionCount: 3, entryPoint: "card", ts: "2026-09-18T10:00:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_started", lessonId: "lesson-14-is", tier: 1, questionCount: 4, entryPoint: "card", ts: "2026-09-18T10:00:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_abandoned", lessonId: "lesson-13-now", tier: 3, answered: 1, total: 3, dwellMs: 40000, ts: "2026-09-18T10:02:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_completed", lessonId: "lesson-13-now", tier: 3, total: 3, firstTryCount: 2, durationMs: 200000, aiUsed: true, hoursSinceStage1: 24, ts: "2026-09-18T10:20:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_ai_result", lessonId: "lesson-13-now", tier: 3, questionIndex: 0, ok: true, latencyMs: 3200, degraded: false, degradeReason: null, ts: "2026-09-18T10:19:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_ai_result", lessonId: "lesson-14-is", tier: 3, questionIndex: 1, ok: false, latencyMs: 9000, degraded: true, degradeReason: "timeout", ts: "2026-09-18T10:19:30.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_step_result", lessonId: "lesson-13-now", tier: 1, itemKind: "derived", sourceRef: "lesson-13-now:t1:variants:0", attempts: 1, passed: true, ts: "2026-09-18T10:00:30.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_item_repeat", lessonId: "lesson-13-now", sourceRef: "lesson-13-now:t1:variants:0", seenCount7d: 2, ts: "2026-09-18T10:00:31.000Z" });
+
+    const summary = summarizeGrammarTelemetry().boost;
+    expect(summary.abandoned).toBe(1);
+    expect(summary.abandonRate).toBeCloseTo(0.5);
+    expect(summary.aiUsedRate).toBe(1);
+    expect(summary.aiDegradedRate).toBeCloseTo(0.5);
+    expect(summary.itemRepeatRate).toBe(1);
+  });
+
+  it("R-B7：自评事件不污染题级漏斗（按 sourceRef 前缀排除）", () => {
+    appendGrammarEvent({ kind: "grammar_boost_step_result", lessonId: "lesson-13-now", tier: 1, itemKind: "derived", sourceRef: "self-eval:easy", attempts: 1, passed: true, ts: "2026-09-18T10:00:00.000Z" });
+    const summary = summarizeGrammarTelemetry().boost;
+    expect(summary.itemRepeatRate).toBe(0);
+  });
+
+  it("W0：关 3 进入事件可读回（补上关 3 的到达率缺口）", () => {
+    appendGrammarEvent({ kind: "grammar_reaudit_started", lessonId: "lesson-13-now", ts: "2026-09-18T10:00:00.000Z" });
+    expect(listGrammarEventsByKind("grammar_reaudit_started")).toHaveLength(1);
+  });
 });

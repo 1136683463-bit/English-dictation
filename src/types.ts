@@ -384,6 +384,11 @@ export interface AppData {
    * 与 grammarLessonsDone 双写并存：关 1 完成时两处都写；旧数据回填时此处补 [1]。旧字段保留 ≥1 版本可回滚。
    */
   grammarLessonStagesDone?: Record<string, number[]>;
+  /**
+   * 「趁热练」课后强化训练完成态（2026-09-18 PRD R-B1）：lessonId → 已完成档位数组（1/2/3）。
+   * 语义 = 至少完成过一次该档；复练不改写此字段（完成后无限重练）。可选层，不参与解锁判定。
+   */
+  grammarBoostsDone?: Record<string, number[]>;
   /** 「我的英文日记」条目。 */
   diaryEntries: DiaryEntry[];
   schedules: Schedule[];

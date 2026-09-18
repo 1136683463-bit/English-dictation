@@ -23,6 +23,31 @@ import cover21 from "../assets/lessons/lesson-21.jpg";
 import cover22 from "../assets/lessons/lesson-22.jpg";
 import cover23 from "../assets/lessons/lesson-23.jpg";
 import cover24 from "../assets/lessons/lesson-24.jpg";
+import cover25 from "../assets/lessons/lesson-25.jpg";
+import cover26 from "../assets/lessons/lesson-26.jpg";
+import cover27 from "../assets/lessons/lesson-27.jpg";
+import cover28 from "../assets/lessons/lesson-28.jpg";
+import cover29 from "../assets/lessons/lesson-29.jpg";
+import cover30 from "../assets/lessons/lesson-30.jpg";
+import cover31 from "../assets/lessons/lesson-31.jpg";
+import cover32 from "../assets/lessons/lesson-32.jpg";
+import cover33 from "../assets/lessons/lesson-33.jpg";
+import cover34 from "../assets/lessons/lesson-34.jpg";
+import cover35 from "../assets/lessons/lesson-35.jpg";
+import cover36 from "../assets/lessons/lesson-36.jpg";
+import cover37 from "../assets/lessons/lesson-37.jpg";
+import cover38 from "../assets/lessons/lesson-38.jpg";
+import cover39 from "../assets/lessons/lesson-39.jpg";
+import cover40 from "../assets/lessons/lesson-40.jpg";
+import cover41 from "../assets/lessons/lesson-41.jpg";
+import cover42 from "../assets/lessons/lesson-42.jpg";
+import cover43 from "../assets/lessons/lesson-43.jpg";
+import cover44 from "../assets/lessons/lesson-44.jpg";
+import cover45 from "../assets/lessons/lesson-45.jpg";
+import cover46 from "../assets/lessons/lesson-46.jpg";
+import cover47 from "../assets/lessons/lesson-47.jpg";
+import cover48 from "../assets/lessons/lesson-48.jpg";
+import cover49 from "../assets/lessons/lesson-49.jpg";
 
 /**
  * 「小美的一天」· 初学者语法连续剧（第一季 1–12 课 · 第二季进阶篇 13 课起，规划见 PRD-grammar-advanced）。
@@ -4420,7 +4445,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "一般现在时 · 三单 -s",
     episode: "小美的一天 ㉕",
     scene: "campus",
-    cover: cover1,
+    cover: cover25,
     sceneSetupZh: "周一早读，小美观察同桌的习惯，发现了好多「他每天都做的事」。",
     dialogueEn: "He drinks milk every day.",
     dialogueZh: "你指着同桌跟朋友说。",
@@ -4613,7 +4638,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "存在句 · there is / there are",
     episode: "小美的一天 ㉖",
     scene: "mansion",
-    cover: cover18,
+    cover: cover26,
     sceneSetupZh: "周末整理房间，小美帮你数桌上的东西。",
     dialogueEn: "What is on the desk?",
     dialogueZh: "你指着书桌问她。",
@@ -4797,7 +4822,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "疑问词 · what / where / when / how",
     episode: "小美的一天 ㉗",
     scene: "city",
-    cover: cover9,
+    cover: cover27,
     sceneSetupZh: "放学路上，小美看你东张西望，猜到你在找东西。",
     dialogueEn: "What are you looking for?",
     dialogueZh: "她停下来问你。",
@@ -4981,7 +5006,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "频率副词 · always / often / never",
     episode: "小美的一天 ㉘",
     scene: "campus",
-    cover: cover16,
+    cover: cover28,
     sceneSetupZh: "周一早上，小美发现自己总是第一个到教室。",
     dialogueEn: "You are always early!",
     dialogueZh: "同桌惊讶地说。",
@@ -5166,7 +5191,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "将来时 · be going to",
     episode: "小美的一天 ㉙",
     scene: "city",
-    cover: cover2,
+    cover: cover29,
     sceneSetupZh: "周五放学，小美和同学约周末的计划。",
     dialogueEn: "What are you going to do this weekend?",
     dialogueZh: "同学问你。",
@@ -5349,7 +5374,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "数量词 · some / any / much / many",
     episode: "小美的一天 ㉚",
     scene: "mansion",
-    cover: cover11,
+    cover: cover30,
     sceneSetupZh: "周末大扫除，小美帮你数家里的东西。",
     dialogueEn: "Are there any apples on the table?",
     dialogueZh: "你问她。",
@@ -5533,7 +5558,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "形容词最高级 · -est / most",
     episode: "小美的一天 ㉛",
     scene: "island",
-    cover: cover14,
+    cover: cover31,
     sceneSetupZh: "水果摊前，小美挑三个苹果里最大的那个。",
     dialogueEn: "Which one do you want?",
     dialogueZh: "摊主问你。",
@@ -5716,7 +5741,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "祈使句 · 动词开头",
     episode: "小美的一天 ㉜",
     scene: "mansion",
-    cover: cover21,
+    cover: cover32,
     sceneSetupZh: "起风了，外婆朝屋里喊。",
     dialogueEn: "Close the door, please!",
     dialogueZh: "外婆朝你喊。",
@@ -5898,7 +5923,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "指示代词 · this / that / these / those",
     episode: "小美的一天 ㉝",
     scene: "mystery",
-    cover: cover20,
+    cover: cover33,
     sceneSetupZh: "放学下雨，小美在失物堆里发现两把伞。",
     dialogueEn: "Whose umbrellas are these?",
     dialogueZh: "她指着伞堆问你。",
@@ -6081,7 +6106,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "过去进行时 · was/were + V-ing",
     episode: "小美的一天 ㉞",
     scene: "campus",
-    cover: cover13,
+    cover: cover34,
     sceneSetupZh: "放学后，朋友问你昨天下午三点在干嘛。",
     dialogueEn: "What were you doing at three yesterday?",
     dialogueZh: "朋友问。",
@@ -6264,7 +6289,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "话中话 · 疑问句回家换鞋",
     episode: "小美的一天 ㉟",
     scene: "city",
-    cover: cover9,
+    cover: cover35,
     sceneSetupZh: "早上出门前，妈妈在门口找不到钥匙，问你知不知道它在哪儿。",
     dialogueEn: "Do you know where my key is?",
     dialogueZh: "妈妈在门口问你。",
@@ -6448,7 +6473,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "话中话 · 小挂件 that",
     episode: "小美的一天 ㊱",
     scene: "campus",
-    cover: cover16,
+    cover: cover36,
     sceneSetupZh: "课间休息，同桌趴在桌上没精神，同学凑过来问你。",
     dialogueEn: "Is she tired?",
     dialogueZh: "同学转头问你。",
@@ -6634,7 +6659,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "话中话 · 引子可以换人",
     episode: "小美的一天 ㊲",
     scene: "city",
-    cover: cover6,
+    cover: cover37,
     sceneSetupZh: "小区门口，邻居阿姨拦住小美，打听一个同学在哪里。",
     dialogueEn: "Do you know where Xiaoming is?",
     dialogueZh: "小区门口，邻居阿姨问你。",
@@ -6819,7 +6844,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "话中话 · 转述别人的话",
     episode: "小美的一天 ㊳",
     scene: "campus",
-    cover: cover2,
+    cover: cover38,
     sceneSetupZh: "接力赛前，教练在跑道边问小美：Lily 会不会来？小美把 Lily 的原话转告给教练。",
     dialogueEn: "Will Lily come to the race?",
     dialogueZh: "教练在跑道边问你。",
@@ -7002,7 +7027,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "给名词挂尾巴 · who",
     episode: "小美的一天 ㊴",
     scene: "campus",
-    cover: cover7,
+    cover: cover39,
     sceneSetupZh: "放学时在校门口接人，同学问你哪个是你哥哥。",
     dialogueEn: "Who is your brother?",
     dialogueZh: "同学在东张西望。",
@@ -7186,7 +7211,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "给名词挂尾巴 · which",
     episode: "小美的一天 ㊵",
     scene: "campus",
-    cover: cover10,
+    cover: cover40,
     sceneSetupZh: "课桌分享会上，同桌问你有什么好书推荐。",
     dialogueEn: "Which book is good?",
     dialogueZh: "同桌凑过来问你。",
@@ -7370,7 +7395,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "收口 · 两句话拼一句",
     episode: "小美的一天 ㊶",
     scene: "campus",
-    cover: cover22,
+    cover: cover41,
     sceneSetupZh: "期末班会，小美向新老师介绍同学和班级的事。",
     dialogueEn: "Can you tell me about your class?",
     dialogueZh: "新老师微笑着问你。",
@@ -7554,7 +7579,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "动词的第二份工作 · -ing",
     episode: "小美的一天 ㊷",
     scene: "sparkle",
-    cover: cover5,
+    cover: cover42,
     sceneSetupZh: "周末兴趣角，新同桌问小美平时喜欢做什么。",
     dialogueEn: "What do you like?",
     dialogueZh: "新同桌问她周末喜欢做什么。",
@@ -7742,7 +7767,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "让事情当主角 · -ing 开头",
     episode: "小美的一天 ㊸",
     scene: "island",
-    cover: cover17,
+    cover: cover43,
     sceneSetupZh: "夏令营水上活动日结束，小美回家跟妈妈汇报。",
     dialogueEn: "How was the water day?",
     dialogueZh: "妈妈在门口问她。",
@@ -7928,7 +7953,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "小垫板新用法 · to + 去做什么",
     episode: "小美的一天 ㊹",
     scene: "city",
-    cover: cover4,
+    cover: cover44,
     sceneSetupZh: "放学路上，妈妈打电话让小美顺路去商店买东西。",
     dialogueEn: "Can you go to the shop?",
     dialogueZh: "妈妈在电话里问你。",
@@ -8115,7 +8140,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "enjoy 的门 · 只认 -ing",
     episode: "小美的一天 ㊺",
     scene: "magic",
-    cover: cover12,
+    cover: cover45,
     sceneSetupZh: "美术兴趣班的报名表上要写自己的爱好，小美认真填。",
     dialogueEn: "What do you enjoy?",
     dialogueZh: "同桌探头看你填表。",
@@ -8301,7 +8326,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "收口 · 名字版 + 小垫板",
     episode: "小美的一天 ㊻",
     scene: "mansion",
-    cover: cover24,
+    cover: cover46,
     sceneSetupZh: "期末兴趣分享会，小美介绍自己的爱好和暑假打算。",
     dialogueEn: "What do you enjoy?",
     dialogueZh: "同学们围过来问你。",
@@ -8487,7 +8512,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "情态三兄弟 · should",
     episode: "小美的一天 ㊼",
     scene: "mansion",
-    cover: cover3,
+    cover: cover47,
     sceneSetupZh: "期末复习夜，小美还在熬夜写作业，妈妈端着一杯热牛奶走过来。",
     dialogueEn: "You should sleep early.",
     dialogueZh: "妈妈把牛奶放在桌上，轻声说。",
@@ -8674,7 +8699,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "条件句 · if 里说现在",
     episode: "小美的一天 ㊽",
     scene: "city",
-    cover: cover8,
+    cover: cover48,
     sceneSetupZh: "周末早晨，小美趴在窗边看天色，妈妈在厨房问她今天怎么安排。",
     dialogueEn: "What will you do today?",
     dialogueZh: "妈妈在厨房问她。",
@@ -8861,7 +8886,7 @@ export const grammarLessons: GrammarLesson[] = [
     grammarLabel: "收口 · 建议 + 条件",
     episode: "小美的一天 ㊾",
     scene: "campus",
-    cover: cover15,
+    cover: cover49,
     sceneSetupZh: "出门前妈妈叮嘱小美带上伞，到学校她把这句提醒转告给同学。",
     dialogueEn: "Any tips for the weekend?",
     dialogueZh: "同学在班群里问。",
@@ -9040,6 +9065,10040 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "建议先走（should take），条件挂后（if it rains）。"
     },
     huntCaseIds: ["hunt-weekend-tip"]
+  },
+  {
+    // ── 第七批 · L50 被动本体（幕后句）：谁做的不重要——把做过版借到 be 身边 ──
+    id: "lesson-50-passive",
+    number: 50,
+    title: "杯子被摔了",
+    grammarLabel: "幕后句 · 谁做的不重要",
+    episode: "小美的一天 ㊿",
+    scene: "campus",
+    cover: cover16,
+    sceneSetupZh: "课间回到座位，小美发现桌上的杯子摔在地上，跟同桌说起这件事。",
+    dialogueEn: "What happened to your cup?",
+    dialogueZh: "同桌看着地上的杯子问你。",
+    intentZh: "我的杯子被摔了。",
+    targetSentence: "My cup was broken.",
+    blocks: [
+      { text: "My cup", role: "我的杯子（站台上）" },
+      { text: "was", role: "过去版 be（新搭档）" },
+      { text: "broken", role: "摔坏（做过版）" }
+    ],
+    oneLineRule: "谁做的不重要时，把「做过版」借到 be 身边：My cup was broken——杯子站台上，做事的人退到幕后（跟 have 身边是同一件外套）。",
+    examples: [
+      { en: "My cup was broken.", zh: "我的杯子被摔了。" },
+      { en: "My key was lost.", zh: "我的钥匙丢了。" },
+      { en: "The window was broken.", zh: "窗户被弄坏了。" },
+      { en: "The picture was finished.", zh: "画被画完了。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What happened to your cup?", zh: "同桌看着地上的杯子问你。" },
+      { who: "npc", en: "It is on the floor now.", zh: "她补了一句：它现在躺在地上。" },
+      { who: "me", en: "My cup was broken.", zh: "轮到你说了——杯子被摔了。" }
+    ],
+    contrast: [
+      {
+        wrong: "My cup was break.",
+        wrongMark: "break",
+        correct: "My cup was broken.",
+        whyZh: "be 身边要穿「做过版」——不能拿原形充数：was broken。老规矩：have 身边穿什么，be 身边就穿什么。"
+      },
+      {
+        wrong: "My cup was broke.",
+        wrongMark: "broke",
+        correct: "My cup was broken.",
+        whyZh: "昨天版也不能充数：break → broke → broken 是三件外套——broke 是昨天版，be 身边要穿做过版 broken。"
+      },
+      {
+        wrong: "My cup broken.",
+        wrongMark: null,
+        correct: "My cup was broken.",
+        whyZh: "少了搭档！做过版不能独自站台——be（was）是它的新搭档，丢了句子就塌了。"
+      },
+      {
+        wrong: "My cup were broken.",
+        wrongMark: "were",
+        correct: "My cup was broken.",
+        whyZh: "一个杯子用 was——were 是一群人的搭档（复数专用），这里请不动它。"
+      },
+      {
+        wrong: "Someone broke my cup.",
+        wrongMark: null,
+        correct: "My cup was broken.",
+        bothRight: true,
+        whyZh: "两句都对——一句说「有人摔了我的杯子」（谁干的站台上）；一句说「我的杯子被摔了」（杯子站台上）。看你想让谁当主角。"
+      },
+      {
+        wrong: "I have broken my cup.",
+        wrongMark: null,
+        correct: "My cup was broken.",
+        bothRight: true,
+        whyZh: "两句也都对——同一件做过版外套：左边跟 have（我弄坏了），右边跟 be（杯子被弄坏了）。外套同一件，换了搭档。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "My cup was broken.", zh: "我的杯子被摔了。" },
+      { label: "否定", en: "My cup wasn't broken.", zh: "我的杯子没被摔。", noteZh: "not 跟 was 走：wasn't。" },
+      { label: "疑问", en: "Was your cup broken?", zh: "你的杯子被摔了吗？", noteZh: "Was 搬句首——is/are 的问句搬法照旧。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说钥匙丢了", en: "My key was lost.", zh: "我的钥匙丢了。" },
+      { sceneZh: "说窗户被弄坏了", en: "The window was broken.", zh: "窗户被弄坏了。" },
+      { sceneZh: "说画被画完了", en: "The picture was finished.", zh: "画被画完了。" }
+    ],
+    deepDive: {
+      title: "同一件外套，两个搭档",
+      paragraphs: [
+        "第 21 课你认识过「做过版」：它是动词的第三件外套（watch→watched、do→done、break→broken）。那件外套一直跟 have 出场：I have done my homework（我写完了）。",
+        "今天它换了新搭档：be。My cup was broken（杯子被摔了）——谁摔的不重要，杯子这件事站台上。have 身边说「我干的」，be 身边说「事发生了」。",
+        "怎么分？看你想让谁当主角：做事的人重要，用主动（Someone broke my cup.）；事重要、人不重要，用幕后句（My cup was broken.）。",
+        "be 的两个班岗也复习一下：be + 动词ing 是「正在做」（I am drawing）；be + 做过版是「被做过」（My cup was broken）。同一件工装，看它后面跟的是什么。"
+      ]
+    },
+    summary: {
+      rule: "谁做的不重要——把做过版借到 be 身边：My cup was broken。",
+      points: [
+        "My cup was broken. —— 杯子站台上，人退幕后",
+        "Someone broke my cup. —— 也可以让做事的人站台上（都对）",
+        "I have broken my cup. —— 同一件外套、两个搭档（have / be）"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我的杯子被摔了。",
+        before: "My cup",
+        after: "broken.",
+        options: ["was", "were", "am"],
+        answer: "was",
+        explain: "一个杯子、过去的事：was broken。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我的杯子被摔了。",
+        tokens: ["My", "cup", "was", "broken."],
+        answer: "My cup was broken.",
+        explain: "be 搭档（was）+ 做过版（broken）——谁摔的不重要。"
+      },
+      {
+        // R8 跨课复现：第 21 课（have + 做过版）原句
+        kind: "arrange",
+        promptZh: "先复习一小步——第 21 课学过：我已经写完作业了。",
+        tokens: ["I", "have", "done", "my", "homework."],
+        answer: "I have done my homework.",
+        explain: "复现第 21 课：做过版跟 have 出场。今天它还要跟 be 出场。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["My", "cup", "was", "break."],
+        wrongToken: "break.",
+        answer: "break.",
+        correctionZh: "be 身边要穿做过版：was broken。",
+        explain: "原形不能站在 be 身边——穿做过版。"
+      },
+      {
+        // R8 跨课复现：第 13 课（be + -ing）——be 的另一班岗
+        kind: "arrange",
+        promptZh: "再对照一句——第 13 课学过：我正在画一幅画。",
+        tokens: ["I", "am", "drawing", "a", "picture."],
+        answer: "I am drawing a picture.",
+        explain: "复现第 13 课：be + 动词ing 是「正在做」；be + 做过版是「被做过」——两班岗。"
+      },
+      {
+        // R9 变形/替换：have 搭档换 be 搭档（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子换搭档：「I have broken my cup.」想说「杯子被摔了」（人退幕后），开头要换成什么？",
+        replaceBase: "I have broken my cup.",
+        replaceTarget: "把「我弄坏了杯子」换成「杯子被摔了」（人退幕后）",
+        options: ["My cup was", "My cup have", "My cup is"],
+        answer: "My cup was",
+        explain: "人退幕后、事站台上：My cup was broken——同一个 broken，搭档从 have 换成 was。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我的杯子被摔了。",
+        tokens: ["My", "cup", "was", "broken."],
+        distractors: ["were"],
+        answer: "My cup was broken."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：我的杯子没被摔。",
+        tokens: ["My", "cup", "wasn't", "broken."],
+        distractors: ["weren't"],
+        answer: "My cup wasn't broken."
+      },
+      {
+        // R8 跨课复现（L23）：同形分词
+        promptZh: "先复习一小步——第 23 课学过：我丢了钥匙。",
+        tokens: ["I", "have", "lost", "my", "key."],
+        distractors: ["losed"],
+        answer: "I have lost my key."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你的杯子被摔了吗？",
+        tokens: ["Was", "your", "cup", "broken?"],
+        distractors: ["Did"],
+        answer: "Was your cup broken?"
+      }
+    ],
+    recall: {
+      promptZh: "课间回到座位，发现杯子躺在地上。凭记忆，写出你跟同桌说的那句英文。",
+      intentZh: "我的杯子被摔了。",
+      answer: "My cup was broken.",
+      noteZh: "谁做的不重要：事站台上（My cup was broken）——做过版跟 be 出场。"
+    },
+    huntCaseIds: ["hunt-broken-window"]
+  },
+  {
+    // ── 第七批 · L51 复数搭档（were）：主语变多，be 换 were 搭档——were 薄区正式教学 ──
+    id: "lesson-51-plural",
+    number: 51,
+    title: "教室被打扫了",
+    grammarLabel: "幕后句 · 复数搭档",
+    episode: "小美的一天 五十一",
+    scene: "campus",
+    cover: cover23,
+    sceneSetupZh: "周一早上到教室，发现窗户和桌子都被擦得干干净净，值日生刚走。",
+    dialogueEn: "Who cleaned the room?",
+    dialogueZh: "同桌看着干净的教室问你。",
+    intentZh: "窗户被打扫了。",
+    targetSentence: "The windows were cleaned yesterday.",
+    blocks: [
+      { text: "The windows", role: "那些窗户（一群，复数）" },
+      { text: "were", role: "过去版 be（复数搭档）" },
+      { text: "cleaned", role: "打扫（做过版）" }
+    ],
+    oneLineRule: "幕后句的搭档也要配对：一个用 was、一群用 were——The windows were cleaned（窗户们被打扫了）。",
+    examples: [
+      { en: "The windows were cleaned yesterday.", zh: "窗户昨天被打扫了。" },
+      { en: "The desks were cleaned too.", zh: "桌子也被擦了。" },
+      { en: "The cups were washed.", zh: "杯子们被洗了。" },
+      { en: "The pictures were finished.", zh: "画们被画完了。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Who cleaned the room?", zh: "同桌看着干净的教室问你。" },
+      { who: "npc", en: "Everything looks new.", zh: "她补了一句：一切看着像新的。" },
+      { who: "me", en: "The windows were cleaned yesterday.", zh: "轮到你说了——窗户（们）昨天被打扫了。" }
+    ],
+    contrast: [
+      {
+        wrong: "The windows was cleaned.",
+        wrongMark: "was",
+        correct: "The windows were cleaned.",
+        whyZh: "主语 The windows 是一群（复数）——用 were 搭档。一个 was、一群 were，配对不能错。"
+      },
+      {
+        wrong: "The window were cleaned.",
+        wrongMark: "were",
+        correct: "The window was cleaned.",
+        whyZh: "反过来的错也一样：一个窗户用 was——were 请不动（它是复数专用）。"
+      },
+      {
+        wrong: "The windows was clean yesterday.",
+        wrongMark: "clean",
+        correct: "The windows were cleaned yesterday.",
+        whyZh: "两个坑：搭档要配对（were），动词要穿做过版（cleaned）——clean 说「干净的」这个状态，cleaned 说「被打扫过」这件事。"
+      },
+      {
+        wrong: "Was the windows cleaned?",
+        wrongMark: "Was",
+        correct: "Were the windows cleaned?",
+        whyZh: "问句里搭档也要配对：一群窗户用 Were 开头。"
+      },
+      {
+        wrong: "Someone cleaned the windows.",
+        wrongMark: null,
+        correct: "The windows were cleaned.",
+        bothRight: true,
+        whyZh: "两句都对——一句说「有人擦了窗户」（谁干的站台上）；一句说「窗户被打扫了」（窗户站台上）。看你想让谁当主角。"
+      },
+      {
+        wrong: "The window was cleaned yesterday.",
+        wrongMark: null,
+        correct: "The windows were cleaned yesterday.",
+        bothRight: true,
+        whyZh: "两句也都对——一扇窗户用 was，好几扇窗户用 were。搭档跟着主语的人数走（这是本课的新手感）。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "The windows were cleaned yesterday.", zh: "窗户昨天被打扫了。" },
+      { label: "否定", en: "The windows weren't cleaned.", zh: "窗户没被打扫。", noteZh: "not 跟 were 走：weren't。" },
+      { label: "疑问", en: "Were the windows cleaned?", zh: "窗户被打扫了吗？", noteZh: "Were 搬句首——一群的搭档。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说桌子也被擦了", en: "The desks were cleaned too.", zh: "桌子也被擦了。" },
+      { sceneZh: "说杯子们被洗了", en: "The cups were washed.", zh: "杯子们被洗了。" },
+      { sceneZh: "说画们被画完了", en: "The pictures were finished.", zh: "画们被画完了。" }
+    ],
+    deepDive: {
+      title: "一个用 was、一群用 were",
+      paragraphs: [
+        "你已经见过 was 和 were 这对搭档：I was drawing（我在画，单数）、They were playing（他们在玩，一群）——第 34 课学的。",
+        "幕后句里它们照样配对：一个东西站台上用 was（The window was cleaned）、一群东西站台上用 were（The windows were cleaned）。",
+        "怎么记？看台上有几个人：一个人用 was、一伙人用 were——和 am/is/are 的分工一一对应（am/is 对 was，are 对 were）。",
+        "顺便对照上节课：My cup was broken（一个杯子）→ The cups were washed（一群杯子）——同一件做过版外套，搭档跟着人数换。"
+      ]
+    },
+    summary: {
+      rule: "幕后句搭档要配对：一个用 was、一群用 were——The windows were cleaned。",
+      points: [
+        "The window was cleaned. —— 一扇：was",
+        "The windows were cleaned. —— 一群：were",
+        "Were the windows cleaned? —— 问句也配对"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：窗户（们）被打扫了。",
+        before: "The windows",
+        after: "cleaned.",
+        options: ["were", "was", "am"],
+        answer: "were",
+        explain: "The windows 是一群，用 were 搭档。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：窗户（们）昨天被打扫了。",
+        tokens: ["The", "windows", "were", "cleaned", "yesterday."],
+        answer: "The windows were cleaned yesterday.",
+        explain: "复数搭档（were）+ 做过版（cleaned）。"
+      },
+      {
+        // R8 跨课复现：第 50 课（单数对照）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 50 课学过：我的杯子被摔了。",
+        tokens: ["My", "cup", "was", "broken."],
+        answer: "My cup was broken.",
+        explain: "复现第 50 课：一个东西用 was。这节课看一群的。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["The", "windows", "was", "cleaned."],
+        wrongToken: "was",
+        answer: "was",
+        correctionZh: "一群窗户用 were：The windows were cleaned。",
+        explain: "一个 was、一群 were——搭档要配对。"
+      },
+      {
+        // R8 跨课复现：第 19 课（were 先例）
+        kind: "arrange",
+        promptZh: "再对照一句——第 19 课学过：起风了，但我们很开心。",
+        tokens: ["It", "was", "windy,", "but", "we", "were", "happy."],
+        answer: "It was windy, but we were happy.",
+        explain: "复现第 19 课：we 是一伙的，用 were——和幕后句一个道理。"
+      },
+      {
+        // R9 变形/替换：单数换复数（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子换人数：「The window was cleaned.」教室里有好几扇窗户，be 要换成什么？",
+        replaceBase: "The window was cleaned.",
+        replaceTarget: "一扇换成一群（The windows）",
+        options: ["were", "was", "is"],
+        answer: "were",
+        explain: "一扇 was、一群 were：The windows were cleaned。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：窗户（们）被打扫了。",
+        tokens: ["The", "windows", "were", "cleaned."],
+        distractors: ["was"],
+        answer: "The windows were cleaned."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：窗户没被打扫。",
+        tokens: ["The", "windows", "weren't", "cleaned."],
+        distractors: ["wasn't"],
+        answer: "The windows weren't cleaned."
+      },
+      {
+        // R8 跨课复现（L34）：were doing 先例
+        promptZh: "先复习一小步——第 34 课学过：他们当时正在踢足球。",
+        tokens: ["They", "were", "playing", "football."],
+        distractors: ["was"],
+        answer: "They were playing football."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：窗户被打扫了吗？",
+        tokens: ["Were", "the", "windows", "cleaned?"],
+        distractors: ["Was"],
+        answer: "Were the windows cleaned?"
+      }
+    ],
+    recall: {
+      promptZh: "周一早上，同桌问谁打扫了教室。凭记忆，写出你跟她说的一句。",
+      intentZh: "窗户（们）昨天被打扫了。",
+      answer: "The windows were cleaned yesterday.",
+      noteZh: "一群东西用 were 搭档：The windows were cleaned。"
+    },
+    huntCaseIds: ["hunt-clean-classroom"]
+  },
+  {
+    // ── 第七批 · L52 by 施动者：想说谁做的，就垫 by（把幕后的人拉出来补一句）──
+    id: "lesson-52-by-agent",
+    number: 52,
+    title: "蛋糕被谁吃了",
+    grammarLabel: "幕后句 · 想说谁就垫 by",
+    episode: "小美的一天 五十二",
+    scene: "mansion",
+    cover: cover10,
+    sceneSetupZh: "生日会结束，小美发现蛋糕少了一大块，哥哥在一旁偷笑。",
+    dialogueEn: "Who ate the cake?",
+    dialogueZh: "妈妈看着空盘子问。",
+    intentZh: "蛋糕被我哥哥吃了。",
+    targetSentence: "The cake was eaten by my brother.",
+    blocks: [
+      { text: "The cake was eaten", role: "蛋糕被吃了（事站台上）" },
+      { text: "by my brother", role: "被我哥哥（把人拉出来）" }
+    ],
+    oneLineRule: "想说谁做的，就在幕后句尾巴垫一块 by：was eaten by my brother——事在前，人在后，by 是「被谁」的牌子。",
+    examples: [
+      { en: "The cake was eaten by my brother.", zh: "蛋糕被我哥哥吃了。" },
+      { en: "The window was broken by the wind.", zh: "窗户被风弄坏了。" },
+      { en: "The song was sung by her.", zh: "那首歌是她唱的。" },
+      { en: "The letter was written by Xiaomei.", zh: "那封信是小美写的。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Who ate the cake?", zh: "妈妈看着空盘子问。" },
+      { who: "npc", en: "Look at your brother!", zh: "她指了指旁边偷笑的哥哥。" },
+      { who: "me", en: "The cake was eaten by my brother.", zh: "轮到你说了——蛋糕被我哥哥吃了。" }
+    ],
+    contrast: [
+      {
+        wrong: "The cake was eaten from my brother.",
+        wrongMark: "from",
+        correct: "The cake was eaten by my brother.",
+        whyZh: "「被谁」用 by，不是 from——from 说的是「从哪里来」。中文的「从/被」翻过来容易拿错牌子，记住：by 才是「被谁」。"
+      },
+      {
+        wrong: "The cake was eaten my brother.",
+        wrongMark: null,
+        correct: "The cake was eaten by my brother.",
+        whyZh: "想说谁做的，by 不能丢：was eaten 【by】my brother——人从幕后拉出来，要垫一块牌子。"
+      },
+      {
+        wrong: "My brother ate the cake.",
+        wrongMark: null,
+        correct: "The cake was eaten by my brother.",
+        bothRight: true,
+        whyZh: "两句都对——一句说「我哥哥吃了蛋糕」（哥哥站台上）；一句说「蛋糕被我哥哥吃了」（蛋糕站台上、哥哥从幕后点个名）。谁重要谁上台。"
+      },
+      {
+        wrong: "The cake was eaten.",
+        wrongMark: null,
+        correct: "The cake was eaten by my brother.",
+        bothRight: true,
+        whyZh: "两句也都对——不想说谁吃的，就不垫 by（The cake was eaten.）；想说，就垫上（by my brother）。by 是选配的。"
+      },
+      {
+        wrong: "The cake was eat by my brother.",
+        wrongMark: "eat",
+        correct: "The cake was eaten by my brother.",
+        whyZh: "be 身边要穿做过版：was eaten——eat → ate → eaten，第 50 课学的手感。"
+      },
+      {
+        wrong: "The cake was eaten of my brother.",
+        wrongMark: "of",
+        correct: "The cake was eaten by my brother.",
+        whyZh: "of 是「的」（my brother 的什么），by 才是「被谁」——牌子别拿错。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "The cake was eaten by my brother.", zh: "蛋糕被我哥哥吃了。" },
+      { label: "否定", en: "The cake wasn't eaten by my brother.", zh: "蛋糕不是我哥哥吃的。", noteZh: "not 跟 was 走：wasn't；by 那截照挂。" },
+      { label: "疑问", en: "Was the cake eaten by your brother?", zh: "蛋糕是你哥哥吃的吗？", noteZh: "Was 搬句首，by my brother 留在句尾。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说窗户被风弄坏了", en: "The window was broken by the wind.", zh: "窗户被风弄坏了。" },
+      { sceneZh: "说歌是她唱的", en: "The song was sung by her.", zh: "那首歌是她唱的。" },
+      { sceneZh: "说信是小美写的", en: "The letter was written by Xiaomei.", zh: "那封信是小美写的。" }
+    ],
+    deepDive: {
+      title: "想说谁，就垫一块 by",
+      paragraphs: [
+        "上节课的幕后句是「谁做的不重要」：My cup was broken（杯子被摔了，谁摔的不管）。",
+        "有时候又想点个名：「是我哥哥吃的！」——这时在句尾垫一块 by：The cake was eaten by my brother。",
+        "看位置：事在台上最前面（The cake）、be + 做过版说它怎么了（was eaten）、by 后面跟「谁干的」（my brother）。顺序千万别反。",
+        "by 还是选配的：不想点名就不垫（The cake was eaten.）——两种说法都对，看你聊到哪一步。"
+      ]
+    },
+    summary: {
+      rule: "想说谁做的，就垫 by：was eaten by my brother——事在前、人在后。",
+      points: [
+        "The cake was eaten by my brother. —— by 是「被谁」的牌子",
+        "The cake was eaten. —— 不想说谁就不垫（也对）",
+        "My brother ate the cake. —— 想说谁，也可以让他站台上（主动）"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：蛋糕被我哥哥吃了。",
+        before: "The cake was eaten",
+        after: "my brother.",
+        options: ["by", "from", "of"],
+        answer: "by",
+        explain: "「被谁」用 by：eaten by my brother。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：蛋糕被我哥哥吃了。",
+        tokens: ["The", "cake", "was", "eaten", "by", "my", "brother."],
+        answer: "The cake was eaten by my brother.",
+        explain: "事在前（The cake was eaten）、人在后（by my brother）。"
+      },
+      {
+        // R8 跨课复现：第 50 课（不带 by 的幕后句）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 50 课学过：我的杯子被摔了。",
+        tokens: ["My", "cup", "was", "broken."],
+        answer: "My cup was broken.",
+        explain: "复现第 50 课：不点名时就不垫 by——今天学点名的那一版。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["The", "cake", "was", "eaten", "from", "my", "brother."],
+        wrongToken: "from",
+        answer: "from",
+        correctionZh: "「被谁」用 by：eaten by my brother。",
+        explain: "from 是「从哪里来」；被谁用 by。"
+      },
+      {
+        // R8 跨课复现：第 21 课（eat 的做过版）
+        kind: "arrange",
+        promptZh: "再对照一句——第 21 课学过：我吃过早饭了。",
+        tokens: ["I", "have", "eaten", "breakfast."],
+        answer: "I have eaten breakfast.",
+        explain: "复现第 21 课：同一个 eaten——跟 have 出场是「吃过了」，跟 be 出场是「被吃了」。"
+      },
+      {
+        // R9 变形/替换：不点名 → 点名（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子补人名：「The cake was eaten.（蛋糕被吃了）」想点哥哥的名，句尾要垫什么？",
+        replaceBase: "The cake was eaten.",
+        replaceTarget: "想点哥哥的名（my brother）",
+        options: ["by my brother", "from my brother", "of my brother"],
+        answer: "by my brother",
+        explain: "点名垫 by：The cake was eaten by my brother。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：蛋糕被我哥哥吃了。",
+        tokens: ["The", "cake", "was", "eaten", "by", "my", "brother."],
+        distractors: ["from"],
+        answer: "The cake was eaten by my brother."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：蛋糕不是我哥哥吃的。",
+        tokens: ["The", "cake", "wasn't", "eaten", "by", "my", "brother."],
+        distractors: ["weren't"],
+        answer: "The cake wasn't eaten by my brother."
+      },
+      {
+        // R8 跨课复现：第 51 课（复数搭档）对照
+        promptZh: "先复习一小步——第 51 课学过：窗户（们）被打扫了。",
+        tokens: ["The", "windows", "were", "cleaned."],
+        distractors: ["was"],
+        answer: "The windows were cleaned."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：蛋糕是你哥哥吃的吗？",
+        tokens: ["Was", "the", "cake", "eaten", "by", "your", "brother?"],
+        distractors: ["Were"],
+        answer: "Was the cake eaten by your brother?"
+      }
+    ],
+    recall: {
+      promptZh: "生日会结束，妈妈看着空盘子问「谁吃了蛋糕」。凭记忆，写出点名哥哥的那句英文。",
+      intentZh: "蛋糕被我哥哥吃了。",
+      answer: "The cake was eaten by my brother.",
+      noteZh: "点名垫 by：事在前、人在后。"
+    },
+    huntCaseIds: ["hunt-birthday-cake"]
+  },
+  {
+    // ── 第七批 · L53 has been done（已经做过了）：完成时里 be 穿做过版——been 的双身份对撞 ──
+    id: "lesson-53-has-been-done",
+    number: 53,
+    title: "窗户已经打扫过了",
+    grammarLabel: "幕后句 · 已经做过了",
+    episode: "小美的一天 五十三",
+    scene: "campus",
+    cover: cover24,
+    sceneSetupZh: "早读前，同学们发现窗户透亮，小美说值日生已经打扫过了。",
+    dialogueEn: "The window is so clean!",
+    dialogueZh: "同桌看着透亮的窗户感叹。",
+    intentZh: "窗户已经打扫过了。",
+    targetSentence: "The window has been cleaned.",
+    blocks: [
+      { text: "The window", role: "窗户（站台上）" },
+      { text: "has been", role: "已经（been 出场）" },
+      { text: "cleaned", role: "打扫（做过版）" }
+    ],
+    oneLineRule: "说「已经被做过了」：has been + 做过版——been 是 be 的做过版（第 22 课学过），在这里跟 has 搭班。",
+    examples: [
+      { en: "The window has been cleaned.", zh: "窗户已经打扫过了。" },
+      { en: "The window hasn't been cleaned.", zh: "窗户还没被打扫。" },
+      { en: "Has the window been cleaned?", zh: "窗户打扫过了吗？" },
+      { en: "The letter has been written.", zh: "信已经写好了。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "The window is so clean!", zh: "同桌看着透亮的窗户感叹。" },
+      { who: "npc", en: "Was it done yesterday?", zh: "她猜：是昨天弄的吗？" },
+      { who: "me", en: "The window has been cleaned.", zh: "轮到你说了——窗户已经打扫过了。" }
+    ],
+    contrast: [
+      {
+        wrong: "The window has cleaned.",
+        wrongMark: null,
+        correct: "The window has been cleaned.",
+        whyZh: "has 后面要垫 be 的做过版（been）：has been cleaned。缺了它，句子就塌了——has 不能直接抓动词。"
+      },
+      {
+        wrong: "The window has been clean.",
+        wrongMark: "clean",
+        correct: "The window has been cleaned.",
+        whyZh: "been 后面要穿做过版：clean 说「干净的」这个状态，cleaned 说「被打扫过」这个动作——差一个 -ed 差一个动作。"
+      },
+      {
+        wrong: "I have been to Beijing.",
+        wrongMark: null,
+        correct: "The window has been cleaned.",
+        bothRight: true,
+        whyZh: "两句都对——been 有两个身份：后面跟地方＝去过（I have been to Beijing）；后面跟做过版＝被做过（The window has been cleaned）。看 been 后面站的是地方还是分词。"
+      },
+      {
+        wrong: "The window has been cleaned yesterday.",
+        wrongMark: "yesterday",
+        correct: "The window was cleaned yesterday.",
+        whyZh: "有 yesterday 这种明确时间点，就不用完成时——说 The window was cleaned yesterday（第 24 课学过的判据）。"
+      },
+      {
+        wrong: "The window hasn't been cleaned.",
+        wrongMark: null,
+        correct: "The window has been cleaned.",
+        bothRight: true,
+        whyZh: "两句都对——肯定（已经打扫过了）和否定（还没打扫）都是同一个骨架：has 后面 not 可加可不加、been cleaned 原地不动。看你想说哪头。"
+      },
+      {
+        wrong: "Have the window been cleaned?",
+        wrongMark: "Have",
+        correct: "Has the window been cleaned?",
+        whyZh: "一扇窗户用 Has 搬句首：Has the window been cleaned？——Been cleaned 留在原地不动。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "The window has been cleaned.", zh: "窗户已经打扫过了。" },
+      { label: "否定", en: "The window hasn't been cleaned.", zh: "窗户还没被打扫。", noteZh: "not 跟着 has 走（hasn't）；been cleaned 原地不动。" },
+      { label: "疑问", en: "Has the window been cleaned?", zh: "窗户打扫过了吗？", noteZh: "Has 搬句首，been cleaned 不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说信已经写好了", en: "The letter has been written.", zh: "信已经写好了。" },
+      { sceneZh: "说窗户还没被打扫", en: "The window hasn't been cleaned.", zh: "窗户还没被打扫。" },
+      { sceneZh: "问窗户打扫过了吗", en: "Has the window been cleaned?", zh: "窗户打扫过了吗？" }
+    ],
+    deepDive: {
+      title: "been 的两个身份",
+      paragraphs: [
+        "第 22 课你认识过 been：它是 be 的做过版——I have been to Beijing（我去过北京）。been 后面跟地方，说的是「去过」。",
+        "今天 been 又换个活：后面跟动词的做过版——The window has been cleaned（窗户已经打扫过了）。been 后面跟分词，说的是「被做过」。",
+        "怎么分？看 been 后面站的是谁：跟地方（Beijing、the zoo）＝去过；跟做过版（cleaned、written）＝被做过。一个词，两班岗。",
+        "和昨天的说法合起来看：The window was cleaned.（昨天打扫了）/ The window has been cleaned.（已经打扫过了，现在还是干净的）——想强调「现在做完了」，用 has been。"
+      ]
+    },
+    summary: {
+      rule: "说「已经被做过了」：has been + 做过版——The window has been cleaned。",
+      points: [
+        "The window has been cleaned. —— has been + cleaned",
+        "I have been to Beijing. —— been 后面跟地方＝去过",
+        "Has the window been cleaned? —— 问句：Has 搬句首"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：窗户已经打扫过了。",
+        before: "The window has",
+        after: "cleaned.",
+        options: ["been", "be", "is"],
+        answer: "been",
+        explain: "has 后面垫 been：has been cleaned。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：窗户已经打扫过了。",
+        tokens: ["The", "window", "has", "been", "cleaned."],
+        answer: "The window has been cleaned.",
+        explain: "has been + 做过版（cleaned）。"
+      },
+      {
+        // R8 跨课复现：第 22 课（been 的第一身份）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 22 课学过：我去过北京。",
+        tokens: ["I", "have", "been", "to", "Beijing."],
+        answer: "I have been to Beijing.",
+        explain: "复现第 22 课：been 后面跟地方＝去过。今天看它的第二个身份。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["The", "window", "has", "cleaned."],
+        wrongToken: "cleaned.",
+        answer: "cleaned.",
+        correctionZh: "has 后面要垫 been：has been cleaned。",
+        explain: "缺了 been，句子就塌了。"
+      },
+      {
+        // R8 跨课复现：第 24 课（时间点判据）
+        kind: "arrange",
+        promptZh: "再对照一句——第 24 课学过：昨天我去了公园。",
+        tokens: ["Yesterday", "I", "went", "to", "the", "park."],
+        answer: "Yesterday I went to the park.",
+        explain: "复现第 24 课：有 yesterday 用昨天版——完成时不吃具体时间点。"
+      },
+      {
+        // R9 变形/替换：过去式换完成时说法（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子换口气：「The window was cleaned.（昨天打扫了）」想强调「已经打扫过了（现在还是干净的）」，was 要换成什么？",
+        replaceBase: "The window was cleaned.",
+        replaceTarget: "换成「已经打扫过了」的口气",
+        options: ["has been", "have been", "is been"],
+        answer: "has been",
+        explain: "一扇窗户用 has been：The window has been cleaned。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：窗户已经打扫过了。",
+        tokens: ["The", "window", "has", "been", "cleaned."],
+        distractors: ["have"],
+        answer: "The window has been cleaned."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：窗户还没被打扫。",
+        tokens: ["The", "window", "hasn't", "been", "cleaned."],
+        distractors: ["haven't"],
+        answer: "The window hasn't been cleaned."
+      },
+      {
+        // R8 跨课复现（L50）：was cleaned 对照
+        promptZh: "先复习一小步——第 50 课学过：我的杯子被摔了。",
+        tokens: ["My", "cup", "was", "broken."],
+        distractors: ["were"],
+        answer: "My cup was broken."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：窗户打扫过了吗？",
+        tokens: ["Has", "the", "window", "been", "cleaned?"],
+        distractors: ["Have"],
+        answer: "Has the window been cleaned?"
+      }
+    ],
+    recall: {
+      promptZh: "早读前，同桌感叹窗户很干净。凭记忆，写出你那句「已经打扫过了」的英文。",
+      intentZh: "窗户已经打扫过了。",
+      answer: "The window has been cleaned.",
+      noteZh: "has been + 做过版——been 跟 has 搭班，说的还是「被做过」。"
+    },
+    huntCaseIds: ["hunt-cleaned-board"]
+  },
+  {
+    // ── 第七批 · L54 收口课（零新知全复现）：被动地图——谁重要谁上台 ──
+    id: "lesson-54-focus",
+    number: 54,
+    title: "谁上台",
+    grammarLabel: "收口 · 谁重要谁上台",
+    episode: "小美的一天 五十四",
+    scene: "city",
+    cover: cover20,
+    sceneSetupZh: "班会结束，同学们围着展板聊今天的展览——有人关心谁做的，有人只关心事办成了没。",
+    dialogueEn: "Who took these pictures?",
+    dialogueZh: "同学指着展板问你。",
+    intentZh: "照片是老师拍的。",
+    targetSentence: "The pictures were taken by the teacher.",
+    blocks: [
+      { text: "The pictures", role: "照片们（复数站台上）" },
+      { text: "were taken", role: "被拍了（were + 做过版）" },
+      { text: "by the teacher", role: "被老师（点名垫 by）" }
+    ],
+    oneLineRule: "谁重要谁上台：想说谁干的用主动（The teacher took the pictures.）；想说事，用幕后句——谁重要谁上台。",
+    examples: [
+      { en: "The pictures were taken by the teacher.", zh: "照片是老师拍的。" },
+      { en: "The window was cleaned yesterday.", zh: "窗户昨天被打扫了。" },
+      { en: "The window has been cleaned.", zh: "窗户已经打扫过了。" },
+      { en: "The teacher took the pictures.", zh: "老师拍了这些照片。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Who took these pictures?", zh: "同学指着展板问你。" },
+      { who: "npc", en: "They are so good!", zh: "她补了一句：拍得真好。" },
+      { who: "me", en: "The pictures were taken by the teacher.", zh: "轮到你说了——照片是老师拍的。" }
+    ],
+    contrast: [
+      {
+        wrong: "The pictures were took by the teacher.",
+        wrongMark: "took",
+        correct: "The pictures were taken by the teacher.",
+        whyZh: "be 身边要穿做过版：were taken——took 是昨天版，不能充数。"
+      },
+      {
+        wrong: "The pictures were taken from the teacher.",
+        wrongMark: "from",
+        correct: "The pictures were taken by the teacher.",
+        whyZh: "「被谁」用 by，不是 from——from 说的是「从哪里来」。第 52 课学过的牌子。"
+      },
+      {
+        wrong: "The teacher took the pictures.",
+        wrongMark: null,
+        correct: "The pictures were taken by the teacher.",
+        bothRight: true,
+        whyZh: "两句都对——一句说「老师拍了照片」（老师站台上）；一句说「照片是老师拍的」（照片站台上、老师从幕后点个名）。谁重要谁上台。"
+      },
+      {
+        wrong: "The window has been cleaned yesterday.",
+        wrongMark: "yesterday",
+        correct: "The window was cleaned yesterday.",
+        whyZh: "有 yesterday 用昨天版：was cleaned——完成时不吃具体时间点（第 24/53 课判据）。"
+      },
+      {
+        wrong: "The window has been clean.",
+        wrongMark: "clean",
+        correct: "The window has been cleaned.",
+        whyZh: "been 后面要穿做过版：cleaned 说「被打扫过」——clean 是「干净的」这个状态。"
+      },
+      {
+        wrong: "The pictures was taken by the teacher.",
+        wrongMark: "was",
+        correct: "The pictures were taken by the teacher.",
+        whyZh: "主语 The pictures 是一群，用 were 搭档——一个 was、一群 were（第 51 课的配对）。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "The pictures were taken by the teacher.", zh: "照片是老师拍的。" },
+      { label: "否定", en: "The pictures weren't taken by the teacher.", zh: "照片不是老师拍的。", noteZh: "not 跟 were 走：weren't；by the teacher 照挂。" },
+      { label: "疑问", en: "Were the pictures taken by the teacher?", zh: "照片是老师拍的吗？", noteZh: "Were 搬句首（复数搭档），by the teacher 不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说窗户昨天被打扫了", en: "The window was cleaned yesterday.", zh: "窗户昨天被打扫了。" },
+      { sceneZh: "说窗户已经打扫过了", en: "The window has been cleaned.", zh: "窗户已经打扫过了。" },
+      { sceneZh: "说照片是老师拍的（主动版）", en: "The teacher took the pictures.", zh: "老师拍了这些照片。" }
+    ],
+    deepDive: {
+      title: "被动地图",
+      paragraphs: [
+        "这一批你学了一整套「幕后句」，收口时把它们画成一张地图：",
+        "① 谁做的不重要：was/were + 做过版——My cup was broken. / The windows were cleaned.（一个 was、一群 were）",
+        "② 想说谁做的：句尾垫 by——The cake was eaten by my brother. / The pictures were taken by the teacher.",
+        "③ 已经做过了：has been + 做过版——The window has been cleaned.（been 跟 has 搭班）",
+        "一句话判据贯穿全部：谁重要谁上台。做事的人重要，用主动（Someone broke my cup. / The teacher took the pictures.）；事重要、人不重要，用幕后句。分寸在你手里。"
+      ]
+    },
+    summary: {
+      rule: "被动地图：was/were + 做过版（被做过）→ by（被谁）→ has been + 做过版（已经做过了）——谁重要谁上台。",
+      points: [
+        "The pictures were taken by the teacher. —— 全体要素同台",
+        "The teacher took the pictures. —— 想说谁，让他站台上（都对）",
+        "谁重要谁上台 —— 一句话判据"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：照片是老师拍的。",
+        before: "The pictures were",
+        after: "by the teacher.",
+        options: ["taken", "took", "taking"],
+        answer: "taken",
+        explain: "be 身边穿做过版：were taken。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：照片是老师拍的。",
+        tokens: ["The", "pictures", "were", "taken", "by", "the", "teacher."],
+        answer: "The pictures were taken by the teacher.",
+        explain: "全体要素同台：复数搭档（were）+ 做过版（taken）+ 点名（by the teacher）。"
+      },
+      {
+        // R8 跨课复现：第 50 课（本体）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 50 课学过：我的杯子被摔了。",
+        tokens: ["My", "cup", "was", "broken."],
+        answer: "My cup was broken.",
+        explain: "复现第 50 课：谁做的不重要——不点名版。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["The", "pictures", "were", "took", "by", "the", "teacher."],
+        wrongToken: "took",
+        answer: "took",
+        correctionZh: "be 身边穿做过版：were taken。",
+        explain: "took 是昨天版，不能充数。"
+      },
+      {
+        // R8 跨课复现：第 53 课（already 版）
+        kind: "arrange",
+        promptZh: "再对照一句——第 53 课学过：窗户已经打扫过了。",
+        tokens: ["The", "window", "has", "been", "cleaned."],
+        answer: "The window has been cleaned.",
+        explain: "复现第 53 课：has been + 做过版——已经做过了。"
+      },
+      {
+        // R9 变形/替换：焦点选择（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子换焦点：「The teacher took the pictures.」想把焦点挪到照片上（谁拍的不重要？不，还是点个名），be 要怎么搭？",
+        replaceBase: "The teacher took the pictures.",
+        replaceTarget: "把焦点挪到照片上（保留点名）",
+        options: ["were taken by", "was taken by", "were took by"],
+        answer: "were taken by",
+        explain: "一群照片用 were taken by：The pictures were taken by the teacher。"
+      }
+    ],
+    practice: [
+      {
+        // 全批混练：L50 型
+        promptZh: "你想说：我的杯子被摔了。",
+        tokens: ["My", "cup", "was", "broken."],
+        distractors: ["were"],
+        answer: "My cup was broken."
+      },
+      {
+        // 全批混练：L52 型
+        promptZh: "你想说：蛋糕被我哥哥吃了。",
+        tokens: ["The", "cake", "was", "eaten", "by", "my", "brother."],
+        distractors: ["from"],
+        answer: "The cake was eaten by my brother."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：照片是老师拍的吗？",
+        tokens: ["Were", "the", "pictures", "taken", "by", "the", "teacher?"],
+        distractors: ["Was"],
+        answer: "Were the pictures taken by the teacher?"
+      },
+      {
+        // 全批总句
+        promptZh: "全批收官——你想说：照片是老师拍的。",
+        tokens: ["The", "pictures", "were", "taken", "by", "the", "teacher."],
+        distractors: ["took"],
+        answer: "The pictures were taken by the teacher."
+      }
+    ],
+    recall: {
+      promptZh: "班会上，同学指着展板问照片是谁拍的。凭记忆，写出你那句英文。",
+      intentZh: "照片是老师拍的。",
+      answer: "The pictures were taken by the teacher.",
+      noteZh: "全体要素同台：were + taken + by the teacher。"
+    },
+    huntCaseIds: ["hunt-show-focus"]
+  },
+
+  // ── 第八批 · L55 排位词①（first/second/third + the）：报数管「有几个」、排位管「排第几」——日期链第一课（批八 PRD §2）──
+  {
+    id: "lesson-55-ordinal",
+    number: 55,
+    title: "第一个到教室",
+    grammarLabel: "第几个 · first / second / third",
+    episode: "小美的一天 五十五",
+    scene: "campus",
+    cover: cover28,
+    sceneSetupZh: "周一清晨，小美第一个到教室，在黑板上写下比赛名次等同学来。",
+    dialogueEn: "Who is the first to come?",
+    dialogueZh: "同桌走进教室，指着黑板上的名次表问你。",
+    intentZh: "他是第一个到的。",
+    targetSentence: "He is the first to come.",
+    blocks: [
+      { text: "He is", role: "他是" },
+      { text: "the first", role: "第一个（排位词）" },
+      { text: "to come", role: "来的（做的事）" }
+    ],
+    oneLineRule: "说「第几个」用排位词：first（第一）、second（第二）、third（第三）——排位词前面常带着 the。",
+    examples: [
+      { en: "He is the first to come.", zh: "他是第一个到的。" },
+      { en: "Tom is the second to finish.", zh: "汤姆是第二个跑完的。" },
+      { en: "Amy is the third to finish.", zh: "艾米是第三个跑完的。" },
+      { en: "He comes first.", zh: "他第一个来。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Who is the first to come?", zh: "同桌走进教室，指着黑板上的名次表问你。" },
+      { who: "npc", en: "Tom and Amy are on the board, too.", zh: "她念了念：名次表上还有汤姆和艾米。" },
+      { who: "me", en: "He is the first to come.", zh: "轮到你说了——他是第一个到的。" }
+    ],
+    contrast: [
+      {
+        wrong: "He is first to come.",
+        wrongMark: null,
+        correct: "He is the first to come.",
+        whyZh: "排位词前面不能光着：the first——排位一出现，the 就跟上（想想第 31 课的 the best，是它家老亲戚）。"
+      },
+      {
+        wrong: "Tom is the two to finish.",
+        wrongMark: "two",
+        correct: "Tom is the second to finish.",
+        whyZh: "报数词不能顶排位词：two 是「两个」，second 才是「第二」——报数管几个、排位管第几。"
+      },
+      {
+        wrong: "Amy is the three to finish.",
+        wrongMark: "three",
+        correct: "Amy is the third to finish.",
+        whyZh: "三的排位是 third——不是把 three 直接搬来，拼法要单独认。"
+      },
+      {
+        wrong: "He comes first.",
+        wrongMark: null,
+        correct: "He is the first to come.",
+        bothRight: true,
+        whyZh: "两句都对——同一个「第一」，两种说法：句尾的 first 能单独用（He comes first），「the first + 做事」的说法也完整。看你想怎么说。"
+      },
+      {
+        wrong: "There is a winner.",
+        wrongMark: null,
+        correct: "There are three winners.",
+        bothRight: true,
+        whyZh: "两句都对——一个赢家用 is、三个赢家用 are；three 是报数词，管「有几个」——别和排位家族混（第 26 课的老规矩）。"
+      },
+      {
+        wrong: "The three boys are here.",
+        wrongMark: null,
+        correct: "The third boy is here.",
+        bothRight: true,
+        whyZh: "两句都对——「三个男孩」是一群、「第三个男孩」是排出来的那一个：three 管几个、third 管第几，差几个字母差一件事。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "He is the first to come.", zh: "他是第一个到的。" },
+      { label: "否定", en: "He is not the first to come.", zh: "他不是第一个到的。", noteZh: "not 跟 is 走：is not——the first to come 原地不动。" },
+      { label: "疑问", en: "Who is the first?", zh: "谁是第一个？", noteZh: "问「谁是第一个」，疑问词 Who 站句首（第 27 课的搬法照旧）。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说汤姆第二个跑完", en: "Tom is the second to finish.", zh: "汤姆是第二个跑完的。" },
+      { sceneZh: "说艾米第三个回答", en: "Amy is the third to answer.", zh: "艾米是第三个回答的。" },
+      { sceneZh: "说他第一个来（句尾版）", en: "He comes first.", zh: "他第一个来。" }
+    ],
+    deepDive: {
+      title: "报数词和排位词",
+      paragraphs: [
+        "这一课认识一个新家族：排位词——first（第一）、second（第二）、third（第三）。它们和报数词（one、two、three）是两个家族：报数词管「有几个」，排位词管「排第几」。",
+        "从「四」往后，排位词大多在数字后面加 -th：fourth、sixth、seventh……把 -th 想成「排位的小尾巴」。只有几个常客要单独认：first、second、third。",
+        "排位词前面常带着 the：the first、the second——想想第 31 课的 the best（最好的），它就是 the 家的老亲戚。排位一出现，the 就跟上。",
+        "把 two 和 second 放一起体会：two boys 是「两个男孩」（数出来的）；the second boy 是「第二个男孩」（排出来的）。差一个词，差一件事。"
+      ]
+    },
+    summary: {
+      rule: "说「第几个」用排位词：first、second、third——排位词前面常带着 the。",
+      points: [
+        "He is the first to come. —— the first 排第一",
+        "He comes first. —— 同一个「第一」，两种说法",
+        "The third boy is here. —— 排位词站名词前"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：他是第一个到的。",
+        before: "He is",
+        after: "to come.",
+        options: ["the first", "the two", "first"],
+        answer: "the first",
+        explain: "排位词前面带着 the：the first——报数词 two 在这儿上不了岗。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：他是第一个到的。",
+        tokens: ["He", "is", "the", "first", "to", "come."],
+        answer: "He is the first to come.",
+        explain: "排位词前面带着 the：the first；后面「来的事」用 to come。"
+      },
+      {
+        // R8 跨课复现：第 6 课（It 占位说时间）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 6 课学过：今天是星期一。",
+        tokens: ["It", "is", "Monday."],
+        answer: "It is Monday.",
+        explain: "复现第 6 课：It 占位说时间——小美抬头看了一眼教室的钟。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["He", "is", "first", "to", "come."],
+        wrongToken: "first",
+        answer: "first",
+        correctionZh: "排位词前面要带着 the：the first。",
+        explain: "排位一出现，the 就跟上。"
+      },
+      {
+        // R8 跨课复现：第 26 课（There 先占位）
+        kind: "arrange",
+        promptZh: "再对照一句——第 26 课学过：桌上有一本书。",
+        tokens: ["There", "is", "a", "book", "on", "the", "desk."],
+        answer: "There is a book on the desk.",
+        explain: "复现第 26 课：There 先占位说「有」——这个名字牌以后还会用到。"
+      },
+      {
+        // R9 变形/替换：报数换排位（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「Tom is the second to finish.」把「第二」换成「第三」，排位词要怎么变？",
+        replaceBase: "Tom is the second to finish.",
+        replaceTarget: "把「第二」换成「第三」",
+        options: ["the third", "the three", "third"],
+        answer: "the third",
+        explain: "三的排位是 third（不是 three）——前面照样带着 the：the third。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：他是第一个到的。",
+        tokens: ["He", "is", "the", "first", "to", "come."],
+        distractors: ["one"],
+        answer: "He is the first to come."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：谁是第一个？",
+        tokens: ["Who", "is", "the", "first?"],
+        distractors: ["two"],
+        answer: "Who is the first?"
+      },
+      {
+        // R8 跨课复现：第 26 课原句
+        promptZh: "复习第 26 课：桌上有一本书。",
+        tokens: ["There", "is", "a", "book", "on", "the", "desk."],
+        distractors: ["are"],
+        answer: "There is a book on the desk."
+      },
+      {
+        promptZh: "收个尾——你想说：艾米是第三个到的。",
+        tokens: ["Amy", "is", "the", "third", "to", "come."],
+        distractors: ["three"],
+        answer: "Amy is the third to come."
+      }
+    ],
+    recall: {
+      promptZh: "周一早读，同桌指着黑板上的名次表问你谁是第一个到的。凭记忆，写出你那句英文。",
+      intentZh: "他是第一个到的。",
+      answer: "He is the first to come.",
+      noteZh: "排位词前面带着 the：the first；「来的事」用 to come。"
+    },
+    huntCaseIds: ["hunt-race-result"]
+  },
+
+  // ── 第八批 · L56 月份（12 个月 + in）：挂着挂历认月份，说「在某个月」用 in——接住 L27 的生日问句（批八 PRD §2）──
+  {
+    id: "lesson-56-months",
+    number: 56,
+    title: "我的生日在五月",
+    grammarLabel: "月份 · in May",
+    episode: "小美的一天 五十六",
+    scene: "mansion",
+    cover: cover30,
+    sceneSetupZh: "家里挂历前，小美在 12 个月格子上圈生日，给全家人的生日排顺序。",
+    dialogueEn: "When is your birthday?",
+    dialogueZh: "妈妈指着挂历问你。",
+    intentZh: "我的生日在五月。",
+    targetSentence: "My birthday is in May.",
+    blocks: [
+      { text: "My birthday", role: "我的生日" },
+      { text: "is", role: "在（是）" },
+      { text: "in May", role: "在五月（大格子）" }
+    ],
+    oneLineRule: "说「在某个月」用 in：in May——只说月份这一大格用 in；月份名字首字母要抬头（May 像人名一样大写）。",
+    examples: [
+      { en: "My birthday is in May.", zh: "我的生日在五月。" },
+      { en: "My birthday is in June.", zh: "我的生日在六月。" },
+      { en: "Grandma's birthday is in October.", zh: "奶奶的生日在十月。" },
+      { en: "It is May.", zh: "现在是五月。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "When is your birthday?", zh: "妈妈指着挂历问你。" },
+      { who: "npc", en: "Let's circle it on the calendar.", zh: "她把笔递给你：来，圈在挂历上。" },
+      { who: "me", en: "My birthday is in May.", zh: "轮到你说了——我的生日在五月。" }
+    ],
+    contrast: [
+      {
+        wrong: "My birthday is on May.",
+        wrongMark: "on",
+        correct: "My birthday is in May.",
+        whyZh: "只说「哪个月」用 in——月份是一个大格子；「某一天」才用 on（第 18 课的判据：点用 on、段用 in）。"
+      },
+      {
+        wrong: "My birthday is in may.",
+        wrongMark: "may",
+        correct: "My birthday is in May.",
+        whyZh: "月份名字要抬头：May——像人名一样首字母大写，小写的 may 是另一个词。"
+      },
+      {
+        wrong: "School starts on Monday.",
+        wrongMark: null,
+        correct: "School starts in May.",
+        bothRight: true,
+        whyZh: "两句都对——一天用 on（on Monday）、一个月用 in（in May）：点到哪一级，用哪个词。"
+      },
+      {
+        wrong: "When is your birthday?",
+        wrongMark: null,
+        correct: "My birthday is in May.",
+        bothRight: true,
+        whyZh: "两句都对——一句问（第 27 课学的问句）、一句答。会问还要会答，今天就补上答句。"
+      },
+      {
+        wrong: "It is Monday.",
+        wrongMark: null,
+        correct: "It is May.",
+        bothRight: true,
+        whyZh: "两句都对——第 6 课说星期（It is Monday），今天说月份（It is May）：星期是「点」、月份是「段」，名字都抬头。"
+      },
+      {
+        wrong: "July / August / September / October / November / December",
+        wrongMark: null,
+        correct: "January / February / March / April / May / June",
+        bothRight: true,
+        whyZh: "12 个月挂历认读——长名字拆三段读：Sep-tem-ber / Oc-to-ber / No-vem-ber / De-cem-ber，读顺了就不怕长。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "My birthday is in May.", zh: "我的生日在五月。" },
+      { label: "否定", en: "My birthday is not in May.", zh: "我的生日不在五月。", noteZh: "not 跟 is 走：is not——in May 原地不动。" },
+      { label: "疑问", en: "Is your birthday in May?", zh: "你的生日在五月吗？", noteZh: "Is 搬句首，in May 不动（第 27 课的搬法照旧）。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说爷爷的生日在十月", en: "Grandpa's birthday is in October.", zh: "爷爷的生日在十月。" },
+      { sceneZh: "说开学在九月", en: "School starts in September.", zh: "开学在九月。" },
+      { sceneZh: "问对方生日在不在七月", en: "Is your birthday in July?", zh: "你的生日在七月吗？" }
+    ],
+    deepDive: {
+      title: "挂历上的大格子",
+      paragraphs: [
+        "12 个月名字来自挂历——不用死背，先认形状：一个月一个大格子，格子上的名字首字母都抬头（January、February……），因为它们是「名字」，像人名一样。",
+        "说「在某个月」用 in：in May、in October——你先说到哪个大格子。月份是「段」（一段很长），所以用 in；星期和日子是「点」（就那一天），所以用 on。第 18 课的判据今天升级：点用 on、段用 in。",
+        "长名字不用怕：September 拆成 Sep-tem-ber、October 拆成 Oc-to-ber、November 拆成 No-vem-ber、December 拆成 De-cem-ber——按段读就顺了。",
+        "想想第 27 课你学过的问句：When is your birthday？当时你只会问。今天你会答了：My birthday is in May.——会问又会答，生日这件事就完整了。"
+      ]
+    },
+    summary: {
+      rule: "说「在某个月」用 in：in May——月份是大格子（段）；名字首字母要抬头。",
+      points: [
+        "My birthday is in May. —— 一个月用 in",
+        "When is your birthday? / My birthday is in May. —— 会问也会答",
+        "on Monday / in May —— 点用 on、段用 in"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我的生日在五月。",
+        before: "My birthday is",
+        after: "May.",
+        options: ["in", "on", "at"],
+        answer: "in",
+        explain: "只说月份这个大格子用 in：in May——「某一天」才用 on。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我的生日在五月。",
+        tokens: ["My", "birthday", "is", "in", "May."],
+        answer: "My birthday is in May.",
+        explain: "in + 月份：in May——月份名字抬头。"
+      },
+      {
+        // R8 跨课复现：第 27 课（生日问句）——本课负责「答」
+        kind: "arrange",
+        promptZh: "先复习一小步——第 27 课学过：你的生日是什么时候？",
+        tokens: ["When", "is", "your", "birthday?"],
+        answer: "When is your birthday?",
+        explain: "复现第 27 课：会问；今天补上「答」。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["My", "birthday", "is", "in", "may."],
+        wrongToken: "may.",
+        answer: "may.",
+        correctionZh: "月份名字要抬头：May。",
+        explain: "像人名一样首字母大写——小写的 may 是另一个词。"
+      },
+      {
+        // R8 跨课复现：第 6 课（It 占位说时间）
+        kind: "arrange",
+        promptZh: "再对照一句——第 6 课学过：今天是星期五。",
+        tokens: ["It", "is", "Friday."],
+        answer: "It is Friday.",
+        explain: "复现第 6 课：It 占位说时间——星期和月份是一家人，名字都抬头。"
+      },
+      {
+        // R9 变形/替换：换月份（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「My birthday is in May.」把五月换成十月，月份名字要怎么变？",
+        replaceBase: "My birthday is in May.",
+        replaceTarget: "把五月换成十月",
+        options: ["in October", "in october", "on October"],
+        answer: "in October",
+        explain: "still in + 月份：in October——名字照样抬头。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我的生日在五月。",
+        tokens: ["My", "birthday", "is", "in", "May."],
+        distractors: ["on"],
+        answer: "My birthday is in May."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你的生日在五月吗？",
+        tokens: ["Is", "your", "birthday", "in", "May?"],
+        distractors: ["on"],
+        answer: "Is your birthday in May?"
+      },
+      {
+        // R8 跨课复现：第 6 课原句
+        promptZh: "复习第 6 课：今天是星期五。",
+        tokens: ["It", "is", "Friday."],
+        distractors: ["are"],
+        answer: "It is Friday."
+      },
+      {
+        promptZh: "收个尾——你想说：开学在九月。",
+        tokens: ["School", "starts", "in", "September."],
+        distractors: ["on"],
+        answer: "School starts in September."
+      }
+    ],
+    recall: {
+      promptZh: "家里挂历前，妈妈指着格子问你生日是什么时候。凭记忆，写出你那句英文。",
+      intentZh: "我的生日在五月。",
+      answer: "My birthday is in May.",
+      noteZh: "只用月份用 in：in May——名字抬头。"
+    },
+    huntCaseIds: ["hunt-birthday-list"]
+  },
+
+  // ── 第八批 · L57 日期（on + 月份 + 日子读排位词）：日期链收口——L27 会问、L56 说月份、本课说日子（批八 PRD §2）──
+  {
+    id: "lesson-57-dates",
+    number: 57,
+    title: "十月一日",
+    grammarLabel: "日期 · on October 1",
+    episode: "小美的一天 五十七",
+    scene: "campus",
+    cover: cover18,
+    sceneSetupZh: "开学通知贴在教室门口，小美指着日期念给同学听。",
+    dialogueEn: "When does school start?",
+    dialogueZh: "同学凑过来看通知。",
+    intentZh: "开学在十月一号。",
+    targetSentence: "School starts on October 1.",
+    blocks: [
+      { text: "School starts", role: "开学（它开头做事）" },
+      { text: "on", role: "在（点到日子）" },
+      { text: "October 1", role: "十月一号（读 October first）" }
+    ],
+    oneLineRule: "说「某月某日」＝on + 月份 + 日子；日子里的数字读排位词——October 1 读 October first。",
+    examples: [
+      { en: "School starts on October 1.", zh: "开学在十月一号。" },
+      { en: "My birthday is on May third.", zh: "我的生日在五月三号。" },
+      { en: "The party is on June 2.", zh: "派对在六月二号。" },
+      { en: "We meet on Monday.", zh: "我们周一见面。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "When does school start?", zh: "同学凑过来看通知。" },
+      { who: "npc", en: "The date is right here.", zh: "她指着通知上的红字。" },
+      { who: "me", en: "School starts on October 1.", zh: "轮到你说了——开学在十月一号。" }
+    ],
+    contrast: [
+      {
+        wrong: "School starts in October 1.",
+        wrongMark: "in",
+        correct: "School starts on October 1.",
+        whyZh: "有具体日子就用 on：October 1 是「某一天」——只说月份才用 in（in October）。点到日子就升级。"
+      },
+      {
+        wrong: "School starts on October one.",
+        wrongMark: "one",
+        correct: "School starts on October 1.",
+        whyZh: "日子读排位词，不读报数：1 读 first——October 1 读 October first（第 55 课的排位家族又出场）。"
+      },
+      {
+        wrong: "My birthday is in May.",
+        wrongMark: null,
+        correct: "My birthday is on May third.",
+        bothRight: true,
+        whyZh: "两句都对——只说「五月」用 in（in May）；点到「五月三号」升级用 on（on May third）——一步之差。"
+      },
+      {
+        wrong: "School starts on october 1.",
+        wrongMark: "october",
+        correct: "School starts on October 1.",
+        whyZh: "月份名字要抬头：October——第 56 课的老规矩，写日期也别忘。"
+      },
+      {
+        wrong: "He is the first to come.",
+        wrongMark: null,
+        correct: "School starts on October 1.",
+        bothRight: true,
+        whyZh: "两句都对——第 55 课的 the first（第一个）站台上；日子里的 1 读出来就是 first：排位词家族的又一次出场。"
+      },
+      {
+        wrong: "School starts on Monday.",
+        wrongMark: null,
+        correct: "School starts on October 1.",
+        bothRight: true,
+        whyZh: "两句都对——「某一天」都是同一班：星期几用 on、日期也用 on。日期写 October 1 或 1 October 都对，两种都对不用改。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "School starts on October 1.", zh: "开学在十月一号。" },
+      { label: "否定", en: "School doesn't start on October 1.", zh: "开学不在十月一号。", noteZh: "动作请帮手 doesn't（第 25 课的规矩）；日期块原地不动。" },
+      { label: "疑问", en: "Does school start on October 1?", zh: "开学在十月一号吗？", noteZh: "Does 站句首，start 穿原样，日期块不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说生日在五月三号", en: "My birthday is on May third.", zh: "我的生日在五月三号。" },
+      { sceneZh: "说派对在六月二号", en: "The party is on June 2.", zh: "派对在六月二号。" },
+      { sceneZh: "问开学在不在十月一号", en: "Does school start on October 1?", zh: "开学在十月一号吗？" }
+    ],
+    deepDive: {
+      title: "日期链收口",
+      paragraphs: [
+        "把这三课连起来看：第 27 课你会问（When is your birthday?）；第 56 课你会答月份（My birthday is in May.）；今天你会答日子（My birthday is on May third.）——从问到答，生日和开学这种事你都能说全了。",
+        "判据一条：点到哪一级用哪个词——只说月份用 in（in May），点到日子升级用 on（on May third）。点用 on、段用 in，第 18 课的老判据一路升级到这里。",
+        "日子为什么读 first 不读 one？因为说的是「第几个日子」——五月三号是「五月里的第三个日子」，读 May third。写的时候写 3 或 third 都行，读出来读排位词。",
+        "写日期两种顺序都对：October 1（美式）或 1 October（英式）——见到 1 October 别惊讶，它和 October 1 是一个意思。"
+      ]
+    },
+    summary: {
+      rule: "说「某月某日」＝on + 月份 + 日子（日子读排位词）：School starts on October 1.",
+      points: [
+        "School starts on October 1. —— 点到日子用 on",
+        "in May / on May third —— 月份一步，日子升级",
+        "October 1 读 October first —— 日子读排位词"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：开学在十月一号。",
+        before: "School starts",
+        after: "October 1.",
+        options: ["on", "in", "at"],
+        answer: "on",
+        explain: "有具体日子就用 on：on October 1——点到日子就升级。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：开学在十月一号。",
+        tokens: ["School", "starts", "on", "October", "1."],
+        answer: "School starts on October 1.",
+        explain: "on + 月份 + 日子：on October 1——读出来是 October first。"
+      },
+      {
+        // R8 跨课复现：第 55 课（the first 排位词）——日子的 first 就是它
+        kind: "arrange",
+        promptZh: "先复习一小步——第 55 课学过：他是第一个到的。",
+        tokens: ["He", "is", "the", "first", "to", "come."],
+        answer: "He is the first to come.",
+        explain: "复现第 55 课：the first——今天日期里的 1 读 first，就是它。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["School", "starts", "on", "October", "one."],
+        wrongToken: "one.",
+        answer: "one.",
+        correctionZh: "日子读排位词：1 读 first——on October first。",
+        explain: "报数词不能顶排位词的岗。"
+      },
+      {
+        // R8 跨课复现：第 56 课（in + 月份）
+        kind: "arrange",
+        promptZh: "再对照一句——第 56 课学过：我的生日在五月。",
+        tokens: ["My", "birthday", "is", "in", "May."],
+        answer: "My birthday is in May.",
+        explain: "复现第 56 课：只说月份用 in——今天点到日子，一步升级到 on。"
+      },
+      {
+        // R9 变形/替换：换日子（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「School starts on October 1.」把日子换成「五月三号」，要怎么变？",
+        replaceBase: "School starts on October 1.",
+        replaceTarget: "把日子换成「五月三号」",
+        options: ["on May third", "on May three", "in May three"],
+        answer: "on May third",
+        explain: "点到日子用 on + 排位词：on May third——three 要换成 third。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：开学在十月一号。",
+        tokens: ["School", "starts", "on", "October", "1."],
+        distractors: ["in"],
+        answer: "School starts on October 1."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：开学在十月一号吗？",
+        tokens: ["Does", "school", "start", "on", "October", "1?"],
+        distractors: ["Do"],
+        answer: "Does school start on October 1?"
+      },
+      {
+        // R8 跨课复现：第 18 课原句（on + 某一天）
+        promptZh: "复习第 18 课：我们周一见面。",
+        tokens: ["We", "meet", "on", "Monday."],
+        distractors: ["in"],
+        answer: "We meet on Monday."
+      },
+      {
+        promptZh: "收个尾——你想说：我的生日在五月三号。",
+        tokens: ["My", "birthday", "is", "on", "May", "third."],
+        distractors: ["three"],
+        answer: "My birthday is on May third."
+      }
+    ],
+    recall: {
+      promptZh: "开学通知贴在教室门口，同学问你什么时候开学。凭记忆，写出你那句英文。",
+      intentZh: "开学在十月一号。",
+      answer: "School starts on October 1.",
+      noteZh: "点到日子用 on；数字 1 读 first。"
+    },
+    huntCaseIds: ["hunt-calendar-note"]
+  },
+
+  // ── 第八批 · L58 -ly 副词（做事的样子）：形容词加 -ly 变样子词，站动词后面——与 L28 频率词「前座」对照（批八 PRD §2）──
+  {
+    id: "lesson-58-ly-adverbs",
+    number: 58,
+    title: "她跑得快",
+    grammarLabel: "做事的样子 · 动词后面加 -ly",
+    episode: "小美的一天 五十八",
+    scene: "campus",
+    cover: cover49,
+    sceneSetupZh: "运动会看台上，小美给跑第一的姐姐喊加油，报出她跑的样子。",
+    dialogueEn: "Look at your sister!",
+    dialogueZh: "同学推推你的胳膊。",
+    intentZh: "她跑得快。",
+    targetSentence: "She runs quickly.",
+    blocks: [
+      { text: "She runs", role: "她跑（动作）" },
+      { text: "quickly", role: "快（做事的样子）" }
+    ],
+    oneLineRule: "说「怎么做的」，在动作词后面站一个样子词：大多是形容样子的词加 -ly 变来——quick→quickly、careful→carefully。",
+    examples: [
+      { en: "She runs quickly.", zh: "她跑得快。" },
+      { en: "He does his homework carefully.", zh: "他做作业很仔细。" },
+      { en: "She reads loudly.", zh: "她朗读声音大。" },
+      { en: "She is quick.", zh: "她很快（跑得快这个特点）。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Look at your sister!", zh: "同学推推你的胳膊。" },
+      { who: "npc", en: "She is so fast on the track!", zh: "她指着跑道喊。" },
+      { who: "me", en: "She runs quickly.", zh: "轮到你说了——她跑得快。" }
+    ],
+    contrast: [
+      {
+        wrong: "She quickly runs.",
+        wrongMark: "quickly",
+        correct: "She runs quickly.",
+        whyZh: "样子词站动词后面：runs quickly——频率词抢前座（always runs），样子词坐后座（runs quickly），座位不同（第 28 课的对照）。"
+      },
+      {
+        wrong: "She runs quick.",
+        wrongMark: "quick",
+        correct: "She runs quickly.",
+        whyZh: "「什么样」的词不能顶「做得怎么样」的岗：quick 形容人（She is quick），加 -ly 才是「跑得快」（runs quickly）。"
+      },
+      {
+        wrong: "She is quick.",
+        wrongMark: null,
+        correct: "She runs quickly.",
+        bothRight: true,
+        whyZh: "两句都对——说「她快」（她的特点）用 is + quick；说「她跑得快」（做得怎么样）用 runs + quickly。是什么样 vs 做得怎么样。"
+      },
+      {
+        wrong: "She always runs in the morning.",
+        wrongMark: null,
+        correct: "She runs quickly.",
+        bothRight: true,
+        whyZh: "两句都对——always（频率词）站动词前面，这是第 28 课的老规矩；今天学的 quickly 站动词后面。前座后座，各坐各的。"
+      },
+      {
+        wrong: "He does his homework carefully.",
+        wrongMark: null,
+        correct: "She runs quickly.",
+        bothRight: true,
+        whyZh: "两句都对——做事的样子跟着动作走：runs quickly、does his homework carefully——careful 加 -ly 再收尾。"
+      },
+      {
+        wrong: "He reads loud.",
+        wrongMark: "loud",
+        correct: "He reads loudly.",
+        whyZh: "形容词顶岗反向再练一条：读书「声音大」要说 reads loudly——形容词 loud 加 -ly 才是样子词。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "She runs quickly.", zh: "她跑得快。" },
+      { label: "否定", en: "She doesn't run quickly.", zh: "她跑得不快。", noteZh: "not 走帮手 doesn't；quickly 留在动词后不动。" },
+      { label: "疑问", en: "Does she run quickly?", zh: "她跑得快吗？", noteZh: "Does 站句首，run 穿原样，后座词不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说他做作业仔细", en: "He does his homework carefully.", zh: "他做作业很仔细。" },
+      { sceneZh: "说她朗读声音大", en: "She reads loudly.", zh: "她朗读声音大。" },
+      { sceneZh: "问对方跑得快不快", en: "Do you run quickly?", zh: "你跑得快吗？" }
+    ],
+    deepDive: {
+      title: "前座与后座",
+      paragraphs: [
+        "第 28 课你认识过一族词：always、often、never——它们说「多久一次」，站动词前面（I always arrive early）。今天的新一族站动词后面（She runs quickly）。",
+        "两族词别坐错位置：说「多久一次」坐前座；说「怎么做的」坐后座。always runs（前座）/ runs quickly（后座）——一回生两回熟，座位记牢。",
+        "后座词怎么来的？大多是从「形容样子的词」加 -ly 变来的：quick→quickly、careful→carefully、loud→loudly。变化不难：尾巴上挂个 -ly 就行。",
+        "「什么样」和「做得怎么样」是两班岗：She is quick（她是快的——形容她这个人）；She runs quickly（她跑得快——形容跑这件事）。差一个 -ly，差一个岗位。"
+      ]
+    },
+    summary: {
+      rule: "说「怎么做的」，动作词后面站个样子词（形容词加 -ly）：She runs quickly.——前座频率、后座样子。",
+      points: [
+        "She runs quickly. —— 样子词坐后座",
+        "I always arrive early. —— 频率词坐前座",
+        "is quick / runs quickly —— 是什么样 vs 做得怎么样"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：她跑得快。",
+        before: "She runs",
+        after: ".",
+        options: ["quickly", "quick", "always"],
+        answer: "quickly",
+        explain: "「做得怎么样」要加 -ly 的样子词：runs quickly——quick 是形容人，always 是频率词（前座的）。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：她跑得快。",
+        tokens: ["She", "runs", "quickly."],
+        answer: "She runs quickly.",
+        explain: "样子词坐后座：runs quickly——动作在前，样子在后。"
+      },
+      {
+        // R8 跨课复现：第 28 课（频率词前座）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 28 课学过：我总是早到。",
+        tokens: ["I", "always", "arrive", "early."],
+        answer: "I always arrive early.",
+        explain: "复现第 28 课：always 坐前座（动词前）——今天的样子词坐后座，座位对照着记。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["She", "runs", "quick."],
+        wrongToken: "quick.",
+        answer: "quick.",
+        correctionZh: "要加 -ly 的样子词：runs quickly。",
+        explain: "形容词不能顶样子词的岗。"
+      },
+      {
+        // R8 跨课复现：第 25 课（三单 -s）
+        kind: "arrange",
+        promptZh: "再对照一句——第 25 课学过：他每天喝牛奶。",
+        tokens: ["He", "drinks", "milk", "every", "day."],
+        answer: "He drinks milk every day.",
+        explain: "复现第 25 课：三单的 -s 别丢——今天句子里的 runs 也穿着这件外套。"
+      },
+      {
+        // R9 变形/替换：换样子词（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「She runs quickly.」把「快」换成「仔细（careful）」，样子词要怎么变？",
+        replaceBase: "She runs quickly.",
+        replaceTarget: "把「快」换成「仔细」",
+        options: ["carefully", "careful", "carefuly"],
+        answer: "carefully",
+        explain: "careful 加 -ly：carefully——拼写把 e 留住。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：她跑得快。",
+        tokens: ["She", "runs", "quickly."],
+        distractors: ["quick"],
+        answer: "She runs quickly."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：她跑得快吗？",
+        tokens: ["Does", "she", "run", "quickly?"],
+        distractors: ["runs"],
+        answer: "Does she run quickly?"
+      },
+      {
+        promptZh: "复习第 28 课：我总是早到。",
+        tokens: ["I", "always", "arrive", "early."],
+        distractors: ["arrive always"],
+        answer: "I always arrive early."
+      },
+      {
+        promptZh: "收个尾——你想说：他做作业很仔细。",
+        tokens: ["He", "does", "his", "homework", "carefully."],
+        distractors: ["careful"],
+        answer: "He does his homework carefully."
+      }
+    ],
+    recall: {
+      promptZh: "运动会看台上，同学指着跑第一的姐姐让你也说一句。凭记忆，写出你那句英文。",
+      intentZh: "她跑得快。",
+      answer: "She runs quickly.",
+      noteZh: "样子词坐后座：runs quickly——别和频率词的前座混。"
+    },
+    huntCaseIds: ["hunt-sports-report"]
+  },
+
+  // ── 第八批 · L59 well / fast（副词链收口）：两个不按 -ly 走的常客——good→well、fast→fast；L14 认读种子转正（批八 PRD §2）──
+  {
+    id: "lesson-59-well-fast",
+    number: 59,
+    title: "她唱得好",
+    grammarLabel: "不按 -ly 走的两个常客 · good→well、fast→fast",
+    episode: "小美的一天 五十九",
+    scene: "mansion",
+    cover: cover21,
+    sceneSetupZh: "家庭聚会上姐姐唱完一首，小美在客厅夸她唱得好。",
+    dialogueEn: "She sings very well.",
+    dialogueZh: "姐姐唱完一首歌，亲戚们都在鼓掌。",
+    intentZh: "她唱得很好。",
+    targetSentence: "She sings very well.",
+    blocks: [
+      { text: "She sings", role: "她唱（动作）" },
+      { text: "very well", role: "很好（放大器 + 常客）" }
+    ],
+    oneLineRule: "两个常客不按 -ly 走：good 的样子词是 well，fast 的样子词还是 fast；very 要贴在样子词前面。",
+    examples: [
+      { en: "She sings very well.", zh: "她唱得很好。" },
+      { en: "He runs very fast.", zh: "他跑得很快。" },
+      { en: "She is a good singer.", zh: "她是个好歌手。" },
+      { en: "She can sing very well.", zh: "她唱歌很好听（第 14 课的句子）。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Listen! Your sister is singing.", zh: "客厅里，姐姐唱完了一首歌。" },
+      { who: "npc", en: "She can sing very well.", zh: "妈妈轻轻跟着哼了一句。" },
+      { who: "me", en: "She sings very well.", zh: "轮到你说了——她唱得很好。" }
+    ],
+    contrast: [
+      {
+        wrong: "She sings very good.",
+        wrongMark: "good",
+        correct: "She sings very well.",
+        whyZh: "good 形容「她这个人/东西好」，well 说「做得好」：sing + well——good 的样子词是 well，不是 goodly。"
+      },
+      {
+        wrong: "She sings well very.",
+        wrongMark: "very",
+        correct: "She sings very well.",
+        whyZh: "very 是「放大器」，得排在它放大的词前面：very well——先放大、后样子。"
+      },
+      {
+        wrong: "He runs fastly.",
+        wrongMark: "fastly",
+        correct: "He runs fast.",
+        whyZh: "fast 自己就是样子词，不加 -ly：runs fast——没有 fastly 这个词。"
+      },
+      {
+        wrong: "She is a good singer.",
+        wrongMark: null,
+        correct: "She sings well.",
+        bothRight: true,
+        whyZh: "两句都对——夸「一个好歌手」用 good 挂在人身上；夸「唱得好」用 well 跟着动作。挂人用 good、跟动作用 well。"
+      },
+      {
+        wrong: "She runs quickly.",
+        wrongMark: null,
+        correct: "She sings very well.",
+        bothRight: true,
+        whyZh: "两句都对——第 58 课的 quickly 是规则型（quick 加 -ly）；今天的 well 是不按套路走的常客。一族词加一个常客。"
+      },
+      {
+        wrong: "She can sing very well.",
+        wrongMark: null,
+        correct: "She sings very well.",
+        bothRight: true,
+        whyZh: "两句都对——第 14 课你听懂过「She can sing very well.」（她会唱，带 can）；今天你不带 can 也会说了。会听 → 会自己说。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "She sings very well.", zh: "她唱得很好。" },
+      { label: "否定", en: "She doesn't sing very well.", zh: "她唱得不太好。", noteZh: "not 走帮手 doesn't；very well 原地不动。" },
+      { label: "疑问", en: "Does she sing well?", zh: "她唱得好吗？", noteZh: "Does 站句首，sing 穿原样——问句里 very 可以省。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "夸姐姐唱得好", en: "She sings very well.", zh: "她唱得很好。" },
+      { sceneZh: "说弟弟跑得很快（fast 常客）", en: "He runs very fast.", zh: "他跑得很快。" },
+      { sceneZh: "说她朗读声音大（规则型复现）", en: "She reads loudly." , zh: "她朗读声音大。" }
+    ],
+    deepDive: {
+      title: "副词链地图",
+      paragraphs: [
+        "这一批你认识了一族词：做事的样子词。大多是从形容样子的词加 -ly 变来：quick→quickly、careful→carefully、loud→loudly——加个 -ly 就是「做得怎么样」。",
+        "有两个常客不按套路走：good 的样子词是 well（唱歌「好」是 sing well，不是 sing good）；fast 谁也不加（跑得「快」还是 fast，没有 fastly）。两个常客不需要理由，记句子就行。",
+        "再加一个放大器 very：它站样子词前面——very well、very fast。想加力气就把 very 摆上去。",
+        "回头看第 14 课：She can sing very well.——当时你只是听懂了（带 can 的版本）。今天你不带 can 也会自己说了：She sings very well. 从听懂到会说，这就是这一课的意义。"
+      ]
+    },
+    summary: {
+      rule: "两个常客：good 的样子词是 well、fast 还是 fast——very 贴在样子词前面。",
+      points: [
+        "She sings very well. —— well 是 good 的样子词",
+        "He runs very fast. —— fast 不加 -ly",
+        "She can sing very well. —— 第 14 课听懂过，今天会说"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：她唱得很好。",
+        before: "She sings",
+        after: ".",
+        options: ["very well", "well very", "very good"],
+        answer: "very well",
+        explain: "very 排样子词前面，well 说「做得好」：very well——good 上不了这个岗。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：她唱得很好。",
+        tokens: ["She", "sings", "very", "well."],
+        answer: "She sings very well.",
+        explain: "放大器在前、样子词在后：very well。"
+      },
+      {
+        // R8 跨课复现：第 14 课（认读种子转正——逐字拼一次）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 14 课你听过的句子：她会唱得很好。",
+        tokens: ["She", "can", "sing", "very", "well."],
+        answer: "She can sing very well.",
+        explain: "复现第 14 课：can 后面的 sing 穿原样、well 收尾——今天它要转正成你自己的句子。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["She", "sings", "very", "good."],
+        wrongToken: "good.",
+        answer: "good.",
+        correctionZh: "good 的样子词是 well：sings very well。",
+        explain: "good 形容人/东西，well 说做得好。"
+      },
+      {
+        // R8 跨课复现：第 58 课（规则型对照）
+        kind: "arrange",
+        promptZh: "再对照一句——第 58 课学过：她跑得快。",
+        tokens: ["She", "runs", "quickly."],
+        answer: "She runs quickly.",
+        explain: "复现第 58 课：quickly 是规则型（quick 加 -ly）——今天两位常客不这么走。"
+      },
+      {
+        // R9 变形/替换：常客换规则型（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子换样子词：「She sings very well.」把「好」换成「声音大（loud）」，样子词要怎么变？",
+        replaceBase: "She sings very well.",
+        replaceTarget: "把「好」换成「声音大」",
+        options: ["loudly", "loud", "loudly very"],
+        answer: "loudly",
+        explain: "loud 加 -ly 变 loudly：sings loudly——规则型照旧；well / fast 是两位常客。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：她唱得很好。",
+        tokens: ["She", "sings", "very", "well."],
+        distractors: ["good"],
+        answer: "She sings very well."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：她唱得好吗？",
+        tokens: ["Does", "she", "sing", "well?"],
+        distractors: ["sings"],
+        answer: "Does she sing well?"
+      },
+      {
+        promptZh: "复习第 58 课：她跑得快。",
+        tokens: ["She", "runs", "quickly."],
+        distractors: ["quick"],
+        answer: "She runs quickly."
+      },
+      {
+        promptZh: "收个尾——你想说：他跑得很快。",
+        tokens: ["He", "runs", "very", "fast."],
+        distractors: ["fastly"],
+        answer: "He runs very fast."
+      }
+    ],
+    recall: {
+      promptZh: "家庭聚会上姐姐唱完一首歌，大家都看着你。凭记忆，写出你那句夸她的话。",
+      intentZh: "她唱得很好。",
+      answer: "She sings very well.",
+      noteZh: "well 是 good 的样子词；very 贴在它前面。"
+    },
+    huntCaseIds: ["hunt-stage-note"]
+  },
+
+  // ── 第八批 · L60 收口课（there was/were）：把 L26 存在句翻到「昨天版」——回忆的开关（批八 PRD §2）──
+  {
+    id: "lesson-60-there-was",
+    number: 60,
+    title: "昨天公园里有…",
+    grammarLabel: "回忆版存在句 · there was / there were",
+    episode: "小美的一天 六十",
+    scene: "mansion",
+    cover: cover26,
+    sceneSetupZh: "周末整理相册，小美翻出上个月公园野餐的照片，跟你说「那天」有什么。",
+    dialogueEn: "Look at this old photo!",
+    dialogueZh: "小美举着一张照片跑过来。",
+    intentZh: "那天公园里有一只鸟。",
+    targetSentence: "There was a bird in the park.",
+    blocks: [
+      { text: "There was", role: "有（昨天版）" },
+      { text: "a bird", role: "一只鸟" },
+      { text: "in the park", role: "在公园里" }
+    ],
+    oneLineRule: "讲「昨天有什么」把 There is / are 换昨天版：单数 was、复数 were——There 先占位的老规矩不动。",
+    examples: [
+      { en: "There was a bird in the park.", zh: "那天公园里有一只鸟。" },
+      { en: "There were two birds in the park.", zh: "那天公园里有两只鸟。" },
+      { en: "There was a photo on the wall.", zh: "墙上曾有一张照片。" },
+      { en: "There is a bird today.", zh: "今天有一只鸟。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Look at this old photo!", zh: "小美举着一张照片跑过来。" },
+      { who: "npc", en: "We had a picnic in the park.", zh: "她说：那天我们在公园野餐。" },
+      { who: "me", en: "There was a bird in the park.", zh: "轮到你说了——那天公园里有一只鸟。" }
+    ],
+    contrast: [
+      {
+        wrong: "There have a book yesterday.",
+        wrongMark: "have",
+        correct: "There was a book yesterday.",
+        whyZh: "存在的「有」用 There be，不用 have（第 26 课的老规矩）——昨天版就用 was：There was a book yesterday。"
+      },
+      {
+        wrong: "There was two birds.",
+        wrongMark: "was",
+        correct: "There were two birds.",
+        whyZh: "两只鸟是一群，用 were 搭档：There were two birds——单数 was、复数 were（第 51 课的配对）。"
+      },
+      {
+        wrong: "Yesterday there is a bird.",
+        wrongMark: "is",
+        correct: "There was a bird yesterday.",
+        whyZh: "句子开头说了昨天，动词要跟着换昨天版：is→was——时间点变了，搭档跟着变。"
+      },
+      {
+        wrong: "There is a bird today.",
+        wrongMark: null,
+        correct: "There was a bird yesterday.",
+        bothRight: true,
+        whyZh: "两句都对——现在版（is）说今天、昨天版（was）说那天：同一只鸟，两个时间点。"
+      },
+      {
+        wrong: "My birthday is on May third.",
+        wrongMark: null,
+        correct: "There was a bird in the park.",
+        bothRight: true,
+        whyZh: "两句都对——第 57 课的日期链复现：回忆那天说得出日期，也说得出「那天有什么」。"
+      },
+      {
+        wrong: "There were flowers.",
+        wrongMark: null,
+        correct: "There was a flower.",
+        bothRight: true,
+        whyZh: "两句都对——一群用 were（There were flowers）、一朵用 was（There was a flower）：看后面东西的人数配对。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "There was a bird in the park.", zh: "那天公园里有一只鸟。" },
+      { label: "否定", en: "There wasn't a bird.", zh: "那天没有鸟。", noteZh: "not 跟 was 走：wasn't——There 先占位不动。" },
+      { label: "疑问", en: "Was there a bird?", zh: "那天有鸟吗？", noteZh: "Was 搬句首——第 26 课「Is there 开头是问句」的搬法照旧。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说那天公园里有两只鸟", en: "There were two birds in the park.", zh: "那天公园里有两只鸟。" },
+      { sceneZh: "说那天没有鸟", en: "There wasn't a bird.", zh: "那天没有鸟。" },
+      { sceneZh: "问那天有没有鸟", en: "Was there a bird?", zh: "那天有鸟吗？" }
+    ],
+    deepDive: {
+      title: "存在句地图：现在版与昨天版",
+      paragraphs: [
+        "把第 26 课和今天连起来看：There 先占位说「有」——现在版用 is / are（There is a book / There are three apples），昨天版用 was / were（There was a bird / There were two birds）。",
+        "搭档怎么选？看后面东西的人数：一个用 is / was，一群用 are / were。现在版和昨天版一一对应：is→was、are→were。",
+        "为什么「有」不用 have？have 是「某人拥有」（I have a book），There be 是「某处存在」（There is a book）。中文都是「有」，英语两条路——第 26 课的老规矩，今天照样管用。",
+        "回忆的开关就在这：翻相册说「那天有什么」，把动词换成昨天版，一句话就把你带回那天的公园——今天这批课到此收口，说日期、夸做得好、回忆昨天，日常小事你都能说利索了。"
+      ]
+    },
+    summary: {
+      rule: "说「那天有什么」：There 先占位 + 昨天版搭档——单数 was、复数 were。",
+      points: [
+        "There was a bird in the park. —— 一只用 was",
+        "There were two birds. —— 一群用 were",
+        "is→was、are→were —— 现在版和昨天版一一对应"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：那天公园里有一只鸟。",
+        before: "There",
+        after: "a bird in the park.",
+        options: ["was", "were", "is"],
+        answer: "was",
+        explain: "一只鸟用单数搭档，回忆版就是 was：There was a bird。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：那天公园里有一只鸟。",
+        tokens: ["There", "was", "a", "bird", "in", "the", "park."],
+        answer: "There was a bird in the park.",
+        explain: "There 先占位 + 昨天版搭档 was：回忆那天的公园。"
+      },
+      {
+        // R8 跨课复现：第 26 课（现在版先站好，再换昨天版）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 26 课学过：桌上有一本书。",
+        tokens: ["There", "is", "a", "book", "on", "the", "desk."],
+        answer: "There is a book on the desk.",
+        explain: "复现第 26 课：现在版用 is——今天把同一句翻到昨天版就是 was。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["Yesterday", "there", "is", "a", "bird."],
+        wrongToken: "is",
+        answer: "is",
+        correctionZh: "开头说了昨天，动词要换昨天版：Yesterday there was a bird。",
+        explain: "时间点变了，搭档跟着变。"
+      },
+      {
+        // R8 跨课复现：第 34 课（was 的另一个岗位：过去进行）
+        kind: "arrange",
+        promptZh: "再对照一句——第 34 课学过：三点时我正在画画。",
+        tokens: ["I", "was", "drawing", "at", "three."],
+        answer: "I was drawing at three.",
+        explain: "复现第 34 课：was + 动词ing 是「正在做」；今天 was + There 句是「那天有」——was 的两班岗。"
+      },
+      {
+        // R9 变形/替换：单数换复数（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「There was a bird in the park.」把「一只鸟」换成「两只鸟」，搭档要怎么变？",
+        replaceBase: "There was a bird in the park.",
+        replaceTarget: "把 a bird 换成 two birds",
+        options: ["were", "was", "are"],
+        answer: "were",
+        explain: "两只鸟是一群，用 were 搭档：There were two birds——回忆版的一群也是 were。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：那天公园里有一只鸟。",
+        tokens: ["There", "was", "a", "bird", "in", "the", "park."],
+        distractors: ["were"],
+        answer: "There was a bird in the park."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：那天有鸟吗？",
+        tokens: ["Was", "there", "a", "bird?"],
+        distractors: ["Is"],
+        answer: "Was there a bird?"
+      },
+      {
+        // R8 跨课复现：第 26 课原句
+        promptZh: "复习第 26 课：桌上有一本书。",
+        tokens: ["There", "is", "a", "book", "on", "the", "desk."],
+        distractors: ["are"],
+        answer: "There is a book on the desk."
+      },
+      {
+        // 全批收官总句
+        promptZh: "全批收官——你想说：那天公园里有两只鸟。",
+        tokens: ["There", "were", "two", "birds", "in", "the", "park."],
+        distractors: ["was"],
+        answer: "There were two birds in the park."
+      }
+    ],
+    recall: {
+      promptZh: "翻相册时小美举起一张公园野餐的照片。看着那张照片，凭记忆，写出你那句英文。",
+      intentZh: "那天公园里有一只鸟。",
+      answer: "There was a bird in the park.",
+      noteZh: "There 先占位 + 昨天版搭档 was：单数用 was。"
+    },
+    huntCaseIds: ["hunt-old-photo"]
+  },
+
+  // ── 第九批 · L61 客气请求①（Could you…?）：L32 礼貌三档第三档上岗——请人帮忙最客气的一档（批九 PRD §2）──
+  {
+    id: "lesson-61-could-you",
+    number: 61,
+    title: "能帮我一下吗",
+    grammarLabel: "客气请求 · Could you…?",
+    episode: "小美的一天 六十一",
+    scene: "city",
+    cover: cover31,
+    sceneSetupZh: "街角，小美抱着一摞书腾不出手，请路人帮她把门推开。",
+    dialogueEn: "Could you help me?",
+    dialogueZh: "你抱着书，朝旁边的大姐姐开口。",
+    intentZh: "能帮我一下吗？",
+    targetSentence: "Could you help me?",
+    blocks: [
+      { text: "Could you", role: "能（请你）——最客气的一档" },
+      { text: "help", role: "帮（穿原样）" },
+      { text: "me", role: "我" }
+    ],
+    oneLineRule: "请人帮忙用 Could you + 动词原形——比 Can you 更客气；动词不垫 to、不换装。",
+    examples: [
+      { en: "Could you help me?", zh: "能帮我一下吗？" },
+      { en: "Could you close the door?", zh: "能把门关上吗？" },
+      { en: "Could you help me, please?", zh: "能帮我一下吗？（口气更软）" },
+      { en: "I could help you.", zh: "我可以帮你。（我能帮上忙）" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Oh, can I help you?", zh: "大姐姐看到你抱着一摞书。" },
+      { who: "npc", en: "The door is heavy.", zh: "她指了指那扇门。" },
+      { who: "me", en: "Could you help me?", zh: "轮到你说了——能帮我一下吗？" }
+    ],
+    contrast: [
+      {
+        wrong: "Could you to help me?",
+        wrongMark: "to",
+        correct: "Could you help me?",
+        whyZh: "垫板不进这扇门：Could you help——家族不垫板（第 47 课的老规矩）。"
+      },
+      {
+        wrong: "Could you helping me?",
+        wrongMark: "helping",
+        correct: "Could you help me?",
+        whyZh: "动词穿原样，不换 -ing 装：Could you help me——跟 must/should 家族一个规矩。"
+      },
+      {
+        wrong: "Can you help me?",
+        wrongMark: null,
+        correct: "Could you help me?",
+        bothRight: true,
+        whyZh: "两句都对——Can you 直接、Could you 更客气：第 32 课礼貌三档，今天升到最客气档。"
+      },
+      {
+        wrong: "Close the door, please.",
+        wrongMark: null,
+        correct: "Could you close the door?",
+        bothRight: true,
+        whyZh: "两句都对——please 版直白、could 版最客气：请人做事两档都能用，看场合挑。"
+      },
+      {
+        wrong: "Close the door, please!",
+        wrongMark: null,
+        correct: "Could you close the door?",
+        bothRight: true,
+        whyZh: "两句都对——第 32 课三档的起点和顶点：Close the door, please（直白）→ Could you close the door（最客气）。"
+      },
+      {
+        wrong: "Can I have a milk tea?",
+        wrongMark: null,
+        correct: "Could you help me?",
+        bothRight: true,
+        whyZh: "两句都对——要东西问「我能不能」（Can I…，第 14 课）；请人帮忙问「你能不能」（Could you…，今天）——两个方向的两句问话。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I could help you.", zh: "我可以帮你。", noteZh: "could 站动词前、动词穿原样：I could help you。" },
+      { label: "否定", en: "I couldn't help you.", zh: "我没能帮上你。", noteZh: "could 加 not 缩成 couldn't——跟 can→can't 一个规矩。" },
+      { label: "疑问", en: "Could you help me, please?", zh: "能帮我一下吗？（口气更软）", noteZh: "再加一个 please，口气更软。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "请人把窗打开", en: "Could you open the window?", zh: "能把窗打开吗？" },
+      { sceneZh: "请人等一下", en: "Could you wait a minute?", zh: "能等一下吗？" },
+      { sceneZh: "说可以帮对方", en: "I could help you.", zh: "我可以帮你。" }
+    ],
+    deepDive: {
+      title: "could 的两班岗",
+      paragraphs: [
+        "第 32 课你见过「礼貌三档」：Close the door（直白）→ Close the door, please（加个 please）→ Could you close the door?（最客气）。第三档今天正式上岗——请人帮忙、问路、求助，这一档最稳妥。",
+        "could 和 can 一样是不变词：后面动词穿原样（Could you help me），不垫 to、不换 -ing——跟 must/should 家族同一个规矩。",
+        "could 还有另一个班岗：说「能」（有本事）。I could help you 就是「我可以帮你」——说出来的事，不是问句。这个班岗你现在认得、听得出就行，用得到的时候它自己会顺出来。",
+        "三个门卫排排站：Can you help me?（直接）→ Could you help me?（客气）→ Could you help me, please?（最软）——需要哪个请哪个。"
+      ]
+    },
+    summary: {
+      rule: "请人帮忙用 Could you + 动词原形——比 Can you 更客气；不垫板、不换装。",
+      points: [
+        "Could you help me? —— 最客气的一档",
+        "Can you / Could you —— 两句都对，口气不同",
+        "I could help you. —— could 的另一个班岗（我能帮上）"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：能帮我一下吗？",
+        before: "Could you",
+        after: "me?",
+        options: ["help", "to help", "helping"],
+        answer: "help",
+        explain: "家族不垫板、不换装：Could you help me。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：能帮我一下吗？",
+        tokens: ["Could", "you", "help", "me?"],
+        answer: "Could you help me?",
+        explain: "请人帮忙最客气的一档：Could you + 动词原形。"
+      },
+      {
+        // R8 跨课复现：第 32 课（礼貌三档起点）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 32 课学过：请把门关上。",
+        tokens: ["Close", "the", "door,", "please!"],
+        answer: "Close the door, please!",
+        explain: "复现第 32 课：礼貌三档的起点——今天把第三档接上。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["Could", "you", "to", "help", "me?"],
+        wrongToken: "to",
+        answer: "to",
+        correctionZh: "垫板不进这扇门：Could you help me。",
+        explain: "家族不垫板——第 47 课的老规矩。"
+      },
+      {
+        // R8 跨课复现：第 26 课（There 先占位）
+        kind: "arrange",
+        promptZh: "再对照一句——第 26 课学过：桌上有一本书。",
+        tokens: ["There", "is", "a", "book", "on", "the", "desk."],
+        answer: "There is a book on the desk.",
+        explain: "复现第 26 课：今天小美怀里抱的就是一摞书。"
+      },
+      {
+        // R9 变形/替换：换动词（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「Could you help me?」把「帮忙」换成「等一下（wait a minute）」，动词要怎么变？",
+        replaceBase: "Could you help me?",
+        replaceTarget: "把 help 换成 wait a minute",
+        options: ["wait a minute", "to wait a minute", "waiting a minute"],
+        answer: "wait a minute",
+        explain: "穿原样、不垫板：Could you wait a minute。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：能帮我一下吗？",
+        tokens: ["Could", "you", "help", "me?"],
+        distractors: ["to"],
+        answer: "Could you help me?"
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：我没能帮上你。",
+        tokens: ["I", "couldn't", "help", "you."],
+        distractors: ["to"],
+        answer: "I couldn't help you."
+      },
+      {
+        // R8 跨课复现：第 14 课原句
+        promptZh: "复习第 14 课：我能要一杯奶茶吗？",
+        tokens: ["Can", "I", "have", "a", "milk", "tea?"],
+        distractors: ["Could"],
+        answer: "Can I have a milk tea?"
+      },
+      {
+        promptZh: "收个尾——你想说：能帮我一下吗？（口气再软一点）",
+        tokens: ["Could", "you", "help", "me,", "please?"],
+        distractors: ["helping"],
+        answer: "Could you help me, please?"
+      }
+    ],
+    recall: {
+      promptZh: "街角，小美抱着一摞书腾不出手，想请旁边的大姐姐帮忙。凭记忆，写出她那句英文。",
+      intentZh: "能帮我一下吗？",
+      answer: "Could you help me?",
+      noteZh: "第三档上岗：Could you + 动词原形——不垫板、不换装。"
+    },
+    huntCaseIds: ["hunt-help-note"]
+  },
+
+  // ── 第九批 · L62 客气想要（would like）：L4 对白种子收口——want 的客气版，会说会问（批九 PRD §2）──
+  {
+    id: "lesson-62-would-like",
+    number: 62,
+    title: "你想要点什么",
+    grammarLabel: "客气想要 · would like",
+    episode: "小美的一天 六十二",
+    scene: "mansion",
+    cover: cover32,
+    sceneSetupZh: "周末，小美去阿姨家做客，阿姨端出茶壶招待她。",
+    dialogueEn: "What would you like?",
+    dialogueZh: "阿姨提着茶壶笑着问你。",
+    intentZh: "我要一杯茶。",
+    targetSentence: "I would like a cup of tea.",
+    blocks: [
+      { text: "I would like", role: "我想要（客气版）" },
+      { text: "a cup of tea", role: "一杯茶" }
+    ],
+    oneLineRule: "想把「想要」说客气一点，用 I would like：比 I want 软一档，would 家族穿原样。",
+    examples: [
+      { en: "I would like a cup of tea.", zh: "我要一杯茶。" },
+      { en: "What would you like?", zh: "你想要点什么？" },
+      { en: "She would like a cup of coffee.", zh: "她要一杯咖啡。" },
+      { en: "I would like to sleep.", zh: "我想睡觉。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Come in, please!", zh: "阿姨开门把你让进屋。" },
+      { who: "npc", en: "What would you like?", zh: "她提着茶壶问你想喝点什么。" },
+      { who: "me", en: "I would like a cup of tea.", zh: "轮到你说了——你要一杯茶。" }
+    ],
+    contrast: [
+      {
+        wrong: "I would like to tea.",
+        wrongMark: "to",
+        correct: "I would like a cup of tea.",
+        whyZh: "想要的东西直接跟上，不垫板：would like a cup of tea——垫板是给动作用的（would like to sleep）。"
+      },
+      {
+        wrong: "I would likes tea.",
+        wrongMark: "likes",
+        correct: "I would like a cup of tea.",
+        whyZh: "would 家族穿原样：like 不加 -s——跟 must/should 家族一个规矩。"
+      },
+      {
+        wrong: "I want a cup of tea.",
+        wrongMark: null,
+        correct: "I would like a cup of tea.",
+        bothRight: true,
+        whyZh: "两句都对——want 直接、would like 客气：两档口气，看场合挑。"
+      },
+      {
+        wrong: "What would you like?",
+        wrongMark: null,
+        correct: "I would like a cup of tea.",
+        bothRight: true,
+        whyZh: "两句都对——一句问、一句答：第 4 课听过的问法，今天连答句一起会了。"
+      },
+      {
+        wrong: "I would like to sleep.",
+        wrongMark: null,
+        correct: "I would like a cup of tea.",
+        bothRight: true,
+        whyZh: "两句都对——想要「东西」直接跟上（a cup of tea）；想要「做事」垫块 to（to sleep）。"
+      },
+      {
+        wrong: "Can I have a milk tea?",
+        wrongMark: null,
+        correct: "I would like a cup of tea.",
+        bothRight: true,
+        whyZh: "两句都对——要东西两说法：问店员用 Can I have（第 14 课）；客气地说「我要」用 I would like（今天）。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I would like a cup of tea.", zh: "我要一杯茶。" },
+      { label: "否定", en: "I wouldn't like coffee.", zh: "我不想要咖啡。", noteZh: "would 加 not 缩成 wouldn't，直接跟在 I 后。" },
+      { label: "疑问", en: "What would you like?", zh: "你想要点什么？", noteZh: "第 4 课听过的问法——今天会自己说了。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说想喝一杯咖啡", en: "I would like a cup of coffee.", zh: "我要一杯咖啡。" },
+      { sceneZh: "问客人想要什么", en: "What would you like?", zh: "你想要点什么？" },
+      { sceneZh: "说她想睡觉", en: "She would like to sleep.", zh: "她想睡觉。" }
+    ],
+    deepDive: {
+      title: "would like 的两个用法",
+      paragraphs: [
+        "想要「东西」：would like 后面直接跟上——I would like a cup of tea。想要「做事」：在中间垫一块 to——I would like to sleep。看后面跟的是什么，垫不垫板就定了。",
+        "would like 是 want 的客气版：I want a cup of tea（直接）→ I would like a cup of tea（客气）。点单、做客、招待客人，客气一档都用它。",
+        "would 也是「不变词」家族的一员：I / you / she / he……谁当主语，would like 都穿原样——She would like a cup of coffee（likes 的 -s 不给它穿）。",
+        "第 4 课你在奶茶店听过 What would you like?——当时你只会答 I want a milk tea。今天你连问带答都有了：问 What would you like?，答 I would like a cup of tea。"
+      ]
+    },
+    summary: {
+      rule: "客气想要用 would like：I would like a cup of tea——想要东西直接跟，想要做事垫 to。",
+      points: [
+        "I would like a cup of tea. —— 客气版的「我要」",
+        "What would you like? —— 第 4 课听过，今天会问也会答",
+        "I would like to sleep. —— 想要做事，垫块 to"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我要一杯茶。",
+        before: "I would like",
+        after: "tea.",
+        options: ["a cup of", "to", "cup"],
+        answer: "a cup of",
+        explain: "想要的东西直接跟上：a cup of tea——不垫板。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我要一杯茶。",
+        tokens: ["I", "would", "like", "a", "cup", "of", "tea."],
+        answer: "I would like a cup of tea.",
+        explain: "would like + 想要的东西：a cup of tea。"
+      },
+      {
+        // R8 跨课复现：第 4 课（问句种子——本课收口）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 4 课听过：你想要点什么？",
+        tokens: ["What", "would", "you", "like?"],
+        answer: "What would you like?",
+        explain: "复现第 4 课：当时你只会答——今天连问带答都有了。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "would", "likes", "coffee."],
+        wrongToken: "likes",
+        answer: "likes",
+        correctionZh: "would 家族穿原样：would like coffee。",
+        explain: "likes 的 -s 不给它穿。"
+      },
+      {
+        // R8 跨课复现：第 16 课（家族点名）
+        kind: "arrange",
+        promptZh: "再对照一句——第 16 课学过：我今天必须完成作业。",
+        tokens: ["I", "must", "finish", "my", "homework", "today."],
+        answer: "I must finish my homework today.",
+        explain: "复现第 16 课：must 家族穿原样——今天认识的 would 也是这一家的。"
+      },
+      {
+        // R9 变形/替换：换主语（家族永不变形）
+        kind: "replace",
+        promptZh: "句子变身：「I would like a cup of tea.」把 I 换成 She，中间那截要怎么变？",
+        replaceBase: "I would like a cup of tea.",
+        replaceTarget: "把 I 换成 She",
+        options: ["would like", "would likes", "will like"],
+        answer: "would like",
+        explain: "家族永不变形：She would like a cup of tea——换主语也不给它加 -s。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我要一杯茶。",
+        tokens: ["I", "would", "like", "a", "cup", "of", "tea."],
+        distractors: ["to"],
+        answer: "I would like a cup of tea."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你想要点什么？",
+        tokens: ["What", "would", "you", "like?"],
+        distractors: ["did"],
+        answer: "What would you like?"
+      },
+      {
+        // R8 跨课复现：第 14 课原句
+        promptZh: "复习第 14 课：我能要一杯奶茶吗？",
+        tokens: ["Can", "I", "have", "a", "milk", "tea?"],
+        distractors: ["Could"],
+        answer: "Can I have a milk tea?"
+      },
+      {
+        promptZh: "收个尾——你想说：她要一杯咖啡。",
+        tokens: ["She", "would", "like", "a", "cup", "of", "coffee."],
+        distractors: ["likes"],
+        answer: "She would like a cup of coffee."
+      }
+    ],
+    recall: {
+      promptZh: "阿姨家做客，她提着茶壶问你想喝点什么。凭记忆，写出你那句英文。",
+      intentZh: "我要一杯茶。",
+      answer: "I would like a cup of tea.",
+      noteZh: "客气版「我要」：would like + 东西——不垫板。"
+    },
+    huntCaseIds: ["hunt-guest-note"]
+  },
+
+  // ── 第九批 · L63 给东西（双宾语）：先给谁、后给什么；东西变 it 要翻身垫 to（批九 PRD §2）──
+  {
+    id: "lesson-63-give-me",
+    number: 63,
+    title: "把它递给我",
+    grammarLabel: "给东西 · give me the book / give it to me",
+    episode: "小美的一天 六十三",
+    scene: "campus",
+    cover: cover33,
+    sceneSetupZh: "手工课上，小美两只手都占着，请同桌把桌上的书递过来。",
+    dialogueEn: "Please give me the book.",
+    dialogueZh: "你朝同桌开口。",
+    intentZh: "请把那本书递给我。",
+    targetSentence: "Please give me the book.",
+    blocks: [
+      { text: "Please give me", role: "请给我——先给谁" },
+      { text: "the book", role: "那本书——后给什么" }
+    ],
+    oneLineRule: "给东西：先给谁、后给什么（give me the book）——中文同序；东西换成 it 时，要跑到后面垫上 to（give it to me）。",
+    examples: [
+      { en: "Please give me the book.", zh: "请把那本书递给我。" },
+      { en: "Please give it to me.", zh: "请把它递给我。" },
+      { en: "Please pass me the pen.", zh: "请把那支笔递给我。" },
+      { en: "Please give me the pen.", zh: "请把那支笔给我。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Your hands are full!", zh: "同桌看你两手都占着。" },
+      { who: "npc", en: "What do you need?", zh: "她问你还要什么。" },
+      { who: "me", en: "Please give me the book.", zh: "轮到你说了——请把那本书递给我。" }
+    ],
+    contrast: [
+      {
+        wrong: "Give me it.",
+        wrongMark: "me it",
+        correct: "Give it to me.",
+        whyZh: "东西一变成 it，就要绕到后面垫 to：give it to me——「先给谁、后给什么」的规矩，碰到小词要翻个身。"
+      },
+      {
+        wrong: "Give the book me.",
+        wrongMark: "the book me",
+        correct: "Give me the book.",
+        whyZh: "两样东西挤一块会撞车：谁在前（me）、什么在后（the book）——中文「给我那本书」就是这个顺序。"
+      },
+      {
+        wrong: "Give me the book.",
+        wrongMark: null,
+        correct: "Give the book to me.",
+        bothRight: true,
+        whyZh: "两句都对——顺口说 me the book 版，想强调「给谁」就说 the book to me 版。"
+      },
+      {
+        wrong: "Please pass me the pen.",
+        wrongMark: null,
+        correct: "Please give me the pen.",
+        bothRight: true,
+        whyZh: "两句都对——递东西两兄弟 pass 和 give 走同一套语序：先给谁、后给什么。"
+      },
+      {
+        wrong: "There is a book on the desk.",
+        wrongMark: null,
+        correct: "Please give me the book.",
+        bothRight: true,
+        whyZh: "两句都对——第 26 课「桌上有本书」＋今天「请把书递给我」：同一本书，从桌上到你手里。"
+      },
+      {
+        wrong: "Can I have a milk tea?",
+        wrongMark: null,
+        correct: "Could you help me?",
+        bothRight: true,
+        whyZh: "两句都对——要东西（Can I…第 14 课）＋请帮忙（Could you…第 61 课）：「给与请」两个方向。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "Please give me the book.", zh: "请把那本书递给我。" },
+      { label: "否定", en: "Don't give me the book.", zh: "别把书递给我。", noteZh: "别做在前面垫 Don't：Don't give——第 32 课的老规矩。" },
+      { label: "疑问", en: "Can you give me the book?", zh: "能把书递给我吗？", noteZh: "请人递东西的问句——用 Could 更客气（第 61 课）。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说请把那支笔递给我", en: "Please pass me the pen.", zh: "请把那支笔递给我。" },
+      { sceneZh: "说请把它递给我（it 版）", en: "Please give it to me.", zh: "请把它递给我。" },
+      { sceneZh: "问对方能不能把书递过来", en: "Can you give me the book?", zh: "能把书递给我吗？" }
+    ],
+    deepDive: {
+      title: "先给谁、后给什么",
+      paragraphs: [
+        "中文说「给我一本书」，英语正好同一个顺序：give me a book——你早就有的直觉，今天正式点破。",
+        "两样东西跟在一个动作后面，顺序有讲究：先给谁（me）、后给什么（the book）。挤在一起会撞车——*give the book me 就不行。",
+        "那个「什么」要是换成了小词 it（它），就得跑到后面、垫上一块 to：give it to me。小词太轻，站不住前面那个位子。",
+        "递东西的动词不止 give：pass（递）、show（给谁看）都走同一套。以后再遇到新的，照样套。"
+      ]
+    },
+    summary: {
+      rule: "给东西：先给谁、后给什么（give me the book）；东西变 it 要翻身垫 to（give it to me）。",
+      points: [
+        "Please give me the book. —— 先给谁、后给什么",
+        "Please give it to me. —— it 版：翻身垫 to",
+        "pass / give 同一套 —— 递东西两兄弟"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：请把那本书递给我。",
+        before: "Please give",
+        after: "the book.",
+        options: ["me", "to me", "my"],
+        answer: "me",
+        explain: "先给谁：me 站在 give 后面第一位——give me the book。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：请把那本书递给我。",
+        tokens: ["Please", "give", "me", "the", "book."],
+        answer: "Please give me the book.",
+        explain: "先给谁（me）、后给什么（the book）。"
+      },
+      {
+        // R8 跨课复现：第 26 课（桌上那本书）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 26 课学过：桌上有一本书。",
+        tokens: ["There", "is", "a", "book", "on", "the", "desk."],
+        answer: "There is a book on the desk.",
+        explain: "复现第 26 课：桌上那本书——今天把它递到手。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["Please", "give", "it", "me."],
+        wrongToken: "me.",
+        answer: "me.",
+        correctionZh: "要给谁垫块 to：give it to me——it 站前面时，me 要垫 to。",
+        explain: "东西变 it 要翻身垫 to。"
+      },
+      {
+        // R8 跨课复现：第 61 课（请帮忙）
+        kind: "arrange",
+        promptZh: "再对照一句——第 61 课学过：能帮我一下吗？",
+        tokens: ["Could", "you", "help", "me?"],
+        answer: "Could you help me?",
+        explain: "复现第 61 课：请人帮忙最客气的一档——今天请人递东西。"
+      },
+      {
+        // R9 变形/替换：东西换 it（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「Please give me the book.」把那本书换成小词 it，句子要怎么变？",
+        replaceBase: "Please give me the book.",
+        replaceTarget: "把 the book 换成 it",
+        options: ["Please give it to me.", "Please give me it.", "Please give it me."],
+        answer: "Please give it to me.",
+        explain: "东西变 it 要翻身垫 to：give it to me——今天最容易忘的一步。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：请把那本书递给我。",
+        tokens: ["Please", "give", "me", "the", "book."],
+        distractors: ["my"],
+        answer: "Please give me the book."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：能把书递给我吗？",
+        tokens: ["Can", "you", "give", "me", "the", "book?"],
+        distractors: ["Does"],
+        answer: "Can you give me the book?"
+      },
+      {
+        promptZh: "你想说：请把它递给我。",
+        tokens: ["Please", "give", "it", "to", "me."],
+        distractors: ["for"],
+        answer: "Please give it to me."
+      },
+      {
+        // R8 跨课复现：第 61 课原句
+        promptZh: "复习第 61 课：能帮我一下吗？",
+        tokens: ["Could", "you", "help", "me?"],
+        distractors: ["to"],
+        answer: "Could you help me?"
+      }
+    ],
+    recall: {
+      promptZh: "手工课上，小美两只手都占着，请同桌把桌上的书递过来。凭记忆，写出她那句英文。",
+      intentZh: "请把那本书递给我。",
+      answer: "Please give me the book.",
+      noteZh: "先给谁、后给什么：give me the book。"
+    },
+    huntCaseIds: ["hunt-handout-note"]
+  },
+
+  // ── 第九批 · L64 收尾动词（finish + 名字版）：L45 门卫体系扩员第一站——又一个单门门卫（批九 PRD §2）──
+  {
+    id: "lesson-64-finish-doing",
+    number: 64,
+    title: "我看完啦",
+    grammarLabel: "收尾动词 · finish + 名字版",
+    episode: "小美的一天 六十四",
+    scene: "mansion",
+    cover: cover34,
+    sceneSetupZh: "周末晚上，小美合上刚读完的故事书，跟姐姐说「我看完啦」。",
+    dialogueEn: "I finished reading the book.",
+    dialogueZh: "小美合上书，朝姐姐晃了晃。",
+    intentZh: "我看完这本书啦。",
+    targetSentence: "I finished reading the book.",
+    blocks: [
+      { text: "I finished", role: "我完成了（收尾）" },
+      { text: "reading the book", role: "读这本书（名字版）" }
+    ],
+    oneLineRule: "说「做完了」用 finish + 名字版（finish reading）——它和第 45 课的 enjoy 一样，门只开一扇。",
+    examples: [
+      { en: "I finished reading the book.", zh: "我看完这本书啦。" },
+      { en: "I finished my homework.", zh: "我写完作业了。" },
+      { en: "She finished drawing a picture.", zh: "她画完了一幅画。" },
+      { en: "I enjoy reading.", zh: "我享受读书。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Is the story good?", zh: "姐姐凑过来问。" },
+      { who: "npc", en: "You read so fast!", zh: "她看你已经翻到最后一页。" },
+      { who: "me", en: "I finished reading the book.", zh: "轮到你说了——我看完这本书啦。" }
+    ],
+    contrast: [
+      {
+        wrong: "I finished to read the book.",
+        wrongMark: "to",
+        correct: "I finished reading the book.",
+        whyZh: "finish 的门也开一扇：只认名字版——跟第 45 课 enjoy 是同一类门卫，to 进不去。"
+      },
+      {
+        wrong: "I finished read the book.",
+        wrongMark: "read",
+        correct: "I finished reading the book.",
+        whyZh: "光板词不能进门：read 加 -ing 变名字版（reading），守卫才放行。"
+      },
+      {
+        wrong: "I finished reading the book.",
+        wrongMark: null,
+        correct: "I finished the book.",
+        bothRight: true,
+        whyZh: "两句都对——想说清「做的事情」就带 reading；直接说「看完书了」也完整。"
+      },
+      {
+        wrong: "I like reading.",
+        wrongMark: null,
+        correct: "I finished reading.",
+        bothRight: true,
+        whyZh: "两句都对——同一个名字版 reading，门口换了守卫：like 也认、finish 也认——名字版是通行证。"
+      },
+      {
+        wrong: "I enjoy reading.",
+        wrongMark: null,
+        correct: "I finished reading the book.",
+        bothRight: true,
+        whyZh: "两句都对——第 45 课 enjoy 的门卫又见面了：enjoy reading、finish reading——名字版两边都进得去。"
+      },
+      {
+        wrong: "I have done my homework.",
+        wrongMark: null,
+        correct: "I finished my homework.",
+        bothRight: true,
+        whyZh: "两句都对——「做完了」两条路：have done（第 21 课的做过版）或 finished（今天的收尾词）。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I finished reading the book.", zh: "我看完这本书啦。" },
+      { label: "否定", en: "I didn't finish reading the book.", zh: "我还没看完这本书。", noteZh: "昨天的「没做完」：didn't 挡住 finish，reading 不动。" },
+      { label: "疑问", en: "Did you finish reading the book?", zh: "你看完这本书了吗？", noteZh: "Did 站句首，finish 穿原样，reading 留在原地。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说写完作业了", en: "I finished my homework.", zh: "我写完作业了。" },
+      { sceneZh: "说她画完了一幅画", en: "She finished drawing a picture.", zh: "她画完了一幅画。" },
+      { sceneZh: "问对方看完书了吗", en: "Did you finish reading the book?", zh: "你看完这本书了吗？" }
+    ],
+    deepDive: {
+      title: "又一个单门门卫",
+      paragraphs: [
+        "第 45 课认识过 enjoy 的门：只认名字版（enjoy reading），to 进不去。今天的 finish 是同一个脾气：finish reading、finish drawing——只开一扇门。",
+        "「名字版」是什么？就是把动作穿上 -ing 外套、当「做的事情」来用：read → reading、draw → drawing。它在 like / enjoy / finish 这些门卫门前都通行。",
+        "也有动词门口是垫板的：want to travel（第 15 课）、would like to sleep（第 62 课）——同一个动作，门口规矩不同。遇到新动词，看一眼它认哪一种。",
+        "门卫名单还会加长：后面你还会遇到更多「只认名字版」或「只认垫板」的动词——一个一个遇，不着急。"
+      ]
+    },
+    summary: {
+      rule: "做完了 = finish + 名字版：finish reading——门口规矩跟 enjoy 一样，只开一扇。",
+      points: [
+        "I finished reading the book. —— 收尾的门 + 名字版",
+        "I finished my homework. —— 直接说「做完了什么」也完整",
+        "I enjoy reading. / I finished reading. —— 名字版两边都进得去"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我看完这本书啦。",
+        before: "I finished",
+        after: "the book.",
+        options: ["reading", "to read", "read"],
+        answer: "reading",
+        explain: "finish 的门只开一扇：只认名字版 reading。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我看完这本书啦。",
+        tokens: ["I", "finished", "reading", "the", "book."],
+        answer: "I finished reading the book.",
+        explain: "收尾的门 + 名字版：finished reading。"
+      },
+      {
+        // R8 跨课复现：第 45 课（门卫家族前一站）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 45 课学过：我享受读书。",
+        tokens: ["I", "enjoy", "reading."],
+        answer: "I enjoy reading.",
+        explain: "复现第 45 课：enjoy 的门——今天再认识一个新门卫 finish。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "finished", "to", "read", "the", "book."],
+        wrongToken: "to",
+        answer: "to",
+        correctionZh: "垫板进不了 finish 的门：finished reading。",
+        explain: "只认名字版——第 45 课同款门卫。"
+      },
+      {
+        // R8 跨课复现：第 42 课（名字版通行证）
+        kind: "arrange",
+        promptZh: "再对照一句——第 42 课学过：我喜欢读书。",
+        tokens: ["I", "like", "reading."],
+        answer: "I like reading.",
+        explain: "复现第 42 课：like 也认名字版——reading 这张通行证拿着到处用。"
+      },
+      {
+        // R9 变形/替换：换动词（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I finished reading the book.」把「读书」换成「画画（draw a picture）」，收尾句要怎么变？",
+        replaceBase: "I finished reading the book.",
+        replaceTarget: "把 reading the book 换成 draw a picture",
+        options: ["drawing a picture", "draw a picture", "to draw a picture"],
+        answer: "drawing a picture",
+        explain: "名字版换上：finished drawing a picture——-ing 外套穿好。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我看完这本书啦。",
+        tokens: ["I", "finished", "reading", "the", "book."],
+        distractors: ["to"],
+        answer: "I finished reading the book."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你看完这本书了吗？",
+        tokens: ["Did", "you", "finish", "reading", "the", "book?"],
+        distractors: ["Does"],
+        answer: "Did you finish reading the book?"
+      },
+      {
+        promptZh: "你想说：我写完作业了。",
+        tokens: ["I", "finished", "my", "homework."],
+        distractors: ["to"],
+        answer: "I finished my homework."
+      },
+      {
+        // R8 跨课复现：第 45 课原句
+        promptZh: "复习第 45 课：我享受读书。",
+        tokens: ["I", "enjoy", "reading."],
+        distractors: ["to"],
+        answer: "I enjoy reading."
+      }
+    ],
+    recall: {
+      promptZh: "周末晚上，小美合上刚读完的故事书，跟姐姐说「我看完啦」。凭记忆，写出她那句英文。",
+      intentZh: "我看完这本书啦。",
+      answer: "I finished reading the book.",
+      noteZh: "收尾的门 + 名字版：finished reading。"
+    },
+    huntCaseIds: ["hunt-reading-corner"]
+  },
+
+  // ── 第九批 · L65 一样（as…as）：两头卡住——与 L17「更…than」两家人对照（批九 PRD §2）──
+  {
+    id: "lesson-65-as-as",
+    number: 65,
+    title: "和你一样高",
+    grammarLabel: "一样 · as tall as",
+    episode: "小美的一天 六十五",
+    scene: "campus",
+    cover: cover35,
+    sceneSetupZh: "体检日，走廊里排着量身高的队伍，小美和同桌靠着身高贴比个子。",
+    dialogueEn: "He is as tall as me.",
+    dialogueZh: "同桌踮起脚往贴纸上比划。",
+    intentZh: "他和我一样高。",
+    targetSentence: "He is as tall as me.",
+    blocks: [
+      { text: "He is", role: "他是" },
+      { text: "as tall as", role: "一样高（两头卡住）" },
+      { text: "me", role: "我" }
+    ],
+    oneLineRule: "说「一样」用 as…as 两头卡住（as tall as me）——两个 as 一个都不能丢。",
+    examples: [
+      { en: "He is as tall as me.", zh: "他和我一样高。" },
+      { en: "She is as smart as her sister.", zh: "她和姐姐一样聪明。" },
+      { en: "This book is as new as that one.", zh: "这本书和那本一样新。" },
+      { en: "He is taller than me.", zh: "他比我高。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Let's check our height!", zh: "同桌拉着你往身高贴那边站。" },
+      { who: "npc", en: "Wow, look at this boy!", zh: "她指着旁边排队的男生。" },
+      { who: "me", en: "He is as tall as me.", zh: "轮到你说了——他和我一样高。" }
+    ],
+    contrast: [
+      {
+        wrong: "He is as tall than me.",
+        wrongMark: "than",
+        correct: "He is as tall as me.",
+        whyZh: "「一样」家不认 than：than 是隔壁「更…」家的门牌（第 17 课的老规矩）。"
+      },
+      {
+        wrong: "He is tall as me.",
+        wrongMark: null,
+        correct: "He is as tall as me.",
+        whyZh: "两头都要卡住：少一头 as，「一样」就散架。"
+      },
+      {
+        wrong: "He is as taller as me.",
+        wrongMark: "taller",
+        correct: "He is as tall as me.",
+        whyZh: "中间的词穿原样：加了 -er 是「更」家的人，进不了「一样」家的门。"
+      },
+      {
+        wrong: "He is taller than me.",
+        wrongMark: null,
+        correct: "He is as tall as me.",
+        bothRight: true,
+        whyZh: "两句都对——一句「更高」（更…家）、一句「一样高」（一样家）：两家人各站一边。"
+      },
+      {
+        wrong: "This boat is bigger than that one.",
+        wrongMark: null,
+        correct: "He is as tall as me.",
+        bothRight: true,
+        whyZh: "两句都对——第 17 课「更…家」的门牌又见：bigger than——今天学的是它隔壁的「一样家」。"
+      },
+      {
+        wrong: "This one is mine.",
+        wrongMark: null,
+        correct: "He is as tall as me.",
+        bothRight: true,
+        whyZh: "两句都对——第 33 课认过 mine（我的）；今天的 me 是「我」——跟在 as 后面的用 me。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "He is as tall as me.", zh: "他和我一样高。" },
+      { label: "否定", en: "He is not as tall as me.", zh: "他不如我高。", noteZh: "not 跟 is 走——说不「一样」的常用说法。" },
+      { label: "疑问", en: "Is he as tall as you?", zh: "他和你一样高吗？", noteZh: "Is 搬句首——两头卡住的中间那截不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说她和她姐姐一样聪明", en: "She is as smart as her sister.", zh: "她和姐姐一样聪明。" },
+      { sceneZh: "说这本书和那本一样新", en: "This book is as new as that one.", zh: "这本书和那本一样新。" },
+      { sceneZh: "说他不如我高", en: "He is not as tall as me.", zh: "他不如我高。" }
+    ],
+    deepDive: {
+      title: "「更」家和「一样」家",
+      paragraphs: [
+        "第 17 课认识过「更」家：bigger than、taller than——比下去用 than。今天认识隔壁的「一样」家：as tall as——一样用两个 as 卡住。",
+        "两家人门牌不同：than 只在「更」家用；「一样」家的两个 as 一个都不能丢——as tall as me，少一头就散架。",
+        "中间那个词穿原样：as tall as（不写 taller）、as smart as（不写 smarter）——加了 -er 就串门到「更」家去了。",
+        "说不「一样」（不如）也简单：在第一个 is 后面加 not——He is not as tall as me（他不如我高）。"
+      ]
+    },
+    summary: {
+      rule: "说「一样」用 as…as 两头卡住：as tall as me——「更」家用 than，「一样」家用两个 as。",
+      points: [
+        "He is as tall as me. —— 两头卡住",
+        "He is taller than me. —— 「更」家的门牌",
+        "He is not as tall as me. —— 不如"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：他和我一样高。",
+        before: "He is",
+        after: "me.",
+        options: ["as tall as", "taller than", "tall as"],
+        answer: "as tall as",
+        explain: "两头卡住：as tall as——少一头 as 就散架。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：他和我一样高。",
+        tokens: ["He", "is", "as", "tall", "as", "me."],
+        answer: "He is as tall as me.",
+        explain: "两个 as 各卡一头：as tall as me。"
+      },
+      {
+        // R8 跨课复现：第 17 课（「更」家门牌）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 17 课学过：这条船比那条大。",
+        tokens: ["This", "boat", "is", "bigger", "than", "that", "one."],
+        answer: "This boat is bigger than that one.",
+        explain: "复现第 17 课：「更」家用 than——今天隔壁「一样」家站好。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["He", "is", "as", "tall", "than", "me."],
+        wrongToken: "than",
+        answer: "than",
+        correctionZh: "「一样」家不认 than：as tall as me。",
+        explain: "than 是「更…」家的门牌。"
+      },
+      {
+        // R8 跨课复现：第 31 课（the 家族）
+        kind: "arrange",
+        promptZh: "再对照一句——第 31 课学过：我要最大的那个苹果。",
+        tokens: ["I", "want", "the", "biggest", "apple."],
+        answer: "I want the biggest apple.",
+        explain: "复现第 31 课：最大的（the biggest）——比较家族今天又多认了一家。"
+      },
+      {
+        // R9 变形/替换：换形容（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「He is as tall as me.」把「高」换成「聪明（smart）」，中间那截要怎么变？",
+        replaceBase: "He is as tall as me.",
+        replaceTarget: "把 tall 换成 smart",
+        options: ["as smart as", "as smarter as", "smart than"],
+        answer: "as smart as",
+        explain: "中间的词穿原样：as smart as——加了 -er 就串门了。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：他和我一样高。",
+        tokens: ["He", "is", "as", "tall", "as", "me."],
+        distractors: ["than"],
+        answer: "He is as tall as me."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：他和你一样高吗？",
+        tokens: ["Is", "he", "as", "tall", "as", "you?"],
+        distractors: ["than"],
+        answer: "Is he as tall as you?"
+      },
+      {
+        promptZh: "你想说：这本书和那本一样新。",
+        tokens: ["This", "book", "is", "as", "new", "as", "that", "one."],
+        distractors: ["than"],
+        answer: "This book is as new as that one."
+      },
+      {
+        // R8 跨课复现：第 17 课原句
+        promptZh: "复习第 17 课：这条船比那条大。",
+        tokens: ["This", "boat", "is", "bigger", "than", "that", "one."],
+        distractors: ["as"],
+        answer: "This boat is bigger than that one."
+      }
+    ],
+    recall: {
+      promptZh: "体检日走廊，同桌指着旁边排队的男生让你看。凭记忆，写出你那句英文。",
+      intentZh: "他和我一样高。",
+      answer: "He is as tall as me.",
+      noteZh: "两头卡住：as tall as——两个 as 一个都不能丢。"
+    },
+    huntCaseIds: ["hunt-height-chart"]
+  },
+
+  // ── 第九批 · L66 太…了装不下（too…to）：L32 风句种子转正——一条句子装中文两句；批收口（批九 PRD §2）──
+  {
+    id: "lesson-66-too-to",
+    number: 66,
+    title: "太重了拿不动",
+    grammarLabel: "太…了装不下 · too…to",
+    episode: "小美的一天 六十六",
+    scene: "city",
+    cover: cover36,
+    sceneSetupZh: "搬家日，小美想一个人搬最大的纸箱，蹲下使劲抬了抬，纹丝不动。",
+    dialogueEn: "It is too heavy to carry.",
+    dialogueZh: "小美拍拍纸箱，朝姐姐摇摇头。",
+    intentZh: "它太重了，拿不动。",
+    targetSentence: "It is too heavy to carry.",
+    blocks: [
+      { text: "It is too heavy", role: "它太重了" },
+      { text: "to carry", role: "搬不动（拿它没辙）" }
+    ],
+    oneLineRule: "说「太…了（所以）不能…」用 too + 词 + to + 动作：too heavy to carry——一条句子装中文两句。",
+    examples: [
+      { en: "It is too heavy to carry.", zh: "它太重了，拿不动。" },
+      { en: "It is too hot to sleep.", zh: "太热了，睡不着。" },
+      { en: "It is too dark to see.", zh: "太黑了，看不见。" },
+      { en: "The wind is too strong.", zh: "风太大了。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Need a hand?", zh: "姐姐抱着一摞盘子路过。" },
+      { who: "npc", en: "That box looks big!", zh: "她看了一眼那个大纸箱。" },
+      { who: "me", en: "It is too heavy to carry.", zh: "轮到你说了——它太重了，拿不动。" }
+    ],
+    contrast: [
+      {
+        wrong: "The box is too heavy that I can't carry it.",
+        wrongMark: "that",
+        correct: "The box is too heavy to carry.",
+        whyZh: "中文「太…了（所以）不能…」两句直译会超载：英语一条句子就装下了——too…to。"
+      },
+      {
+        wrong: "It is too heavy to carry it.",
+        wrongMark: "it.",
+        correct: "It is too heavy to carry.",
+        whyZh: "to 后面不用再把东西指一遍——它已经在句子头上了。"
+      },
+      {
+        wrong: "The wind is very strong to go out.",
+        wrongMark: "very",
+        correct: "The wind is too strong to go out.",
+        whyZh: "「太…了装不下」的位子给 too：「非常」只说很大，说不出「不能出门」。"
+      },
+      {
+        wrong: "It is very heavy.",
+        wrongMark: null,
+        correct: "It is too heavy to carry.",
+        bothRight: true,
+        whyZh: "两句都对——一句只说「很重」；想带上「拿不动」，就在词前放 too、后面接 to 动作。"
+      },
+      {
+        wrong: "The wind is too strong.",
+        wrongMark: null,
+        correct: "It is too heavy to carry.",
+        bothRight: true,
+        whyZh: "两句都对——第 32 课听过「风太大」（到这儿就停）；今天把后半段 to go out 装上——种子转正。"
+      },
+      {
+        wrong: "It is too hot to sleep.",
+        wrongMark: null,
+        correct: "It is too dark to see.",
+        bothRight: true,
+        whyZh: "两句都对——两个常景：「太热睡不着」「太黑看不见」——too…to 一对就读顺。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "It is too heavy to carry.", zh: "它太重了，拿不动。" },
+      { label: "否定", en: "It is too heavy for me.", zh: "它对我来说太重了。", noteZh: "搬不动就说 for me——说明对谁来说太重。" },
+      { label: "疑问", en: "Is it too heavy to carry?", zh: "是不是太重搬不动？", noteZh: "Is 搬句首——too…to 那截不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说太热了睡不着", en: "It is too hot to sleep.", zh: "太热了，睡不着。" },
+      { sceneZh: "说太黑了看不见", en: "It is too dark to see.", zh: "太黑了，看不见。" },
+      { sceneZh: "说搬不动（开口求助）", en: "Could you help me? It is too heavy to carry.", zh: "能帮我一下吗？它太重了。" }
+    ],
+    deepDive: {
+      title: "too 的两个身份",
+      paragraphs: [
+        "too 今天站的位子是「太」：站在词前面——too heavy、too hot、too dark。想带上「所以不能」，后面接 to + 动作：too heavy to carry。",
+        "too 还有一个老身份「也」：站在句子尾巴上——I like tea too（我也喜欢茶）。两个身份看站位：句尾是「也」，词前是「太」。",
+        "为什么不用 very？very heavy 只说「很重」，话说到这儿就停了；too heavy to carry 带上「拿不动」——想说出「没法做」，就请 too 上场。",
+        "回头看看第 32 课：外婆喊 Close the door，补了一句 The wind is too strong——当时你听懂了「风太大」。今天你把整条 too…to 拿下了：It is too heavy to carry。"
+      ]
+    },
+    summary: {
+      rule: "太…了装不下：too + 词 + to + 动作（too heavy to carry）——一条句子装中文两句。",
+      points: [
+        "It is too heavy to carry. —— 太…了（所以）不能…",
+        "The wind is too strong. → too strong to go out —— 种子转正",
+        "too 两身份：词前是「太」、句尾是「也」"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：它太重了，拿不动。",
+        before: "It is",
+        after: "to carry.",
+        options: ["too heavy", "very heavy", "heavy too"],
+        answer: "too heavy",
+        explain: "「装不下」的位子给 too：too heavy to carry。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：它太重了，拿不动。",
+        tokens: ["It", "is", "too", "heavy", "to", "carry."],
+        answer: "It is too heavy to carry.",
+        explain: "太…了装不下：too heavy to carry。"
+      },
+      {
+        // R8 跨课复现：第 32 课（风句种子——本课转正起点）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 32 课听过：风太大了。",
+        tokens: ["The", "wind", "is", "too", "strong."],
+        answer: "The wind is too strong.",
+        explain: "复现第 32 课：当时听懂一半——今天把后半段 to go out 装上。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["It", "is", "too", "heavy", "to", "carry", "it."],
+        wrongToken: "it.",
+        answer: "it.",
+        correctionZh: "to 后面不用再指一遍：too heavy to carry。",
+        explain: "东西已经在句子头上了。"
+      },
+      {
+        // R8 跨课复现：第 61 课（开口求助）
+        kind: "arrange",
+        promptZh: "再对照一句——第 61 课学过：能帮我一下吗？",
+        tokens: ["Could", "you", "help", "me?"],
+        answer: "Could you help me?",
+        explain: "复现第 61 课：搬不动就开口——「太…了装不下」＋「能帮我吗」串成一线。"
+      },
+      {
+        // R9 变形/替换：换形容词（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「It is too heavy to carry.」把「重」换成「热（hot）」，句子要怎么变？",
+        replaceBase: "It is too heavy to carry.",
+        replaceTarget: "把 heavy 换成 hot",
+        options: ["too hot", "very hot", "hot too"],
+        answer: "too hot",
+        explain: "同一把椅子换人坐：too hot to sleep——太热了睡不着。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：它太重了，拿不动。",
+        tokens: ["It", "is", "too", "heavy", "to", "carry."],
+        distractors: ["very"],
+        answer: "It is too heavy to carry."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：是不是太重搬不动？",
+        tokens: ["Is", "it", "too", "heavy", "to", "carry?"],
+        distractors: ["Does"],
+        answer: "Is it too heavy to carry?"
+      },
+      {
+        promptZh: "你想说：太热了，睡不着。",
+        tokens: ["It", "is", "too", "hot", "to", "sleep."],
+        distractors: ["very"],
+        answer: "It is too hot to sleep."
+      },
+      {
+        // R8 跨课复现：第 61 课原句（批收口串线）
+        promptZh: "全批收官——复习第 61 课：能帮我一下吗？",
+        tokens: ["Could", "you", "help", "me?"],
+        distractors: ["to"],
+        answer: "Could you help me?"
+      }
+    ],
+    recall: {
+      promptZh: "搬家日，小美想一个人搬最大的纸箱，抬了抬纹丝不动。凭记忆，写出她那句英文。",
+      intentZh: "它太重了，拿不动。",
+      answer: "It is too heavy to carry.",
+      noteZh: "太…了装不下：too + 词 + to + 动作——一条句子装两句。"
+    },
+    huntCaseIds: ["hunt-moving-day-note"]
+  },
+
+  // ── 第十批 · L67 擅长（good at + 名字版）：门牌 at 上岗——案件话术句转正（批十 PRD §2）──
+  {
+    id: "lesson-67-good-at",
+    number: 67,
+    title: "我擅长画画",
+    grammarLabel: "擅长 · good at + 名字版",
+    episode: "小美的一天 六十七",
+    scene: "campus",
+    cover: cover12,
+    sceneSetupZh: "美术课后的才艺角，小美把画贴上墙，同学凑过来夸她画得好。",
+    dialogueEn: "You are so good at drawing!",
+    dialogueZh: "同学看着墙上的画说。",
+    intentZh: "我擅长画画。",
+    targetSentence: "I am good at drawing.",
+    blocks: [
+      { text: "I am good", role: "我擅长" },
+      { text: "at", role: "门牌 at（挂上擅长）" },
+      { text: "drawing", role: "画画（名字版）" }
+    ],
+    oneLineRule: "说「擅长做某事」用 good at + 名字版：good at drawing——at 是它的门牌，门里穿名字版。",
+    examples: [
+      { en: "I am good at drawing.", zh: "我擅长画画。" },
+      { en: "She is good at math.", zh: "她数学很好。" },
+      { en: "He is good at swimming.", zh: "他擅长游泳。" },
+      { en: "Are you good at singing?", zh: "你唱歌好听吗？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "You are so good at drawing!", zh: "同学看着墙上的画说。" },
+      { who: "npc", en: "This one is really nice.", zh: "她指了指最上面那张。" },
+      { who: "me", en: "I am good at drawing.", zh: "轮到你说了——我擅长画画。" }
+    ],
+    contrast: [
+      {
+        wrong: "I am good at draw.",
+        wrongMark: "draw",
+        correct: "I am good at drawing.",
+        whyZh: "门牌后面穿名字版：at drawing——光板进不了门（跟 enjoy/finish 一个规矩）。"
+      },
+      {
+        wrong: "I am good in drawing.",
+        wrongMark: "in",
+        correct: "I am good at drawing.",
+        whyZh: "擅长用门牌 at：「在…方面」的 in 是中文惯性——第 6 课案件里听过 good at，今天正面学。"
+      },
+      {
+        wrong: "I like drawing.",
+        wrongMark: null,
+        correct: "I am good at drawing.",
+        bothRight: true,
+        whyZh: "两句都对——同一个名字版：喜欢也认（第 42 课）、擅长也认——通行证换门卫不换。"
+      },
+      {
+        wrong: "I am good at math.",
+        wrongMark: null,
+        correct: "I am good at drawing.",
+        bothRight: true,
+        whyZh: "两句都对——门牌后接学科直接跟（math）、接事情穿名字版（drawing）——两种都对。"
+      },
+      {
+        wrong: "I finished reading.",
+        wrongMark: null,
+        correct: "I am good at drawing.",
+        bothRight: true,
+        whyZh: "两句都对——第 64 课 finished reading（收尾的门）＋今天 good at drawing（擅长的门牌）：名字版排队点名。"
+      },
+      {
+        wrong: "My hat is in the box.",
+        wrongMark: null,
+        correct: "I am good at drawing.",
+        bothRight: true,
+        whyZh: "两句都对——第 18 课 in the box（盒子里）复现：in/on/at 三词家族，at 今天有了新岗。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I am good at drawing.", zh: "我擅长画画。" },
+      { label: "否定", en: "I am not good at singing.", zh: "我不擅长唱歌。", noteZh: "not 跟 am 走——「不擅长」。" },
+      { label: "疑问", en: "Are you good at drawing?", zh: "你擅长画画吗？", noteZh: "Are 搬句首——问对方擅长什么。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说她数学很好", en: "She is good at math.", zh: "她数学很好。" },
+      { sceneZh: "说他擅长游泳", en: "He is good at swimming.", zh: "他擅长游泳。" },
+      { sceneZh: "问对方唱不唱得好", en: "Are you good at singing?", zh: "你唱歌好听吗？" }
+    ],
+    deepDive: {
+      title: "门牌 at 挂上门",
+      paragraphs: [
+        "第 18 课认识过 in / on / at 三块门牌：in the box（盒子里）、on Monday（周一）、at six（六点）。今天 at 接了新活：挂在「擅长」后面——good at。",
+        "门牌后面穿什么？多数要穿名字版：good at drawing、good at swimming——跟第 42 课喜欢、第 45 课享受、第 64 课收尾一个规矩：通行证走到哪儿都认。",
+        "例外也有：接一门学科直接跟就行——good at math、good at English（学科名本来就当「事」用）。遇到新词，看一眼它穿不穿外套。",
+        "「擅长」这件事挂在 at 上，别用 in 去推——中文说「在数学方面很好」，那个「在」是中文的思维；英语的门牌房里，擅长只认 at。"
+      ]
+    },
+    summary: {
+      rule: "擅长做某事：good at + 名字版（good at drawing）——at 是门牌，门里穿名字版。",
+      points: [
+        "I am good at drawing. —— 门牌 at + 名字版",
+        "She is good at math. —— 接学科直接跟",
+        "I like reading. / I am good at drawing. —— 通行证换门卫不换"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我擅长画画。",
+        before: "I am good at",
+        after: ".",
+        options: ["drawing", "draw", "to draw"],
+        answer: "drawing",
+        explain: "门牌后面穿名字版：at drawing。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我擅长画画。",
+        tokens: ["I", "am", "good", "at", "drawing."],
+        answer: "I am good at drawing.",
+        explain: "good at + 名字版：门牌挂上门。"
+      },
+      {
+        // R8 跨课复现：第 42 课（名字版通行证起点）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 42 课学过：我喜欢读书。",
+        tokens: ["I", "like", "reading."],
+        answer: "I like reading.",
+        explain: "复现第 42 课：名字版通行证——今天拿它进新门牌。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "am", "good", "in", "drawing."],
+        wrongToken: "in",
+        answer: "in",
+        correctionZh: "擅长用门牌 at：good at drawing。",
+        explain: "「在…方面」的 in 是中文惯性。"
+      },
+      {
+        // R8 跨课复现：第 45 课（enjoy 的门）
+        kind: "arrange",
+        promptZh: "再对照一句——第 45 课学过：我享受读书。",
+        tokens: ["I", "enjoy", "reading."],
+        answer: "I enjoy reading.",
+        explain: "复现第 45 课：enjoy 的门——门卫名单今天又添一位。"
+      },
+      {
+        // R9 变形/替换：换擅长的事（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I am good at drawing.」把「画画」换成「游泳（swim）」，门牌后面要怎么变？",
+        replaceBase: "I am good at drawing.",
+        replaceTarget: "把 drawing 换成 swim",
+        options: ["swimming", "swim", "to swim"],
+        answer: "swimming",
+        explain: "名字版换一件：good at swimming——-ing 外套穿好。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我擅长画画。",
+        tokens: ["I", "am", "good", "at", "drawing."],
+        distractors: ["in"],
+        answer: "I am good at drawing."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你擅长画画吗？",
+        tokens: ["Are", "you", "good", "at", "drawing?"],
+        distractors: ["Do"],
+        answer: "Are you good at drawing?"
+      },
+      {
+        promptZh: "你想说：她数学很好。",
+        tokens: ["She", "is", "good", "at", "math."],
+        distractors: ["in"],
+        answer: "She is good at math."
+      },
+      {
+        // R8 跨课复现：第 45 课原句
+        promptZh: "复习第 45 课：我享受读书。",
+        tokens: ["I", "enjoy", "reading."],
+        distractors: ["to"],
+        answer: "I enjoy reading."
+      }
+    ],
+    recall: {
+      promptZh: "美术课后的才艺角，同学夸小美画得好。凭记忆，写出她那句英文。",
+      intentZh: "我擅长画画。",
+      answer: "I am good at drawing.",
+      noteZh: "门牌 at + 名字版：good at drawing。"
+    },
+    huntCaseIds: ["hunt-good-at"]
+  },
+
+  // ── 第十批 · L68 买给你（buy sb sth / buy sth for sb）：to 递到手、for 为你办——两家人分家（批十 PRD §2）──
+  {
+    id: "lesson-68-buy-for",
+    number: 68,
+    title: "买给你",
+    grammarLabel: "买给谁 · buy sb sth / buy sth for sb",
+    episode: "小美的一天 六十八",
+    scene: "city",
+    cover: cover44,
+    sceneSetupZh: "母亲节前的周末，小美在商店挑了一份礼物，回家递给妈妈。",
+    dialogueEn: "I bought a gift for my mom.",
+    dialogueZh: "小美把礼物袋递到妈妈手里。",
+    intentZh: "我给妈妈买了份礼物。",
+    targetSentence: "I bought a gift for my mom.",
+    blocks: [
+      { text: "I bought", role: "我买了（昨天版）" },
+      { text: "a gift", role: "一份礼物" },
+      { text: "for my mom", role: "给妈妈的（为你办）" }
+    ],
+    oneLineRule: "说「买给谁」：东西在前、for + 人收尾（buys a gift for my mom）——递到手的用 to，为你办的用 for。",
+    examples: [
+      { en: "I bought a gift for my mom.", zh: "我给妈妈买了份礼物。" },
+      { en: "I bought my mom a gift.", zh: "我给妈妈买了份礼物（同序换位）。" },
+      { en: "She made a cake for me.", zh: "她给我做了个蛋糕。" },
+      { en: "Please give it to me.", zh: "请把它递给我。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What a nice bag!", zh: "妈妈接过礼物袋。" },
+      { who: "npc", en: "Is it for me?", zh: "她笑着问。" },
+      { who: "me", en: "I bought a gift for my mom.", zh: "轮到你说了——我给妈妈买了份礼物。" }
+    ],
+    contrast: [
+      {
+        wrong: "I bought a gift to my mom.",
+        wrongMark: "to",
+        correct: "I bought a gift for my mom.",
+        whyZh: "买是「为你办的事」，用 for；to 是递到手的老位子（第 63 课 give it to me）——两家人分家。"
+      },
+      {
+        wrong: "I bought for my mom a gift.",
+        wrongMark: "for my mom",
+        correct: "I bought a gift for my mom.",
+        whyZh: "for 的人站最后：要么走 me the book 式（先给谁后给什么）、要么东西在前 for 收尾——别插中间。"
+      },
+      {
+        wrong: "I bought my mom a gift.",
+        wrongMark: null,
+        correct: "I bought a gift for my mom.",
+        bothRight: true,
+        whyZh: "两句都对——先给谁后给什么（第 63 课老规矩）今天扩到 buy：两序随便挑。"
+      },
+      {
+        wrong: "Please give the gift to me.",
+        wrongMark: null,
+        correct: "I bought the gift for my mom.",
+        bothRight: true,
+        whyZh: "两句都对——递到手 to（give 的位子）／为你办 for（buy 的位子）：一字之差两家人。"
+      },
+      {
+        wrong: "I go to the shop to buy milk.",
+        wrongMark: null,
+        correct: "I bought a gift for my mom.",
+        bothRight: true,
+        whyZh: "两句都对——第 44 课去商店买东西（buy 的老句子）＋今天买给谁：同一个 buy，加了「给谁」。"
+      },
+      {
+        wrong: "Please give me the book.",
+        wrongMark: null,
+        correct: "I bought a gift for my mom.",
+        bothRight: true,
+        whyZh: "两句都对——第 63 课先给谁后给什么（give）＋今天 for 收尾（buy）：递东西家族的门规都摸清了。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I bought a gift for my mom.", zh: "我给妈妈买了份礼物。" },
+      { label: "否定", en: "I didn't buy a gift for my mom.", zh: "我没给妈妈买礼物。", noteZh: "昨天的「没买」用 didn't + 原形 buy——bought 退回原样。" },
+      { label: "疑问", en: "Did you buy a gift for your mom?", zh: "你给妈妈买礼物了吗？", noteZh: "Did 搬句首，buy 穿原样，for your mom 不动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说她给我做了个蛋糕", en: "She made a cake for me.", zh: "她给我做了个蛋糕。" },
+      { sceneZh: "说给妈妈买了份礼物（换位版）", en: "I bought my mom a gift.", zh: "我给妈妈买了份礼物。" },
+      { sceneZh: "问对方给妈妈买礼物了吗", en: "Did you buy a gift for your mom?", zh: "你给妈妈买礼物了吗？" }
+    ],
+    deepDive: {
+      title: "to 递到手、for 为你办",
+      paragraphs: [
+        "第 63 课学过递东西：give me the book、give it to me——那是「递到手」，用 to。今天 buy 出场：给你买的礼物，是你花了心思「为你办」的事，用 for。",
+        "两边都记两个说法：递到手——give me the book ／ give the book to me；为你办——buy my mom a gift ／ buy a gift for my mom。顺序都是老规矩：先给谁后给什么，或者东西在前、末尾收尾。",
+        "buy 的昨天版是 bought（第 11 课见过的老实词）：bought 不走加 -ed 的路——和 go→went 一样要单独记。今天句子里它穿着昨天版出场。",
+        "第 44 课你去商店买牛奶（go to the shop to buy milk）——今天的 buy 前面多了一个「给谁」：买给妈妈、买给朋友，都是 for 出场。"
+      ]
+    },
+    summary: {
+      rule: "买给谁：buy + 人 + 东西 ／ buy + 东西 + for + 人——递到手用 to，为你办用 for。",
+      points: [
+        "I bought a gift for my mom. —— for 收尾版",
+        "I bought my mom a gift. —— 先给谁后给什么版（都对）",
+        "give it to me ／ buy it for me —— to 与 for 两家人"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我给妈妈买了份礼物。",
+        before: "I bought a gift",
+        after: "my mom.",
+        options: ["for", "to", "at"],
+        answer: "for",
+        explain: "买是为你办的事：for my mom——to 是递到手的位子。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我给妈妈买了份礼物。",
+        tokens: ["I", "bought", "a", "gift", "for", "my", "mom."],
+        answer: "I bought a gift for my mom.",
+        explain: "东西在前、for + 人收尾：a gift for my mom。"
+      },
+      {
+        // R8 跨课复现：第 63 课（先给谁后给什么）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 63 课学过：请把那本书递给我。",
+        tokens: ["Please", "give", "me", "the", "book."],
+        answer: "Please give me the book.",
+        explain: "复现第 63 课：递到手的 to——今天 for 家族登场分家。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "bought", "a", "gift", "to", "my", "mom."],
+        wrongToken: "to",
+        answer: "to",
+        correctionZh: "为你办用 for：a gift for my mom。",
+        explain: "to 是递到手的位子——买用 for。"
+      },
+      {
+        // R8 跨课复现：第 44 课（buy 的老句子）
+        kind: "arrange",
+        promptZh: "再对照一句——第 44 课学过：我去商店买牛奶。",
+        tokens: ["I", "go", "to", "the", "shop", "to", "buy", "milk."],
+        answer: "I go to the shop to buy milk.",
+        explain: "复现第 44 课：buy 的老句子——今天给它加「给谁」。"
+      },
+      {
+        // R9 变形/替换：换两序（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I bought a gift for my mom.」换成「先给谁后给什么」语序，中间要怎么变？",
+        replaceBase: "I bought a gift for my mom.",
+        replaceTarget: "换成先给谁后给什么语序",
+        options: ["I bought my mom a gift.", "I bought for my mom a gift.", "I bought a gift my mom for."],
+        answer: "I bought my mom a gift.",
+        explain: "两序互换：my mom 上中间位、a gift 收尾——for 不用了。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我给妈妈买了份礼物。",
+        tokens: ["I", "bought", "a", "gift", "for", "my", "mom."],
+        distractors: ["to"],
+        answer: "I bought a gift for my mom."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你给妈妈买礼物了吗？",
+        tokens: ["Did", "you", "buy", "a", "gift", "for", "your", "mom?"],
+        distractors: ["Does"],
+        answer: "Did you buy a gift for your mom?"
+      },
+      {
+        // R8 跨课复现：第 44 课原句
+        promptZh: "复习第 44 课：我去商店买牛奶。",
+        tokens: ["I", "go", "to", "the", "shop", "to", "buy", "milk."],
+        distractors: ["buying"],
+        answer: "I go to the shop to buy milk."
+      },
+      {
+        promptZh: "收个尾——你想说：她给我做了个蛋糕。",
+        tokens: ["She", "made", "a", "cake", "for", "me."],
+        distractors: ["to"],
+        answer: "She made a cake for me."
+      }
+    ],
+    recall: {
+      promptZh: "母亲节前的周末，小美把礼物递给妈妈。凭记忆，写出她那句英文。",
+      intentZh: "我给妈妈买了份礼物。",
+      answer: "I bought a gift for my mom.",
+      noteZh: "为你办用 for：a gift for my mom。"
+    },
+    huntCaseIds: ["hunt-gift-list"]
+  },
+
+  // ── 第十批 · L69 你介意吗（Would you mind…?）：礼貌第四档 + 门卫名单再添一位——应答链带 Yes 陷阱（批十 PRD §2）──
+  {
+    id: "lesson-69-mind",
+    number: 69,
+    title: "你介意吗",
+    grammarLabel: "客气第四档 · Would you mind + 名字版",
+    episode: "小美的一天 六十九",
+    scene: "campus",
+    cover: cover39,
+    sceneSetupZh: "午后的教室闷得慌，小美朝靠窗的同桌开口，请她开个窗。",
+    dialogueEn: "Would you mind opening the window?",
+    dialogueZh: "小美探过身，朝同桌轻声开口。",
+    intentZh: "你介意把窗打开吗？",
+    targetSentence: "Would you mind opening the window?",
+    blocks: [
+      { text: "Would you mind", role: "你介意吗（最婉转的一档）" },
+      { text: "opening", role: "打开（名字版）" },
+      { text: "the window?", role: "窗户" }
+    ],
+    oneLineRule: "请人做事最婉转的一档：Would you mind + 名字版（mind opening）；答应说 Of course not——「当然不介意」。",
+    examples: [
+      { en: "Would you mind opening the window?", zh: "你介意把窗打开吗？" },
+      { en: "Of course not.", zh: "当然不介意。（我去开）" },
+      { en: "I don't mind opening the window.", zh: "我不介意开窗。" },
+      { en: "Do you mind opening the window?", zh: "你介意开一下窗吗？（口气直接一点）" }
+    ],
+    dialogue: [
+      { who: "npc", en: "It is so hot in here.", zh: "同桌扇着本子嘟囔。" },
+      { who: "npc", en: "The window is closed.", zh: "她瞟了一眼窗户。" },
+      { who: "me", en: "Would you mind opening the window?", zh: "轮到你说了——你介意把窗打开吗？" }
+    ],
+    contrast: [
+      {
+        wrong: "Would you mind open the window?",
+        wrongMark: "open",
+        correct: "Would you mind opening the window?",
+        whyZh: "mind 的门只认名字版：光板进不了门——跟 enjoy/finish 一个规矩。"
+      },
+      {
+        wrong: "Would you mind to open the window?",
+        wrongMark: "to",
+        correct: "Would you mind opening the window?",
+        whyZh: "垫板对门卫不管用：mind 不认 to——去掉它，名字版上岗。"
+      },
+      {
+        wrong: "Could you open the window?",
+        wrongMark: null,
+        correct: "Would you mind opening the window?",
+        bothRight: true,
+        whyZh: "两句都对——第三档（Could you 直接请）、第四档（Would you mind 最婉转）：看交情挑。"
+      },
+      {
+        wrong: "Yes.",
+        wrongMark: null,
+        correct: "Of course not.",
+        whyZh: "应答陷阱：问的是「你介意吗」——答应说的是「当然不介意」（Of course not）；Yes 出口反而成了「我介意」。"
+      },
+      {
+        wrong: "Could you help me?",
+        wrongMark: null,
+        correct: "Would you mind opening the window?",
+        bothRight: true,
+        whyZh: "两句都对——第 61 课第三档＋今天第四档：请人帮忙从直接到婉转，四档全会。"
+      },
+      {
+        wrong: "I finished reading the book.",
+        wrongMark: null,
+        correct: "Would you mind opening the window?",
+        bothRight: true,
+        whyZh: "两句都对——第 64 课收尾的门＋今天 mind 的门：门卫名单又添一位，名字版通行证走到哪儿都认。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I don't mind opening the window.", zh: "我不介意开窗。", noteZh: "自己说不介意：don't mind + 名字版。" },
+      { label: "否定", en: "I don't mind at all.", zh: "我一点都不介意。", noteZh: "at all 收尾——加满「一点都不」。" },
+      { label: "疑问", en: "Do you mind opening the window?", zh: "你介意开一下窗吗？", noteZh: "Do 开头也常听到，口气比 Would you mind 直接一点。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "请同桌关一下门", en: "Would you mind closing the door?", zh: "你介意把门关上吗？" },
+      { sceneZh: "说自己不介意开窗", en: "I don't mind opening the window.", zh: "我不介意开窗。" },
+      { sceneZh: "用直接一点的口气再问一遍", en: "Do you mind opening the window?", zh: "你介意开一下窗吗？" }
+    ],
+    deepDive: {
+      title: "第四档与应答链",
+      paragraphs: [
+        "礼貌档位一路升上来：Close the door（直白）→ Close the door, please（加 please）→ Could you close the door?（第 61 课第三档）→ Would you mind closing the door?（今天第四档，最婉转）。",
+        "为什么最婉转？它把「请你做事」绕成了「你介意吗」——给对方留足了说「不」的余地，这是英语里请人帮忙最客气的一档。",
+        "应答要小心：被问 Would you mind…?，答应（好，我去）要说 Of course not（当然不介意）；不想做才说 Sorry, I can't。Sure 和 No problem 也可以——都是「不介意，我来」。记住：Yes 出口就成「我介意」了。",
+        "mind 也是「只认名字版」的门卫（第 64 课说的「名单还会加长」今天再加一位）：Would you mind opening——opening 穿 -ing 外套。"
+      ]
+    },
+    summary: {
+      rule: "最婉转的一档：Would you mind + 名字版（mind opening）——答应说 Of course not。",
+      points: [
+        "Would you mind opening the window? —— 第四档上岗",
+        "Of course not. —— 「当然不介意」（别说 Yes）",
+        "Could you…? ／ Would you mind…? —— 第三档、第四档都对"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：你介意把窗打开吗？",
+        before: "Would you mind",
+        after: "the window?",
+        options: ["opening", "open", "to open"],
+        answer: "opening",
+        explain: "mind 的门只认名字版：opening。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：你介意把窗打开吗？",
+        tokens: ["Would", "you", "mind", "opening", "the", "window?"],
+        answer: "Would you mind opening the window?",
+        explain: "第四档 + 名字版：mind opening。"
+      },
+      {
+        // R8 跨课复现：第 61 课（第三档）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 61 课学过：能帮我一下吗？",
+        tokens: ["Could", "you", "help", "me?"],
+        answer: "Could you help me?",
+        explain: "复现第 61 课：第三档——今天升到第四档。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["Would", "you", "mind", "to", "open", "the", "window?"],
+        wrongToken: "to",
+        answer: "to",
+        correctionZh: "垫板对门卫不管用：要去掉 to、穿名字版——mind opening。",
+        explain: "mind 不认 to。"
+      },
+      {
+        // R8 跨课复现：第 64 课（门卫名单前一位）
+        kind: "arrange",
+        promptZh: "再对照一句——第 64 课学过：我看完这本书啦。",
+        tokens: ["I", "finished", "reading", "the", "book."],
+        answer: "I finished reading the book.",
+        explain: "复现第 64 课：finished reading——今天 mind 又添一位。"
+      },
+      {
+        // R9 变形/替换：换请做的事（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「Would you mind opening the window?」把「开窗」换成「关窗（close the window）」，动词要怎么变？",
+        replaceBase: "Would you mind opening the window?",
+        replaceTarget: "把 opening the window 换成 close the window",
+        options: ["closing the window", "close the window", "to close the window"],
+        answer: "closing the window",
+        explain: "名字版换一件：mind closing——-ing 外套穿好。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：你介意把窗打开吗？",
+        tokens: ["Would", "you", "mind", "opening", "the", "window?"],
+        distractors: ["to"],
+        answer: "Would you mind opening the window?"
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想（直接一点）问：你介意开一下窗吗？",
+        tokens: ["Do", "you", "mind", "opening", "the", "window?"],
+        distractors: ["Does"],
+        answer: "Do you mind opening the window?"
+      },
+      {
+        promptZh: "你想说：我不介意开窗。",
+        tokens: ["I", "don't", "mind", "opening", "the", "window."],
+        distractors: ["to"],
+        answer: "I don't mind opening the window."
+      },
+      {
+        // R8 跨课复现：第 61 课原句
+        promptZh: "复习第 61 课：能帮我一下吗？",
+        tokens: ["Could", "you", "help", "me?"],
+        distractors: ["to"],
+        answer: "Could you help me?"
+      }
+    ],
+    recall: {
+      promptZh: "午后教室闷得慌，小美请靠窗的同桌开个窗——用了最婉转的一档。凭记忆，写出她那句英文。",
+      intentZh: "你介意把窗打开吗？",
+      answer: "Would you mind opening the window?",
+      noteZh: "第四档 + 名字版：mind opening。"
+    },
+    huntCaseIds: ["hunt-mind-note"]
+  },
+
+  // ── 第十批 · L70 要不要（Would you like…?）：offer 型 + 应答链——第 62 课的「问」端收口（批十 PRD §2）──
+  {
+    id: "lesson-70-would-you-like",
+    number: 70,
+    title: "要不要",
+    grammarLabel: "提供 · Would you like…? + Yes, please / No, thanks",
+    episode: "小美的一天 七十",
+    scene: "mansion",
+    cover: cover46,
+    sceneSetupZh: "表妹来家里玩，小美拎着小茶壶，问她要不要来点茶。",
+    dialogueEn: "Would you like some tea?",
+    dialogueZh: "小美举起茶壶朝向表妹。",
+    intentZh: "你要不要来点茶？",
+    targetSentence: "Would you like some tea?",
+    blocks: [
+      { text: "Would you like", role: "要不要（端到人前问）" },
+      { text: "some tea?", role: "来点茶" }
+    ],
+    oneLineRule: "问对方「要不要」用 Would you like + 东西：要就说 Yes, please.；不要就说 No, thanks.。",
+    examples: [
+      { en: "Would you like some tea?", zh: "你要不要来点茶？" },
+      { en: "Yes, please.", zh: "要，谢谢。" },
+      { en: "No, thanks.", zh: "不要，谢谢。" },
+      { en: "Would you like to have some tea?", zh: "要不要来喝点茶？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "I am a little thirsty.", zh: "表妹舔了舔嘴唇。" },
+      { who: "npc", en: "Do you have any drinks?", zh: "她问你有没有喝的。" },
+      { who: "me", en: "Would you like some tea?", zh: "轮到你说了——你要不要来点茶？" }
+    ],
+    contrast: [
+      {
+        wrong: "Would you like to some tea?",
+        wrongMark: "to",
+        correct: "Would you like some tea?",
+        whyZh: "东西直接跟、不垫板：some tea——垫板留给动作（would like to have）。"
+      },
+      {
+        wrong: "Do you like some tea?",
+        wrongMark: "Do",
+        correct: "Would you like some tea?",
+        whyZh: "想提供却问成了「你爱不爱喝茶」：「要不要」用 Would you like，「爱不爱」才是 Do you like。"
+      },
+      {
+        wrong: "Would you like some tea?",
+        wrongMark: null,
+        correct: "Yes, please.",
+        bothRight: true,
+        whyZh: "两句都对——问「要不要」＋答「要，谢谢」：成对出场，答句里 please 让答得周全。"
+      },
+      {
+        wrong: "Do you want some tea?",
+        wrongMark: null,
+        correct: "Would you like some tea?",
+        bothRight: true,
+        whyZh: "两句都对——熟人直接问 want、招待客人用 Would you like 更体面。"
+      },
+      {
+        wrong: "I would like a cup of tea.",
+        wrongMark: null,
+        correct: "Would you like some tea?",
+        bothRight: true,
+        whyZh: "两句都对——第 62 课会答「我想要」，今天会把问句递出去：想要和给前问，两头都会。"
+      },
+      {
+        wrong: "What would you like?",
+        wrongMark: null,
+        correct: "Would you like some tea?",
+        bothRight: true,
+        whyZh: "两句都对——问「想要什么」（第 4 课种子、第 62 课）＋问「要不要」：两条问法都熟。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "Yes, please.", zh: "要，谢谢。", noteZh: "要就说——please 让答得周全。" },
+      { label: "否定", en: "No, thanks.", zh: "不要，谢谢。", noteZh: "不要就说——thanks 让拒绝也体面。" },
+      { label: "疑问", en: "Would you like to have some tea?", zh: "要不要来喝点茶？", noteZh: "想请对方做动作时，垫上 to：to have——东西和动作两种问法。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "问表妹要不要来点茶", en: "Would you like some tea?", zh: "你要不要来点茶？" },
+      { sceneZh: "答应「要」", en: "Yes, please.", zh: "要，谢谢。" },
+      { sceneZh: "婉拒「不要」", en: "No, thanks.", zh: "不要，谢谢。" }
+    ],
+    deepDive: {
+      title: "两条问法：想要什么、要不要",
+      paragraphs: [
+        "第 62 课你会答「我想要」（I would like a cup of tea）；今天把同一家族的问句递到别人面前：Would you like some tea?——问「要不要」，招待、分零食都靠它。",
+        "两条问法的分工：What would you like?（你想要什么——让对方自己挑）／Would you like some tea?（要不要这个——端着东西问）。一个开放式、一个端到人前。",
+        "应答成对记：要——Yes, please.；不要——No, thanks.。两个都带上 please/thanks，答得周全。",
+        "别和 Do you like…? 混：「爱不爱」问的是平时的口味（Do you like tea? 你平时爱喝茶吗）；「要不要」是现在这一杯（Would you like some tea?）——一字之差，一问口味一问当下。"
+      ]
+    },
+    summary: {
+      rule: "问「要不要」：Would you like + 东西——要答 Yes, please.；不要答 No, thanks.。",
+      points: [
+        "Would you like some tea? —— 端到人前问",
+        "Yes, please. / No, thanks. —— 应答成对",
+        "Do you like…? ／ Would you like…? —— 口味 vs 当下"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想问：你要不要来点茶？",
+        before: "Would you like",
+        after: "?",
+        options: ["some tea", "to tea", "tea to"],
+        answer: "some tea",
+        explain: "东西直接跟：some tea——不垫板。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想问：你要不要来点茶？",
+        tokens: ["Would", "you", "like", "some", "tea?"],
+        answer: "Would you like some tea?",
+        explain: "端到人前问：Would you like + 东西。"
+      },
+      {
+        // R8 跨课复现：第 62 课（同家族）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 62 课学过：你想要点什么？",
+        tokens: ["What", "would", "you", "like?"],
+        answer: "What would you like?",
+        explain: "复现第 62 课：两条问法今天配对——一条让对方挑、一条端着问。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["Would", "you", "like", "to", "some", "tea?"],
+        wrongToken: "to",
+        answer: "to",
+        correctionZh: "东西直接跟、不垫板：some tea。",
+        explain: "垫板留给动作（to have）。"
+      },
+      {
+        // R8 跨课复现：第 4 课（种子）
+        kind: "arrange",
+        promptZh: "再对照一句——第 4 课听过：你想要点什么？",
+        tokens: ["What", "would", "you", "like?"],
+        answer: "What would you like?",
+        explain: "复现第 4 课：种子今天第三次见面——两条问法都熟了。"
+      },
+      {
+        // R9 变形/替换：换提供的东西（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「Would you like some tea?」把「茶」换成「咖啡（coffee）」，句子要怎么变？",
+        replaceBase: "Would you like some tea?",
+        replaceTarget: "把 some tea 换成 some coffee",
+        options: ["some coffee", "to coffee", "coffee some"],
+        answer: "some coffee",
+        explain: "同一个位子换东西：some coffee——照样直接跟。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想问：你要不要来点茶？",
+        tokens: ["Would", "you", "like", "some", "tea?"],
+        distractors: ["to"],
+        answer: "Would you like some tea?"
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问（请对方做动作）：要不要来喝点茶？",
+        tokens: ["Would", "you", "like", "to", "have", "some", "tea?"],
+        distractors: ["having"],
+        answer: "Would you like to have some tea?"
+      },
+      {
+        promptZh: "你想答（要）：要，谢谢。",
+        tokens: ["Yes,", "please."],
+        distractors: ["thanks"],
+        answer: "Yes, please."
+      },
+      {
+        // R8 跨课复现：第 62 课原句
+        promptZh: "复习第 62 课：我要一杯茶。",
+        tokens: ["I", "would", "like", "a", "cup", "of", "tea."],
+        distractors: ["to"],
+        answer: "I would like a cup of tea."
+      }
+    ],
+    recall: {
+      promptZh: "表妹来家里玩说口渴，小美拎着小茶壶问她要不要来点茶。凭记忆，写出她那句英文。",
+      intentZh: "你要不要来点茶？",
+      answer: "Would you like some tea?",
+      noteZh: "端到人前问：Would you like + 东西。"
+    },
+    huntCaseIds: ["hunt-tea-invite"]
+  },
+
+  // ── 第十批 · L71 够轻拿得动（enough）：L66 镜像收尾——「够」站词后面；批收口（批十 PRD §2）──
+  {
+    id: "lesson-71-enough",
+    number: 71,
+    title: "够轻拿得动",
+    grammarLabel: "够 · enough 站词后",
+    episode: "小美的一天 七十一",
+    scene: "island",
+    cover: cover17,
+    sceneSetupZh: "春游出门前，小美把背包往妹妹肩上一放，掂了掂说这包不沉、背得动。",
+    dialogueEn: "The bag is light enough to carry.",
+    dialogueZh: "小美拍了拍背包对妹妹说。",
+    intentZh: "包够轻，背得动。",
+    targetSentence: "The bag is light enough to carry.",
+    blocks: [
+      { text: "The bag is light", role: "包很轻" },
+      { text: "enough", role: "够（站词后面）" },
+      { text: "to carry", role: "背得动（接动作）" }
+    ],
+    oneLineRule: "说「够」用 enough——它站词的后面（light enough）；后半段接 to + 动作收尾（to carry）。",
+    examples: [
+      { en: "The bag is light enough to carry.", zh: "包够轻，背得动。" },
+      { en: "He is old enough.", zh: "他够大了。" },
+      { en: "We have enough money.", zh: "我们的钱够。" },
+      { en: "It is too heavy to carry.", zh: "它太重了，拿不动。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "This bag looks heavy.", zh: "妹妹掂了掂背包。" },
+      { who: "npc", en: "Can I carry it?", zh: "她问你行不行。" },
+      { who: "me", en: "The bag is light enough to carry.", zh: "轮到你说了——包够轻，背得动。" }
+    ],
+    contrast: [
+      {
+        wrong: "The bag is enough light to carry.",
+        wrongMark: "enough",
+        correct: "The bag is light enough to carry.",
+        whyZh: "enough 站词的后面：light enough——中文的「够」在前面（够轻），英语的 enough 在词后。"
+      },
+      {
+        wrong: "It is too heavy to carry.",
+        wrongMark: null,
+        correct: "The bag is light enough to carry.",
+        bothRight: true,
+        whyZh: "两句都对——太重拿不动（第 66 课）↔ 够轻拿得动（今天）：一面镜子翻个面就对。"
+      },
+      {
+        wrong: "The bag is light enough for carry.",
+        wrongMark: "for",
+        correct: "The bag is light enough to carry.",
+        whyZh: "后面接动作要垫 to：enough to carry——for 是「为你办」家的人（第 68 课刚分家）。"
+      },
+      {
+        wrong: "We have enough money.",
+        wrongMark: null,
+        correct: "He is old enough.",
+        bothRight: true,
+        whyZh: "两句都对——enough 两处岗：名词前（enough money）、词后（old enough）——今天主攻词后，名词前认读。"
+      },
+      {
+        wrong: "It is too heavy to carry.",
+        wrongMark: null,
+        correct: "The bag is light enough to carry.",
+        bothRight: true,
+        whyZh: "两句都对——第 66 课镜像的另一面：too 和 enough 是一对反义词，句子形状搭对。"
+      },
+      {
+        wrong: "He is as tall as me.",
+        wrongMark: null,
+        correct: "The bag is light enough to carry.",
+        bothRight: true,
+        whyZh: "两句都对——第 65 课「一样」（as…as）、第 66 课「太」（too…to）、今天「够」（enough）：程度三兄弟排好队。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "The bag is light enough to carry.", zh: "包够轻，背得动。" },
+      { label: "否定", en: "The bag is not light enough.", zh: "包不够轻。", noteZh: "不够轻——not 跟 is 走；后半段可省。" },
+      { label: "疑问", en: "Is the bag light enough to carry?", zh: "包够轻能背吗？", noteZh: "Is 搬句首——问背不背得动。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说他够大了", en: "He is old enough.", zh: "他够大了。" },
+      { sceneZh: "说我们的钱够", en: "We have enough money.", zh: "我们的钱够。" },
+      { sceneZh: "问包够不够轻", en: "Is the bag light enough to carry?", zh: "包够轻能背吗？" }
+    ],
+    deepDive: {
+      title: "够站后面——镜子的两面",
+      paragraphs: [
+        "第 66 课你学过 too…to：too heavy to carry（太重了拿不动）。今天把它翻个面：light enough to carry（够轻，拿得动）。too 和 enough 是一对——一个说「太过了」，一个说「够格了」。",
+        "位置记牢：too 站在词前面（too heavy）、enough 站在词后面（light enough）——位置天生相反，和它们的意思正好照应。",
+        "后半段的 to carry 两兄弟一样：够了能做的事、太过了做不了的事，都用 to + 动作收尾。",
+        "enough 还有一个岗位在名词前面：enough money（钱够）、enough time（时间够）。今天你先记住词后那句（light enough），名词前这句认得、听得懂就行——用起来一样是「够」。"
+      ]
+    },
+    summary: {
+      rule: "说「够」：enough 站词的后面（light enough）——后半段接 to + 动作（to carry）。",
+      points: [
+        "The bag is light enough to carry. —— 够站后面",
+        "too heavy to carry ↔ light enough to carry —— 镜子两面",
+        "enough money —— 名词前的老位子（认读）"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：包够轻，背得动。",
+        before: "The bag is light",
+        after: "to carry.",
+        options: ["enough", "too", "very"],
+        answer: "enough",
+        explain: "「够」的位子给 enough：light enough——站词后。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：包够轻，背得动。",
+        tokens: ["The", "bag", "is", "light", "enough", "to", "carry."],
+        answer: "The bag is light enough to carry.",
+        explain: "够站词后 + to + 动作：light enough to carry。"
+      },
+      {
+        // R8 跨课复现：第 66 课（镜像起点）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 66 课学过：它太重了，拿不动。",
+        tokens: ["It", "is", "too", "heavy", "to", "carry."],
+        answer: "It is too heavy to carry.",
+        explain: "复现第 66 课：太重拿不动——今天把镜子翻个面。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["The", "bag", "is", "enough", "light", "to", "carry."],
+        wrongToken: "enough",
+        answer: "enough",
+        correctionZh: "enough 站词的后面：light enough。",
+        explain: "中文的「够」在前，英语的 enough 在后。"
+      },
+      {
+        // R8 跨课复现：第 65 课（程度三兄弟第一位）
+        kind: "arrange",
+        promptZh: "再对照一句——第 65 课学过：他和我一样高。",
+        tokens: ["He", "is", "as", "tall", "as", "me."],
+        answer: "He is as tall as me.",
+        explain: "复现第 65 课：一样（as…as）——程度三兄弟今天到齐。"
+      },
+      {
+        // R9 变形/替换：换形容词（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「The bag is light enough to carry.」把「轻」换成「大（big）」——够大装得下，句子要怎么变？",
+        replaceBase: "The bag is light enough to carry.",
+        replaceTarget: "把 light 换成 big",
+        options: ["big enough", "enough big", "big too"],
+        answer: "big enough",
+        explain: "同一个位子换词：big enough——enough 照样站词后。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：包够轻，背得动。",
+        tokens: ["The", "bag", "is", "light", "enough", "to", "carry."],
+        distractors: ["too"],
+        answer: "The bag is light enough to carry."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：包够轻能背吗？",
+        tokens: ["Is", "the", "bag", "light", "enough", "to", "carry?"],
+        distractors: ["Does"],
+        answer: "Is the bag light enough to carry?"
+      },
+      {
+        promptZh: "你想说：他够大了。",
+        tokens: ["He", "is", "old", "enough."],
+        distractors: ["too"],
+        answer: "He is old enough."
+      },
+      {
+        // R8 跨课复现：第 66 课原句（批收口串线）
+        promptZh: "全批收官——复习第 66 课：它太重了，拿不动。",
+        tokens: ["It", "is", "too", "heavy", "to", "carry."],
+        distractors: ["enough"],
+        answer: "It is too heavy to carry."
+      }
+    ],
+    recall: {
+      promptZh: "春游出门前，小美把背包往妹妹肩上一放，说这包背得动。凭记忆，写出她那句英文。",
+      intentZh: "包够轻，背得动。",
+      answer: "The bag is light enough to carry.",
+      noteZh: "够站后面：light enough + to carry。"
+    },
+    huntCaseIds: ["hunt-enough-bag"]
+  },
+
+  // ── 第十一批 · L72 多久一次（How often）：How 家族又一岗——L28 频率阶梯补上问句（批十一 PRD §2）──
+  {
+    id: "lesson-72-how-often",
+    number: 72,
+    title: "多久一次",
+    grammarLabel: "多久一次 · How often + 答语词块",
+    episode: "小美的一天 七十二",
+    scene: "campus",
+    cover: cover43,
+    sceneSetupZh: "操场边，小美指着你的跑步计划表，问你多久跑一次。",
+    dialogueEn: "How often do you run?",
+    dialogueZh: "小美指着计划表上的格子问你。",
+    intentZh: "你多久跑一次？",
+    targetSentence: "How often do you run?",
+    blocks: [
+      { text: "How often", role: "多久一次（问节奏）" },
+      { text: "do you run?", role: "你跑步（请帮手 do）" }
+    ],
+    oneLineRule: "问「多久一次」用 How often——第 27 课「How 管方式」的又一岗；答语是词块：twice a week（一周两次）。",
+    examples: [
+      { en: "How often do you run?", zh: "你多久跑一次？" },
+      { en: "Twice a week.", zh: "一周两次。" },
+      { en: "I run three times a week.", zh: "我一周跑三次。" },
+      { en: "I read once a month.", zh: "我一个月读一次。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Your plan looks great!", zh: "小美翻着你的计划表。" },
+      { who: "npc", en: "How often do you run?", zh: "她指着格子问你多久跑一次。" },
+      { who: "me", en: "Twice a week.", zh: "轮到你说了——一周两次。" }
+    ],
+    contrast: [
+      {
+        wrong: "How often you run?",
+        wrongMark: null,
+        correct: "How often do you run?",
+        whyZh: "问动作要请帮手 do：疑问词后面，动作用 do 帮忙（第 27 课的老规矩）。"
+      },
+      {
+        wrong: "I run one week two times.",
+        wrongMark: "one week two times",
+        correct: "I run twice a week.",
+        whyZh: "「一星期两次」时间放后面：twice a week——「两次」有专门说法 twice，中文直译的语序是最大的坑。"
+      },
+      {
+        wrong: "How often do you run?",
+        wrongMark: null,
+        correct: "Twice a week.",
+        bothRight: true,
+        whyZh: "两句都对——问「多久一次」＋答「一周两次」：成对出场。"
+      },
+      {
+        wrong: "How old are you?",
+        wrongMark: null,
+        correct: "How are you?",
+        bothRight: true,
+        whyZh: "两句都对——How 家族两兄弟：「多大了」（How old）和「你好吗」（How are you）同一条路：How 站句首。"
+      },
+      {
+        wrong: "I always arrive early.",
+        wrongMark: null,
+        correct: "How often do you run?",
+        bothRight: true,
+        whyZh: "两句都对——第 28 课频率副词站位（always）＋今天学会问：答句老基座，问句今天补。"
+      },
+      {
+        wrong: "I have seen that film twice!",
+        wrongMark: null,
+        correct: "I run twice a week.",
+        bothRight: true,
+        whyZh: "两句都对——第 21 课对白里的 twice（看过两遍）＋今天有了搭档：twice a week。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I run twice a week.", zh: "我一周跑两次。", noteZh: "答语词块：twice a week——「两次」在前、时间在后。" },
+      { label: "否定", en: "I don't run every day.", zh: "我不是每天都跑。", noteZh: "don't 帮忙说清节奏。" },
+      { label: "疑问", en: "How often do you run?", zh: "你多久跑一次？", noteZh: "问动作请帮手 do：How often 站句首，do 排第二。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说她一周游泳三次", en: "She goes swimming three times a week.", zh: "她一周游泳三次。" },
+      { sceneZh: "说我一个月读一次", en: "I read once a month.", zh: "我一个月读一次。" },
+      { sceneZh: "问她多久去一次图书馆", en: "How often does she go to the library?", zh: "她多久去一次图书馆？" }
+    ],
+    deepDive: {
+      title: "答语词块三档",
+      paragraphs: [
+        "回答「多久一次」有三档说法：一次——once a week（一周一次）；两次——twice a week（一周两次）；三次以上——three times a week（数字 + times）。「两次」有专门说法 twice，不用 two times。",
+        "顺序记牢：先说几次、再说周期——twice a week、once a month。中文「一星期两次」是时间在前，英语正好倒过来。",
+        "第 28 课你学过频率副词（always、often、never）站动词前面；今天补上它们的问法：How often do you run?——答句可以是副词（I often run.），也可以是词块（Twice a week.）。",
+        "How 家族排排站：How are you（你好吗）、How old（多大）、How many（多少）、今天的 How often（多久一次）——一个 How 站句首，后面接什么问什么。"
+      ]
+    },
+    summary: {
+      rule: "问「多久一次」用 How often；答语词块：once／twice／three times + a week。",
+      points: [
+        "How often do you run? —— How 家族又一岗",
+        "Twice a week. —— 几次在前、周期在后",
+        "once a week / twice a week / three times a week —— 答语三档"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想问：你多久跑一次？",
+        before: "How often",
+        after: "run?",
+        options: ["do you", "you", "are you"],
+        answer: "do you",
+        explain: "问动作要请帮手：How often do you run。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想问：你多久跑一次？",
+        tokens: ["How", "often", "do", "you", "run?"],
+        answer: "How often do you run?",
+        explain: "How often 站句首、do 排第二：疑问词的老规矩。"
+      },
+      {
+        // R8 跨课复现：第 28 课（频率阶梯起点）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 28 课学过：我总是早到。",
+        tokens: ["I", "always", "arrive", "early."],
+        answer: "I always arrive early.",
+        explain: "复现第 28 课：频率副词站动词前——答句老基座在库。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["How", "often", "you", "run?"],
+        wrongToken: "you",
+        answer: "you",
+        correctionZh: "问动作要请帮手 do：How often do you run。",
+        explain: "疑问词后面，动作用 do 帮忙。"
+      },
+      {
+        // R8 跨课复现：第 21 课（twice 老句）
+        kind: "arrange",
+        promptZh: "再对照一句——第 21 课听过：那部电影我看过两遍了！",
+        tokens: ["I", "have", "seen", "that", "film", "twice!"],
+        answer: "I have seen that film twice!",
+        explain: "复现第 21 课：twice（两遍）老句——今天它有了新搭档 a week。"
+      },
+      {
+        // R9 变形/替换：换周期（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I run twice a week.」换成「一个月一次」（一个月只跑一次），词块要怎么换？",
+        replaceBase: "I run twice a week.",
+        replaceTarget: "把 twice a week 换成「一个月一次」",
+        options: ["once a month", "one a month", "a month once"],
+        answer: "once a month",
+        explain: "一次用 once：once a month——几次在前、周期在后。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想问：你多久跑一次？",
+        tokens: ["How", "often", "do", "you", "run?"],
+        distractors: ["are"],
+        answer: "How often do you run?"
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：我不是每天都跑。",
+        tokens: ["I", "don't", "run", "every", "day."],
+        distractors: ["doesn't"],
+        answer: "I don't run every day."
+      },
+      {
+        promptZh: "你想答：一周两次。",
+        tokens: ["Twice", "a", "week."],
+        distractors: ["two"],
+        answer: "Twice a week."
+      },
+      {
+        // R8 跨课复现：第 28 课原句
+        promptZh: "复习第 28 课：我总是早到。",
+        tokens: ["I", "always", "arrive", "early."],
+        distractors: ["arrive always"],
+        answer: "I always arrive early."
+      }
+    ],
+    recall: {
+      promptZh: "操场边，小美指着你的跑步计划表问你多久跑一次。凭记忆，写出她那句英文。",
+      intentZh: "你多久跑一次？",
+      answer: "How often do you run?",
+      noteZh: "How often 站句首、动作请帮手 do。"
+    },
+    huntCaseIds: ["hunt-run-plan"]
+  },
+
+  // ── 第十一批 · L73 要花多久（How long does it take?）：How 家族再添一岗——take 表耗时全库首次转正（批十一 PRD §2）──
+  {
+    id: "lesson-73-how-long",
+    number: 73,
+    title: "要花多久",
+    grammarLabel: "要花多久 · How long does it take? + It takes…",
+    episode: "小美的一天 七十三",
+    scene: "city",
+    cover: cover9,
+    sceneSetupZh: "早高峰的路口，小美见你盯着公交站牌，问你到学校要花多久。",
+    dialogueEn: "How long does it take?",
+    dialogueZh: "小美凑过来看站牌。",
+    intentZh: "到学校要花多久？",
+    targetSentence: "How long does it take?",
+    blocks: [
+      { text: "How long", role: "多久（量时间条）" },
+      { text: "does it take?", role: "要花（请帮手 does）" }
+    ],
+    oneLineRule: "问「要花多久」用 How long does it take——答语 It takes ten minutes（take 表「花时间」）。",
+    examples: [
+      { en: "How long does it take?", zh: "要花多久？" },
+      { en: "It takes ten minutes.", zh: "要花十分钟。" },
+      { en: "It takes an hour by bus.", zh: "坐公交车要一个小时。" },
+      { en: "How far is the school?", zh: "学校有多远？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "The bus is late again.", zh: "小美看了一眼站牌叹气。" },
+      { who: "npc", en: "How long does it take to school?", zh: "她问你到学校要花多久。" },
+      { who: "me", en: "It takes ten minutes.", zh: "轮到你说了——要花十分钟。" }
+    ],
+    contrast: [
+      {
+        wrong: "How long it takes?",
+        wrongMark: null,
+        correct: "How long does it take?",
+        whyZh: "问动作要请帮手 does：疑问词后面，动作用 does 帮忙（第 72 课刚立的老规矩）。"
+      },
+      {
+        wrong: "It is ten minutes.",
+        wrongMark: "is",
+        correct: "It takes ten minutes.",
+        whyZh: "「花时间」用 takes 不用 is：中文「是十分钟」的惯性——英语说「它花十分钟」。"
+      },
+      {
+        wrong: "How long does it take?",
+        wrongMark: null,
+        correct: "It takes ten minutes.",
+        bothRight: true,
+        whyZh: "两句都对——问「要花多久」＋答「要十分钟」：成对出场。"
+      },
+      {
+        wrong: "How far is the school?",
+        wrongMark: null,
+        correct: "How long does it take?",
+        bothRight: true,
+        whyZh: "两句都对——「多远」问距离、「多久」问时间：How 家族两兄弟，一个量路、一个量钟。"
+      },
+      {
+        wrong: "How does he go to school?",
+        wrongMark: null,
+        correct: "How long does it take?",
+        bothRight: true,
+        whyZh: "两句都对——第 27 课 How 管方式（怎么去）＋今天 How long 量时间：同一个 How，问的东西不同。"
+      },
+      {
+        wrong: "How many books do you have?",
+        wrongMark: null,
+        correct: "It takes ten minutes.",
+        bothRight: true,
+        whyZh: "两句都对——第 30 课问数量（多少本）＋今天答时长（十分钟）：How 家族排排站。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "It takes ten minutes.", zh: "要花十分钟。", noteZh: "take 表花时间：It takes + 时长。" },
+      { label: "否定", en: "It doesn't take long.", zh: "花不了多久。", noteZh: "doesn't 帮手 + 原形 take。" },
+      { label: "疑问", en: "How long does it take?", zh: "要花多久？", noteZh: "How long 站句首、does 排第二。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说坐公交要一个小时", en: "It takes an hour by bus.", zh: "坐公交车要一个小时。" },
+      { sceneZh: "说走路只要五分钟", en: "It takes five minutes on foot.", zh: "走路只要五分钟。" },
+      { sceneZh: "问去火车站要多久", en: "How long does it take to the station?", zh: "去火车站要多久？" }
+    ],
+    deepDive: {
+      title: "take 表花时间",
+      paragraphs: [
+        "「花时间」英语有自己的词：take。东西当主角——It takes ten minutes（「它」花十分钟）。这个「它」不是小美、不是公交车，是那段路、那件事本身。",
+        "问句和答句成对记：How long does it take?（要花多久？）／It takes ten minutes.（要花十分钟。）问的时候 does 帮忙，答的时候 takes 穿上 -s（它一个，三单尾巴）。",
+        "It takes an hour by bus.（坐公交要一小时）——后面想说什么交通工具、走什么路，都可以跟。",
+        "How 家族越排越长：How are you（你好吗）、How old（多大）、How many（多少）、How often（多久一次）、今天的 How long（要花多久）。还有一个认读的小兄弟：How far（有多远）——问距离，你先认得、听得出就行。"
+      ]
+    },
+    summary: {
+      rule: "问「要花多久」：How long does it take?——答：It takes + 时长（takes 表花时间）。",
+      points: [
+        "How long does it take? —— How 家族又一岗",
+        "It takes ten minutes. —— 「花时间」用 takes",
+        "How far is the school? —— 「多远」认读兄弟"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想问：要花多久？",
+        before: "How long",
+        after: "take?",
+        options: ["does it", "it", "is it"],
+        answer: "does it",
+        explain: "问动作请帮手：How long does it take。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想问：要花多久？",
+        tokens: ["How", "long", "does", "it", "take?"],
+        answer: "How long does it take?",
+        explain: "How long 站句首、does 排第二：疑问词的老规矩。"
+      },
+      {
+        // R8 跨课复现：第 27 课（How 管方式老句）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 27 课学过：你在找什么？",
+        tokens: ["What", "are", "you", "looking", "for?"],
+        answer: "What are you looking for?",
+        explain: "复现第 27 课：疑问词家族起点——今天 How 再添一岗。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["It", "is", "ten", "minutes."],
+        wrongToken: "is",
+        answer: "is",
+        correctionZh: "「花时间」用 takes 不用 is：It takes ten minutes。",
+        explain: "中文「是十分钟」的惯性——英语说「它花十分钟」。"
+      },
+      {
+        // R8 跨课复现：第 30 课（How many）
+        kind: "arrange",
+        promptZh: "再对照一句——第 30 课学过：你有多少本书？",
+        tokens: ["How", "many", "books", "do", "you", "have?"],
+        answer: "How many books do you have?",
+        explain: "复现第 30 课：How 家族排排站——问完数量，今天问时长。"
+      },
+      {
+        // R9 变形/替换：问距离的认读句（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「How long does it take?」想问「有多远」，How 后面那截要怎么换？",
+        replaceBase: "How long does it take?",
+        replaceTarget: "把 long 换成 far（问距离）",
+        options: ["How far is the school?", "How far does it take?", "How long is the school?"],
+        answer: "How far is the school?",
+        explain: "问距离：How far is the school?——今天认读一句，混个脸熟。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想问：要花多久？",
+        tokens: ["How", "long", "does", "it", "take?"],
+        distractors: ["is"],
+        answer: "How long does it take?"
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：花不了多久。",
+        tokens: ["It", "doesn't", "take", "long."],
+        distractors: ["takes"],
+        answer: "It doesn't take long."
+      },
+      {
+        promptZh: "你想答：要花十分钟。",
+        tokens: ["It", "takes", "ten", "minutes."],
+        distractors: ["is"],
+        answer: "It takes ten minutes."
+      },
+      {
+        // R8 跨课复现：第 30 课原句
+        promptZh: "复习第 30 课：你有多少本书？",
+        tokens: ["How", "many", "books", "do", "you", "have?"],
+        distractors: ["does"],
+        answer: "How many books do you have?"
+      }
+    ],
+    recall: {
+      promptZh: "早高峰路口，小美看着站牌问你到学校要花多久。凭记忆，写出她那句英文。",
+      intentZh: "要花多久？",
+      answer: "How long does it take?",
+      noteZh: "How long 站句首、does 排第二。"
+    },
+    huntCaseIds: ["hunt-trip-time"]
+  },
+
+  // ── 第十一批 · L74 让我来帮你（Let me / help + 原形）：两个口令块——第 61 课请求义的来处，今天出手义转正（批十一 PRD §2）──
+  {
+    id: "lesson-74-help-let",
+    number: 74,
+    title: "让我来帮你",
+    grammarLabel: "让我来 · Let me / help + 动作穿原样",
+    episode: "小美的一天 七十四",
+    scene: "mansion",
+    cover: cover19,
+    sceneSetupZh: "周末搬家，小美看你抱着纸箱腾不出手，开口说让我来帮你。",
+    dialogueEn: "Let me help you.",
+    dialogueZh: "小美接过你手里的纸箱。",
+    intentZh: "让我来帮你。",
+    targetSentence: "Let me help you.",
+    blocks: [
+      { text: "Let me", role: "让我来（我出手）" },
+      { text: "help you", role: "帮你（搭把手）" }
+    ],
+    oneLineRule: "「让我来」用 Let me + 动作穿原样（Let me help）；「帮你做」help 后面也是动作穿原样（help you carry）——口令块后面直接接动作，不垫板。",
+    examples: [
+      { en: "Let me help you.", zh: "让我来帮你。" },
+      { en: "Let me carry the box.", zh: "让我来搬这个箱子。" },
+      { en: "He helped me carry the box.", zh: "他帮我搬了箱子。" },
+      { en: "Can I help you?", zh: "我能帮上忙吗？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "This box is heavy!", zh: "你抱着纸箱喘着气。" },
+      { who: "npc", en: "Let me help you.", zh: "小美伸手接过纸箱。" },
+      { who: "me", en: "Let me help you.", zh: "轮到你说了——让我来帮你。" }
+    ],
+    contrast: [
+      {
+        wrong: "Let me to help you.",
+        wrongMark: "to",
+        correct: "Let me help you.",
+        whyZh: "口令块后面直接接动作，不垫板：Let me help——跟第 47 课家族一个规矩。"
+      },
+      {
+        wrong: "Let me helps you.",
+        wrongMark: "helps",
+        correct: "Let me help you.",
+        whyZh: "动词穿原样：跟 must/should/can 家族一个规矩——helps 的 -s 不给它穿。"
+      },
+      {
+        wrong: "Could you help me?",
+        wrongMark: null,
+        correct: "Let me help you.",
+        bothRight: true,
+        whyZh: "两句都对——你会请人帮你（第 61 课），今天你也能开口帮人：一来一往，两条都会。"
+      },
+      {
+        wrong: "He helped me carry the box.",
+        wrongMark: null,
+        correct: "Let me help you.",
+        bothRight: true,
+        whyZh: "两句都对——help 后面垫不垫 to 两可：helped me carry 和 helped me to carry 都对；别的口令块一个都不垫，这里最宽松。"
+      },
+      {
+        wrong: "Let me carry the box.",
+        wrongMark: null,
+        correct: "Let me help you.",
+        bothRight: true,
+        whyZh: "两句都对——同一个口令块换动作：Let me help you ／ Let me carry the box——后面接什么就做什么。"
+      },
+      {
+        wrong: "You should sleep early.",
+        wrongMark: null,
+        correct: "Let me help you.",
+        bothRight: true,
+        whyZh: "两句都对——第 47 课家族不垫板（should sleep）＋今天的 Let me help：老规矩一条线。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "Let me help you.", zh: "让我来帮你。", noteZh: "Let me + 动作穿原样。" },
+      { label: "否定", en: "She doesn't let me help.", zh: "她不让我帮忙。", noteZh: "doesn't 帮忙，let 照样穿原样。" },
+      { label: "疑问", en: "Can I help you?", zh: "我能帮上忙吗？", noteZh: "出手也常这么问——第 14 课 can 老熟人。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说让我来搬这个箱子", en: "Let me carry the box.", zh: "让我来搬这个箱子。" },
+      { sceneZh: "说他帮我搬了箱子", en: "He helped me carry the box.", zh: "他帮我搬了箱子。" },
+      { sceneZh: "问「我能帮上忙吗」", en: "Can I help you?", zh: "我能帮上忙吗？" }
+    ],
+    deepDive: {
+      title: "两个口令块",
+      paragraphs: [
+        "今天认识两个「口令块」：Let me（让我来——我出手）和 help（搭把手）。它们后面都直接接动作，动作穿原样：Let me help、help you carry——不垫板、不加 -s，跟 must/should/can 家族一个规矩。",
+        "第 61 课你会说 Could you help me?（请你帮我）；今天反过来：Let me help you（让我来帮你）——请求和出手，一件事的两头都齐了。",
+        "help 后面最宽松：垫不垫 to 两可——He helped me carry the box. 和 He helped me to carry the box. 都对。别的口令块一个都不垫，只有它两头都收。",
+        "「让」这个字中文里管的事很多：让某人做（Let me…）、让谁等（wait）……今天先拿下一个最常用的：Let me——我出手的时候开口说它。"
+      ]
+    },
+    summary: {
+      rule: "「让我来」Let me + 动作穿原样；「帮你做」help + 动作穿原样——口令块后面直接接动作，不垫板。",
+      points: [
+        "Let me help you. —— 让我来（我出手）",
+        "He helped me carry the box. —— help 后垫不垫 to 两可",
+        "Could you help me? ／ Let me help you. —— 请求与出手两头"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：让我来帮你。",
+        before: "Let me",
+        after: "you.",
+        options: ["help", "to help", "helps"],
+        answer: "help",
+        explain: "口令块后面直接接动作：Let me help。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：让我来帮你。",
+        tokens: ["Let", "me", "help", "you."],
+        answer: "Let me help you.",
+        explain: "Let me + 动作穿原样：口令块出手。"
+      },
+      {
+        // R8 跨课复现：第 61 课（请求义）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 61 课学过：能帮我一下吗？",
+        tokens: ["Could", "you", "help", "me?"],
+        answer: "Could you help me?",
+        explain: "复现第 61 课：请求义——今天换成自己出手。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["Let", "me", "to", "help", "you."],
+        wrongToken: "to",
+        answer: "to",
+        correctionZh: "口令块不垫板：Let me help you。",
+        explain: "跟 must/should 家族一个规矩。"
+      },
+      {
+        // R8 跨课复现：第 47 课（家族不垫板）
+        kind: "arrange",
+        promptZh: "再对照一句——第 47 课学过：你该早点睡。",
+        tokens: ["You", "should", "sleep", "early."],
+        answer: "You should sleep early.",
+        explain: "复现第 47 课：家族不垫板——老规矩今天扩到 Let me。"
+      },
+      {
+        // R9 变形/替换：换动作（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「Let me help you.」把「帮你」换成「搬这个箱子（carry the box）」，动作要怎么变？",
+        replaceBase: "Let me help you.",
+        replaceTarget: "把 help you 换成 carry the box",
+        options: ["carry the box", "to carry the box", "carrying the box"],
+        answer: "carry the box",
+        explain: "动作穿原样：Let me carry the box。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：让我来帮你。",
+        tokens: ["Let", "me", "help", "you."],
+        distractors: ["to"],
+        answer: "Let me help you."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：我能帮上忙吗？",
+        tokens: ["Can", "I", "help", "you?"],
+        distractors: ["Do"],
+        answer: "Can I help you?"
+      },
+      {
+        promptZh: "你想说：让我来做吧。",
+        tokens: ["Let", "me", "do", "it."],
+        distractors: ["does"],
+        answer: "Let me do it."
+      },
+      {
+        // R8 跨课复现：第 47 课原句
+        promptZh: "复习第 47 课：你该早点睡。",
+        tokens: ["You", "should", "sleep", "early."],
+        distractors: ["to"],
+        answer: "You should sleep early."
+      }
+    ],
+    recall: {
+      promptZh: "周末搬家，小美看你抱着纸箱腾不出手，开口搭把手。凭记忆，写出她那句英文。",
+      intentZh: "让我来帮你。",
+      answer: "Let me help you.",
+      noteZh: "Let me + 动作穿原样——不垫板。"
+    },
+    huntCaseIds: ["hunt-moving-help"]
+  },
+
+  // ── 第十一批 · L75 咱们去…吧（Let's + How about）：老熟人转正——L56/L65 对白两处弱曝；提议功能收口；批收口（批十一 PRD §2）──
+  {
+    id: "lesson-75-lets",
+    number: 75,
+    title: "咱们去…吧",
+    grammarLabel: "提议 · Let's + 动作穿原样",
+    episode: "小美的一天 七十五",
+    scene: "forest",
+    cover: cover29,
+    sceneSetupZh: "周六早上，小美扒着窗帘看天气，回头提议一起去公园。",
+    dialogueEn: "Let's go to the park.",
+    dialogueZh: "小美放下窗帘，回头提议。",
+    intentZh: "咱们去公园吧。",
+    targetSentence: "Let's go to the park.",
+    blocks: [
+      { text: "Let's", role: "咱们…吧（口令块）" },
+      { text: "go to the park", role: "去公园（动作穿原样）" }
+    ],
+    oneLineRule: "提议「咱们去…吧」用 Let's + 动作穿原样（Let's go）——口令块后面直接接动作，不垫板。",
+    examples: [
+      { en: "Let's go to the park.", zh: "咱们去公园吧。" },
+      { en: "Good idea!", zh: "好主意！" },
+      { en: "How about going to the park?", zh: "去公园怎么样？" },
+      { en: "Let's not go now.", zh: "咱们别现在去。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "The weather is great today!", zh: "小美扒着窗帘往外看。" },
+      { who: "npc", en: "Let's go to the park.", zh: "她回头提议。" },
+      { who: "me", en: "Good idea!", zh: "轮到你说了——好主意！" }
+    ],
+    contrast: [
+      {
+        wrong: "Let's to go to the park.",
+        wrongMark: "to",
+        correct: "Let's go to the park.",
+        whyZh: "口令块后面直接接动作，不垫板：Let's go——跟第 74 课同规矩。"
+      },
+      {
+        wrong: "Let's going to the park.",
+        wrongMark: "going",
+        correct: "Let's go to the park.",
+        whyZh: "动词穿原样，不换 -ing 装：跟 must/should 家族一个规矩。"
+      },
+      {
+        wrong: "Let's go to the park.",
+        wrongMark: null,
+        correct: "How about going to the park?",
+        bothRight: true,
+        whyZh: "两句都对——Let's 直接提议、How about 把选项放桌上问：提议的第二种说法今天送你。"
+      },
+      {
+        wrong: "What about you?",
+        wrongMark: null,
+        correct: "How about a cup of tea?",
+        bothRight: true,
+        whyZh: "两句都对——老位上的 What about 是「你呢」（第 45 课）；How about 才是「怎么样」——一个词两岗，看后头跟着谁。"
+      },
+      {
+        wrong: "Let's circle it on the calendar.",
+        wrongMark: null,
+        correct: "Let's go to the park.",
+        bothRight: true,
+        whyZh: "两句都对——第 56 课对白里的 Let's（来，圈在挂历上）转正：老句子今天扶正。"
+      },
+      {
+        wrong: "Let's go to the park.",
+        wrongMark: null,
+        correct: "Good idea!",
+        bothRight: true,
+        whyZh: "两句都对——提议＋接话成对出场：Let's…（咱们去吧）／ Good idea!（好主意）。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "Let's go to the park.", zh: "咱们去公园吧。", noteZh: "Let's + 动作穿原样。" },
+      { label: "否定", en: "Let's not go now.", zh: "咱们别现在去。", noteZh: "not 跟在 Let's 后面。" },
+      { label: "提议（第二种）", en: "How about going to the park?", zh: "去公园怎么样？", noteZh: "How about 后面穿名字版 going——把选项放桌上问。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "提议出来接话「好主意」", en: "Good idea!", zh: "好主意！" },
+      { sceneZh: "说咱们别现在去", en: "Let's not go now.", zh: "咱们别现在去。" },
+      { sceneZh: "提议去公园（第二种说法）", en: "How about going to the park?", zh: "去公园怎么样？" }
+    ],
+    deepDive: {
+      title: "口令块 Let's 与把选项放桌上",
+      paragraphs: [
+        "Let's 是「Let us」的缩写——字面是「让我们」，实际是提议：咱们一起吧。它是对白里的老熟人：第 56 课「Let's circle it on the calendar.」、第 65 课「Let's check our height!」——今天正式扶正成你自己的句子。",
+        "规矩和第 74 课一样：口令块后面直接接动作、动作穿原样——Let's go、Let's eat，不垫板、不加装。",
+        "提议还有第二种说法：How about + 名字版（How about going to the park?）——把选项放桌上问，比 Let's 软一点。",
+        "接话成对记：别人提议，你同意就说 Good idea!（好主意）；想换个主意就说 How about…?——一条提议链就齐了。"
+      ]
+    },
+    summary: {
+      rule: "提议「咱们…吧」：Let's + 动作穿原样（Let's go）——第二种说法 How about + 名字版。",
+      points: [
+        "Let's go to the park. —— 口令块提议",
+        "Good idea! —— 接话成对",
+        "How about going to the park? —— 把选项放桌上"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想提议：咱们去公园吧。",
+        before: "Let's",
+        after: "to the park.",
+        options: ["go", "to go", "going"],
+        answer: "go",
+        explain: "口令块后面直接接动作：Let's go。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想提议：咱们去公园吧。",
+        tokens: ["Let's", "go", "to", "the", "park."],
+        answer: "Let's go to the park.",
+        explain: "Let's + 动作穿原样：口令块提议。"
+      },
+      {
+        // R8 跨课复现：第 29 课（从「我打算」到「咱们去吧」）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 29 课学过：我打算去看电影。",
+        tokens: ["I", "am", "going", "to", "watch", "a", "movie."],
+        answer: "I am going to watch a movie.",
+        explain: "复现第 29 课：「我打算」（自己）——今天升级成「咱们去吧」（一起）。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["Let's", "to", "go", "to", "the", "park."],
+        wrongToken: "to",
+        answer: "to",
+        correctionZh: "口令块不垫板：Let's go——去掉第一个 to。",
+        explain: "跟第 74 课同规矩。"
+      },
+      {
+        // R8 跨课复现：第 65 课（Let's 弱曝句转正）
+        kind: "arrange",
+        promptZh: "再对照一句——第 65 课听过：咱们来量量身高！",
+        tokens: ["Let's", "check", "our", "height!"],
+        answer: "Let's check our height!",
+        explain: "复现第 65 课：对白里的 Let's——今天是你自己的句子了。"
+      },
+      {
+        // R9 变形/替换：换第二种说法（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「Let's go to the park.」换成第二种提议说法（把选项放桌上问），开头要怎么换？",
+        replaceBase: "Let's go to the park.",
+        replaceTarget: "换成 How about 型提议",
+        options: ["How about going to the park?", "How about go to the park?", "How about to go to the park?"],
+        answer: "How about going to the park?",
+        explain: "How about 后面穿名字版：going——第二说法今天会了。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想提议：咱们去公园吧。",
+        tokens: ["Let's", "go", "to", "the", "park."],
+        distractors: ["going"],
+        answer: "Let's go to the park."
+      },
+      {
+        // R06 变体扩量：与 variants 第二种提议卡逐字一致的变体题
+        promptZh: "你想换种说法（把选项放桌上）：去公园怎么样？",
+        tokens: ["How", "about", "going", "to", "the", "park?"],
+        distractors: ["go"],
+        answer: "How about going to the park?"
+      },
+      {
+        promptZh: "你想说：咱们来做吧。",
+        tokens: ["Let's", "do", "it."],
+        distractors: ["does"],
+        answer: "Let's do it."
+      },
+      {
+        // R8 跨课复现：第 29 课原句（批收口串线）
+        promptZh: "全批收官——复习第 29 课：我打算去看电影。",
+        tokens: ["I", "am", "going", "to", "watch", "a", "movie."],
+        distractors: ["watches"],
+        answer: "I am going to watch a movie."
+      }
+    ],
+    recall: {
+      promptZh: "周六早上天气晴，小美回头提议一起去公园。凭记忆，写出她那句英文。",
+      intentZh: "咱们去公园吧。",
+      answer: "Let's go to the park.",
+      noteZh: "Let's + 动作穿原样——不垫板。"
+    },
+    huntCaseIds: ["hunt-park-plan"]
+  },
+
+  // ── 第十二批 · L76 好多了（much + 比较级）：给「更」加力的小词——B1 真课提前（批十二 PRD §2）──
+  {
+    id: "lesson-76-much-better",
+    number: 76,
+    title: "好多了",
+    grammarLabel: "程度加力 · much + 比较级",
+    episode: "小美的一天 七十六",
+    scene: "mansion",
+    cover: cover7,
+    sceneSetupZh: "小美昨天不太舒服，今天在客厅伸了个懒腰，说自己好多了。",
+    dialogueEn: "I feel much better today.",
+    dialogueZh: "小美伸了个懒腰，笑着跟你说。",
+    intentZh: "我今天好多了。",
+    targetSentence: "I feel much better today.",
+    blocks: [
+      { text: "I feel", role: "我觉得（身体感觉）" },
+      { text: "much better", role: "好多了（给「更」加力）" },
+      { text: "today", role: "今天" }
+    ],
+    oneLineRule: "给「更」加力的小词用 much：much better、much taller——它站比较级前面，比单说 better 力气更大。",
+    examples: [
+      { en: "I feel much better today.", zh: "我今天好多了。" },
+      { en: "He is much taller than me.", zh: "他比我高多了。" },
+      { en: "This one is much better.", zh: "这个好多了。" },
+      { en: "How far is the school?", zh: "学校有多远？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Are you feeling better?", zh: "妈妈端着一杯热水走过来。" },
+      { who: "npc", en: "You looked tired yesterday.", zh: "她昨天看你蔫蔫的。" },
+      { who: "me", en: "I feel much better today.", zh: "轮到你说了——我今天好多了。" }
+    ],
+    contrast: [
+      {
+        wrong: "How much milk is there?",
+        wrongMark: null,
+        correct: "I feel much better.",
+        bothRight: true,
+        whyZh: "两句都对——much 有两个岗：管数量（How much milk，第 30 课）和给「更」加力（much better，今天）——看它后头跟着谁。"
+      },
+      {
+        wrong: "I am very better.",
+        wrongMark: "very",
+        correct: "I feel much better.",
+        whyZh: "「好多了」用 much 不用 very：very 不能给「更」加力——想加力，请 much 上场。"
+      },
+      {
+        wrong: "He is more taller than me.",
+        wrongMark: "more",
+        correct: "He is much taller than me.",
+        whyZh: "「更」已经藏在 taller 里了：前面只加力、不再叠 more——more 和 -er 没见过面。"
+      },
+      {
+        wrong: "I feel much better today.",
+        wrongMark: null,
+        correct: "He is much taller than me.",
+        bothRight: true,
+        whyZh: "两句都对——同一个小词，一个管感觉（much better）、一个管个子（much taller）：成对出场。"
+      },
+      {
+        wrong: "It is the best movie this year.",
+        wrongMark: null,
+        correct: "I feel much better today.",
+        bothRight: true,
+        whyZh: "两句都对——第 31 课 good→better→best 的老规矩，今天在 better 前面加力：much better。"
+      },
+      {
+        wrong: "How far is the school?",
+        wrongMark: null,
+        correct: "I feel much better today.",
+        bothRight: true,
+        whyZh: "两句都对——第 73 课 far 老熟人（「多远」）今天只认读：far 也能给「更」加力（far better），先混个脸熟。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I feel much better today.", zh: "我今天好多了。", noteZh: "much 站比较级前面加力。" },
+      { label: "否定", en: "I am not much better today.", zh: "我今天没好多少。", noteZh: "not 插在 much 前面。" },
+      { label: "疑问", en: "Are you much better today?", zh: "你今天好点了吗？", noteZh: "Are 搬句首——问对方好转没。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说他比我高多了", en: "He is much taller than me.", zh: "他比我高多了。" },
+      { sceneZh: "说这个好多了", en: "This one is much better.", zh: "这个好多了。" },
+      { sceneZh: "问对方好点了吗", en: "Are you much better today?", zh: "你今天好点了吗？" }
+    ],
+    deepDive: {
+      title: "much 的两个岗",
+      paragraphs: [
+        "第 30 课你认识过 much 的一个岗：管「数不清的数量」——How much milk（多少牛奶）。今天它换第二个岗：给「更」加力。",
+        "怎么分？看它后面跟着谁：跟「数不清的东西」（milk、money、water）＝问数量；跟「更…的词」（better、taller）＝加力。一个 much，两班岗，看后头。",
+        "给「更」加力的不止 much：far 也行——far better（好得多）比 much better 力气还大。far 你第 73 课见过（How far 问距离）——今天认读一句，混个脸熟。",
+        "为什么不能说 very better？因为 very 是「非常」的岗（very good），它不给「更」加力。中文说「好多了」，英语的力气词是 much——记住这句，very 就不会串门了。"
+      ]
+    },
+    summary: {
+      rule: "给「更」加力的小词：much better、much taller——站比较级前面。",
+      points: [
+        "I feel much better today. —— 加力小词上岗",
+        "much 两岗：管数量（much milk）／加力（much better）",
+        "very better ❌ —— very 不站这个位"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我今天好多了。",
+        before: "I feel",
+        after: "better today.",
+        options: ["much", "very", "more"],
+        answer: "much",
+        explain: "给「更」加力用 much：much better。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我今天好多了。",
+        tokens: ["I", "feel", "much", "better", "today."],
+        answer: "I feel much better today.",
+        explain: "加力小词站比较级前面：much better。"
+      },
+      {
+        // R8 跨课复现：第 17 课（比较链起点）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 17 课学过：这条船比那条大。",
+        tokens: ["This", "boat", "is", "bigger", "than", "that", "one."],
+        answer: "This boat is bigger than that one.",
+        explain: "复现第 17 课：「更」的门牌——今天给它加力。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "feel", "very", "better", "today."],
+        wrongToken: "very",
+        answer: "very",
+        correctionZh: "给「更」加力用 much：much better——very 不站这个位。",
+        explain: "very 是「非常」的岗，不给「更」加力。"
+      },
+      {
+        // R8 跨课复现：第 31 课（good→better→best）
+        kind: "arrange",
+        promptZh: "再对照一句——第 31 课学过：这是今年最好的电影。",
+        tokens: ["It", "is", "the", "best", "movie", "this", "year."],
+        answer: "It is the best movie this year.",
+        explain: "复现第 31 课：good→better→best 老规矩——今天在 better 前面加力。"
+      },
+      {
+        // R9 变形/替换：换比较的词（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I feel much better today.」把「好」换成「高（tall）」，加力句要怎么变？",
+        replaceBase: "I feel much better today.",
+        replaceTarget: "把 better 换成 tall（说他比我高多了）",
+        options: ["much taller than me", "more taller than me", "very taller than me"],
+        answer: "much taller than me",
+        explain: "加力 + 「更」的词：much taller than me——不叠 more、不请 very。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我今天好多了。",
+        tokens: ["I", "feel", "much", "better", "today."],
+        distractors: ["very"],
+        answer: "I feel much better today."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你今天好点了吗？",
+        tokens: ["Are", "you", "much", "better", "today?"],
+        distractors: ["Do"],
+        answer: "Are you much better today?"
+      },
+      {
+        promptZh: "你想说：他比我高多了。",
+        tokens: ["He", "is", "much", "taller", "than", "me."],
+        distractors: ["more"],
+        answer: "He is much taller than me."
+      },
+      {
+        // R8 跨课复现：第 30 课原句
+        promptZh: "复习第 30 课：有多少牛奶？",
+        tokens: ["How", "much", "milk", "is", "there?"],
+        distractors: ["many"],
+        answer: "How much milk is there?"
+      }
+    ],
+    recall: {
+      promptZh: "小美昨天不太舒服，今天在客厅伸了个懒腰。凭记忆，写出她那句英文。",
+      intentZh: "我今天好多了。",
+      answer: "I feel much better today.",
+      noteZh: "加力小词站比较级前面：much better。"
+    },
+    huntCaseIds: ["hunt-feel-better"]
+  },
+
+  // ── 第十二批 · L77 一直在做（keep + 名字版）：名字版通行证第五站——keep 是「一直」，不是「收尾」（批十二 PRD §2）──
+  {
+    id: "lesson-77-keep-doing",
+    number: 77,
+    title: "一直在做",
+    grammarLabel: "习惯不停 · keep + 名字版",
+    episode: "小美的一天 七十七",
+    scene: "campus",
+    cover: cover42,
+    sceneSetupZh: "放学后的自习角，小美看你每天来，问你是不是一直都在这里做作业。",
+    dialogueEn: "I keep doing my homework.",
+    dialogueZh: "小美放下书包，朝你笑了笑。",
+    intentZh: "我一直在做作业。",
+    targetSentence: "I keep doing my homework.",
+    blocks: [
+      { text: "I keep", role: "我一直（不停）" },
+      { text: "doing my homework", role: "做作业（名字版）" }
+    ],
+    oneLineRule: "一件事一直做、不停做，用 keep + 名字版（keep doing）——keep 是「一直」，不是「做完」（那是第 64 课的 finish）。",
+    examples: [
+      { en: "I keep doing my homework.", zh: "我一直在做作业。" },
+      { en: "I keep reading at night.", zh: "我一直在晚上读书。" },
+      { en: "She keeps asking questions.", zh: "她一直在问问题。" },
+      { en: "I finished reading the book.", zh: "我看完这本书了。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "You are here again!", zh: "小美放下书包，朝你笑了笑。" },
+      { who: "npc", en: "Every day after school!", zh: "她数了数日子。" },
+      { who: "me", en: "I keep doing my homework.", zh: "轮到你说了——我一直在做作业。" }
+    ],
+    contrast: [
+      {
+        wrong: "I keep to do my homework.",
+        wrongMark: "to",
+        correct: "I keep doing my homework.",
+        whyZh: "名字版通道只收名字版、不垫板：keep doing——跟 like/enjoy/finish 一个规矩。"
+      },
+      {
+        wrong: "He keeps do it.",
+        wrongMark: "do",
+        correct: "He keeps doing it.",
+        whyZh: "名字版不装光板：keeps doing——三单的 -s 只动 keep 自己，后面照样穿名字版。"
+      },
+      {
+        wrong: "I finished reading the book.",
+        wrongMark: null,
+        correct: "I keep reading at night.",
+        bothRight: true,
+        whyZh: "两句都对——finish 是刹车（做完了）、keep 是不停车（一直在做）：一个收尾、一个持续，分工不同。"
+      },
+      {
+        wrong: "You keep quiet, please.",
+        wrongMark: null,
+        correct: "I keep reading.",
+        bothRight: true,
+        whyZh: "两句都对——老位上的 keep 是「保持」（keep quiet 保持安静）；今天这条是「一直」（keep reading）——看后头跟的是状态还是名字版。"
+      },
+      {
+        wrong: "I enjoy reading.",
+        wrongMark: null,
+        correct: "I keep doing my homework.",
+        bothRight: true,
+        whyZh: "两句都对——第 45 课名字版通行证老站＋今天第五站：enjoy reading ／ keep doing。"
+      },
+      {
+        wrong: "I am good at drawing.",
+        wrongMark: null,
+        correct: "I keep doing my homework.",
+        bothRight: true,
+        whyZh: "两句都对——第 67 课通道老规矩（入口后面永远跟名字版）＋今天 keep：通行证第五站打卡。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I keep doing my homework.", zh: "我一直在做作业。", noteZh: "keep + 名字版：不停做。" },
+      { label: "否定", en: "I don't keep doing it.", zh: "我不再一直做了。", noteZh: "don't 帮忙，后面照样名字版。" },
+      { label: "疑问", en: "Do you keep reading at night?", zh: "你一直在晚上读书吗？", noteZh: "Do 站句首——问对方是不是一直在做。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说我一直在晚上读书", en: "I keep reading at night.", zh: "我一直在晚上读书。" },
+      { sceneZh: "说她一直在问问题", en: "She keeps asking questions.", zh: "她一直在问问题。" },
+      { sceneZh: "问对方是不是一直在晚上读书", en: "Do you keep reading at night?", zh: "你一直在晚上读书吗？" }
+    ],
+    deepDive: {
+      title: "名字版通行证第五站",
+      paragraphs: [
+        "名字版通行证一路打卡：第 42 课 like reading（喜欢）、第 45 课 enjoy reading（享受）、第 64 课 finish reading（做完）、第 67 课 good at drawing（擅长）——今天第五站：keep reading（一直做）。",
+        "先分清 keep 和 finish：finish 是刹车——做完了、停下了；keep 是不停车——一直做、不停下。I finished reading 是「看完了」；I keep reading 是「一直在看」。",
+        "keep 还有一个老位子：「保持」——keep quiet（保持安静）、keep the door open（让门开着）。今天这条是「一直做」（后面跟名字版）——看后头跟的是状态还是名字版，就知道是哪个岗。",
+        "三单的规矩照旧：He keeps doing——keep 自己加 -s（他不一般），后面的名字版不动。"
+      ]
+    },
+    summary: {
+      rule: "一直做不停做：keep + 名字版（keep doing）——keep 是不停车，finish 是刹车。",
+      points: [
+        "I keep doing my homework. —— 通行证第五站",
+        "I finished reading. ／ I keep reading. —— 刹车 vs 不停车",
+        "He keeps doing it. —— 三单只动 keep 自己"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我一直在做作业。",
+        before: "I keep",
+        after: "my homework.",
+        options: ["doing", "to do", "do"],
+        answer: "doing",
+        explain: "名字版通道只收名字版：keep doing。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我一直在做作业。",
+        tokens: ["I", "keep", "doing", "my", "homework."],
+        answer: "I keep doing my homework.",
+        explain: "keep + 名字版：不停做。"
+      },
+      {
+        // R8 跨课复现：第 64 课（最近邻划界）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 64 课学过：我看完这本书了。",
+        tokens: ["I", "finished", "reading", "the", "book."],
+        answer: "I finished reading the book.",
+        explain: "复现第 64 课：finish 是刹车（做完了）——今天学不停车（keep）。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "keep", "to", "do", "my", "homework."],
+        wrongToken: "to",
+        answer: "to",
+        correctionZh: "名字版通道不垫板：keep doing。",
+        explain: "跟 like/enjoy/finish 一个规矩。"
+      },
+      {
+        // R8 跨课复现：第 42 课（通行证首站）
+        kind: "arrange",
+        promptZh: "再对照一句——第 42 课学过：我喜欢读书。",
+        tokens: ["I", "like", "reading."],
+        answer: "I like reading.",
+        explain: "复现第 42 课：通行证首站——今天第五站打卡。"
+      },
+      {
+        // R9 变形/替换：换做的事（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I keep doing my homework.」把「做作业」换成「读书（read）」，通道后面要怎么变？",
+        replaceBase: "I keep doing my homework.",
+        replaceTarget: "把 doing my homework 换成 read（一直在读书）",
+        options: ["reading", "read", "to read"],
+        answer: "reading",
+        explain: "名字版换一件：keep reading——-ing 外套穿好。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我一直在做作业。",
+        tokens: ["I", "keep", "doing", "my", "homework."],
+        distractors: ["to"],
+        answer: "I keep doing my homework."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你一直在晚上读书吗？",
+        tokens: ["Do", "you", "keep", "reading", "at", "night?"],
+        distractors: ["Does"],
+        answer: "Do you keep reading at night?"
+      },
+      {
+        promptZh: "你想说：我一直在晚上读书。",
+        tokens: ["I", "keep", "reading", "at", "night."],
+        distractors: ["read"],
+        answer: "I keep reading at night."
+      },
+      {
+        // R8 跨课复现：第 42 课原句
+        promptZh: "复习第 42 课：我喜欢读书。",
+        tokens: ["I", "like", "reading."],
+        distractors: ["to"],
+        answer: "I like reading."
+      }
+    ],
+    recall: {
+      promptZh: "放学后的自习角，小美看你每天来，说你从来没停下。凭记忆，写出你那句英文。",
+      intentZh: "我一直在做作业。",
+      answer: "I keep doing my homework.",
+      noteZh: "keep + 名字版：不停车。"
+    },
+    huntCaseIds: ["hunt-hobby-habit"]
+  },
+
+  // ── 第十二批 · L78 一天的故事（跨季综合 · 零新知全复现 · 批收口）：把一天串成一条线（批十二 PRD §2）──
+  {
+    id: "lesson-78-day-story",
+    number: 78,
+    title: "一天的故事",
+    grammarLabel: "收口 · 跨季大团圆（零新知）",
+    episode: "小美的一天 七十八",
+    scene: "sparkle",
+    cover: cover25,
+    sceneSetupZh: "傍晚的公园长椅，小美把一天做的事串成一条线，讲给你听。",
+    dialogueEn: "I run every day, and I keep reading.",
+    dialogueZh: "小美靠在长椅上，望着跑道上的人。",
+    intentZh: "我每天跑步，也一直在读书。",
+    targetSentence: "I run every day, and I keep reading.",
+    blocks: [
+      { text: "I run every day", role: "我每天跑步（频率位）" },
+      { text: "and", role: "而且（两条线接起来）" },
+      { text: "I keep reading", role: "我一直在读书（不停车）" }
+    ],
+    oneLineRule: "把两件事串成一条线：中间用 and 接上——前半句说「每天」，后半句说「一直」，一天的故事就齐了。",
+    examples: [
+      { en: "I run every day, and I keep reading.", zh: "我每天跑步，也一直在读书。" },
+      { en: "I don't run every day, but I keep reading.", zh: "我不是每天跑，但一直在读书。" },
+      { en: "Do you run or walk every day?", zh: "你每天是跑步还是走路？" },
+      { en: "When it is sunny, I run in the park.", zh: "天晴的时候，我在公园跑步。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "The park is so lively tonight!", zh: "小美靠在长椅上，望着跑道上的人。" },
+      { who: "npc", en: "What do you do every day?", zh: "她转头问你每天做些什么。" },
+      { who: "me", en: "I run every day, and I keep reading.", zh: "轮到你说了——我每天跑步，也一直在读书。" }
+    ],
+    contrast: [
+      {
+        wrong: "I finished read the book.",
+        wrongMark: "read",
+        correct: "I finished reading the book.",
+        whyZh: "名字版通道：finish 后面也收名字版（第 64 课老规矩——光板进不了门）。"
+      },
+      {
+        wrong: "I feel very better today.",
+        wrongMark: "very",
+        correct: "I feel much better today.",
+        whyZh: "刚学的加力小词回流：much better——very 不站「更」前面（第 76 课）。"
+      },
+      {
+        wrong: "This boat is bigger than that one.",
+        wrongMark: null,
+        correct: "I feel much better today.",
+        bothRight: true,
+        whyZh: "两句都对——第 17 课的「更」（bigger than）＋第 76 课的「更加力」（much better）：同台站好。"
+      },
+      {
+        wrong: "I enjoy reading.",
+        wrongMark: null,
+        correct: "I keep reading at night.",
+        bothRight: true,
+        whyZh: "两句都对——第 45 课 enjoy reading ＋ 第 77 课 keep reading：名字版通行证两位老站同台。"
+      },
+      {
+        wrong: "I always arrive early.",
+        wrongMark: null,
+        correct: "I run every day, and I keep reading.",
+        bothRight: true,
+        whyZh: "两句都对——第 28 课频率位（always 站动词前）＋今天 every day 收尾：说节奏的两条路。"
+      },
+      {
+        wrong: "When it is sunny, I run in the park.",
+        wrongMark: null,
+        correct: "I run every day, and I keep reading.",
+        bothRight: true,
+        whyZh: "两句都对——第 48 课 if 家族的老邻居 when（天晴的时候）认读一句：条件句的老朋友。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I run every day, and I keep reading.", zh: "我每天跑步，也一直在读书。", noteZh: "and 把两条线接起来。" },
+      { label: "否定", en: "I don't run every day, but I keep reading.", zh: "我不是每天跑，但一直在读书。", noteZh: "but 转个弯——否定前句、保后句。" },
+      { label: "疑问", en: "Do you run or walk every day?", zh: "你每天是跑步还是走路？", noteZh: "or 两条路挑一条——老熟人 or（二选一）。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说不是每天跑但一直在读", en: "I don't run every day, but I keep reading.", zh: "我不是每天跑，但一直在读书。" },
+      { sceneZh: "问对方每天跑步还是走路", en: "Do you run or walk every day?", zh: "你每天是跑步还是走路？" },
+      { sceneZh: "说天晴的时候在公园跑步", en: "When it is sunny, I run in the park.", zh: "天晴的时候，我在公园跑步。" }
+    ],
+    deepDive: {
+      title: "跨季倒带：一天的线怎么接",
+      paragraphs: [
+        "这一课没有新知识——把你这一路学的几样东西串成一条线：说节奏（第 25/28 课的 every day、always）、说「更」（第 17 课 bigger than、第 76 课 much better）、说「一直做」（第 77 课 keep reading）。",
+        "接线的词有三个：and（两条都算上）、but（转个弯）、or（二选一）。前面你都见过：and/but 是第 19 课的老伙计，or 今天正式登场一回。",
+        "句子的顺序也有讲究：先说「每天做什么」（every day 收尾）、再接「一直做什么」（keep + 名字版）——先把日常摊开，再把坚持说出来。",
+        "跨季倒带一路点过：L17 比较链、L25 每天、L28 频率位、L45 名字版、L64 收尾、L76 加力、L77 不停车——七季的东西，今天一句话全用上。"
+      ]
+    },
+    summary: {
+      rule: "把两件事串成一条线：and 接上、but 转弯、or 二选一——一天的故事就齐了。",
+      points: [
+        "I run every day, and I keep reading. —— 频率 + 不停车",
+        "and / but / or —— 三条接线",
+        "跨季七站：比较链、频率位、名字版、收尾、加力、不停车"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想把两件事接起来：我每天跑步，也一直在读书。",
+        before: "I run every day,",
+        after: "I keep reading.",
+        options: ["and", "but", "or"],
+        answer: "and",
+        explain: "两条都算上：and 接上。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我每天跑步，也一直在读书。",
+        tokens: ["I", "run", "every", "day,", "and", "I", "keep", "reading."],
+        answer: "I run every day, and I keep reading.",
+        explain: "频率 + 不停车，and 接成一条线。"
+      },
+      {
+        // R8 跨课复现：第 28 课（频率位起点）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 28 课学过：我总是早到。",
+        tokens: ["I", "always", "arrive", "early."],
+        answer: "I always arrive early.",
+        explain: "复现第 28 课：频率位老规矩——今天说「每天」用 every day 收尾。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "finished", "read", "the", "book."],
+        wrongToken: "read",
+        answer: "read",
+        correctionZh: "名字版通道：finish 后面收名字版——finished reading。",
+        explain: "第 64 课老规矩。"
+      },
+      {
+        // R8 跨课复现：第 45 课（名字版老站）
+        kind: "arrange",
+        promptZh: "再对照一句——第 45 课学过：我享受读书。",
+        tokens: ["I", "enjoy", "reading."],
+        answer: "I enjoy reading.",
+        explain: "复现第 45 课：名字版通行证——今天 keep reading 是它第五站。"
+      },
+      {
+        // R9 变形/替换：换接线词（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I run every day, and I keep reading.」想改成「不是每天跑，但一直在读」，接头要怎么换？",
+        replaceBase: "I run every day, and I keep reading.",
+        replaceTarget: "改成「不是每天跑，但一直在读」",
+        options: ["don't run every day, but I keep", "run every day, or I keep", "not run every day, and keep"],
+        answer: "don't run every day, but I keep",
+        explain: "否定前句用 don't、转个弯用 but：I don't run every day, but I keep reading。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我每天跑步，也一直在读书。",
+        tokens: ["I", "run", "every", "day,", "and", "I", "keep", "reading."],
+        distractors: ["but"],
+        answer: "I run every day, and I keep reading."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你每天是跑步还是走路？",
+        tokens: ["Do", "you", "run", "or", "walk", "every", "day?"],
+        distractors: ["and"],
+        answer: "Do you run or walk every day?"
+      },
+      {
+        // R8 跨课复现：第 17 课原句
+        promptZh: "复习第 17 课：这条船比那条大。",
+        tokens: ["This", "boat", "is", "bigger", "than", "that", "one."],
+        distractors: ["as"],
+        answer: "This boat is bigger than that one."
+      },
+      {
+        // 全批收官惯例：复现第 76 课原句
+        promptZh: "全批收官——复习第 76 课：我今天好多了。",
+        tokens: ["I", "feel", "much", "better", "today."],
+        distractors: ["very"],
+        answer: "I feel much better today."
+      }
+    ],
+    recall: {
+      promptZh: "傍晚的公园长椅，小美把一天做的事串成一条线讲给你听。凭记忆，写出你那句英文。",
+      intentZh: "我每天跑步，也一直在读书。",
+      answer: "I run every day, and I keep reading.",
+      noteZh: "and 把两条线接起来：频率 + 不停车。"
+    },
+    huntCaseIds: ["hunt-full-day"]
+  },
+
+  // ── 第十三批 · L79 就在旁边（next to）：门牌家族新员——紧挨着，两个词一起住（批十三 PRD §2·大章节第一课）──
+  {
+    id: "lesson-79-next-to",
+    number: 79,
+    title: "就在旁边",
+    grammarLabel: "位置词 · next to",
+    episode: "小美的一天 七十九",
+    scene: "mansion",
+    cover: cover1,
+    sceneSetupZh: "小美在书房收拾东西，比划着说书桌紧挨着窗户。",
+    dialogueEn: "My desk is next to the window.",
+    dialogueZh: "小美拍了拍书桌，朝窗户努了努嘴。",
+    intentZh: "我的书桌紧挨着窗户。",
+    targetSentence: "My desk is next to the window.",
+    blocks: [
+      { text: "My desk is", role: "我的书桌是" },
+      { text: "next to", role: "紧挨着（两个词一起住）" },
+      { text: "the window", role: "那扇窗户" }
+    ],
+    oneLineRule: "说「紧挨着」用 next to——两个词一起住（to 不能丢）；它和第 18 课的 in/on/at 是一家人，都是说位置的。",
+    examples: [
+      { en: "My desk is next to the window.", zh: "我的书桌紧挨着窗户。" },
+      { en: "He sits next to me.", zh: "他坐在我旁边。" },
+      { en: "The shop is next to the bank.", zh: "商店紧挨着银行。" },
+      { en: "Is there a park near here?", zh: "这附近有公园吗？" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Your room looks nice!", zh: "小美站在书房门口看了看。" },
+      { who: "npc", en: "Where is your desk?", zh: "她问你书桌在哪儿。" },
+      { who: "me", en: "My desk is next to the window.", zh: "轮到你说了——我的书桌紧挨着窗户。" }
+    ],
+    contrast: [
+      {
+        wrong: "My desk is next the window.",
+        wrongMark: "next",
+        correct: "My desk is next to the window.",
+        whyZh: "两个词一起住：next to——to 不能丢（漏 to 是头号坑）。"
+      },
+      {
+        wrong: "My desk is next to window.",
+        wrongMark: null,
+        correct: "My desk is next to the window.",
+        whyZh: "窗户是「那一扇」：要带上 the——next to the window。"
+      },
+      {
+        wrong: "My hat is in the box.",
+        wrongMark: null,
+        correct: "My desk is next to the window.",
+        bothRight: true,
+        whyZh: "两句都对——第 18 课的老门牌（in the box）＋今天的新门牌（next to）：一家人。"
+      },
+      {
+        wrong: "Is there a park near here?",
+        wrongMark: null,
+        correct: "My desk is next to the window.",
+        bothRight: true,
+        whyZh: "两句都对——第 26 课 near（不远）＋今天 next to（紧挨着）：差一层「贴不贴」。"
+      },
+      {
+        wrong: "There is a cat under the chair.",
+        wrongMark: null,
+        correct: "My desk is next to the window.",
+        bothRight: true,
+        whyZh: "两句都对——第 26 课 under（在下面）复现：位置词越攒越多。"
+      },
+      {
+        wrong: "She is at home.",
+        wrongMark: null,
+        correct: "My desk is next to the window.",
+        bothRight: true,
+        whyZh: "两句都对——第 18 课 at（在某个点）复现：位置词家族排排站。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "My desk is next to the window.", zh: "我的书桌紧挨着窗户。", noteZh: "next to：两个词一起住。" },
+      { label: "否定", en: "My desk is not next to the window.", zh: "我的书桌不挨着窗户。", noteZh: "not 跟 is 走。" },
+      { label: "疑问", en: "Is your desk next to the window?", zh: "你的书桌挨着窗户吗？", noteZh: "Is 搬句首——问对方的位置。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说他坐在我旁边", en: "He sits next to me.", zh: "他坐在我旁边。" },
+      { sceneZh: "说商店紧挨着银行", en: "The shop is next to the bank.", zh: "商店紧挨着银行。" },
+      { sceneZh: "问对方书桌挨不挨着窗户", en: "Is your desk next to the window?", zh: "你的书桌挨着窗户吗？" }
+    ],
+    deepDive: {
+      title: "位置词家族：从 in/on/at 到 next to",
+      paragraphs: [
+        "第 18 课你学过三块老门牌：in（在里面）、on（在上面）、at（在某个点）。今天家族来了新成员：next to（紧挨着）——它是「贴边站」的那一位。",
+        "next to 是「两个词一起住」：next + to，to 不能丢。中文说「在窗户旁边」，英语说 next to the window——中间那个 to 就是「朝向」，少了它句子就缺一块。",
+        "和 near 比一比：near 是「不远」（可能还隔条街），next to 是「紧挨着」（贴在一起）——差一层「贴不贴」。",
+        "location 家族越攒越多：in／on／at（第 18 课）＋under／near（第 26 课）＋今天的 next to——一样一样往里加，你的「东西在哪」就说得越来越准。"
+      ]
+    },
+    summary: {
+      rule: "说「紧挨着」用 next to——两个词一起住；它和 in/on/at 一样，都是说位置的。",
+      points: [
+        "My desk is next to the window. —— 新门牌上岗",
+        "next to（紧挨着）／ near（不远）—— 差一层「贴不贴」",
+        "in／on／at／under／near／next to —— 位置词家族"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我的书桌紧挨着窗户。",
+        before: "My desk is",
+        after: "the window.",
+        options: ["next to", "next", "near to"],
+        answer: "next to",
+        explain: "两个词一起住：next to。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我的书桌紧挨着窗户。",
+        tokens: ["My", "desk", "is", "next", "to", "the", "window."],
+        answer: "My desk is next to the window.",
+        explain: "next to 两个词：to 不能丢。"
+      },
+      {
+        // R8 跨课复现：第 18 课（老门牌）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 18 课学过：我的帽子在盒子里。",
+        tokens: ["My", "hat", "is", "in", "the", "box."],
+        answer: "My hat is in the box.",
+        explain: "复现第 18 课：老门牌 in——今天家族来新人。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["My", "desk", "is", "next", "the", "window."],
+        wrongToken: "next",
+        answer: "next",
+        correctionZh: "两个词一起住：next 【to】the window。",
+        explain: "to 不能丢。"
+      },
+      {
+        // R8 跨课复现：第 26 课（under）
+        kind: "arrange",
+        promptZh: "再对照一句——第 26 课学过：椅子下面有一只猫。",
+        tokens: ["There", "is", "a", "cat", "under", "the", "chair."],
+        answer: "There is a cat under the chair.",
+        explain: "复现第 26 课：under（在下面）——位置词家族排排站。"
+      },
+      {
+        // R9 变形/替换：换位置（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「My desk is next to the window.」把「书桌」换成「他坐的地方」（他坐在我旁边），位置词那截要怎么变？",
+        replaceBase: "My desk is next to the window.",
+        replaceTarget: "换成「他坐在我旁边」",
+        options: ["He sits next to me.", "He sits next me.", "He next to sits me."],
+        answer: "He sits next to me.",
+        explain: "动作句照样用 next to：He sits next to me——to 不丢。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我的书桌紧挨着窗户。",
+        tokens: ["My", "desk", "is", "next", "to", "the", "window."],
+        distractors: ["near"],
+        answer: "My desk is next to the window."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你的书桌挨着窗户吗？",
+        tokens: ["Is", "your", "desk", "next", "to", "the", "window?"],
+        distractors: ["Does"],
+        answer: "Is your desk next to the window?"
+      },
+      {
+        // 保障句（cloze 落 sits）
+        promptZh: "你想说：他坐在我旁边。",
+        tokens: ["He", "sits", "next", "to", "me."],
+        distractors: ["sit"],
+        answer: "He sits next to me."
+      },
+      {
+        // R8 跨课复现：第 26 课原句
+        promptZh: "复习第 26 课：椅子下面有一只猫。",
+        tokens: ["There", "is", "a", "cat", "under", "the", "chair."],
+        distractors: ["on"],
+        answer: "There is a cat under the chair."
+      }
+    ],
+    recall: {
+      promptZh: "小美站在书房门口，问你书桌在哪儿。凭记忆，写出你那句英文。",
+      intentZh: "我的书桌紧挨着窗户。",
+      answer: "My desk is next to the window.",
+      noteZh: "next to：两个词一起住——to 不能丢。"
+    },
+    huntCaseIds: ["hunt-desk-map"]
+  },
+
+  // ── 第十三批 · L80 前面、后面（in front of / behind）：前后一对——脸朝哪边、背朝哪边（批十三 PRD §2）──
+  {
+    id: "lesson-80-front-behind",
+    number: 80,
+    title: "前面、后面",
+    grammarLabel: "位置词 · in front of / behind",
+    episode: "小美的一天 八十",
+    scene: "mansion",
+    cover: cover2,
+    sceneSetupZh: "小美到处找猫，最后发现猫蹲在门后头。",
+    dialogueEn: "The cat is behind the door.",
+    dialogueZh: "小美朝门后努了努嘴，小声说。",
+    intentZh: "猫在门后头。",
+    targetSentence: "The cat is behind the door.",
+    blocks: [
+      { text: "The cat is", role: "那只猫是" },
+      { text: "behind", role: "在后面（背朝那边）" },
+      { text: "the door", role: "那扇门" }
+    ],
+    oneLineRule: "说「在前面」用 in front of、「在后面」用 behind——一对好搭档：一个脸朝那边，一个背朝那边。",
+    examples: [
+      { en: "The cat is behind the door.", zh: "猫在门后头。" },
+      { en: "The school is in front of the park.", zh: "学校在公园前面。" },
+      { en: "He sits in front of me.", zh: "他坐在我前面。" },
+      { en: "The ball is behind the box.", zh: "球在盒子后面。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Where is the cat?", zh: "小美到处找，问你猫在哪儿。" },
+      { who: "npc", en: "I cannot find it!", zh: "她有点着急。" },
+      { who: "me", en: "The cat is behind the door.", zh: "轮到你说了——猫在门后头。" }
+    ],
+    contrast: [
+      {
+        wrong: "The ball is in front the door.",
+        wrongMark: null,
+        correct: "The ball is in front of the door.",
+        whyZh: "前面那一位是三个词一起住：in front of——of 不能丢。"
+      },
+      {
+        wrong: "The cat is behind of the door.",
+        wrongMark: "of",
+        correct: "The cat is behind the door.",
+        whyZh: "后面那一位只住一个词：behind——它不带 of（跟 in front of 分工不同）。"
+      },
+      {
+        wrong: "The school is in front of the park.",
+        wrongMark: null,
+        correct: "The cat is behind the door.",
+        bothRight: true,
+        whyZh: "两句都对——一个脸朝（in front of）、一个背朝（behind）：前后配对出场。"
+      },
+      {
+        wrong: "My desk is next to the window.",
+        wrongMark: null,
+        correct: "The cat is behind the door.",
+        bothRight: true,
+        whyZh: "两句都对——第 79 课 next to（紧挨着）＋今天 behind（在后面）：位置词排排站。"
+      },
+      {
+        wrong: "There is a cat under the chair.",
+        wrongMark: null,
+        correct: "The cat is behind the door.",
+        bothRight: true,
+        whyZh: "两句都对——第 26 课 under（在下面）复现：猫的老位置又出现了。"
+      },
+      {
+        wrong: "She is at home.",
+        wrongMark: null,
+        correct: "The cat is behind the door.",
+        bothRight: true,
+        whyZh: "两句都对——第 18 课 at（在某个点）复现：位置词家族又添两位。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "The cat is behind the door.", zh: "猫在门后头。", noteZh: "behind 一个人住——不带 of。" },
+      { label: "否定", en: "The cat is not behind the door.", zh: "猫不在门后头。", noteZh: "not 跟 is 走。" },
+      { label: "疑问", en: "Where is the cat?", zh: "猫在哪儿？", noteZh: "问地方——Where 老熟人（第 27 课）。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说学校在公园前面", en: "The school is in front of the park.", zh: "学校在公园前面。" },
+      { sceneZh: "说他坐在我前面", en: "He sits in front of me.", zh: "他坐在我前面。" },
+      { sceneZh: "问猫在哪儿", en: "Where is the cat?", zh: "猫在哪儿？" }
+    ],
+    deepDive: {
+      title: "前后配对：谁带 of、谁不带",
+      paragraphs: [
+        "今天认识一对好搭档：in front of（在前面）和 behind（在后面）。一个脸朝那边、一个背朝那边——说位置时一对一对地用，画面就清楚了。",
+        "两位住的房间不一样：in front of 是三个词一起住（in + front + of），of 不能丢；behind 只住一个词，别给它加 of。中文都是「前/后」，英语这两位一个带 of、一个不带——记住这一对。",
+        "跟第 79 课的 next to 连起来看：next to（贴旁边）、in front of（在前面）、behind（在后面）——你的「东西在哪」越来越立体了。",
+        "还有第 26 课的老朋友 under（在下面）、near（不远）——位置词家族现在有六位：in／on／at／under／near／next to／in front of／behind。"
+      ]
+    },
+    summary: {
+      rule: "前面 in front of（三个词一起住、of 不丢）；后面 behind（一个词、不带 of）。",
+      points: [
+        "The cat is behind the door. —— 背朝那边",
+        "The school is in front of the park. —— 脸朝那边",
+        "in front of 带 of ／ behind 不带 —— 一对好搭档"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：猫在门后头。",
+        before: "The cat is",
+        after: "the door.",
+        options: ["behind", "behind of", "in front of"],
+        answer: "behind",
+        explain: "后面那一位只住一个词：behind。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：猫在门后头。",
+        tokens: ["The", "cat", "is", "behind", "the", "door."],
+        answer: "The cat is behind the door.",
+        explain: "behind 一个人住——不带 of。"
+      },
+      {
+        // R8 跨课复现：第 79 课（位置词新员）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 79 课学过：我的书桌紧挨着窗户。",
+        tokens: ["My", "desk", "is", "next", "to", "the", "window."],
+        answer: "My desk is next to the window.",
+        explain: "复现第 79 课：next to——今天再来一对前后。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["The", "cat", "is", "behind", "of", "the", "door."],
+        wrongToken: "of",
+        answer: "of",
+        correctionZh: "后面那一位不带 of：behind the door。",
+        explain: "of 是多出来的——去掉它。"
+      },
+      {
+        // R8 跨课复现：第 26 课（under）
+        kind: "arrange",
+        promptZh: "再对照一句——第 26 课学过：椅子下面有一只猫。",
+        tokens: ["There", "is", "a", "cat", "under", "the", "chair."],
+        answer: "There is a cat under the chair.",
+        explain: "复现第 26 课：under（在下面）——位置词家族越排越长。"
+      },
+      {
+        // R9 变形/替换：换成一对面（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「The cat is behind the door.」把「门后」换成「学校前面」，位置那截要怎么换？",
+        replaceBase: "The cat is behind the door.",
+        replaceTarget: "换成「学校在前面（公园）」（The school is ___ the park.）",
+        options: ["in front of", "in front", "front of"],
+        answer: "in front of",
+        explain: "前面那一位三个词一起住：in front of the park——of 不丢。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：猫在门后头。",
+        tokens: ["The", "cat", "is", "behind", "the", "door."],
+        distractors: ["of"],
+        answer: "The cat is behind the door."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：猫在哪儿？",
+        tokens: ["Where", "is", "the", "cat?"],
+        distractors: ["What"],
+        answer: "Where is the cat?"
+      },
+      {
+        promptZh: "你想说：学校在公园前面。",
+        tokens: ["The", "school", "is", "in", "front", "of", "the", "park."],
+        distractors: ["behind"],
+        answer: "The school is in front of the park."
+      },
+      {
+        // R8 跨课复现：第 26 课原句
+        promptZh: "复习第 26 课：椅子下面有一只猫。",
+        tokens: ["There", "is", "a", "cat", "under", "the", "chair."],
+        distractors: ["on"],
+        answer: "There is a cat under the chair."
+      }
+    ],
+    recall: {
+      promptZh: "小美到处找猫，最后发现猫蹲在门后头。凭记忆，写出你那句英文。",
+      intentZh: "猫在门后头。",
+      answer: "The cat is behind the door.",
+      noteZh: "behind 一个人住——不带 of。"
+    },
+    huntCaseIds: ["hunt-cat-hiding"]
+  },
+
+  // ── 第十三批 · L81 夹在中间（between A and B）：两头都要点名——中间用 and 牵起来（批十三 PRD §2）──
+  {
+    id: "lesson-81-between",
+    number: 81,
+    title: "夹在中间",
+    grammarLabel: "位置词 · between A and B",
+    episode: "小美的一天 八十一",
+    scene: "campus",
+    cover: cover3,
+    sceneSetupZh: "教室换座位，小美看了看新座位表，说自己坐在汤姆和艾米中间。",
+    dialogueEn: "I sit between Tom and Amy.",
+    dialogueZh: "小美指着座位表上自己的名字。",
+    intentZh: "我坐在汤姆和艾米中间。",
+    targetSentence: "I sit between Tom and Amy.",
+    blocks: [
+      { text: "I sit", role: "我坐" },
+      { text: "between", role: "在中间（两头都要点名）" },
+      { text: "Tom and Amy", role: "汤姆和艾米（用 and 牵起来）" }
+    ],
+    oneLineRule: "说「在中间」用 between——两头都要点名，中间用 and 牵起来（between Tom and Amy）。",
+    examples: [
+      { en: "I sit between Tom and Amy.", zh: "我坐在汤姆和艾米中间。" },
+      { en: "The shop is between the bank and the park.", zh: "商店在银行和公园中间。" },
+      { en: "The ball is between the two boxes.", zh: "球在两个盒子中间。" },
+      { en: "I was busy and happy.", zh: "我又忙又开心。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "We have new seats!", zh: "小美看着座位表。" },
+      { who: "npc", en: "Who is next to you?", zh: "她问你旁边是谁。" },
+      { who: "me", en: "I sit between Tom and Amy.", zh: "轮到你说了——我坐汤姆和艾米中间。" }
+    ],
+    contrast: [
+      {
+        wrong: "I sit between Tom to Amy.",
+        wrongMark: "to",
+        correct: "I sit between Tom and Amy.",
+        whyZh: "两头用 and 牵起来：between Tom 【and】Amy——「从…到…」的 to 在这儿上不了岗。"
+      },
+      {
+        wrong: "I sit between Tom.",
+        wrongMark: null,
+        correct: "I sit between Tom and Amy.",
+        whyZh: "两头都要点名：给了这头、还要给那头——话要说完。"
+      },
+      {
+        wrong: "I was busy and happy.",
+        wrongMark: null,
+        correct: "I sit between Tom and Amy.",
+        bothRight: true,
+        whyZh: "两句都对——第 19 课 and（连接两样）＋今天 and（牵两头）：一个词两班岗。"
+      },
+      {
+        wrong: "My desk is next to the window.",
+        wrongMark: null,
+        correct: "I sit between Tom and Amy.",
+        bothRight: true,
+        whyZh: "两句都对——第 79 课 next to（贴旁边）＋今天 between（夹中间）：位置词排排站。"
+      },
+      {
+        wrong: "The cat is behind the door.",
+        wrongMark: null,
+        correct: "I sit between Tom and Amy.",
+        bothRight: true,
+        whyZh: "两句都对——第 80 课 behind（在后面）复现：前后左右中间，方位都齐了。"
+      },
+      {
+        wrong: "There are three apples on the table.",
+        wrongMark: null,
+        correct: "I sit between Tom and Amy.",
+        bothRight: true,
+        whyZh: "两句都对——第 26 课 on（在上面）复现：位置词家族大点兵。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I sit between Tom and Amy.", zh: "我坐在汤姆和艾米中间。", noteZh: "两头点名、and 牵手。" },
+      { label: "否定", en: "I don't sit between Tom and Amy.", zh: "我不坐汤姆和艾米中间。", noteZh: "don't 帮忙，between 那截不动。" },
+      { label: "疑问", en: "Who sits between Tom and Amy?", zh: "谁坐汤姆和艾米中间？", noteZh: "谁坐中间——Who 老熟人（第 27 课）。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说商店在银行和公园中间", en: "The shop is between the bank and the park.", zh: "商店在银行和公园中间。" },
+      { sceneZh: "说球在两个盒子中间", en: "The ball is between the two boxes.", zh: "球在两个盒子中间。" },
+      { sceneZh: "问谁坐中间", en: "Who sits between Tom and Amy?", zh: "谁坐汤姆和艾米中间？" }
+    ],
+    deepDive: {
+      title: "两头都要点名",
+      paragraphs: [
+        "between 是「夹在中间」的位置词，它的规矩是「两头都要点名」：between Tom and Amy——左边一个、右边一个，缺一头句子就没说完。",
+        "两头的名字用 and 牵起来——and 是第 19 课的老熟人（I was busy and happy），今天它多了个班岗：连接位置的两头。",
+        "中文的「从…到…」里有个「到」，翻英语时容易顺手写成 to——between Tom to Amy 就错了。记住：between 家族只认 and。",
+        "方位词家族现在已经很能打了：in／on／at（第 18 课）、under／near（第 26 课）、next to（第 79 课）、in front of／behind（第 80 课）、between（今天）——你的「东西在哪」可以说得非常细了。"
+      ]
+    },
+    summary: {
+      rule: "说「在中间」用 between——两头都要点名，中间用 and 牵起来。",
+      points: [
+        "I sit between Tom and Amy. —— 两头点名",
+        "between A and B —— and 牵手（不用 to）",
+        "next to ／ in front of ／ behind ／ between —— 方位四件套"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我坐在汤姆和艾米中间。",
+        before: "I sit between Tom",
+        after: "Amy.",
+        options: ["and", "to", "with"],
+        answer: "and",
+        explain: "两头用 and 牵起来：between Tom and Amy。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我坐在汤姆和艾米中间。",
+        tokens: ["I", "sit", "between", "Tom", "and", "Amy."],
+        answer: "I sit between Tom and Amy.",
+        explain: "两头点名、and 牵手。"
+      },
+      {
+        // R8 跨课复现：第 80 课（前后一对）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 80 课学过：猫在门后头。",
+        tokens: ["The", "cat", "is", "behind", "the", "door."],
+        answer: "The cat is behind the door.",
+        explain: "复现第 80 课：behind（在后面）——今天学夹中间。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "sit", "between", "Tom", "to", "Amy."],
+        wrongToken: "to",
+        answer: "to",
+        correctionZh: "两头用 and 牵：between Tom and Amy。",
+        explain: "「从…到…」的 to 在这儿上不了岗。"
+      },
+      {
+        // R8 跨课复现：第 19 课（and 老熟人）
+        kind: "arrange",
+        promptZh: "再对照一句——第 19 课学过：我又忙又开心。",
+        tokens: ["I", "was", "busy", "and", "happy."],
+        answer: "I was busy and happy.",
+        explain: "复现第 19 课：and 连接两样——今天用它牵两头。"
+      },
+      {
+        // R9 变形/替换：换两头（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I sit between Tom and Amy.」把中间那截换成「银行和公园」（说商店在它们中间），要怎么换？",
+        replaceBase: "I sit between Tom and Amy.",
+        replaceTarget: "换成「商店在银行和公园中间」（The shop is between ___ ___）",
+        options: ["the bank and the park", "the bank to the park", "bank and park"],
+        answer: "the bank and the park",
+        explain: "两头都要点名、带上 the：between the bank and the park。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我坐在汤姆和艾米中间。",
+        tokens: ["I", "sit", "between", "Tom", "and", "Amy."],
+        distractors: ["to"],
+        answer: "I sit between Tom and Amy."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：谁坐汤姆和艾米中间？",
+        tokens: ["Who", "sits", "between", "Tom", "and", "Amy?"],
+        distractors: ["sit"],
+        answer: "Who sits between Tom and Amy?"
+      },
+      {
+        promptZh: "你想说：商店在银行和公园中间。",
+        tokens: ["The", "shop", "is", "between", "the", "bank", "and", "the", "park."],
+        distractors: ["to"],
+        answer: "The shop is between the bank and the park."
+      },
+      {
+        // R8 跨课复现：第 19 课原句
+        promptZh: "复习第 19 课：我又忙又开心。",
+        tokens: ["I", "was", "busy", "and", "happy."],
+        distractors: ["but"],
+        answer: "I was busy and happy."
+      }
+    ],
+    recall: {
+      promptZh: "教室换座位，小美指着座位表上自己的名字。凭记忆，写出她那句英文。",
+      intentZh: "我坐在汤姆和艾米中间。",
+      answer: "I sit between Tom and Amy.",
+      noteZh: "两头点名、and 牵手——不用 to。"
+    },
+    huntCaseIds: ["hunt-seat-plan"]
+  },
+
+  // ── 第十三批 · L82 把它放那儿（put · 三态同形）：放，三天长一个样（批十三 PRD §2）──
+  {
+    id: "lesson-82-put",
+    number: 82,
+    title: "把它放那儿",
+    grammarLabel: "放 · put（三态同形）",
+    episode: "小美的一天 八十二",
+    scene: "mansion",
+    cover: cover4,
+    sceneSetupZh: "小美放学进门，把书包往门边一放，说就放这儿。",
+    dialogueEn: "I put my bag next to the door.",
+    dialogueZh: "小美把书包往门边一放。",
+    intentZh: "我把书包放在门边。",
+    targetSentence: "I put my bag next to the door.",
+    blocks: [
+      { text: "I put", role: "我放（三天长一个样）" },
+      { text: "my bag", role: "我的书包" },
+      { text: "next to the door", role: "在门边（位置收尾）" }
+    ],
+    oneLineRule: "说「放」用 put——它三天长一个样：今天 put、昨天 put、明天还是 put（不加 -ed）。",
+    examples: [
+      { en: "I put my bag next to the door.", zh: "我把书包放在门边。" },
+      { en: "I put my bag on the desk.", zh: "我把书包放在桌上。" },
+      { en: "Put the book in the box.", zh: "把书放进盒子里。" },
+      { en: "I went to school yesterday.", zh: "我昨天去学校了。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Where is your bag?", zh: "妈妈看你两手空空。" },
+      { who: "npc", en: "Your desk is next to the window.", zh: "她指了指书房。" },
+      { who: "me", en: "I put my bag next to the door.", zh: "轮到你说了——我把书包放在门边。" }
+    ],
+    contrast: [
+      {
+        wrong: "I putted my bag next to the door.",
+        wrongMark: "putted",
+        correct: "I put my bag next to the door.",
+        whyZh: "put 三天长一个样：不加 -ed——跟 go→went 那种老实词不同路。"
+      },
+      {
+        wrong: "I put my bag next the door.",
+        wrongMark: "next",
+        correct: "I put my bag next to the door.",
+        whyZh: "第 79 课的老规矩：next to 两个词一起住——to 不能丢。"
+      },
+      {
+        wrong: "I went to school yesterday.",
+        wrongMark: null,
+        correct: "I put my bag next to the door.",
+        bothRight: true,
+        whyZh: "两句都对——第 10 课 went（昨天版）＋今天 put（三天一个样）：一个换装、一个不换。"
+      },
+      {
+        wrong: "Close the door.",
+        wrongMark: null,
+        correct: "I put my bag next to the door.",
+        bothRight: true,
+        whyZh: "两句都对——第 32 课祈使句（动词开头、省主语）＋今天 put 出台：都是动作句。"
+      },
+      {
+        wrong: "My desk is next to the window.",
+        wrongMark: null,
+        correct: "I put my bag next to the door.",
+        bothRight: true,
+        whyZh: "两句都对——第 79 课 next to（贴旁边）＋今天 put（放到那儿）：位置词前后都是老熟人。"
+      },
+      {
+        wrong: "The cat is behind the door.",
+        wrongMark: null,
+        correct: "I put my bag next to the door.",
+        bothRight: true,
+        whyZh: "两句都对——第 80 课 behind（在后面）复现：说位置的两条路都熟了。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I put my bag next to the door.", zh: "我把书包放在门边。", noteZh: "put 三天一个样。" },
+      { label: "否定", en: "I don't put my bag on the desk.", zh: "我不把书包放桌上。", noteZh: "don't 帮忙，put 照样原样。" },
+      { label: "疑问", en: "Where do you put your bag?", zh: "你把书包放哪儿？", noteZh: "问你放哪儿——do 帮忙（第 27 课的老规矩）。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说把书包放在桌上", en: "I put my bag on the desk.", zh: "我把书包放在桌上。" },
+      { sceneZh: "说把书放进盒子里（祈使）", en: "Put the book in the box.", zh: "把书放进盒子里。" },
+      { sceneZh: "问对方把书包放哪儿", en: "Where do you put your bag?", zh: "你把书包放哪儿？" }
+    ],
+    deepDive: {
+      title: "put：三天长一个样",
+      paragraphs: [
+        "第 10 课你学过「昨天版」：go→went、eat→ate、see→saw。今天这位新朋友不一样：put 昨天不改装——今天 put、昨天 put、明天还是 put。",
+        "英语里有一小撮这样的「实在词」：形状从头到尾不变，放进任何时间的句子里都认识。put 是最常用的一个——放书包、放杯子、放钥匙，天天用。",
+        "怎么用？「把什么放到哪里」：put + 东西 + 位置——I put my bag next to the door（书包放到门边）。位置那截用第 79-81 课学的词收尾。",
+        "跟祈使句连起来也好用：Put the book in the box（把书放进盒子里）——动词开头、省主语，第 32 课的老规矩。让别人「放一下」，一句话就够。"
+      ]
+    },
+    summary: {
+      rule: "说「放」用 put——三天长一个样（不加 -ed）：put + 东西 + 位置。",
+      points: [
+        "I put my bag next to the door. —— 放 + 位置",
+        "putted ❌ —— 它不穿昨天的外套",
+        "Put the book in the box. —— 让别人放也一句搞定"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我把书包放在门边。",
+        before: "I",
+        after: "my bag next to the door.",
+        options: ["put", "putted", "puts"],
+        answer: "put",
+        explain: "put 三天长一个样：不加 -ed。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我把书包放在门边。",
+        tokens: ["I", "put", "my", "bag", "next", "to", "the", "door."],
+        answer: "I put my bag next to the door.",
+        explain: "put + 东西 + 位置：一句话说完放哪。"
+      },
+      {
+        // R8 跨课复现：第 79 课（位置收尾词）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 79 课学过：我的书桌紧挨着窗户。",
+        tokens: ["My", "desk", "is", "next", "to", "the", "window."],
+        answer: "My desk is next to the window.",
+        explain: "复现第 79 课：位置词学会了——今天给它配个动作。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "putted", "my", "bag", "on", "the", "desk."],
+        wrongToken: "putted",
+        answer: "putted",
+        correctionZh: "put 三天长一个样：I put my bag on the desk。",
+        explain: "它不穿昨天的外套。"
+      },
+      {
+        // R8 跨课复现：第 10 课（昨天版老规矩）
+        kind: "arrange",
+        promptZh: "再对照一句——第 10 课学过：我昨天去公园了。",
+        tokens: ["Yesterday", "I", "went", "to", "the", "park."],
+        answer: "Yesterday I went to the park.",
+        explain: "复现第 10 课：went（昨天版换装）——put 偏偏不换。"
+      },
+      {
+        // R9 变形/替换：换位置（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I put my bag next to the door.」把「门边」换成「桌上」，位置那截要怎么换？",
+        replaceBase: "I put my bag next to the door.",
+        replaceTarget: "把 next to the door 换成「桌上」",
+        options: ["on the desk", "in the desk", "at the desk"],
+        answer: "on the desk",
+        explain: "桌面是「表面」：on the desk——第 18 课的老门牌。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我把书包放在门边。",
+        tokens: ["I", "put", "my", "bag", "next", "to", "the", "door."],
+        distractors: ["putted"],
+        answer: "I put my bag next to the door."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你把书包放哪儿？",
+        tokens: ["Where", "do", "you", "put", "your", "bag?"],
+        distractors: ["Does"],
+        answer: "Where do you put your bag?"
+      },
+      {
+        promptZh: "你想说：我把书包放在桌上。",
+        tokens: ["I", "put", "my", "bag", "on", "the", "desk."],
+        distractors: ["putted"],
+        answer: "I put my bag on the desk."
+      },
+      {
+        // R8 跨课复现：第 32 课原句
+        promptZh: "复习第 32 课：把门关上。",
+        tokens: ["Close", "the", "door."],
+        distractors: ["You"],
+        answer: "Close the door."
+      }
+    ],
+    recall: {
+      promptZh: "小美放学进门，把书包往门边一放。凭记忆，写出她那句英文。",
+      intentZh: "我把书包放在门边。",
+      answer: "I put my bag next to the door.",
+      noteZh: "put 三天一个样——不加 -ed。"
+    },
+    huntCaseIds: ["hunt-pack-bag"]
+  },
+
+  // ── 第十三批 · L83 有个东西（something / anything）：L30 some/any 老规矩的东西版（批十三 PRD §2）──
+  {
+    id: "lesson-83-something",
+    number: 83,
+    title: "有个东西",
+    grammarLabel: "不点名的东西 · something / anything",
+    episode: "小美的一天 八十三",
+    scene: "mansion",
+    cover: cover5,
+    sceneSetupZh: "小美手里攥着东西背在身后，说有样东西要给你。",
+    dialogueEn: "I have something for you.",
+    dialogueZh: "小美笑着把手背到身后。",
+    intentZh: "我有样东西给你。",
+    targetSentence: "I have something for you.",
+    blocks: [
+      { text: "I have", role: "我有" },
+      { text: "something", role: "一样东西（先不说是什么）" },
+      { text: "for you", role: "给你的" }
+    ],
+    oneLineRule: "说不清或者先不说是什么，用 something；疑问和否定里换成 anything——第 30 课 some/any 的老规矩。",
+    examples: [
+      { en: "I have something for you.", zh: "我有样东西给你。" },
+      { en: "I don't have anything for you.", zh: "我没有东西带给你。" },
+      { en: "Do you have anything for me?", zh: "你有东西给我吗？" },
+      { en: "I want something to drink.", zh: "我想喝点什么。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "You look happy today!", zh: "小美笑着把手背到身后。" },
+      { who: "npc", en: "What is in your hand?", zh: "她问：你手里拿着什么？" },
+      { who: "me", en: "I have something for you.", zh: "轮到你说了——我有样东西给你。" }
+    ],
+    contrast: [
+      {
+        wrong: "I don't have something for you.",
+        wrongMark: "something",
+        correct: "I don't have anything for you.",
+        whyZh: "否定句里换 anything：don't have anything——第 30 课 some/any 的老规矩。"
+      },
+      {
+        wrong: "Do you have something for me?",
+        wrongMark: "something",
+        correct: "Do you have anything for me?",
+        whyZh: "疑问句里也换 anything：Do you have anything——同一个规矩（肯定用 some 侧、疑问否定用 any 侧）。"
+      },
+      {
+        wrong: "There are some apples on the table.",
+        wrongMark: null,
+        correct: "I have something for you.",
+        bothRight: true,
+        whyZh: "两句都对——第 30 课 some（一些）＋今天 something（一样东西）：老规矩穿新衣服。"
+      },
+      {
+        wrong: "I don't have any candy.",
+        wrongMark: null,
+        correct: "I have something for you.",
+        bothRight: true,
+        whyZh: "两句都对——第 30 课的 any（否定侧）＋今天 something 的肯定侧：一对。"
+      },
+      {
+        wrong: "My desk is next to the window.",
+        wrongMark: null,
+        correct: "I have something for you.",
+        bothRight: true,
+        whyZh: "两句都对——第 79 课位置词复现：这一季的句子都能串起来听。"
+      },
+      {
+        wrong: "I put my bag next to the door.",
+        wrongMark: null,
+        correct: "I have something for you.",
+        bothRight: true,
+        whyZh: "两句都对——第 82 课 put（放）复现：东西放好了，现在说「有样东西给你」。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I have something for you.", zh: "我有样东西给你。", noteZh: "肯定用 something。" },
+      { label: "否定", en: "I don't have anything for you.", zh: "我没有东西带给你。", noteZh: "否定换 anything。" },
+      { label: "疑问", en: "Do you have anything for me?", zh: "你有东西给我吗？", noteZh: "疑问也换 anything。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说想喝点什么", en: "I want something to drink.", zh: "我想喝点什么。" },
+      { sceneZh: "说没东西带给你", en: "I don't have anything for you.", zh: "我没有东西带给你。" },
+      { sceneZh: "问对方有没有东西给我", en: "Do you have anything for me?", zh: "你有东西给我吗？" }
+    ],
+    deepDive: {
+      title: "some/any 的东西版",
+      paragraphs: [
+        "第 30 课你学过「一些」的规矩：肯定句用 some、疑问和否定换 any。今天认识它们的「东西版」：something（某样东西）、anything（任何东西）——规矩一模一样。",
+        "什么时候用？想说「有个东西」，但先不说是什么（或者说不清）：I have something for you——手里攥着、话先留一半，这就是 something 的舞台。",
+        "三个搭配顺手记：something to drink（喝点什么）、something to eat（吃点什么）、something for you（给你的东西）——后面跟 to + 动作，或者 for + 人。",
+        "疑问否定换 anything 是反射动作：Do you have anything for me?（有东西给我吗）／I don't have anything（什么都没有）——注意「疑问本身就换」，不用等否定。"
+      ]
+    },
+    summary: {
+      rule: "说不清的「一个东西」用 something；疑问和否定换 anything——第 30 课 some/any 的老规矩。",
+      points: [
+        "I have something for you. —— 肯定侧",
+        "Do you have anything for me? —— 疑问侧换 anything",
+        "something to drink —— 想喝点什么"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我有样东西给你。",
+        before: "I have",
+        after: "for you.",
+        options: ["something", "anything", "some thing"],
+        answer: "something",
+        explain: "肯定句用 something：有样东西（先不说是什么）。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我有样东西给你。",
+        tokens: ["I", "have", "something", "for", "you."],
+        answer: "I have something for you.",
+        explain: "something + for you：东西给你。"
+      },
+      {
+        // R8 跨课复现：第 30 课（老规矩源头）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 30 课学过：桌上有一些苹果。",
+        tokens: ["There", "are", "some", "apples", "on", "the", "table."],
+        answer: "There are some apples on the table.",
+        explain: "复现第 30 课：肯定用 some——今天认识它的「东西版」。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "don't", "have", "something", "for", "you."],
+        wrongToken: "something",
+        answer: "something",
+        correctionZh: "否定句里换 anything：don't have anything。",
+        explain: "第 30 课的老规矩。"
+      },
+      {
+        // R8 跨课复现：第 30 课否定侧
+        kind: "arrange",
+        promptZh: "再对照一句——第 30 课学过：我没有糖。",
+        tokens: ["I", "don't", "have", "any", "candy."],
+        answer: "I don't have any candy.",
+        explain: "复现第 30 课：否定用 any——今天 anything 同款。"
+      },
+      {
+        // R9 变形/替换：换东西（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I have something for you.」把「给你的东西」换成「喝点什么」，后半截要怎么换？",
+        replaceBase: "I have something for you.",
+        replaceTarget: "把 for you 换成「喝点什么」",
+        options: ["to drink", "drink", "for drink"],
+        answer: "to drink",
+        explain: "想喝点什么：something to drink——to + 动作收尾。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我有样东西给你。",
+        tokens: ["I", "have", "something", "for", "you."],
+        distractors: ["anything"],
+        answer: "I have something for you."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你有东西给我吗？",
+        tokens: ["Do", "you", "have", "anything", "for", "me?"],
+        distractors: ["something"],
+        answer: "Do you have anything for me?"
+      },
+      {
+        promptZh: "你想说：我想喝点什么。",
+        tokens: ["I", "want", "something", "to", "drink."],
+        distractors: ["anything"],
+        answer: "I want something to drink."
+      },
+      {
+        // R8 跨课复现：第 30 课原句
+        promptZh: "复习第 30 课：我没有糖。",
+        tokens: ["I", "don't", "have", "any", "candy."],
+        distractors: ["some"],
+        answer: "I don't have any candy."
+      }
+    ],
+    recall: {
+      promptZh: "小美笑着把手背到身后，你问她手里有什么。凭记忆，写出你那句英文。",
+      intentZh: "我有样东西给你。",
+      answer: "I have something for you.",
+      noteZh: "肯定用 something——先不说是什么。"
+    },
+    huntCaseIds: ["hunt-gift-box"]
+  },
+
+  // ── 第十三批 · L84 什么都没有（nothing / someone）：啥也没有——它自带「不」（批十三 PRD §2）──
+  {
+    id: "lesson-84-nothing",
+    number: 84,
+    title: "什么都没有",
+    grammarLabel: "不点名的东西 · nothing / someone",
+    episode: "小美的一天 八十四",
+    scene: "mansion",
+    cover: cover6,
+    sceneSetupZh: "小美打开一个旧盒子，里面空空的，什么也没有。",
+    dialogueEn: "There is nothing in the box.",
+    dialogueZh: "小美把盒子倒过来抖了抖。",
+    intentZh: "盒子里什么也没有。",
+    targetSentence: "There is nothing in the box.",
+    blocks: [
+      { text: "There is", role: "有（存在先占位）" },
+      { text: "nothing", role: "什么也没有（自带「不」）" },
+      { text: "in the box", role: "在盒子里" }
+    ],
+    oneLineRule: "说「什么也没有」用 nothing——它自带「不」，句子里不再请 not；someone 是「有人」，一个人配 is。",
+    examples: [
+      { en: "There is nothing in the box.", zh: "盒子里什么也没有。" },
+      { en: "I have nothing.", zh: "我什么都没有。" },
+      { en: "Someone is at the door.", zh: "有人在门口。" },
+      { en: "Someone left them here.", zh: "有人把它们落这儿了。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Is there anything in the box?", zh: "小美抱着旧盒子晃了晃。" },
+      { who: "npc", en: "Listen... nothing!", zh: "她晃给你听：一点声音都没有。" },
+      { who: "me", en: "There is nothing in the box.", zh: "轮到你说了——盒子里什么也没有。" }
+    ],
+    contrast: [
+      {
+        wrong: "I don't have nothing.",
+        wrongMark: "don't",
+        correct: "I have nothing.",
+        whyZh: "nothing 自带「不」：一句话里有了它，就别再请 not——两个「不」打架。"
+      },
+      {
+        wrong: "Someone are at the door.",
+        wrongMark: "are",
+        correct: "Someone is at the door.",
+        whyZh: "someone 是「一个人」：配 is——第 26 课单复数判断的老规矩。"
+      },
+      {
+        wrong: "There is something in the box.",
+        wrongMark: null,
+        correct: "There is nothing in the box.",
+        bothRight: true,
+        whyZh: "两句都对——有样东西（something）／啥也没有（nothing）：一对反义，对台站。"
+      },
+      {
+        wrong: "I have something for you.",
+        wrongMark: null,
+        correct: "There is nothing in the box.",
+        bothRight: true,
+        whyZh: "两句都对——第 83 课 something 复现：一个「有」、一个「没」。"
+      },
+      {
+        wrong: "Is there a park near here?",
+        wrongMark: null,
+        correct: "There is nothing in the box.",
+        bothRight: true,
+        whyZh: "两句都对——第 26 课 There be 家族复现：问「有没有」就是它的老本行。"
+      },
+      {
+        wrong: "Someone left them here.",
+        wrongMark: null,
+        correct: "There is nothing in the box.",
+        bothRight: true,
+        whyZh: "两句都对——第 33 课某人（someone）的老台词复现：someone 今天正式转正。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "There is nothing in the box.", zh: "盒子里什么也没有。", noteZh: "nothing 自带「不」。" },
+      { label: "否定", en: "There is not anything in the box.", zh: "盒里没东西（换个说法）。", noteZh: "想用 not 也可以：换成 anything，两个「不」不打架。" },
+      { label: "疑问", en: "Is there anything in the box?", zh: "盒子里有东西吗？", noteZh: "疑问换 anything——第 83 课的老规矩。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说我什么都没有", en: "I have nothing.", zh: "我什么都没有。" },
+      { sceneZh: "说有人在门口", en: "Someone is at the door.", zh: "有人在门口。" },
+      { sceneZh: "问盒子里有没有东西", en: "Is there anything in the box?", zh: "盒子里有东西吗？" }
+    ],
+    deepDive: {
+      title: "nothing 自带「不」",
+      paragraphs: [
+        "nothing 的肚子里已经装着一个「不」了——它就是「什么也没有」。所以一句话里有了它，就别再请 not 来帮忙：I have nothing（我什么都没有）。",
+        "如果想用 not 呢？那就换个词：I don't have anything——not + anything，两个「不」其实是一个意思的两种说法。记住原则：nothing 和 not 不同台。",
+        "someone 是「有人」——它说的是「某一个人」，所以配 is：Someone is at the door（有人在门口）。第 33 课的老台词 Someone left them here，今天正式转正。",
+        "三个一起记：something（有样东西）、anything（任何东西，疑问否定用）、nothing（啥也没有）——「不点名的东西」三兄弟到齐了。"
+      ]
+    },
+    summary: {
+      rule: "nothing 自带「不」（不再请 not）：There is nothing in the box.；someone 是「一个人」，配 is。",
+      points: [
+        "There is nothing in the box. —— 啥也没有",
+        "I don't have nothing ❌ —— 两个「不」打架",
+        "Someone is at the door. —— someone 配 is"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：盒子里什么也没有。",
+        before: "There is",
+        after: "in the box.",
+        options: ["nothing", "not nothing", "anything"],
+        answer: "nothing",
+        explain: "nothing 自带「不」：不再请 not。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：盒子里什么也没有。",
+        tokens: ["There", "is", "nothing", "in", "the", "box."],
+        answer: "There is nothing in the box.",
+        explain: "There be + nothing：啥也没有。"
+      },
+      {
+        // R8 跨课复现：第 26 课（There be 家族）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 26 课学过：桌上有一本书。",
+        tokens: ["There", "is", "a", "book", "on", "the", "desk."],
+        answer: "There is a book on the desk.",
+        explain: "复现第 26 课：There be——今天它有话要说（啥也没有）。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "don't", "have", "nothing."],
+        wrongToken: "don't",
+        answer: "don't",
+        correctionZh: "nothing 自带「不」：去掉 don't——I have nothing。",
+        explain: "两个「不」打架。"
+      },
+      {
+        // R8 跨课复现：第 33 课（someone 老台词）
+        kind: "arrange",
+        promptZh: "再对照一句——第 33 课听过：有人把它们落这儿了。",
+        tokens: ["Someone", "left", "them", "here."],
+        answer: "Someone left them here.",
+        explain: "复现第 33 课：someone 老台词——今天正式转正。"
+      },
+      {
+        // R9 变形/替换：换说法（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「There is nothing in the box.」想换成 not 的说法，中间那截要怎么变？",
+        replaceBase: "There is nothing in the box.",
+        replaceTarget: "换成 not + anything 的说法",
+        options: ["not anything", "not nothing", "no anything"],
+        answer: "not anything",
+        explain: "换说法：is not anything——not 和 anything 搭伙，不和 nothing 搭伙。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：盒子里什么也没有。",
+        tokens: ["There", "is", "nothing", "in", "the", "box."],
+        distractors: ["anything"],
+        answer: "There is nothing in the box."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：盒子里有东西吗？",
+        tokens: ["Is", "there", "anything", "in", "the", "box?"],
+        distractors: ["nothing"],
+        answer: "Is there anything in the box?"
+      },
+      {
+        promptZh: "你想说：有人在门口。",
+        tokens: ["Someone", "is", "at", "the", "door."],
+        distractors: ["are"],
+        answer: "Someone is at the door."
+      },
+      {
+        // R8 跨课复现：第 33 课原句
+        promptZh: "复习第 33 课：有人把它们落这儿了。",
+        tokens: ["Someone", "left", "them", "here."],
+        distractors: ["leaves"],
+        answer: "Someone left them here."
+      }
+    ],
+    recall: {
+      promptZh: "小美打开旧盒子，里面空空的。凭记忆，写出你那句英文。",
+      intentZh: "盒子里什么也没有。",
+      answer: "There is nothing in the box.",
+      noteZh: "nothing 自带「不」——不再请 not。"
+    },
+    huntCaseIds: ["hunt-empty-drawer"]
+  },
+
+  // ── 第十三批 · L85 这是谁的（whose）：疑问词家族最后一位补员——L33 对白转正（批十三 PRD §2）──
+  {
+    id: "lesson-85-whose",
+    number: 85,
+    title: "这是谁的",
+    grammarLabel: "问东西的主人 · whose",
+    episode: "小美的一天 八十五",
+    scene: "mystery",
+    cover: cover8,
+    sceneSetupZh: "失物堆前，小美捡起一本书，问这是谁的。",
+    dialogueEn: "Whose book is this?",
+    dialogueZh: "小美把书举起来晃了晃。",
+    intentZh: "这是谁的书？",
+    targetSentence: "Whose book is this?",
+    blocks: [
+      { text: "Whose book", role: "谁的书（主人词站最前）" },
+      { text: "is this?", role: "是这本？" }
+    ],
+    oneLineRule: "问「这是谁的」，用 whose 站最前面——whose 后面直接跟东西（whose book），再问是谁的。",
+    examples: [
+      { en: "Whose book is this?", zh: "这是谁的书？" },
+      { en: "Whose bag is this?", zh: "这是谁的包？" },
+      { en: "Whose umbrellas are these?", zh: "这些是谁的伞？" },
+      { en: "This one is mine.", zh: "这本是我的。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Someone left a book here.", zh: "小美从失物堆里捡起一本书。" },
+      { who: "npc", en: "It is not mine.", zh: "她翻了翻，不是自己的。" },
+      { who: "me", en: "Whose book is this?", zh: "轮到你说了——这是谁的书？" }
+    ],
+    contrast: [
+      {
+        wrong: "Who's book is this?",
+        wrongMark: "Who's",
+        correct: "Whose book is this?",
+        whyZh: "谁是「谁」，whose 是「谁的」——两家人读起来像、写法不同：whose 一个词，who's 是 who is 的缩写。"
+      },
+      {
+        wrong: "Whose is this book?",
+        wrongMark: null,
+        correct: "Whose book is this?",
+        whyZh: "whose 后面直接跟东西：Whose book（谁的书）——再问 is this。"
+      },
+      {
+        wrong: "Where is my hat?",
+        wrongMark: null,
+        correct: "Whose book is this?",
+        bothRight: true,
+        whyZh: "两句都对——第 18 课 Where（在哪）＋今天 whose（谁的）：疑问词家族一句一个。"
+      },
+      {
+        wrong: "Whose umbrellas are these?",
+        wrongMark: null,
+        correct: "Whose book is this?",
+        bothRight: true,
+        whyZh: "两句都对——第 33 课的老对白（那些伞是谁的）今天转正：疑问有了自己的课。"
+      },
+      {
+        wrong: "Do you have anything for me?",
+        wrongMark: null,
+        correct: "Whose book is this?",
+        bothRight: true,
+        whyZh: "两句都对——第 83 课 anything 复现：失物堆前正好用得上。"
+      },
+      {
+        wrong: "There is nothing in the box.",
+        wrongMark: null,
+        correct: "Whose book is this?",
+        bothRight: true,
+        whyZh: "两句都对——第 84 课 nothing 复现：这一季的问句和答句都串起来了。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "Whose book is this?", zh: "这是谁的书？", noteZh: "whose + 东西 + is this。" },
+      { label: "否定", en: "This is not my book.", zh: "这不是我的书。", noteZh: "答「不是我的」——is not。" },
+      { label: "疑问", en: "Whose bag is this?", zh: "这是谁的包？", noteZh: "换样东西再问一次。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "问这是谁的包", en: "Whose bag is this?", zh: "这是谁的包？" },
+      { sceneZh: "问这些是谁的伞", en: "Whose umbrellas are these?", zh: "这些是谁的伞？" },
+      { sceneZh: "说这本是我的", en: "This one is mine.", zh: "这本是我的。" }
+    ],
+    deepDive: {
+      title: "疑问词家族大点兵",
+      paragraphs: [
+        "第 27 课你认识了疑问词家族的四位：What（什么）、Where（哪里）、When（什么时候）、Who（谁）；第 72 课又添了 How 家族。今天最后一位成员报到：Whose——「谁的」。",
+        "whose 的规矩：站最前面、后面直接跟东西——Whose book is this?（谁的书是这本）。中文说「这是谁的书」，「谁的」在中间；英语把 whose 提到最前头。",
+        "最容易混的是 who's：它读起来和 whose 一模一样，但 who's = who is（谁是）。写的时候要看清楚——问「谁的」用 whose（一个词），「谁是」才用 who's。",
+        "第 33 课的老对白 Whose umbrellas are these?（那些伞是谁的）今天正式转正——当时你只是听过，现在它是一整个家族的最后一块拼图。"
+      ]
+    },
+    summary: {
+      rule: "问「这是谁的」：whose + 东西 + is this?——whose 一个词，who's 是「谁是」。",
+      points: [
+        "Whose book is this? —— 主人词站最前",
+        "Whose umbrellas are these? —— 第 33 课老对白转正",
+        "whose（谁的）≠ who's（谁是）—— 读音像、写法不同"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想问：这是谁的书？",
+        before: "___ book is this?",
+        after: "",
+        options: ["Whose", "Who's", "Who"],
+        answer: "Whose",
+        explain: "问「谁的」用 whose——一个词。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想问：这是谁的书？",
+        tokens: ["Whose", "book", "is", "this?"],
+        answer: "Whose book is this?",
+        explain: "whose + 东西 + is this：主人词站最前。"
+      },
+      {
+        // R8 跨课复现：第 33 课（老对白）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 33 课听过：这些是谁的伞？",
+        tokens: ["Whose", "umbrellas", "are", "these?"],
+        answer: "Whose umbrellas are these?",
+        explain: "复现第 33 课：老对白——今天正式转正。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["Who's", "book", "is", "this?"],
+        wrongToken: "Who's",
+        answer: "Who's",
+        correctionZh: "问「谁的」用 whose（一个词）：Whose book is this?",
+        explain: "who's 是「谁是」——两家人。"
+      },
+      {
+        // R8 跨课复现：第 27 课（家族老四位）
+        kind: "arrange",
+        promptZh: "再对照一句——第 27 课学过：你的生日是什么时候？",
+        tokens: ["When", "is", "your", "birthday?"],
+        answer: "When is your birthday?",
+        explain: "复现第 27 课：家族老成员——它的妹妹 whose 今天补位。"
+      },
+      {
+        // R9 变形/替换：换东西（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「Whose book is this?」把「书」换成「包」，句子要怎么变？",
+        replaceBase: "Whose book is this?",
+        replaceTarget: "把 book 换成 bag",
+        options: ["Whose bag is this?", "Whose is bag this?", "Who's bag is this?"],
+        answer: "Whose bag is this?",
+        explain: "同一个位子换东西：Whose bag is this?——whose 照样站最前。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想问：这是谁的书？",
+        tokens: ["Whose", "book", "is", "this?"],
+        distractors: ["Who's"],
+        answer: "Whose book is this?"
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：这是谁的包？",
+        tokens: ["Whose", "bag", "is", "this?"],
+        distractors: ["Who"],
+        answer: "Whose bag is this?"
+      },
+      {
+        promptZh: "你想说：这本是我的。",
+        tokens: ["This", "one", "is", "mine."],
+        distractors: ["my"],
+        answer: "This one is mine."
+      },
+      {
+        // R8 跨课复现：第 33 课原句
+        promptZh: "复习第 33 课：这些是谁的伞？",
+        tokens: ["Whose", "umbrellas", "are", "these?"],
+        distractors: ["Who's"],
+        answer: "Whose umbrellas are these?"
+      }
+    ],
+    recall: {
+      promptZh: "失物堆前，小美捡起一本书，不是她的。凭记忆，写出她那句英文。",
+      intentZh: "这是谁的书？",
+      answer: "Whose book is this?",
+      noteZh: "whose 一个词——后面直接跟东西。"
+    },
+    huntCaseIds: ["hunt-umbrella-owner"]
+  },
+
+  // ── 第十三批 · L86 失物招领处（收口 · 零新知全复现）：把身边的东西一件件说清楚——大章节收口（批十三 PRD §2）──
+  {
+    id: "lesson-86-lost-and-found",
+    number: 86,
+    title: "失物招领处",
+    grammarLabel: "收口 · 大团圆（零新知）",
+    episode: "小美的一天 八十六",
+    scene: "school",
+    cover: cover11,
+    sceneSetupZh: "学校失物招领处，小美和你一件件认领、一件件放回。",
+    dialogueEn: "Whose bag is this? It is next to the door.",
+    dialogueZh: "小美从失物架上拎起一个包。",
+    intentZh: "这是谁的包？它就在门边。",
+    targetSentence: "Whose bag is this? It is next to the door.",
+    blocks: [
+      { text: "Whose bag is this?", role: "这是谁的包？（问主人）" },
+      { text: "It is next to the door.", role: "它在门边（说位置）" }
+    ],
+    oneLineRule: "一句问主人（Whose…?）、一句说位置（next to…）——把身边的东西说清楚，这一季的本事全在这一问一答里。",
+    examples: [
+      { en: "Whose bag is this? It is next to the door.", zh: "这是谁的包？它在门边。" },
+      { en: "There is nothing in the bag.", zh: "包里什么也没有。" },
+      { en: "I put my bag next to the door.", zh: "我把书包放在门边。" },
+      { en: "What a nice bag!", zh: "多好的包啊！（认读）" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Look! A bag on the shelf.", zh: "小美从失物架上拎起一个包。" },
+      { who: "npc", en: "Who left it here?", zh: "她左右看了看，没人。" },
+      { who: "me", en: "Whose bag is this? It is next to the door.", zh: "轮到你说了——这是谁的包？它在门边。" }
+    ],
+    contrast: [
+      {
+        wrong: "I putted it on the desk.",
+        wrongMark: "putted",
+        correct: "I put it on the desk.",
+        whyZh: "第 82 课回流：put 三天长一个样——不加 -ed。"
+      },
+      {
+        wrong: "Whose bag is this? It is next to the door.",
+        wrongMark: null,
+        correct: "It is next to the door.",
+        bothRight: true,
+        whyZh: "两句都对——一句问主人（第 85 课）、一句说位置（第 79 课）：复现不是新点，一问一答站稳。"
+      },
+      {
+        wrong: "I don't have nothing.",
+        wrongMark: "don't",
+        correct: "I have nothing.",
+        whyZh: "第 84 课回流：nothing 自带「不」——去掉 don't。"
+      },
+      {
+        wrong: "My desk is next to the window.",
+        wrongMark: null,
+        correct: "Whose bag is this?",
+        bothRight: true,
+        whyZh: "两句都对——第 79 课 next to（贴旁边）＋第 85 课 whose（谁的）：位置与主人，两句都好用。"
+      },
+      {
+        wrong: "The cat is behind the door.",
+        wrongMark: null,
+        correct: "I sit between Tom and Amy.",
+        bothRight: true,
+        whyZh: "两句都对——第 80 课 behind（在后面）＋第 81 课 between（在中间）：方位家族兄弟排排站。"
+      },
+      {
+        wrong: "What a nice bag!",
+        wrongMark: null,
+        correct: "There is nothing in the box.",
+        bothRight: true,
+        whyZh: "两句都对——第 68 课的感叹句（多好的包啊）今天只认读；第 84 课 nothing 复现：大章末点个名。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "Whose bag is this? It is next to the door.", zh: "这是谁的包？它在门边。", noteZh: "一问一答：主人与位置。" },
+      { label: "否定", en: "There is nothing in the bag.", zh: "包里什么也没有。", noteZh: "nothing 自带「不」——第 84 课回流。" },
+      { label: "疑问", en: "Is this your bag?", zh: "这是你的包吗？", noteZh: "问「是不是你的」——Is 搬句首。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说包里什么也没有", en: "There is nothing in the bag.", zh: "包里什么也没有。" },
+      { sceneZh: "说把包放在门边", en: "I put my bag next to the door.", zh: "我把书包放在门边。" },
+      { sceneZh: "问这是谁的伞", en: "Whose umbrella is this?", zh: "这是谁的伞？" }
+    ],
+    deepDive: {
+      title: "大章倒带：把身边说清楚",
+      paragraphs: [
+        "这一季八课，你学会了一套「把身边说清楚」的本事：东西在哪（next to／in front of／behind／between）、怎么放（put）、说不清是什么（something／anything／nothing／someone）、这是谁的（whose）。",
+        "方位家族现在有八位：in／on／at（第 18 课）、under／near（第 26 课）、next to（第 79 课）、in front of／behind（第 80 课）、between（第 81 课）——你指哪儿说哪儿。",
+        "「不点名的东西」三兄弟：something（有样东西）、anything（疑问否定用）、nothing（啥也没有）——第 30 课 some/any 的老规矩一路管到这儿。",
+        "最后送一句认读（第 68 课的老朋友）：What a nice bag!（多好的包啊）——感叹句先混个脸熟，它有自己的课在后面等着。失物招领处的一天到此收工：问主人、说位置、清点东西，你都会了。"
+      ]
+    },
+    summary: {
+      rule: "把身边说清楚：东西在哪（next to／behind／between）＋ 怎么放（put）＋ 说不清是什么（something／nothing）＋ 这是谁的（whose）。",
+      points: [
+        "Whose bag is this? It is next to the door. —— 一问一答收口",
+        "方位八位：in／on／at／under／near／next to／in front of／behind／between",
+        "put 三天一个样 ／ nothing 自带「不」——本季两条老规矩"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想问：这是谁的包？",
+        before: "___ bag is this?",
+        after: "",
+        options: ["Whose", "Who's", "Where"],
+        answer: "Whose",
+        explain: "问「谁的」用 whose——第 85 课的规矩。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：它在门边。",
+        tokens: ["It", "is", "next", "to", "the", "door."],
+        answer: "It is next to the door.",
+        explain: "位置收尾：next to the door——第 79 课老规矩。"
+      },
+      {
+        // R8 跨课复现：第 82 课（put）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 82 课学过：我把书包放在门边。",
+        tokens: ["I", "put", "my", "bag", "next", "to", "the", "door."],
+        answer: "I put my bag next to the door.",
+        explain: "复现第 82 课：put 三天一个样——大章第一段的本事。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "putted", "it", "on", "the", "desk."],
+        wrongToken: "putted",
+        answer: "putted",
+        correctionZh: "put 三天长一个样：I put it on the desk。",
+        explain: "第 82 课回流。"
+      },
+      {
+        // R8 跨课复现：第 84 课（nothing）
+        kind: "arrange",
+        promptZh: "再对照一句——第 84 课学过：盒子里什么也没有。",
+        tokens: ["There", "is", "nothing", "in", "the", "box."],
+        answer: "There is nothing in the box.",
+        explain: "复现第 84 课：nothing 自带「不」——大章第二段的本事。"
+      },
+      {
+        // R9 变形/替换：换问的东西（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「Whose bag is this?」把「包」换成「伞（umbrella）」，句子要怎么变？",
+        replaceBase: "Whose bag is this?",
+        replaceTarget: "把 bag 换成 umbrella",
+        options: ["Whose umbrella is this?", "Whose is umbrella this?", "Who's umbrella is this?"],
+        answer: "Whose umbrella is this?",
+        explain: "同一个位子换东西：Whose umbrella is this?——失物招领处最常用的一句。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想问：这是谁的包？",
+        tokens: ["Whose", "bag", "is", "this?"],
+        distractors: ["Who's"],
+        answer: "Whose bag is this?"
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：包里什么也没有。",
+        tokens: ["There", "is", "nothing", "in", "the", "bag."],
+        distractors: ["anything"],
+        answer: "There is nothing in the bag."
+      },
+      {
+        // R8 跨课复现：第 82 课原句
+        promptZh: "复习第 82 课：我把书包放在门边。",
+        tokens: ["I", "put", "my", "bag", "next", "to", "the", "door."],
+        distractors: ["putted"],
+        answer: "I put my bag next to the door."
+      },
+      {
+        // 全批收官惯例：复现第 80 课原句
+        promptZh: "全批收官——复习第 80 课：猫在门后头。",
+        tokens: ["The", "cat", "is", "behind", "the", "door."],
+        distractors: ["of"],
+        answer: "The cat is behind the door."
+      }
+    ],
+    recall: {
+      promptZh: "学校失物招领处，小美从失物架上拎起一个包问你。凭记忆，写出她那句英文。",
+      intentZh: "这是谁的包？它在门边。",
+      answer: "Whose bag is this? It is next to the door.",
+      noteZh: "一句问主人、一句说位置——大章收口。"
+    },
+    huntCaseIds: ["hunt-lost-found"]
+  },
+
+  // ── 第十四批 · L87 今天真冷（合体 It's）：两个词挤一挤——L6 老句的短版（批十四 PRD §2·大章节第一课）──
+  {
+    id: "lesson-87-its-cold",
+    number: 87,
+    title: "今天真冷",
+    grammarLabel: "两个词挤一挤 · It's",
+    episode: "小美的一天 八十七",
+    scene: "school",
+    cover: cover16,
+    sceneSetupZh: "开学第一天早上，校门口风不小，小美搓着手说今天真冷。",
+    dialogueEn: "It's cold today.",
+    dialogueZh: "小美搓着手，朝手心哈了口气。",
+    intentZh: "今天真冷。",
+    targetSentence: "It's cold today.",
+    blocks: [
+      { text: "It's", role: "它是（两个词挤一挤）" },
+      { text: "cold", role: "冷" },
+      { text: "today", role: "今天" }
+    ],
+    oneLineRule: "两个词可以挤一挤：It is 挤成 It's——短的这版口语里天天用，意思一模一样。",
+    examples: [
+      { en: "It's cold today.", zh: "今天真冷。" },
+      { en: "It is cold today.", zh: "今天很冷。（一个意思）" },
+      { en: "It's nice to see you.", zh: "见到你真好。" },
+      { en: "It is sunny today.", zh: "今天天晴。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Good morning!", zh: "校门口，同学朝你挥手。" },
+      { who: "npc", en: "You look cold.", zh: "她看你缩着脖子。" },
+      { who: "me", en: "It's cold today.", zh: "轮到你说了——今天真冷。" }
+    ],
+    contrast: [
+      {
+        wrong: "It's cold today.",
+        wrongMark: null,
+        correct: "It is cold today.",
+        bothRight: true,
+        whyZh: "两句都对——长的短的都在：It is cold（第 6 课学的）和 It's cold（今天学的短版）意思一模一样。"
+      },
+      {
+        wrong: "Its cold today.",
+        wrongMark: "Its",
+        correct: "It's cold today.",
+        whyZh: "短版的尾巴上有一小撇：It's——那一撇是把 is 挤掉后留下的记号，丢了它就成了「它的」。"
+      },
+      {
+        wrong: "It cold today.",
+        wrongMark: null,
+        correct: "It's cold today.",
+        whyZh: "挤掉的是 is，但搭档不能全没：It's 里还留着它的影——光剩 It 句子就塌了。"
+      },
+      {
+        wrong: "It is sunny today.",
+        wrongMark: null,
+        correct: "It's cold today.",
+        bothRight: true,
+        whyZh: "两句都对——第 6 课的天气老句（It is sunny）＋今天的短版：天气句两版都会。"
+      },
+      {
+        wrong: "Where is my hat?",
+        wrongMark: null,
+        correct: "It's cold today.",
+        bothRight: true,
+        whyZh: "两句都对——第 18 课的 Where is（在哪）复现：天冷了，帽子该在哪儿。"
+      },
+      {
+        wrong: "I am happy.",
+        wrongMark: null,
+        correct: "It's cold today.",
+        bothRight: true,
+        whyZh: "两句都对——第 1 课的 I am（我是）复现：I am 也能挤成 I'm，同一个道理（今天先记 It's）。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "It's cold today.", zh: "今天真冷。", noteZh: "It is 挤成 It's。" },
+      { label: "否定", en: "It's not cold today.", zh: "今天不冷。", noteZh: "not 跟 is 走：It's not。" },
+      { label: "疑问", en: "Is it cold today?", zh: "今天冷吗？", noteZh: "第 6 课的搬法照旧：Is 搬句首。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说见到你真好", en: "It's nice to see you.", zh: "见到你真好。" },
+      { sceneZh: "说今天天晴", en: "It is sunny today.", zh: "今天天晴。" },
+      { sceneZh: "问今天冷不冷", en: "Is it cold today?", zh: "今天冷吗？" }
+    ],
+    deepDive: {
+      title: "两个词挤一挤",
+      paragraphs: [
+        "英语口语里，两个小词常常挤一挤合成一个短词：It is → It's、I am → I'm、That is → That's——挤完尾巴上留一小撇（'），记号还在。",
+        "为什么挤？因为说话要快。老外日常说「今天冷」，十个里有九个说 It's cold——长的 It is cold 也不错，只是听起来更慢、更正式。两句都对，随你挑。",
+        "那一小撇很重要：It's 是「它是」的短版，Its 是「它的」——读起来一样，写法差一小撇，意思差一条街。写的时候记得把尾巴带上。",
+        "第 6 课你学过 It is cold today 的完整版；今天把短版装上——从今天起，打招呼聊天气，你两版都会。"
+      ]
+    },
+    summary: {
+      rule: "两个词挤一挤：It is → It's（短的这版口语天天用）——尾巴那一小撇不能丢。",
+      points: [
+        "It's cold today. —— 短版（口语常用）",
+        "It is cold today. —— 长版（也对）",
+        "Its ❌ —— 少一小撇就成了「它的」"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：今天真冷。（用短的那版）",
+        before: "",
+        after: " cold today.",
+        options: ["It's", "Its", "It"],
+        answer: "It's",
+        explain: "It is 挤成 It's——尾巴带一小撇。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：今天真冷。",
+        tokens: ["It's", "cold", "today."],
+        answer: "It's cold today.",
+        explain: "短版：It's + cold + today。"
+      },
+      {
+        // R8 跨课复现：第 6 课（长版老句）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 6 课学过：今天很冷。",
+        tokens: ["It", "is", "cold", "today."],
+        answer: "It is cold today.",
+        explain: "复现第 6 课：长版——今天把它挤短。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["Its", "cold", "today."],
+        wrongToken: "Its",
+        answer: "Its",
+        correctionZh: "尾巴上要有一小撇：It's cold today。",
+        explain: "少一小撇就成了「它的」。"
+      },
+      {
+        // R8 跨课复现：第 18 课（Where is）
+        kind: "arrange",
+        promptZh: "再对照一句——第 18 课学过：我的帽子在哪？",
+        tokens: ["Where", "is", "my", "hat?"],
+        answer: "Where is my hat?",
+        explain: "复现第 18 课：Where is 里也有 is——天冷，帽子戴好。"
+      },
+      {
+        // R9 变形/替换：长换短（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「It is sunny today.」把长版挤成短版，开头要怎么变？",
+        replaceBase: "It is sunny today.",
+        replaceTarget: "把 It is 挤成短的",
+        options: ["It's", "Its", "It is's"],
+        answer: "It's",
+        explain: "同一招换一句：It's sunny today——尾巴带撇。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：今天真冷。",
+        tokens: ["It's", "cold", "today."],
+        distractors: ["Its"],
+        answer: "It's cold today."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：今天冷吗？",
+        tokens: ["Is", "it", "cold", "today?"],
+        distractors: ["Does"],
+        answer: "Is it cold today?"
+      },
+      {
+        promptZh: "你想说：见到你真好。",
+        tokens: ["It's", "nice", "to", "see", "you."],
+        distractors: ["Its"],
+        answer: "It's nice to see you."
+      },
+      {
+        // R8 跨课复现：第 6 课原句
+        promptZh: "复习第 6 课：今天很冷。",
+        tokens: ["It", "is", "cold", "today."],
+        distractors: ["are"],
+        answer: "It is cold today."
+      }
+    ],
+    recall: {
+      promptZh: "开学第一天早上校门口，同学看你缩着脖子。凭记忆，写出你那句英文。",
+      intentZh: "今天真冷。",
+      answer: "It's cold today.",
+      noteZh: "It is 挤成 It's——尾巴带一小撇。"
+    },
+    huntCaseIds: ["hunt-cold-morning"]
+  },
+
+  // ── 第十四批 · L88 今天刮风（-y 家族）：名词穿 -y 外套变成「…的」（批十四 PRD §2）──
+  {
+    id: "lesson-88-its-windy",
+    number: 88,
+    title: "今天刮风",
+    grammarLabel: "名词穿外套 · windy / snowy / cloudy",
+    episode: "小美的一天 八十八",
+    scene: "school",
+    cover: cover20,
+    sceneSetupZh: "校门口风很大，风把云吹了过来，小美按住帽檐。",
+    dialogueEn: "It's windy today.",
+    dialogueZh: "小美按住帽檐，眯着眼。",
+    intentZh: "今天刮风。",
+    targetSentence: "It's windy today.",
+    blocks: [
+      { text: "It's", role: "它是（挤一挤）" },
+      { text: "windy", role: "刮风的（wind 穿了外套）" },
+      { text: "today", role: "今天" }
+    ],
+    oneLineRule: "名词穿上一件 -y 外套，就变成「…的」：wind→windy（刮风的）、snow→snowy（下雪的）、cloud→cloudy（多云的）。",
+    examples: [
+      { en: "It's windy today.", zh: "今天刮风。" },
+      { en: "It's snowy today.", zh: "今天下雪。" },
+      { en: "It's cloudy today.", zh: "今天多云。" },
+      { en: "It's cold today.", zh: "今天真冷。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Look at the clouds!", zh: "小美指着天上跑得飞快的云。" },
+      { who: "npc", en: "My hat!", zh: "她的帽檐被风掀了起来。" },
+      { who: "me", en: "It's windy today.", zh: "轮到你说了——今天刮风。" }
+    ],
+    contrast: [
+      {
+        wrong: "It's wind today.",
+        wrongMark: "wind",
+        correct: "It's windy today.",
+        whyZh: "「刮风的」要说 windy——wind 穿上 -y 外套才变成「…的」。（这一处只在这里对照：漏外套的错不放进案子里。）"
+      },
+      {
+        wrong: "It's windy day.",
+        wrongMark: null,
+        correct: "It's a windy day.",
+        whyZh: "「一个大风天」要带 a：It's a windy day——漏了 a 句子就缺口。"
+      },
+      {
+        wrong: "It's cold today.",
+        wrongMark: null,
+        correct: "It's windy today.",
+        bothRight: true,
+        whyZh: "两句都对——第 87 课短版＋今天的 windy：天气句越说越细。"
+      },
+      {
+        wrong: "It is sunny today.",
+        wrongMark: null,
+        correct: "It's windy today.",
+        bothRight: true,
+        whyZh: "两句都对——第 6 课 sunny（晴）＋今天 windy（风）：-y 家族的两位都在。"
+      },
+      {
+        wrong: "It was windy, but we were happy.",
+        wrongMark: null,
+        correct: "It's windy today.",
+        bothRight: true,
+        whyZh: "两句都对——第 19 课听过 windy（风很大，但我们很开心）——今天它正式上岗。"
+      },
+      {
+        wrong: "The clouds are white.",
+        wrongMark: null,
+        correct: "It's windy today.",
+        bothRight: true,
+        whyZh: "两句都对——云和风是一家人：云在跑（clouds）、风在吹（windy）——第 26 课的单复数也在。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "It's windy today.", zh: "今天刮风。", noteZh: "wind 穿 -y 外套。" },
+      { label: "否定", en: "It's not windy today.", zh: "今天不刮风。", noteZh: "not 跟 is 走：It's not。" },
+      { label: "疑问", en: "Is it windy today?", zh: "今天刮风吗？", noteZh: "Is 搬句首——第 6 课的搬法。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说今天下雪", en: "It's snowy today.", zh: "今天下雪。" },
+      { sceneZh: "说今天多云", en: "It's cloudy today.", zh: "今天多云。" },
+      { sceneZh: "问今天刮不刮风", en: "Is it windy today?", zh: "今天刮风吗？" }
+    ],
+    deepDive: {
+      title: "名词穿 -y 外套",
+      paragraphs: [
+        "天气词有一个好玩的规矩：很多都是名词「穿了外套」变来的——wind（风）穿上 -y 变成 windy（刮风的）、snow（雪）变成 snowy（下雪的）、cloud（云）变成 cloudy（多云的）。",
+        "怎么记？看到 -y 尾巴，就想「…的」：windy 是「风的（天气）」、snowy 是「雪的」、cloudy 是「云的」——外套一穿，名字就变成描述。",
+        "第 6 课你学过 sunny（晴的）——它也是这样来的：sun（太阳）穿 -y。今天再认识三个兄弟，天气词家族就够你天天聊了。",
+        "说说天气三件套：It's + 天气词 + today——It's cold、It's windy、It's snowy——第 87 课的短版配上今天的新词，随口就能聊。"
+      ]
+    },
+    summary: {
+      rule: "名词穿 -y 外套变成「…的」：wind→windy、snow→snowy、cloud→cloudy。",
+      points: [
+        "It's windy today. —— wind 穿外套",
+        "snowy / cloudy / sunny —— -y 家族排排站",
+        "It's a windy day. —— 「一个大风天」要带 a"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：今天刮风。",
+        before: "It's",
+        after: "today.",
+        options: ["windy", "wind", "wind's"],
+        answer: "windy",
+        explain: "刮风的要说 windy——wind 穿 -y 外套。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：今天刮风。",
+        tokens: ["It's", "windy", "today."],
+        answer: "It's windy today.",
+        explain: "短版 + windy：It's windy today。"
+      },
+      {
+        // R8 跨课复现：第 87 课（合体）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 87 课学过：今天真冷。",
+        tokens: ["It's", "cold", "today."],
+        answer: "It's cold today.",
+        explain: "复现第 87 课：短版——今天给它换上天气新词。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["It's", "wind", "today."],
+        wrongToken: "wind",
+        answer: "wind",
+        correctionZh: "穿 -y 外套：windy。",
+        explain: "「刮风的」要用 windy。"
+      },
+      {
+        // R8 跨课复现：第 6 课（sunny 老熟人）
+        kind: "arrange",
+        promptZh: "再对照一句——第 6 课学过：今天天晴。",
+        tokens: ["It", "is", "sunny", "today."],
+        answer: "It is sunny today.",
+        explain: "复现第 6 课：sunny 也是 -y 家族——穿外套的老规矩。"
+      },
+      {
+        // R9 变形/替换：换天气词（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「It's windy today.」把「刮风」换成「下雪（snow）」，天气词要怎么变？",
+        replaceBase: "It's windy today.",
+        replaceTarget: "把 windy 换成 snow（下雪的）",
+        options: ["snowy", "snow", "snowing"],
+        answer: "snowy",
+        explain: "snow 穿 -y 外套：It's snowy today——同一个规矩。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：今天刮风。",
+        tokens: ["It's", "windy", "today."],
+        distractors: ["wind"],
+        answer: "It's windy today."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：今天刮风吗？",
+        tokens: ["Is", "it", "windy", "today?"],
+        distractors: ["Does"],
+        answer: "Is it windy today?"
+      },
+      {
+        promptZh: "你想说：今天多云。",
+        tokens: ["It's", "cloudy", "today."],
+        distractors: ["cloud"],
+        answer: "It's cloudy today."
+      },
+      {
+        // R8 跨课复现：第 6 课原句
+        promptZh: "复习第 6 课：今天天晴。",
+        tokens: ["It", "is", "sunny", "today."],
+        distractors: ["sun"],
+        answer: "It is sunny today."
+      }
+    ],
+    recall: {
+      promptZh: "校门口风很大，风把云吹得飞快，小美按住帽檐。凭记忆，写出你那句英文。",
+      intentZh: "今天刮风。",
+      answer: "It's windy today.",
+      noteZh: "wind 穿 -y 外套：windy。"
+    },
+    huntCaseIds: ["hunt-windy-window"]
+  },
+
+  // ── 第十四批 · L89 多好的天啊（What a…!）：先说 What 再把 a 和东西摆上——L86 预告兑现（批十四 PRD §2）──
+  {
+    id: "lesson-89-what-a-day",
+    number: 89,
+    title: "多好的天啊",
+    grammarLabel: "多好的… · What a + 东西",
+    episode: "小美的一天 八十九",
+    scene: "school",
+    cover: cover21,
+    sceneSetupZh: "风把云吹散了，太阳出来，小美抬头感叹多好的天。",
+    dialogueEn: "What a nice day!",
+    dialogueZh: "小美抬头眯着眼，笑了。",
+    intentZh: "多好的天啊！",
+    targetSentence: "What a nice day!",
+    blocks: [
+      { text: "What", role: "多么（先说它）" },
+      { text: "a nice day", role: "一个好天（a 在形容词后面）" }
+    ],
+    oneLineRule: "感叹「多好的…」：先说 What，再把 a 和东西摆上——What a + nice + day!（a 站在形容词后面）。",
+    examples: [
+      { en: "What a nice day!", zh: "多好的天啊！" },
+      { en: "What a nice bag!", zh: "多好的包啊！" },
+      { en: "What a big house!", zh: "多大的房子啊！" },
+      { en: "It's a nice day.", zh: "今天天气不错。（陈述句）" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Look! The sun is out!", zh: "小美抬头，云散了。" },
+      { who: "npc", en: "The sky is so blue.", zh: "她眯着眼，笑了。" },
+      { who: "me", en: "What a nice day!", zh: "轮到你说了——多好的天啊！" }
+    ],
+    contrast: [
+      {
+        wrong: "What nice day!",
+        wrongMark: "nice",
+        correct: "What a nice day!",
+        whyZh: "「一个天」要带 a——而且 a 站在形容词后面：What a nice day!（漏了 a 句子就缺口）。"
+      },
+      {
+        wrong: "What a nice day?",
+        wrongMark: "?",
+        correct: "What a nice day!",
+        whyZh: "感叹要配感叹号，不是问号——这是喊出来的，不是问出来的。"
+      },
+      {
+        wrong: "It's a nice day.",
+        wrongMark: null,
+        correct: "What a nice day!",
+        bothRight: true,
+        whyZh: "两句都对——平着说（It's a nice day）和喊着说（What a nice day!）：一个是陈述、一个是感叹。"
+      },
+      {
+        wrong: "What a nice bag!",
+        wrongMark: null,
+        correct: "What a nice day!",
+        bothRight: true,
+        whyZh: "两句都对——第 68 课听过 What a nice bag（多好的包）——今天换成天，同一个架子。"
+      },
+      {
+        wrong: "It's windy today.",
+        wrongMark: null,
+        correct: "What a nice day!",
+        bothRight: true,
+        whyZh: "两句都对——第 88 课 windy（刮风）＋今天感叹：风停日出，正好喊一句。"
+      },
+      {
+        wrong: "It's cold today.",
+        wrongMark: null,
+        correct: "What a nice day!",
+        bothRight: true,
+        whyZh: "两句都对——第 87 课短版复现：天从冷到暖，一句感叹收尾。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "What a nice day!", zh: "多好的天啊！", noteZh: "What a + 形容词 + 东西——a 站形容词后。" },
+      { label: "否定", en: "What a bad day!", zh: "多糟的一天啊！", noteZh: "换个词就换了心情——架子不变。" },
+      { label: "疑问", en: "Is it a nice day?", zh: "今天天气好吗？", noteZh: "想问就问：Is 搬句首——感叹变疑问。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "感叹一个好包", en: "What a nice bag!", zh: "多好的包啊！" },
+      { sceneZh: "感叹一座大房子", en: "What a big house!", zh: "多大的房子啊！" },
+      { sceneZh: "平着说今天天气不错", en: "It's a nice day.", zh: "今天天气不错。" }
+    ],
+    deepDive: {
+      title: "感叹的架子",
+      paragraphs: [
+        "感叹句有一个固定架子：What + a + 形容词 + 东西——What a nice day!（多好的天啊）。先说 What 把气提起来，再把 a 和东西摆上，感叹号收尾。",
+        "最容易丢的是 a：What nice day ❌ 听起来像少了块砖——「一个天」必须带 a。记的时候把 a 和形容词当一个整体背：a nice day。",
+        "感叹和陈述是一对：平着说 It's a nice day（今天天气不错）；喊着说 What a nice day!（多好的天啊）——同样的事，口气不同。",
+        "第 68 课你听过 What a nice bag!（多好的包）——当时它只是句台词；第 86 课我们写了一句「它有自己的课在后面等着」——今天它来了。"
+      ]
+    },
+    summary: {
+      rule: "感叹「多好的…」：What a + 形容词 + 东西（What a nice day!）——a 站在形容词后面。",
+      points: [
+        "What a nice day! —— 感叹的架子",
+        "What nice day ❌ —— a 不能丢",
+        "It's a nice day. / What a nice day! —— 平着说 vs 喊着说"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想感叹：多好的天啊！",
+        before: "What",
+        after: " day!",
+        options: ["a nice", "nice", "nice a"],
+        answer: "a nice",
+        explain: "a 站在形容词前面、紧跟着 What：What a nice day!"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想感叹：多好的天啊！",
+        tokens: ["What", "a", "nice", "day!"],
+        answer: "What a nice day!",
+        explain: "架子：What + a + 形容词 + 东西。"
+      },
+      {
+        // R8 跨课复现：第 68 课（老台词）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 68 课听过：多好的包啊！",
+        tokens: ["What", "a", "nice", "bag!"],
+        answer: "What a nice bag!",
+        explain: "复现第 68 课：老台词——今天正式学它的架子。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["What", "nice", "day!"],
+        wrongToken: "nice",
+        answer: "nice",
+        correctionZh: "a 不能丢：What 【a】 nice day!",
+        explain: "「一个天」要带 a。"
+      },
+      {
+        // R8 跨课复现：第 87 课（短版天气句）
+        kind: "arrange",
+        promptZh: "再对照一句——第 87 课学过：今天真冷。",
+        tokens: ["It's", "cold", "today."],
+        answer: "It's cold today.",
+        explain: "复现第 87 课：平着说天气——等一下我们喊一句。"
+      },
+      {
+        // R9 变形/替换：换形容词（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「What a nice day!」把「好」换成「大（big）」，感叹的架子怎么变？",
+        replaceBase: "What a nice day!",
+        replaceTarget: "把 nice 换成 big",
+        options: ["What a big day!", "What big a day!", "What a day big!"],
+        answer: "What a big day!",
+        explain: "架子里换个形容词：What a big day!——a 还是站原位。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想感叹：多好的天啊！",
+        tokens: ["What", "a", "nice", "day!"],
+        distractors: ["nice a"],
+        answer: "What a nice day!"
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：今天天气好吗？",
+        tokens: ["Is", "it", "a", "nice", "day?"],
+        distractors: ["Does"],
+        answer: "Is it a nice day?"
+      },
+      {
+        promptZh: "你想感叹：多好的包啊！",
+        tokens: ["What", "a", "nice", "bag!"],
+        distractors: ["an"],
+        answer: "What a nice bag!"
+      },
+      {
+        // R8 跨课复现：第 88 课原句
+        promptZh: "复习第 88 课：今天刮风。",
+        tokens: ["It's", "windy", "today."],
+        distractors: ["wind"],
+        answer: "It's windy today."
+      }
+    ],
+    recall: {
+      promptZh: "风把云吹散了，太阳出来，小美抬头笑了。凭记忆，写出她那句英文。",
+      intentZh: "多好的天啊！",
+      answer: "What a nice day!",
+      noteZh: "What + a + 形容词 + 东西——a 不能丢。"
+    },
+    huntCaseIds: ["hunt-nice-day"]
+  },
+
+  // ── 第十四批 · L90 写完作业才看电视（after + 小句子）：after 后面升级成跟一整句（批十四 PRD §2·中段自走查点）──
+  {
+    id: "lesson-90-after",
+    number: 90,
+    title: "写完作业才看电视",
+    grammarLabel: "先后 · after + 小句子",
+    episode: "小美的一天 九十",
+    scene: "mansion",
+    cover: cover26,
+    sceneSetupZh: "放学回到家，小美说自己的规矩：写完作业才看电视。",
+    dialogueEn: "After I do my homework, I watch TV.",
+    dialogueZh: "小美把书包放好，指了指作业本。",
+    intentZh: "我写完作业才看电视。",
+    targetSentence: "After I do my homework, I watch TV.",
+    blocks: [
+      { text: "After I do my homework", role: "我写完作业后（一整句小句子）" },
+      { text: "I watch TV", role: "我看电视" }
+    ],
+    oneLineRule: "说「做完一件事之后」：after 后面要跟一个完整的小句子（谁 + 做什么）——After I do my homework, I watch TV。",
+    examples: [
+      { en: "After I do my homework, I watch TV.", zh: "我写完作业才看电视。" },
+      { en: "After I eat dinner, I read a book.", zh: "我吃完晚饭看书。" },
+      { en: "I go home after school.", zh: "放学后我回家。（第 9 课老句）" },
+      { en: "After we clean the room, we play games.", zh: "我们打扫完房间就玩游戏。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What do you do after school?", zh: "小美把书包放好，问你放学后都干什么。" },
+      { who: "npc", en: "Do you watch TV first?", zh: "她猜你是不是先看电视。" },
+      { who: "me", en: "After I do my homework, I watch TV.", zh: "轮到你说了——我写完作业才看电视。" }
+    ],
+    contrast: [
+      {
+        wrong: "After eat dinner, I watch TV.",
+        wrongMark: null,
+        correct: "After I eat dinner, I watch TV.",
+        whyZh: "after 后面要有一整句：谁 + 做什么——After 【I】 eat dinner。光剩一个动作，句子就缺了「谁」。"
+      },
+      {
+        wrong: "I watch TV after I do my homework.",
+        wrongMark: null,
+        correct: "After I do my homework, I watch TV.",
+        bothRight: true,
+        whyZh: "两句都对——「先做完作业」那截可以摆前面（After I do my homework, I watch TV），也可以摆后面（I watch TV after I do my homework）——先后一样、口气不同。"
+      },
+      {
+        wrong: "After I do my homework, I watched TV.",
+        wrongMark: "watched",
+        correct: "After I do my homework, I watch TV.",
+        whyZh: "说的都是每天常做的事，动词都用现在版：do…watch——两个动作同一档。"
+      },
+      {
+        wrong: "I go home after school.",
+        wrongMark: null,
+        correct: "After I do my homework, I watch TV.",
+        bothRight: true,
+        whyZh: "两句都对——第 9 课 after school（放学后，后面跟一个名字）＋今天 after + 一整句：老词升级。"
+      },
+      {
+        wrong: "I wash my hands before I eat.",
+        wrongMark: null,
+        correct: "After I do my homework, I watch TV.",
+        bothRight: true,
+        whyZh: "两句都对——before（先做的那件）和 after（后做的那件）是一对——下一课专门学它。"
+      },
+      {
+        wrong: "It's cold today.",
+        wrongMark: null,
+        correct: "After I do my homework, I watch TV.",
+        bothRight: true,
+        whyZh: "两句都对——第 87 课短版复现：聊完天气，聊规矩。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "After I do my homework, I watch TV.", zh: "我写完作业才看电视。", noteZh: "after + 一整句（谁+做什么）。" },
+      { label: "否定", en: "After I do my homework, I don't watch TV.", zh: "我写完作业也不看电视。", noteZh: "后半句的「不」用 don't——前半句照旧。" },
+      { label: "疑问", en: "Do you watch TV after you do your homework?", zh: "你写完作业看电视吗？", noteZh: "after 那截也可以摆后面——问句 Do 站句首。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说吃完晚饭看书", en: "After I eat dinner, I read a book.", zh: "我吃完晚饭看书。" },
+      { sceneZh: "说打扫完房间玩游戏", en: "After we clean the room, we play games.", zh: "我们打扫完房间就玩游戏。" },
+      { sceneZh: "问对方放学后做什么", en: "What do you do after school?", zh: "你放学后做什么？" }
+    ],
+    deepDive: {
+      title: "after 升级：从跟一个名字到跟一整句",
+      paragraphs: [
+        "第 9 课你学过 after school（放学后）——当时 after 后面只跟一个名字。今天它升级了：后面跟一整个小句子，谁做什么都说全——After I do my homework（我写完作业后）。",
+        "为什么要有「谁」？因为英语的小句子必须站直：有主语、有动作。中文说「吃完饭后」，主语藏在话里；英语要把它请出来：After I eat dinner——那个 I 不能省。",
+        "两段之间有个逗号，是分界线：逗号前是「先做的事」、逗号后是「然后做的事」——After I do my homework, I watch TV。",
+        "两个动作的时态要站同一档：都是每天常做的事，就都用现在版（do…watch）。说昨天的故事，就两个都换昨天版——今天先练现在版。"
+      ]
+    },
+    summary: {
+      rule: "after 后面跟一整句（谁 + 做什么）：After I do my homework, I watch TV——逗号分先后。",
+      points: [
+        "After I do my homework, I watch TV. —— after + 一整句",
+        "After eat dinner ❌ —— 缺了「谁」",
+        "after school（第 9 课）→ after I do my homework —— 老词升级"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我写完作业才看电视。",
+        before: "After",
+        after: "my homework, I watch TV.",
+        options: ["I do", "do", "doing"],
+        answer: "I do",
+        explain: "after 后面要有一整句：谁（I）+ 做什么（do）。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我写完作业才看电视。",
+        tokens: ["After", "I", "do", "my", "homework,", "I", "watch", "TV."],
+        answer: "After I do my homework, I watch TV.",
+        explain: "两段式：先做的事（After…）+ 然后做的事（I watch TV）。"
+      },
+      {
+        // R8 跨课复现：第 9 课（老词原形）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 9 课学过：放学后我回家。",
+        tokens: ["I", "go", "home", "after", "school."],
+        answer: "I go home after school.",
+        explain: "复现第 9 课：after 后面只跟一个名字——今天升级成跟一整句。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["After", "eat", "dinner,", "I", "watch", "TV."],
+        wrongToken: "eat",
+        answer: "eat",
+        correctionZh: "要补上「谁」：After 【I】 eat dinner。",
+        explain: "小句子要有主语——那个 I 不能省。"
+      },
+      {
+        // R8 跨课复现：第 87 课（天气句）
+        kind: "arrange",
+        promptZh: "再对照一句——第 87 课学过：今天真冷。",
+        tokens: ["It's", "cold", "today."],
+        answer: "It's cold today.",
+        explain: "复现第 87 课：短版天气——聊完天，聊规矩。"
+      },
+      {
+        // R9 变形/替换：换后做的事（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「After I do my homework, I watch TV.」把「看电视」换成「读书（read a book）」，后半截怎么变？",
+        replaceBase: "After I do my homework, I watch TV.",
+        replaceTarget: "把 I watch TV 换成「读书」",
+        options: ["I read a book.", "I reading a book.", "read a book."],
+        answer: "I read a book.",
+        explain: "后面那截也是完整小句子：I read a book——谁+做什么。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我写完作业才看电视。",
+        tokens: ["After", "I", "do", "my", "homework,", "I", "watch", "TV."],
+        distractors: ["doing"],
+        answer: "After I do my homework, I watch TV."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你写完作业看电视吗？",
+        tokens: ["Do", "you", "watch", "TV", "after", "you", "do", "your", "homework?"],
+        distractors: ["Does"],
+        answer: "Do you watch TV after you do your homework?"
+      },
+      {
+        promptZh: "你想说：我吃完晚饭看书。",
+        tokens: ["After", "I", "eat", "dinner,", "I", "read", "a", "book."],
+        distractors: ["eating"],
+        answer: "After I eat dinner, I read a book."
+      },
+      {
+        // R8 跨课复现：第 9 课原句
+        promptZh: "复习第 9 课：放学后我回家。",
+        tokens: ["I", "go", "home", "after", "school."],
+        distractors: ["to"],
+        answer: "I go home after school."
+      }
+    ],
+    recall: {
+      promptZh: "放学回到家，小美问你放学后都干什么，还猜你是不是先看电视。凭记忆，写出你那句英文。",
+      intentZh: "我写完作业才看电视。",
+      answer: "After I do my homework, I watch TV.",
+      noteZh: "after 后面跟一整句（谁+做什么）。"
+    },
+    huntCaseIds: ["hunt-homework-first"]
+  },
+
+  // ── 第十四批 · L91 吃饭前先洗手（before + 小句子）：before 和 after 是一对（批十四 PRD §2）──
+  {
+    id: "lesson-91-before",
+    number: 91,
+    title: "吃饭前先洗手",
+    grammarLabel: "先后 · before + 小句子",
+    episode: "小美的一天 九十一",
+    scene: "mansion",
+    cover: cover31,
+    sceneSetupZh: "聊到家里的规矩，小美说吃饭前要先洗手。",
+    dialogueEn: "Before I eat, I wash my hands.",
+    dialogueZh: "小美指了指洗手池。",
+    intentZh: "吃饭前我先洗手。",
+    targetSentence: "Before I eat, I wash my hands.",
+    blocks: [
+      { text: "Before I eat", role: "我吃饭前（先做的那件）" },
+      { text: "I wash my hands", role: "我洗手" }
+    ],
+    oneLineRule: "说「做一件事之前」：before 后面也跟一整句——Before I eat, I wash my hands；before 和 after 是一对。",
+    examples: [
+      { en: "Before I eat, I wash my hands.", zh: "吃饭前我先洗手。" },
+      { en: "Before I sleep, I read a book.", zh: "睡觉前我看会儿书。" },
+      { en: "After I do my homework, I watch TV.", zh: "我写完作业才看电视。（第 90 课老句）" },
+      { en: "Before we go out, we take an umbrella.", zh: "出门前我们带把伞。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Dinner is ready!", zh: "妈妈在厨房喊。" },
+      { who: "npc", en: "Wash your hands first.", zh: "她又补了一句。" },
+      { who: "me", en: "Before I eat, I wash my hands.", zh: "轮到你说了——吃饭前我先洗手。" }
+    ],
+    contrast: [
+      {
+        wrong: "Before eat, I wash my hands.",
+        wrongMark: "eat",
+        correct: "Before I eat, I wash my hands.",
+        whyZh: "before 后面也要有一整句：Before 【I】 eat——跟第 90 课 after 一个规矩。"
+      },
+      {
+        wrong: "Before I eat I wash my hands.",
+        wrongMark: null,
+        correct: "Before I eat, I wash my hands.",
+        whyZh: "两段之间要点个逗号：Before I eat【,】 I wash my hands——逗号是两段的分界线。"
+      },
+      {
+        wrong: "After I do my homework, I watch TV.",
+        wrongMark: null,
+        correct: "Before I eat, I wash my hands.",
+        bothRight: true,
+        whyZh: "两句都对——after 管「做完之后」（第 90 课）、before 管「做之前」（今天）：一对好搭档。"
+      },
+      {
+        wrong: "I wash my hands before I eat.",
+        wrongMark: null,
+        correct: "Before I eat, I wash my hands.",
+        bothRight: true,
+        whyZh: "两句都对——「先洗手」那截可以摆前面，也可以摆后面：先后一样、口气不同（跟 after 同一招）。"
+      },
+      {
+        wrong: "It's cold today.",
+        wrongMark: null,
+        correct: "Before I eat, I wash my hands.",
+        bothRight: true,
+        whyZh: "两句都对——第 87 课短版复现：聊完天气聊规矩。"
+      },
+      {
+        wrong: "What a nice day!",
+        wrongMark: null,
+        correct: "Before I eat, I wash my hands.",
+        bothRight: true,
+        whyZh: "两句都对——第 89 课感叹复现：这一章的话越攒越多。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "Before I eat, I wash my hands.", zh: "吃饭前我先洗手。", noteZh: "before + 一整句（先做的那件）。" },
+      { label: "否定", en: "Before I eat, I don't drink water.", zh: "吃饭前我不喝水。", noteZh: "后半句的「不」用 don't——前半句照旧。" },
+      { label: "疑问", en: "Do you wash your hands before you eat?", zh: "你吃饭前洗手吗？", noteZh: "before 那截摆后面也行——问句 Do 站句首。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说睡觉前看会儿书", en: "Before I sleep, I read a book.", zh: "睡觉前我看会儿书。" },
+      { sceneZh: "说出门前带把伞", en: "Before we go out, we take an umbrella.", zh: "出门前我们带把伞。" },
+      { sceneZh: "问对方饭前洗不洗手", en: "Do you wash your hands before you eat?", zh: "你吃饭前洗手吗？" }
+    ],
+    deepDive: {
+      title: "before 和 after 这一对",
+      paragraphs: [
+        "before 和 after 是一对方向相反的好搭档：after 说「做完一件事之后」、before 说「做一件事之前」——同一件事，从两头看。",
+        "Before I eat, I wash my hands（吃饭前先洗手）／After I eat, I read a book（吃完饭后看书）——一个管前、一个管后，两个都是「后面跟一整句」的规矩。",
+        "先做的那截可以摆前面、也可以摆后面：Before I eat, I wash my hands 和 I wash my hands before I eat——先后一样。想强调「先洗手」，就把它放前面。",
+        "两段之间记得点逗号——那是两段的分界线，英文里读起来会停一下，写起来也要停一下（一个逗号）。"
+      ]
+    },
+    summary: {
+      rule: "before 后面也跟一整句：Before I eat, I wash my hands——before 管前、after 管后，一对搭档。",
+      points: [
+        "Before I eat, I wash my hands. —— before + 一整句",
+        "before（之前）／ after（之后）—— 一对方向相反",
+        "逗号是分界线 —— 两段之间点一下"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：吃饭前我先洗手。",
+        before: "Before",
+        after: "eat, I wash my hands.",
+        options: ["I", "me", "my"],
+        answer: "I",
+        explain: "before 后面要有一整句：谁（I）+ 做什么（eat）。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：吃饭前我先洗手。",
+        tokens: ["Before", "I", "eat,", "I", "wash", "my", "hands."],
+        answer: "Before I eat, I wash my hands.",
+        explain: "先做的那件（Before…）+ 然后那件（I wash my hands）。"
+      },
+      {
+        // R8 跨课复现：第 90 课（after 一对）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 90 课学过：我写完作业才看电视。",
+        tokens: ["After", "I", "do", "my", "homework,", "I", "watch", "TV."],
+        answer: "After I do my homework, I watch TV.",
+        explain: "复现第 90 课：after 管「之后」——今天学它的搭档 before。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["Before", "eat,", "I", "wash", "my", "hands."],
+        wrongToken: "eat,",
+        answer: "eat,",
+        correctionZh: "要补上「谁」：Before 【I】 eat。",
+        explain: "小句子要有主语——跟 after 一个规矩。"
+      },
+      {
+        // R8 跨课复现：第 89 课（感叹）
+        kind: "arrange",
+        promptZh: "再对照一句——第 89 课学过：多好的天啊！",
+        tokens: ["What", "a", "nice", "day!"],
+        answer: "What a nice day!",
+        explain: "复现第 89 课：感叹的架子——今天学先后。"
+      },
+      {
+        // R9 变形/替换：前换后（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「Before I eat, I wash my hands.」把「之前」换成「之后」（吃完饭后看书），领头词要怎么换？",
+        replaceBase: "Before I eat, I wash my hands.",
+        replaceTarget: "换成「吃完饭后看书」的意思",
+        options: ["After I eat, I read a book.", "Before I eat, I read a book.", "After I eat, I wash my hands."],
+        answer: "After I eat, I read a book.",
+        explain: "方向反过来：After I eat, I read a book——before 换 after、动作也跟着换。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：吃饭前我先洗手。",
+        tokens: ["Before", "I", "eat,", "I", "wash", "my", "hands."],
+        distractors: ["me"],
+        answer: "Before I eat, I wash my hands."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你吃饭前洗手吗？",
+        tokens: ["Do", "you", "wash", "your", "hands", "before", "you", "eat?"],
+        distractors: ["Does"],
+        answer: "Do you wash your hands before you eat?"
+      },
+      {
+        promptZh: "你想说：睡觉前我看会儿书。",
+        tokens: ["Before", "I", "sleep,", "I", "read", "a", "book."],
+        distractors: ["sleeping"],
+        answer: "Before I sleep, I read a book."
+      },
+      {
+        // R8 跨课复现：第 90 课原句
+        promptZh: "复习第 90 课：我写完作业才看电视。",
+        tokens: ["After", "I", "do", "my", "homework,", "I", "watch", "TV."],
+        distractors: ["doing"],
+        answer: "After I do my homework, I watch TV."
+      }
+    ],
+    recall: {
+      promptZh: "开饭了，妈妈让你先洗手。凭记忆，写出你回答的那句英文。",
+      intentZh: "吃饭前我先洗手。",
+      answer: "Before I eat, I wash my hands.",
+      noteZh: "before + 一整句——先做的那件放前面。"
+    },
+    huntCaseIds: ["hunt-before-dinner"]
+  },
+
+  // ── 第十四批 · L92 天晴的时候我跑步（when 从句转正）：L78 认读升级＋L27 疑问 when 同形对照（批十四 PRD §2）──
+  {
+    id: "lesson-92-when",
+    number: 92,
+    title: "天晴的时候我跑步",
+    grammarLabel: "什么时候 · when + 小句子",
+    episode: "小美的一天 九十二",
+    scene: "campus",
+    cover: cover32,
+    sceneSetupZh: "聊到常做的事，小美说天晴的时候她就去跑步。",
+    dialogueEn: "When it is sunny, I run.",
+    dialogueZh: "小美看了看操场的跑道。",
+    intentZh: "天晴的时候我跑步。",
+    targetSentence: "When it is sunny, I run.",
+    blocks: [
+      { text: "When it is sunny", role: "天晴的时候（一整句）" },
+      { text: "I run", role: "我跑步" }
+    ],
+    oneLineRule: "说「当…的时候」：when 也领一整句——When it is sunny, I run；它跟 after/before 是同一个三人组（后面都跟一整句）。",
+    examples: [
+      { en: "When it is sunny, I run.", zh: "天晴的时候我跑步。" },
+      { en: "When I am tired, I go to bed early.", zh: "我累的时候就早点睡。" },
+      { en: "When it is sunny, I run in the park.", zh: "天晴的时候我在公园跑步。（第 78 课老句）" },
+      { en: "When do you run?", zh: "你什么时候跑步？（问句）" }
+    ],
+    dialogue: [
+      { who: "npc", en: "You look great!", zh: "小美看着你，笑着问你有什么秘诀。" },
+      { who: "npc", en: "Do you run every day?", zh: "她朝跑道努了努嘴。" },
+      { who: "me", en: "When it is sunny, I run.", zh: "轮到你说了——天晴的时候我跑步。" }
+    ],
+    contrast: [
+      {
+        wrong: "When is sunny, I run.",
+        wrongMark: "is",
+        correct: "When it is sunny, I run.",
+        whyZh: "小句子要有「谁」：When 【it】 is sunny——那个 it 是天气句的老座位（第 6 课）。"
+      },
+      {
+        wrong: "When it is sunny I run.",
+        wrongMark: null,
+        correct: "When it is sunny, I run.",
+        whyZh: "两段之间点个逗号：When it is sunny【,】 I run——跟 after/before 一个规矩。"
+      },
+      {
+        wrong: "When do you run?",
+        wrongMark: null,
+        correct: "When it is sunny, I run.",
+        bothRight: true,
+        whyZh: "两句都对——When 有两班岗：站句首问「什么时候」（第 27 课）、在句子里说「当…的时候」（今天）——看它在问还是在说。"
+      },
+      {
+        wrong: "After I do my homework, I watch TV.",
+        wrongMark: null,
+        correct: "When it is sunny, I run.",
+        bothRight: true,
+        whyZh: "两句都对——after（之后）＋when（当…时候）：先后三人组排排站。"
+      },
+      {
+        wrong: "Before I eat, I wash my hands.",
+        wrongMark: null,
+        correct: "When it is sunny, I run.",
+        bothRight: true,
+        whyZh: "两句都对——before（之前）复现：三人组今天到齐（after/before/when）。"
+      },
+      {
+        wrong: "It's a nice day.",
+        wrongMark: null,
+        correct: "When it is sunny, I run.",
+        bothRight: true,
+        whyZh: "两句都对——第 89 课陈述句复现：天气好，正好跑步。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "When it is sunny, I run.", zh: "天晴的时候我跑步。", noteZh: "when + 一整句（当…的时候）。" },
+      { label: "否定", en: "When it is rainy, I don't run.", zh: "下雨的时候我不跑。", noteZh: "后半句的「不」用 don't——前半句照旧。" },
+      { label: "疑问", en: "When do you run?", zh: "你什么时候跑步？", noteZh: "When 站句首问「什么时候」——第 27 课的疑问岗。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说我累了就早点睡", en: "When I am tired, I go to bed early.", zh: "我累的时候就早点睡。" },
+      { sceneZh: "说天晴时在公园跑步", en: "When it is sunny, I run in the park.", zh: "天晴的时候我在公园跑步。" },
+      { sceneZh: "问对方什么时候跑步", en: "When do you run?", zh: "你什么时候跑步？" }
+    ],
+    deepDive: {
+      title: "when 的两班岗",
+      paragraphs: [
+        "when 有两班岗：第一班站句首问「什么时候」——When do you run?（第 27 课学的疑问岗）；第二班在句子里领一个「当…的时候」——When it is sunny, I run（今天的连词岗）。",
+        "怎么分？看它有没有在问。句尾带问号、前头站着 do/is 的，是问句；句子里讲「每当这个时候就怎样」的，是连词——两班岗长得一样，心思不同。",
+        "先后三人组今天到齐：after（做完之后）、before（做之前）、when（当…的时候）——三个都是「后面跟一整句」，规矩一样。",
+        "第 78 课你见过 When it is sunny, I run in the park（当时只是认读）——今天它转正了：会自己说，还会分清两班岗。"
+      ]
+    },
+    summary: {
+      rule: "when 领一整句说「当…的时候」：When it is sunny, I run——它和 after/before 是先后三人组。",
+      points: [
+        "When it is sunny, I run. —— when 的连词岗",
+        "When do you run? —— when 的疑问岗（第 27 课）",
+        "after / before / when —— 先后三人组到齐"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：天晴的时候我跑步。",
+        before: "When",
+        after: "sunny, I run.",
+        options: ["it is", "is", "it"],
+        answer: "it is",
+        explain: "小句子要有「谁」和搭档：When it is sunny。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：天晴的时候我跑步。",
+        tokens: ["When", "it", "is", "sunny,", "I", "run."],
+        answer: "When it is sunny, I run.",
+        explain: "when + 一整句 + 逗号 + 主句。"
+      },
+      {
+        // R8 跨课复现：第 78 课（老句）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 78 课听过：天晴的时候我在公园跑步。",
+        tokens: ["When", "it", "is", "sunny,", "I", "run", "in", "the", "park."],
+        answer: "When it is sunny, I run in the park.",
+        explain: "复现第 78 课：老句子——今天正式转正。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["When", "is", "sunny,", "I", "run."],
+        wrongToken: "is",
+        answer: "is",
+        correctionZh: "要补上「谁」：When 【it】 is sunny。",
+        explain: "天气句的老座位 it 不能缺。"
+      },
+      {
+        // R8 跨课复现：第 27 课（疑问 when 对照）
+        kind: "arrange",
+        promptZh: "再对照一句——第 27 课学过：你的生日是什么时候？",
+        tokens: ["When", "is", "your", "birthday?"],
+        answer: "When is your birthday?",
+        explain: "复现第 27 课：When 的疑问岗——今天认识它的连词岗。"
+      },
+      {
+        // R9 变形/替换：换条件（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「When it is sunny, I run.」把「天晴」换成「我累了」（tired），前半截怎么变？",
+        replaceBase: "When it is sunny, I run.",
+        replaceTarget: "把 it is sunny 换成「我累了」",
+        options: ["When I am tired,", "When is tired,", "When I tired,"],
+        answer: "When I am tired,",
+        explain: "换个人称换搭档：When I am tired——谁累、配 am。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：天晴的时候我跑步。",
+        tokens: ["When", "it", "is", "sunny,", "I", "run."],
+        distractors: ["sun"],
+        answer: "When it is sunny, I run."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你什么时候跑步？",
+        tokens: ["When", "do", "you", "run?"],
+        distractors: ["Does"],
+        answer: "When do you run?"
+      },
+      {
+        promptZh: "你想说：我累的时候就早点睡。",
+        tokens: ["When", "I", "am", "tired,", "I", "go", "to", "bed", "early."],
+        distractors: ["tiring"],
+        answer: "When I am tired, I go to bed early."
+      },
+      {
+        // R8 跨课复现：第 91 课原句
+        promptZh: "复习第 91 课：吃饭前我先洗手。",
+        tokens: ["Before", "I", "eat,", "I", "wash", "my", "hands."],
+        distractors: ["me"],
+        answer: "Before I eat, I wash my hands."
+      }
+    ],
+    recall: {
+      promptZh: "小美问你跑步有什么秘诀。凭记忆，写出你那句英文。",
+      intentZh: "天晴的时候我跑步。",
+      answer: "When it is sunny, I run.",
+      noteZh: "when + 一整句——跟 after/before 一个规矩。"
+    },
+    huntCaseIds: ["hunt-sunny-run"]
+  },
+
+  // ── 第十四批 · L93 我从前常在这儿玩（used to + 原形）：从前常这样、现在不这样（批十四 PRD §2）──
+  {
+    id: "lesson-93-used-to",
+    number: 93,
+    title: "我从前常在这儿玩",
+    grammarLabel: "从前常这样 · used to",
+    episode: "小美的一天 九十三",
+    scene: "campus",
+    cover: cover18,
+    sceneSetupZh: "站在校门口的老操场边说，小美说从前她常在这儿玩。",
+    dialogueEn: "I used to play here.",
+    dialogueZh: "小美望着老操场，笑了笑。",
+    intentZh: "我从前常在这儿玩。",
+    targetSentence: "I used to play here.",
+    blocks: [
+      { text: "I used to", role: "我从前常（现在不这样了）" },
+      { text: "play here", role: "在这儿玩（动作穿原样）" }
+    ],
+    oneLineRule: "说「从前常这样、现在不这样了」用 used to——后面跟原形：I used to play here。",
+    examples: [
+      { en: "I used to play here.", zh: "我从前常在这儿玩。" },
+      { en: "She used to live in Beijing.", zh: "她从前住在北京。" },
+      { en: "We used to walk to school.", zh: "我们从前走路去上学。" },
+      { en: "I play here every day.", zh: "我每天都在这儿玩。（现在）" }
+    ],
+    dialogue: [
+      { who: "npc", en: "This playground is old.", zh: "小美望着老操场。" },
+      { who: "npc", en: "Do you come here often?", zh: "她问你现在常不常来。" },
+      { who: "me", en: "I used to play here.", zh: "轮到你说了——我从前常在这儿玩。" }
+    ],
+    contrast: [
+      {
+        wrong: "I use to play here.",
+        wrongMark: "use",
+        correct: "I used to play here.",
+        whyZh: "used to 的尾巴上有个 d，不能丢：I 【used】 to play——丢了这个 d，就变成「用」了。"
+      },
+      {
+        wrong: "I used to playing here.",
+        wrongMark: "playing",
+        correct: "I used to play here.",
+        whyZh: "used to 后面跟原形：play——不穿 -ing 外套（跟 want to travel 一个规矩）。"
+      },
+      {
+        wrong: "I play here every day.",
+        wrongMark: null,
+        correct: "I used to play here.",
+        bothRight: true,
+        whyZh: "两句都对——「现在每天都在玩」（I play here every day）和「从前常玩、现在不这样了」（I used to play here）：现在和从前的两句话。"
+      },
+      {
+        wrong: "Yesterday I went to the park.",
+        wrongMark: null,
+        correct: "I used to play here.",
+        bothRight: true,
+        whyZh: "两句都对——第 10 课「昨天去了一次」（went）＋今天「从前常常」（used to）：一次 vs 常常，两条说过去的路。"
+      },
+      {
+        wrong: "He drinks milk every day.",
+        wrongMark: null,
+        correct: "I used to play here.",
+        bothRight: true,
+        whyZh: "两句都对——第 25 课三单 -s（每天的习惯）＋今天 used to（从前的习惯）：习惯句两兄弟。"
+      },
+      {
+        wrong: "When it is sunny, I run.",
+        wrongMark: null,
+        correct: "I used to play here.",
+        bothRight: true,
+        whyZh: "两句都对——第 92 课 when（当…时候）复现：这一章的说法越来越全。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I used to play here.", zh: "我从前常在这儿玩。", noteZh: "used to + 原形——尾巴 d 不丢。" },
+      { label: "否定", en: "I didn't use to play here.", zh: "我从前不常在这儿玩。", noteZh: "「不」用 didn't——这时 use 反而不带 d（跟着 didn't 走）。" },
+      { label: "疑问", en: "Did you use to play here?", zh: "你从前常在这儿玩吗？", noteZh: "问句 Did 站句首——use 也不带 d。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说她从前住在北京", en: "She used to live in Beijing.", zh: "她从前住在北京。" },
+      { sceneZh: "说我们从前走路去上学", en: "We used to walk to school.", zh: "我们从前走路去上学。" },
+      { sceneZh: "问对方从前常不常在这儿玩", en: "Did you use to play here?", zh: "你从前常在这儿玩吗？" }
+    ],
+    deepDive: {
+      title: "used to：从前和现在的对比",
+      paragraphs: [
+        "used to 说的是「从前常这样、现在不这样了」——它自带一条时间线：I used to play here（从前常在这儿玩，现在不玩了）。",
+        "后面跟原形：used to play（不穿 -ing、不穿 -ed）——跟 want to travel、Let me help 一个规矩：to 后面永远穿原样。",
+        "那条小尾巴要留意：说「从前常」是 used to（带 d）；说「从前不常」「从前常吗」时，d 跑到前面的 didn't/Did 里去了——I didn't use to play／Did you use to play（这时 use 不带 d）。",
+        "和「昨天去了一次」的 went 比一比：went 说「那次去了」；used to 说「从前常常」——一次 vs 常常，两条说过去的路，你都拿到了。"
+      ]
+    },
+    summary: {
+      rule: "说「从前常这样、现在不这样」：used to + 原形（I used to play here）——尾巴 d 不丢。",
+      points: [
+        "I used to play here. —— 从前常常",
+        "I play here every day. —— 现在每天（对比）",
+        "didn't use to ／ Did you use to…? —— d 跟着前面的帮手走"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我从前常在这儿玩。",
+        before: "I",
+        after: "play here.",
+        options: ["used to", "use to", "used"],
+        answer: "used to",
+        explain: "尾巴上要有 d：used to——不能丢。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我从前常在这儿玩。",
+        tokens: ["I", "used", "to", "play", "here."],
+        answer: "I used to play here.",
+        explain: "used to + 原形：play here。"
+      },
+      {
+        // R8 跨课复现：第 10 课（昨天版对照）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 10 课学过：昨天我去了公园。",
+        tokens: ["Yesterday", "I", "went", "to", "the", "park."],
+        answer: "Yesterday I went to the park.",
+        explain: "复现第 10 课：「昨天去了一次」——今天学「从前常常」。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "use", "to", "play", "here."],
+        wrongToken: "use",
+        answer: "use",
+        correctionZh: "尾巴上补个 d：I 【used】 to play here。",
+        explain: "丢了 d 就变成「用」了。"
+      },
+      {
+        // R8 跨课复现：第 25 课（习惯句）
+        kind: "arrange",
+        promptZh: "再对照一句——第 25 课学过：他每天喝牛奶。",
+        tokens: ["He", "drinks", "milk", "every", "day."],
+        answer: "He drinks milk every day.",
+        explain: "复现第 25 课：现在的习惯（每天）——今天学从前的习惯。"
+      },
+      {
+        // R9 变形/替换：换动作（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I used to play here.」把「玩」换成「住（live）」，后半截怎么变？",
+        replaceBase: "I used to play here.",
+        replaceTarget: "把 play here 换成「住在北京」",
+        options: ["live in Beijing", "living in Beijing", "lived in Beijing"],
+        answer: "live in Beijing",
+        explain: "used to 后面跟原形：live——不穿 -ing、不穿 -ed。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我从前常在这儿玩。",
+        tokens: ["I", "used", "to", "play", "here."],
+        distractors: ["use"],
+        answer: "I used to play here."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你从前常在这儿玩吗？",
+        tokens: ["Did", "you", "use", "to", "play", "here?"],
+        distractors: ["used"],
+        answer: "Did you use to play here?"
+      },
+      {
+        promptZh: "你想说：她从前住在北京。",
+        tokens: ["She", "used", "to", "live", "in", "Beijing."],
+        distractors: ["living"],
+        answer: "She used to live in Beijing."
+      },
+      {
+        // R8 跨课复现：第 10 课原句
+        promptZh: "复习第 10 课：昨天我去了公园。",
+        tokens: ["Yesterday", "I", "went", "to", "the", "park."],
+        distractors: ["go"],
+        answer: "Yesterday I went to the park."
+      }
+    ],
+    recall: {
+      promptZh: "站在校门口的老操场边，小美问你从前常不常在这儿玩。凭记忆，写出你那句英文。",
+      intentZh: "我从前常在这儿玩。",
+      answer: "I used to play here.",
+      noteZh: "used to + 原形——尾巴 d 不丢。"
+    },
+    huntCaseIds: ["hunt-old-playground"]
+  },
+
+  // ── 第十四批 · L94 校门口聊两句（收口 · 零新知全复现）：从见面到再见——大章收口（批十四 PRD §2）──
+  {
+    id: "lesson-94-gate-talk",
+    number: 94,
+    title: "校门口聊两句",
+    grammarLabel: "收口 · 大团圆（零新知）",
+    episode: "小美的一天 九十四",
+    scene: "school",
+    cover: cover10,
+    sceneSetupZh: "开学第一天早上，从校门口见面到再见——把这一章的话串成一次完整聊天。",
+    dialogueEn: "It's cold today. What a nice day!",
+    dialogueZh: "小美搓着手过来，风一停又抬头看天。",
+    intentZh: "今天真冷。多好的天啊！",
+    targetSentence: "It's cold today. What a nice day!",
+    blocks: [
+      { text: "It's cold today.", role: "今天真冷（短版合体）" },
+      { text: "What a nice day!", role: "多好的天啊（感叹）" }
+    ],
+    oneLineRule: "把这一章的话串成一次聊天：见面说天气（It's cold）、看天感叹（What a nice day!）、聊规矩（After I…）、说从前（I used to…）——一句接一句。",
+    examples: [
+      { en: "It's cold today.", zh: "今天真冷。" },
+      { en: "What a nice day!", zh: "多好的天啊！" },
+      { en: "After I do my homework, I watch TV.", zh: "我写完作业才看电视。" },
+      { en: "I used to play here.", zh: "我从前常在这儿玩。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Morning! It's cold today.", zh: "校门口，小美搓着手过来。" },
+      { who: "npc", en: "Oh — the wind stops. What a nice day!", zh: "风一停，她抬头看天。" },
+      { who: "me", en: "It's cold today. What a nice day!", zh: "轮到你说了——今天真冷，多好的天啊！" }
+    ],
+    contrast: [
+      {
+        wrong: "What nice day!",
+        wrongMark: null,
+        correct: "What a nice day!",
+        whyZh: "第 89 课回流：a 不能丢——What 【a】 nice day!"
+      },
+      {
+        wrong: "After eat dinner, I watch TV.",
+        wrongMark: "eat",
+        correct: "After I eat dinner, I watch TV.",
+        whyZh: "第 90 课回流：after 后面要有一整句——那个 I 不能省。"
+      },
+      {
+        wrong: "I use to play here.",
+        wrongMark: "use",
+        correct: "I used to play here.",
+        whyZh: "第 93 课回流：尾巴上要有 d——I 【used】 to play。"
+      },
+      {
+        wrong: "It is cold today.",
+        wrongMark: null,
+        correct: "It's cold today.",
+        bothRight: true,
+        whyZh: "两句都对——长版（It is cold）和短版（It's cold）都在：先说长的，再说短的。"
+      },
+      {
+        wrong: "When it is sunny, I run.",
+        wrongMark: null,
+        correct: "After I do my homework, I watch TV.",
+        bothRight: true,
+        whyZh: "两句都对——第 92 课 when（当…时候）＋第 90 课 after（之后）：先后三人组各回一句。"
+      },
+      {
+        wrong: "It's windy today.",
+        wrongMark: null,
+        correct: "What a nice day!",
+        bothRight: true,
+        whyZh: "两句都对——第 88 课 windy（刮风）＋第 89 课感叹：风停日出，聊得越来越顺。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "It's cold today. What a nice day!", zh: "今天真冷。多好的天啊！", noteZh: "两句连着说：先天气、再感叹。" },
+      { label: "否定", en: "It's not a nice day.", zh: "今天天不好。", noteZh: "not 跟 is 走——反过来说也行。" },
+      { label: "疑问", en: "Do you play here after school?", zh: "放学后你在这儿玩吗？", noteZh: "问句 Do 站句首——after school 的老搭配。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "感叹一个好包（第 68 课老句）", en: "What a nice bag!", zh: "多好的包啊！" },
+      { sceneZh: "说写完作业才看电视（第 90 课老句）", en: "After I do my homework, I watch TV.", zh: "我写完作业才看电视。" },
+      { sceneZh: "说从前常在这儿玩（第 93 课老句）", en: "I used to play here.", zh: "我从前常在这儿玩。" }
+    ],
+    deepDive: {
+      title: "大章倒带：聊两句的本事",
+      paragraphs: [
+        "这一章八课，你学会了「聊两句」的一整套：见面说天气（It's cold——短版合体）、换着词说天气（windy／snowy／cloudy——名词穿 -y 外套）、看天感叹（What a nice day!）、聊规矩说先后（After I…／Before I…／When it is…）、说从前（I used to…）。",
+        "这一章的句子有个共同点：都能在「校门口见面」这个场景里用上——先打招呼聊天气、再说说自己的规矩、走着走着聊起从前。八课的话，一次聊完。",
+        "先后三人组（after／before／when）是你这一章最新拿到的工具：以后讲故事、说安排，全靠它们把两件事串起来。",
+        "最后看一句老朋友的感叹：What a nice bag!（第 68 课）——当时它只是一句台词，这一章里它变成了你自己的话（第 89 课）。从听到说，就是这八课走的路。"
+      ]
+    },
+    summary: {
+      rule: "聊两句的本事：说天气（It's cold／windy）＋ 感叹（What a…!）＋ 说先后（after／before／when）＋ 说从前（used to）。",
+      points: [
+        "It's cold today. What a nice day! —— 两句连着说",
+        "After I…／Before I…／When it is… —— 先后三人组",
+        "I used to play here. —— 说从前"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想感叹：多好的天啊！",
+        before: "What",
+        after: " day!",
+        options: ["a nice", "nice", "nice a"],
+        answer: "a nice",
+        explain: "第 89 课老规矩：a 站形容词前面——What a nice day!"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：今天真冷。",
+        tokens: ["It's", "cold", "today."],
+        answer: "It's cold today.",
+        explain: "第 87 课短版：It's——尾巴带撇。"
+      },
+      {
+        // R8 跨课复现：第 93 课（说从前）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 93 课学过：我从前常在这儿玩。",
+        tokens: ["I", "used", "to", "play", "here."],
+        answer: "I used to play here.",
+        explain: "复现第 93 课：说从前——尾巴 d 不丢。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["What", "nice", "day!"],
+        wrongToken: "nice",
+        answer: "nice",
+        correctionZh: "a 不能丢：What 【a】 nice day!",
+        explain: "第 89 课老规矩。"
+      },
+      {
+        // R8 跨课复现：第 90 课（说先后）
+        kind: "arrange",
+        promptZh: "再对照一句——第 90 课学过：我写完作业才看电视。",
+        tokens: ["After", "I", "do", "my", "homework,", "I", "watch", "TV."],
+        answer: "After I do my homework, I watch TV.",
+        explain: "复现第 90 课：after + 一整句——先后三人组老大。"
+      },
+      {
+        // R9 变形/替换：换说法（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「It's cold today.」把「冷」换成「刮风（windy）」，天气词怎么变？",
+        replaceBase: "It's cold today.",
+        replaceTarget: "把 cold 换成 windy",
+        options: ["It's windy today.", "It's wind today.", "It windy today."],
+        answer: "It's windy today.",
+        explain: "第 88 课老规矩：wind 穿 -y 外套——It's windy today。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：今天真冷。",
+        tokens: ["It's", "cold", "today."],
+        distractors: ["Its"],
+        answer: "It's cold today."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：今天天不好。",
+        tokens: ["It's", "not", "a", "nice", "day."],
+        distractors: ["no"],
+        answer: "It's not a nice day."
+      },
+      {
+        // R8 跨课复现：第 89 课原句
+        promptZh: "复习第 89 课：多好的天啊！",
+        tokens: ["What", "a", "nice", "day!"],
+        distractors: ["nice a"],
+        answer: "What a nice day!"
+      },
+      {
+        // 章末收官惯例：复现第 91 课原句
+        promptZh: "全批收官——复习第 91 课：吃饭前我先洗手。",
+        tokens: ["Before", "I", "eat,", "I", "wash", "my", "hands."],
+        distractors: ["me"],
+        answer: "Before I eat, I wash my hands."
+      }
+    ],
+    recall: {
+      promptZh: "开学第一天早上，校门口风一停，小美抬头看天。凭记忆，写出她那句感叹。",
+      intentZh: "多好的天啊！",
+      answer: "What a nice day!",
+      noteZh: "What + a + 形容词 + 东西——a 不能丢。"
+    },
+    huntCaseIds: ["hunt-after-school-talk"]
+  },
+
+  // ── 第十五批 · L95 那时我正在看书（was + 穿 -ing）：昨天版的「正在」——L34 平台升级（批十五 PRD §2·单拱第一课）──
+  {
+    id: "lesson-95-was-doing",
+    number: 95,
+    title: "那时我正在看书",
+    grammarLabel: "那时正做着 · was + 穿 -ing",
+    episode: "小美的一天 九十五",
+    scene: "campus",
+    cover: cover13,
+    sceneSetupZh: "回想昨晚八点自己在做什么——昨天那个电话的故事开场。",
+    dialogueEn: "I was reading at eight.",
+    dialogueZh: "小美托着腮想了想昨晚。",
+    intentZh: "八点的时候我正在看书。",
+    targetSentence: "I was reading at eight.",
+    blocks: [
+      { text: "I was", role: "我那时（昨天版搭档）" },
+      { text: "reading", role: "正在看书（-ing 外套）" },
+      { text: "at eight", role: "八点的时候" }
+    ],
+    oneLineRule: "说「那时正做着」：be 换成昨天版 was/were，动作照穿 -ing 外套——I was reading at eight。",
+    examples: [
+      { en: "I was reading at eight.", zh: "八点的时候我正在看书。" },
+      { en: "I was drawing at three.", zh: "三点时我正在画画。" },
+      { en: "She was reading last night.", zh: "昨晚她正在看书。" },
+      { en: "They were playing football.", zh: "他们当时正在踢足球。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What were you doing last night?", zh: "小美托着腮问你。" },
+      { who: "npc", en: "At eight, I mean.", zh: "她补了一句：就八点那会儿。" },
+      { who: "me", en: "I was reading at eight.", zh: "轮到你说了——八点的时候我正在看书。" }
+    ],
+    contrast: [
+      {
+        wrong: "I was read at eight.",
+        wrongMark: "read",
+        correct: "I was reading at eight.",
+        whyZh: "动作没穿 -ing 外套：was 后面要跟 reading——「那时正做着」，外套不能脱。"
+      },
+      {
+        wrong: "I read at eight.",
+        wrongMark: "read",
+        correct: "I was reading at eight.",
+        whyZh: "丢掉了「那时正做着」：光说 read 是「读了」（一件事），要加 was + -ing 才是「当时正做着」。"
+      },
+      {
+        wrong: "I was drawing at three.",
+        wrongMark: null,
+        correct: "I was reading at eight.",
+        bothRight: true,
+        whyZh: "两句都对——第 34 课的老句（三点正在画画）＋今天换个钟点：同一套说法，随你换。"
+      },
+      {
+        wrong: "She was reading last night.",
+        wrongMark: null,
+        correct: "I was reading at eight.",
+        bothRight: true,
+        whyZh: "两句都对——第 34 课的老句复现：她昨晚在看、我八点在读——「那时正做着」越用越顺。"
+      },
+      {
+        wrong: "Yesterday I went to the park.",
+        wrongMark: null,
+        correct: "I was reading at eight.",
+        bothRight: true,
+        whyZh: "两句都对——第 10 课「昨天去了」（一件事）＋今天「那时正做着」：两条说过去的路。"
+      },
+      {
+        wrong: "What were you doing?",
+        wrongMark: null,
+        correct: "I was reading at eight.",
+        bothRight: true,
+        whyZh: "两句都对——第 34 课问句（你那时在干嘛）＋今天的答句：一问一答配套。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I was reading at eight.", zh: "八点的时候我正在看书。", noteZh: "was + 穿 -ing。" },
+      { label: "否定", en: "I was not reading at eight.", zh: "八点那会儿我没在看书。", noteZh: "not 跟 was 走。" },
+      { label: "疑问", en: "Were you reading at eight?", zh: "八点你在看书吗？", noteZh: "Were 搬句首——问对方那时在干嘛。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说三点时正在画画", en: "I was drawing at three.", zh: "三点时我正在画画。" },
+      { sceneZh: "说他们当时正在踢足球", en: "They were playing football.", zh: "他们当时正在踢足球。" },
+      { sceneZh: "问对方八点在不在看书", en: "Were you reading at eight?", zh: "八点你在看书吗？" }
+    ],
+    deepDive: {
+      title: "昨天版的「正在」",
+      paragraphs: [
+        "第 34 课你学过「昨天某时正在做」：I was drawing at three（三点时我正在画画）——be 用昨天版（was/were），动作照穿 -ing 外套。今天把它拿来做主菜。",
+        "两个零件缺一不可：昨天版搭档（was/were）＋穿 -ing 的动作。少了外套（I was read）错、少了搭档（I reading）也错——合体才成立。",
+        "一个用 was、一伙用 were：I was reading（一个）／They were playing（一群）——第 51 课学过的配对，这里照样管用。",
+        "跟「昨天去了」比一比：I went to the park（去了一趟，一件事做完）／I was reading at eight（那时正做着，画面停在那一刻）——两条说过去的路，今天走这条「画面」路。"
+      ]
+    },
+    summary: {
+      rule: "说「那时正做着」：was/were + 穿 -ing 的动作（I was reading at eight）——两个零件缺一不可。",
+      points: [
+        "I was reading at eight. —— 昨天版搭档 + -ing 外套",
+        "I was read ❌ ／ I read ❌ —— 少外套、少搭档都不行",
+        "They were playing. —— 一伙人用 were"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：八点的时候我正在看书。",
+        before: "I",
+        after: "at eight.",
+        options: ["was reading", "was read", "read"],
+        answer: "was reading",
+        explain: "昨天版搭档（was）+ 穿 -ing 的动作（reading）：两个零件。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：八点的时候我正在看书。",
+        tokens: ["I", "was", "reading", "at", "eight."],
+        answer: "I was reading at eight.",
+        explain: "was + reading：昨天版「正在」。"
+      },
+      {
+        // R8 跨课复现：第 34 课（平台老句）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 34 课学过：三点时我正在画画。",
+        tokens: ["I", "was", "drawing", "at", "three."],
+        answer: "I was drawing at three.",
+        explain: "复现第 34 课：老句——今天换个钟点接着说。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "was", "read", "at", "eight."],
+        wrongToken: "read",
+        answer: "read",
+        correctionZh: "动作要穿 -ing 外套：was 【reading】 at eight。",
+        explain: "「那时正做着」——外套不能脱。"
+      },
+      {
+        // R8 跨课复现：第 10 课（昨天版对照）
+        kind: "arrange",
+        promptZh: "再对照一句——第 10 课学过：昨天我去了公园。",
+        tokens: ["Yesterday", "I", "went", "to", "the", "park."],
+        answer: "Yesterday I went to the park.",
+        explain: "复现第 10 课：「去了一趟」——对照今天的「那时正做着」。"
+      },
+      {
+        // R9 变形/替换：换人称（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I was reading at eight.」把 I 换成 They（一伙人），搭档要怎么变？",
+        replaceBase: "I was reading at eight.",
+        replaceTarget: "把 I 换成 They",
+        options: ["were", "was", "are"],
+        answer: "were",
+        explain: "一伙人用 were：They were reading——配对照旧。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：八点的时候我正在看书。",
+        tokens: ["I", "was", "reading", "at", "eight."],
+        distractors: ["read"],
+        answer: "I was reading at eight."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：八点你在看书吗？",
+        tokens: ["Were", "you", "reading", "at", "eight?"],
+        distractors: ["Was"],
+        answer: "Were you reading at eight?"
+      },
+      {
+        // 保障句（cloze 落 were）
+        promptZh: "你想说：他们当时正在踢足球。",
+        tokens: ["They", "were", "playing", "football."],
+        distractors: ["was"],
+        answer: "They were playing football."
+      },
+      {
+        // R8 跨课复现：第 10 课原句
+        promptZh: "复习第 10 课：昨天我去了公园。",
+        tokens: ["Yesterday", "I", "went", "to", "the", "park."],
+        distractors: ["go"],
+        answer: "Yesterday I went to the park."
+      }
+    ],
+    recall: {
+      promptZh: "小美问你昨晚八点在做什么。凭记忆，写出你那句英文。",
+      intentZh: "八点的时候我正在看书。",
+      answer: "I was reading at eight.",
+      noteZh: "was + 穿 -ing：两个零件缺一不可。"
+    },
+    huntCaseIds: ["hunt-eight-reading"]
+  },
+
+  // ── 第十五批 · L96 当时正下着雨（背景句）：天气句的昨天版——L34 伏笔兑现（批十五 PRD §2）──
+  {
+    id: "lesson-96-was-raining",
+    number: 96,
+    title: "当时正下着雨",
+    grammarLabel: "背景句 · It was + 穿 -ing",
+    episode: "小美的一天 九十六",
+    scene: "city",
+    cover: cover14,
+    sceneSetupZh: "故事第二句：那天晚上，外面正下着雨，窗上全是水。",
+    dialogueEn: "It was raining that night.",
+    dialogueZh: "小美指了指窗玻璃上的水痕。",
+    intentZh: "那天晚上正下着雨。",
+    targetSentence: "It was raining.",
+    blocks: [
+      { text: "It was", role: "它那时（昨天版）" },
+      { text: "raining", role: "正在下雨（-ing 外套）" }
+    ],
+    oneLineRule: "天气句的昨天版：It was raining——今天版说今天（It is raining），昨天版说那天。",
+    examples: [
+      { en: "It was raining.", zh: "当时正下着雨。" },
+      { en: "It is raining.", zh: "现在正下着雨。" },
+      { en: "It was cold that night.", zh: "那天晚上很冷。" },
+      { en: "It's cold today.", zh: "今天真冷。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What was the weather like that night?", zh: "小美望着窗外问你。" },
+      { who: "npc", en: "Look at the window!", zh: "她指了指窗玻璃上的水痕。" },
+      { who: "me", en: "It was raining.", zh: "轮到你说了——当时正下着雨。" }
+    ],
+    contrast: [
+      {
+        wrong: "It was rain.",
+        wrongMark: "rain",
+        correct: "It was raining.",
+        whyZh: "动作没穿 -ing 外套：was 后面要跟 raining——雨是「正在下」的样子。"
+      },
+      {
+        wrong: "It rains yesterday.",
+        wrongMark: "rains",
+        correct: "It was raining.",
+        whyZh: "yesterday 在场，动词要换昨天版：光用 rains 是「天天下雨」的口气，说那天要用 was raining。"
+      },
+      {
+        wrong: "It is raining.",
+        wrongMark: null,
+        correct: "It was raining.",
+        bothRight: true,
+        whyZh: "两句都对——今天版（It is raining，现在正下）和昨天版（It was raining，那天正下）：同一场雨的两个版本。"
+      },
+      {
+        wrong: "It was windy, but we were happy.",
+        wrongMark: null,
+        correct: "It was raining.",
+        bothRight: true,
+        whyZh: "两句都对——第 19 课的老句子（起风了，但我们很开心）——那时版天气的老熟人。"
+      },
+      {
+        wrong: "It's cold today.",
+        wrongMark: null,
+        correct: "It was raining.",
+        bothRight: true,
+        whyZh: "两句都对——第 87 课今天版（今天真冷）＋今天学的昨天版：天气两版都会。"
+      },
+      {
+        wrong: "I was reading at eight.",
+        wrongMark: null,
+        correct: "It was raining.",
+        bothRight: true,
+        whyZh: "两句都对——第 95 课「那时正在做」复现：一个人看书、天在下雨——故事的两句话。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "It was raining.", zh: "当时正下着雨。", noteZh: "It was + 穿 -ing。" },
+      { label: "否定", en: "It was not raining.", zh: "那会儿没下雨。", noteZh: "not 跟 was 走。" },
+      { label: "疑问", en: "Was it raining?", zh: "那时在下雨吗？", noteZh: "Was 搬句首——问那天的天气。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说现在正下着雨", en: "It is raining.", zh: "现在正下着雨。" },
+      { sceneZh: "说那天晚上很冷", en: "It was cold that night.", zh: "那天晚上很冷。" },
+      { sceneZh: "问那时在下雨吗", en: "Was it raining?", zh: "那时在下雨吗？" }
+    ],
+    deepDive: {
+      title: "今天版说今天，昨天版说那天",
+      paragraphs: [
+        "天气句有两版：今天版——It is raining（现在正下着雨）；昨天版——It was raining（那天正下着雨）。零件一样，只是搭档换了版本。",
+        "第 34 课就埋了一句：「过去进行最常用的场景之一，就是讲故事背景」——今天它兑现了：讲故事时先说「那天正下着雨」，画面就铺开了。",
+        "搭配记牢：昨天版搭档（was）＋穿 -ing 的动作（raining）——少外套（It was rain）错、没换版本（It rains yesterday）也错。",
+        "先说背景、再讲事情——这是讲故事的顺序：It was raining（背景铺好），然后 When you called, I was reading（事情来了）。下一课我们就学「事情来了」怎么说。"
+      ]
+    },
+    summary: {
+      rule: "天气句的昨天版：It was raining——搭档换昨天版、动作照穿 -ing；今天版说今天、昨天版说那天。",
+      points: [
+        "It was raining. —— 昨天版（背景句）",
+        "It is raining. —— 今天版（现在）",
+        "先说背景、再讲事情 —— 讲故事的顺序"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：当时正下着雨。",
+        before: "It was",
+        after: ".",
+        options: ["raining", "rain", "rains"],
+        answer: "raining",
+        explain: "动作穿 -ing 外套：It was raining。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：当时正下着雨。",
+        tokens: ["It", "was", "raining."],
+        answer: "It was raining.",
+        explain: "昨天版搭档 + -ing 外套：三个词说完。"
+      },
+      {
+        // R8 跨课复现：第 34 课（伏笔原句）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 34 课听过：当时正下着雨。",
+        tokens: ["It", "was", "raining."],
+        answer: "It was raining.",
+        explain: "复现第 34 课：当时只是听懂——今天它会自己说了。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["It", "was", "rain."],
+        wrongToken: "rain",
+        answer: "rain",
+        correctionZh: "动作要穿 -ing 外套：It was 【raining】。",
+        explain: "雨是「正在下」的样子。"
+      },
+      {
+        // R8 跨课复现：第 87 课（今天版对照）
+        kind: "arrange",
+        promptZh: "再对照一句——第 87 课学过：今天真冷。",
+        tokens: ["It's", "cold", "today."],
+        answer: "It's cold today.",
+        explain: "复现第 87 课：今天版——今天学它的昨天版。"
+      },
+      {
+        // R9 变形/替换：今天换昨天（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「It is raining.」把今天版换成昨天版，搭档要怎么变？",
+        replaceBase: "It is raining.",
+        replaceTarget: "把今天版换成昨天版",
+        options: ["It was raining.", "It was rain.", "It is rained."],
+        answer: "It was raining.",
+        explain: "搭档换昨天版：It was raining——外套照穿。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：当时正下着雨。",
+        tokens: ["It", "was", "raining."],
+        distractors: ["rain"],
+        answer: "It was raining."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：那时在下雨吗？",
+        tokens: ["Was", "it", "raining?"],
+        distractors: ["Is"],
+        answer: "Was it raining?"
+      },
+      {
+        // 保障句（cloze 落 is——今天版对照）
+        promptZh: "你想说：现在正下着雨。",
+        tokens: ["It", "is", "raining."],
+        distractors: ["was"],
+        answer: "It is raining."
+      },
+      {
+        // R8 跨课复现：第 87 课原句
+        promptZh: "复习第 87 课：今天真冷。",
+        tokens: ["It's", "cold", "today."],
+        distractors: ["Its"],
+        answer: "It's cold today."
+      }
+    ],
+    recall: {
+      promptZh: "小美望着窗外问你那天晚上的天气。凭记忆，写出你那句英文。",
+      intentZh: "当时正下着雨。",
+      answer: "It was raining.",
+      noteZh: "昨天版搭档 + -ing 外套：It was raining。"
+    },
+    huntCaseIds: ["hunt-rainy-memory"]
+  },
+
+  // ── 第十五批 · L97 电话响的时候（when + 当时正做着）：跨批对白闭环——回答 L34「I called you but no answer.」（批十五 PRD §2）──
+  {
+    id: "lesson-97-when-called",
+    number: 97,
+    title: "你打电话的时候",
+    grammarLabel: "那时候 · when + 当时正做着",
+    episode: "小美的一天 九十七",
+    scene: "mansion",
+    cover: cover15,
+    sceneSetupZh: "故事第三句——直接回答第 34 课那句「我打了电话没人接」：你打电话的时候，我正在看书。",
+    dialogueEn: "When you called, I was reading.",
+    dialogueZh: "小美放下电话听筒的记录本，跟你解释。",
+    intentZh: "你打电话的时候我正在看书。",
+    targetSentence: "When you called, I was reading.",
+    blocks: [
+      { text: "When you called", role: "你打电话的时候（插进来的小事）" },
+      { text: "I was reading", role: "我正在看书（当时正做着）" }
+    ],
+    oneLineRule: "when 领的那截是「插进来的小事」（用短的版本），另一截是「当时正做着」（was + 穿 -ing）——When you called, I was reading。",
+    examples: [
+      { en: "When you called, I was reading.", zh: "你打电话的时候我正在看书。" },
+      { en: "When you called, I was sleeping.", zh: "你打电话的时候我正在睡觉。" },
+      { en: "I called you but no answer.", zh: "我打了电话没人接。（第 34 课）" },
+      { en: "When it is sunny, I run.", zh: "天晴的时候我跑步。（第 92 课）" }
+    ],
+    dialogue: [
+      { who: "npc", en: "I called you but no answer.", zh: "小美翻着电话记录本，学你朋友那口气。" },
+      { who: "npc", en: "What were you doing?", zh: "她问你那会儿在干嘛。" },
+      { who: "me", en: "When you called, I was reading.", zh: "轮到你说了——你打电话的时候我正在看书。" }
+    ],
+    contrast: [
+      {
+        wrong: "When you called, I read a book.",
+        wrongMark: "read",
+        correct: "When you called, I was reading.",
+        whyZh: "「当时正做着」丢了版本：read 是「读了」（一件事），was reading 才是「正看着」——被电话打断的正是那个画面。"
+      },
+      {
+        wrong: "When you call, I was reading.",
+        wrongMark: "call",
+        correct: "When you called, I was reading.",
+        whyZh: "打电话那件是昨天的事，要换昨天版：When you 【called】——两截都是昨天的事。"
+      },
+      {
+        wrong: "When you called, I read a book.",
+        wrongMark: "read",
+        correct: "When you called, I was reading.",
+        whyZh: "同一件事，哪件穿 -ing 有讲究：电话是「插进来的小事」（短版本 called），看书是「当时正做着」（was reading）——反过来就讲不通了。"
+      },
+      {
+        wrong: "I called you but no answer.",
+        wrongMark: null,
+        correct: "When you called, I was reading.",
+        bothRight: true,
+        whyZh: "两句都对——第 34 课老对白（我打了电话没人接）＋今天把你的回答递回去：老对白今天有回话了。"
+      },
+      {
+        wrong: "When it is sunny, I run.",
+        wrongMark: null,
+        correct: "When you called, I was reading.",
+        bothRight: true,
+        whyZh: "两句都对——第 92 课 when（天晴的时候，天天的事）＋今天 when（你打电话的时候，昨天的事）：when 的岗越用越熟。"
+      },
+      {
+        wrong: "When is your birthday?",
+        wrongMark: null,
+        correct: "When you called, I was reading.",
+        bothRight: true,
+        whyZh: "两句都对——问「什么时候」（第 27 课）和说「当…的时候」（今天）：when 同形两张脸，看它在问还是在说。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "When you called, I was reading.", zh: "你打电话的时候我正在看书。", noteZh: "小事用短的版本（called）、正做着穿 -ing（was reading）。" },
+      { label: "否定", en: "When you called, I was not reading.", zh: "你打电话时我没在看书。", noteZh: "not 跟 was 走。" },
+      { label: "疑问", en: "Were you reading when I called?", zh: "我打电话时你在看书吗？", noteZh: "把 when 那截挪到后面问也行——Were 搬句首。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说你打电话时我正在睡觉", en: "When you called, I was sleeping.", zh: "你打电话的时候我正在睡觉。" },
+      { sceneZh: "说我打电话时你在看书吗", en: "Were you reading when I called?", zh: "我打电话时你在看书吗？" },
+      { sceneZh: "说天晴的时候我跑步（第 92 课老句）", en: "When it is sunny, I run.", zh: "天晴的时候我跑步。" }
+    ],
+    deepDive: {
+      title: "两截话：谁穿 -ing、谁用短的",
+      paragraphs: [
+        "这条句子里有两截：when you called（你打电话）和 I was reading（我正在看书）。哪截穿 -ing？——「被插进来的那件小事」用短版本（called），「当时正做着的」穿 -ing（was reading）。",
+        "为什么？想象画面：镜头先对着「正在看书」的你，忽然电话铃插进来——正在看的（画面）穿 -ing、插进来的（事件）用短的。英文的老习惯就是这样分工。",
+        "第 34 课你听过朋友那句「I called you but no answer.」（我打了电话没人接）——今天你把回答递回去了：When you called, I was reading（你打电话的时候我在看书）。跨了六十多课的老对白，今天接上了。",
+        "两截的版本要配套：都是昨天的事——called（昨天版）、was reading（昨天版 + -ing）。一截换了一截没换，听起来就像半新半旧的衣服。"
+      ]
+    },
+    summary: {
+      rule: "when 领的那截是「插进来的小事」（短版本），另一截是「当时正做着」（was + 穿 -ing）——When you called, I was reading。",
+      points: [
+        "When you called, I was reading. —— 小事 + 正做着",
+        "called 短的 ／ was reading 穿 -ing —— 分工不换位",
+        "I called you but no answer. —— 第 34 课老对白今天有回话"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：你打电话的时候我正在看书。",
+        before: "When you called,",
+        after: ".",
+        options: ["I was reading", "I read", "I reading"],
+        answer: "I was reading",
+        explain: "当时正做着要穿 -ing：was reading。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：你打电话的时候我正在看书。",
+        tokens: ["When", "you", "called,", "I", "was", "reading."],
+        answer: "When you called, I was reading.",
+        explain: "两截话：小事（called）+ 正做着（was reading）。"
+      },
+      {
+        // R8 跨课复现：第 34 课（对白闭环）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 34 课听过：我打了电话没人接。",
+        tokens: ["I", "called", "you", "but", "no", "answer."],
+        answer: "I called you but no answer.",
+        explain: "复现第 34 课：老对白——今天把回答递回去。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["When", "you", "call,", "I", "was", "reading."],
+        wrongToken: "call,",
+        answer: "call,",
+        correctionZh: "打电话那件要换昨天版：When you 【called】。",
+        explain: "两截都是昨天的事。"
+      },
+      {
+        // R8 跨课复现：第 92 课（when 的岗）
+        kind: "arrange",
+        promptZh: "再对照一句——第 92 课学过：天晴的时候我跑步。",
+        tokens: ["When", "it", "is", "sunny,", "I", "run."],
+        answer: "When it is sunny, I run.",
+        explain: "复现第 92 课：when 的岗——今天的 when 换到昨天。"
+      },
+      {
+        // R9 变形/替换：换正做着的事（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「When you called, I was reading.」把「看书」换成「睡觉（sleep）」，正做着那截怎么变？",
+        replaceBase: "When you called, I was reading.",
+        replaceTarget: "把 reading 换成 sleep",
+        options: ["I was sleeping.", "I was sleep.", "I slept."],
+        answer: "I was sleeping.",
+        explain: "还是 was + 穿 -ing：sleep→sleeping——外套照穿。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：你打电话的时候我正在看书。",
+        tokens: ["When", "you", "called,", "I", "was", "reading."],
+        distractors: ["read"],
+        answer: "When you called, I was reading."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：你打电话时我没在看书。",
+        tokens: ["When", "you", "called,", "I", "was", "not", "reading."],
+        distractors: ["no"],
+        answer: "When you called, I was not reading."
+      },
+      {
+        // 保障句（cloze 落 sleeping——正做着那截不落空）
+        promptZh: "你想说：你打电话的时候我正在睡觉。",
+        tokens: ["When", "you", "called,", "I", "was", "sleeping."],
+        distractors: ["sleep"],
+        answer: "When you called, I was sleeping."
+      },
+      {
+        // R8 跨课复现：第 92 课原句
+        promptZh: "复习第 92 课：天晴的时候我跑步。",
+        tokens: ["When", "it", "is", "sunny,", "I", "run."],
+        distractors: ["sun"],
+        answer: "When it is sunny, I run."
+      }
+    ],
+    recall: {
+      promptZh: "小美翻着电话记录本问你那会儿在干嘛。凭记忆，写出你那句英文。",
+      intentZh: "你打电话的时候我正在看书。",
+      answer: "When you called, I was reading.",
+      noteZh: "小事用短的（called）、正做着穿 -ing（was reading）。"
+    },
+    huntCaseIds: ["hunt-call-reading"]
+  },
+
+  // ── 第十五批 · L98 一边…一边…（while）：两件同时进行、各自穿 -ing——while 全库首次（批十五 PRD §2·中段自走查点）──
+  {
+    id: "lesson-98-while",
+    number: 98,
+    title: "一边…一边…",
+    grammarLabel: "两件同时 · while + 都在穿 -ing",
+    episode: "小美的一天 九十八",
+    scene: "mansion",
+    cover: cover22,
+    sceneSetupZh: "故事第四句：那会儿我在看书，弟弟在睡觉——两件同时在发生。",
+    dialogueEn: "While I was reading, he was sleeping.",
+    dialogueZh: "小美朝弟弟的房门努了努嘴。",
+    intentZh: "我看书那会儿，他在睡觉。",
+    targetSentence: "While I was reading, he was sleeping.",
+    blocks: [
+      { text: "While I was reading", role: "我看书那会儿（一件在进行）" },
+      { text: "he was sleeping", role: "他在睡觉（另一件也在进行）" }
+    ],
+    oneLineRule: "说「两件同时在发生」用 while，两边各自穿 -ing：While I was reading, he was sleeping——两支镜头同时开着。",
+    examples: [
+      { en: "While I was reading, he was sleeping.", zh: "我看书那会儿，他在睡觉。" },
+      { en: "While I was cooking, she was reading.", zh: "我做饭那会儿，她在看书。" },
+      { en: "I was reading while he was sleeping.", zh: "他在睡觉的时候我在看书。（换个顺序也一样）" },
+      { en: "When you called, I was reading.", zh: "你打电话时我正在看书。（第 97 课）" }
+    ],
+    dialogue: [
+      { who: "npc", en: "What was your brother doing?", zh: "小美问你弟弟那会儿在干嘛。" },
+      { who: "npc", en: "Was he reading, too?", zh: "她朝弟弟的房门努了努嘴。" },
+      { who: "me", en: "While I was reading, he was sleeping.", zh: "轮到你说了——我看书那会儿，他在睡觉。" }
+    ],
+    contrast: [
+      {
+        wrong: "While I was reading, he slept.",
+        wrongMark: "slept",
+        correct: "While I was reading, he was sleeping.",
+        whyZh: "同时的那件也要穿 -ing：slept 是「睡了一觉」（一件事）——两件同时在，两边都穿。"
+      },
+      {
+        wrong: "While I read, he was sleeping.",
+        wrongMark: "read",
+        correct: "While I was reading, he was sleeping.",
+        whyZh: "前半那件也丢了「正做着」：while 领的两边都在进行——read 是光板，要变成 was reading。"
+      },
+      {
+        wrong: "During I was reading, he was sleeping.",
+        wrongMark: "During",
+        correct: "While I was reading, he was sleeping.",
+        whyZh: "during 后面只能跟「名字」（during the class），跟不了小句子——要说一整句，得用 while 领路。"
+      },
+      {
+        wrong: "I was reading while he was sleeping.",
+        wrongMark: null,
+        correct: "While I was reading, he was sleeping.",
+        bothRight: true,
+        whyZh: "两句都对——两件同时在，谁先谁后都行：While I was reading, he was sleeping. ／ I was reading while he was sleeping. 一个意思。"
+      },
+      {
+        wrong: "When you called, I was reading.",
+        wrongMark: null,
+        correct: "While I was reading, he was sleeping.",
+        bothRight: true,
+        whyZh: "两句都对——第 97 课 when（插进来的小事）＋今天 while（两件同时在）：一个打断、一个并行。"
+      },
+      {
+        wrong: "They were playing football.",
+        wrongMark: null,
+        correct: "While I was reading, he was sleeping.",
+        bothRight: true,
+        whyZh: "两句都对——第 34 课老句（一伙人当时正踢球）今天仍在——while 也是同一套零件。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "While I was reading, he was sleeping.", zh: "我看书那会儿，他在睡觉。", noteZh: "while 两边都穿 -ing。" },
+      { label: "否定", en: "While I was reading, he was not sleeping.", zh: "我看书那会儿他没在睡。", noteZh: "not 跟第二个 was 走。" },
+      { label: "疑问", en: "Was he sleeping while you were reading?", zh: "你看书时他在睡吗？", noteZh: "把 while 那截挪到后面问也行——Was 搬句首。" },
+    ],
+    sceneSwings: [
+      { sceneZh: "说我做饭那会儿她在看书", en: "While I was cooking, she was reading.", zh: "我做饭那会儿，她在看书。" },
+      { sceneZh: "说他在睡觉时我在看书（换顺序版）", en: "I was reading while he was sleeping.", zh: "他在睡觉的时候我在看书。" },
+      { sceneZh: "问你弟那会儿在不在睡", en: "Was he sleeping while you were reading?", zh: "你看书时他在睡吗？" }
+    ],
+    deepDive: {
+      title: "while 与 when 的分工，和 during 的门槛",
+      paragraphs: [
+        "第 97 课的 when 领的是「插进来的小事」（When you called）——打断。今天的 while 领的是「两件同时在」（While I was reading）——并行。一个打断、一个并行，都是讲故事的好工具。",
+        "while 的规矩：两边都穿 -ing。While I was reading（我看书那会儿）、he was sleeping（他在睡觉）——两支镜头同时开着，谁说前面都行。",
+        "再来认识 during 的门槛：它后面只能跟「名字」——during the class（课那会儿）、during the night（夜里）。想跟一整句话？请 while 出马：While I was reading——during I was reading 说不通。今天只作对照，混个脸熟。",
+        "同一件事两种说法：While I was reading, he was sleeping. ／ I was reading while he was sleeping.——顺序换一换，意思一个样，看你想先让镜头对着谁。"
+      ]
+    },
+    summary: {
+      rule: "两件同时在：while 两边都穿 -ing（While I was reading, he was sleeping）——when 管打断、while 管并行。",
+      points: [
+        "While I was reading, he was sleeping. —— 两支镜头同时开",
+        "I was reading while he was sleeping. —— 换顺序也一样",
+        "during ❌ 跟小句子 —— 它只认名字（during the class）"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：我看书那会儿，他在睡觉。",
+        before: "While I was reading,",
+        after: ".",
+        options: ["he was sleeping", "he slept", "he sleeping"],
+        answer: "he was sleeping",
+        explain: "同时的那件也穿 -ing：he was sleeping。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：我看书那会儿，他在睡觉。",
+        tokens: ["While", "I", "was", "reading,", "he", "was", "sleeping."],
+        answer: "While I was reading, he was sleeping.",
+        explain: "while 两边都穿 -ing：两支镜头同时开。"
+      },
+      {
+        // R8 跨课复现：第 97 课（when 对照）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 97 课学过：你打电话的时候我正在看书。",
+        tokens: ["When", "you", "called,", "I", "was", "reading."],
+        answer: "When you called, I was reading.",
+        explain: "复现第 97 课：when 管打断——今天的 while 管并行。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["While", "I", "was", "reading,", "he", "slept."],
+        wrongToken: "slept.",
+        answer: "slept.",
+        correctionZh: "同时的那件也要穿 -ing：he 【was sleeping】。",
+        explain: "两件同时在，两边都穿外套。"
+      },
+      {
+        // R8 跨课复现：第 34 课（一伙人正做着）
+        kind: "arrange",
+        promptZh: "再对照一句——第 34 课学过：他们当时正在踢足球。",
+        tokens: ["They", "were", "playing", "football."],
+        answer: "They were playing football.",
+        explain: "复现第 34 课：一伙人用 were——零件跟 while 句一样。"
+      },
+      {
+        // R9 变形/替换：换两件事（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「While I was reading, he was sleeping.」把两件换成「我做饭、她看书」，动词怎么变？",
+        replaceBase: "While I was reading, he was sleeping.",
+        replaceTarget: "换成「我做饭那会儿她在看书」",
+        options: ["While I was cooking, she was reading.", "While I was cook, she was read.", "While I cooked, she read."],
+        answer: "While I was cooking, she was reading.",
+        explain: "还是两边都穿 -ing：cooking／reading——外套各穿各的。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：我看书那会儿，他在睡觉。",
+        tokens: ["While", "I", "was", "reading,", "he", "was", "sleeping."],
+        distractors: ["slept"],
+        answer: "While I was reading, he was sleeping."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你看书时他在睡吗？",
+        tokens: ["Was", "he", "sleeping", "while", "you", "were", "reading?"],
+        distractors: ["Did"],
+        answer: "Was he sleeping while you were reading?"
+      },
+      {
+        // 保障句（换两件事）
+        promptZh: "你想说：我做饭那会儿，她在看书。",
+        tokens: ["While", "I", "was", "cooking,", "she", "was", "reading."],
+        distractors: ["cooked"],
+        answer: "While I was cooking, she was reading."
+      },
+      {
+        // R8 跨课复现：第 34 课原句
+        promptZh: "复习第 34 课：他们当时正在踢足球。",
+        tokens: ["They", "were", "playing", "football."],
+        distractors: ["was"],
+        answer: "They were playing football."
+      }
+    ],
+    recall: {
+      promptZh: "小美问你弟弟那会儿在干嘛。凭记忆，写出你那句英文。",
+      intentZh: "我看书那会儿，他在睡觉。",
+      answer: "While I was reading, he was sleeping.",
+      noteZh: "while 两边都穿 -ing——两支镜头同时开。"
+    },
+    huntCaseIds: ["hunt-two-screens"]
+  },
+
+  // ── 第十五批 · L99 电话响的时候（进行 vs 昨天版）：哪件用哪个版本——响是一下子、看是一阵子（批十五 PRD §2）──
+  {
+    id: "lesson-99-when-rang",
+    number: 99,
+    title: "电话响的时候",
+    grammarLabel: "哪件用哪个版本 · 进行 vs 昨天版",
+    episode: "小美的一天 九十九",
+    scene: "mansion",
+    cover: cover27,
+    sceneSetupZh: "故事第五句：电话响的那一下，我正在看书——响是一下子的事。",
+    dialogueEn: "I was reading when the phone rang.",
+    dialogueZh: "小美指了指茶几上的电话。",
+    intentZh: "电话响的时候我正在看书。",
+    targetSentence: "I was reading when the phone rang.",
+    blocks: [
+      { text: "I was reading", role: "我正在看书（一阵子的事）" },
+      { text: "when the phone rang", role: "电话响了（一下子的事）" }
+    ],
+    oneLineRule: "哪件用哪个版本：正在做的一阵子穿 -ing（was reading）、插进来的那一下用昨天版（rang）——响是一下子、看是一阵子。",
+    examples: [
+      { en: "I was reading when the phone rang.", zh: "电话响的时候我正在看书。" },
+      { en: "The phone rang while I was sleeping.", zh: "我睡觉的时候电话响了。" },
+      { en: "When the guests arrived, Jane was cooking dinner.", zh: "客人到的时候，简正在做晚饭。" },
+      { en: "Jane cooked dinner.", zh: "简做了晚饭。（一顿饭的完成）" }
+    ],
+    dialogue: [
+      { who: "npc", en: "When did the phone ring?", zh: "小美指了指茶几上的电话。" },
+      { who: "npc", en: "What were you doing?", zh: "她问你那一下在干嘛。" },
+      { who: "me", en: "I was reading when the phone rang.", zh: "轮到你说了——电话响的时候我正在看书。" }
+    ],
+    contrast: [
+      {
+        wrong: "The phone was ringing while I was sleeping.",
+        wrongMark: "ringing",
+        correct: "The phone rang while I was sleeping.",
+        whyZh: "响是一下子的事：穿 -ing 就成了「一直在响」——像闹钟一样响个不停。一下子的那件用昨天版：rang。"
+      },
+      {
+        wrong: "I was reading when the phone ring.",
+        wrongMark: "ring",
+        correct: "I was reading when the phone rang.",
+        whyZh: "响那一下没换昨天版：ring 是光板，要说 rang——第 10 课的昨天版规矩。"
+      },
+      {
+        wrong: "I was reading when the phone rang.",
+        wrongMark: null,
+        correct: "When the guests arrived, Jane was cooking dinner.",
+        bothRight: true,
+        whyZh: "两句都对——都是「一阵子 + 一下子」的架子：I was reading（一阵子）when the phone rang（一下子）／was cooking（一阵子）when the guests arrived（一下子）。"
+      },
+      {
+        wrong: "It was raining.",
+        wrongMark: null,
+        correct: "I was reading when the phone rang.",
+        bothRight: true,
+        whyZh: "两句都对——第 34 课的老句（当时正下着雨，故事第一句）＋今天的「电话响」：同一本书的两页。"
+      },
+      {
+        wrong: "While I was reading, he was sleeping.",
+        wrongMark: null,
+        correct: "I was reading when the phone rang.",
+        bothRight: true,
+        whyZh: "两句都对——第 98 课 while（两件同时在）＋今天（一件打断另一件）：同与断，两种镜头。"
+      },
+      {
+        wrong: "Yesterday I went to the park.",
+        wrongMark: null,
+        correct: "I was reading when the phone rang.",
+        bothRight: true,
+        whyZh: "两句都对——第 10 课「昨天去了一趟」＋今天「那一下正做着」：都是一下子的事，分工不同。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I was reading when the phone rang.", zh: "电话响的时候我正在看书。", noteZh: "一阵子穿 -ing、一下子用昨天版。" },
+      { label: "否定", en: "I was not reading when the phone rang.", zh: "电话响时我没在看书。", noteZh: "not 跟 was 走。" },
+      { label: "疑问", en: "What were you doing when the phone rang?", zh: "电话响的时候你在干嘛？", noteZh: "Were 搬前面问——第 34 课的问法照旧。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说我睡觉的时候电话响了", en: "The phone rang while I was sleeping.", zh: "我睡觉的时候电话响了。" },
+      { sceneZh: "说客人到的时候简在做晚饭", en: "When the guests arrived, Jane was cooking dinner.", zh: "客人到的时候，简正在做晚饭。" },
+      { sceneZh: "问电话响的时候在干嘛", en: "What were you doing when the phone rang?", zh: "电话响的时候你在干嘛？" }
+    ],
+    deepDive: {
+      title: "响是一下子，看是一阵子",
+      paragraphs: [
+        "同一段回忆里有两种事：一阵子的（正在看书、正在下雨）和一下子的（电话响了、有人敲门）。英文给它们配了不同版本：一阵子穿 -ing（was reading），一下子用昨天版（rang）。",
+        "为什么？因为「响」就是一瞬间——叮铃一声就完了；「看」是一段时间——挂在那里。想象画面：镜头对着看书的你（一阵子），忽然电话铃插进来（一下子）——画面穿 -ing、插进来的用昨天版。",
+        "两种摆法都行：I was reading when the phone rang（先看后响）／The phone rang while I was sleeping（先响后睡）——哪个在前先说哪个。",
+        "别忘了「响」的昨天版是 rang：ring→rang→rung（老词有自己的三件外套）——今天用中间那件。"
+      ]
+    },
+    summary: {
+      rule: "一阵子穿 -ing（was reading）、一下子用昨天版（rang）——I was reading when the phone rang。",
+      points: [
+        "I was reading when the phone rang. —— 一阵子 + 一下子",
+        "The phone rang while I was sleeping. —— 换个顺序也一样",
+        "ring → rang —— 响的昨天版"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：电话响的时候我正在看书。",
+        before: "I was reading when the phone",
+        after: ".",
+        options: ["rang", "ring", "ringing"],
+        answer: "rang",
+        explain: "响是一下子——用昨天版：rang。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：电话响的时候我正在看书。",
+        tokens: ["I", "was", "reading", "when", "the", "phone", "rang."],
+        answer: "I was reading when the phone rang.",
+        explain: "一阵子（was reading）+ 一下子（rang）。"
+      },
+      {
+        // R8 跨课复现：第 98 课（while 对照）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 98 课学过：我看书那会儿，他在睡觉。",
+        tokens: ["While", "I", "was", "reading,", "he", "was", "sleeping."],
+        answer: "While I was reading, he was sleeping.",
+        explain: "复现第 98 课：两件同时在——今天学「一件打断另一件」。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["The", "phone", "was", "ringing", "while", "I", "was", "sleeping."],
+        wrongToken: "ringing",
+        answer: "ringing",
+        correctionZh: "响是一下子：The phone 【rang】 while I was sleeping。",
+        explain: "穿 -ing 就成了「一直在响」。"
+      },
+      {
+        // R8 跨课复现：第 34 课（故事第一句）
+        kind: "arrange",
+        promptZh: "再对照一句——第 34 课学过：三点时我正在画画。",
+        tokens: ["I", "was", "drawing", "at", "three."],
+        answer: "I was drawing at three.",
+        explain: "复现第 34 课：一阵子的画面——今天的「一下子」正好插进来。"
+      },
+      {
+        // R9 变形/替换：换一下子的事（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I was reading when the phone rang.」把「电话响」换成「有人敲门（knock）」，一下子那截怎么变？",
+        replaceBase: "I was reading when the phone rang.",
+        replaceTarget: "把 the phone rang 换成「有人敲门」",
+        options: ["someone knocked", "someone knock", "someone was knocking"],
+        answer: "someone knocked",
+        explain: "敲门也是一下子：knocked——用昨天版（不穿 -ing）。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：电话响的时候我正在看书。",
+        tokens: ["I", "was", "reading", "when", "the", "phone", "rang."],
+        distractors: ["ring"],
+        answer: "I was reading when the phone rang."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：电话响的时候你在干嘛？",
+        tokens: ["What", "were", "you", "doing", "when", "the", "phone", "rang?"],
+        distractors: ["Was"],
+        answer: "What were you doing when the phone rang?"
+      },
+      {
+        // 保障句
+        promptZh: "你想说：我睡觉的时候电话响了。",
+        tokens: ["The", "phone", "rang", "while", "I", "was", "sleeping."],
+        distractors: ["ringing"],
+        answer: "The phone rang while I was sleeping."
+      },
+      {
+        // R8 跨课复现：第 34 课原句
+        promptZh: "复习第 34 课：三点时我正在画画。",
+        tokens: ["I", "was", "drawing", "at", "three."],
+        distractors: ["drew"],
+        answer: "I was drawing at three."
+      }
+    ],
+    recall: {
+      promptZh: "小美指着茶几上的电话问你那一下在干嘛。凭记忆，写出你那句英文。",
+      intentZh: "电话响的时候我正在看书。",
+      answer: "I was reading when the phone rang.",
+      noteZh: "一阵子穿 -ing、一下子用昨天版——rang。"
+    },
+    huntCaseIds: ["hunt-phone-rang"]
+  },
+
+  // ── 第十五批 · L100 从前常这样（讲故事里用 used to）：回讲老习惯——一次去了/那会儿正做着/从前常常 三路对照（批十五 PRD §2）──
+  {
+    id: "lesson-100-used-to-story",
+    number: 100,
+    title: "从前常这样",
+    grammarLabel: "讲故事 · used to 回讲",
+    episode: "小美的一天 一百",
+    scene: "campus",
+    cover: cover37,
+    sceneSetupZh: "故事往回一翻：站在学校老操场边说，从前我常在这儿玩。",
+    dialogueEn: "I used to play here every day.",
+    dialogueZh: "小美望着老操场，眼神跑远了。",
+    intentZh: "从前我天天在这儿玩。",
+    targetSentence: "I used to play here every day.",
+    blocks: [
+      { text: "I used to play here", role: "从前我常在这儿玩" },
+      { text: "every day", role: "天天（从前的常常）" }
+    ],
+    oneLineRule: "讲故事往回翻：从前的习惯用 used to（I used to play here every day）——「一次去了」（went）、「那会儿正做着」（was reading）、「从前常常」（used to）三条路各管一摊。",
+    examples: [
+      { en: "I used to play here every day.", zh: "从前我天天在这儿玩。" },
+      { en: "I used to play here.", zh: "我从前常在这儿玩。（第 93 课）" },
+      { en: "I was reading at eight.", zh: "八点的时候我正在看书。（那一晚）" },
+      { en: "Yesterday I went to the park.", zh: "昨天我去了公园。（那一趟）" }
+    ],
+    dialogue: [
+      { who: "npc", en: "This playground is so old!", zh: "小美望着老操场。" },
+      { who: "npc", en: "Did you play here before?", zh: "她问你家是不是住得近。" },
+      { who: "me", en: "I used to play here every day.", zh: "轮到你说了——从前我天天在这儿玩。" }
+    ],
+    contrast: [
+      {
+        wrong: "I use to play here every day.",
+        wrongMark: "use",
+        correct: "I used to play here every day.",
+        whyZh: "尾巴上少了 d：used to——「从前常常」的老记号不能丢。"
+      },
+      {
+        wrong: "I used to playing here every day.",
+        wrongMark: "playing",
+        correct: "I used to play here every day.",
+        whyZh: "used to 后面跟原形：play——它不认 -ing 外套（跟 want to travel 一个规矩）。"
+      },
+      {
+        wrong: "I was reading at eight.",
+        wrongMark: null,
+        correct: "I used to play here every day.",
+        bothRight: true,
+        whyZh: "两句都对——说那一晚「正做着」（was reading）vs 说从前「常常」（used to）：两个「过去」各管一摊、不打架。"
+      },
+      {
+        wrong: "Yesterday I went to the park.",
+        wrongMark: null,
+        correct: "I used to play here every day.",
+        bothRight: true,
+        whyZh: "两句都对——「昨天去了一趟」（went）＋「从前天天」（used to）：一次去了 vs 从前常常。"
+      },
+      {
+        wrong: "I didn't use to play here.",
+        wrongMark: null,
+        correct: "I used to play here every day.",
+        bothRight: true,
+        whyZh: "两句都对——第 93 课的反面（从前不常来）＋今天的正面：d 跟着前面的帮手走，两种都说得出。"
+      },
+      {
+        wrong: "I always arrive early.",
+        wrongMark: null,
+        correct: "I used to play here every day.",
+        bothRight: true,
+        whyZh: "两句都对——第 28 课「现在的常常」（always）＋今天「从前的常常」（used to）：一个现在、一个从前。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I used to play here every day.", zh: "从前我天天在这儿玩。", noteZh: "used to——从前常常、现在不这样了。" },
+      { label: "否定", en: "I didn't use to play here.", zh: "从前我不常在这儿玩。", noteZh: "否定用 didn't——d 跟着帮手走。" },
+      { label: "疑问", en: "Did you use to play here?", zh: "你从前常在这儿玩吗？", noteZh: "问句 Did 站句首——use 不带 d。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说我从前常在这儿玩（第 93 课老句）", en: "I used to play here.", zh: "我从前常在这儿玩。" },
+      { sceneZh: "说八点那会儿正在看书", en: "I was reading at eight.", zh: "八点的时候我正在看书。" },
+      { sceneZh: "说昨天去了公园", en: "Yesterday I went to the park.", zh: "昨天我去了公园。" }
+    ],
+    deepDive: {
+      title: "三条说过去的路，今天凑齐了",
+      paragraphs: [
+        "这一章你攒了三条说过去的路：那一次去了（I went to the park，一趟做完）、那会儿正做着（I was reading at eight，画面停住）、从前常常（I used to play here every day，一段时期的习惯）。",
+        "今天的主角是第三条：讲故事往回翻的时候，用 used to 说「那时候的日常」——从前天天在这儿玩、从前常去那家店。它和现在对照着听：从前这样、现在不这样了。",
+        "「从前常常」和「现在常常」也要分清：现在每天还在做，用 every day 配现在版（I play here every day）；从前才这样，用 used to（I used to play here every day）——同一个 every day，动词的版本不一样。",
+        "三条路走到这儿，你讲故事的底子就有了：先铺背景（It was raining）、说被什么打断（when the phone rang）、聊从前的习惯（I used to…）——昨天的故事，你能从头讲到尾了。"
+      ]
+    },
+    summary: {
+      rule: "讲故事往回翻：从前的习惯用 used to（I used to play here every day）——一次去了/那会儿正做着/从前常常，三条路各管一摊。",
+      points: [
+        "I used to play here every day. —— 从前的常常",
+        "I went there. ／ I was reading. —— 一次 vs 一阵",
+        "I used to play here. ／ I play here every day. —— 从前 vs 现在"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：从前我天天在这儿玩。",
+        before: "I",
+        after: "here every day.",
+        options: ["used to play", "use to play", "used to playing"],
+        answer: "used to play",
+        explain: "used to + 原形：d 不丢、外套不穿。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：从前我天天在这儿玩。",
+        tokens: ["I", "used", "to", "play", "here", "every", "day."],
+        answer: "I used to play here every day.",
+        explain: "used to + 原形——说从前的常常。"
+      },
+      {
+        // R8 跨课复现：第 93 课（老句）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 93 课学过：我从前常在这儿玩。",
+        tokens: ["I", "used", "to", "play", "here."],
+        answer: "I used to play here.",
+        explain: "复现第 93 课：老句——今天把它放回故事里说。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "use", "to", "play", "here", "every", "day."],
+        wrongToken: "use",
+        answer: "use",
+        correctionZh: "尾巴上补个 d：I 【used】 to play here every day。",
+        explain: "「从前常常」的老记号不能丢。"
+      },
+      {
+        // R8 跨课复现：第 10 课（一次去了）
+        kind: "arrange",
+        promptZh: "再对照一句——第 10 课学过：昨天我去了公园。",
+        tokens: ["Yesterday", "I", "went", "to", "the", "park."],
+        answer: "Yesterday I went to the park.",
+        explain: "复现第 10 课：「去了一趟」——三条路的第一条。"
+      },
+      {
+        // R9 变形/替换：换习惯（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I used to play here every day.」把「玩」换成「读书（read）」，后半截怎么变？",
+        replaceBase: "I used to play here every day.",
+        replaceTarget: "把 play here 换成「天天晚上读书」",
+        options: ["read at night", "reading at night", "read at night every day"],
+        answer: "read at night",
+        explain: "used to 后面跟原形：read——「从前的常常」换个习惯照样说。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：从前我天天在这儿玩。",
+        tokens: ["I", "used", "to", "play", "here", "every", "day."],
+        distractors: ["use"],
+        answer: "I used to play here every day."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：你从前常在这儿玩吗？",
+        tokens: ["Did", "you", "use", "to", "play", "here?"],
+        distractors: ["used"],
+        answer: "Did you use to play here?"
+      },
+      {
+        // 保障句（cloze 落 used——正中考点）
+        promptZh: "你想说：我从前常晚上读书。",
+        tokens: ["I", "used", "to", "read", "at", "night."],
+        distractors: ["use"],
+        answer: "I used to read at night."
+      },
+      {
+        // R8 跨课复现：第 10 课原句
+        promptZh: "复习第 10 课：昨天我去了公园。",
+        tokens: ["Yesterday", "I", "went", "to", "the", "park."],
+        distractors: ["go"],
+        answer: "Yesterday I went to the park."
+      }
+    ],
+    recall: {
+      promptZh: "站在学校老操场边，小美问你家是不是住得近。凭记忆，写出你那句英文。",
+      intentZh: "从前我天天在这儿玩。",
+      answer: "I used to play here every day.",
+      noteZh: "used to——从前的常常；d 不丢、外套不穿。"
+    },
+    huntCaseIds: ["hunt-old-habit"]
+  },
+
+  // ── 第十五批 · L101 讲故事（跨课混排 · 半收口）：一句接一句串成小故事——then 认读（批十五 PRD §2）──
+  {
+    id: "lesson-101-tell-story",
+    number: 101,
+    title: "讲故事",
+    grammarLabel: "一句接一句 · 混排（then 认读）",
+    episode: "小美的一天 一百零一",
+    scene: "sparkle",
+    cover: cover38,
+    sceneSetupZh: "把前六课各一句串成一个完整的小故事——昨晚八点那个电话，一句接一句说起来。",
+    dialogueEn: "I was reading. It was raining. When you called, I was reading.",
+    dialogueZh: "小美撑着下巴，眼睛看着半空，一句一句把昨晚摆出来。",
+    intentZh: "我在看书。外面下着雨。你打电话时我正在看书。",
+    targetSentence: "I was reading. It was raining. When you called, I was reading.",
+    blocks: [
+      { text: "I was reading.", role: "我在看书（画面开场）" },
+      { text: "It was raining.", role: "外面下着雨（背景铺上）" },
+      { text: "When you called, …", role: "你打电话的时候…（事情来了）" }
+    ],
+    oneLineRule: "讲故事：一句接一句——先摆画面（I was reading），再铺背景（It was raining），最后让事情插进来（When you called）——中间可以用 then 接上（认读）。",
+    examples: [
+      { en: "I was reading. It was raining.", zh: "我在看书。外面下着雨。" },
+      { en: "Then you called.", zh: "然后你打电话来了。（then 认读）" },
+      { en: "When you called, I was reading.", zh: "你打电话的时候我正在看书。" },
+      { en: "I used to play here.", zh: "我从前常在这儿玩。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "Tell me about last night.", zh: "小美撑着下巴，眼睛看着半空。" },
+      { who: "npc", en: "One sentence at a time.", zh: "她摆了摆手：一句一句来。" },
+      { who: "me", en: "I was reading. It was raining. When you called, I was reading.", zh: "轮到你了——把昨晚摆出来。" }
+    ],
+    contrast: [
+      {
+        wrong: "I was read at eight.",
+        wrongMark: "read",
+        correct: "I was reading at eight.",
+        whyZh: "第 95 课回流：一阵子的事要穿 -ing——was reading。"
+      },
+      {
+        wrong: "When you called, I read a book.",
+        wrongMark: "read",
+        correct: "When you called, I was reading.",
+        whyZh: "第 97 课回流：被电话打断的正做着要穿 -ing——was reading。"
+      },
+      {
+        wrong: "I was reading. Then you called.",
+        wrongMark: null,
+        correct: "When you called, I was reading.",
+        bothRight: true,
+        whyZh: "两种说都对——分开两句说（Then you called，then 是「然后」）和合成一句说（When you called, …）：一个意思。"
+      },
+      {
+        wrong: "It was raining.",
+        wrongMark: null,
+        correct: "I was reading at eight.",
+        bothRight: true,
+        whyZh: "两句都对——本批的两句老熟人：第 95 课（八点在看）＋第 96 课（下着雨）——故事的开场两句。"
+      },
+      {
+        wrong: "While I was reading, he was sleeping.",
+        wrongMark: null,
+        correct: "When you called, I was reading.",
+        bothRight: true,
+        whyZh: "两句都对——第 98 课 while（两件同时在）＋第 97 课 when（一件插进来）：两种镜头。"
+      },
+      {
+        wrong: "Yesterday I went to the park.",
+        wrongMark: null,
+        correct: "I used to play here.",
+        bothRight: true,
+        whyZh: "两句都对——第 10 课「一次去了」＋第 93/100 课「从前常常」：说过去的两条路。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I was reading. It was raining. When you called, I was reading.", zh: "我在看书。下着雨。你打电话时我在看书。", noteZh: "一句接一句——画面、背景、事情。" },
+      { label: "否定", en: "I was not reading at eight.", zh: "八点我没在看书。", noteZh: "not 跟 was 走。" },
+      { label: "疑问", en: "What were you doing when I called?", zh: "我打电话时你在干嘛？", noteZh: "Were 搬前面问。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说八点那会儿正在看书", en: "I was reading at eight.", zh: "八点的时候我正在看书。" },
+      { sceneZh: "说外面正下着雨（背景）", en: "It was raining.", zh: "当时正下着雨。" },
+      { sceneZh: "说从前常在这儿玩（往回翻）", en: "I used to play here.", zh: "我从前常在这儿玩。" }
+    ],
+    deepDive: {
+      title: "故事的顺序：画面 → 背景 → 事情",
+      paragraphs: [
+        "讲故事有顺序：先把镜头对准一处画面（I was reading，我在看书），再把背景铺上（It was raining，外面下着雨），最后让事情插进来（When you called，你打电话的时候）——听众脑子里就有画面了。",
+        "句子之间可以用 then（然后）接上：I was reading. Then you called.（我在看书。然后你打电话来了。）——then 是讲故事的小帮手，今天只认读，混个脸熟。",
+        "往回翻还有一条路：I used to play here（从前常在这儿玩）——讲到从前的事，用它。",
+        "这一章的工具箱到这儿齐了：一阵子的事（was reading）、一下子的插曲（rang）、两件同时在（while）、从前的习惯（used to）——讲昨天、讲从前，你都有词用。"
+      ]
+    },
+    summary: {
+      rule: "讲故事的顺序：先摆画面（I was reading）→ 铺背景（It was raining）→ 事情插进来（When you called）——then 是连接词（认读）。",
+      points: [
+        "I was reading. It was raining. Then you called. —— 一句接一句",
+        "When you called, I was reading. —— 合起来说也一样",
+        "was reading ／ rang ／ while ／ used to —— 工具箱齐了"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：八点那会儿我在看书。（一阵子的事）",
+        before: "I",
+        after: "at eight.",
+        options: ["was reading", "read", "was read"],
+        answer: "was reading",
+        explain: "一阵子的事穿 -ing：was reading。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：外面正下着雨。（背景）",
+        tokens: ["It", "was", "raining."],
+        answer: "It was raining.",
+        explain: "背景句：It was raining。"
+      },
+      {
+        // R8 跨课复现：第 100 课（往回翻）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 100 课学过：从前我天天在这儿玩。",
+        tokens: ["I", "used", "to", "play", "here", "every", "day."],
+        answer: "I used to play here every day.",
+        explain: "复现第 100 课：从前的常常——讲故事往回翻就用它。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["I", "was", "read", "at", "eight."],
+        wrongToken: "read",
+        answer: "read",
+        correctionZh: "一阵子的事要穿 -ing：I was 【reading】 at eight。",
+        explain: "第 95 课的老规矩。"
+      },
+      {
+        // R8 跨课复现：第 34 课（老句）
+        kind: "arrange",
+        promptZh: "再对照一句——第 34 课学过：三点时我正在画画。",
+        tokens: ["I", "was", "drawing", "at", "three."],
+        answer: "I was drawing at three.",
+        explain: "复现第 34 课：同一套零件——画面随时可以换。"
+      },
+      {
+        // R9 变形/替换：接上 then（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I was reading.」后面想用 then 接「你打电话来了」，接上哪一截？",
+        replaceBase: "I was reading.",
+        replaceTarget: "用 then 接「你打电话来了」",
+        options: ["Then you called.", "Then you call.", "You then called."],
+        answer: "Then you called.",
+        explain: "then 站句首接上：Then you called——然后你打来了（called 是昨天版）。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：八点那会儿我在看书。",
+        tokens: ["I", "was", "reading", "at", "eight."],
+        distractors: ["read"],
+        answer: "I was reading at eight."
+      },
+      {
+        // R06 变体扩量：与 variants 疑问卡逐字一致的疑问变体题
+        promptZh: "你想问：我打电话时你在干嘛？",
+        tokens: ["What", "were", "you", "doing", "when", "I", "called?"],
+        distractors: ["Was"],
+        answer: "What were you doing when I called?"
+      },
+      {
+        // 保障句（cloze 落 raining——实词兜底）
+        promptZh: "你想说：八点那会儿正下着雨。",
+        tokens: ["It", "was", "raining", "at", "eight."],
+        distractors: ["rain"],
+        answer: "It was raining at eight."
+      },
+      {
+        // R8 跨课复现：第 97 课原句
+        promptZh: "复习第 97 课：你打电话的时候我正在看书。",
+        tokens: ["When", "you", "called,", "I", "was", "reading."],
+        distractors: ["read"],
+        answer: "When you called, I was reading."
+      }
+    ],
+    recall: {
+      promptZh: "小美让你把昨晚一句一句摆出来。凭记忆，写出你那句英文。",
+      intentZh: "你打电话的时候我正在看书。",
+      answer: "When you called, I was reading.",
+      noteZh: "事情插进来用 when——正做着穿 -ing。"
+    },
+    huntCaseIds: ["hunt-story-parts"]
+  },
+
+  // ── 第十五批 · L102 昨天那个电话（章末收口 · 零新知）：电话故事收口——大团圆（批十五 PRD §2）──
+  {
+    id: "lesson-102-phone-story",
+    number: 102,
+    title: "昨天那个电话",
+    grammarLabel: "收口 · 大团圆（零新知）",
+    episode: "小美的一天 一百零二",
+    scene: "mansion",
+    cover: cover40,
+    sceneSetupZh: "电话故事收口：从「昨晚八点」到「从前的操场」——把这条电话线一次说完。",
+    dialogueEn: "I was reading at eight. It was raining. When you called, I was reading.",
+    dialogueZh: "小美把电话记录本合上，往椅背一靠，笑了。",
+    intentZh: "八点我在看书。下着雨。你打电话时我正在看书。",
+    targetSentence: "I was reading at eight. It was raining. When you called, I was reading.",
+    blocks: [
+      { text: "I was reading at eight.", role: "八点在看（开场）" },
+      { text: "It was raining.", role: "下着雨（背景）" },
+      { text: "When you called, …", role: "电话来了（事情）" }
+    ],
+    oneLineRule: "把这一章的话一次说完：八点在看书、外面下着雨、电话打进来、弟弟在睡、从前常在这儿玩——一条线讲到底。",
+    examples: [
+      { en: "I was reading at eight.", zh: "八点的时候我正在看书。" },
+      { en: "It was raining.", zh: "当时正下着雨。" },
+      { en: "I was reading when the phone rang.", zh: "电话响的时候我正在看书。" },
+      { en: "I used to play here.", zh: "我从前常在这儿玩。" }
+    ],
+    dialogue: [
+      { who: "npc", en: "So that was last night!", zh: "小美把电话记录本合上。" },
+      { who: "npc", en: "And before?", zh: "她往椅背一靠，笑着问：那再往前呢。" },
+      { who: "me", en: "I was reading at eight. It was raining. When you called, I was reading.", zh: "轮到你说了——把昨晚摆出来。" }
+    ],
+    contrast: [
+      {
+        wrong: "It was rain.",
+        wrongMark: "rain",
+        correct: "It was raining.",
+        whyZh: "第 96 课回流：背景句的动作要穿 -ing——It was raining。"
+      },
+      {
+        wrong: "While I was reading, he slept.",
+        wrongMark: "slept",
+        correct: "While I was reading, he was sleeping.",
+        whyZh: "第 98 课回流：两件同时在，两边都穿 -ing——he was sleeping。"
+      },
+      {
+        wrong: "I use to play here.",
+        wrongMark: "use",
+        correct: "I used to play here.",
+        whyZh: "第 100 课回流：从前的常常要带 d——used to。"
+      },
+      {
+        wrong: "I was reading when the phone rang.",
+        wrongMark: null,
+        correct: "I was reading at eight.",
+        bothRight: true,
+        whyZh: "两句都对——第 99 课（电话响那一下）＋第 95 课（八点在看）：同一段回忆的两个镜头。"
+      },
+      {
+        wrong: "When you called, I was reading.",
+        wrongMark: null,
+        correct: "I was reading when the phone rang.",
+        bothRight: true,
+        whyZh: "两句都对——第 97 课 when 在前＋第 99 课 when 在后：同一个架子，倒过来也成。"
+      },
+      {
+        wrong: "I didn't use to play here.",
+        wrongMark: null,
+        correct: "I used to play here.",
+        bothRight: true,
+        whyZh: "两句都对——第 93 课的反面（从前不常）＋正面（从前常常）：d 跟着帮手走。"
+      }
+    ],
+    variants: [
+      { label: "肯定", en: "I was reading at eight. It was raining.", zh: "八点我在看书。外面下着雨。", noteZh: "开场 + 背景，一句接一句。" },
+      { label: "否定", en: "It was not raining.", zh: "那时没下雨。", noteZh: "not 跟 was 走。" },
+      { label: "疑问", en: "Were you reading when I called?", zh: "我打电话时你在看书吗？", noteZh: "Were 搬句首问。" }
+    ],
+    sceneSwings: [
+      { sceneZh: "说八点那会儿正在看书", en: "I was reading at eight.", zh: "八点的时候我正在看书。" },
+      { sceneZh: "说电话响时正在看书", en: "I was reading when the phone rang.", zh: "电话响的时候我正在看书。" },
+      { sceneZh: "说从前常在这儿玩（全章收口）", en: "I used to play here.", zh: "我从前常在这儿玩。" }
+    ],
+    deepDive: {
+      title: "大章倒带：讲故事的整套本事",
+      paragraphs: [
+        "这一章八课，你把「讲故事」的整套本事拿下了：画面（I was reading at eight）、背景（It was raining）、被什么打断（When you called／the phone rang）、两件同时在（While I was reading, he was sleeping）、从前的习惯（I used to play here）。",
+        "工具箱里最重要的一条判据：一阵子的事穿 -ing（was reading、was raining）、一下子的事用昨天版（rang、called）——讲故事的节奏就靠它。",
+        "第 34 课埋的伏笔今天全兑现了：当时那句「过去进行最常用的场景之一是讲故事背景」，你听懂了；今天你不光懂，还能把整段故事讲出来。",
+        "最后一页别忘了往回翻：I used to play here（从前常在这儿玩）——故事讲完，再往前聊两句从前，一个电话的晚上就这么说圆了。"
+      ]
+    },
+    summary: {
+      rule: "讲故事的整套本事：画面（was reading）+ 背景（was raining）+ 打断（rang／called）+ 同时（while）+ 从前（used to）。",
+      points: [
+        "I was reading at eight. It was raining. —— 开场 + 背景",
+        "I was reading when the phone rang. —— 电话打断",
+        "I used to play here. —— 往前翻：从前的常常"
+      ]
+    },
+    guided: [
+      {
+        kind: "choose",
+        promptZh: "你想说：八点那会儿我在看书。",
+        before: "I was",
+        after: "at eight.",
+        options: ["reading", "read", "rain"],
+        answer: "reading",
+        explain: "一阵子的事穿 -ing：was reading。"
+      },
+      {
+        kind: "arrange",
+        promptZh: "你想说：电话响的时候我正在看书。",
+        tokens: ["I", "was", "reading", "when", "the", "phone", "rang."],
+        answer: "I was reading when the phone rang.",
+        explain: "一阵子（was reading）+ 一下子（rang）。"
+      },
+      {
+        // R8 跨课复现：第 100 课（从前的常常）
+        kind: "arrange",
+        promptZh: "先复习一小步——第 100 课学过：从前我天天在这儿玩。",
+        tokens: ["I", "used", "to", "play", "here", "every", "day."],
+        answer: "I used to play here every day.",
+        explain: "复现第 100 课：从前的常常——故事说完往回翻。"
+      },
+      {
+        kind: "spot",
+        promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？",
+        tokens: ["It", "was", "rain."],
+        wrongToken: "rain",
+        answer: "rain",
+        correctionZh: "背景句的动作穿 -ing：It was 【raining】。",
+        explain: "第 96 课的老规矩。"
+      },
+      {
+        // R8 跨课复现：第 98 课（同时）
+        kind: "arrange",
+        promptZh: "再对照一句——第 98 课学过：我看书那会儿，他在睡觉。",
+        tokens: ["While", "I", "was", "reading,", "he", "was", "sleeping."],
+        answer: "While I was reading, he was sleeping.",
+        explain: "复现第 98 课：两件同时在——工具箱的最后一件。"
+      },
+      {
+        // R9 变形/替换：换开场（构造迁移，复用 choose 判题）
+        kind: "replace",
+        promptZh: "句子变身：「I was reading at eight.」把「八点」换成「昨晚（last night）」，句子怎么变？",
+        replaceBase: "I was reading at eight.",
+        replaceTarget: "把 at eight 换成 last night",
+        options: ["I was reading last night.", "I read last night.", "I was read last night."],
+        answer: "I was reading last night.",
+        explain: "换个时间词：last night——was reading 照旧。"
+      }
+    ],
+    practice: [
+      {
+        promptZh: "你想说：八点那会儿我在看书。",
+        tokens: ["I", "was", "reading", "at", "eight."],
+        distractors: ["read"],
+        answer: "I was reading at eight."
+      },
+      {
+        // R06 变体扩量：与 variants 否定卡逐字一致的否定变体题
+        promptZh: "你想说：那时没下雨。",
+        tokens: ["It", "was", "not", "raining."],
+        distractors: ["no"],
+        answer: "It was not raining."
+      },
+      {
+        // R8 跨课复现：第 96 课原句
+        promptZh: "复习第 96 课：当时正下着雨。",
+        tokens: ["It", "was", "raining."],
+        distractors: ["rain"],
+        answer: "It was raining."
+      },
+      {
+        // 章末收官惯例：复现第 99 课原句
+        promptZh: "全批收官——复习第 99 课：电话响的时候我正在看书。",
+        tokens: ["I", "was", "reading", "when", "the", "phone", "rang."],
+        distractors: ["ring"],
+        answer: "I was reading when the phone rang."
+      }
+    ],
+    recall: {
+      promptZh: "电话故事收口——小美往椅背一靠，让你把昨晚一次说完。凭记忆，写出你那句英文。",
+      intentZh: "八点我在看书。下着雨。你打电话时我正在看书。",
+      answer: "I was reading at eight. It was raining. When you called, I was reading.",
+      noteZh: "画面 → 背景 → 事情：一条线讲到底。"
+    },
+    huntCaseIds: ["hunt-phone-story"]
   }
 ];
 

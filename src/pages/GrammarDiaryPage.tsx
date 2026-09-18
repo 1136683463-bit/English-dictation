@@ -1,5 +1,5 @@
 import { BookOpen, CalendarDays, PencilLine, Sparkles } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
@@ -87,6 +87,34 @@ export default function GrammarDiaryPage() {
   const entries = useMemo(() => listDiaryEntries(data), [data]);
   const summary = useMemo(() => summarizeDiaryProgress(data), [data]);
   const aiReady = data.settings.aiProvider.enabled;
+
+  // 2026-09-17 排版优化（二）：历史列表由「整页向下堆叠」改为「定高滚动区」——
+  // 条目再多页面高度恒定，列表在框内滚动（照错词本侧栏 mb-date-list 的既有先例）。
+  // 可见条数仍按 20 递增做渲染护栏，滚动到列表底部可「加载更多」。
+  const historyListRef = useRef<HTMLDivElement | null>(null);
+  const [historyEdges, setHistoryEdges] = useState({ top: false, bottom: false });
+  const [visibleHistoryCount, setVisibleHistoryCount] = useState(20);
+
+  useEffect(() => {
+    const list = historyListRef.current;
+    if (!list) return;
+    const sync = () => {
+      const scrollable = list.scrollHeight > list.clientHeight + 2;
+      const next = {
+        top: scrollable && list.scrollTop > 4,
+        bottom: scrollable && list.scrollTop + list.clientHeight < list.scrollHeight - 4
+      };
+      setHistoryEdges((prev) => (prev.top === next.top && prev.bottom === next.bottom ? prev : next));
+    };
+    sync();
+    list.addEventListener("scroll", sync, { passive: true });
+    const observer = new ResizeObserver(sync);
+    observer.observe(list);
+    return () => {
+      list.removeEventListener("scroll", sync);
+      observer.disconnect();
+    };
+  }, [entries.length, visibleHistoryCount]);
 
   const updateDraft = (questionId: string, patch: Partial<DraftState>) => {
     setDrafts((current) => ({
@@ -358,6 +386,14 @@ export default function GrammarDiaryPage() {
             <span className="eyebrow">History</span>
             <h2>以前写下的句子</h2>
           </div>
+          {/* 2026-09-17 排版优化：显式计数——不再静默丢弃 20 条以外的日记 */}
+          {entries.length > 0 && (
+            <span className="diary-history-count">
+              {entries.length > visibleHistoryCount
+                ? `共 ${entries.length} 条 · 显示最近 ${visibleHistoryCount} 条`
+                : `共 ${entries.length} 条`}
+            </span>
+          )}
         </div>
 
         {entries.length === 0 ? (
@@ -366,8 +402,10 @@ export default function GrammarDiaryPage() {
             description="上面挑一个你最有感觉的问题，写三个词也可以。30 天后回头看，你会吓一跳。"
           />
         ) : (
-          <div className="diary-entry-list">
-            {entries.slice(0, 20).map((entry: DiaryEntry) => (
+          <div className="diary-entry-list" ref={historyListRef}>
+            {/* 定高滚动区：两端渐隐提示（照错词本 mb-date-fade 先例，仅可滚动且未到端时出现） */}
+            <span className={`diary-history-fade top${historyEdges.top ? " on" : ""}`} aria-hidden="true" />
+            {entries.slice(0, visibleHistoryCount).map((entry: DiaryEntry) => (
               <article className="diary-entry-card" key={entry.id}>
                 <div className="diary-entry-head">
                   <span className="diary-entry-date">
@@ -401,6 +439,17 @@ export default function GrammarDiaryPage() {
                 </div>
               </article>
             ))}
+            {/* 加载更多：渲染护栏（列表已在定高框内滚动，追加不改变页面高度） */}
+            {entries.length > visibleHistoryCount && (
+              <button
+                type="button"
+                className="diary-history-more"
+                onClick={() => setVisibleHistoryCount((count) => count + 20)}
+              >
+                加载更多（还有 {entries.length - visibleHistoryCount} 条）
+              </button>
+            )}
+            <span className={`diary-history-fade bottom${historyEdges.bottom ? " on" : ""}`} aria-hidden="true" />
           </div>
         )}
       </section>

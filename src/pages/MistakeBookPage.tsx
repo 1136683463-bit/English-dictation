@@ -9,7 +9,6 @@ import {
   MbCalendarCheck,
   MbCheck,
   MbCopy,
-  MbExamples,
   MbMastered,
   MbPencil,
   MbRefresh,
@@ -22,7 +21,6 @@ import LetterDiffView from "../components/LetterDiffView";
 import PageHeader from "../components/PageHeader";
 import {
   aiService,
-  buildMistakeExamplesPrompt,
   buildStructuredMistakeStoryPrompt,
   MistakeGenerationWord,
   StoryLength,
@@ -42,7 +40,7 @@ import {
 } from "../services/mistakeBookService";
 import { DictionaryEntry, LetterDiffToken, MistakeGeneration, MistakeGenerationStoryWordNote, MistakeGenerationWordSnapshot, Review } from "../types";
 
-type GenerationStatus = "idle" | "examples" | "story";
+type GenerationStatus = "idle" | "story";
 type MasteryStatus = "pending" | "improving" | "mastered" | "stubborn";
 type MistakeFilter = "all" | "pending" | "stubborn" | "unmastered";
 type MistakeSort = "priority" | "wrongCount" | "recent" | "alphabetical";
@@ -470,9 +468,6 @@ export default function MistakeBookPage() {
     return generation.cardIds.slice().sort().join("|") === storySourceCardKey;
   })) : undefined;
   const hasStoryForCurrentSource = Boolean(currentSourceStory);
-  const lowerGenerations = currentSourceStory
-    ? generations.filter((generation) => generation.id !== currentSourceStory.id)
-    : generations;
   const storySettingsSummary = [
     storyLevel,
     getOptionLabel(storySceneOptions, storyScene),
@@ -516,7 +511,7 @@ export default function MistakeBookPage() {
     setPendingStoryFocusId("");
   }, [pendingStoryFocusId, expandedGenerationIds, generations]);
 
-  const generate = async (type: Exclude<GenerationStatus, "idle">, sourceEntries = visibleEntries) => {
+  const generate = async (type: Extract<GenerationStatus, "story">, sourceEntries = visibleEntries) => {
     if (!selectedGroup || sourceEntries.length === 0 || generationStatus !== "idle") return;
 
     setGenerationStatus(type);
@@ -524,24 +519,6 @@ export default function MistakeBookPage() {
 
     try {
       const words = buildGenerationWords(sourceEntries);
-      if (type === "examples") {
-        const input = { dateKey: selectedGroup.dateKey, words, level: storyLevel };
-        const prompt = buildMistakeExamplesPrompt(input);
-        const content = await aiService.generateMistakeExamples(input);
-
-        await updateDataAsync(async (current) => ({
-          data: saveMistakeGeneration(current, {
-          dateKey: selectedGroup.dateKey,
-          type,
-          cardIds: sourceEntries.map((entry) => entry.card.id),
-          title: `${selectedGroup.label}错词例句`,
-          content,
-          prompt
-          })
-        }));
-        return;
-      }
-
       const input = {
         dateKey: selectedGroup.dateKey,
         words,
@@ -977,7 +954,7 @@ export default function MistakeBookPage() {
       <PageHeader
         eyebrow="Mistake Book"
         title={todayGroup ? `今天 ${todayGroup.mistakeCount} 个错词` : "错词本"}
-        description={todayGroup ? `今天已记录 ${todayGroup.attemptCount} 次错误，先处理未掌握词，再生成例句或故事巩固。` : "按日期复盘错词，快速重练，并把当天错词生成例句或英文小故事。"}
+        description={todayGroup ? `今天已记录 ${todayGroup.attemptCount} 次错误，先处理未掌握词，再生成小故事巩固。` : "按日期复盘错词，快速重练，并把当天错词生成英文小故事。"}
         action={
           <div className="mb-header-actions">
             <button type="button" className="secondary-button compact-button" onClick={handleSyncMistakeBook}>
@@ -1043,7 +1020,7 @@ export default function MistakeBookPage() {
             <span className="mb-stat-label">已生成</span>
           </header>
           <strong>{data.mistakeGenerations.length}</strong>
-          <small>用例句和故事让记忆更牢固</small>
+          <small>用小故事让记忆更牢固</small>
         </article>
       </section>
 
@@ -1109,9 +1086,12 @@ export default function MistakeBookPage() {
             {generationError && <p className="mistake-generation-error" role="alert">{generationError}</p>}
             <div className="mb-story" aria-label="错词故事生成器">
               <div className="mb-story-head">
-                <div>
-                  <span className="eyebrow"><MbStory size={13} />Story Builder</span>
-                  <h3>错词小故事</h3>
+                <div className="mb-story-head-main">
+                  <span className="mb-story-head-icon" aria-hidden="true"><MbStory size={22} /></span>
+                  <div>
+                    <span className="eyebrow"><MbStory size={13} />Story Builder</span>
+                    <h3>错词小故事</h3>
+                  </div>
                 </div>
                 <button
                   type="button"
@@ -1126,6 +1106,21 @@ export default function MistakeBookPage() {
               <p className="mb-story-summary">
                 {storySourceLabel}：{storySourceEntries.length} 个词 · {storySettingsSummary}
               </p>
+              {!hasStoryForCurrentSource && storySourceEntries.length > 0 && (
+                <div className="mb-story-invite">
+                  <p className="mb-story-invite-text">
+                    还没开始 —— 用这 {storySourceEntries.length} 个错词，生成一个属于你的英文小故事。
+                  </p>
+                  <div className="mb-story-invite-words" aria-label="故事将使用的错词">
+                    {storySourceEntries.slice(0, 8).map((entry) => (
+                      <span key={`invite-${entry.card.id}`}>{entry.card.front}</span>
+                    ))}
+                    {storySourceEntries.length > 8 && (
+                      <span className="more">+{storySourceEntries.length - 8}</span>
+                    )}
+                  </div>
+                </div>
+              )}
               {storySettingsOpen && (
                 <div className="mistake-story-settings-body">
                   <div className="mistake-story-source" role="group" aria-label="故事词源">
@@ -1201,12 +1196,6 @@ export default function MistakeBookPage() {
                       />
                       <span>中文翻译</span>
                     </label>
-                  </div>
-                  <div className="mistake-story-secondary-actions">
-                    <button className="text-button" type="button" onClick={() => generate("examples")} disabled={generationStatus !== "idle" || visibleEntries.length === 0}>
-                      {generationStatus === "examples" ? <MbRefresh size={15} /> : <MbExamples size={15} />}
-                      生成当前例句
-                    </button>
                   </div>
                 </div>
               )}
@@ -1346,25 +1335,6 @@ export default function MistakeBookPage() {
                 );
               })}
             </div>
-          </section>
-
-          <section className="ui-surface mb-gen-panel">
-            <div className="ui-section-head">
-              <div>
-                <span className="eyebrow">Generated</span>
-                <h2>生成内容</h2>
-              </div>
-              <span className="ui-quiet">{generations.length} 条</span>
-            </div>
-            {generations.length === 0 ? (
-              <p className="muted mb-gen-empty">还没有为这一天生成内容。可以先生成逐词例句，再把全部错词串成一个英文小故事。</p>
-            ) : lowerGenerations.length === 0 ? (
-              <p className="muted mb-gen-empty">当前故事已显示在上方 Story Builder 下方。</p>
-            ) : (
-              <div className="mistake-generation-list">
-                {lowerGenerations.map((generation) => renderGenerationCard(generation))}
-              </div>
-            )}
           </section>
         </div>
       </section>

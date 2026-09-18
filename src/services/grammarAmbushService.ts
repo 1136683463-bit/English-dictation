@@ -149,15 +149,65 @@ export interface RevisitQuestion {
   rebuildTokens?: string[];
 }
 
-/** 抽句子的「语法关键词」做 cloze 空位：优先 be 动词/助动词/谓语动词（本课语法点所在），抽不到用第 2 词。 */
+/**
+ * 抽句子的「语法关键词」做 cloze 空位：优先 be 动词/助动词/谓语动词（本课语法点所在）。
+ *
+ * R-B8 扩容（2026-09-18）：词表从 24 词扩到 60+ 词，覆盖批七–批十一的关键词
+ * （被动 be + 分词、情态 could/would/should、as…as 比较、too…to、enough、
+ * Would you mind、How often / How long does it take、Let me / Let's、How about 等）。
+ * 未命中时不再一律退化为「抽第 2 词」——先试实词（长度 ≥3 且非停用词），最后才回退第 2 词。
+ */
+const GRAMMAR_WORDS = new RegExp(
+  "^(" +
+    [
+      // be 动词全变位（含被动）
+      "am", "is", "are", "was", "were", "be", "been", "being",
+      // 助动词与情态
+      "do", "does", "did", "have", "has", "had", "will", "would", "can", "could", "should", "must", "may", "might",
+      "shall",
+      // 高频谓语动词（第一季 + 后续批次）
+      "go", "goes", "went", "gone", "get", "gets", "got", "give", "gives", "gave", "take", "takes", "took",
+      "make", "makes", "made", "come", "comes", "came", "like", "likes", "want", "wants", "need", "needs",
+      "know", "knows", "think", "thinks", "say", "says", "said", "tell", "tells", "told", "see", "sees", "saw",
+      "look", "looks", "watch", "watches", "eat", "eats", "ate", "eaten", "drink", "drinks", "drank",
+      "draw", "draws", "drew", "drawn", "play", "plays", "played", "read", "reads", "write", "writes", "wrote",
+      "written", "speak", "speaks", "spoke", "listen", "listens", "walk", "walks", "run", "runs", "ran",
+      "help", "helps", "helped", "finish", "finishes", "finished", "start", "starts", "started",
+      "buy", "buys", "bought", "buying", "cook", "cooks", "cooked", "clean", "cleans", "cleaned",
+      "open", "opens", "opened", "close", "closes", "closed", "put", "puts", "let", "lets",
+      // 疑问/程度/频率（批九–批十一）
+      "how", "often", "long", "much", "many", "enough", "too",
+      // 短语骨架词
+      "as", "than", "about", "mind", "would", "please", "let's",
+      // 其他高频功能词（被动与比较常落在这些位置）
+      "not", "don't", "doesn't", "didn't", "can't", "couldn't", "won't"
+    ].join("|") +
+    ")$",
+  "i"
+);
+
+/** 停用词（不该被抽空的词）：抽到这些位置会让题目失去考点意义。 */
+const CLOZE_STOP_WORDS = new Set([
+  "the", "a", "an", "and", "or", "but", "in", "on", "at", "of", "to", "for", "with", "my", "your", "his", "her",
+  "our", "their", "this", "that", "these", "those", "i", "you", "he", "she", "it", "we", "they"
+]);
+
 const pickClozeWord = (sentence: string): { clozeText: string; clozeAnswer: string } => {
-  const GRAMMAR_WORDS = /^(am|is|are|was|were|will|did|does|do|have|has|can|must|should|went|go|drawing|playing|reading|listening|doing|ate|saw|watched)$/i;
   const words = sentence.split(/\s+/).filter(Boolean);
-  const grammarIndex = words.findIndex((w) => GRAMMAR_WORDS.test(w.replace(/[.,!?;:]$/g, "")));
-  const index = grammarIndex >= 0 ? grammarIndex : Math.min(1, words.length - 1);
-  const answer = words[index].replace(/[.,!?;:]$/g, "");
+  const cleaned = words.map((w) => w.replace(/[.,!?;:]$/g, ""));
+  // ① 语法承载词（本课语法点大概率落在这里）
+  let index = cleaned.findIndex((w) => GRAMMAR_WORDS.test(w));
+  // ② 未命中：退一步找实词（长度 ≥3、非停用词）——比机械「抽第 2 词」有意义
+  if (index < 0) {
+    index = cleaned.findIndex((w) => w.length >= 3 && !CLOZE_STOP_WORDS.has(w.toLowerCase()) && /^[a-z']+$/i.test(w));
+  }
+  // ③ 最后才回退第 2 词（原行为）
+  if (index < 0) index = Math.min(1, words.length - 1);
+  const answer = cleaned[index] ?? "";
   const clozeWords = [...words];
-  clozeWords[index] = words[index].endsWith(".") || words[index].endsWith("?") ? "___" + words[index].slice(-1) : "___";
+  clozeWords[index] = words[index].endsWith(".") || words[index].endsWith("?") || words[index].endsWith("!")
+    ? "___" + words[index].slice(-1)
+    : "___";
   return { clozeText: clozeWords.join(" "), clozeAnswer: answer };
 };
 

@@ -1,10 +1,11 @@
-import { ArrowLeft, BookPlus, CheckCircle2, Lightbulb, Lock, RotateCcw, Search } from "lucide-react";
+import { ArrowLeft, BookPlus, CheckCircle2, ChevronDown, Lightbulb, Lock, RotateCcw, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
 import SpeakButton from "../components/SpeakButton";
+import { LESSON_GROUPS } from "../data/grammarSeasons";
 import { addOrUpdateWordWithResult } from "../services/cardService";
 import { findDictionaryEntryAsync } from "../services/dictionaryService";
 import { appendGrammarEvent } from "../services/grammarTelemetry";
@@ -87,6 +88,66 @@ export default function GrammarHuntPage() {
   const [wrongTagTokens, setWrongTagTokens] = useState<number[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [deepLinkHandled, setDeepLinkHandled] = useState(false);
+
+  // 2026-09-17 排版优化：46 个课程 chip 收折——默认只露「全部 + 已解锁课 + 番外」，
+  // 其余进「更多课程」抽屉。学习路径越深，可见 chip 越多（未解锁课不再抢占首屏）。
+  const [moreFilterOpen, setMoreFilterOpen] = useState(false);
+  const primaryLessonOptions = useMemo(
+    () => lessonOptions.filter((option) => option.anyUnlocked),
+    [lessonOptions]
+  );
+  const hiddenLessonOptions = useMemo(
+    () => lessonOptions.filter((option) => !option.anyUnlocked),
+    [lessonOptions]
+  );
+  // 从「更多」里选中后按钮收起但保留可见（否则选中态会消失在抽屉里）
+  const visibleLessonOptions = useMemo(() => {
+    const selectedHidden = hiddenLessonOptions.find((option) => String(option.number) === lessonFilter);
+    return moreFilterOpen
+      ? [...primaryLessonOptions, ...hiddenLessonOptions]
+      : selectedHidden
+        ? [...primaryLessonOptions, selectedHidden]
+        : primaryLessonOptions;
+  }, [moreFilterOpen, primaryLessonOptions, hiddenLessonOptions, lessonFilter]);
+
+  // 2026-09-17 排版优化：案件按季分组（58 案 5.1 屏 → 折叠后的章节化列表）。
+  // 分组依据与路径页共用 LESSON_GROUPS；番外案（无 unlockLesson）单独一组。
+  const [caseGroupOverrides, setCaseGroupOverrides] = useState<Record<string, boolean>>({});
+  const caseGroups = useMemo(() => {
+    const groups = LESSON_GROUPS.map((season) => {
+      const groupCases = cases.filter((item) => {
+        const unlockLesson = lockInfoById.get(item.id)?.unlockLesson;
+        return unlockLesson ? unlockLesson.number >= season.min && unlockLesson.number <= season.max : false;
+      });
+      return { id: season.id, label: season.label, cases: groupCases };
+    }).filter((group) => group.cases.length > 0);
+    const extraCases = cases.filter((item) => !lockInfoById.get(item.id)?.unlockLesson);
+    if (extraCases.length > 0) {
+      groups.push({ id: "extra", label: "番外 · 综合复习", cases: extraCases });
+    }
+    return groups;
+  }, [cases, lockInfoById]);
+
+  // 默认展开规则：优先包含「下一案」（高亮案）的组；否则展开第一个还有未破案的组；
+  // 课程筛选激活时组内就是筛选结果，直接展开该组；全部锁定/全部破完时回落第一组。
+  const defaultOpenCaseGroupId = useMemo(() => {
+    if (caseGroups.length === 0) return null;
+    if (lessonFilter !== "all") return caseGroups[0].id;
+    if (highlightCaseId) {
+      const highlighted = caseGroups.find((group) => group.cases.some((item) => item.id === highlightCaseId));
+      if (highlighted) return highlighted.id;
+    }
+    const firstUnsolved = caseGroups.find((group) =>
+      group.cases.some((item) => !solvedIds.has(item.id) && lockInfoById.get(item.id)?.unlocked)
+    );
+    return firstUnsolved?.id ?? caseGroups[0].id;
+  }, [caseGroups, highlightCaseId, lessonFilter, solvedIds, lockInfoById]);
+  const isCaseGroupOpen = (groupId: string) => caseGroupOverrides[groupId] ?? groupId === defaultOpenCaseGroupId;
+  const toggleCaseGroup = (groupId: string) =>
+    setCaseGroupOverrides((current) => ({
+      ...current,
+      [groupId]: !(current[groupId] ?? groupId === defaultOpenCaseGroupId)
+    }));
 
   // 课程页第④段跳转进来：/grammar/hunt?case=<caseId> 直接进入该案。
   // R01：深链也过锁——理论上课程页只链已解锁案，此处兜底防止手工拼 URL 越级。
@@ -302,7 +363,9 @@ export default function GrammarHuntPage() {
           </div>
         </section>
 
-        {/* R12 按课筛选：学完→即用的闭环（只刷某课关联的案） */}
+        {/* R12 按课筛选：学完→即用的闭环（只刷某课关联的案）。
+            2026-09-17 排版优化：46 个 chip 收折——默认只露「全部 + 已解锁课 + 番外」，
+            未解锁课收进「更多课程」，首屏不再被筛选条吃掉。 */}
         <div className="hunt-filter-bar" aria-label="按课程筛选案件">
           <button
             type="button"
@@ -311,13 +374,13 @@ export default function GrammarHuntPage() {
           >
             全部案件
           </button>
-          {lessonOptions.map((option) => (
+          {visibleLessonOptions.map((option) => (
             <button
               type="button"
               key={option.number}
               className={`hunt-filter-chip${lessonFilter === String(option.number) ? " on" : ""}${option.anyUnlocked ? "" : " locked"}`}
               onClick={() => setLessonFilter(String(option.number))}
-              title={option.anyUnlocked ? option.title : `${option.title}（未解锁）`}
+              title={option.anyUnlocked ? option.title : `${option.title}（还没学到）`}
             >
               {!option.anyUnlocked && <Lock size={11} aria-hidden="true" />}
               第 {option.number} 课
@@ -334,48 +397,87 @@ export default function GrammarHuntPage() {
               番外 · 综合复习
             </button>
           )}
+          {hiddenLessonOptions.length > 0 && (
+            <button
+              type="button"
+              className="hunt-filter-chip hunt-filter-more"
+              aria-expanded={moreFilterOpen}
+              onClick={() => setMoreFilterOpen((open) => !open)}
+            >
+              {moreFilterOpen ? "收起到已解锁" : `更多课程 (${hiddenLessonOptions.length})`}
+              <ChevronDown size={12} className={`hunt-filter-more-chevron${moreFilterOpen ? " is-open" : ""}`} aria-hidden="true" />
+            </button>
+          )}
         </div>
 
-        <div className="hunt-case-list">
-          {cases.map((caseItem) => {
-            const isSolved = solvedIds.has(caseItem.id);
-            const lockInfo = lockInfoById.get(caseItem.id);
-            const isLocked = lockInfo ? !lockInfo.unlocked : false;
-            const isNext = highlightCaseId === caseItem.id && !isSolved && !isLocked;
-            return (
+        {caseGroups.map((group) => {
+          const groupSolved = group.cases.filter((item) => solvedIds.has(item.id)).length;
+          const open = isCaseGroupOpen(group.id);
+          const bodyId = `hunt-case-group-${group.id}`;
+          return (
+            <section
+              key={group.id}
+              className={`hunt-case-group${open ? " is-open" : " is-closed"}`}
+              aria-label={group.label}
+            >
               <button
                 type="button"
-                key={caseItem.id}
-                className={`hunt-case-card${isSolved ? " solved" : ""}${isNext ? " next" : ""}${isLocked ? " locked" : ""}`}
-                onClick={() => {
-                  if (!isLocked) openCase(caseItem);
-                }}
-                disabled={isLocked}
-                aria-disabled={isLocked}
+                className="hunt-case-group-head"
+                aria-expanded={open}
+                aria-controls={bodyId}
+                onClick={() => toggleCaseGroup(group.id)}
               >
-                <div className="hunt-case-card-head">
-                  <span className="hunt-case-number">案件 {String(caseItem.number).padStart(2, "0")}</span>
-                  <strong>{caseItem.title}</strong>
-                  {isSolved && (
-                    <span className="hunt-case-stars" aria-label="已破案">
-                      {"★".repeat(3)}
-                    </span>
-                  )}
-                  {isNext && <span className="hunt-case-next-badge">下一案</span>}
-                  {isLocked && <span className="hunt-case-lock-badge">未解锁</span>}
-                </div>
-                <p className="hunt-case-scene">{caseItem.scene}</p>
-                {isLocked && lockInfo?.unlockLesson ? (
-                  <p className="hunt-case-lock-hint">
-                    学完第 {lockInfo.unlockLesson.number} 课「{lockInfo.unlockLesson.title}」就来破案
-                  </p>
-                ) : (
-                  <span className="hunt-case-meta">{caseItem.errors.length} 处线索</span>
-                )}
+                <ChevronDown size={15} className="hunt-case-group-chevron" aria-hidden="true" />
+                <h2>{group.label}</h2>
+                <span className="hunt-case-group-count">
+                  {groupSolved > 0 ? `已破 ${groupSolved} / ${group.cases.length} 案` : `${group.cases.length} 案`}
+                </span>
               </button>
-            );
-          })}
-        </div>
+              {open && (
+                <div className="hunt-case-list" id={bodyId}>
+                  {group.cases.map((caseItem) => {
+                    const isSolved = solvedIds.has(caseItem.id);
+                    const lockInfo = lockInfoById.get(caseItem.id);
+                    const isLocked = lockInfo ? !lockInfo.unlocked : false;
+                    const isNext = highlightCaseId === caseItem.id && !isSolved && !isLocked;
+                    return (
+                      <button
+                        type="button"
+                        key={caseItem.id}
+                        className={`hunt-case-card${isSolved ? " solved" : ""}${isNext ? " next" : ""}${isLocked ? " locked" : ""}`}
+                        onClick={() => {
+                          if (!isLocked) openCase(caseItem);
+                        }}
+                        disabled={isLocked}
+                        aria-disabled={isLocked}
+                      >
+                        <div className="hunt-case-card-head">
+                          <span className="hunt-case-number">案件 {String(caseItem.number).padStart(2, "0")}</span>
+                          <strong>{caseItem.title}</strong>
+                          {isSolved && (
+                            <span className="hunt-case-stars" aria-label="已破案">
+                              {"★".repeat(3)}
+                            </span>
+                          )}
+                          {isNext && <span className="hunt-case-next-badge">下一案</span>}
+                          {isLocked && <span className="hunt-case-lock-badge">未解锁</span>}
+                        </div>
+                        <p className="hunt-case-scene">{caseItem.scene}</p>
+                        {isLocked && lockInfo?.unlockLesson ? (
+                          <p className="hunt-case-lock-hint">
+                            学完第 {lockInfo.unlockLesson.number} 课「{lockInfo.unlockLesson.title}」就来破案
+                          </p>
+                        ) : (
+                          <span className="hunt-case-meta">{caseItem.errors.length} 处线索</span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+          );
+        })}
       </div>
     );
   }

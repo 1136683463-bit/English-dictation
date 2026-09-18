@@ -1,4 +1,4 @@
-import { Check, GraduationCap, PlayCircle, RotateCcw, Sparkles, TrendingDown } from "lucide-react";
+import { Check, ChevronDown, Flame, GraduationCap, PlayCircle, RotateCcw, Sparkles, TrendingDown } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
@@ -11,7 +11,17 @@ import { buildGrammarReviewSession, GRAMMAR_REVIEW_SESSION_LIMIT } from "../serv
 import { computeWeakSpotsReport, scheduleCardsForToday, type HealedSpot, type WeakSpot } from "../services/grammarWeakSpotsService";
 import { appendGrammarEvent, buildGrammarTelemetryExport, getGrammarTelemetryStats, listGrammarEventsByKind } from "../services/grammarTelemetry";
 import { buildLastWeekReport, type WeeklyReport } from "../services/grammarOutputService";
+import {
+  BOOST_TIER_META,
+  BOOST_TIERS,
+  boostProgressLabel,
+  getLessonBoostTiersDone
+} from "../services/grammarBoostService";
 import { downloadTextFile, nowIso } from "../services/storage";
+// R20：课程分组——按季划分（2026-09-14 第四批上线：season-3 收口至 34，新增 season-4 从句篇）。
+// 2026-09-17 排版优化：分组表迁至 src/data/grammarSeasons.ts（路径页 + 侦探页共用），
+// 并有 grammarSeasons.test.ts 守门「课号必须落区间」（静默过滤是登记过的头号展示层风险）。
+import { LESSON_GROUPS } from "../data/grammarSeasons";
 
 /** R06：已战胜的弱点——确证治愈（不是 7 天没犯被遗忘，而是有卡跃迁 mastered 且此后未再犯）。 */
 function HealedSpotsRow({ spots }: { spots: HealedSpot[] }) {
@@ -161,6 +171,69 @@ const CAN_DO_MILESTONES: CanDoMilestone[] = [
     title: "我能给人建议、说条件",
     zh: "三兄弟（能/必须/应该）+ 条件句（如果下雨就…）——给建议、说打算，日常对话里的语用工具齐了。",
     samples: ["You should sleep early.", "If it rains, I will stay at home.", "You should take an umbrella if it rains."]
+  },
+  {
+    id: "can-do-m9",
+    afterLesson: 54,
+    title: "我能让事当主角",
+    zh: "幕后句（谁做的不重要）+ by（想说谁就垫）+ has been（已经做过了）——谁重要谁上台，你的句子能挑焦点了。",
+    samples: ["My cup was broken.", "The cake was eaten by my brother.", "The window has been cleaned."]
+  },
+  {
+    id: "can-do-m10",
+    afterLesson: 60,
+    title: "我能说清日期和日常细节",
+    zh: "日期链（第几个、哪个月、几月几号）+ 做事的样子（跑得快、唱得好）+ 回忆昨天（那天有…）——日常里的小事，你能说利索了。",
+    samples: ["My birthday is in May.", "She runs quickly.", "There was a bird in the park."]
+  },
+  {
+    id: "can-do-m11",
+    afterLesson: 66,
+    title: "我能客气地请人帮忙、说清一样和太过",
+    zh: "客气请求（Could you…?）+ 给东西（先给谁、后给什么）+ 一样与太过（as…as / too…to）——话说得体面，也说得精确。",
+    samples: ["Could you help me?", "He is as tall as me.", "It is too heavy to carry."]
+  },
+  {
+    id: "can-do-m12",
+    afterLesson: 71,
+    title: "我能说清擅长的、买给谁的、够不够",
+    zh: "擅长（good at）+ 买给你（for 家族）+ 婉转请（Would you mind）+ 招待（Would you like）+ 够（enough）——本领说得出口，心意送得到位。",
+    samples: ["I am good at drawing.", "I bought a gift for my mom.", "The bag is light enough to carry."]
+  },
+  {
+    id: "can-do-m13",
+    afterLesson: 75,
+    title: "我能问频率、问时长、搭把手、约起来",
+    zh: "多久一次（How often）+ 要花多久（How long）+ 让我来帮（Let me）+ 咱们去吧（Let's）——问得清楚，约得起来。",
+    samples: ["How often do you run?", "It takes ten minutes.", "Let's go to the park."]
+  },
+  {
+    id: "can-do-m14",
+    afterLesson: 78,
+    title: "我能给「更」加力、说清一直在做的事",
+    zh: "好多了（much + 更）+ 一直在做（keep + 名字版）+ 把一天串成一条线（跨季大团圆）——说得更有劲，也说得更连贯。",
+    samples: ["I feel much better today.", "I keep doing my homework.", "I run every day, and I keep reading."]
+  },
+  {
+    id: "can-do-m15",
+    afterLesson: 86,
+    title: "我能把身边的东西说清楚",
+    zh: "东西在哪（next to／前后／中间）+ 怎么放（put）+ 说不清是什么（something／nothing）+ 这是谁的（whose）——指哪儿说哪儿，一件件都说明白。",
+    samples: ["My desk is next to the window.", "I put my bag next to the door.", "Whose bag is this? It is next to the door."]
+  },
+  {
+    id: "can-do-m16",
+    afterLesson: 94,
+    title: "我能和人聊两句，也能说说从前的事",
+    zh: "说天气（It's cold／windy）+ 感叹（What a…!）+ 说先后（after／before／when）+ 说从前（used to）——校门口聊两句，话越说越长。",
+    samples: ["It's cold today.", "After I do my homework, I watch TV.", "I used to play here."]
+  },
+  {
+    id: "can-do-m17",
+    afterLesson: 102,
+    title: "我能把昨天的事讲成一段故事",
+    zh: "那时正做着（was reading）+ 被什么打断（when／the phone rang）+ 两件同时在（while）+ 从前的习惯（used to）——昨天那个电话，你能从头讲到尾。",
+    samples: ["I was reading at eight.", "When you called, I was reading.", "I was reading when the phone rang."]
   }
 ];
 
@@ -256,20 +329,6 @@ function TelemetryExportCard() {
   );
 }
 
-/** R20：课程分组——按季划分（2026-09-14 第四批上线：season-3 收口至 34，新增 season-4 从句篇）。 */
-const LESSON_GROUPS: Array<{ id: string; label: string; hint: string; min: number; max: number }> = [
-  { id: "season-1", label: "第一季 · 初级篇", hint: "从第一句英语，到把昨天和明天说清楚", min: 1, max: 12 },
-  { id: "season-2", label: "第二季 · 进阶篇", hint: "从「报句子」到「讲事情」：进行时、情态、比较、连句", min: 13, max: 24 },
-  // F5 第三季 · 巩固篇（2026-09-13）：补 A2 高频缺口——三单 -s、there be、疑问词系统
-  { id: "season-3", label: "第三季 · 巩固篇", hint: "把最顽固的小毛病改掉：三单、存在句、疑问词、频率、打算、数量……全部拿下", min: 25, max: 34 },
-  // 第四批 · 句子变长（2026-09-14）：宾从「话中话」+ 定从「挂尾巴」
-  { id: "season-4", label: "第四季 · 句子变长", hint: "从一句一件事，到一句话说两件事：话中话、给名词挂尾巴", min: 35, max: 41 },
-  // 第五批 · 动词的两件新搭档（2026-09-16）：-ing 名字版 + 目的 to 小垫板
-  { id: "season-5", label: "第五季 · 动词的两件新搭档", hint: "喜欢做、享受做、去做、想做：like/enjoy + reading；go … to buy", min: 42, max: 46 },
-  // 第六批 · 语用入门（2026-09-17）：S5 首兑——should 建议 + if 条件句
-  { id: "season-6", label: "第六季 · 建议与条件", hint: "给人建议、说条件：should 应该 / if 如果……就……", min: 47, max: 49 }
-];
-
 export default function GrammarPathPage() {
   const { data, updateData } = useAppData();
   const lessons = useMemo(() => listGrammarLessons(), []);
@@ -303,6 +362,23 @@ export default function GrammarPathPage() {
   const weakSpotsReport = useMemo(() => computeWeakSpotsReport(data), [data]);
   const weakSpots = weakSpotsReport.active;
   const healedSpots = weakSpotsReport.healed;
+
+  // 2026-09-17 排版优化：季分组折叠——长页（当时 49 课 6.8 屏，现 75 课 11 季）的方位治理。
+  // 默认只展开「下一课」所在季（全部学完时展开最后一季）；手动开合在本次会话内保持。
+  // 不持久化：这是定位功能而非偏好，也避免 localStorage 键膨胀。
+  const [groupOverrides, setGroupOverrides] = useState<Record<string, boolean>>({});
+  const defaultOpenGroupId = useMemo(() => {
+    if (summary.nextLesson) {
+      const group = LESSON_GROUPS.find(
+        (item) => summary.nextLesson!.number >= item.min && summary.nextLesson!.number <= item.max
+      );
+      if (group) return group.id;
+    }
+    return LESSON_GROUPS[LESSON_GROUPS.length - 1]?.id ?? null;
+  }, [summary.nextLesson]);
+  const isGroupOpen = (groupId: string) => groupOverrides[groupId] ?? groupId === defaultOpenGroupId;
+  const toggleGroup = (groupId: string) =>
+    setGroupOverrides((current) => ({ ...current, [groupId]: !(current[groupId] ?? groupId === defaultOpenGroupId) }));
 
   // R23：里程碑达成 = 截至该课号的所有课都完成；已确认的存在独立 localStorage 键，不进 AppData。
   const [confirmedCanDos, setConfirmedCanDos] = useState<string[]>(readConfirmedCanDos);
@@ -385,6 +461,48 @@ export default function GrammarPathPage() {
     );
   };
 
+  /**
+   * R-B6「趁热练」档位条：追加在三节点链**下一行**，渲染在卡片 `<Link>` 之外
+   * （天然无冒泡问题，不需要 stopPropagation；每个档位是可聚焦的 `<Link>`，键盘可单独激活）。
+   * 不新增第 4 个平级节点——避免与「正课/回访/重审」混淆、24 卡视觉膨胀。
+   */
+  const renderBoostBar = (lesson: GrammarLesson) => {
+    if (!data.grammarLessonsDone.includes(lesson.id)) return null;
+    const doneTiers = getLessonBoostTiersDone(data, lesson.id);
+    const progress = boostProgressLabel(data, lesson.id);
+    return (
+      <div className="lesson-boost-bar" aria-label={`第 ${lesson.number} 课趁热练档位`}>
+        <span className="lesson-boost-bar-label">
+          <Flame size={13} aria-hidden="true" /> 趁热练
+        </span>
+        {BOOST_TIERS.map((tier) => {
+          const tierMeta = BOOST_TIER_META[tier];
+          const isDone = doneTiers.has(tier);
+          return (
+            <Link
+              key={tier}
+              to={`/grammar/boost/${lesson.id}?tier=${tier}&from=card`}
+              className={`lesson-boost-tier${isDone ? " done" : ""}`}
+              aria-label={`第 ${lesson.number} 课 趁热练 ${tierMeta.name}（${tierMeta.summaryZh}）`}
+              onClick={() => {
+                appendGrammarEvent({
+                  kind: "grammar_boost_offered",
+                  lessonId: lesson.id,
+                  entryPoint: "card",
+                  recommendedTier: tier,
+                  ts: nowIso()
+                });
+              }}
+            >
+              {isDone ? "●" : "○"} {tierMeta.name}
+            </Link>
+          );
+        })}
+        {progress && <span className="lesson-boost-progress">{progress}</span>}
+      </div>
+    );
+  };
+
   const renderLessonCard = (lesson: GrammarLesson) => {
     const isDone = data.grammarLessonsDone.includes(lesson.id);
     const isNext = lesson.id === nextId;
@@ -420,6 +538,7 @@ export default function GrammarPathPage() {
           </div>
         </Link>
         {renderStageChain(lesson)}
+        {renderBoostBar(lesson)}
       </div>
     );
   };
@@ -502,15 +621,38 @@ export default function GrammarPathPage() {
         const groupLessons = lessons.filter((lesson) => lesson.number >= group.min && lesson.number <= group.max);
         if (groupLessons.length === 0) return null;
         const groupDone = groupLessons.filter((lesson) => data.grammarLessonsDone.includes(lesson.id)).length;
+        const open = isGroupOpen(group.id);
+        const groupComplete = groupDone === groupLessons.length;
+        const bodyId = `grammar-season-${group.id}`;
         return (
-          <section key={group.id} className="lesson-path-section" aria-label={group.label}>
-            <header className="lesson-path-section-head">
+          <section
+            key={group.id}
+            className={`lesson-path-section${open ? " is-open" : " is-closed"}${groupComplete ? " is-complete" : ""}`}
+            aria-label={group.label}
+          >
+            {/* 2026-09-17 排版优化：整行可点的折叠头（button + aria-expanded/aria-controls，
+                与 CollapsibleSection 同一套无障碍模式）；展开时吸顶做长滚动中的方位锚点。 */}
+            <button
+              type="button"
+              className="lesson-path-section-head"
+              aria-expanded={open}
+              aria-controls={bodyId}
+              onClick={() => toggleGroup(group.id)}
+            >
+              <ChevronDown size={16} className="lesson-path-section-chevron" aria-hidden="true" />
               <h2>{group.label}</h2>
-              <p>
-                {group.hint} · {groupDone} / {groupLessons.length} 课
-              </p>
-            </header>
-            <div className="lesson-path-grid">{groupLessons.map(renderLessonCard)}</div>
+              <span className="lesson-path-section-hint" title={group.hint}>
+                {group.hint}
+              </span>
+              <span className={`lesson-path-section-count${groupComplete ? " is-complete" : ""}`}>
+                {groupComplete ? `✓ ${groupDone} / ${groupLessons.length} 课` : `${groupDone} / ${groupLessons.length} 课`}
+              </span>
+            </button>
+            {open && (
+              <div className="lesson-path-grid" id={bodyId}>
+                {groupLessons.map(renderLessonCard)}
+              </div>
+            )}
           </section>
         );
       })}

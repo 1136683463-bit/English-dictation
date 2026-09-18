@@ -26,23 +26,61 @@ export const normalizeChatCompletionsUrl = (baseUrl: string) => {
   return base.endsWith("/chat/completions") ? base : `${base}/chat/completions`;
 };
 
+// Keep in sync with RELAY_BRIDGE_PREFIX in vite.config.ts, which serves it.
+export const RELAY_BRIDGE_PREFIX = "/__ai-relay__/";
+
+const LOOPBACK_HOSTNAMES = new Set(["127.0.0.1", "localhost", "::1"]);
+
+const hostnameOf = (url: URL) => url.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+
+export const isLoopbackRelayUrl = (url: string) => {
+  try {
+    const parsed = new URL(url);
+    // Plain HTTP only: the bridge forwards without TLS, so an https loopback
+    // relay must stay on its own connection rather than be redirected into it.
+    return parsed.protocol === "http:" && LOOPBACK_HOSTNAMES.has(hostnameOf(parsed));
+  } catch {
+    return false;
+  }
+};
+
+/**
+ * Rewrite a loopback relay URL onto the dev server's same-origin bridge.
+ *
+ * A relay on http://127.0.0.1:7865 is a different origin than the page the dev
+ * server serves, and such gateways usually send no CORS headers at all (their
+ * OPTIONS preflight answers 405), so the browser blocks the call as "Load
+ * failed" before it is ever sent. Routing it through the dev server keeps the
+ * request same-origin in the browser while the server does the hop to loopback.
+ *
+ * Only when the page itself is served from loopback: elsewhere the bridge route
+ * would not exist, and rewriting would replace a clear CORS failure with a
+ * confusing "not found" from whatever host is serving the page.
+ */
+export const toRelayBridgeUrl = (url: string) => {
+  if (isTauriRuntime() || !isLoopbackRelayUrl(url)) return url;
+  const pageOrigin = typeof window !== "undefined" ? window.location?.origin ?? "" : "";
+  if (!isLoopbackRelayUrl(pageOrigin)) return url;
+  const parsed = new URL(url);
+  return `${RELAY_BRIDGE_PREFIX}${parsed.host}${parsed.pathname}${parsed.search}`;
+};
+
 export const requestFetch = async (input: string, init: RequestInit): Promise<Response> => {
   if (isTauriRuntime()) {
     const tauriHttp = await import("@tauri-apps/plugin-http");
     return await tauriHttp.fetch(input, init) as Response;
   }
-  return globalThis.fetch(input, init);
+  return globalThis.fetch(toRelayBridgeUrl(input), init);
 };
 
 /**
  * Headers for every OpenAI-compatible chat request.
  *
- * The wb2api local gateway rewrites outbound system prompts and injects
- * DeepSeek thinking by default (both tuned for CLI clients). This app needs
- * its own system prompt kept verbatim and a thinking-free token budget, so all
- * model traffic opts into passthrough prompt + disabled thinking via the two
- * X-WB2A-* opt-in headers. Other relays ignore unknown X-headers by HTTP
- * convention, so they are safe to send everywhere.
+ * The X-WB2A-* headers opt into verbatim system prompts and no DeepSeek
+ * thinking on gateways that read them, and are ignored by HTTP convention
+ * everywhere else. They are not a reliable switch though: the wb2api gateway
+ * only honours the thinking state carried in the request body, so the real
+ * control travels as a body field (see buildAiThinkingParams).
  */
 export const buildAiRequestHeaders = (apiKey: string): Record<string, string> => ({
   "Content-Type": "application/json",
@@ -50,6 +88,60 @@ export const buildAiRequestHeaders = (apiKey: string): Record<string, string> =>
   "X-WB2A-Prompt-Mode": "passthrough",
   "X-WB2A-Thinking": "disabled"
 });
+
+/**
+ * Ask the relay to answer without hidden reasoning.
+ *
+ * The wb2api gateway enables DeepSeek thinking for any request that does not
+ * say otherwise, and those reasoning tokens are billed against `max_tokens`.
+ * A 2600-token chapter budget came back with 1860 tokens spent on reasoning
+ * and the JSON cut off mid-object, which surfaced as "模型续章内容不完整".
+ * Its X-WB2A-Thinking header is never consulted, so this body field is what
+ * actually turns the thinking off.
+ */
+export const buildAiThinkingParams = () => ({ thinking: { type: "disabled" } });
+
+/**
+ * Whether a 400 names one of the optional compatibility fields above, meaning
+ * the relay rejects them even though it speaks chat completions. Strict
+ * OpenAI-style APIs answer this way for unknown arguments, so callers retry
+ * once without them rather than failing the whole feature.
+ */
+export const isOptionalRelayFieldRejection = (message: string) =>
+  /response.?format|json.?object|thinking|reasoning|unsupported|不支持|unrecognized|not permitted|extra inputs/i.test(message);
+
+/**
+ * Send one chat completion, retrying once without the optional compatibility
+ * fields when the relay rejects them by name.
+ *
+ * `thinking` is not part of the OpenAI schema, so a strict API answers 400 for
+ * it; dropping both optional fields on that specific reply keeps such relays
+ * working while the permissive ones (which ignore unknown fields) keep the
+ * thinking opt-out that stops their reasoning tokens from eating the budget.
+ */
+export const postChatCompletion = async <T = any>(
+  url: string,
+  apiKey: string,
+  buildBody: (withOptionalFields: boolean) => Record<string, unknown>,
+  signal?: AbortSignal
+): Promise<{ response: Response; json: T }> => {
+  const send = async (withOptionalFields: boolean) => {
+    const response = await requestFetch(url, {
+      method: "POST",
+      headers: buildAiRequestHeaders(apiKey),
+      body: JSON.stringify(buildBody(withOptionalFields)),
+      signal
+    });
+    return { response, json: await readResponsePayload<T>(response) };
+  };
+
+  const first = await send(true);
+  const errorMessage = (first.json as { error?: { message?: string } } | undefined)?.error?.message ?? "";
+  if (!first.response.ok && first.response.status === 400 && isOptionalRelayFieldRejection(errorMessage)) {
+    return await send(false);
+  }
+  return first;
+};
 
 export const describeModelRequestError = (error: unknown) => {
   if (error instanceof Error) {
