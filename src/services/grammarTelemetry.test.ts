@@ -122,6 +122,64 @@ describe("grammarTelemetry（R01 数据基建）", () => {
     expect(summary.sectionDwell.practice).toBeUndefined();
   });
 
+  it("阶段三：lesson_exit 按段聚合 + 单题耗时按段聚合", () => {
+    appendGrammarEvent({
+      kind: "lesson_exit",
+      lessonId: "lesson-21-have-done",
+      section: "recall",
+      stepIndex: 0,
+      dwellMs: 300000,
+      ts: "2026-09-20T00:00:00.000Z"
+    });
+    appendGrammarEvent({
+      kind: "lesson_exit",
+      lessonId: "lesson-22-been-to",
+      section: "recall",
+      stepIndex: 0,
+      dwellMs: 280000,
+      ts: "2026-09-20T00:10:00.000Z"
+    });
+    appendGrammarEvent({
+      kind: "lesson_exit",
+      lessonId: "lesson-23-lost",
+      section: "practice",
+      stepIndex: 2,
+      dwellMs: 400000,
+      ts: "2026-09-20T00:20:00.000Z"
+    });
+    appendGrammarEvent({
+      kind: "lesson_step_result",
+      lessonId: "lesson-21-have-done",
+      section: "practice",
+      stepKind: "arrange",
+      stepIndex: 0,
+      attempts: 1,
+      passed: true,
+      stepDwellMs: 4200,
+      ts: "2026-09-20T00:30:00.000Z"
+    });
+    appendGrammarEvent({
+      kind: "lesson_step_result",
+      lessonId: "lesson-21-have-done",
+      section: "practice",
+      stepKind: "arrange",
+      stepIndex: 1,
+      attempts: 2,
+      passed: true,
+      stepDwellMs: 12800,
+      ts: "2026-09-20T00:31:00.000Z"
+    });
+
+    const summary = summarizeGrammarTelemetry();
+    // 退出集中在忆段 2 次、练段 1 次 —— 这正是「哪一段最难」的读数
+    expect(summary.lessonExitBySection.recall).toBe(2);
+    expect(summary.lessonExitBySection.practice).toBe(1);
+    expect(summary.lessonExitBySection.watch).toBeUndefined();
+    // 单题耗时：均 8500ms（(4200+12800)/2），旧事件无 stepDwellMs 时不计入
+    expect(summary.stepDwellBySection.practice).toEqual({ totalMs: 17000, samples: 2 });
+    expect(summary.stepDwellBySection.guided).toBeUndefined();
+  });
+
   it("清空后回到空态", () => {
     appendGrammarEvent({ kind: "deep_dive_expanded", lessonId: "lesson-01-am", ts: "2026-09-12T00:00:00.000Z" });
     expect(listGrammarEvents()).toHaveLength(1);
@@ -203,8 +261,87 @@ describe("grammarTelemetry（R01 数据基建）", () => {
     expect(summary.itemRepeatRate).toBe(0);
   });
 
+  it("AI 可观测性：缓存命中率 / 真实延迟 / 模型拆分可算", () => {
+    // 一次真实调用（2.4s，成功）+ 一次缓存命中 + 一次降级
+    appendGrammarEvent({ kind: "grammar_boost_ai_result", lessonId: "lesson-13-now", tier: 3, questionIndex: 0, ok: true, latencyMs: 2400, degraded: false, degradeReason: null, cached: false, model: "model-a", ts: "2026-09-19T10:00:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_ai_result", lessonId: "lesson-13-now", tier: 3, questionIndex: 0, ok: true, latencyMs: 0, degraded: false, degradeReason: null, cached: true, model: "model-a", ts: "2026-09-19T10:05:00.000Z" });
+    appendGrammarEvent({ kind: "grammar_boost_ai_result", lessonId: "lesson-14-can", tier: 3, questionIndex: 1, ok: false, latencyMs: 9000, degraded: true, degradeReason: "timeout", cached: false, model: "model-b", ts: "2026-09-19T10:10:00.000Z" });
+
+    const ai = summarizeGrammarTelemetry().ai;
+    expect(ai.boostCalls).toBe(3);
+    expect(ai.boostCached).toBe(1);
+    expect(ai.boostCacheHitRate).toBeCloseTo(1 / 3);
+    // 真实请求 = 排除缓存命中（延迟 0）；两次真实调用延迟 2400 与 9000 → 均值 5700
+    expect(ai.boostAvgLatencyMs).toBe(5700);
+    expect(ai.byModel["model-a"].calls).toBe(2);
+    expect(ai.byModel["model-b"].degraded).toBe(1);
+  });
+
+  it("AI 可观测性：未配置导致的降级不计入真实延迟（本地短路）", () => {
+    appendGrammarEvent({ kind: "grammar_boost_ai_result", lessonId: "lesson-13-now", tier: 3, questionIndex: 0, ok: false, latencyMs: 0, degraded: true, degradeReason: "not_configured", cached: false, model: "m", ts: "2026-09-19T10:00:00.000Z" });
+    const ai = summarizeGrammarTelemetry().ai;
+    expect(ai.boostCalls).toBe(1);
+    expect(ai.boostAvgLatencyMs).toBe(0);
+  });
+
+  it("AI 可观测性：日记批改成败与失败原因可算", () => {
+    appendGrammarEvent({ kind: "diary_correction_result", entryId: "e1", ok: true, latencyMs: 3000, issueCount: 2, taggedIssueCount: 2, errorKind: null, style: "standard", ts: "2026-09-19T10:00:00.000Z" });
+    appendGrammarEvent({ kind: "diary_correction_result", entryId: "e2", ok: false, latencyMs: 900, issueCount: 0, taggedIssueCount: 0, errorKind: "not_configured", style: "gentle", ts: "2026-09-19T10:01:00.000Z" });
+    appendGrammarEvent({ kind: "diary_correction_result", entryId: "e3", ok: false, latencyMs: 8000, issueCount: 0, taggedIssueCount: 0, errorKind: "timeout", style: "gentle", ts: "2026-09-19T10:02:00.000Z" });
+
+    const ai = summarizeGrammarTelemetry().ai;
+    expect(ai.diaryCalls).toBe(3);
+    expect(ai.diaryFailures).toBe(2);
+    expect(ai.diaryFailureKinds).toEqual({ not_configured: 1, timeout: 1 });
+    expect(ai.diaryAvgLatencyMs).toBe(Math.round((3000 + 900 + 8000) / 3));
+  });
+
   it("W0：关 3 进入事件可读回（补上关 3 的到达率缺口）", () => {
     appendGrammarEvent({ kind: "grammar_reaudit_started", lessonId: "lesson-13-now", ts: "2026-09-18T10:00:00.000Z" });
     expect(listGrammarEventsByKind("grammar_reaudit_started")).toHaveLength(1);
+  });
+
+  describe("A5a · 课内追问与答错追问汇总段（M2，2026-09-21）", () => {
+    it("「问一句」触发/成功/弃权/降级/校验丢弃/P90 可算", () => {
+      appendGrammarEvent({ kind: "ai_explain_requested", lessonId: "L", section: "watch", anchorRef: "watch.deepDive", trigger: "preset", questionChars: 12, quotaUsed: 0, ts: "2026-09-21T10:00:00.000Z" });
+      appendGrammarEvent({ kind: "ai_explain_result", lessonId: "L", section: "watch", anchorRef: "watch.deepDive", model: "m1", ok: true, latencyMs: 2500, degraded: false, degradeReason: null, cached: false, ts: "2026-09-21T10:00:02.000Z" });
+      appendGrammarEvent({ kind: "ai_explain_result", lessonId: "L", section: "watch", anchorRef: "watch.deepDive", model: "m1", ok: false, latencyMs: 9000, degraded: true, degradeReason: "timeout", cached: false, ts: "2026-09-21T10:01:00.000Z" });
+      appendGrammarEvent({ kind: "ai_explain_result", lessonId: "L", section: "watch", anchorRef: "watch.deepDive", model: "m1", ok: false, latencyMs: 1200, degraded: true, degradeReason: "invalid", cached: false, validationFailure: "foreign", ts: "2026-09-21T10:02:00.000Z" });
+      appendGrammarEvent({ kind: "ai_explain_result", lessonId: "L", section: "watch", anchorRef: "watch.deepDive", model: "m1", ok: true, latencyMs: 0, degraded: false, degradeReason: null, cached: true, declined: true, ts: "2026-09-21T10:03:00.000Z" });
+      appendGrammarEvent({ kind: "ai_explain_feedback", lessonId: "L", section: "watch", anchorRef: "watch.deepDive", verdict: "helpful", ts: "2026-09-21T10:04:00.000Z" });
+      appendGrammarEvent({ kind: "ai_explain_feedback", lessonId: "L", section: "watch", anchorRef: "watch.deepDive", verdict: "wrong", ts: "2026-09-21T10:05:00.000Z" });
+
+      const explain = summarizeGrammarTelemetry().explain;
+      expect(explain.askRequested).toBe(1);
+      expect(explain.askResults).toBe(4);
+      expect(explain.askOk).toBe(1); // 只有第一条 ok 且非弃权
+      expect(explain.askDeclined).toBe(1);
+      expect(explain.askDegradeReasons).toEqual({ timeout: 1, invalid: 1 });
+      expect(explain.askValidationFailures).toEqual({ foreign: 1 });
+      expect(explain.askCached).toBe(1);
+      expect(explain.askFeedback).toEqual({ helpful: 1, wrong: 1 });
+      expect(explain.byModel).toEqual({ m1: { calls: 4, degraded: 2 } });
+      // P90：真实请求 = 未命中缓存、非未配置短路、延迟 >0 → 2500/9000/1200
+      expect(explain.askP90LatencyMs).toBe(9000);
+    });
+
+    it("答错追问按归因层分布（AI 有没有比本地多给东西，必须能按层回答）", () => {
+      const base = { kind: "practice_why_wrong_result" as const, lessonId: "L", stepIndex: 0, sentenceHash: "h", ok: true, latencyMs: 0, cached: false, ts: "2026-09-21T11:00:00.000Z" };
+      appendGrammarEvent({ ...base, source: "local_exact", layer: "local_exact" });
+      appendGrammarEvent({ ...base, stepIndex: 1, source: "local_fuzzy", layer: "local_fuzzy" });
+      appendGrammarEvent({ ...base, stepIndex: 2, source: "structural", layer: "structural" });
+      appendGrammarEvent({ ...base, stepIndex: 3, source: "ai", layer: "ai", latencyMs: 3000, model: "m1" });
+      appendGrammarEvent({ ...base, stepIndex: 4, source: "fallback", layer: "fallback" });
+
+      const explain = summarizeGrammarTelemetry().explain;
+      expect(explain.whyWrongByLayer).toEqual({
+        local_exact: 1, local_fuzzy: 1, structural: 1, ai: 1, fallback: 1
+      });
+    });
+
+    it("旧事件无 layer 字段时回退到 source（向后兼容历史数据）", () => {
+      appendGrammarEvent({ kind: "practice_why_wrong_result", lessonId: "L", stepIndex: 9, sentenceHash: "h", ok: true, source: "local_fuzzy", latencyMs: 0, cached: false, ts: "2026-09-21T12:00:00.000Z" });
+      expect(summarizeGrammarTelemetry().explain.whyWrongByLayer).toEqual({ local_fuzzy: 1 });
+    });
   });
 });

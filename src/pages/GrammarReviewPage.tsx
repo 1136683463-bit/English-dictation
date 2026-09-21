@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
+import { useReturnFocus } from "../components/useReturnFocus";
 import { appendGrammarEvent, summarizeGrammarTelemetry, type CardMasteredEvent } from "../services/grammarTelemetry";
 import { nowIso } from "../services/storage";
 import {
   buildGrammarReviewSession,
   buildGrammarReviewTask,
+  diversifyReviewModes,
   GRAMMAR_REVIEW_SESSION_LIMIT,
   isMasteredByOutput,
   judgeGrammarCloze,
@@ -21,8 +23,16 @@ import {
 import { applyMasteredStatus, applyReview } from "../services/reviewService";
 import type { Card, ReviewMode } from "../types";
 
+/**
+ * 复习形态 → 记录用的 review.mode。
+ *
+ * `rebuild` 单独记（2026-09-21 修）：此前 rebuild 和 free_type 都记成 "recall"，
+ * 而 isMasteredByOutput 按 `mode === "recall"` 过滤「输出」记录——
+ * 于是「拼词块通过 + 自己写通过」被当成输出两次，用户只独立写出过 1 次就被判已掌握。
+ * 拼词块有全套词块可点，难度远低于自由输出，不能算一次输出。
+ */
 const reviewModeForTask = (task: GrammarReviewTask): ReviewMode =>
-  task.mode === "cloze" ? "cloze" : "recall";
+  task.mode === "cloze" ? "cloze" : task.mode === "rebuild" ? "rebuild" : "recall";
 
 /** 一次复习的评分映射：一次通过=4（轻松），中途卡过=3（正常），看答案才过=1（忘了，10 分钟后再来）。 */
 const ratingForOutcome = (attempts: number, revealed: boolean): 1 | 2 | 3 | 4 => {
@@ -36,8 +46,11 @@ export default function GrammarReviewPage() {
   // R06：累计掌握视图（成长曲线视角）——随复习动作实时刷新
   const mastery = useMemo(() => summarizeGrammarMastery(data), [data]);
 
-  // 会话只在进入页面时组一次：复习过程中 data 变化不会重排队列
-  const [session] = useState<GrammarReviewCard[]>(() => buildGrammarReviewSession(data));
+  // 会话只在进入页面时组一次：复习过程中 data 变化不会重排队列。
+  // R-UX9：组会话后做同型打散——相邻两张卡题型尽量不同（此前同天入队的卡会连出同型题）。
+  const [session] = useState<GrammarReviewCard[]>(() =>
+    diversifyReviewModes(buildGrammarReviewSession(data), data.sentenceDetails)
+  );
   const [index, setIndex] = useState(0);
   const [finished, setFinished] = useState(session.length === 0);
   const [passedCount, setPassedCount] = useState(0);
@@ -53,11 +66,19 @@ export default function GrammarReviewPage() {
   const [attempts, setAttempts] = useState(0);
   const [outcome, setOutcome] = useState<"idle" | "pass" | "revealed">("idle");
   const [usedClozeOption, setUsedClozeOption] = useState<string | null>(null);
+
+  /**
+   * 判题 / 换卡后把焦点交回题目卡（2026-09-21 新增）。
+   * 依赖键把「第几张 + 当前判定结果」并进去：换卡与出反馈都会触发一次落焦。
+   */
+  const quizCardRef = useReturnFocus<HTMLDivElement>(Boolean(task), `${index}:${outcome}`);
   // R09 Step2：free_type 自由输出态
   const [freeTypeValue, setFreeTypeValue] = useState("");
   const [freeTypeHint, setFreeTypeHint] = useState<string | null>(null);
 
   const total = session.length;
+  /** 结算页也要落焦（最后一卡点「完成复习」后被点按钮卸载）。 */
+  const completeRef = useReturnFocus<HTMLDivElement>(finished, `done:${finished}:${total}`);
   const card: Card | undefined = current?.card;
 
   const resetCardState = () => {
@@ -215,7 +236,7 @@ export default function GrammarReviewPage() {
             </div>
           </>
         ) : (
-          <div className="lesson-complete">
+          <div className="lesson-complete" ref={completeRef} tabIndex={-1}>
             <CheckCircle2 size={28} />
             <h2>复习完成</h2>
             <p>
@@ -237,7 +258,7 @@ export default function GrammarReviewPage() {
       ) : (
         task && card && (
           <section className="lesson-stage" aria-label="语法复习">
-            <div className="lesson-quiz-card">
+            <div className="lesson-quiz-card" ref={quizCardRef} tabIndex={-1}>
               <div className="lesson-quiz-head">
                 <span className="lesson-quiz-step">第 {index + 1} / {total} 张</span>
                 <span className="lesson-quiz-note">

@@ -1,9 +1,10 @@
 import { ArrowLeft, BookPlus, CheckCircle2, ChevronDown, Lightbulb, Lock, RotateCcw, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
+import { useReturnFocus } from "../components/useReturnFocus";
 import SpeakButton from "../components/SpeakButton";
 import { LESSON_GROUPS } from "../data/grammarSeasons";
 import { addOrUpdateWordWithResult } from "../services/cardService";
@@ -16,6 +17,7 @@ import {
   appendHuntResult,
   buildHintMessage,
   buildHuntResult,
+  correctedSentenceOf,
   GRAMMAR_ERROR_TAG_LABELS,
   GRAMMAR_ERROR_TAG_PLAIN,
   HUNT_CLUE_BUDGET,
@@ -63,6 +65,25 @@ export default function GrammarHuntPage() {
   const hasExtraCases = useMemo(() => lockInfos.some((info) => !info.unlockLesson), [lockInfos]);
   // P2-2：番外案整体是否解锁（第 12 课完成后解锁）
   const extraUnlocked = useMemo(() => lockInfos.some((info) => !info.unlockLesson && info.unlocked), [lockInfos]);
+  // R-UX10：最近解锁聚焦——未解锁案按 unlockLesson 课号分组，取课号最小的一组
+  //（= 学完一课就能解锁最多新案的那一课），零术语指出去学哪一课。
+  const nextUnlockHint = useMemo(() => {
+    const lockedByLesson = new Map<number, { lessonId: string; lessonNumber: number; lessonTitle: string; caseCount: number }>();
+    for (const info of lockInfos) {
+      if (info.unlocked || !info.unlockLesson) continue;
+      const lesson = info.unlockLesson;
+      const existing = lockedByLesson.get(lesson.number);
+      lockedByLesson.set(lesson.number, {
+        lessonId: lesson.id,
+        lessonNumber: lesson.number,
+        lessonTitle: lesson.title,
+        caseCount: (existing?.caseCount ?? 0) + 1
+      });
+    }
+    if (lockedByLesson.size === 0) return null;
+    const [minNumber, hint] = [...lockedByLesson.entries()].sort((a, b) => a[0] - b[0])[0];
+    return { ...hint, lessonDone: data.grammarLessonsDone.includes(hint.lessonId), minNumber };
+  }, [lockInfos, data.grammarLessonsDone]);
   const cases = useMemo(() => {
     const filtered = lockInfos.filter((info) => {
       if (lessonFilter === "all") return true;
@@ -79,6 +100,19 @@ export default function GrammarHuntPage() {
   const [feedback, setFeedback] = useState<HuntVerdict | null>(null);
   const [startedAt, setStartedAt] = useState(0);
   const [settledResult, setSettledResult] = useState<HuntResult | null>(null);
+
+  /**
+   * 判题 / 选罪名 / 破案结算后把焦点交回案件面板（2026-09-21 新增）。
+   *
+   * 侦探页的三条关键动线（点词 → 选罪名、全部命中破案、误判出反馈卡）
+   * 都会卸载被点元素，此前焦点一律退回 <body>——键盘用户要从页面开头重新 Tab。
+   * 依赖键并入「已找到数量 / 选中词 / 反馈类型 / 是否已结算」，
+   * 覆盖上述四条状态变化。
+   */
+  const huntPanelRef = useReturnFocus<HTMLElement>(
+    true,
+    `${activeCase?.id ?? ""}:${found.length}:${selectedToken ?? -1}:${feedback?.kind ?? "none"}:${settledResult ? 1 : 0}`
+  );
   const [highlightCaseId, setHighlightCaseId] = useState<string | null>(null);
   const [wordsAdded, setWordsAdded] = useState(false);
   // 提示与复盘：提示消耗线索额度；wrongTag / 提示过的词在复盘里如实标注
@@ -290,9 +324,22 @@ export default function GrammarHuntPage() {
     }
   };
 
+  /**
+   * 真实可加入错词本的词（与 addCorrectionsToMistakeBook 用同一套过滤规则）。
+   * 用于按钮计数——避免显示一个加不进去的数字（见下方按钮处注释）。
+   */
+  const addableCorrectionWords = useMemo(
+    () =>
+      (activeCase?.errors ?? [])
+        .map((error) => pickCorrectionWord(error.correction))
+        .filter((word) => Boolean(word)),
+    [activeCase]
+  );
+
   const addCorrectionsToMistakeBook = () => {
     if (!activeCase || wordsAdded) return;
-    const sentence = activeCase.tokens.join(" ");
+    // 例句用「修正后的正确句」——错词本里不该放一句含错的话（批四十修）
+    const sentence = correctedSentenceOf(activeCase);
     const corrections = activeCase.errors
       .map((error) => ({ word: pickCorrectionWord(error.correction), original: error.original }))
       .filter((item) => item.word);
@@ -362,6 +409,16 @@ export default function GrammarHuntPage() {
             <span>命中数</span>
           </div>
         </section>
+
+        {/* R-UX10：最近解锁聚焦条——置灰案海里指出「最快能解锁的几案」，
+            把「学完第 N 课」从每个灰卡上的一句话变成一个可行动的指向。 */}
+        {nextUnlockHint && (
+          <Link to={`/grammar/lesson/${nextUnlockHint.lessonId}`} className="hunt-next-unlock" aria-label="最近可解锁">
+            <Lightbulb size={13} aria-hidden="true" />
+            最快解锁：学完第 {nextUnlockHint.lessonNumber} 课「{nextUnlockHint.lessonTitle}」，
+            就能多解 {nextUnlockHint.caseCount} 案——{nextUnlockHint.lessonDone ? "去复习这一课" : "去上这一课"}
+          </Link>
+        )}
 
         {/* R12 按课筛选：学完→即用的闭环（只刷某课关联的案）。
             2026-09-17 排版优化：46 个 chip 收折——默认只露「全部 + 已解锁课 + 番外」，
@@ -553,7 +610,7 @@ export default function GrammarHuntPage() {
         </section>
       )}
 
-      <section className="hunt-token-panel" aria-label="案件原文">
+      <section ref={huntPanelRef} tabIndex={-1} className="hunt-token-panel" aria-label="案件原文">
         <p className="hunt-token-flow">
           {activeCase.tokens.map((token, index) => {
             const className = found.includes(index)
@@ -639,7 +696,7 @@ export default function GrammarHuntPage() {
       )}
 
       {settledResult && (
-        <section className="hunt-settle" aria-label="破案结算">
+        <section ref={huntPanelRef} tabIndex={-1} className="hunt-settle" aria-label="破案结算">
           <h2>
             <CheckCircle2 size={20} /> 破案！
           </h2>
@@ -724,10 +781,19 @@ export default function GrammarHuntPage() {
           </div>
 
           <div className="hunt-settle-actions">
-            <button type="button" className="secondary-button" onClick={addCorrectionsToMistakeBook} disabled={wordsAdded}>
-              <BookPlus size={16} />
-              {wordsAdded ? "已加入错词本" : `把 ${activeCase.errors.length} 个改正词加入错词本`}
-            </button>
+            {/*
+              按钮数用「真实可加词数」而非案件错误数（2026-09-20 修）：
+              删词型修正（「去掉 so」）与纯冠词会被 pickCorrectionWord 过滤掉，
+              此前按 errors.length 显示会虚报——199 案里 93 案声明数 > 实际可加数，
+              其中 4 案一个都加不进去，用户点了会看到「已加入错词本」但错词本里空空如也。
+              现在：无可加词时干脆不显示这个按钮。
+            */}
+            {addableCorrectionWords.length > 0 && (
+              <button type="button" className="secondary-button" onClick={addCorrectionsToMistakeBook} disabled={wordsAdded}>
+                <BookPlus size={16} />
+                {wordsAdded ? "已加入错词本" : `把 ${addableCorrectionWords.length} 个改正词加入错词本`}
+              </button>
+            )}
             <button type="button" className="primary-button" onClick={backToList}>
               <RotateCcw size={16} />
               再来一案

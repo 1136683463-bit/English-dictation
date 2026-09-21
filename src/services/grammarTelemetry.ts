@@ -90,6 +90,13 @@ export interface LessonStepResultEvent {
    * 同一句隔天重练会被重复计数。写入侧带上哈希后，去重键优先用它。
    */
   sentenceHash?: string;
+  /**
+   * 本题耗时（毫秒，2026-09-20 阶段三新增）。
+   * 此前只有段级 section_dwell，看不到「同一段内哪一题卡了」——
+   * 而「practice 单题 2.3–4.6 秒」这个关键摩擦指标正需要它。
+   * 旧事件不含此字段，读侧按可选处理。
+   */
+  stepDwellMs?: number;
   ts: string;
 }
 
@@ -97,6 +104,175 @@ export interface LessonStepResultEvent {
 export interface DeepDiveExpandedEvent {
   kind: "deep_dive_expanded";
   lessonId: string;
+  ts: string;
+}
+
+/**
+ * R-AI0 埋点补齐（2026-09-19「问一句」PRD）——「理解吸收」此前完全不可观测。
+ *
+ * 现状缺陷（数析盘点）：判题事件齐备（做对/做错可见），但「用户是否理解了」零信号——
+ * 深挖卡只有「折叠后再展开」事件（默认展开时新用户永不触发），
+ * 四处「回去再看一遍讲解」零埋点，练习「照着拼一遍」被记成假通过。
+ */
+
+/** 深挖卡曝光：进入视野即记（含默认展开态——修复旧事件在默认展开下恒为空的结构性失真）。 */
+export interface DeepDiveImpressionEvent {
+  kind: "deep_dive_impression";
+  lessonId: string;
+  /** default_open = 默认展开被动看到；user_open = 用户从折叠态手动展开（更强的主动动机）。 */
+  mode: "default_open" | "user_open";
+  ts: string;
+}
+
+/** 深挖卡停留：离开该卡时结算——dwell ≥20s 是「真的在读」的口径（S4 配对分母）。 */
+export interface DeepDiveDwellEvent {
+  kind: "deep_dive_dwell";
+  lessonId: string;
+  dwellMs: number;
+  /** 深挖卡段落数（素材厚度，用于分层）。 */
+  paragraphs: number;
+  ts: string;
+}
+
+/** 「回去再看一遍讲解」点击：最直接的「没懂→回看」信号（四处入口此前零埋点）。 */
+export interface LessonRereadEvent {
+  kind: "lesson_reread";
+  lessonId: string;
+  /** 从哪个段发起回看。 */
+  fromSection: LessonSection;
+  /** 回到哪个段（当前全部是 watch）。 */
+  toSection: LessonSection;
+  ts: string;
+}
+
+/** 练习「照着拼一遍」：此前被记成 passed=true 的假通过（放弃与做对在通过率里同形）。 */
+export interface PracticeRevealUsedEvent {
+  kind: "practice_reveal_used";
+  lessonId: string;
+  stepIndex: number;
+  /** 揭示前尝试过几次。 */
+  attemptsBeforeReveal: number;
+  ts: string;
+}
+
+// ── 「问一句」追问式讲解（2026-09-19 PRD R-AI7）────────────────────
+
+/** 追问发起：触发率的分子入口（含预设/自由与配额状态）。 */
+export interface AiExplainRequestedEvent {
+  kind: "ai_explain_requested";
+  lessonId: string;
+  section: string;
+  /** 锚点（如 watch.deepDive）。 */
+  anchorRef: string;
+  trigger: "preset" | "free";
+  questionChars: number;
+  /** 发起前已用掉几次（配额 ≤2）。 */
+  quotaUsed: number;
+  ts: string;
+}
+
+/** 追问结果：降级率 / 弃权率 / 校验丢弃原因 / 延迟的来源。 */
+export interface AiExplainResultEvent {
+  kind: "ai_explain_result";
+  lessonId: string;
+  section: string;
+  anchorRef: string;
+  /** 使用的模型（换模型决策的唯一依据；此前 explain 线无此维度）。 */
+  model?: string;
+  ok: boolean;
+  latencyMs: number;
+  degraded: boolean;
+  degradeReason: "not_configured" | "timeout" | "error" | "invalid" | null;
+  cached: boolean;
+  /** 校验失败的具体原因（invalid 时）。 */
+  validationFailure?: string;
+  /** 弃权（素材不足——设计成功，不是失败）。 */
+  declined?: boolean;
+  outputChars?: number;
+  ts: string;
+}
+
+/** 追问反馈（回答卡三按钮）——「学习者觉得有用」是本功能的核心验收口径。 */
+export interface AiExplainFeedbackEvent {
+  kind: "ai_explain_feedback";
+  lessonId: string;
+  section: string;
+  anchorRef: string;
+  verdict: "helpful" | "unclear" | "wrong";
+  ts: string;
+}
+
+/** 产出提示阶梯：第几档提示 / 最终靠什么解决——「卡在哪一层」的唯一信号。 */
+// ── 「为什么错了」答错现场错因追问（2026-09-19 PRD R-WW4）──────────────
+// 独立 kind：混入 ai_explain_* 会让本地命中也被记成 AI 调用，污染 AI 延迟/降级率口径。
+
+/** 错因追问发起（本地匹配同步完成，故 requested 与 result 常同刻）。 */
+export interface PracticeWhyWrongRequestedEvent {
+  kind: "practice_why_wrong_requested";
+  lessonId: string;
+  stepIndex: number;
+  section: string;
+  /** 错句指纹（hashGrammarSentence，不记原文）。 */
+  sentenceHash: string;
+  /** 命中来源：local_exact / local_fuzzy / ai / fallback。 */
+  matchSource: string;
+  /** 近似命中时的相似度。 */
+  diffScoreAtMatch?: number;
+  /** 发起时本步配额状态。 */
+  quotaState: "available" | "exhausted";
+  ts: string;
+}
+
+/** 错因追问结果：AI 层异步返回时补记（本地层与 requested 同刻）。 */
+export interface PracticeWhyWrongResultEvent {
+  kind: "practice_why_wrong_result";
+  lessonId: string;
+  stepIndex: number;
+  sentenceHash: string;
+  ok: boolean;
+  source: string;
+  /** A5b 归因层：local_exact / local_fuzzy / structural / ai / fallback。
+   *  本地结构兜底对错法覆盖 100%，「AI 有没有比本地多给东西」必须能按层回答。 */
+  layer?: "local_exact" | "local_fuzzy" | "structural" | "ai" | "fallback";
+  /** 使用模型（AI 层）。 */
+  model?: string;
+  latencyMs: number;
+  cached: boolean;
+  declined?: boolean;
+  validationFailure?: string;
+  citedRef?: string;
+  /** AI 归因到的罪名（可选，11 类之一）——弱点档案「同 tag 被问 ≥3 次」的分子。 */
+  errorTag?: string;
+  ts: string;
+}
+
+/** 错因解释反馈：「讲错了」份额 = 误匹配率的核心度量。 */
+export interface PracticeWhyWrongFeedbackEvent {
+  kind: "practice_why_wrong_feedback";
+  lessonId: string;
+  stepIndex: number;
+  verdict: "helpful" | "unclear" | "wrong";
+  ts: string;
+}
+
+/** C4（M3）复盘课完成：从 Top3 弱点拼出的即时提取练习。 */
+export interface GrammarReplayCompletedEvent {
+  kind: "grammar_replay_completed";
+  itemCount: number;
+  firstTryCount: number;
+  tags: string[];
+  durationMs: number;
+  ts: string;
+}
+
+export interface OutputHintStepEvent {
+  kind: "output_hint_step";
+  lessonId: string;
+  stepIndex: number;
+  /** 提示档位：1 词数+首字母 / 2 首字母序列 / 3 骨架句。 */
+  level: 1 | 2 | 3;
+  /** 最终怎么解决的：self 自己写出来 / hint 靠提示通过 / reveal 看答案。 */
+  resolvedBy: "self" | "hint" | "reveal";
   ts: string;
 }
 
@@ -215,7 +391,8 @@ export interface GrammarReauditStartedEvent {
 export interface GrammarBoostOfferedEvent {
   kind: "grammar_boost_offered";
   lessonId: string;
-  entryPoint: "settlement" | "card" | "reaudit";
+  /** R-UX4/W2：新增 "lesson"（正课页内入口），三入口转化可归因。 */
+  entryPoint: "settlement" | "card" | "reaudit" | "lesson";
   /** 建议档位（结算页推第 1 档；卡片按未完成档位推）。 */
   recommendedTier: 1 | 2 | 3;
   ts: string;
@@ -227,7 +404,12 @@ export interface GrammarBoostStartedEvent {
   lessonId: string;
   tier: 1 | 2 | 3;
   questionCount: number;
-  entryPoint: "settlement" | "card" | "reaudit" | "direct";
+  /**
+   * 入口来源。`"lesson"` = 课内入口 `?from=lesson`（2026-09-21 补：
+   * 类型里早就有这个值，但页面没有对应分支，课内入口一直被记成 direct，
+   * 导致 startedByEntry.lesson 结构上恒为 0、该入口的转化率无法归因）。
+   */
+  entryPoint: "settlement" | "card" | "reaudit" | "lesson" | "direct";
   ts: string;
 }
 
@@ -270,7 +452,7 @@ export interface GrammarBoostCompletedEvent {
   ts: string;
 }
 
-/** AI 批改/生成一次调用结果：降级率与延迟的来源。 */
+/** AI 批改/生成一次调用结果：降级率、延迟与缓存命中的来源。 */
 export interface GrammarBoostAiResultEvent {
   kind: "grammar_boost_ai_result";
   lessonId: string;
@@ -281,6 +463,36 @@ export interface GrammarBoostAiResultEvent {
   latencyMs: number;
   degraded: boolean;
   degradeReason: "not_configured" | "timeout" | "error" | "invalid" | null;
+  /**
+   * 是否命中缓存（命中时 latencyMs 为 0）。
+   * 此前该值已算出但没落事件——缓存命中率不可读，也就无法判断
+   * "用户到底等了多少次真实请求"（延迟才是 AI 的瓶颈，不是成本）。
+   */
+  cached?: boolean;
+  /** 调用时刻的模型名，用于按模型对比延迟/降级率。 */
+  model?: string;
+  ts: string;
+}
+
+/**
+ * 日记批改一次调用结果（2026-09-19 补）。
+ *
+ * 此前日记批改零埋点：失败只写进 entry.note，成功只在有 tag 时记 diary_issue_tag。
+ * 结果是「每句串行 3–8s」的实际延迟、失败率、要不要改批量策略，全都无据可依。
+ */
+export interface DiaryCorrectionResultEvent {
+  kind: "diary_correction_result";
+  entryId: string;
+  ok: boolean;
+  latencyMs: number;
+  /** 批改指出的问题数（成功时有意义）。 */
+  issueCount: number;
+  /** 命中的问题里有几处带罪名归因。 */
+  taggedIssueCount: number;
+  /** 失败原因（成功时为 null）。 */
+  errorKind: "not_configured" | "timeout" | "error" | "invalid" | null;
+  /** 批改强度档位（用户设置）。 */
+  style: "gentle" | "standard" | "strict";
   ts: string;
 }
 
@@ -290,6 +502,65 @@ export interface GrammarBoostItemRepeatEvent {
   lessonId: string;
   sourceRef: string;
   seenCount7d: number;
+  ts: string;
+}
+
+// ── R-UX 观测补全（2026-09-19 路线图 W1-W5）────────────────────────
+
+/** R-UX2/W3：课中途退出点——正课漏斗最大盲区（此前只能用最后一条 step_result 近似）。 */
+export interface LessonExitEvent {
+  kind: "lesson_exit";
+  lessonId: string;
+  /** 退出时所在段。 */
+  section: LessonSection;
+  /** 段内步序号（讲解为 watchStep；练习段为 practiceIndex 等）。 */
+  stepIndex: number;
+  /** 本课累计停留毫秒。 */
+  dwellMs: number;
+  ts: string;
+}
+
+/** W1：课小结 AI 结果——5 个 AI 落点里此前唯一零观测的一个（完课自动触发）。 */
+export interface LessonSummaryAiResultEvent {
+  kind: "lesson_summary_ai_result";
+  lessonId: string;
+  ok: boolean;
+  latencyMs: number;
+  cached: boolean;
+  /** 失败/降级原因（成功时省略）。 */
+  degradeReason?: "not_configured" | "timeout" | "error" | "invalid";
+  ts: string;
+}
+
+/** W5：日记写入行为——日记模块此前完全无使用漏斗。 */
+export interface DiaryWriteEvent {
+  kind: "diary_write";
+  /** 问题 id（题库 84 问的稳定引用）。 */
+  questionId: string;
+  /** 写入字符数。 */
+  chars: number;
+  /** 是否批改完成后的重写（R11 recast 跟进）。 */
+  isRewrite: boolean;
+  ts: string;
+}
+
+/** W2：句子入复习队列——「趁热练/日记 → 复习」增长链此前不可归因。 */
+export interface SentenceCardEnqueuedEvent {
+  kind: "sentence_card_enqueued";
+  lessonId: string;
+  /** 入队来源（趁热练产出 / 正课答错 / 日记批改 / 手动）。 */
+  source: "boost" | "lesson_mistake" | "diary" | "manual";
+  sentence: string;
+  ts: string;
+}
+
+/** W4（R-UX5）：开口跟读三档自评——「说」段 TTS 跟读块的采用与自评分布。 */
+export interface SayAloudEventEvent {
+  kind: "say_aloud_event";
+  lessonId: string;
+  /** 「说」段步序（0 = 半提示步，1 = 无提示步）。 */
+  step: number;
+  action: "played" | "smooth" | "halting" | "replay" | "skipped";
   ts: string;
 }
 
@@ -317,7 +588,25 @@ export type GrammarTelemetryEvent =
   | GrammarBoostAbandonedEvent
   | GrammarBoostCompletedEvent
   | GrammarBoostAiResultEvent
-  | GrammarBoostItemRepeatEvent;
+  | GrammarBoostItemRepeatEvent
+  | DiaryCorrectionResultEvent
+  | DeepDiveImpressionEvent
+  | DeepDiveDwellEvent
+  | LessonRereadEvent
+  | PracticeRevealUsedEvent
+  | OutputHintStepEvent
+  | AiExplainRequestedEvent
+  | AiExplainResultEvent
+  | AiExplainFeedbackEvent
+  | PracticeWhyWrongRequestedEvent
+  | PracticeWhyWrongResultEvent
+  | PracticeWhyWrongFeedbackEvent
+  | GrammarReplayCompletedEvent
+  | LessonExitEvent
+  | LessonSummaryAiResultEvent
+  | DiaryWriteEvent
+  | SentenceCardEnqueuedEvent
+  | SayAloudEventEvent;
 
 const memoryEvents: GrammarTelemetryEvent[] = [];
 
@@ -477,6 +766,40 @@ export const buildGrammarTelemetryExport = (): string => {
   );
 };
 
+/**
+ * A5a（M1，2026-09-21）：课内追问（「问一句」）与答错追问（「为什么错了」）的汇总段。
+ * 此前这些事件写得进、读不出——等于没埋：触发率/有用率/弃权率/降级率/校验丢弃分布/P90 全不可算。
+ * 这是后续所有门禁的分母（RICE 排序中它是低 Reach 但不能后置的项）。
+ */
+export interface ExplainSummary {
+  /** 「问一句」发起次数（分子：用户真的问了）。 */
+  askRequested: number;
+  /** 「问一句」返回数（含降级与弃权）。 */
+  askResults: number;
+  /** 「问一句」成功给出回答数。 */
+  askOk: number;
+  /** 弃权数（素材不足——设计成功，不算失败）。 */
+  askDeclined: number;
+  /** 降级分布：not_configured / timeout / error / invalid。 */
+  askDegradeReasons: Record<string, number>;
+  /** 校验丢弃分布：term / length / foreign / citation。 */
+  askValidationFailures: Record<string, number>;
+  /** 缓存命中数。 */
+  askCached: number;
+  /** 真实请求 P90 延迟（命中缓存与未配置短路不计入）。 */
+  askP90LatencyMs: number;
+  /** 反馈分布：helpful / unclear / wrong（「感受不到 AI 有用」的直接度量）。 */
+  askFeedback: Record<string, number>;
+  /** 答错追问发起次数。 */
+  whyWrongRequested: number;
+  /** 答错追问按**归因层**分布：local_exact / local_fuzzy / structural / ai / fallback。 */
+  whyWrongByLayer: Record<string, number>;
+  /** 答错追问反馈分布。 */
+  whyWrongFeedback: Record<string, number>;
+  /** 按模型拆分（explain 线）。 */
+  byModel: Record<string, { calls: number; degraded: number }>;
+}
+
 export interface GrammarTelemetrySummary {
   totalEvents: number;
   completions: number;
@@ -492,11 +815,52 @@ export interface GrammarTelemetrySummary {
   huntSettled: { cases: number; solved: number; solveRate: number };
   /** R20：段级停留汇总——各段累计停留与样本数（均值 = totalMs / samples），对照六段预算表。 */
   sectionDwell: Partial<Record<LessonSection, { totalMs: number; samples: number }>>;
+  /**
+   * 2026-09-20 阶段三：正课中途退出的段分布（此前是盲区——lesson_exit 类型定义在、零写入）。
+   * 用于回答「用户在哪一段放弃」：若集中在忆段说明回忆太难，集中在练段说明题目难。
+   */
+  lessonExitBySection: Partial<Record<LessonSection, number>>;
+  /** 2026-09-20 阶段三：单题耗时（按段聚合）。均值 = totalMs / samples，用于核验「单题 2.3–4.6 秒」是否仍成立。 */
+  stepDwellBySection: Partial<Record<LessonSection, { totalMs: number; samples: number }>>;
   diaryTagCounts: Partial<Record<GrammarErrorTag, number>>;
   /** R05：漏斗第一环——进入路径页 → 7 天内进课。 */
   pathFunnel: { views: number; firstVisitViews: number; pathToLessonWithin7d: number; pathToLessonRate7d: number };
   /** 「趁热练」参与率与分层漏斗（2026-09-18 PRD §3）；样本未积累时各率为 0。 */
   boost: GrammarBoostSummary;
+  /** AI 调用明细（2026-09-19 补）：缓存命中率、真实请求延迟、日记批改失败与按模型拆分。 */
+  ai: AiCallsSummary;
+  /** 课内追问与答错追问的汇总（A5a）。 */
+  explain: ExplainSummary;
+}
+
+/**
+ * AI 调用可观测性汇总（2026-09-19 补）。
+ *
+ * 为什么重要：AI 的瓶颈是延迟而非成本（串行 3–8s/次），而此前只有
+ * 「降级率」一个可读指标——缓存命中率、真实请求延迟、日记批改失败率全不可见，
+ * 导致「要不要改批量策略 / 该不该换更快的模型」都无据可依。
+ */
+export interface AiCallsSummary {
+  /** 趁热练 AI 调用总数（含缓存命中与降级）。 */
+  boostCalls: number;
+  /** 其中命中缓存数（命中时 latencyMs 为 0）。 */
+  boostCached: number;
+  /** 缓存命中率 = boostCached / boostCalls。 */
+  boostCacheHitRate: number;
+  /** 真实请求（未命中缓存且未因未配置而降级）的平均延迟 ms。 */
+  boostAvgLatencyMs: number;
+  /** 真实请求的 P90 延迟 ms（样本 <5 时等于最大值）。 */
+  boostP90LatencyMs: number;
+  /** 日记批改调用数。 */
+  diaryCalls: number;
+  /** 日记批改失败数。 */
+  diaryFailures: number;
+  /** 日记批改平均延迟 ms（含失败）。 */
+  diaryAvgLatencyMs: number;
+  /** 日记批改失败原因分布。 */
+  diaryFailureKinds: Record<string, number>;
+  /** 按模型拆分：模型名 → { 调用数, 降级数, 平均延迟 }。 */
+  byModel: Record<string, { calls: number; degraded: number; avgLatencyMs: number }>;
 }
 
 /** 「趁热练」汇总口径：参与率 / 分层漏斗 / 放弃率 / 难度落位 / AI 使用与降级。 */
@@ -588,6 +952,21 @@ export const summarizeGrammarTelemetry = (): GrammarTelemetrySummary => {
     }
   }
 
+  // 2026-09-20 阶段三：退出段分布 + 单题耗时聚合
+  const lessonExitBySection: Partial<Record<LessonSection, number>> = {};
+  const stepDwellBySection: Partial<Record<LessonSection, { totalMs: number; samples: number }>> = {};
+  for (const event of events) {
+    if (event.kind === "lesson_exit") {
+      lessonExitBySection[event.section] = (lessonExitBySection[event.section] ?? 0) + 1;
+    }
+    if (event.kind === "lesson_step_result" && event.stepDwellMs) {
+      const bucket = stepDwellBySection[event.section] ?? { totalMs: 0, samples: 0 };
+      bucket.totalMs += event.stepDwellMs;
+      bucket.samples += 1;
+      stepDwellBySection[event.section] = bucket;
+    }
+  }
+
   return {
     totalEvents: events.length,
     completions: completions.length,
@@ -602,6 +981,8 @@ export const summarizeGrammarTelemetry = (): GrammarTelemetrySummary => {
       solveRate: settled.length === 0 ? 0 : solvedCount / settled.length
     },
     sectionDwell,
+    lessonExitBySection,
+    stepDwellBySection,
     diaryTagCounts,
     pathFunnel: {
       views: pathViews.length,
@@ -609,7 +990,89 @@ export const summarizeGrammarTelemetry = (): GrammarTelemetrySummary => {
       pathToLessonWithin7d: pathToLesson7d,
       pathToLessonRate7d: pathViews.length === 0 ? 0 : pathToLesson7d / pathViews.length
     },
-    boost: summarizeBoost(events)
+    boost: summarizeBoost(events),
+    ai: summarizeAiCalls(
+      events,
+      events.filter((event): event is GrammarBoostAiResultEvent => event.kind === "grammar_boost_ai_result")
+    ),
+    explain: summarizeExplain(events)
+  };
+};
+
+/**
+ * A5a：课内追问 + 答错追问汇总。
+ * 口径与 summarizeAiCalls 一致：真实请求 = 未命中缓存、非「未配置」短路、延迟 > 0。
+ */
+const summarizeExplain = (events: GrammarTelemetryEvent[]): ExplainSummary => {
+  const askRequested = events.filter(
+    (event): event is AiExplainRequestedEvent => event.kind === "ai_explain_requested"
+  );
+  const askResults = events.filter(
+    (event): event is AiExplainResultEvent => event.kind === "ai_explain_result"
+  );
+  const askFeedbacks = events.filter(
+    (event): event is AiExplainFeedbackEvent => event.kind === "ai_explain_feedback"
+  );
+  const whyRequested = events.filter(
+    (event): event is PracticeWhyWrongRequestedEvent => event.kind === "practice_why_wrong_requested"
+  );
+  const whyResults = events.filter(
+    (event): event is PracticeWhyWrongResultEvent => event.kind === "practice_why_wrong_result"
+  );
+  const whyFeedbacks = events.filter(
+    (event): event is PracticeWhyWrongFeedbackEvent => event.kind === "practice_why_wrong_feedback"
+  );
+
+  const countBy = <T,>(items: T[], pick: (item: T) => string | undefined): Record<string, number> => {
+    const out: Record<string, number> = {};
+    for (const item of items) {
+      const key = pick(item) ?? "unknown";
+      out[key] = (out[key] ?? 0) + 1;
+    }
+    return out;
+  };
+
+  const realCalls = askResults.filter(
+    (event) => !event.cached && event.degradeReason !== "not_configured" && event.latencyMs > 0
+  );
+  const latencies = realCalls.map((event) => event.latencyMs).sort((a, b) => a - b);
+  const p90 =
+    latencies.length === 0
+      ? 0
+      : latencies.length < 5
+        ? latencies[latencies.length - 1]
+        : latencies[Math.min(latencies.length - 1, Math.floor(latencies.length * 0.9))];
+
+  const byModel: Record<string, { calls: number; degraded: number }> = {};
+  for (const event of askResults) {
+    const model = event.model?.trim() || "(未记录)";
+    const bucket = byModel[model] ?? { calls: 0, degraded: 0 };
+    bucket.calls += 1;
+    if (event.degraded) bucket.degraded += 1;
+    byModel[model] = bucket;
+  }
+
+  return {
+    askRequested: askRequested.length,
+    askResults: askResults.length,
+    askOk: askResults.filter((event) => event.ok && !event.declined).length,
+    askDeclined: askResults.filter((event) => event.declined).length,
+    askDegradeReasons: countBy(
+      askResults.filter((event) => event.degradeReason),
+      (event) => event.degradeReason ?? undefined
+    ),
+    askValidationFailures: countBy(
+      askResults.filter((event) => event.validationFailure),
+      (event) => event.validationFailure
+    ),
+    askCached: askResults.filter((event) => event.cached).length,
+    askP90LatencyMs: p90,
+    askFeedback: countBy(askFeedbacks, (event) => event.verdict),
+    whyWrongRequested: whyRequested.length,
+    // 归因层优先读新字段；旧事件回退到 matchSource/source（向后兼容历史数据）
+    whyWrongByLayer: countBy(whyResults, (event) => event.layer ?? event.source),
+    whyWrongFeedback: countBy(whyFeedbacks, (event) => event.verdict),
+    byModel
   };
 };
 
@@ -636,13 +1099,19 @@ const summarizeBoost = (events: GrammarTelemetryEvent[]): GrammarBoostSummary =>
     (event): event is GrammarBoostAiResultEvent => event.kind === "grammar_boost_ai_result"
   );
 
-  const offeredByEntry: Record<GrammarBoostOfferedEvent["entryPoint"], number> = { settlement: 0, card: 0, reaudit: 0 };
+  const offeredByEntry: Record<GrammarBoostOfferedEvent["entryPoint"], number> = {
+    settlement: 0,
+    card: 0,
+    reaudit: 0,
+    lesson: 0
+  };
   for (const event of offeredEvents) offeredByEntry[event.entryPoint] += 1;
 
   const startedByEntry: Record<GrammarBoostStartedEvent["entryPoint"], number> = {
     settlement: 0,
     card: 0,
     reaudit: 0,
+    lesson: 0,
     direct: 0
   };
   for (const event of startedEvents) startedByEntry[event.entryPoint] += 1;
@@ -699,5 +1168,65 @@ const summarizeBoost = (events: GrammarTelemetryEvent[]): GrammarBoostSummary =>
     aiUsedRate: rate(tier3WithAi, tier3Completed.length),
     aiDegradedRate: rate(aiDegraded, aiEvents.length),
     itemRepeatRate: rate(repeatEvents.length, stepEvents.length)
+  };
+};
+
+/** AI 调用汇总的实现（把可观测性从「只有降级率」补齐到缓存/延迟/模型维度）。 */
+const summarizeAiCalls = (
+  events: GrammarTelemetryEvent[],
+  boostAiEvents: GrammarBoostAiResultEvent[]
+): AiCallsSummary => {
+  const cached = boostAiEvents.filter((event) => event.cached).length;
+  // 真实请求 = 发出了网络调用（未命中缓存、且不是「未配置」这种本地短路）
+  const realCalls = boostAiEvents.filter(
+    (event) => !event.cached && event.degradeReason !== "not_configured" && event.latencyMs > 0
+  );
+  const latencies = realCalls.map((event) => event.latencyMs).sort((a, b) => a - b);
+  const avg = latencies.length === 0 ? 0 : Math.round(latencies.reduce((sum, value) => sum + value, 0) / latencies.length);
+  const p90 =
+    latencies.length === 0
+      ? 0
+      : latencies.length < 5
+        ? latencies[latencies.length - 1]
+        : latencies[Math.min(latencies.length - 1, Math.floor(latencies.length * 0.9))];
+
+  const diaryEvents = events.filter(
+    (event): event is DiaryCorrectionResultEvent => event.kind === "diary_correction_result"
+  );
+  const diaryFailures = diaryEvents.filter((event) => !event.ok);
+  const diaryFailureKinds: Record<string, number> = {};
+  for (const event of diaryFailures) {
+    const key = event.errorKind ?? "error";
+    diaryFailureKinds[key] = (diaryFailureKinds[key] ?? 0) + 1;
+  }
+
+  const byModel: Record<string, { calls: number; degraded: number; avgLatencyMs: number }> = {};
+  for (const event of boostAiEvents) {
+    const model = event.model?.trim() || "(未记录)";
+    const bucket = byModel[model] ?? { calls: 0, degraded: 0, avgLatencyMs: 0 };
+    bucket.calls += 1;
+    if (event.degraded) bucket.degraded += 1;
+    // 累计延迟用于算均值（命中缓存记 0，会被真实调用摊薄——这是有意的：它反映"用户实际等待"）
+    bucket.avgLatencyMs += event.latencyMs;
+    byModel[model] = bucket;
+  }
+  for (const model of Object.keys(byModel)) {
+    if (byModel[model].calls > 0) byModel[model].avgLatencyMs = Math.round(byModel[model].avgLatencyMs / byModel[model].calls);
+  }
+
+  return {
+    boostCalls: boostAiEvents.length,
+    boostCached: cached,
+    boostCacheHitRate: boostAiEvents.length === 0 ? 0 : cached / boostAiEvents.length,
+    boostAvgLatencyMs: avg,
+    boostP90LatencyMs: p90,
+    diaryCalls: diaryEvents.length,
+    diaryFailures: diaryFailures.length,
+    diaryAvgLatencyMs:
+      diaryEvents.length === 0
+        ? 0
+        : Math.round(diaryEvents.reduce((sum, event) => sum + event.latencyMs, 0) / diaryEvents.length),
+    diaryFailureKinds,
+    byModel
   };
 };

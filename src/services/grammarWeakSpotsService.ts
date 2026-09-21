@@ -6,8 +6,11 @@ import {
   type GrammarReviewResultEvent,
   type HuntVerdictEvent
 } from "./grammarTelemetry";
+import type { PracticeWhyWrongResultEvent } from "./grammarTelemetry";
 import { GRAMMAR_ERROR_TAG_LABELS, GRAMMAR_ERROR_TAG_PLAIN, findErrorAt, GRAMMAR_ERROR_TAGS } from "./huntService";
+import { findZeroTermHits } from "../data/grammarZeroTerms";
 import { huntCases } from "../data/huntCases";
+import { grammarLessons } from "../data/grammarLessons";
 import { nowIso } from "./storage";
 
 /**
@@ -36,7 +39,13 @@ export const WEAK_SPOT_WEIGHTS = {
   /** 侦探里罪名归错。 */
   huntWrongTag: 1.0,
   /** 侦探里把没问题的词当成错（对语法点的困惑）。 */
-  huntNotError: 0.5
+  huntNotError: 0.5,
+  /**
+   * B3（M2，2026-09-21）：用户对 AI 讲解点「讲错了」。
+   * 高信号——用户明确说这个罪名下面的解释对不上，比「追问」（0.5）更硬，
+   * 但仍低于真实犯错（diary 1.5）——避免一条错反馈把某罪名顶到榜首。
+   */
+  aiExplainWrong: 0.8
 } as const;
 
 const decay = (ts: string, now: number): number => {
@@ -90,6 +99,208 @@ export interface WeakSpotsReport {
 
 export const computeWeakSpots = (data: AppData, now = Date.now()): WeakSpot[] => computeWeakSpotsReport(data, now).active;
 
+/**
+ * C1（M3，2026-09-21）弱点叙事：把已算好的加权排序讲成一句人话。
+ *
+ * 背景（竞析/瑞思交叉结论）：智能体缺的不是"再多一个问答框"，而是**把已有的确定性决策
+ * 用语言表达出来**——弱点档案（频率×7天半衰期）已在跑、回马枪已按它抽题，
+ * 但没有任何一句话告诉用户"你最近总在这摔"。
+ *
+ * 纪律：**纯本地模板、零 AI、零延迟**。事实（次数/趋势）本地算，不让 AI 编数字。
+ * 无基线（首几周没有上一周数据）时降级为绝对陈述，不硬凑趋势。
+ */
+export interface WeakSpotNarrative {
+  /** 叙事句（面向用户的一段人话）。 */
+  text: string;
+  /** 指向的课（按罪名反查第一门含该罪名的课）——"去练一遍"的落点。 */
+  lessonId?: string;
+  lessonTitle?: string;
+  lessonNumber?: number;
+}
+
+/** 趋势对比的观察窗（天）：本周 vs 上一周。 */
+const NARRATIVE_WINDOW_DAYS = 7;
+
+/**
+ * 生成弱点叙事。取 Top1 弱点，比较「近 7 天」与「上一个 7 天」的次数：
+ * - 有基线且上升 → 「比上上周多了 N 次」
+ * - 有基线且下降 → 「比上上周少了 N 次，在好转」
+ * - 无基线 → 绝对陈述（不硬凑趋势）
+ */
+export const buildWeakSpotNarrative = (
+  data: AppData,
+  now = Date.now()
+): WeakSpotNarrative | null => {
+  const { active } = computeWeakSpotsReport(data, now);
+  const top = active[0];
+  if (!top || top.totalCount === 0) return null;
+
+  // 前一窗口次数：复用同一套事件源，只换时间窗
+  const dayMs = 24 * 60 * 60 * 1000;
+  const prevWindowStart = now - NARRATIVE_WINDOW_DAYS * 2 * dayMs;
+  const prevWindowEnd = now - NARRATIVE_WINDOW_DAYS * dayMs;
+  let prevCount = 0;
+  for (const event of listGrammarEventsByKind("practice_why_wrong_result") as PracticeWhyWrongResultEvent[]) {
+    if (event.errorTag !== top.tag) continue;
+    const at = new Date(event.ts).getTime();
+    if (Number.isFinite(at) && at >= prevWindowStart && at < prevWindowEnd) prevCount += 1;
+  }
+  for (const event of listGrammarEventsByKind("diary_issue_tag") as DiaryIssueTagEvent[]) {
+    if (event.tag !== top.tag) continue;
+    const at = new Date(event.ts).getTime();
+    if (Number.isFinite(at) && at >= prevWindowStart && at < prevWindowEnd) prevCount += 1;
+  }
+
+  // 指向具体课：按罪名反查第一门含该罪名的课（huntCaseIds → huntCases → errors[].tag）
+  let lessonId: string | undefined;
+  let lessonTitle: string | undefined;
+  let lessonNumber: number | undefined;
+  const lessonOfTag = (tag: GrammarErrorTag) => {
+    for (const lesson of grammarLessons) {
+      for (const caseId of lesson.huntCaseIds ?? []) {
+        const huntCase = huntCases.find((item) => item.id === caseId);
+        if (huntCase && huntCase.errors.some((error) => error.tag === tag)) return lesson;
+      }
+    }
+    return undefined;
+  };
+  const lesson = lessonOfTag(top.tag);
+  if (lesson) {
+    lessonId = lesson.id;
+    lessonTitle = lesson.title;
+    lessonNumber = lesson.number;
+  }
+
+  const trend =
+    prevCount === 0
+      ? ""
+      : top.recentCount > prevCount
+        ? `，比上上周多了 ${top.recentCount - prevCount} 次`
+        : top.recentCount < prevCount
+          ? `，比上上周少了 ${prevCount - top.recentCount} 次——在好转`
+          : "，和上上周持平";
+
+  const where = lesson ? `第 ${lesson.number} 课就是讲这个的，去练一遍？` : "点下面的「排进今日复习」练一轮。";
+  const text = `你最近总在同一个地方摔：「${top.plain}」——近 7 天 ${top.recentCount} 次${trend}。${where}`;
+  // 零术语红线优先于覆盖率：plain 文案里若带术语（如「可数名词单数」），宁可不出这句叙事
+  if (findZeroTermHits(text).length > 0) return null;
+  return { text, lessonId, lessonTitle, lessonNumber };
+};
+
+/**
+ * C2（M3，2026-09-21）主动介入：连续 2 次同错因 → 次日推一张「你这两天都在这摔」的卡。
+ *
+ * 竞析核查：行业里**没有一家**公开宣称"AI 主动发现问题并介入"（最接近的 Speak 定制复习
+ * 仍属被动组织）。这是唯一能领先而大厂因规模难以模仿的形态——因为我们的判定是
+ * **确定性规则**（本地计数），不需要云端模型反复扫描。
+ *
+ * 纪律：
+ * - 触发条件完全确定性：同一 errorTag 在 48 小时内出现 ≥2 次
+ * - 强度拿捏：每 48 小时最多 1 张（避免"系统比我更急"的抗拒）
+ * - 冷却记录在 localStorage（不进 AppData，避免污染导出数据）
+ */
+export interface ActiveIntervention {
+  tag: GrammarErrorTag;
+  label: string;
+  /** 48 小时内的出现次数。 */
+  count: number;
+  /** 指向的课（按罪名反查）。 */
+  lessonId?: string;
+  lessonTitle?: string;
+  lessonNumber?: number;
+  /** 叙事句。 */
+  text: string;
+}
+
+const INTERVENTION_WINDOW_HOURS = 48;
+const INTERVENTION_MIN_COUNT = 2;
+const INTERVENTION_COOLDOWN_KEY = "grammar-intervention-dismissed-v1";
+const INTERVENTION_COOLDOWN_MS = 48 * 60 * 60 * 1000;
+
+const readInterventionCooldown = (): Record<string, number> => {
+  try {
+    if (typeof window === "undefined" || !window.localStorage) return {};
+    const raw = window.localStorage.getItem(INTERVENTION_COOLDOWN_KEY);
+    return raw ? (JSON.parse(raw) as Record<string, number>) : {};
+  } catch {
+    return {};
+  }
+};
+
+/** 静默本周（用户主动关掉这张卡时的冷却记录）。 */
+export const dismissIntervention = (tag: GrammarErrorTag): void => {
+  try {
+    if (typeof window === "undefined" || !window.localStorage) return;
+    const cooldown = readInterventionCooldown();
+    cooldown[tag] = Date.now();
+    window.localStorage.setItem(INTERVENTION_COOLDOWN_KEY, JSON.stringify(cooldown));
+  } catch {
+    // 忽略：冷却失败只是可能重复推荐，不阻断
+  }
+};
+
+/**
+ * 找出应该主动介入的错因。返回 null 表示当前不该打扰。
+ * 冷却按 tag 维度：同一个错因 48 小时内只推一次。
+ */
+export const findActiveIntervention = (
+  data: AppData,
+  now = Date.now()
+): ActiveIntervention | null => {
+  const windowStart = now - INTERVENTION_WINDOW_HOURS * 60 * 60 * 1000;
+  const cooldown = readInterventionCooldown();
+  const counts = new Map<GrammarErrorTag, number>();
+
+  for (const event of listGrammarEventsByKind("practice_why_wrong_result") as PracticeWhyWrongResultEvent[]) {
+    const tag = event.errorTag as GrammarErrorTag | undefined;
+    if (!tag || !GRAMMAR_ERROR_TAGS.includes(tag)) continue;
+    const at = new Date(event.ts).getTime();
+    if (!Number.isFinite(at) || at < windowStart) continue;
+    counts.set(tag, (counts.get(tag) ?? 0) + 1);
+  }
+  for (const event of listGrammarEventsByKind("diary_issue_tag") as DiaryIssueTagEvent[]) {
+    const tag = event.tag;
+    if (!GRAMMAR_ERROR_TAGS.includes(tag)) continue;
+    const at = new Date(event.ts).getTime();
+    if (!Number.isFinite(at) || at < windowStart) continue;
+    counts.set(tag, (counts.get(tag) ?? 0) + 1);
+  }
+
+  // 取窗口内次数最多的那个（并过滤冷却与门槛）
+  const candidates = [...counts.entries()]
+    .filter(([tag, count]) => count >= INTERVENTION_MIN_COUNT && !(cooldown[tag] && now - cooldown[tag] < INTERVENTION_COOLDOWN_MS))
+    .sort((a, b) => b[1] - a[1]);
+  const picked = candidates[0];
+  if (!picked) return null;
+
+  const [tag, count] = picked;
+  // 指向具体课（与 C1 同一套反查）
+  let lessonId: string | undefined;
+  let lessonTitle: string | undefined;
+  let lessonNumber: number | undefined;
+  for (const lesson of grammarLessons) {
+    for (const caseId of lesson.huntCaseIds ?? []) {
+      const huntCase = huntCases.find((item) => item.id === caseId);
+      if (huntCase && huntCase.errors.some((error) => error.tag === tag)) {
+        lessonId = lesson.id;
+        lessonTitle = lesson.title;
+        lessonNumber = lesson.number;
+        break;
+      }
+    }
+    if (lessonId) break;
+  }
+
+  const label = GRAMMAR_ERROR_TAG_LABELS[tag];
+  const plain = GRAMMAR_ERROR_TAG_PLAIN[tag] ?? label;
+  const text = lessonNumber
+    ? `你这两天都在这摔：「${plain}」(${count} 次)——第 ${lessonNumber} 课的重练档，几分钟就够。`
+    : `你这两天都在这摔：「${plain}」(${count} 次)——先去复习里练一轮？`;
+  // 零术语红线优先于推荐覆盖率：带术语的标签文案（如「可数名词单数」）不推这张卡
+  if (findZeroTermHits(text).length > 0) return null;
+  return { tag, label, count, lessonId, lessonTitle, lessonNumber, text };
+};
+
 export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpotsReport => {
   const stats = new Map<GrammarErrorTag, TagStat>();
   const statFor = (tag: GrammarErrorTag): TagStat => {
@@ -129,6 +340,31 @@ export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpo
     const issue = entry?.issues[event.issueIndex];
     const example = issue ? `${issue.original} → ${issue.correction}` : undefined;
     bump(event.tag, WEAK_SPOT_WEIGHTS.diaryIssue, event.ts, example, entry ? cardIdForDiary(data, entry.id) : undefined);
+  }
+
+  // 「为什么错了」追问归因（R-WW11）：用户对某罪名反复追问 = 高信号短板。
+  // 权重 0.5 保守——追问是「不懂 / 好奇」混合信号，不能与真实犯错（diary 1.5）同级。
+  for (const event of listGrammarEventsByKind("practice_why_wrong_result") as PracticeWhyWrongResultEvent[]) {
+    const errorTag = event.errorTag;
+    if (!event.ok || !errorTag || !GRAMMAR_ERROR_TAGS.includes(errorTag as GrammarErrorTag)) continue;
+    const lesson = grammarLessons.find((item) => item.id === event.lessonId);
+    bump(errorTag as GrammarErrorTag, 0.5, event.ts, lesson ? `追问：${lesson.title}` : undefined);
+  }
+
+  // B3：用户点过的「讲错了」终于被听见——此前 ai_explain_feedback 全库消费方 0 个。
+  // 只消费 wrong 票（helpful 不降权：降权会让已掌握的罪名迟迟不消退，语义混乱）。
+  // 归因路径：反馈事件只带 lessonId/stepIndex，用同课同步的 result 事件找回 errorTag。
+  const tagByStep = new Map<string, string>();
+  for (const event of listGrammarEventsByKind("practice_why_wrong_result") as PracticeWhyWrongResultEvent[]) {
+    if (event.errorTag) tagByStep.set(`${event.lessonId}#${event.stepIndex}`, event.errorTag);
+  }
+  for (const event of listGrammarEventsByKind("practice_why_wrong_feedback")) {
+    const feedback = event as { lessonId: string; stepIndex: number; verdict: string; ts: string };
+    if (feedback.verdict !== "wrong") continue;
+    const tag = tagByStep.get(`${feedback.lessonId}#${feedback.stepIndex}`);
+    if (!tag || !GRAMMAR_ERROR_TAGS.includes(tag as GrammarErrorTag)) continue;
+    const lesson = grammarLessons.find((item) => item.id === feedback.lessonId);
+    bump(tag as GrammarErrorTag, WEAK_SPOT_WEIGHTS.aiExplainWrong, feedback.ts, lesson ? `讲错了：${lesson.title}` : undefined);
   }
 
   for (const event of listGrammarEventsByKind("grammar_review_result") as GrammarReviewResultEvent[]) {
@@ -205,7 +441,17 @@ export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpo
 const cardIdForDiary = (data: AppData, entryId: string): string | undefined =>
   data.cards.find((card) => card.type === "sentence" && card.sourceId === `diary:${entryId}`)?.id;
 
-/** 把弱点关联的卡片全部排到今天到期：一键「今天复习它」。 */
+/**
+ * 把弱点关联的卡片全部排到今天到期：一键「今天复习它」。
+ *
+ * 2026-09-21 修：此前只改 nextReviewAt，但**语法复习会话排除 intervalDays === 0 的卡**
+ * （那是「从未进过复习队列」的标记，见 listDueGrammarReviewCards）。于是对一张
+ * 刚入队、还没复习过的新卡点「排进今日复习」，按钮变灰显示「已排进今日复习」，
+ * 复习页却一张都不出——用户被承诺了今天能复习到，实际什么都没有。
+ *
+ * 这里同时把 intervalDays 抬到 1（一个最小的真实间隔），让它成为队内卡；
+ * 只对「本来就是 0」的卡动，已有正常间隔的卡不改（避免把 20 天间隔的卡压回 1 天）。
+ */
 export const scheduleCardsForToday = (data: AppData, cardIds: string[]): AppData => {
   const ids = new Set(cardIds.filter(Boolean));
   if (ids.size === 0) return data;
@@ -213,7 +459,13 @@ export const scheduleCardsForToday = (data: AppData, cardIds: string[]): AppData
   return {
     ...data,
     schedules: data.schedules.map((schedule) =>
-      ids.has(schedule.cardId) ? { ...schedule, nextReviewAt: stamp } : schedule
+      ids.has(schedule.cardId)
+        ? {
+            ...schedule,
+            nextReviewAt: stamp,
+            intervalDays: (schedule.intervalDays ?? 0) === 0 ? 1 : schedule.intervalDays
+          }
+        : schedule
     )
   };
 };

@@ -15,8 +15,7 @@ import {
   listHuntCasesWithLock,
   pickCorrectionWord,
   pickHintTarget,
-  summarizeHuntProgress
-} from "./huntService";
+  summarizeHuntProgress, GRAMMAR_ERROR_TAGS } from "./huntService";
 import { huntCases } from "../data/huntCases";
 import { grammarLessons } from "../data/grammarLessons";
 import { makeTestData } from "./testUtils";
@@ -105,8 +104,11 @@ describe("hunt service", () => {
     expect(tenseStat).toEqual({ tag: "tense", found: 1, wrong: 1 });
     const pluralStat = summary.tagStats.find((stat) => stat.tag === "plural");
     expect(pluralStat).toEqual({ tag: "plural", found: 0, wrong: 1 });
-    // 全部 10 个罪名都要出现在统计里，便于页面渲染固定的罪名面板。
-    expect(summary.tagStats).toHaveLength(10);
+    // 全部罪名都要出现在统计里，便于页面渲染固定的罪名面板。
+    // 2026-09-21：词表已从 LABELS 派生（唯一来源），含 comparison 共 11 个——
+    // 原先的 10 是「两处词表不一致」的遗留值（见 H1 的已知问题登记）。
+    expect(summary.tagStats).toHaveLength(GRAMMAR_ERROR_TAGS.length);
+    expect(summary.tagStats).toHaveLength(11);
   });
 
   it("works with default empty hunt fields from makeTestData", () => {
@@ -240,7 +242,20 @@ describe("R02 找错知识缺口 → SM-2 复习队列", () => {
     expect(card.type).toBe("sentence");
     expect(card.tags).toContain("语法");
     expect(card.sourceId).toBe(`hunt:${caseItem.id}`);
-    expect(card.front).toBe(caseItem.tokens.join(" "));
+    /**
+     * 正面是「完整正确句」（2026-09-21 修）：
+     * 此前断言的 `caseItem.tokens.join(" ")` 是含错原文——那句子里留着案件的植错，
+     * 而这张卡是进 SM-2 复习队列当答案用的（用户照抄它应该判对）。
+     * 修好后正确句 = 把该案全部植错改正（见 correctedSentenceOf）。
+     */
+    const corrected = [...caseItem.tokens];
+    for (const error of [...caseItem.errors].sort((a, b) => b.tokenIndex - a.tokenIndex)) {
+      const trailing = /([.,!?;:]+)$/.exec(corrected[error.tokenIndex])?.[1] ?? "";
+      if (/^（?去掉/.test(error.correction.trim())) corrected.splice(error.tokenIndex, 1);
+      else corrected[error.tokenIndex] = `${error.correction.trim().replace(/[.,!?;:]+$/, "")}${trailing}`;
+    }
+    expect(card.front).toBe(corrected.join(" "));
+    expect(card.front, "正面不应再含任何植错原形").not.toBe(caseItem.tokens.join(" "));
     // grammarNote 嵌入稳定罪名 token（[tag:原错词]，弱点回溯用）
     const details = data.sentenceDetails.find((item) => item.cardId === card.id);
     expect(details?.grammarNote).toContain(`[${caseItem.errors[0].tag}:${caseItem.errors[0].original}]`);

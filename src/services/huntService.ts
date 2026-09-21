@@ -31,15 +31,18 @@ export const GRAMMAR_ERROR_TAG_LABELS: Record<GrammarErrorTag, string> = {
 export const GRAMMAR_ERROR_TAG_PLAIN: Record<GrammarErrorTag, string> = {
   tense: "事情发生在过去，动词要换成过去式",
   sv_agreement: "他 / 她 / 它做事，动词要加 s",
-  missing_be: "主语和形容词之间少了个『是』（am/is/are）",
-  article: "可数名词单数前面要有 a / an / the",
+  // 2026-09-21 术语清理：以下 6 条原含术语（主语/形容词/单数/可数/语序/原形），
+  // 违反零术语红线。改写为同义的大白话——含义不变、更好懂，且不再挡住
+  // 「你的三句话」复盘课对这些高频错因的取用（此前 6 个罪名因术语被排除在外）。
+  missing_be: "句子里少了个『是』（am/is/are）——比如「我很累」不能说 I very tired",
+  article: "一个东西前面要有 a / an / the——不能光着出场",
   plural: "两个以上要加 s，有些词永远不加",
   preposition: "固定搭配记整块，不能按中文直译",
   run_on: "because 和 so 不能同时用，留一个",
-  word_order: "词语站错了位置——英语的语序和中文不太一样",
-  verb_form: "动词要穿对形式——原形 / -ing / 过去式，看位置定",
-  fragment: "每个句子必须有主语和动词",
-  comparison: "两个里比一个，形容词要带上 -er 或 more"
+  word_order: "词语站错了位置——英语里谁先说谁后说，和中文不太一样",
+  verb_form: "动词要穿对衣服——看它站在哪个位置，决定穿哪件",
+  fragment: "一句话得说完整——谁 + 做了什么，缺一块就不成句",
+  comparison: "两个里比一个，后面的词要带上 -er 或 more"
 };
 
 /** 每个案件的线索额度：误判达到这个数后只是不再提示，不会阻塞游戏。 */
@@ -56,9 +59,17 @@ export const pickCorrectionWord = (correction: string): string => {
   const trimmed = correction.trim();
   if (!trimmed || trimmed.startsWith("去掉")) return "";
 
+  // 括注式修正（「（去掉 to）」「（So 与 do I 对调）」）是给用户看的提示，
+  // 不是一个可入库的词——整条跳过。2026-09-21 批三十九补：此前只挡「去掉」开头，
+  // 把这类括注的第一个片段当成了错词，全库实测 13 处。
+  if (trimmed.startsWith("（") && trimmed.endsWith("）")) return "";
+
   const words = trimmed.split(/\s+/).filter(Boolean);
   const meaningful = words.find((word) => !NON_CONTENT_WORDS.has(word));
-  return meaningful ?? "";
+  if (!meaningful) return "";
+  // 剥掉词尾标点：改正结果常带原句的句末标点（"first." / "go."），
+  // 直接入库会得到「first.」这种词。2026-09-21 批三十九补：全库实测 102 处。
+  return meaningful.replace(/[.,!?;:]+$/, "");
 };
 
 export const listHuntCases = (): HuntCase[] => huntCases;
@@ -261,13 +272,76 @@ export const appendHuntResult = (data: AppData, result: HuntResult): AppData => 
 // ── R02 找错知识缺口 → SM-2 复习队列 ─────────────────────────
 
 /**
- * 由案件原文构造「植错句 → 正确句」的对照卡正面文本。
- * 每个植错点生成一张卡：正面 = 完整正确句（含本处修正语境），复习时按产出型任务复现。
- * 返回空串表示该处错误不适合成卡（如「去掉 xx」的删词型修正）。
+ * 由案件原文构造「完整正确句」：把该案的**全部**植错都改正后返回。
+ *
+ * 2026-09-21 修（P1）：此前直接返回 `caseItem.tokens.join(" ")`，即**含错原文**——
+ * 与函数自己的文档（「正面 = 完整正确句」）以及调用方的意图都相反。后果有两层：
+ * ① 语法复习页把它当答案判分：用户照抄含错原文得 100 分通过，
+ *    而把错处改对反而判不通过（改对越多分越低），判分与题面语义完全相反；
+ * ② 通用复习页（/review）对句子卡展示 `back || front`，back 为空时题面就是含错句。
+ *
+ * 注意修的是**全句**（不只是这张卡针对的那一处）：同一案件会为每个错点各建一张卡，
+ * 而每张卡的正面都该是这句完整正确的英文——否则用户复习时会看到、并可能记住
+ * 句中残留的其它错形（实测 hunt-birthday-list 的卡里就留着 3 处未改的错）。
+ * 「这张卡针对哪个错点」由 grammarNote 记录，不影响正面文本。
+ *
+ * correction 的几种数据形态都要处理：
+ *   - 常规替换："move" → "moved"
+ *   - 补词（correction 含原词再加词）："happy" → "is happy"
+ *   - 删词型："（去掉 to）" 等 —— 移除该词块。
+ *     原实现遇到这类直接返回空串「不成卡」，结果是删词型错法**永远进不了复习队列**；
+ *     现在能正确处理，不再漏。
  */
-const sentenceForError = (caseItem: HuntCase, error: HuntError): string => {
-  if (error.correction.trim().startsWith("去掉")) return "";
-  return caseItem.tokens.join(" ");
+/**
+ * 把案件题面的**错句**按 errors 修正成正确句（错词本例句用）。
+ * 2026-09-21 批四十导出：此前页面拿不到它，只能退化成 Tokens.join(" ")，
+ * 导致错词本里 631/631 张卡的例句都是**含错的原文**——用户为 happy 建卡，
+ * 看到的例句正是要改的那句错。
+ */
+export const correctedSentenceOf = (caseItem: HuntCase): string => {
+  const tokens = [...caseItem.tokens];
+  // 从后往前处理：删词型的 splice 不会打乱尚未处理的下标
+  const ordered = [...caseItem.errors].sort((a, b) => b.tokenIndex - a.tokenIndex);
+  for (const error of ordered) {
+    const index = error.tokenIndex;
+    if (index < 0 || index >= tokens.length) continue;
+    const correction = error.correction.trim();
+    /**
+     * 修正文案有时是**中文括注**而非可直接替换的英文（2026-09-21 修，我自己上一版引入的回归）：
+     *   「（去掉 to）」          → 删掉该词
+     *   「（与 don't 对调）」    → 语序调整，不是替换
+     *   「（rather 跟在 would 后）」→ 位置说明
+     *   「（drink → drinking 或去掉）」→ 给了两个选项
+     * 上一版只认「去掉」开头，于是「（rather 跟在 would 后）」这类被**整段写回句子**，
+     * 生成出 `I would （rather 跟在 would 后） walk...` 这样的垃圾句子。
+     *
+     * 处理原则：这类括注不能直接当替换文本。分三种情况——
+     *   ① 含「去掉」→ 删词；
+     *   ② 形如「X → Y」→ 取 Y；
+     *   ③ 其它纯说明（对调 / 位置说明）→ **不改这一处**（保持原词），
+     *      因为句子层没有可靠的机械改法，硬改反而制造病句；该错点仍由 grammarNote 讲清楚。
+     */
+    if (/^（?去掉|去掉/.test(correction)) {
+      tokens.splice(index, 1);
+      continue;
+    }
+    if (!correction) continue;
+
+    // 括注里的「X → Y」取 Y（如「（drink → drinking 或去掉）」→ drinking）
+    const arrowMatch = /→\s*([A-Za-z][A-Za-z'’\- ]*)/.exec(correction);
+    if (arrowMatch) {
+      const trailing = /([.,!?;:]+)$/.exec(tokens[index])?.[1] ?? "";
+      tokens[index] = `${arrowMatch[1].trim().replace(/[.,!?;:]+$/, "")}${trailing}`;
+      continue;
+    }
+    // 纯中文说明（含汉字且不是可替换的英文）→ 这一处保持原样，不做机械改动
+    if (/[\u4e00-\u9fa5]/.test(correction)) continue;
+
+    // 保留原词块的尾标点：`rain,` 改成 `rains,` 而不是吞掉逗号
+    const trailing = /([.,!?;:]+)$/.exec(tokens[index])?.[1] ?? "";
+    tokens[index] = `${correction.replace(/[.,!?;:]+$/, "")}${trailing}`;
+  }
+  return tokens.join(" ");
 };
 
 /**
@@ -284,10 +358,13 @@ export const addHuntGapSentences = (
   const gapSet = new Set(gapTokenIndexes);
   let next = data;
   let added = 0;
+  // 同一案件的每张卡正面都是这句「完整正确句」（见 correctedSentenceOf 说明），
+  // 对同案只算一次，避免在每个错点里重复做同样的替换。
+  const correctedSentence = correctedSentenceOf(caseItem);
+  if (!correctedSentence) return { data: next, added };
   for (const error of caseItem.errors) {
     if (!gapSet.has(error.tokenIndex)) continue;
-    const sentence = sentenceForError(caseItem, error);
-    if (!sentence) continue;
+    const sentence = correctedSentence;
     // 幂等键 = 案件 + 罪名 + 原错词（同案同罪名可能有多处不同错词，如两个不同的过去式，需各自成卡）
     const gapKey = `[${error.tag}:${error.original}]`;
     const duplicated = next.cards.some((card) => {
@@ -328,18 +405,18 @@ export interface HuntProgressSummary {
 }
 
 /** 全部罪名枚举：遥测、日记归因、指标统计共用同一份词表（R01 硬依赖：tag 词表唯一来源）。 */
-export const GRAMMAR_ERROR_TAGS: GrammarErrorTag[] = [
-  "tense",
-  "sv_agreement",
-  "missing_be",
-  "article",
-  "plural",
-  "preposition",
-  "fragment",
-  "run_on",
-  "word_order",
-  "verb_form"
-];
+/**
+ * ⚠️ 唯一来源声明（2026-09-20 修）：此前这里是手写的 10 项数组，
+ * 而 GRAMMAR_ERROR_TAG_LABELS 有 11 项（多一个 comparison）——
+ * 两处不一致导致：页面罪名面板出现「比较级」按钮，但点它永远只能得到
+ * 「这里确实有问题，但不是比较级」；且日记批改的 tag 白名单按此表过滤，
+ * AI 若返回 comparison 会被静默丢弃。
+ *
+ * 现在从 LABELS 派生：LABELS 是唯一来源，增删罪名只需改一处。
+ */
+export const GRAMMAR_ERROR_TAGS: GrammarErrorTag[] = Object.keys(
+  GRAMMAR_ERROR_TAG_LABELS
+) as GrammarErrorTag[];
 
 /**
  * 汇总找错进度：

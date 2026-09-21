@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
+import SpeakButton from "../components/SpeakButton";
 import {
   addDiarySentenceToReview,
   applyDiaryCorrection,
@@ -11,6 +12,7 @@ import {
   listDiaryEntries,
   listRecentDiaryQuestionIds,
   markDiaryCorrectionFailed,
+  meaningfulText,
   pickDailyDiaryQuestions,
   requestDiaryCorrection,
   saveDiaryEntry,
@@ -33,6 +35,8 @@ interface DraftState {
   issues?: DiaryIssue[];
   /** R11：更地道的重述（recast）。 */
   recast?: string;
+  /** 一句中文追问——批改后的「再多说一句」邀请（此前 prompt 要求返回但被丢弃）。 */
+  followUp?: string;
   message?: string;
 }
 
@@ -123,8 +127,11 @@ export default function GrammarDiaryPage() {
     }));
   };
 
-  const isDirty = (draft: DraftState | undefined) =>
-    Boolean(draft?.value.trim()) && draft!.value.trim() !== (draft?.savedValue ?? "");
+  // 与 diaryService.saveDiaryEntry 的校验同口径：只有零宽/空白字符不算写了内容
+  const isDirty = (draft: DraftState | undefined) => {
+    const value = meaningfulText(draft?.value ?? "");
+    return Boolean(value) && value !== meaningfulText(draft?.savedValue ?? "");
+  };
 
   const pendingCount = groupQuestions.filter((question) => isDirty(drafts[question.id])).length;
 
@@ -153,6 +160,15 @@ export default function GrammarDiaryPage() {
       const entry = saved.entry;
       updateDraft(question.id, { entryId: entry.id, savedValue: draft.value.trim() });
 
+      // W5 观测：日记写入漏斗——此前写日记这件事本身零事件（使用率/重写率不可知）
+      appendGrammarEvent({
+        kind: "diary_write",
+        questionId: question.id,
+        chars: draft.value.trim().length,
+        isRewrite: Boolean(drafts[question.id]?.entryId),
+        ts: nowIso()
+      });
+
       if (!aiReady) {
         updateDraft(question.id, {
           status: "done",
@@ -162,6 +178,7 @@ export default function GrammarDiaryPage() {
       }
 
       updateDraft(question.id, { status: "correcting" });
+      const correctionStartedAt = Date.now();
       try {
         // R11：按设置传入批改强度（温柔/标准/严格），默认 standard
         const correction = await requestDiaryCorrection(
@@ -173,7 +190,13 @@ export default function GrammarDiaryPage() {
         await updateDataAsync(async (latest) => ({
           // R09：批改写回 + 带 tag 问题的句子自动进入复习队列（R03 规则）
           data: addDiarySentenceToReview(
-            applyDiaryCorrection(latest, entry.id, correction.correctedEn, correction.issues),
+            applyDiaryCorrection(
+              latest,
+              entry.id,
+              correction.correctedEn,
+              correction.issues,
+              correction.followUp
+            ),
             { ...entry, correctedEn: correction.correctedEn, issues: correction.issues }
           )
         }));
@@ -189,11 +212,24 @@ export default function GrammarDiaryPage() {
             ts: nowIso()
           });
         });
+        // AI 可观测性：批改成功也记一条（此前只有「有问题且有 tag」时才留痕）
+        appendGrammarEvent({
+          kind: "diary_correction_result",
+          entryId: entry.id,
+          ok: true,
+          latencyMs: Date.now() - correctionStartedAt,
+          issueCount: correction.issues.length,
+          taggedIssueCount: correction.issues.filter((issue) => issue.tag).length,
+          errorKind: null,
+          style: data.settings.diaryCorrectionStyle ?? "standard",
+          ts: nowIso()
+        });
         updateDraft(question.id, {
           status: "done",
           correctedEn: correction.correctedEn,
           issues: correction.issues,
           recast: correction.recast,
+          followUp: correction.followUp,
           message:
             correction.issues.length > 0 ? "批改完成——这句和它的问题点已排进复习队列。" : undefined
         });
@@ -202,6 +238,25 @@ export default function GrammarDiaryPage() {
       } catch (error) {
         failed += 1;
         const message = error instanceof Error ? error.message : "批改暂时没有成功，句子已经保存。";
+        // 失败也要留痕（此前只写 entry.note，失败率与原因分布不可算）
+        const rawMessage = error instanceof Error ? error.message : "";
+        appendGrammarEvent({
+          kind: "diary_correction_result",
+          entryId: entry.id,
+          ok: false,
+          latencyMs: Date.now() - correctionStartedAt,
+          issueCount: 0,
+          taggedIssueCount: 0,
+          errorKind: /配置/.test(rawMessage)
+            ? "not_configured"
+            : /timeout|abort|超时/i.test(rawMessage)
+              ? "timeout"
+              : /没有返回|可解析/.test(rawMessage)
+                ? "invalid"
+                : "error",
+          style: data.settings.diaryCorrectionStyle ?? "standard",
+          ts: nowIso()
+        });
         await updateDataAsync(async (latest) => ({
           data: markDiaryCorrectionFailed(latest, entry.id, message)
         }));
@@ -255,6 +310,14 @@ export default function GrammarDiaryPage() {
     if (reviewAdded[entry.id]) return;
     updateData((latest) => addDiarySentenceToReview(latest, entry));
     setReviewAdded((current) => ({ ...current, [entry.id]: true }));
+    // W2 观测：日记 → 复习增长链入队事件（与 boost/lesson_mistake 同口径）
+    appendGrammarEvent({
+      kind: "sentence_card_enqueued",
+      lessonId: "diary",
+      source: "diary",
+      sentence: entry.correctedEn || entry.answerEn,
+      ts: nowIso()
+    });
   };
 
   const savedToday = groupQuestions.filter((question) => drafts[question.id]?.entryId).length;
@@ -345,6 +408,13 @@ export default function GrammarDiaryPage() {
                   ))}
                 </ul>
               )}
+              {/* followUp：批改之后的一句追问，作为「再多说一句」的邀请（可选，模型不一定给） */}
+              {settled && draft.followUp && (
+                <p className="diary-entry-followup">
+                  <span className="diary-followup-label">再多说一句</span>
+                  {draft.followUp}
+                </p>
+              )}
               {draft.status === "failed" && draft.message && <p className="diary-note">{draft.message}</p>}
             </article>
           );
@@ -427,15 +497,25 @@ export default function GrammarDiaryPage() {
                 )}
                 {entry.note && <p className="diary-entry-note">{entry.note}</p>}
                 <div className="diary-entry-actions">
-                  <button
-                    type="button"
-                    className="secondary-button"
-                    onClick={() => handleAddToReview(entry)}
-                    disabled={reviewAdded[entry.id]}
-                  >
-                    <BookOpen size={15} />
-                    {reviewAdded[entry.id] ? "已在复习队列" : "加入复习队列"}
-                  </button>
+                  {/* R-UX6：朗读用户原句——从「写对」到「读出声」的零成本出口（TTS 失败静默） */}
+                  <SpeakButton text={entry.answerEn} ariaLabel="读一遍我写的" />
+                  {/*
+                    只在真能入队时显示（2026-09-20 修）：
+                    addDiarySentenceToReview 对「没有任何问题」的句子直接返回不处理，
+                    但按钮此前无条件渲染——用户点了会看到「已在复习队列」、
+                    埋点也照记，而 cards 数量没变（假承诺）。
+                  */}
+                  {entry.issues.length > 0 && (
+                    <button
+                      type="button"
+                      className="secondary-button"
+                      onClick={() => handleAddToReview(entry)}
+                      disabled={reviewAdded[entry.id]}
+                    >
+                      <BookOpen size={15} />
+                      {reviewAdded[entry.id] ? "已在复习队列" : "加入复习队列"}
+                    </button>
+                  )}
                 </div>
               </article>
             ))}

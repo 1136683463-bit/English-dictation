@@ -5871,6 +5871,29 @@ input[type="range"]:focus-visible {
   min-height: 360px;
 }
 
+/* 单行输入不套正文的 360px 大框：文字贴顶，符合「从上往下写」的习惯 */
+input.large-textarea {
+  min-height: 0;
+  height: auto;
+  padding: 14px 16px;
+  font-size: 17px;
+}
+
+/* 键盘快捷键小键帽：标注 Tab 提示 / 回车下一题 */
+.kbd-hint {
+  display: inline-block;
+  padding: 1px 7px;
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -17755,6 +17778,158 @@ html {
   gap: 16px;
 }
 
+/* ── R-UX-IA 季卡片两级导航（2026-09-19）────────────────────────
+   首页 = 20 张季卡总览（进度环 + 状态一目了然）；点卡片才展开该季课表。
+   状态色：已完成（success）＞进行中（accent 高亮）＞未开始（中性）。 */
+.season-map {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.season-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  overflow: hidden;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.season-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: 0 2px 10px rgba(31, 43, 58, 0.05);
+}
+
+/* 进行中：accent 描边 + 微光——一眼找到「我在哪」 */
+.season-card.is-current {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 4px 14px rgba(236, 124, 46, 0.12);
+}
+
+/* 已完成：收敛为成功色淡底，视觉上「清掉」 */
+.season-card.is-complete {
+  background: color-mix(in srgb, var(--success, #16a34a) 4%, var(--surface));
+  border-color: color-mix(in srgb, var(--success, #16a34a) 30%, var(--line));
+}
+
+/* 展开态：卡片纵向铺满一行，课表嵌在卡内 */
+.season-card.is-open {
+  grid-column: 1 / -1;
+}
+
+.season-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* 进度环：conic-gradient 驱动（--p = 百分比），中数字 = 已完课数 / ✓ */
+.season-ring {
+  --p: 0;
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background:
+    radial-gradient(farthest-side, var(--surface) 96%, transparent 100%) 50% 50% / 78% 78% no-repeat,
+    conic-gradient(var(--accent) calc(var(--p) * 1%), var(--line) 0);
+}
+
+.season-card.is-complete .season-ring {
+  background:
+    radial-gradient(farthest-side, var(--surface) 96%, transparent 100%) 50% 50% / 78% 78% no-repeat,
+    conic-gradient(var(--success, #16a34a) calc(var(--p) * 1%), var(--line) 0);
+}
+
+.season-ring-num {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.season-card.is-complete .season-ring-num {
+  color: var(--success, #16a34a);
+}
+
+.season-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+/* 标题行：标题 + 徽章同行。标题单行截断不换行（长季名末尾省略号），
+   徽章固定行尾。简介仍两行截断。 */
+.season-card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.season-card-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 简介：标题下独占整行宽度，两行截断（比一行省略号多显示一倍内容） */
+.season-card-hint {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.season-card-meta {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  color: var(--ink-soft);
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+
+.season-card.is-current .season-card-meta {
+  background: var(--accent-soft);
+  color: var(--accent-strong, #c2410c);
+  font-weight: 700;
+}
+
+.season-card.is-complete .season-card-meta {
+  color: var(--success, #16a34a);
+  font-weight: 600;
+}
+
+/* 展开态课表：卡内上边距 + 分隔线，与卡片头形成嵌套关系 */
+.season-card.is-open .lesson-path-grid {
+  padding: 4px 16px 16px;
+  border-top: 1px solid var(--line);
+}
+
 /* R20：季分组（2026-09-17 排版优化：整行可点折叠头 + 展开态吸顶）。
    长页的方位治理（当时 49 课 6.8 屏，现 75 课 11 季）：默认只展开「下一课」所在季，其余折叠为摘要行；
    展开季的头部吸顶（照 adventure-reader-toolbar 先例：半透明底 + blur），
@@ -18043,6 +18218,79 @@ html {
 .lesson-boost-tier.done {
   color: var(--success, #16a34a);
   font-weight: 600;
+}
+
+/* R-UX5 开口跟读块：可选、零判分，视觉上轻（虚线边）不与主流程抢注意 */
+.speak-aloud-card {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px 14px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.speak-aloud-label {
+  font-weight: 700;
+  color: var(--accent-strong, #c2410c);
+}
+
+.speak-aloud-rate {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.speak-aloud-hint,
+.speak-aloud-done {
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+/* R-UX10 hunt 最近解锁聚焦条：置灰案海里的一个可行动指向 */
+.hunt-next-unlock {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 4px;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--accent-soft, rgba(236, 124, 46, 0.08));
+  color: var(--ink-soft);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.hunt-next-unlock:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong, #c2410c);
+}
+
+/* R-UX8 例句连播开关：小 pill，贴在「同一个说法」标签行尾 */
+.lesson-autoplay-toggle {
+  margin-left: 10px;
+  padding: 2px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.lesson-autoplay-toggle.on {
+  border-color: var(--accent);
+  color: var(--accent-strong, #c2410c);
+  background: var(--accent-soft);
 }
 
 .lesson-boost-progress {
@@ -19155,10 +19403,15 @@ html {
   backdrop-filter: blur(12px);
 }
 
-.lesson-topbar-title strong {
+.lesson-topbar-title strong,
+.lesson-topbar-title h1 {
   display: block;
   color: var(--ink);
   font-size: 16px;
+  /* h1 的浏览器默认外边距会撑开顶栏，统一清零（沿用原 <strong> 的视觉） */
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .lesson-topbar-title span {
@@ -19547,6 +19800,7 @@ html {
 }
 
 .lesson-complete {
+  position: relative; /* 角标定位基准：贴整张完课卡的右上角 */
   display: grid;
   justify-items: center;
   gap: 10px;
@@ -19577,73 +19831,180 @@ html {
 /* ─────────── 完课确证 · 价值收据（重排版） ─────────── */
 
 /* 顶部庆祝区：品牌绿圆徽章 + 大标题 + 远景说明 */
+/* 完课 hero（2026-09-20 视觉改版）：内容列与收据卡同宽同址，
+   季进度角标绝对定位在整张完课卡的右上角（用户要的位置），彻底脱离内容流。 */
 .complete-hero {
-  display: grid;
-  justify-items: center;
-  gap: 8px;
-  padding: 6px 0 2px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 4px 0 0;
+  text-align: left;
+}
+
+.complete-hero-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
 }
 
 .complete-hero-badge {
   display: grid;
   place-items: center;
-  width: 56px;
-  height: 56px;
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: var(--secondary-soft);
   color: var(--secondary);
-  box-shadow: inset 0 0 0 1.5px rgba(72, 184, 120, 0.35);
+  box-shadow: inset 0 0 0 2px rgba(72, 184, 120, 0.3);
+}
+
+.complete-hero-text {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
 }
 
 .complete-hero h2 {
-  margin: 2px 0 0;
+  margin: 0;
   color: var(--ink);
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 800;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
 }
 
 .complete-hero-sub {
   max-width: 460px;
   margin: 0;
   color: var(--muted) !important;
-  font-size: 12.5px !important;
-  line-height: 1.7;
+  font-size: 13px !important;
+  line-height: 1.6;
+}
+
+/* G1 角标：季名 + 本季点数 + 本季第 N / M 课（页右上角，轻量、不抢主体） */
+/* 角标：整张完课卡的右上角（与卡内边距对齐）。
+   任何宽度都留在角落——之前的窄屏降级版本会把它改成「居中独占一行」，白占一整行高度。 */
+.hero-corner {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  z-index: 1;
+  display: grid;
+  gap: 5px;
+  justify-items: end;
+  pointer-events: none;
+}
+
+.hero-corner-season {
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.hero-corner-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hero-corner-dots .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e2e7ec;
+}
+
+.hero-corner-dots .dot.on {
+  background: var(--accent);
+  box-shadow: 0 0 0 2px rgba(242, 106, 27, 0.14);
+}
+
+.hero-corner-sub {
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+/* 窄屏：角标移到 hero 上方一行居中，避免与标题争宽 */
+/* 窄屏：角标仍留在右上角，只是收紧体量（缩点距、季名降级为小字），
+   并给标题区留出右侧安全距离——不再把它挪成独占一行的居中块。 */
+@media (max-width: 900px) {
+  .hero-corner {
+    top: 18px;
+    right: 18px;
+    gap: 4px;
+  }
+
+  .hero-corner-season {
+    font-size: 11px;
+  }
+
+  .hero-corner-dots {
+    gap: 3px;
+  }
+
+  .hero-corner-dots .dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .hero-corner-sub {
+    font-size: 11px;
+  }
+
+  .complete-hero-main {
+    padding-right: 132px; /* 给右上角标让位，标题与说明在它左侧换行 */
+  }
+
+  .complete-hero-sub {
+    max-width: 100%;
+  }
+}
+
+/* 更窄：季名整行隐去，只留点数与课次，仍守右上角 */
+@media (max-width: 620px) {
+  .hero-corner-season {
+    display: none;
+  }
+
+  .complete-hero-main {
+    padding-right: 116px;
+  }
 }
 
 /* 收据卡容器：三段纵向节奏 */
 .complete-receipt {
   display: grid;
-  gap: 20px;
+  gap: 32px;
   width: 100%;
-  max-width: 560px;
-  margin-top: 10px;
+  max-width: 600px;
+  margin-top: 26px;
   text-align: left;
 }
 
 .receipt-block {
   display: grid;
-  gap: 8px;
+  gap: 12px;
 }
 
 /* 区块标题：图标胶囊 + 文字，替代裸 emoji 标签 */
 .receipt-block-title {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   margin: 0;
-  color: var(--ink-soft);
-  font-size: 13px;
+  color: var(--ink);
+  font-size: 17px;
   font-weight: 700;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
 }
 
 .receipt-block-icon {
   display: grid;
   place-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 7px;
+  width: 26px;
+  height: 26px;
+  border-radius: 9px;
   flex-shrink: 0;
 }
 
@@ -19665,12 +20026,70 @@ html {
 /* 收据卡：白底 + 细边 + 微阴影，浮在 muted 底之上 */
 .receipt-card {
   display: grid;
-  gap: 10px;
-  padding: 14px 16px;
+  gap: 14px;
+  padding: 18px 20px;
   border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: var(--surface);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 10px rgba(31, 43, 58, 0.05);
+}
+
+/* E1 语义色条：三块卡按语义区分（绿=已掌握 / 蓝=能说出 / 琥珀=待巩固），不再三个同质白盒 */
+.receipt-card.gain {
+  border-top: 3px solid var(--secondary);
+}
+
+.receipt-card.speak {
+  border-top: 3px solid var(--blue);
+}
+
+.receipt-card.gap {
+  border-top: 3px solid var(--amber);
+}
+
+/* E1 规则两行条：【条件胶囊 → 动作大字 → 例句】，横向铺满，规则从「一句话」变成可对照的三段 */
+.rule-rows {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rule-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+}
+
+.rule-row + .rule-row {
+  border-top: 1px solid var(--line);
+}
+
+.rule-cap {
+  flex-shrink: 0;
+  padding: 3px 11px;
+  border-radius: var(--radius-pill);
+  background: var(--blue-soft);
+  color: var(--blue-ink);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.rule-act {
+  color: var(--ink);
+  font-size: 16.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.55;
+}
+
+.rule-eg {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.5;
 }
 
 /* 语法点 chip：替代原来的蓝色小字 */
@@ -19757,7 +20176,7 @@ html {
 .receipt-sentence-text {
   min-width: 0;
   color: var(--ink);
-  font-size: 14px;
+  font-size: 15.5px;
   line-height: 1.6;
 }
 
@@ -21366,19 +21785,144 @@ html {
   line-height: 1.6;
 }
 
-.lesson-summary-points {
+/* 前测结果卡头：题号 + 结论标签同行，先给结论再给细节 */
+.lesson-summary-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.lesson-verdict-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.lesson-verdict-chip.is-miss {
+  background: var(--danger-soft);
+  color: var(--danger-ink);
+}
+
+.lesson-verdict-chip.is-pass {
+  background: var(--green-soft);
+  color: var(--green-ink);
+}
+
+/* 你的选择 vs 正确选择：红/绿分色，杜绝「两行同色读成一句」 */
+.lesson-pick-compare {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+/* 答对时只剩「你选的那个」一格，不必占满两列 */
+.lesson-pick-compare.is-single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.lesson-pick-cell {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+}
+
+.lesson-pick-cell > span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.lesson-pick-cell > strong {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-wrap: anywhere;
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.lesson-pick-cell > strong svg {
+  flex-shrink: 0;
+}
+
+.lesson-pick-cell.is-mine {
+  background: var(--danger-soft);
+}
+
+.lesson-pick-cell.is-mine > span,
+.lesson-pick-cell.is-mine > strong {
+  color: var(--danger-ink);
+}
+
+.lesson-pick-cell.is-correct {
+  background: var(--green-soft);
+}
+
+.lesson-pick-cell.is-correct > span,
+.lesson-pick-cell.is-correct > strong {
+  color: var(--green-ink);
+}
+
+@media (max-width: 560px) {
+  .lesson-pick-compare {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 逐题解析：结果页的核心信息——「为什么是这个答案」 */
+.lesson-pretest-why {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
   margin: 0;
-  padding-left: 18px;
-}
-
-.lesson-summary-points li {
-  color: var(--muted);
+  padding: 8px 11px;
+  border-radius: var(--radius-sm);
+  background: var(--amber-soft);
+  color: var(--amber-ink);
   font-size: 12.5px;
-  line-height: 1.7;
+  line-height: 1.65;
 }
 
-.lesson-summary-points li::marker {
-  color: var(--secondary);
+.lesson-pretest-why svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+/* 对错结论条（正误对比揭示后）：判错时必须先亮结论，不能让绿句替用户「默认答对」 */
+.lesson-verdict-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.5;
+}
+
+.lesson-verdict-banner svg {
+  flex-shrink: 0;
+}
+
+.lesson-verdict-banner.is-pass {
+  background: var(--green-soft);
+  color: var(--green-ink);
+}
+
+.lesson-verdict-banner.is-miss {
+  background: var(--danger-soft);
+  color: var(--danger-ink);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--danger) 26%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -26962,4 +27506,536 @@ html {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
+}
+
+/* followUp：批改之后的一句追问（「再多说一句」邀请）——虚线弱化，与 recast 的实底区分 */
+.diary-entry-followup {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px dashed var(--line-strong, var(--line));
+  border-radius: var(--radius-sm);
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.diary-followup-label {
+  flex: none;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--surface-subtle, rgba(148, 163, 184, 0.12));
+  color: var(--text-dim);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* 双正解题：一对说法并排（A/B），与 contrast 的单句呈现区分 */
+.boost-pair-row {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.boost-pair-sentence {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* AI 周报小结：模板句给数字结论，AI 句给下一步建议——视觉上弱化一级 */
+.weekly-report-ai {
+  margin: 6px 0 0;
+  padding-left: 10px;
+  border-left: 2px solid var(--accent);
+  color: var(--text-dim);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+/* 收据页 AI 错因小结：一句话说清卡在哪一步（失败时不渲染，不留空位） */
+.receipt-ai-summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 8px 11px;
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-dim);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.receipt-ai-summary svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--accent-strong, #c2410c);
+}
+
+/* 听力题：喇叭 + 两个文本选项（选项是整句，需要块级排布） */
+.boost-listen-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-subtle, rgba(148, 163, 184, 0.12));
+}
+
+.boost-listen-hint {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.boost-listen-options {
+  display: grid;
+  gap: 8px;
+}
+
+.boost-listen-option {
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.boost-listen-option:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.boost-listen-option.picked {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.boost-listen-option:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+/* R-AI1：答对反馈里的「为什么」一行（课内版，与趁热练的 boost-why 同族但更轻） */
+.lesson-why-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 6px 0 0;
+  color: var(--text-dim);
+  font-size: 12.5px;
+  line-height: 1.65;
+}
+
+.lesson-why-line svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--accent-strong, #c2410c);
+}
+
+/* 「问一句」追问层（深挖卡内）：比深挖卡正文更轻——渐进披露，不打扰 */
+.lesson-ask-block {
+  margin: 8px 0 4px;
+}
+
+/* C1（M3）：弱点叙事——把加权排序讲成人话（此前只有数字） */
+.weak-spots-narrative {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin: 0 0 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff4ea 0%, #fffdfb 70%);
+  border: 1px solid #ffe2cc;
+}
+
+.weak-spots-narrative p {
+  flex: 1 1 320px;
+  margin: 0;
+  color: var(--ink);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+.weak-spots-narrative-cta {
+  flex-shrink: 0;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--ease-ui);
+}
+
+.weak-spots-narrative-cta:hover {
+  background: var(--accent-strong);
+}
+
+/* C4（M3）：弱点卡上的复盘课入口（次级按钮，与「去第 N 课」并列） */
+.weak-spots-narrative-cta.secondary {
+  background: #fff;
+  color: var(--accent-ink);
+  border: 1px solid #ffd9bd;
+}
+
+.weak-spots-narrative-cta.secondary:hover {
+  background: var(--accent-soft);
+}
+
+/* C2（M3）：主动介入卡——连续 2 次同错因时出现在课程地图顶部 */
+.active-intervention {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f2fbf6 0%, #fdfefd 72%);
+  border: 1px solid #cfeadd;
+  box-shadow: 0 4px 14px rgba(72, 184, 120, 0.09);
+}
+
+.active-intervention-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: var(--secondary-soft);
+  color: var(--green-ink);
+}
+
+.active-intervention-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.active-intervention-body p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+
+.active-intervention-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 720px) {
+  .active-intervention {
+    flex-wrap: wrap;
+  }
+
+  .active-intervention-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* B1（M2）：未配置 AI 时的常驻轻提示——比入口更轻，但始终在场（此前整块消失） */
+.lesson-ask-absent {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 7px 12px;
+  border-radius: 10px;
+  background: var(--surface-muted);
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+/* A2（M1）：AI 失败时的可见话术（此前静默消失） */
+.lesson-ask-notice {
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--amber-soft);
+  color: var(--amber-ink);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.lesson-ask-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.lesson-ask-entry:hover {
+  color: var(--accent-strong, #c2410c);
+  background: var(--accent-soft);
+}
+
+.lesson-ask-panel {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+  padding: 12px 14px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.lesson-ask-hint {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 12px;
+}
+
+.lesson-ask-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lesson-ask-chip {
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 12.5px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.lesson-ask-chip:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.lesson-ask-chip:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.lesson-ask-free {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.lesson-ask-free input {
+  flex: 1;
+  padding: 7px 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: 13px;
+  color: var(--text);
+}
+
+.lesson-ask-loading {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.lesson-ask-answer {
+  display: grid;
+  gap: 8px;
+}
+
+.lesson-ask-answer > p:first-child {
+  margin: 0;
+  color: var(--text);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+.lesson-ask-source {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.lesson-ask-rating {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.lesson-ask-rate {
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+.lesson-ask-rate:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong, #c2410c);
+}
+
+.lesson-ask-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lesson-ask-done {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.lesson-ask-close {
+  justify-self: end;
+  padding: 3px 10px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.lesson-ask-close:hover {
+  color: var(--text);
+}
+
+/* 「为什么错了」错因追问（答错第 2 次后的三阶梯中层） */
+.lesson-whywrong-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px dashed var(--line-strong, var(--line));
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.lesson-whywrong-entry:hover {
+  color: var(--accent-strong, #c2410c);
+  border-color: var(--accent);
+}
+
+.lesson-whywrong-panel {
+  display: grid;
+  gap: 8px;
+  margin: 8px auto 0;
+  max-width: 560px;
+  padding: 12px 14px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.lesson-whywrong-answer {
+  display: grid;
+  gap: 6px;
+}
+
+.lesson-whywrong-answer > p:first-child {
+  margin: 0;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.lesson-whywrong-correct {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.lesson-whywrong-fallback {
+  display: grid;
+  gap: 4px;
+}
+
+
+/* 「你拼的 vs 正确说法」对照块（2026-09-19 用户反馈：AI 回答要贴着自己的错句讲） */
+.lesson-whywrong-compare {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  margin-bottom: 10px;
+}
+.lesson-whywrong-compare p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.lesson-whywrong-mine strong {
+  color: #b4550f;
+  word-break: break-word;
+}
+.lesson-whywrong-right strong {
+  color: #177a3d;
+  word-break: break-word;
+}
+/* 反馈按钮已选态 */
+.lesson-ask-rate.rated {
+  border-color: var(--accent, #e0704a);
+  background: rgba(224, 112, 74, 0.12);
+  color: #b4550f;
+  font-weight: 600;
+}
+.lesson-ask-rated-note {
+  font-size: 12.5px;
+  color: #6b7280;
+}
+.lesson-whywrong-fallback > p:first-child {
+  margin: 0;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.lesson-whywrong-fallback-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* 位置提示降级（错 2 次后）：小一号浅色，让位给三阶梯 */
+p.lesson-hint-minor,
+.lesson-feedback.retry p.lesson-hint-minor {
+  color: var(--muted);
+  font-size: 12px;
 }

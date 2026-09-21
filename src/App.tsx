@@ -13,7 +13,7 @@ import {
   Settings
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { NavLink, Route, Routes, useLocation } from "react-router-dom";
+import { NavLink, Route, Routes, useLocation, useParams } from "react-router-dom";
 import BrandMark from "./components/BrandMark";
 import { AppProvider, useAppData } from "./AppContext";
 import { computeStreak } from "./services/statsService";
@@ -37,10 +37,12 @@ import AdventureWorldsPage from "./pages/AdventureWorldsPage";
 import GatePlayPage from "./pages/GatePlayPage";
 import GrammarPathPage from "./pages/GrammarPathPage";
 import GrammarReviewPage from "./pages/GrammarReviewPage";
+import GrammarReplayPage from "./pages/GrammarReplayPage";
 import GrammarLessonPage from "./pages/GrammarLessonPage";
 import GrammarRevisitPage from "./pages/GrammarRevisitPage";
 import GrammarReauditPage from "./pages/GrammarReauditPage";
 import GrammarBoostPage from "./pages/GrammarBoostPage";
+import NotFoundPage from "./components/NotFoundPage";
 import GrammarHuntPage from "./pages/GrammarHuntPage";
 import GrammarDiaryPage from "./pages/GrammarDiaryPage";
 import OnboardingGuide from "./components/OnboardingGuide";
@@ -63,6 +65,28 @@ const navGroups = ["训练台", "内容库", "回顾"];
 
 const mobilePrimaryNavPaths = new Set(["/today", "/training", "/adventure", "/library"]);
 const mobileMoreItems = navItems.filter((item) => !mobilePrimaryNavPaths.has(item.to));
+
+/**
+ * 参数化路由的 key 包装：同路由换参数（第 4 课 → 第 5 课）时 React Router 会复用组件实例，
+ * 上一课的 stage/段内进度等 useState 全部带过去——表现为「点下一课直接落在课堂结尾」。
+ * 用 key 让 lessonId 变化时强制重挂载，回到课程开头。
+ */
+const GrammarLessonPageRoute = () => {
+  const { lessonId } = useParams();
+  return <GrammarLessonPage key={lessonId} />;
+};
+const GrammarRevisitPageRoute = () => {
+  const { lessonId } = useParams();
+  return <GrammarRevisitPage key={lessonId} />;
+};
+const GrammarReauditPageRoute = () => {
+  const { lessonId } = useParams();
+  return <GrammarReauditPage key={lessonId} />;
+};
+const GrammarBoostPageRoute = () => {
+  const { lessonId } = useParams();
+  return <GrammarBoostPage key={lessonId} />;
+};
 
 const AppLayout = () => {
   const location = useLocation();
@@ -170,10 +194,14 @@ const AppLayout = () => {
           <Route path="/adventure/:adventureId" element={<AdventurePlayPage />} />
           <Route path="/grammar" element={<GrammarPathPage />} />
           <Route path="/grammar/review" element={<GrammarReviewPage />} />
-          <Route path="/grammar/lesson/:lessonId" element={<GrammarLessonPage />} />
-          <Route path="/grammar/lesson/:lessonId/revisit" element={<GrammarRevisitPage />} />
-          <Route path="/grammar/lesson/:lessonId/reaudit" element={<GrammarReauditPage />} />
-          <Route path="/grammar/boost/:lessonId" element={<GrammarBoostPage />} />
+          {/* C4：从 Top3 弱点拼出的复盘课（素材 100% 溯源，即时提取练习） */}
+          <Route path="/grammar/replay" element={<GrammarReplayPage />} />
+          {/* :lessonId 参数路由必须带 key——同路由换参数时 React Router 会复用组件实例，
+              上一课的 stage/practiceDone 等状态会带进下一课（表现为「点下一课直接停在结尾」）。 */}
+          <Route path="/grammar/lesson/:lessonId" element={<GrammarLessonPageRoute />} />
+          <Route path="/grammar/lesson/:lessonId/revisit" element={<GrammarRevisitPageRoute />} />
+          <Route path="/grammar/lesson/:lessonId/reaudit" element={<GrammarReauditPageRoute />} />
+          <Route path="/grammar/boost/:lessonId" element={<GrammarBoostPageRoute />} />
           <Route path="/grammar/hunt" element={<GrammarHuntPage />} />
           <Route path="/grammar/diary" element={<GrammarDiaryPage />} />
           <Route path="/mistakes" element={<MistakeBookPage />} />
@@ -187,6 +215,8 @@ const AppLayout = () => {
           <Route path="/import" element={<ImportPage />} />
           <Route path="/stats" element={<StatsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          {/* R-UX1：catch-all 兜底——无匹配路由此前渲染空白 main，任何路径笔误都像页面坏了 */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
       <OnboardingGuide />

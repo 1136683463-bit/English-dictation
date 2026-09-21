@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { appendGrammarEvent, clearGrammarTelemetry } from "./grammarTelemetry";
-import { computeWeakSpots, computeWeakSpotsReport, scheduleCardsForToday } from "./grammarWeakSpotsService";
+import { buildWeakSpotNarrative, computeWeakSpots, computeWeakSpotsReport, findActiveIntervention, scheduleCardsForToday } from "./grammarWeakSpotsService";
+import { findZeroTermHits } from "../data/grammarZeroTerms";
 import type { AppData, Card, DiaryEntry, Schedule } from "../types";
 
 const iso = (offsetDays: number) =>
@@ -47,6 +48,8 @@ const baseData = (overrides: Partial<AppData>): AppData =>
 
 beforeEach(() => {
   clearGrammarTelemetry();
+  // C2 的介入冷却记在独立 localStorage 键，与遥测分开清理（否则跨用例污染）
+  window.localStorage.removeItem("grammar-intervention-dismissed-v1");
 });
 
 describe("grammarWeakSpotsService（R08 弱点档案）", () => {
@@ -236,5 +239,113 @@ describe("grammarWeakSpotsService（R08 弱点档案）", () => {
     expect(report.active.map((spot) => spot.tag)).toEqual(["article"]);
     // 向后兼容：computeWeakSpots 只返回活跃榜
     expect(computeWeakSpots(data).map((spot) => spot.tag)).toEqual(["article"]);
+  });
+
+  describe("C1/C2 · 弱点叙事与主动介入（M3，2026-09-21）", () => {
+    it("弱点叙事把加权排序讲成人话，并指向具体课", () => {
+      appendGrammarEvent({ kind: "diary_issue_tag", entryId: "d1", issueIndex: 0, tag: "sv_agreement", ts: new Date().toISOString() });
+      appendGrammarEvent({ kind: "diary_issue_tag", entryId: "d2", issueIndex: 0, tag: "sv_agreement", ts: new Date().toISOString() });
+
+      const narrative = buildWeakSpotNarrative(baseData({
+        diaryEntries: [
+          makeDiaryEntry("d1", "sv_agreement", "I go", "I goes"),
+          makeDiaryEntry("d2", "sv_agreement", "She go", "She goes")
+        ]
+      }));
+      expect(narrative).not.toBeNull();
+      expect(narrative!.text).toContain("你最近总在同一个地方摔");
+      expect(narrative!.text).toContain("近 7 天");
+      // 叙事句必须零术语（面向用户文本红线）
+      expect(findZeroTermHits(narrative!.text)).toEqual([]);
+    });
+
+    it("无数据时不叙事（不硬凑，宁可不说）", () => {
+      expect(buildWeakSpotNarrative(baseData({}))).toBeNull();
+    });
+
+    it("主动介入：48 小时内同错因 ≥2 次才触发（门槛可控）", () => {
+      const now = Date.now();
+      const recent = new Date(now - 60 * 60 * 1000).toISOString();
+      // 只有 1 次 → 不触发
+      appendGrammarEvent({ kind: "practice_why_wrong_result", lessonId: "L", stepIndex: 0, sentenceHash: "h", ok: true, source: "ai", errorTag: "sv_agreement", latencyMs: 1, cached: false, ts: recent });
+      expect(findActiveIntervention(baseData({}))).toBeNull();
+
+      // 第 2 次（同一错因）→ 触发
+      appendGrammarEvent({ kind: "practice_why_wrong_result", lessonId: "L", stepIndex: 1, sentenceHash: "h2", ok: true, source: "ai", errorTag: "sv_agreement", latencyMs: 1, cached: false, ts: recent });
+      const intervention = findActiveIntervention(baseData({}));
+      expect(intervention).not.toBeNull();
+      expect(intervention!.tag).toBe("sv_agreement");
+      expect(intervention!.count).toBe(2);
+      expect(findZeroTermHits(intervention!.text)).toEqual([]);
+    });
+
+    it("主动介入：窗口外的旧记录不计入（48 小时窗口）", () => {
+      const old = new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString();
+      appendGrammarEvent({ kind: "practice_why_wrong_result", lessonId: "L", stepIndex: 0, sentenceHash: "h", ok: true, source: "ai", errorTag: "tense", latencyMs: 1, cached: false, ts: old });
+      appendGrammarEvent({ kind: "practice_why_wrong_result", lessonId: "L", stepIndex: 1, sentenceHash: "h2", ok: true, source: "ai", errorTag: "tense", latencyMs: 1, cached: false, ts: old });
+      expect(findActiveIntervention(baseData({}))).toBeNull();
+    });
+  });
+
+  describe("B3 · AI 讲解反馈接入弱点档案（M2，2026-09-21）", () => {
+    it("用户点「讲错了」会计入该罪名权重（此前 ai_explain_feedback 消费方 0 个）", () => {
+      const data = baseData({});
+      // 先有答错追问的 AI 归因（带 errorTag），再有点「讲错了」的反馈
+      appendGrammarEvent({
+        kind: "practice_why_wrong_result",
+        lessonId: "lesson-01-am",
+        stepIndex: 3,
+        sentenceHash: "h1",
+        ok: true,
+        source: "ai",
+        layer: "ai",
+        errorTag: "sv_agreement",
+        latencyMs: 3000,
+        cached: false,
+        ts: "2026-09-21T10:00:00.000Z"
+      });
+      appendGrammarEvent({
+        kind: "practice_why_wrong_feedback",
+        lessonId: "lesson-01-am",
+        stepIndex: 3,
+        verdict: "wrong",
+        ts: "2026-09-21T10:01:00.000Z"
+      });
+
+      const spots = computeWeakSpots(data);
+      const target = spots.find((spot) => spot.tag === "sv_agreement");
+      expect(target, "讲错了应把该罪名带进弱点榜").toBeTruthy();
+      // 0.5（追问）+ 0.8（讲错了）= 1.3（含时间衰减，故断言区间）
+      expect(target!.score).toBeGreaterThan(1.2);
+      expect(target!.score).toBeLessThanOrEqual(1.3);
+    });
+
+    it("「有用」票不产生权重（只有 wrong 票计入，避免语义混乱）", () => {
+      const data = baseData({});
+      appendGrammarEvent({
+        kind: "practice_why_wrong_result",
+        lessonId: "lesson-01-am",
+        stepIndex: 5,
+        sentenceHash: "h2",
+        ok: true,
+        source: "ai",
+        errorTag: "article",
+        latencyMs: 2000,
+        cached: false,
+        ts: "2026-09-21T11:00:00.000Z"
+      });
+      appendGrammarEvent({
+        kind: "practice_why_wrong_feedback",
+        lessonId: "lesson-01-am",
+        stepIndex: 5,
+        verdict: "helpful",
+        ts: "2026-09-21T11:01:00.000Z"
+      });
+
+      const target = computeWeakSpots(data).find((spot) => spot.tag === "article");
+      // 仅追问那一份（0.5，含衰减）
+      expect(target!.score).toBeGreaterThan(0.45);
+      expect(target!.score).toBeLessThanOrEqual(0.5);
+    });
   });
 });

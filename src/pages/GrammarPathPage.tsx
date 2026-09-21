@@ -1,4 +1,4 @@
-import { Check, ChevronDown, Flame, GraduationCap, PlayCircle, RotateCcw, Sparkles, TrendingDown } from "lucide-react";
+import { Check, Flame, GraduationCap, PlayCircle, RotateCcw, Sparkles, TrendingDown } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
@@ -6,9 +6,11 @@ import AdventureScene from "../components/AdventureScene";
 import PageHeader from "../components/PageHeader";
 import type { AdventureSceneId } from "../components/AdventureScene";
 import type { GrammarLesson } from "../types";
-import { backfillLessonCoreSentences, getLessonStageLock, listGrammarLessons, summarizeLessonProgress, type LessonStageIndex } from "../services/lessonService";
+import { backfillLessonCoreSentences, getLessonStageLock, repairLessonCoreSentenceTranslations, listGrammarLessons, summarizeLessonProgress, type LessonStageIndex } from "../services/lessonService";
+import { loadLessonResume } from "../services/grammarLessonResumeService";
 import { buildGrammarReviewSession, GRAMMAR_REVIEW_SESSION_LIMIT } from "../services/grammarReviewService";
-import { computeWeakSpotsReport, scheduleCardsForToday, type HealedSpot, type WeakSpot } from "../services/grammarWeakSpotsService";
+import { buildWeakSpotNarrative, computeWeakSpotsReport, dismissIntervention, findActiveIntervention, scheduleCardsForToday, type ActiveIntervention, type HealedSpot, type WeakSpot, type WeakSpotNarrative } from "../services/grammarWeakSpotsService";
+import { buildReplayLesson } from "../services/grammarReplayService";
 import { appendGrammarEvent, buildGrammarTelemetryExport, getGrammarTelemetryStats, listGrammarEventsByKind } from "../services/grammarTelemetry";
 import { buildLastWeekReport, type WeeklyReport } from "../services/grammarOutputService";
 import {
@@ -22,6 +24,7 @@ import { downloadTextFile, nowIso } from "../services/storage";
 // 2026-09-17 排版优化：分组表迁至 src/data/grammarSeasons.ts（路径页 + 侦探页共用），
 // 并有 grammarSeasons.test.ts 守门「课号必须落区间」（静默过滤是登记过的头号展示层风险）。
 import { LESSON_GROUPS } from "../data/grammarSeasons";
+import { buildWeeklySummaryFacts, requestWeeklySummary } from "../services/grammarWeeklySummaryService";
 
 /** R06：已战胜的弱点——确证治愈（不是 7 天没犯被遗忘，而是有卡跃迁 mastered 且此后未再犯）。 */
 function HealedSpotsRow({ spots }: { spots: HealedSpot[] }) {
@@ -38,7 +41,7 @@ function HealedSpotsRow({ spots }: { spots: HealedSpot[] }) {
 }
 
 /** R08：本周反复犯的语法错 Top 3——频率×新近加权，一键排进今日复习。 */
-function WeakSpotsCard({ spots }: { spots: WeakSpot[] }) {
+function WeakSpotsCard({ spots, narrative, replayAvailable }: { spots: WeakSpot[]; narrative: WeakSpotNarrative | null; replayAvailable: boolean }) {
   const { updateData } = useAppData();
   const [queuedTags, setQueuedTags] = useState<Record<string, boolean>>({});
 
@@ -99,6 +102,63 @@ function WeakSpotsCard({ spots }: { spots: WeakSpot[] }) {
           );
         })}
       </ol>
+      {/* C1（M3）：把已算好的加权排序讲成一句人话——此前只有数字，没有人告诉你"你总在这摔"。
+          纯本地模板，零 AI 零延迟；有课可指向时给直达入口（放在榜后作收口，不打乱列表的既有阅读顺序）。 */}
+      {narrative && (
+        <div className="weak-spots-narrative">
+          <p>{narrative.text}</p>
+          {narrative.lessonId && (
+            <Link to={`/grammar/lesson/${narrative.lessonId}`} className="weak-spots-narrative-cta">
+              去第 {narrative.lessonNumber} 课
+            </Link>
+          )}
+          {/* C4：把弱点拼成一节可走完的复盘课（3–5 题，每题可溯源） */}
+          {replayAvailable && (
+            <Link to="/grammar/replay" className="weak-spots-narrative-cta secondary">
+              拼一节错题重练
+            </Link>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
+
+/**
+ * C2（M3）：主动介入卡——连续 2 次同错因时，课程地图顶部推一张直达重练的卡。
+ * 竞析核查：行业没有一家做到"AI 主动发现问题并介入"。判定完全本地确定性，零 AI 调用。
+ */
+function ActiveInterventionCard({ intervention }: { intervention: ActiveIntervention }) {
+  const [dismissed, setDismissed] = useState(false);
+  if (dismissed) return null;
+
+  return (
+    <section className="active-intervention" aria-label="主动介入推荐">
+      <span className="active-intervention-icon" aria-hidden="true">
+        <Sparkles size={16} />
+      </span>
+      <div className="active-intervention-body">
+        <p>{intervention.text}</p>
+      </div>
+      <div className="active-intervention-actions">
+        {intervention.lessonId && (
+          <Link to={`/grammar/lesson/${intervention.lessonId}`} className="primary-button">
+            去重练第 {intervention.lessonNumber} 课
+          </Link>
+        )}
+        {/* C4：也可以直接拼一节针对性的复盘课 */}
+        <Link to="/grammar/replay" className="secondary-button">拼错题重练</Link>
+        <button
+          type="button"
+          className="ghost-link"
+          onClick={() => {
+            dismissIntervention(intervention.tag);
+            setDismissed(true);
+          }}
+        >
+          先不用
+        </button>
+      </div>
     </section>
   );
 }
@@ -115,7 +175,7 @@ interface CanDoMilestone {
 }
 
 /** R07：can-do 锚点与 24 课对齐——12（第一季收口）/ 18（进阶过半）/ 24（全剧终）。 */
-const CAN_DO_MILESTONES: CanDoMilestone[] = [
+export const CAN_DO_MILESTONES: CanDoMilestone[] = [
   {
     id: "can-do-m1",
     afterLesson: 12,
@@ -141,7 +201,7 @@ const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m4",
     afterLesson: 27,
     title: "我能说清楚他和她每天做什么",
-    zh: "三单、存在句、疑问词全拿下——最顽固的小毛病都改掉了，你的日常表达已经又稳又准。",
+    zh: "「他/她/它」后面的 -s、有没有、问什么——最顽固的小毛病全拿下，你的日常表达已经又稳又准。",
     samples: ["He drinks milk every day.", "There is a book on the desk.", "Where is my key?"]
   },
   {
@@ -234,6 +294,181 @@ const CAN_DO_MILESTONES: CanDoMilestone[] = [
     title: "我能把昨天的事讲成一段故事",
     zh: "那时正做着（was reading）+ 被什么打断（when／the phone rang）+ 两件同时在（while）+ 从前的习惯（used to）——昨天那个电话，你能从头讲到尾。",
     samples: ["I was reading at eight.", "When you called, I was reading.", "I was reading when the phone rang."]
+  },
+  {
+    id: "can-do-m18",
+    afterLesson: 110,
+    title: "我能说清谁让谁做什么",
+    zh: "推着做（makes）+ 放开做（lets）+ 分内的事（had）+ 费口舌请动（got to）+ 等到…为止（until）——家里和学校谁让谁做什么，四句话排一行。",
+    samples: ["My mom makes me do my homework.", "She lets him play after dinner.", "I got him to go with me."]
+  },
+  {
+    id: "can-do-m19",
+    afterLesson: 118,
+    title: "我能说清身边的人和东西",
+    zh: "谁的（人后面加撇号 s）+ 我的（句尾用长版）+ 我的感受（感到版）+ 还有几个（a few）+ 有（have got／has got）——身边的事，一句话说清一件。",
+    samples: ["Grandma's birthday is in May.", "This book is mine.", "I am bored."]
+  },
+  {
+    id: "can-do-m20",
+    afterLesson: 124,
+    title: "我能说清「习惯了」",
+    zh: "从前常（used to）+ 习惯了（be used to）+ 慢慢习惯（get used to）+ 不习惯怎么说——同一个 to，前面有 be 是一张脸，没 be 是另一张。",
+    samples: ["I used to walk to school.", "I am used to the cold.", "I am getting used to it."]
+  },
+  {
+    id: "can-do-m21",
+    afterLesson: 127,
+    title: "我能说出看到的东西是什么样",
+    zh: "看着怎么样（It looks nice）+ 换人换形（You look tired／She looks tired）+ 同一个 look 两张脸（喊人看 vs 说样子）——看到什么就说什么。",
+    samples: ["It looks nice.", "You look tired.", "The sky looks dark."]
+  },
+  {
+    id: "can-do-m22",
+    afterLesson: 133,
+    title: "我能说出听到、闻到、尝到、摸到的是什么样",
+    zh: "看（looks）+ 听（sounds）+ 闻（smells）+ 尝（tastes）+ 摸（feels）——五张脸一个架子，后面直接跟那个「怎么样」的词。",
+    samples: ["It sounds great.", "It smells good.", "The water feels cold."]
+  },
+  {
+    id: "can-do-m23",
+    afterLesson: 138,
+    title: "我能说出我盼着什么",
+    zh: "盼着（look forward to）+ 换人换形（She looks forward to）+ 盼着做某事（forward to doing）+ 盼着吗（Are you looking forward to…）——同一个 to，后面跟的那件事。",
+    samples: ["I am looking forward to the weekend.", "She looks forward to the summer.", "I am looking forward to seeing you."]
+  },
+  {
+    id: "can-do-m24",
+    afterLesson: 141,
+    title: "我能说「虽然…」",
+    zh: "虽然（Although 站最前面领一整句）+ 可是（but 站中间接两半）+ 只留一个——中文成对说，英语只留一个。",
+    samples: ["Although it is raining, I will go out.", "It is raining, but I will go out.", "Although it was cold, we went out."]
+  },
+  {
+    id: "can-do-m25",
+    afterLesson: 144,
+    title: "我能说「一到…就…」",
+    zh: "一到就做（As soon as 站最前面领一整句）+ 前面说现在、后面说将来（第 48 课教过的同一条规矩）+ 两个刻度（when 是那段时间里，as soon as 是一到就）。",
+    samples: ["As soon as I finish, I will eat.", "When I finish, I will eat.", "As soon as I get home, I will call you."]
+  },
+  {
+    id: "can-do-m26",
+    afterLesson: 147,
+    title: "我能说「我也不」",
+    zh: "我也一样（too 站句尾）+ 我也不（有「不」换 either）+ 都站句尾——同一个「也」，中文一个字，英语两张脸。",
+    samples: ["I like tea too.", "I don't like coffee either.", "Drawing is fun too."]
+  },
+  {
+    id: "can-do-m27",
+    afterLesson: 150,
+    title: "我能说「两个都」和「两个都不」",
+    zh: "两个都（both 站最前面）+ 两个都不（有「不」换 neither）+ 后面那个东西带上 s、搭档用 are——同一个「两个」，两张脸。",
+    samples: ["Both books are good.", "Neither book is good.", "Are both books good?"]
+  },
+  {
+    id: "can-do-m28",
+    afterLesson: 152,
+    title: "我能说「全都」和「每一个」",
+    zh: "全都（all 站最前面，后面可以站 the）+ 一个一个来（every 后面只说一个）+ 好多个带上 s 用 are／单个用 is——中文一个「都」字，看你从哪头数。",
+    samples: ["All the books are good.", "Every student is here.", "All my books are new."]
+  },
+  {
+    id: "can-do-m29",
+    afterLesson: 154,
+    title: "我能说「还没」「已经」「还在」",
+    zh: "还没（yet 站句尾）+ 已经（already 站中间）+ 还在（still 站中间，紧挨着 is／have）——中文一个「还」，英语按「没发生」还是「一直在」分两个词。",
+    samples: ["She hasn't come yet.", "I have already eaten.", "She is still waiting."]
+  },
+  {
+    id: "can-do-m30",
+    afterLesson: 156,
+    title: "我能说「多久以前」和「持续多久」",
+    zh: "多久以前（数字＋时间词＋ago 站句尾，动词穿昨天版）+ 持续多久（for 接在那块时间前面）+ 数着说的词带上 s——往回数、数时长，两条路。",
+    samples: ["She left three days ago.", "I waited for an hour.", "She left two hours ago."]
+  },
+  {
+    id: "can-do-m31",
+    afterLesson: 158,
+    title: "我能说「一个都不」",
+    zh: "一个都不（说东西：None of the cups are mine——none 后面拴 of）+ 一个人都没有（说人：Nobody is at home——人装在词里，搭档用 is）+ 都自带「不」，后面不再请 not。",
+    samples: ["None of the cups are mine.", "Nobody is at home.", "None of them are here."]
+  },
+  {
+    id: "can-do-m32",
+    afterLesson: 160,
+    title: "我能说「像什么」和「好像」",
+    zh: "看起来像（look 后面请 like 出场：It looks like a boat）+ 好像（seem 后面请 to 垫一下：He seems to know you）+ to 后面那个动作穿原样。",
+    samples: ["It looks like a boat.", "He seems to know you.", "She seems to like the boat."]
+  },
+  {
+    id: "can-do-m33",
+    afterLesson: 162,
+    title: "我能说「需要」和「大多数」",
+    zh: "需要（need 后面请 to 垫一下：I need to buy some milk）+ 大多数（most 后面拴 of：Most of the students like it）+ to 后面穿原样、一群人配原样动词。",
+    samples: ["I need to buy some milk.", "Most of the students like it.", "I need to go home now."]
+  },
+  {
+    id: "can-do-m34",
+    afterLesson: 185,
+    title: "我能说这一章的五对说法",
+    zh: "自己来（myself／himself）+ 互相（each other）+ 太多（too many／too much）+ 很多（a lot of）+ 建议（Why don't you）+ 缩写（I'd like）+ 既…又…／既不…也不… + 除非／为了 + 能够／我也是 + 宁愿／更喜欢 + 更早的事／征求同意 + 整个／最好…——成对学，一对一对说得出。",
+    samples: ["I finished the whole book.", "We had better go now.", "I got up early in order to catch the bus."]
+  },
+  {
+    id: "can-do-m35",
+    afterLesson: 187,
+    title: "我能说「是为了」和「只要」",
+    zh: "是为了让谁做什么（so that 后面带「谁 + 能做什么」：I came early so that you can rest）+ 只要你（as long as 两个 as 各卡一头：I will go as long as you come）——换人用 so that，给底线用 as long as。",
+    samples: ["I came early so that you can rest.", "I will go as long as you come.", "You can go as long as you finish."]
+  },
+  {
+    id: "can-do-m36",
+    afterLesson: 188,
+    title: "我能说「昨天不得不」",
+    zh: "昨天不得不（must 只管现在，过去的事用 had to：I had to walk home yesterday）+ had to 后面穿原样——同一句「不得不」，时间不同说法不同。",
+    samples: ["I had to walk home yesterday.", "She had to cook dinner last night.", "I must finish my homework today."]
+  },
+  {
+    id: "can-do-m37",
+    afterLesson: 189,
+    title: "我能说「他们的」",
+    zh: "他们的（their 贴在东西前面，不带 s：These are their books）+ 自己站的那个带 s（theirs：These books are theirs）——第 8 课那批小标签，今天补上缺的一个。",
+    samples: ["These are their books.", "These books are theirs.", "Their classroom is on the second floor."]
+  },
+  {
+    id: "can-do-m38",
+    afterLesson: 190,
+    title: "我能说「我正在学做某事」",
+    zh: "正在学做（前面穿 -ing、后面垫 to：I am learning to swim）+ 两层拼起来（be 加 -ing 是第 13 课的，垫板 to 是第 15 课那家的）——会了和学着，差着呢。",
+    samples: ["I am learning to swim.", "She is learning to draw.", "I am swimming."]
+  },
+  {
+    id: "can-do-m39",
+    afterLesson: 192,
+    title: "我能说「走进、穿过、横过」",
+    zh: "走进里面用 into（She walked into the kitchen，比 in 多一层「从外面动到里面」）+ 中间钻过去用 through、一头到另一头用 across（We walked through the forest and across the bridge）——两个词中文都能翻成「穿过」，画面却不同。",
+    samples: ["She walked into the kitchen.", "We walked through the forest.", "We walked across the bridge."]
+  },
+  {
+    id: "can-do-m40",
+    afterLesson: 193,
+    title: "我能说「太…了，所以…」",
+    zh: "太…了所以（so 和 that 一头一尾：The wind was so strong that the window broke）+ 分清 so 的三张脸——「所以」（第 20 课，站自己一句开头）／「是为了」（第 186 课，so that 连着写）／「太…了所以」（今天，中间隔着「有多…」那一小截）。",
+    samples: ["The wind was so strong that the window broke.", "He was so tired that he fell asleep.", "I was hungry, so I ate noodles."]
+  },
+  {
+    id: "can-do-m41",
+    afterLesson: 194,
+    title: "我能说「这么…的一个」",
+    zh: "这么…的一个（a 紧跟 such，再跟「东西」：It was such a big fish）+ 分清「这么」的两条路——跟「有多…」那个词用 so（so strong，第 193 课）／跟「东西」用 such a（such a big fish，今天）。",
+    samples: ["It was such a big fish.", "She is such a kind teacher.", "The wind was so strong that the window broke."]
+  },
+  {
+    id: "can-do-m42",
+    afterLesson: 195,
+    title: "我能说「它的」",
+    zh: "它的（its 不带小撇，跟 my／her 站同一个位置，贴在东西前面：The cat is in its box）+ 分清同一个音的两张脸——带撇的 It's 是「它是」（第 87 课）／不带撇的 its 是「它的」（今天）。判断只看一件事：能不能换成 it is。",
+    samples: ["The cat is in its box.", "Its box is small.", "It's cold today."]
   }
 ];
 
@@ -277,6 +512,25 @@ function CanDoCard({ milestone, onConfirm }: { milestone: CanDoMilestone; onConf
 const WEEKLY_REPORT_KEY = "grammar-weekly-report-v1";
 
 function WeeklyReportCard({ report, onDismiss }: { report: WeeklyReport; onDismiss: () => void }) {
+  const { data } = useAppData();
+  /**
+   * AI 小结（可选增强）：模板句已经给出数字结论，AI 再补一句"下一步建议"。
+   * 每周只调一次（按周缓存），且失败/未配置时静默保留模板句——绝不阻塞或弹错。
+   */
+  const [aiText, setAiText] = useState<string | null>(null);
+  const requestedRef = useRef(false);
+  useEffect(() => {
+    if (requestedRef.current) return;
+    requestedRef.current = true;
+    const facts = buildWeeklySummaryFacts(data);
+    if (!facts) return;
+    void requestWeeklySummary(data.settings.aiProvider, facts).then((outcome) => {
+      if (outcome.ok && outcome.text) setAiText(outcome.text);
+    });
+    // 只在挂载时请求一次（周报卡每周只出现一次）
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <section className="can-do-card weekly-report-card" aria-label="上周小结">
       <header className="can-do-head">
@@ -286,6 +540,7 @@ function WeeklyReportCard({ report, onDismiss }: { report: WeeklyReport; onDismi
         <div className="can-do-heading">
           <h2>上周小结</h2>
           <p>{report.sentence}</p>
+          {aiText && <p className="weekly-report-ai">{aiText}</p>}
         </div>
       </header>
       <button type="button" className="can-do-confirm" onClick={onDismiss}>
@@ -349,36 +604,62 @@ export default function GrammarPathPage() {
   }, []);
 
   // R04 存量回填：核心句没入队的已完成课，进语法页时静默补齐（幂等，空跑零成本）。
+  // 顺带补写存量核心句卡缺失的中文意思——back 为空会让 /review 的题面等于答案本身。
   const backfillRan = useRef(false);
   useEffect(() => {
     if (backfillRan.current) return;
     backfillRan.current = true;
-    updateData((latest) => backfillLessonCoreSentences(latest).data);
+    updateData((latest) => repairLessonCoreSentenceTranslations(backfillLessonCoreSentences(latest).data).data);
   }, [updateData]);
 
   const summary = useMemo(() => summarizeLessonProgress(data), [data]);
   const nextId = summary.nextLesson?.id ?? null;
   const dueReviewCount = useMemo(() => buildGrammarReviewSession(data, GRAMMAR_REVIEW_SESSION_LIMIT).length, [data]);
   const weakSpotsReport = useMemo(() => computeWeakSpotsReport(data), [data]);
+  // C1：弱点叙事（纯本地模板，零 AI）
+  const weakSpotNarrative = useMemo(() => buildWeakSpotNarrative(data), [data]);
+  // C2：主动介入（连续 2 次同错因 → 顶部推荐卡，48 小时冷却）
+  const activeIntervention = useMemo(() => findActiveIntervention(data), [data]);
+  // C4：弱点素材是否够拼一节复盘课（不够则不显示入口，不给残缺的课）
+  const replayAvailable = useMemo(
+    () => !buildReplayLesson(weakSpotsReport.active.map((spot) => spot.tag)).isEmpty,
+    [weakSpotsReport]
+  );
   const weakSpots = weakSpotsReport.active;
   const healedSpots = weakSpotsReport.healed;
 
-  // 2026-09-17 排版优化：季分组折叠——长页（当时 49 课 6.8 屏，现 75 课 11 季）的方位治理。
-  // 默认只展开「下一课」所在季（全部学完时展开最后一季）；手动开合在本次会话内保持。
-  // 不持久化：这是定位功能而非偏好，也避免 localStorage 键膨胀。
-  const [groupOverrides, setGroupOverrides] = useState<Record<string, boolean>>({});
-  const defaultOpenGroupId = useMemo(() => {
-    if (summary.nextLesson) {
+  // 2026-09-17 排版优化：季分组折叠——长页的方位治理。
+  // R-UX-IA（2026-09-19）：两级导航——首页总览季卡，点卡片展开该季课表。
+  // 2026-09-20 季合并后为 27 季（原 38 季，末段 17 个小季合并为 6 个大季）。
+  // 单选语义：openSeasonId = null（全部收起）/ 季 id；默认展开「下一课」所在季
+  //（全部学完时展开最后一季）。此前 override 表 + 默认值回退的组合会让默认季
+  // 绕过互斥（点别的卡后旧季仍开），改为显式单值状态机。
+  const [openSeasonId, setOpenSeasonId] = useState<string | null>(() => {
+    const nextLesson = summary.nextLesson;
+    if (nextLesson) {
       const group = LESSON_GROUPS.find(
-        (item) => summary.nextLesson!.number >= item.min && summary.nextLesson!.number <= item.max
+        (item) => nextLesson.number >= item.min && nextLesson.number <= item.max
       );
       if (group) return group.id;
     }
     return LESSON_GROUPS[LESSON_GROUPS.length - 1]?.id ?? null;
+  });
+  // 换课（下一课推进）且用户未手动动过折叠时，展开态跟随当前季
+  const openSeasonTouchedRef = useRef(false);
+  useEffect(() => {
+    const nextLesson = summary.nextLesson;
+    if (openSeasonTouchedRef.current || !nextLesson) return;
+    const group = LESSON_GROUPS.find(
+      (item) => nextLesson.number >= item.min && nextLesson.number <= item.max
+    );
+    if (group) setOpenSeasonId(group.id);
   }, [summary.nextLesson]);
-  const isGroupOpen = (groupId: string) => groupOverrides[groupId] ?? groupId === defaultOpenGroupId;
-  const toggleGroup = (groupId: string) =>
-    setGroupOverrides((current) => ({ ...current, [groupId]: !(current[groupId] ?? groupId === defaultOpenGroupId) }));
+  const isGroupOpen = (groupId: string) => openSeasonId === groupId;
+  const toggleGroup = (groupId: string) => {
+    openSeasonTouchedRef.current = true;
+    // 单选：点别的卡切换过去；点已开的卡收起（回到总览）
+    setOpenSeasonId((current) => (current === groupId ? null : groupId));
+  };
 
   // R23：里程碑达成 = 截至该课号的所有课都完成；已确认的存在独立 localStorage 键，不进 AppData。
   const [confirmedCanDos, setConfirmedCanDos] = useState<string[]>(readConfirmedCanDos);
@@ -389,6 +670,20 @@ export default function GrammarPathPage() {
     );
   }, [data.grammarLessonsDone, lessons]);
   const pendingCanDo = achievedCanDos.find((milestone) => !confirmedCanDos.includes(milestone.id)) ?? null;
+
+  // R-UX7：路径页恢复锚点——找「有续学快照且未完课」的课（快照 24h 过期由 service 保证）
+  const resumeHint = useMemo(() => {
+    const doneIds = new Set(data.grammarLessonsDone);
+    // 只扫快照语义上的「最近在学」：从下一课往前找几课 + 已解锁未完课，量小直接线性
+    for (const lesson of lessons) {
+      if (doneIds.has(lesson.id)) continue;
+      const snapshot = loadLessonResume(lesson.id);
+      if (snapshot && (snapshot.practiceIndex > 0 || snapshot.outputStep >= 0)) {
+        return { lessonId: lesson.id, lessonNumber: lesson.number, step: snapshot.practiceIndex };
+      }
+    }
+    return null;
+  }, [data.grammarLessonsDone, lessons]);
 
   const confirmCanDo = (milestoneId: string) => {
     const next = [...confirmedCanDos, milestoneId];
@@ -559,6 +854,8 @@ export default function GrammarPathPage() {
         }
       />
 
+      {activeIntervention && <ActiveInterventionCard intervention={activeIntervention} />}
+
       {/* R03 首访引导分态：零进度时主线「第 1 课」是唯一主 CTA，日记/找错降级；
           有进度后主 CTA 是「继续第 N 课」。文案随进度出现，不对零基础说「已经学过的」。 */}
       {summary.done === 0 ? (
@@ -584,9 +881,17 @@ export default function GrammarPathPage() {
           <p>{summary.done <= 3 ? "学过的地方，可以去侦探那里找找漏洞来复习。" : "已经学过的语法点，可以去侦探那里找一找漏洞来复习。"}</p>
           <div className="lesson-path-entry-actions">
             {summary.nextLesson ? (
-              <Link to={`/grammar/lesson/${summary.nextLesson.id}`} className="primary-button">
-                <PlayCircle size={16} /> 继续第 {summary.nextLesson.number} 课 · {summary.nextLesson.title}
-              </Link>
+              <>
+                <Link to={`/grammar/lesson/${summary.nextLesson.id}`} className="primary-button">
+                  <PlayCircle size={16} /> 继续第 {summary.nextLesson.number} 课 · {summary.nextLesson.title}
+                </Link>
+                {/* R-UX7：恢复锚点——上次中途离开的课置顶可续（联动 R-UX3 快照，24h 内有效） */}
+                {resumeHint && resumeHint.lessonId !== summary.nextLesson.id && (
+                  <Link to={`/grammar/lesson/${resumeHint.lessonId}`} className="secondary-button">
+                    上次学到第 {resumeHint.lessonNumber} 课 · 第 {resumeHint.step + 1} 步，去接着练
+                  </Link>
+                )}
+              </>
             ) : (
               <Link to="/grammar/review" className="primary-button">
                 <RotateCcw size={15} /> 全部课程已完成 · 去复习巩固
@@ -607,7 +912,9 @@ export default function GrammarPathPage() {
         </div>
       )}
 
-      {weakSpots.length > 0 && <WeakSpotsCard spots={weakSpots} />}
+      {weakSpots.length > 0 && (
+        <WeakSpotsCard spots={weakSpots} narrative={weakSpotNarrative} replayAvailable={replayAvailable} />
+      )}
 
       {/* R06：确证治愈列表——独立于活跃弱点榜，活跃榜为空也展示「已战胜」 */}
       {healedSpots.length > 0 && <HealedSpotsRow spots={healedSpots} />}
@@ -617,45 +924,58 @@ export default function GrammarPathPage() {
 
       {pendingCanDo && <CanDoCard milestone={pendingCanDo} onConfirm={confirmCanDo} />}
 
-      {LESSON_GROUPS.map((group) => {
-        const groupLessons = lessons.filter((lesson) => lesson.number >= group.min && lesson.number <= group.max);
-        if (groupLessons.length === 0) return null;
-        const groupDone = groupLessons.filter((lesson) => data.grammarLessonsDone.includes(lesson.id)).length;
-        const open = isGroupOpen(group.id);
-        const groupComplete = groupDone === groupLessons.length;
-        const bodyId = `grammar-season-${group.id}`;
-        return (
-          <section
-            key={group.id}
-            className={`lesson-path-section${open ? " is-open" : " is-closed"}${groupComplete ? " is-complete" : ""}`}
-            aria-label={group.label}
-          >
-            {/* 2026-09-17 排版优化：整行可点的折叠头（button + aria-expanded/aria-controls，
-                与 CollapsibleSection 同一套无障碍模式）；展开时吸顶做长滚动中的方位锚点。 */}
-            <button
-              type="button"
-              className="lesson-path-section-head"
-              aria-expanded={open}
-              aria-controls={bodyId}
-              onClick={() => toggleGroup(group.id)}
+      {/* R-UX-IA：季卡片两级导航——首页只见季卡总览（进度+状态一目了然），
+          点卡片才展开该季课表（同时只开一季，方位置焦）。
+          此前是 20 个折叠行全部平铺，滚动长、季与季的进度要逐行扫。 */}
+      <div className="season-map">
+        {LESSON_GROUPS.map((group) => {
+          const groupLessons = lessons.filter((lesson) => lesson.number >= group.min && lesson.number <= group.max);
+          if (groupLessons.length === 0) return null;
+          const groupDone = groupLessons.filter((lesson) => data.grammarLessonsDone.includes(lesson.id)).length;
+          const open = isGroupOpen(group.id);
+          const groupComplete = groupDone === groupLessons.length;
+          const isCurrent = summary.nextLesson != null && summary.nextLesson.number >= group.min && summary.nextLesson.number <= group.max;
+          const bodyId = `grammar-season-${group.id}`;
+          const percent = Math.round((groupDone / groupLessons.length) * 100);
+          // 进度环：conic-gradient，空进度与满进度都由 --p 驱动（无 JS 绘图）
+          const ringStyle = { ["--p" as string]: String(percent) };
+          return (
+            <section
+              key={group.id}
+              className={`season-card${open ? " is-open" : ""}${groupComplete ? " is-complete" : ""}${isCurrent ? " is-current" : ""}`}
+              aria-label={group.label}
             >
-              <ChevronDown size={16} className="lesson-path-section-chevron" aria-hidden="true" />
-              <h2>{group.label}</h2>
-              <span className="lesson-path-section-hint" title={group.hint}>
-                {group.hint}
-              </span>
-              <span className={`lesson-path-section-count${groupComplete ? " is-complete" : ""}`}>
-                {groupComplete ? `✓ ${groupDone} / ${groupLessons.length} 课` : `${groupDone} / ${groupLessons.length} 课`}
-              </span>
-            </button>
-            {open && (
-              <div className="lesson-path-grid" id={bodyId}>
-                {groupLessons.map(renderLessonCard)}
-              </div>
-            )}
-          </section>
-        );
-      })}
+              <button
+                type="button"
+                className="season-card-head"
+                aria-expanded={open}
+                aria-controls={bodyId}
+                onClick={() => toggleGroup(group.id)}
+              >
+                <span className="season-ring" style={ringStyle} aria-hidden="true">
+                  <span className="season-ring-num">{groupComplete ? "✓" : `${groupDone}`}</span>
+                </span>
+                {/* R-UX-IA 修复：两行布局——首行标题+徽章，次行简介独占整宽。
+                    此前三块挤一行，窄卡时标题折行、简介只剩省略号。 */}
+                <span className="season-card-text">
+                  <span className="season-card-title-row">
+                    <span className="season-card-title">{group.label}</span>
+                    <span className="season-card-meta">
+                      {groupComplete ? "已完成" : isCurrent ? "进行中" : `${groupDone} / ${groupLessons.length} 课`}
+                    </span>
+                  </span>
+                  <span className="season-card-hint">{group.hint}</span>
+                </span>
+              </button>
+              {open && (
+                <div className="lesson-path-grid" id={bodyId}>
+                  {groupLessons.map(renderLessonCard)}
+                </div>
+              )}
+            </section>
+          );
+        })}
+      </div>
 
       {/* R03：导出卡偏技术化，首访（零进度）不展示，避免稀释主线 */}
       {summary.done > 0 && <TelemetryExportCard />}

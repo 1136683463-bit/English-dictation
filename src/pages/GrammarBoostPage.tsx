@@ -4,6 +4,7 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
+import { useReturnFocus } from "../components/useReturnFocus";
 import SpeakButton from "../components/SpeakButton";
 import {
   BOOST_TIER_META,
@@ -60,8 +61,24 @@ export default function GrammarBoostPage() {
 
   const tierParam = Number(searchParams.get("tier"));
   const fromParam = searchParams.get("from");
-  const entryPoint: "settlement" | "card" | "reaudit" | "direct" =
-    fromParam === "receipt" ? "settlement" : fromParam === "card" ? "card" : fromParam === "reaudit" ? "reaudit" : "direct";
+  /**
+   * 入口归因（2026-09-21 修）。
+   *
+   * `GrammarBoostStartedEvent["entryPoint"]` 的类型里本来就有 `"lesson"`，
+   * 但这里此前没有对应分支——课内入口 `?from=lesson` 一律被记成 `"direct"`，
+   * 于是 `startedByEntry.lesson` 结构上恒为 0，课内入口的转化率无法归因。
+   * （曝光事件走的另一套映射，本来就认 lesson，两处口径现在对齐。）
+   */
+  const entryPoint: "settlement" | "card" | "reaudit" | "lesson" | "direct" =
+    fromParam === "receipt"
+      ? "settlement"
+      : fromParam === "card"
+        ? "card"
+        : fromParam === "reaudit"
+          ? "reaudit"
+          : fromParam === "lesson"
+            ? "lesson"
+            : "direct";
 
   const doneTiers = useMemo(() => getLessonBoostTiersDone(data, lessonId), [data, lessonId]);
   const suggested = useMemo(() => suggestBoostTier(data, lessonId), [data, lessonId]);
@@ -78,6 +95,9 @@ export default function GrammarBoostPage() {
   const [firstTryCount, setFirstTryCount] = useState(0);
   const [attemptsThisItem, setAttemptsThisItem] = useState(0);
   const [outcome, setOutcome] = useState<"idle" | "pass" | "retry" | "revealed">("idle");
+
+  /** 判题 / 换题后把焦点交回题目卡（2026-09-21 新增）。 */
+  const quizCardRef = useReturnFocus<HTMLDivElement>(true, `${index}:${outcome}:${phase}`);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [hintLevel, setHintLevel] = useState(0);
   const [textValue, setTextValue] = useState("");
@@ -141,9 +161,19 @@ export default function GrammarBoostPage() {
   const answeredRef = useRef(0);
   const itemsCountRef = useRef(0);
 
+  /**
+   * 埋点前的「页面可用」守卫（2026-09-21 修）。
+   *
+   * 这两个埋点 effect 声明在 `canBoostLesson` 门禁 return **之前**，于是
+   * **未上完这一课**（页面只显示「先上完这一课」，用户根本练不了）也会记
+   * offered / started，把不可用的曝光算进转化率分母；而不存在的课（lesson 为空）
+   * 却一条都不记——同为「页面不可用」却两套行为。统一成：拿不到课 或 未准入 → 都不记。
+   */
+  const pageUsable = Boolean(lesson) && canBoostLesson(data, lessonId);
+
   // 曝光埋点（选择态：入口来自结算页/卡片/重审页时记一条）
   useEffect(() => {
-    if (!lesson || offeredLoggedRef.current) return;
+    if (!pageUsable || offeredLoggedRef.current) return;
     if (phase === "select" && entryPoint !== "direct") {
       offeredLoggedRef.current = true;
       appendGrammarEvent({
@@ -154,11 +184,11 @@ export default function GrammarBoostPage() {
         ts: nowIso()
       });
     }
-  }, [lesson, phase, lessonId, entryPoint, suggested]);
+  }, [pageUsable, lesson, phase, lessonId, entryPoint, suggested]);
 
   // 进档事件（每次进入某一档记一条；ref 守卫——StrictMode 双跑只记一次）
   useEffect(() => {
-    if (phase !== "running" || !lesson || startedLoggedRef.current) return;
+    if (!pageUsable || phase !== "running" || startedLoggedRef.current) return;
     startedLoggedRef.current = true;
     appendGrammarEvent({
       kind: "grammar_boost_started",
@@ -168,7 +198,7 @@ export default function GrammarBoostPage() {
       entryPoint,
       ts: nowIso()
     });
-  }, [phase, lesson, lessonId, tier, entryPoint]);
+  }, [pageUsable, phase, lessonId, tier, entryPoint]);
 
   // 中途离开：未完成且已答过题 → 记 abandoned（唯一能算放弃率的事件）。
   // 依赖只留 phase/tier——answered 用 ref 读，否则每次答题都会重挂清理函数、记出一条假放弃。
@@ -176,7 +206,18 @@ export default function GrammarBoostPage() {
     if (phase !== "running") return;
     return () => {
       if (completedRef.current) return;
-      if (answeredRef.current <= 0 && itemsCountRef.current === 0) return;
+      /**
+       * 答 0 题不算放弃（2026-09-20 修）：原条件是
+       * `answeredRef.current <= 0 && itemsCountRef.current === 0`，
+       * 但 itemsCountRef 在出题 effect 里就被写成题目总数（4/5/3），
+       * 用户答任何题之前它已非 0 → 整个守卫恒为 false，
+       * 「点进来看一眼就走」也会记一条 abandoned。
+       *
+       * 后果：abandonRate = abandoned / started 是**唯一**能算放弃率的口径，
+       * 被系统性抬高，三档漏斗的决策数据因此失真。
+       * 现在只按「是否真的答过题」判定。
+       */
+      if (answeredRef.current <= 0) return;
       appendGrammarEvent({
         kind: "grammar_boost_abandoned",
         lessonId,
@@ -246,6 +287,16 @@ export default function GrammarBoostPage() {
   const currentItem: BoostItem | undefined = items[index];
 
   const recordStep = (item: BoostItem, attempts: number, passed: boolean) => {
+    /**
+     * 每次判题都算「答过一题」（2026-09-21 修）。
+     *
+     * 此前只有 `advance()`（需要点「下一题」）才自增 answeredRef，
+     * 而真实动线里用户很可能**看完反馈就关掉页面**——那次作答没被计入，
+     * 于是「答了 1 题就离开」被记成「0 题放弃」而不记 abandoned，
+     * 放弃率被系统性**低估**（与此前修掉的「0 题也记放弃」正好反向）。
+     * 用 `Math.max` 保证同一题重试多次也只算一题。
+     */
+    answeredRef.current = Math.max(answeredRef.current, index + 1);
     appendGrammarEvent({
       kind: "grammar_boost_step_result",
       lessonId,
@@ -296,34 +347,53 @@ export default function GrammarBoostPage() {
     setPhase("running");
   };
 
-  const finishTier = () => {
+  /**
+   * 收尾。`finalFirstTryCount` 由调用方传入——**必须传**，因为 `advance` 里
+   * `setFirstTryCount` 是异步的，直接读 `firstTryCount` 拿到的是上一轮渲染的旧值，
+   * 于是最后一道题若一次答对，完成页会说「4 / 4 题一次就对」，
+   * 而埋点里的 firstTryCount 只有 3（2026-09-21 修：页面文案与埋点同口径）。
+   *
+   * `aiUsed` 的记账时机（2026-09-21 修）：事件必须在**AI 批改请求结束之后**再写，
+   * 否则 `aiUsedRef` 还是初始的 false——`aiUsedRate` 这个指标的分子永远记不上
+   * （实测：用户明明看到了批改卡，completed 事件里 aiUsed 仍是 false、比率恒为 0）。
+   * 但批改是异步的、不能阻塞完成态展示，所以：先切到完成页，再等批改落定后补写事件。
+   * 未配置 AI 时没有等待，走原路径同步写。
+   */
+  const finishTier = (finalFirstTryCount: number) => {
     completedRef.current = true;
-    const completedAt = readCompletedAt(lessonId);
-    const hours = completedAt ? Math.max(0, (Date.now() - Date.parse(completedAt)) / 3_600_000) : null;
-    appendGrammarEvent({
-      kind: "grammar_boost_completed",
-      lessonId,
-      tier,
-      total: items.length,
-      firstTryCount,
-      durationMs: Date.now() - startedAtRef.current,
-      aiUsed: aiUsedRef.current,
-      hoursSinceStage1: hours === null ? null : Math.round(hours * 10) / 10,
-      ts: nowIso()
-    });
     updateData((latest) => markBoostTierDone(latest, lessonId, tier));
     setPhase("done");
+
+    const writeCompletedEvent = () => {
+      const completedAt = readCompletedAt(lessonId);
+      const hours = completedAt ? Math.max(0, (Date.now() - Date.parse(completedAt)) / 3_600_000) : null;
+      appendGrammarEvent({
+        kind: "grammar_boost_completed",
+        lessonId,
+        tier,
+        total: items.length,
+        firstTryCount: finalFirstTryCount,
+        durationMs: Date.now() - startedAtRef.current,
+        aiUsed: aiUsedRef.current,
+        hoursSinceStage1: hours === null ? null : Math.round(hours * 10) / 10,
+        ts: nowIso()
+      });
+    };
+
     // 档 3 收尾：本档写过的句子一次性送 AI 批改（不逐题、不阻塞完成态展示）。
     if (tier === 3 && aiReady) {
-      void runAiCorrection(productionsRef.current);
+      void runAiCorrection(productionsRef.current).finally(writeCompletedEvent);
+      return;
     }
+    writeCompletedEvent();
   };
 
   const advance = (passed: boolean) => {
-    answeredRef.current += 1;
-    if (passed && attemptsThisItem <= 1) setFirstTryCount((value) => value + 1);
+    // answeredRef 已在 recordStep 里按题号推进；这里不再自增，避免同一次作答被重复计数。
+    const nextFirstTryCount = passed && attemptsThisItem <= 1 ? firstTryCount + 1 : firstTryCount;
+    if (passed && attemptsThisItem <= 1) setFirstTryCount(nextFirstTryCount);
     if (index + 1 >= items.length) {
-      finishTier();
+      finishTier(nextFirstTryCount);
       return;
     }
     setIndex((value) => value + 1);
@@ -342,6 +412,14 @@ export default function GrammarBoostPage() {
       );
       if (duplicated) return latest;
       const tag = aiCorrections.flatMap((entry) => entry.issues).find((issue) => issue.tag)?.tag;
+      // W2 观测：趁热练 → 复习队列的入队事件（核心增长链此前不可归因）
+      appendGrammarEvent({
+        kind: "sentence_card_enqueued",
+        lessonId,
+        source: "boost",
+        sentence,
+        ts: nowIso()
+      });
       return addSentence(latest, {
         sentence,
         translation: item.intentZh,
@@ -392,6 +470,8 @@ export default function GrammarBoostPage() {
       latencyMs: outcomeResult.latencyMs,
       degraded: outcomeResult.degraded,
       degradeReason: outcomeResult.degradeReason,
+      cached: outcomeResult.cached,
+      model: provider.model,
       ts: nowIso()
     });
     if (outcomeResult.ok && outcomeResult.entries.length > 0) {
@@ -449,6 +529,8 @@ export default function GrammarBoostPage() {
       latencyMs: outcome.latencyMs,
       degraded: outcome.degraded,
       degradeReason: outcome.degradeReason,
+      cached: outcome.cached,
+      model: provider.model,
       ts: nowIso()
     });
     if (!outcome.ok || outcome.items.length === 0) return;
@@ -474,6 +556,38 @@ export default function GrammarBoostPage() {
   const passItem = (item: BoostItem, attempts: number) => {
     setOutcome("pass");
     setFeedback(item.answer);
+  };
+
+  /** 听力题：点选项即判（两个选项，不需要二次确认）。 */
+  const submitListen = (option: string) => {
+    if (!currentItem || outcome === "pass" || outcome === "revealed") return;
+    setClozePicked(option);
+    const attempts = attemptsThisItem + 1;
+    setAttemptsThisItem(attempts);
+    const passed = judgeBoostItem(currentItem, { text: option }).passed;
+    recordStep(currentItem, attempts, passed);
+    if (passed) {
+      passItem(currentItem, attempts);
+    } else {
+      setOutcome("retry");
+      setFeedback("再听一遍——两句只差一个地方，注意那处不同。");
+    }
+  };
+
+  /** 双正解题：点选项即判（两个选项，不需要二次确认）。 */
+  const submitBothRight = (pickedBoth: boolean) => {
+    if (!currentItem || outcome === "pass" || outcome === "revealed") return;
+    setPickedProblem(pickedBoth);
+    const attempts = attemptsThisItem + 1;
+    setAttemptsThisItem(attempts);
+    const passed = judgeBoostItem(currentItem, { pickedProblem: pickedBoth }).passed;
+    recordStep(currentItem, attempts, passed);
+    if (passed) {
+      passItem(currentItem, attempts);
+    } else {
+      setOutcome("retry");
+      setFeedback("再想想——英语里有些说法不止一种。");
+    }
   };
 
   const submitContrast = () => {
@@ -522,7 +636,9 @@ export default function GrammarBoostPage() {
       passItem(currentItem, attempts);
     } else {
       setOutcome("retry");
-      setFeedback("还差一点——想想主语是谁，搭档要跟着变。");
+      // 零术语红线（2026-09-21 修）：原文是「想想主语是谁，搭档要跟着变」，
+      // 「主语」是术语表中的禁用词。改成课程库里通行的零术语说法（对照 L1 的「搭档」比喻）。
+      setFeedback("还差一点——先看这句话说的是「谁」，搭档要跟着它变。");
     }
   };
 
@@ -620,6 +736,23 @@ export default function GrammarBoostPage() {
     setChoicePicked(null);
     setBuiltTokens([]);
   };
+
+  // 答对/看答案后回车即进下一题：不用离开键盘去找按钮。
+  // retry 态不劫持回车——用户多半在输入框里改句子（框内回车=重新提交），全局清空反而会毁掉草稿。
+  // 焦点在按钮/输入框上时让原生行为处理，避免回车触发两次。
+  useEffect(() => {
+    if (outcome !== "pass" && outcome !== "revealed") return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Enter" || event.isComposing || event.shiftKey) return;
+      const active = document.activeElement;
+      if (active instanceof HTMLElement && ["BUTTON", "A", "INPUT", "TEXTAREA", "SELECT"].includes(active.tagName)) return;
+      event.preventDefault();
+      goNextFromFeedback();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [outcome, index, items.length]);
 
   // ── 档选择态 ──────────────────────────────────────────────
 
@@ -788,6 +921,10 @@ export default function GrammarBoostPage() {
   const itemLabel =
     currentItem?.kind === "contrast"
       ? "这句有问题吗"
+      : currentItem?.kind === "bothright"
+        ? "这两句都对吗"
+        : currentItem?.kind === "listen"
+          ? "听一听，哪句对"
       : currentItem?.kind === "spot"
         ? "找出用错的那个词"
         : currentItem?.kind === "cloze"
@@ -800,7 +937,9 @@ export default function GrammarBoostPage() {
                 ? "点词成句"
                 : currentItem?.kind === "recall"
                   ? "看着中文写出来"
-                  : currentItem?.kind === "variant"
+                  : currentItem?.kind === "translate"
+                    ? "看着中文写整句"
+                    : currentItem?.kind === "variant"
                     ? "换个说法，自己写"
                     : currentItem?.kind === "fix"
                       ? "把错的改成对的"
@@ -815,12 +954,19 @@ export default function GrammarBoostPage() {
         action={
           <div className="lesson-progress-pill" aria-label="本档进度">
             <Flame size={16} />
-            <span>{index + (outcome === "idle" ? 0 : 1)} / {items.length} 题</span>
+            {/*
+              进度只在「这一题真的过了」之后前进。
+              2026-09-21 修：此前判据是 outcome !== "idle"，但本页的 retry（答错）是**非终态**——
+              用户还停在同一道题上重试，进度却已经 +1，与「第 X / N 题」并列显示时自相矛盾
+              （第 1 题答错 → 顶部显示「1 / 4 题」，下面写着「第 1 / 4 题」）。
+              复习页没有 retry 态，所以那边同样的公式是对的；本页要显式排除 retry。
+            */}
+            <span>{index + (outcome === "pass" || outcome === "revealed" ? 1 : 0)} / {items.length} 题</span>
           </div>
         }
       />
       <section className="lesson-stage" aria-label="趁热练进行中">
-        <div className="lesson-quiz-card">
+        <div className="lesson-quiz-card" ref={quizCardRef} tabIndex={-1}>
           <div className="lesson-quiz-head">
             <span className="lesson-quiz-step">第 {index + 1} / {items.length} 题</span>
             <span className="lesson-quiz-note">{itemLabel}</span>
@@ -896,6 +1042,63 @@ export default function GrammarBoostPage() {
             </div>
           )}
 
+          {/* 双正解：给一对说法，问是否两句都对 */}
+          {currentItem?.kind === "bothright" && currentItem.correctPair && (
+            <div className="lesson-contrast-block">
+              <div className="boost-pair-row">
+                <span className="boost-pair-sentence">
+                  A. {currentItem.correctPair.first}
+                  <SpeakButton text={currentItem.correctPair.first} />
+                </span>
+                <span className="boost-pair-sentence">
+                  B. {currentItem.correctPair.second}
+                  <SpeakButton text={currentItem.correctPair.second} />
+                </span>
+              </div>
+              <div className="boost-choice-row">
+                <button
+                  type="button"
+                  className={`boost-choice${pickedProblem === true ? " picked" : ""}`}
+                  onClick={() => submitBothRight(true)}
+                  disabled={outcome === "pass" || outcome === "revealed"}
+                >
+                  两句都对
+                </button>
+                <button
+                  type="button"
+                  className={`boost-choice${pickedProblem === false ? " picked" : ""}`}
+                  onClick={() => submitBothRight(false)}
+                  disabled={outcome === "pass" || outcome === "revealed"}
+                >
+                  只有一句对
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* 听力：播放一句，选出听到的那句（干扰项是本课语法点的典型错句） */}
+          {currentItem?.kind === "listen" && currentItem.listenOptions && (
+            <div className="lesson-contrast-block">
+              <div className="boost-listen-row">
+                <SpeakButton text={currentItem.listenText ?? ""} ariaLabel="播放要听的那句话" />
+                <span className="boost-listen-hint">点喇叭听一遍，可以反复听</span>
+              </div>
+              <div className="boost-listen-options">
+                {currentItem.listenOptions.map((option) => (
+                  <button
+                    type="button"
+                    key={option}
+                    className={`boost-listen-option${clozePicked === option ? " picked" : ""}`}
+                    onClick={() => submitListen(option)}
+                    disabled={outcome === "pass" || outcome === "revealed"}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* 改错：点出用错了的那个词 */}
           {currentItem?.kind === "spot" && (
             <div className="lesson-contrast-block">
@@ -947,7 +1150,7 @@ export default function GrammarBoostPage() {
 
           {/* 词块重建 / 点词成句 */}
           {(currentItem?.kind === "rebuild" || currentItem?.kind === "arrange") && (
-            <div>
+            <div className="lesson-arrange">
               <div className="lesson-build-area lit" aria-label="已选词块">
                 {builtTokens.map((token, position) => (
                   <button
@@ -988,8 +1191,8 @@ export default function GrammarBoostPage() {
           )}
 
           {/* 中文→整句 / 无提示产出 / 变式产出 / 自己改错（都要自己写出整句） */}
-          {(["recall", "produce", "variant", "fix", "free"] as const).includes(
-            currentItem?.kind as "recall" | "produce" | "variant" | "fix" | "free"
+          {(["recall", "translate", "produce", "variant", "fix", "free"] as const).includes(
+            currentItem?.kind as "recall" | "translate" | "produce" | "variant" | "fix" | "free"
           ) && (
             <div>
               {/* variant / fix：先给出「已知的样例句」，让任务边界清楚 */}
@@ -1015,9 +1218,35 @@ export default function GrammarBoostPage() {
                   value={textValue}
                   onChange={(event) => setTextValue(event.target.value)}
                   onKeyDown={(event) => {
-                    if (event.key === "Enter" && textValue.trim()) submitText();
+                    if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing && textValue.trim()) {
+                      event.preventDefault();
+                      submitText();
+                      return;
+                    }
+                    /**
+                     * 要提示改用 Ctrl/Cmd + H（2026-09-21 修，P1 无障碍）。
+                     *
+                     * 此前用的是 Tab：`preventDefault()` 会**吃掉导航键**，焦点被锁死在输入框里，
+                     * 直到提示用完才放行——键盘用户无法离开这个输入框（Shift+Tab 同样被吞）。
+                     * 导航键不应用于「触发功能」，这是无障碍的基本约束。
+                     * Ctrl/Cmd + H 不与输入法、浏览器常用键冲突，且不影响 Tab 的正常语义。
+                     */
+                    if (
+                      (event.ctrlKey || event.metaKey) &&
+                      (event.key === "h" || event.key === "H") &&
+                      currentItem.hints &&
+                      hintLevel < currentItem.hints.length &&
+                      outcome === "idle"
+                    ) {
+                      event.preventDefault();
+                      setHintLevel((value) => value + 1);
+                    }
                   }}
-                  placeholder="写下这句话（回车提交）"
+                  placeholder={
+                    currentItem.hints && hintLevel < currentItem.hints.length
+                      ? "写下这句话（回车提交 · Ctrl+H 要提示）"
+                      : "写下这句话（回车提交）"
+                  }
                   aria-label="产出答案"
                   disabled={outcome === "pass" || outcome === "revealed"}
                 />
@@ -1029,7 +1258,7 @@ export default function GrammarBoostPage() {
                   </button>
                   {currentItem.hints && hintLevel < currentItem.hints.length && (
                     <button type="button" className="ghost-link" onClick={() => setHintLevel((value) => value + 1)}>
-                      想不起来，要一级提示
+                      想不起来，要一级提示 <kbd className="kbd-hint">Tab</kbd>
                     </button>
                   )}
                   {attemptsThisItem > 0 && (
@@ -1063,9 +1292,16 @@ export default function GrammarBoostPage() {
               )}
               <p className="boost-check-note">
                 <Info size={13} />
+                {/**
+                 * 入队只发生在档 3（`queueFailedProduce` 开头就是 `if (tier !== 3) return`）。
+                 * 2026-09-21 修：此前无论哪一档都写「这句已经排进复习队列」，
+                 * 档 1/2 的用户被承诺了一件不会发生的事（实测卡片数 0 → 0）。
+                 */}
                 {outcome === "pass"
                   ? "这一句现在能自己说出来了——比昨天进步了一点。"
-                  : "这句已经排进复习队列，后面会再见到它。"}
+                  : tier === 3
+                    ? "这句已经排进复习队列，后面会再见到它。"
+                    : "这一档先到这里——到「换你来说」时，写不顺的句子会自动排进复习。"}
                 {" "}
                 <Link to={`/grammar/lesson/${lesson.id}`} className="ghost-link">回这一课看看</Link>
               </p>
@@ -1074,6 +1310,7 @@ export default function GrammarBoostPage() {
                   {index + 1 >= items.length ? "完成这一档" : "下一题"}
                 </button>
                 <SpeakButton text={currentItem?.answer ?? ""} />
+                <kbd className="kbd-hint" title="回车进入下一题">↵</kbd>
               </div>
             </div>
           )}

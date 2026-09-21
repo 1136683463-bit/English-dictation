@@ -1,6 +1,12 @@
 export type CardType = "word" | "phrase" | "sentence";
 export type CardStatus = "new" | "learning" | "review" | "mastered" | "suspended";
-export type ReviewMode = "recognize" | "recall" | "spelling" | "cloze" | "dictation";
+/**
+ * 复习形态。`rebuild`（把词块拼回句子）2026-09-21 从 `recall` 里拆出来：
+ * 此前「拼词块」与「自己写整句」共用 recall，导致语法复习的掌握判定
+ * （isMasteredByOutput 按 mode === "recall" 过滤）把拼词块也算成一次输出，
+ * 用户只真正独立写出过 1 次就被判「已掌握」。
+ */
+export type ReviewMode = "recognize" | "recall" | "spelling" | "cloze" | "dictation" | "rebuild";
 export type Rating = 1 | 2 | 3 | 4;
 export type MistakeGenerationType = "examples" | "story";
 export type MistakeGenerationLevel = "A2" | "B1" | "B2";
@@ -632,6 +638,12 @@ export interface DiaryCorrectionResult {
   issues: DiaryIssue[];
   /** 更地道的重述（recast）；AI 未返回时缺省。 */
   recast?: string;
+  /**
+   * 一句中文追问（严格档要求，其他档位模型也可能给）。
+   * prompt 从 R11 起就要求返回它，但解析层此前丢弃了这个字段——
+   * 现在接住并展示：批改之后紧跟一句"再多说一句"的邀请，是 output 延展的低成本抓手。
+   */
+  followUp?: string;
 }
 
 /** 一条英文日记。status: pending=还没批改（离线保存），done=已批改。 */
@@ -645,6 +657,8 @@ export interface DiaryEntry {
   issues: DiaryIssue[];
   status: "pending" | "done";
   note?: string;
+  /** 批改给出的一句中文追问（可选）——展示为「再多说一句」的邀请。 */
+  followUp?: string;
   createdAt: string;
 }
 

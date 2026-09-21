@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock } from "lucide-react";
+import { CheckCircle2, Clock, Lightbulb } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
@@ -9,6 +9,7 @@ import { buildAmbushQuestions, buildRevisitQuiz, judgeAmbushPick, type AmbushQue
 import { appendGrammarEvent, listGrammarEventsByKind } from "../services/grammarTelemetry";
 import { nowIso } from "../services/storage";
 import { checkLessonTokens } from "../services/lessonService";
+import { explainForSentence } from "../services/grammarExplainService";
 
 /**
  * F1 关 2 · 次日回访关（2026-09-13 PRD §6.1）。
@@ -35,6 +36,7 @@ export default function GrammarRevisitPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [lessonId]
   );
+
 
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<"quiz" | "ambush" | "done">("quiz");
@@ -87,6 +89,20 @@ export default function GrammarRevisitPage() {
       </div>
     );
   }
+
+  /**
+   * 答对也讲「为什么」：回访是提取练习，提取成功后的解释把「碰对了」固化成「知道为什么」。
+   * 讲解来自本课素材的句子级匹配（contrast/variants/sceneSwings），不含新结论。
+   *
+   * ⚠️ 必须写在任何提前 return 之前（2026-09-20 修）：此前它位于下方「回访完成」的
+   * 提前 return 之后，完关瞬间 phase 变为 "done" 触发重渲染时，该次渲染命中早退分支
+   * → 少调用一个 hook → React 抛「Rendered fewer hooks than expected」并整树卸载（白屏）。
+   */
+  const revisitWhy = useMemo(
+    () => (quiz[index] && lesson ? explainForSentence(lesson, quiz[index].answer) : ""),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [quiz[index]?.answer, lessonId]
+  );
 
   if (isLessonStageDone(data, lessonId, 2) || phase === "done") {
     return (
@@ -241,7 +257,20 @@ export default function GrammarRevisitPage() {
                   className="large-textarea"
                   value={clozeValue}
                   onChange={(e) => setClozeValue(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === "Enter" && clozeValue.trim()) submitCloze(); }}
+                  onKeyDown={(e) => {
+                    /**
+                     * 组词态与 Shift+Enter 的守卫（2026-09-21 修，P1）。
+                     *
+                     * 此前只判断 `key === "Enter"`，与课内输入框口径不一致：
+                     * 中文输入法组词结束的回车会给 `key=Enter + isComposing=true`，
+                     * 于是**把没写完的答案直接交上去判 retry**；
+                     * Shift+Enter 也被当成提交（用户没有换行的余地）。
+                     * 课内（GrammarLessonPage）与复习页都有这两行守卫，这里漏了。
+                     */
+                    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing && clozeValue.trim()) {
+                      submitCloze();
+                    }
+                  }}
                   placeholder="填出空缺的词（回车提交）"
                   aria-label="填空答案"
                 />
@@ -251,7 +280,7 @@ export default function GrammarRevisitPage() {
               </div>
             </div>
           ) : (
-            <div>
+            <div className="lesson-arrange">
               <div className="lesson-build-area lit" aria-label="重建句子">
                 {rebuildPicked.map((token, i) => (
                   <span className="lesson-chip static" key={`${token}-${i}`}>{token}</span>
@@ -275,6 +304,11 @@ export default function GrammarRevisitPage() {
           {feedback === "pass" && (
             <div className="lesson-feedback pass" aria-live="polite">
               <p><CheckCircle2 size={16} /> 提取成功！<strong>{currentQuiz?.answer}</strong></p>
+              {currentQuiz && revisitWhy && (
+                <p className="lesson-why-line">
+                  <Lightbulb size={13} aria-hidden="true" /> {revisitWhy}
+                </p>
+              )}
               <button type="button" className="primary-button" onClick={advanceQuiz}>
                 {index + 1 >= quiz.length ? (ambush ? "最后一题：回马一枪" : "完成回访") : "下一题"}
               </button>
