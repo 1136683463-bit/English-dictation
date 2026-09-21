@@ -271,31 +271,17 @@ describe("KB4 拼装区键盘等价性", () => {
     const chip = builtChips(page)[0];
     expect(chip.disabled, "拼装区词块在通过态下仍可点（本身是允许回头改的设计）").toBe(false);
     /*
-     * 对照：`arrangeUndoLast`（橡皮擦，:1338-1365）已被修成
-     *   「已通过的题擦一块不撤销通关」；
-     * 但 `arrangeRemove`（点击拼装区词块，:1292-1306，onClick={() => remove(pos)}）
-     * **仍然无条件把反馈置 idle** → 两条等价路径行为不一致。
+     * 修复后：两条等价路径口径一致——点拼装区词块（arrangeRemove）与橡皮擦
+     * （arrangeUndoLast）都不再撤销已通过的题。此前只修了橡皮擦，
+     * 点击路径仍无条件置 idle，导致「下一题」消失、用户必须重摆。
      */
     clickEl(chip);
     await flushAsync();
     expect(
       feedbackClass(page),
-      "当前行为（缺陷）：点词块移除仍会把「通过」撤销（橡皮擦已修，点击路径漏了）"
-    ).toBe("none");
-    expect(canAdvance(page), "当前行为（缺陷）：「下一题」消失，用户必须重摆").toBe(false);
-    // 恢复方式回到「全清 + 按顺序重摆」——与橡皮擦修好前的症状完全相同
-    let removals = 0;
-    for (let guard = 0; guard < 30 && builtChips(page).length > 0; guard += 1) {
-      clickEl(builtChips(page)[0]);
-      removals += 1;
-      await flushAsync();
-    }
-    for (const word of words) addWord(page, word);
-    await flushAsync();
-    // eslint-disable-next-line no-console
-    console.log(`KB4-6 误触后恢复代价：${removals} 次移除 + ${words.length} 次添加`);
-    expect(feedbackClass(page), "全清重摆后可恢复通过").toContain("pass");
-    expect(canAdvance(page), "全清重摆后「下一题」回来").toBe(true);
+      "点词块移除不应撤销「通过」"
+    ).toContain("pass");
+    expect(canAdvance(page), "「下一题」应仍在").toBe(true);
     page.unmount();
   });
 

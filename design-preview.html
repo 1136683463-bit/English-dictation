@@ -1,0 +1,1646 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>语法完课结果页 · 方案预览</title>
+<style>
+  /* ── 设计令牌（与 src/styles.css 一致）──────────────────────── */
+  :root {
+    --bg: #f4f6f8;
+    --surface: #ffffff;
+    --surface-muted: #f8fafb;
+    --ink: #1f2b3a;
+    --ink-soft: #3e4c5e;
+    --muted: #5f6b7a;
+    --line: #e8edf1;
+    --line-strong: #d7dfe6;
+    --accent: #f26a1b;
+    --accent-strong: #d95a12;
+    --accent-soft: #fff1e8;
+    --accent-ink: #c04a0b;
+    --secondary: #48b878;
+    --secondary-soft: #e9f8ef;
+    --green-ink: #24784c;
+    --amber: #f5b301;
+    --amber-soft: #fdf3d8;
+    --amber-ink: #8a6200;
+    --blue: #3b6ef5;
+    --blue-soft: #eef3ff;
+    --blue-ink: #2f62ea;
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-pill: 999px;
+    --shadow-sm: 0 1px 2px rgba(31, 43, 58, 0.04);
+    --shadow-md: 0 8px 24px rgba(31, 43, 58, 0.08);
+    --ease-ui: 160ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #eceff3;
+    color: var(--ink);
+    font-family: Inter, "HarmonyOS Sans SC", "PingFang SC", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── 预览框架（非产品 UI，只是让方案并排可看）──────────────── */
+  .harness-bar {
+    position: sticky; top: 0; z-index: 50;
+    display: grid; gap: 10px;
+    padding: 16px 28px 14px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .harness-bar h1 { margin: 0; font-size: 17px; font-weight: 800; letter-spacing: .01em; }
+  .harness-bar p { margin: 0; font-size: 12.5px; color: var(--muted); }
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tabs button {
+    padding: 7px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--line-strong); background: #fff; color: var(--ink-soft);
+    font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
+    transition: var(--ease-ui);
+  }
+  .tabs button:hover { border-color: var(--accent); color: var(--accent-ink); }
+  .tabs button.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(242,106,27,.24); }
+  .panels { padding: 26px 28px 80px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .frame {
+    max-width: 880px; margin: 0 auto;
+    padding: 40px 32px 56px;
+    background: var(--bg); border-radius: 20px; border: 1px solid var(--line-strong);
+  }
+  .note {
+    max-width: 880px; margin: 0 auto 18px;
+    padding: 14px 18px; border-radius: 14px;
+    background: #fff; border: 1px solid var(--line-strong); border-left: 3px solid var(--accent);
+  }
+  .note h3 { margin: 0 0 8px; font-size: 13px; font-weight: 800; letter-spacing: .02em; color: var(--accent-ink); }
+  .note ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+  .note li { font-size: 12.5px; line-height: 1.6; color: var(--ink-soft); }
+
+  /* ── 产品 UI 通用件 ───────────────────────────────────────── */
+  .complete-hero { display: grid; justify-items: center; gap: 8px; padding: 6px 0 2px; }
+  .complete-hero h2 { margin: 2px 0 0; color: var(--ink); font-weight: 800; letter-spacing: .01em; }
+  .complete-hero-sub { max-width: 460px; margin: 0; text-align: center; color: var(--muted); line-height: 1.7; }
+  .complete-receipt { display: grid; width: 100%; max-width: 560px; margin: 10px auto 0; text-align: left; }
+  .receipt-block { display: grid; }
+  .receipt-block-title { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--ink-soft); font-weight: 700; letter-spacing: .01em; }
+  .receipt-block-icon { display: grid; place-items: center; flex-shrink: 0; }
+  .receipt-chip {
+    display: inline-flex; align-items: center; justify-self: start;
+    padding: 3px 10px; border-radius: var(--radius-pill);
+    background: var(--accent-soft); color: var(--accent-ink);
+    font-weight: 700; letter-spacing: .02em;
+  }
+  .receipt-rule { margin: 0; color: var(--ink-soft); }
+  .receipt-points { margin: 0; padding: 0; list-style: none; }
+  .receipt-points li { position: relative; color: var(--ink-soft); }
+  .receipt-sentences { margin: 0; padding: 0; list-style: none; }
+  .receipt-sentences li { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .receipt-sentence-text { min-width: 0; color: var(--ink); }
+  .receipt-sentence-label { display: inline-block; font-style: normal; font-weight: 600; }
+  .icon-button { display: grid; place-items: center; border: none; cursor: pointer; transition: var(--ease-ui); }
+  .receipt-queue-note { display: flex; align-items: center; flex-wrap: wrap; color: var(--muted); }
+  .receipt-queue-link { display: inline-flex; align-items: center; text-decoration: none; font-weight: 600; }
+  .receipt-ai-summary { display: flex; align-items: flex-start; gap: 7px; margin: 0; color: var(--blue-ink); }
+  .lesson-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; }
+  .primary-button {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 11px 22px; border: none; border-radius: var(--radius-pill);
+    background: var(--accent); color: #fff; font-size: 14.5px; font-weight: 700;
+    cursor: pointer; text-decoration: none; font-family: inherit;
+    box-shadow: 0 6px 16px rgba(242, 106, 27, 0.24);
+  }
+  .secondary-button {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 11px 20px; border-radius: var(--radius-pill);
+    border: 1px solid var(--line-strong); background: #fff; color: var(--ink-soft);
+    font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; font-family: inherit;
+  }
+  .ghost-link { font-size: 13px; color: var(--muted); text-decoration: none; }
+
+  /* 对错小练习 */
+  .practice-block { display: grid; gap: 12px; width: 100%; max-width: 560px; margin: 0 auto; }
+  .practice-title { margin: 0; font-size: 13px; font-weight: 700; color: var(--muted); text-align: center; }
+  .contrast-card { border-radius: var(--radius-md); border: 1px solid var(--line); background: var(--surface); padding: 16px 18px; display: grid; gap: 12px; }
+  .contrast-prompt { margin: 0; font-size: 14px; color: var(--ink-soft); }
+  .option-row { display: grid; gap: 9px; }
+  .option {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 16px; border-radius: 14px;
+    border: 1px solid var(--line); background: var(--surface-muted);
+    font-size: 15px; color: var(--ink);
+  }
+  .option b { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-ink); font-size: 12px; flex-shrink: 0; }
+
+  /* ══════════════════════════════════════════════════════════
+     现状 —— 精确复刻当前线上样式（用于对比）
+     ══════════════════════════════════════════════════════════ */
+  .v-current .complete-hero-badge { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--secondary-soft); color: var(--secondary); box-shadow: inset 0 0 0 1.5px rgba(72,184,120,.35); }
+  .v-current .complete-hero h2 { font-size: 24px; }
+  .v-current .complete-hero-sub { font-size: 12.5px; }
+  .v-current .complete-receipt { gap: 20px; }
+  .v-current .receipt-block { gap: 8px; }
+  .v-current .receipt-block-title { font-size: 13px; }
+  .v-current .receipt-block-icon { width: 22px; height: 22px; border-radius: 7px; }
+  .v-current .receipt-block-icon.gain { background: var(--secondary-soft); color: var(--secondary); }
+  .v-current .receipt-block-icon.speak { background: var(--blue-soft); color: var(--blue); }
+  .v-current .receipt-block-icon.gap { background: var(--amber-soft); color: #b07c04; }
+  .v-current .receipt-card { display: grid; gap: 10px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--shadow-sm); }
+  .v-current .receipt-chip { font-size: 11.5px; }
+  .v-current .receipt-rule { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; line-height: 1.7; }
+  .v-current .receipt-points { display: grid; gap: 6px; }
+  .v-current .receipt-points li { padding-left: 14px; font-size: 13px; line-height: 1.65; }
+  .v-current .receipt-points li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 5px; height: 5px; border-radius: 50%; background: var(--secondary); }
+  .v-current .receipt-sentences li { padding: 9px 0; }
+  .v-current .receipt-sentences li + li { border-top: 1px dashed var(--line); }
+  .v-current .receipt-sentence-text { font-size: 14px; line-height: 1.6; }
+  .v-current .receipt-sentence-label { margin-right: 8px; padding: 1px 7px; border-radius: 6px; background: var(--surface-muted); color: var(--muted); font-size: 11px; }
+  .v-current .receipt-sentences .icon-button { width: 30px; height: 30px; border-radius: 9px; color: var(--blue); background: var(--blue-soft); }
+  .v-current .receipt-queue-note { gap: 4px 10px; margin: 2px 0 0; padding-top: 10px; border-top: 1px dashed var(--line); font-size: 12.5px; line-height: 1.6; }
+  .v-current .receipt-queue-link { padding: 3px 12px; border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--accent-ink); font-size: 12px; margin-left: 2px; }
+  .v-current .receipt-ai-summary { font-size: 12.5px; line-height: 1.65; }
+  .v-current .lesson-actions { margin-top: 22px; }
+  .v-current .practice-block { margin-top: 18px; }
+
+  /* ══════════════════════════════════════════════════════════
+     方案 A · 精修收据
+     字号阶梯 12/13/15/17/20/30 · 块间 32 卡内 16 · 语义配色
+     ══════════════════════════════════════════════════════════ */
+  .v-a .complete-hero { gap: 10px; padding: 2px 0 0; }
+  .v-a .complete-hero-badge {
+    display: grid; place-items: center; width: 68px; height: 68px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, #f2fcf6 0%, var(--secondary-soft) 70%);
+    color: var(--secondary); box-shadow: inset 0 0 0 2px rgba(72,184,120,.30), 0 8px 20px rgba(72,184,120,.16);
+  }
+  .v-a .complete-hero h2 { font-size: 30px; letter-spacing: -0.01em; }
+  .v-a .complete-hero-sub { font-size: 14px; }
+  .v-a .complete-receipt { gap: 32px; margin-top: 26px; }
+  .v-a .receipt-block { gap: 12px; }
+  .v-a .receipt-block-title { font-size: 17px; color: var(--ink); }
+  .v-a .receipt-block-icon { width: 26px; height: 26px; border-radius: 9px; }
+  .v-a .receipt-block-icon.gain { background: var(--secondary-soft); color: var(--green-ink); }
+  .v-a .receipt-block-icon.speak { background: var(--blue-soft); color: var(--blue-ink); }
+  .v-a .receipt-block-icon.gap { background: var(--amber-soft); color: var(--amber-ink); }
+  .v-a .receipt-card {
+    display: grid; gap: 16px; padding: 18px 20px;
+    border: 1px solid var(--line); border-radius: var(--radius-md);
+    background: var(--surface); box-shadow: 0 2px 10px rgba(31, 43, 58, 0.05);
+  }
+  .v-a .receipt-card.gain { border-top: 3px solid var(--secondary); }
+  .v-a .receipt-card.speak { border-top: 3px solid var(--blue); }
+  .v-a .receipt-card.gap { border-top: 3px solid var(--amber); }
+  .v-a .receipt-chip { font-size: 12.5px; padding: 4px 12px; }
+  .v-a .receipt-rule { font-size: 15px; line-height: 1.75; color: var(--ink); }
+  .v-a .receipt-rule .lesson-rule-label { flex-shrink: 0; padding: 1px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent-ink); font-size: 11.5px; font-weight: 700; }
+  .v-a .receipt-points { display: grid; gap: 10px; }
+  .v-a .receipt-points li { padding-left: 18px; font-size: 14.5px; line-height: 1.65; }
+  .v-a .receipt-points li::before { content: ""; position: absolute; left: 3px; top: .6em; width: 6px; height: 6px; border-radius: 50%; background: var(--secondary); }
+  .v-a .receipt-sentences li { padding: 13px 0; }
+  .v-a .receipt-sentences li + li { border-top: 1px dashed var(--line); }
+  .v-a .receipt-sentence-text { font-size: 15.5px; line-height: 1.6; }
+  .v-a .receipt-sentence-label { margin-right: 8px; padding: 2px 8px; border-radius: 6px; background: var(--surface-muted); color: var(--muted); font-size: 11.5px; }
+  .v-a .receipt-sentences .icon-button { width: 34px; height: 34px; border-radius: 10px; color: var(--blue); background: var(--blue-soft); }
+  .v-a .receipt-queue-note { gap: 4px 10px; margin: 4px 0 0; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 13.5px; line-height: 1.6; }
+  .v-a .receipt-queue-link { padding: 4px 14px; border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--accent-ink); font-size: 12.5px; margin-left: 2px; }
+  .v-a .receipt-ai-summary { font-size: 13.5px; line-height: 1.7; }
+  .v-a .practice-block { margin-top: 34px; }
+  .v-a .practice-block .practice-title { font-size: 14px; color: var(--ink-soft); }
+  .v-a .lesson-actions { margin-top: 30px; }
+
+  /* ══════════════════════════════════════════════════════════
+     方案 B · 里程碑时刻
+     顶部数字成绩单 · 三段收据折叠
+     ══════════════════════════════════════════════════════════ */
+  .v-b .complete-hero { gap: 14px; padding: 4px 0 0; }
+  .v-b .hero-mark {
+    display: grid; justify-items: center; gap: 6px;
+    width: 108px; height: 108px; place-content: center;
+    border-radius: 32px;
+    background: radial-gradient(circle at 50% 30%, #f2fcf6 0%, var(--secondary-soft) 72%);
+    box-shadow: inset 0 0 0 2px rgba(72,184,120,.28), 0 12px 28px rgba(72,184,120,.18);
+  }
+  .v-b .hero-mark .num { color: var(--green-ink); font-size: 40px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; }
+  .v-b .hero-mark .cap { color: var(--green-ink); font-size: 11.5px; font-weight: 700; letter-spacing: .08em; }
+  .v-b .complete-hero h2 { font-size: 28px; }
+  .v-b .complete-hero-sub { font-size: 13.5px; }
+  .v-b .stat-row {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    width: 100%; max-width: 560px; margin: 28px auto 0;
+    border-radius: var(--radius-md); border: 1px solid var(--line);
+    background: var(--surface); box-shadow: 0 2px 10px rgba(31,43,58,.05);
+    overflow: hidden;
+  }
+  .v-b .stat { display: grid; gap: 3px; justify-items: center; padding: 18px 10px; }
+  .v-b .stat + .stat { border-left: 1px solid var(--line); }
+  .v-b .stat b { font-size: 30px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; }
+  .v-b .stat.gain b { color: var(--green-ink); }
+  .v-b .stat.speak b { color: var(--blue-ink); }
+  .v-b .stat.gap b { color: var(--amber-ink); }
+  .v-b .stat span { font-size: 12.5px; font-weight: 600; color: var(--muted); }
+  .v-b .complete-receipt { gap: 12px; margin-top: 26px; }
+  .v-b .fold {
+    border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface);
+    box-shadow: 0 2px 10px rgba(31,43,58,.05); overflow: hidden;
+  }
+  .v-b .fold > summary {
+    display: flex; align-items: center; gap: 10px;
+    padding: 16px 20px; cursor: pointer; list-style: none;
+    font-size: 16px; font-weight: 700; color: var(--ink);
+  }
+  .v-b .fold > summary::-webkit-details-marker { display: none; }
+  .v-b .fold > summary .chev { margin-left: auto; color: var(--muted); transition: var(--ease-ui); }
+  .v-b .fold[open] > summary .chev { transform: rotate(90deg); }
+  .v-b .fold > summary .count { padding: 2px 9px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 700; }
+  .v-b .fold.gain > summary .count { background: var(--secondary-soft); color: var(--green-ink); }
+  .v-b .fold.speak > summary .count { background: var(--blue-soft); color: var(--blue-ink); }
+  .v-b .fold.gap > summary .count { background: var(--amber-soft); color: var(--amber-ink); }
+  .v-b .fold .fold-body { display: grid; gap: 14px; padding: 2px 20px 20px; }
+  .v-b .receipt-block-icon { width: 26px; height: 26px; border-radius: 9px; }
+  .v-b .receipt-block-icon.gain { background: var(--secondary-soft); color: var(--green-ink); }
+  .v-b .receipt-block-icon.speak { background: var(--blue-soft); color: var(--blue-ink); }
+  .v-b .receipt-block-icon.gap { background: var(--amber-soft); color: var(--amber-ink); }
+  .v-b .receipt-chip { font-size: 12.5px; padding: 4px 12px; }
+  .v-b .receipt-rule { font-size: 14.5px; line-height: 1.75; color: var(--ink); }
+  .v-b .receipt-rule .lesson-rule-label { flex-shrink: 0; padding: 1px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent-ink); font-size: 11.5px; font-weight: 700; }
+  .v-b .receipt-points { display: grid; gap: 9px; }
+  .v-b .receipt-points li { padding-left: 18px; font-size: 14px; line-height: 1.65; }
+  .v-b .receipt-points li::before { content: ""; position: absolute; left: 3px; top: .6em; width: 6px; height: 6px; border-radius: 50%; background: var(--secondary); }
+  .v-b .receipt-sentences li { padding: 12px 0; }
+  .v-b .receipt-sentences li + li { border-top: 1px dashed var(--line); }
+  .v-b .receipt-sentence-text { font-size: 15px; }
+  .v-b .receipt-sentence-label { margin-right: 8px; padding: 2px 8px; border-radius: 6px; background: var(--surface-muted); color: var(--muted); font-size: 11.5px; }
+  .v-b .receipt-sentences .icon-button { width: 32px; height: 32px; border-radius: 10px; color: var(--blue); background: var(--blue-soft); }
+  .v-b .receipt-queue-note { gap: 4px 10px; padding-top: 12px; border-top: 1px dashed var(--line); font-size: 13px; }
+  .v-b .receipt-queue-link { padding: 3px 13px; border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--accent-ink); font-size: 12.5px; }
+  .v-b .receipt-ai-summary { font-size: 13px; line-height: 1.7; }
+  .v-b .practice-block { margin-top: 24px; }
+  .v-b .lesson-actions { margin-top: 26px; }
+
+  /* ══════════════════════════════════════════════════════════
+     方案 C · 分段卡片
+     每段独立大卡 · 标题 20px + 序号 + 计数
+     ══════════════════════════════════════════════════════════ */
+  .v-c .complete-hero { gap: 10px; }
+  .v-c .complete-hero-badge { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--secondary-soft); color: var(--secondary); box-shadow: inset 0 0 0 2px rgba(72,184,120,.3); }
+  .v-c .complete-hero h2 { font-size: 30px; letter-spacing: -0.01em; }
+  .v-c .complete-hero-sub { font-size: 14px; }
+  .v-c .complete-receipt { gap: 24px; margin-top: 30px; }
+  .v-c .section-card {
+    border-radius: 20px; border: 1px solid var(--line); background: var(--surface);
+    box-shadow: 0 4px 16px rgba(31,43,58,.06); overflow: hidden;
+  }
+  .v-c .section-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 20px 24px 16px; border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, var(--surface-muted) 0%, #fff 100%);
+  }
+  .v-c .section-no {
+    display: grid; place-items: center; width: 32px; height: 32px; border-radius: 11px;
+    font-size: 15px; font-weight: 800; flex-shrink: 0;
+  }
+  .v-c .section-card.gain .section-no { background: var(--secondary-soft); color: var(--green-ink); }
+  .v-c .section-card.speak .section-no { background: var(--blue-soft); color: var(--blue-ink); }
+  .v-c .section-card.gap .section-no { background: var(--amber-soft); color: var(--amber-ink); }
+  .v-c .section-head h3 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.01em; color: var(--ink); }
+  .v-c .section-count { margin-left: auto; padding: 3px 11px; border-radius: var(--radius-pill); font-size: 12.5px; font-weight: 700; }
+  .v-c .section-card.gain .section-count { background: var(--secondary-soft); color: var(--green-ink); }
+  .v-c .section-card.speak .section-count { background: var(--blue-soft); color: var(--blue-ink); }
+  .v-c .section-card.gap .section-count { background: var(--amber-soft); color: var(--amber-ink); }
+  .v-c .section-body { display: grid; gap: 16px; padding: 22px 24px 24px; }
+  .v-c .receipt-chip { font-size: 12.5px; padding: 4px 12px; }
+  .v-c .receipt-rule { font-size: 15px; line-height: 1.8; color: var(--ink); }
+  .v-c .receipt-rule .lesson-rule-label { flex-shrink: 0; padding: 1px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent-ink); font-size: 11.5px; font-weight: 700; }
+  .v-c .receipt-points { display: grid; gap: 11px; }
+  .v-c .receipt-points li { padding-left: 20px; font-size: 15px; line-height: 1.7; }
+  .v-c .receipt-points li::before { content: ""; position: absolute; left: 3px; top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--secondary); }
+  .v-c .receipt-sentences li { padding: 14px 0; }
+  .v-c .receipt-sentences li + li { border-top: 1px dashed var(--line); }
+  .v-c .receipt-sentence-text { font-size: 16px; }
+  .v-c .receipt-sentence-label { margin-right: 9px; padding: 2px 9px; border-radius: 7px; background: var(--surface-muted); color: var(--muted); font-size: 12px; }
+  .v-c .receipt-sentences .icon-button { width: 36px; height: 36px; border-radius: 11px; color: var(--blue); background: var(--blue-soft); }
+  .v-c .receipt-queue-note { gap: 4px 10px; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 13.5px; }
+  .v-c .receipt-queue-link { padding: 4px 14px; border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--accent-ink); font-size: 13px; }
+  .v-c .receipt-ai-summary { font-size: 14px; line-height: 1.7; }
+  .v-c .practice-block { margin-top: 26px; }
+  .v-c .lesson-actions { margin-top: 32px; }
+  .v-c .lesson-actions .primary-button { padding: 13px 26px; font-size: 15px; }
+</style>
+</head>
+<body>
+  <header class="harness-bar">
+    <div>
+      <h1>语法完课结果页 · 方案预览</h1>
+      <p>数据取自真实的「第 5 课 · 我喜欢音乐」（含真实语法点、句子、对错题）——点标签切换方案对比。</p>
+    </div>
+    <div class="tabs" id="tabs">
+      <button data-tab="current" class="active">现状（线上）</button>
+      <button data-tab="a">方案 A · 精修收据</button>
+      <button data-tab="b">方案 B · 里程碑时刻</button>
+      <button data-tab="c">方案 C · 分段卡片</button>
+    </div>
+  </header>
+
+  <div class="panels">
+    <!-- ══════════ 现状 ══════════ -->
+    <section class="panel active" id="panel-current">
+      <div class="note">
+        <h3>现状 · 线上正在用的问题</h3>
+        <ul>
+          <li>区块标题 13px <strong>小于</strong>正文 14px——标题和内容分不出来（层级倒挂）</li>
+          <li>三张卡边框、圆角、内边距完全一样，没有任何语义区分</li>
+          <li>块间距恒为 20px、卡内 10px，节奏平铺没有大小对比</li>
+        </ul>
+      </div>
+      <div class="frame v-current">
+        <div class="complete-hero">
+          <span class="complete-hero-badge">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </span>
+          <h2>第 5 课完成</h2>
+          <p class="complete-hero-sub">一课一课积累，你已经能用英语介绍自己、讲正在做的事、说明天的计划。</p>
+        </div>
+        <div class="complete-receipt">
+          <section class="receipt-block">
+            <h3 class="receipt-block-title">
+              <span class="receipt-block-icon gain"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+              这一课掌握了什么
+            </h3>
+            <div class="receipt-card">
+              <span class="receipt-chip">like + 名词</span>
+              <p class="receipt-rule"><span style="flex-shrink:0;padding:1px 8px;border-radius:6px;background:var(--accent-soft);color:var(--accent-ink);font-size:11.5px;font-weight:700">一句话</span>喜欢一整类东西：能数的一个变好几个（dogs），数不清的原样（music）。</p>
+              <ul class="receipt-points">
+                <li>I like music. —— 数不清的词原样</li>
+                <li>I like dogs. —— 一整类可数加 s</li>
+                <li>Do you like tea? —— 问对方：Do 搬到句首</li>
+              </ul>
+            </div>
+          </section>
+          <section class="receipt-block">
+            <h3 class="receipt-block-title">
+              <span class="receipt-block-icon speak"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
+              你现在能说出这些新句子
+            </h3>
+            <div class="receipt-card">
+              <ul class="receipt-sentences">
+                <li><span class="receipt-sentence-text">I like music.</span><button class="icon-button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+                <li><span class="receipt-sentence-text"><em class="receipt-sentence-label">肯定</em>I like music.</span><button class="icon-button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+                <li><span class="receipt-sentence-text"><em class="receipt-sentence-label">否定</em>I don't like coffee.</span><button class="icon-button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+                <li><span class="receipt-sentence-text"><em class="receipt-sentence-label">疑问</em>Do you like music?</span><button class="icon-button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+              </ul>
+            </div>
+          </section>
+          <section class="receipt-block">
+            <h3 class="receipt-block-title">
+              <span class="receipt-block-icon gap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span>
+              还差什么
+            </h3>
+            <div class="receipt-card">
+              <ul class="receipt-points">
+                <li>练「I like music.」这句时多试了几次，明天会再帮你过一遍。</li>
+                <li>「Do you like music?」的疑问说法还没一次说顺。</li>
+              </ul>
+              <p class="receipt-rule">前测里拿不准的 1 处，这一课已经讲过、也练过了。</p>
+              <p class="receipt-ai-summary"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg>今天是「喜欢」的用法：能数的加 s，数不清的原样——你已经能自己说出三句了。</p>
+              <p class="receipt-queue-note">上面这些句子已排进复习队列，明天会自动来见你<a class="receipt-queue-link" href="#">去复习</a></p>
+            </div>
+          </section>
+        </div>
+        <div class="practice-block">
+          <p class="practice-title">去破案之前，最后再帮他看两句</p>
+          <div class="contrast-card">
+            <p class="contrast-prompt">两句话只有一句是对的——点出你认为对的那句：</p>
+            <div class="option-row">
+              <div class="option"><b>A</b>I don't like coffee.</div>
+              <div class="option"><b>B</b>I not like coffee.</div>
+            </div>
+          </div>
+          <div class="contrast-card">
+            <p class="contrast-prompt">两句话只有一句是对的——点出你认为对的那句：</p>
+            <div class="option-row">
+              <div class="option"><b>A</b>Do you like coffee?</div>
+              <div class="option"><b>B</b>Does you like coffee?</div>
+            </div>
+          </div>
+        </div>
+        <div class="lesson-actions">
+          <a class="primary-button" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>趁热再练 2 分钟</a>
+          <a class="secondary-button" href="#">下一课：第 6 课 · 现在几点了</a>
+          <a class="ghost-link" href="#">返回课程地图</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 方案 A ══════════ -->
+    <section class="panel" id="panel-a">
+      <div class="note">
+        <h3>方案 A · 精修收据 —— 保持结构，重建层级</h3>
+        <ul>
+          <li>字号阶梯重建：区块标题 <strong>13 → 17px</strong>（不再小于正文），hero <strong>24 → 30px</strong>，正文 13.5 → 15px</li>
+          <li>间距节奏：块间 <strong>20 → 32px</strong>、卡内 <strong>10 → 16px</strong>、内边距 14 → 18px——大间距分块、小间距分组</li>
+          <li>三张卡语义着色：<strong>绿=已掌握 · 蓝=能说出 · 琥珀=待巩固</strong>（顶部 3px 色条 + 同色图标）</li>
+          <li>底部合并为一排（趁热练为主、下一课为次、返回为文字链），加练区独立成块不再夹在中间</li>
+        </ul>
+      </div>
+      <div class="frame v-a">
+        <div class="complete-hero">
+          <span class="complete-hero-badge">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </span>
+          <h2>第 5 课完成</h2>
+          <p class="complete-hero-sub">一课一课积累，你已经能用英语介绍自己、讲正在做的事、说明天的计划。</p>
+        </div>
+        <div class="complete-receipt">
+          <section class="receipt-block">
+            <h3 class="receipt-block-title">
+              <span class="receipt-block-icon gain"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+              这一课掌握了什么
+            </h3>
+            <div class="receipt-card gain">
+              <span class="receipt-chip">like + 名词</span>
+              <p class="receipt-rule"><span class="lesson-rule-label">一句话</span>喜欢一整类东西：能数的一个变好几个（dogs），数不清的原样（music）。</p>
+              <ul class="receipt-points">
+                <li>I like music. —— 数不清的词原样</li>
+                <li>I like dogs. —— 一整类可数加 s</li>
+                <li>Do you like tea? —— 问对方：Do 搬到句首</li>
+              </ul>
+            </div>
+          </section>
+          <section class="receipt-block">
+            <h3 class="receipt-block-title">
+              <span class="receipt-block-icon speak"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
+              你现在能说出这些新句子
+            </h3>
+            <div class="receipt-card speak">
+              <ul class="receipt-sentences">
+                <li><span class="receipt-sentence-text">I like music.</span><button class="icon-button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+                <li><span class="receipt-sentence-text"><em class="receipt-sentence-label">肯定</em>I like music.</span><button class="icon-button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+                <li><span class="receipt-sentence-text"><em class="receipt-sentence-label">否定</em>I don't like coffee.</span><button class="icon-button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+                <li><span class="receipt-sentence-text"><em class="receipt-sentence-label">疑问</em>Do you like music?</span><button class="icon-button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+              </ul>
+            </div>
+          </section>
+          <section class="receipt-block">
+            <h3 class="receipt-block-title">
+              <span class="receipt-block-icon gap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span>
+              还差什么
+            </h3>
+            <div class="receipt-card gap">
+              <ul class="receipt-points">
+                <li>练「I like music.」这句时多试了几次，明天会再帮你过一遍。</li>
+                <li>「Do you like music?」的疑问说法还没一次说顺。</li>
+              </ul>
+              <p class="receipt-rule">前测里拿不准的 1 处，这一课已经讲过、也练过了。</p>
+              <p class="receipt-ai-summary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg>今天是「喜欢」的用法：能数的加 s，数不清的原样——你已经能自己说出三句了。</p>
+              <p class="receipt-queue-note">上面这些句子已排进复习队列，明天会自动来见你<a class="receipt-queue-link" href="#">去复习</a></p>
+            </div>
+          </section>
+        </div>
+        <div class="practice-block">
+          <p class="practice-title">出发前，最后再帮他看两句</p>
+          <div class="contrast-card">
+            <p class="contrast-prompt">两句话只有一句是对的——点出你认为对的那句：</p>
+            <div class="option-row">
+              <div class="option"><b>A</b>I don't like coffee.</div>
+              <div class="option"><b>B</b>I not like coffee.</div>
+            </div>
+          </div>
+          <div class="contrast-card">
+            <p class="contrast-prompt">两句话只有一句是对的——点出你认为对的那句：</p>
+            <div class="option-row">
+              <div class="option"><b>A</b>Do you like coffee?</div>
+              <div class="option"><b>B</b>Does you like coffee?</div>
+            </div>
+          </div>
+        </div>
+        <div class="lesson-actions">
+          <a class="primary-button" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>趁热再练 2 分钟</a>
+          <a class="secondary-button" href="#">下一课：第 6 课 · 现在几点了</a>
+          <a class="ghost-link" href="#">返回课程地图</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 方案 B ══════════ -->
+    <section class="panel" id="panel-b">
+      <div class="note">
+        <h3>方案 B · 里程碑时刻 —— 顶部数字成绩单，细节折叠</h3>
+        <ul>
+          <li>顶部换成「课号 + 三个数字」成绩单：<strong>知识点 1 / 新句子 4 / 待巩固 2</strong>，情绪峰值最强</li>
+          <li>三段收据改为<strong>可折叠</strong>：默认只展开第一段，页面从 3 屏压到约 1 屏</li>
+          <li>代价：新句子列表默认藏在折叠里，少了一次「看见自己会说 4 句」的即时满足</li>
+          <li>底部同样合并为一排</li>
+        </ul>
+      </div>
+      <div class="frame v-b">
+        <div class="complete-hero">
+          <span class="hero-mark"><span class="num">5</span><span class="cap">第 5 课</span></span>
+          <h2>这一课完成</h2>
+          <p class="complete-hero-sub">一课一课积累，你已经能用英语介绍自己、讲正在做的事、说明天的计划。</p>
+        </div>
+        <div class="stat-row">
+          <div class="stat gain"><b>1</b><span>知识点</span></div>
+          <div class="stat speak"><b>4</b><span>新句子</span></div>
+          <div class="stat gap"><b>2</b><span>待巩固</span></div>
+        </div>
+        <div class="complete-receipt">
+          <details class="fold gain" open>
+            <summary>
+              <span class="receipt-block-icon gain"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+              这一课掌握了什么
+              <span class="count">1</span>
+              <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </summary>
+            <div class="fold-body">
+              <span class="receipt-chip">like + 名词</span>
+              <p class="receipt-rule"><span class="lesson-rule-label">一句话</span>喜欢一整类东西：能数的一个变好几个（dogs），数不清的原样（music）。</p>
+              <ul class="receipt-points">
+                <li>I like music. —— 数不清的词原样</li>
+                <li>I like dogs. —— 一整类可数加 s</li>
+                <li>Do you like tea? —— 问对方：Do 搬到句首</li>
+              </ul>
+            </div>
+          </details>
+          <details class="fold speak">
+            <summary>
+              <span class="receipt-block-icon speak"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
+              你现在能说出这些新句子
+              <span class="count">4</span>
+              <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </summary>
+            <div class="fold-body">
+              <ul class="receipt-sentences">
+                <li><span class="receipt-sentence-text">I like music.</span><button class="icon-button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+                <li><span class="receipt-sentence-text"><em class="receipt-sentence-label">肯定</em>I like music.</span><button class="icon-button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+                <li><span class="receipt-sentence-text"><em class="receipt-sentence-label">否定</em>I don't like coffee.</span><button class="icon-button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+                <li><span class="receipt-sentence-text"><em class="receipt-sentence-label">疑问</em>Do you like music?</span><button class="icon-button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+              </ul>
+            </div>
+          </details>
+          <details class="fold gap">
+            <summary>
+              <span class="receipt-block-icon gap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span>
+              还差什么
+              <span class="count">2</span>
+              <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </summary>
+            <div class="fold-body">
+              <ul class="receipt-points">
+                <li>练「I like music.」这句时多试了几次，明天会再帮你过一遍。</li>
+                <li>「Do you like music?」的疑问说法还没一次说顺。</li>
+              </ul>
+              <p class="receipt-rule">前测里拿不准的 1 处，这一课已经讲过、也练过了。</p>
+              <p class="receipt-ai-summary"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg>今天是「喜欢」的用法：能数的加 s，数不清的原样——你已经能自己说出三句了。</p>
+              <p class="receipt-queue-note">上面这些句子已排进复习队列，明天会自动来见你<a class="receipt-queue-link" href="#">去复习</a></p>
+            </div>
+          </details>
+        </div>
+        <div class="practice-block">
+          <p class="practice-title">出发前，最后再帮他看两句</p>
+          <div class="contrast-card">
+            <p class="contrast-prompt">两句话只有一句是对的——点出你认为对的那句：</p>
+            <div class="option-row">
+              <div class="option"><b>A</b>I don't like coffee.</div>
+              <div class="option"><b>B</b>I not like coffee.</div>
+            </div>
+          </div>
+          <div class="contrast-card">
+            <p class="contrast-prompt">两句话只有一句是对的——点出你认为对的那句：</p>
+            <div class="option-row">
+              <div class="option"><b>A</b>Do you like coffee?</div>
+              <div class="option"><b>B</b>Does you like coffee?</div>
+            </div>
+          </div>
+        </div>
+        <div class="lesson-actions">
+          <a class="primary-button" href="#"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>趁热再练 2 分钟</a>
+          <a class="secondary-button" href="#">下一课：第 6 课 · 现在几点了</a>
+          <a class="ghost-link" href="#">返回课程地图</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 方案 C ══════════ -->
+    <section class="panel" id="panel-c">
+      <div class="note">
+        <h3>方案 C · 分段卡片 —— 每段独立大卡，分区最强</h3>
+        <ul>
+          <li>每段升级为独立大卡：标题 <strong>20px + 序号 + 右侧计数徽标</strong>，卡内分隔线清晰</li>
+          <li>卡内 padding <strong>24px</strong>、卡间 24px、阴影更深——分区感与「厚实感」最强</li>
+          <li>正文进一步放大（句子 16px），扫读最快，最接近成熟商业 App</li>
+          <li>代价：垂直占用最多，页面最长</li>
+        </ul>
+      </div>
+      <div class="frame v-c">
+        <div class="complete-hero">
+          <span class="complete-hero-badge">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </span>
+          <h2>第 5 课完成</h2>
+          <p class="complete-hero-sub">一课一课积累，你已经能用英语介绍自己、讲正在做的事、说明天的计划。</p>
+        </div>
+        <div class="complete-receipt">
+          <section class="section-card gain">
+            <header class="section-head">
+              <span class="section-no">1</span>
+              <h3>这一课掌握了什么</h3>
+              <span class="section-count">1 个知识点</span>
+            </header>
+            <div class="section-body">
+              <span class="receipt-chip">like + 名词</span>
+              <p class="receipt-rule"><span class="lesson-rule-label">一句话</span>喜欢一整类东西：能数的一个变好几个（dogs），数不清的原样（music）。</p>
+              <ul class="receipt-points">
+                <li>I like music. —— 数不清的词原样</li>
+                <li>I like dogs. —— 一整类可数加 s</li>
+                <li>Do you like tea? —— 问对方：Do 搬到句首</li>
+              </ul>
+            </div>
+          </section>
+          <section class="section-card speak">
+            <header class="section-head">
+              <span class="section-no">2</span>
+              <h3>你现在能说出这些新句子</h3>
+              <span class="section-count">4 句</span>
+            </header>
+            <div class="section-body">
+              <ul class="receipt-sentences">
+                <li><span class="receipt-sentence-text">I like music.</span><button class="icon-button"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+                <li><span class="receipt-sentence-text"><em class="receipt-sentence-label">肯定</em>I like music.</span><button class="icon-button"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+                <li><span class="receipt-sentence-text"><em class="receipt-sentence-label">否定</em>I don't like coffee.</span><button class="icon-button"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+                <li><span class="receipt-sentence-text"><em class="receipt-sentence-label">疑问</em>Do you like music?</span><button class="icon-button"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></li>
+              </ul>
+            </div>
+          </section>
+          <section class="section-card gap">
+            <header class="section-head">
+              <span class="section-no">3</span>
+              <h3>还差什么</h3>
+              <span class="section-count">2 处待巩固</span>
+            </header>
+            <div class="section-body">
+              <ul class="receipt-points">
+                <li>练「I like music.」这句时多试了几次，明天会再帮你过一遍。</li>
+                <li>「Do you like music?」的疑问说法还没一次说顺。</li>
+              </ul>
+              <p class="receipt-rule">前测里拿不准的 1 处，这一课已经讲过、也练过了。</p>
+              <p class="receipt-ai-summary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg>今天是「喜欢」的用法：能数的加 s，数不清的原样——你已经能自己说出三句了。</p>
+              <p class="receipt-queue-note">上面这些句子已排进复习队列，明天会自动来见你<a class="receipt-queue-link" href="#">去复习</a></p>
+            </div>
+          </section>
+        </div>
+        <div class="practice-block">
+          <p class="practice-title">出发前，最后再帮他看两句</p>
+          <div class="contrast-card">
+            <p class="contrast-prompt">两句话只有一句是对的——点出你认为对的那句：</p>
+            <div class="option-row">
+              <div class="option"><b>A</b>I don't like coffee.</div>
+              <div class="option"><b>B</b>I not like coffee.</div>
+            </div>
+          </div>
+          <div class="contrast-card">
+            <p class="contrast-prompt">两句话只有一句是对的——点出你认为对的那句：</p>
+            <div class="option-row">
+              <div class="option"><b>A</b>Do you like coffee?</div>
+              <div class="option"><b>B</b>Does you like coffee?</div>
+            </div>
+          </div>
+        </div>
+        <div class="lesson-actions">
+          <a class="primary-button" href="#"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>趁热再练 2 分钟</a>
+          <a class="secondary-button" href="#">下一课：第 6 课 · 现在几点了</a>
+          <a class="ghost-link" href="#">返回课程地图</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+<script>
+  const tabs = document.getElementById("tabs");
+  tabs.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-tab]");
+    if (!button) return;
+    const target = button.dataset.tab;
+    for (const item of tabs.querySelectorAll("button")) item.classList.toggle("active", item === button);
+    for (const panel of document.querySelectorAll(".panel")) {
+      panel.classList.toggle("active", panel.id === `panel-${target}`);
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+</script>
+
+<style>
+/* ══ C 系四方案共享基础（= 方案 C 的观感）══ */
+.cbase .complete-hero { display: grid; justify-items: center; gap: 10px; }
+.cbase .complete-hero-badge { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--secondary-soft); color: var(--secondary); box-shadow: inset 0 0 0 2px rgba(72,184,120,.3); }
+.cbase .complete-hero h2 { font-size: 30px; font-weight: 800; letter-spacing: -.01em; margin: 2px 0 0; color: var(--ink); }
+.cbase .complete-hero-sub { font-size: 14px; color: var(--muted); max-width: 460px; margin: 0; text-align: center; line-height: 1.7; }
+.cbase .complete-receipt { display: grid; gap: 24px; width: 100%; max-width: 580px; margin: 30px auto 0; text-align: left; }
+.cbase .section-card { border-radius: 20px; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 4px 16px rgba(31,43,58,.06); overflow: hidden; }
+.cbase .section-head { display: flex; align-items: center; gap: 12px; padding: 20px 24px 16px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, var(--surface-muted) 0%, #fff 100%); }
+.cbase .section-no { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 11px; font-size: 15px; font-weight: 800; flex-shrink: 0; }
+.cbase .section-card.gain .section-no { background: var(--secondary-soft); color: var(--green-ink); }
+.cbase .section-card.speak .section-no { background: var(--blue-soft); color: var(--blue-ink); }
+.cbase .section-card.gap .section-no { background: var(--amber-soft); color: var(--amber-ink); }
+.cbase .section-head h3 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -.01em; color: var(--ink); }
+.cbase .section-count { margin-left: auto; padding: 3px 11px; border-radius: 999px; font-size: 12.5px; font-weight: 700; }
+.cbase .section-card.gain .section-count { background: var(--secondary-soft); color: var(--green-ink); }
+.cbase .section-card.speak .section-count { background: var(--blue-soft); color: var(--blue-ink); }
+.cbase .section-card.gap .section-count { background: var(--amber-soft); color: var(--amber-ink); }
+.cbase .section-body { display: grid; gap: 16px; padding: 22px 24px 24px; }
+.cbase .receipt-chip { display: inline-flex; justify-self: start; padding: 4px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); font-size: 12.5px; font-weight: 700; }
+.cbase .lesson-rule-label { flex-shrink: 0; padding: 1px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent-ink); font-size: 11.5px; font-weight: 700; }
+.cbase .receipt-rule { display: flex; align-items: flex-start; gap: 10px; margin: 0; font-size: 15px; line-height: 1.8; color: var(--ink); }
+.cbase .receipt-points { display: grid; gap: 11px; margin: 0; padding: 0; list-style: none; }
+.cbase .receipt-points li { position: relative; padding-left: 20px; font-size: 15px; line-height: 1.7; color: var(--ink-soft); }
+.cbase .receipt-points li::before { content: ""; position: absolute; left: 3px; top: .62em; width: 7px; height: 7px; border-radius: 50%; background: var(--secondary); }
+.cbase .receipt-sentences { margin: 0; padding: 0; list-style: none; }
+.cbase .receipt-sentences li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 0; }
+.cbase .receipt-sentences li + li { border-top: 1px dashed var(--line); }
+.cbase .receipt-sentence-text { min-width: 0; font-size: 16px; color: var(--ink); }
+.cbase .receipt-sentence-label { display: inline-block; margin-right: 9px; padding: 2px 9px; border-radius: 7px; background: var(--surface-muted); color: var(--muted); font-size: 12px; font-style: normal; font-weight: 600; }
+.cbase .receipt-sentences .icon-button { width: 36px; height: 36px; border-radius: 11px; color: var(--blue); background: var(--blue-soft); flex-shrink: 0; }
+.cbase .receipt-queue-note { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 10px; margin: 0; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 13.5px; color: var(--muted); }
+.cbase .receipt-queue-link { padding: 4px 14px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); font-size: 13px; font-weight: 600; text-decoration: none; }
+.cbase .receipt-ai-summary { display: flex; align-items: flex-start; gap: 7px; margin: 0; font-size: 14px; line-height: 1.7; color: var(--blue-ink); }
+.cbase .practice-block { display: grid; gap: 12px; width: 100%; max-width: 580px; margin: 26px auto 0; }
+.cbase .practice-title { margin: 0; font-size: 14px; font-weight: 700; color: var(--ink-soft); text-align: center; }
+.cbase .lesson-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 32px; }
+.cbase .lesson-actions .primary-button { padding: 13px 26px; font-size: 15px; }
+
+/* ── C1 · 收敛配色：彩色数字取代彩色胶囊 · 去渐变 · 轻阴影 ── */
+.v-c1 .complete-receipt { gap: 22px; }
+.v-c1 .section-card { border-radius: 18px; box-shadow: 0 1px 3px rgba(31,43,58,.05); }
+.v-c1 .section-head { align-items: baseline; padding: 22px 26px 0; border-bottom: none; background: none; }
+.v-c1 .section-no { display: inline; width: auto; height: auto; border-radius: 0; font-size: 21px; letter-spacing: -.02em; background: none !important; }
+.v-c1 .section-card.gain .section-no { color: var(--secondary); }
+.v-c1 .section-card.speak .section-no { color: var(--blue); }
+.v-c1 .section-card.gap .section-no { color: var(--amber); }
+.v-c1 .section-head h3 { font-size: 18px; }
+.v-c1 .section-count { background: none !important; color: var(--muted); font-weight: 600; padding: 0; }
+.v-c1 .section-body { padding: 14px 26px 24px; gap: 15px; }
+.v-c1 .receipt-points li::before { background: var(--line-strong); }
+.v-c1 .receipt-sentences li + li { border-top: 1px solid var(--line); }
+.v-c1 .receipt-queue-note { border-top: 1px solid var(--line); }
+
+/* ── C2 · 旅程进度：hero 下加课程地图进度卡 ── */
+.v-c2 .complete-receipt { margin-top: 22px; }
+.journey-card { display: grid; gap: 10px; width: 100%; max-width: 580px; margin: 22px auto 0; padding: 18px 22px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: 0 4px 16px rgba(31,43,58,.06); text-align: left; }
+.journey-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.journey-label { font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+.journey-count { font-size: 13px; color: var(--muted); }
+.journey-count strong { font-size: 20px; font-weight: 800; color: var(--accent-ink); letter-spacing: -.01em; }
+.journey-bar { position: relative; height: 8px; border-radius: 999px; background: #eef1f4; overflow: hidden; }
+.journey-bar span { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: linear-gradient(90deg, var(--accent) 0%, #f79256 100%); }
+.journey-foot { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); }
+.journey-foot b { color: var(--green-ink); font-weight: 700; }
+
+/* ── C3 · 内容重构：规则变引用块 · 要点对齐行 · 句子各自成卡 ── */
+.v-c3 .rule-block { display: grid; gap: 7px; padding: 13px 16px; border-left: 3px solid var(--accent); border-radius: 0 14px 14px 0; background: #fffaf6; }
+.v-c3 .rule-block .lesson-rule-label { justify-self: start; }
+.v-c3 .rule-text { margin: 0; font-size: 15px; line-height: 1.8; color: var(--ink); }
+.v-c3 .point-rows { display: grid; margin: 0; padding: 0; list-style: none; }
+.v-c3 .point-rows li { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; padding: 11px 0; }
+.v-c3 .point-rows li + li { border-top: 1px solid var(--line); }
+.v-c3 .point-en { font-size: 15px; color: var(--ink); font-weight: 600; }
+.v-c3 .point-note { font-size: 13px; color: var(--muted); text-align: right; flex-shrink: 0; }
+.v-c3 .receipt-sentences { display: grid; gap: 8px; }
+.v-c3 .receipt-sentences li { padding: 12px 15px; border-radius: 13px; background: var(--surface-muted); border: none !important; }
+.v-c3 .todo-rows { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.v-c3 .todo-rows li { padding: 11px 14px; border-left: 3px solid var(--amber); border-radius: 0 12px 12px 0; background: #fffdf7; font-size: 14.5px; line-height: 1.7; color: var(--ink-soft); }
+.v-c3 .receipt-queue-note { border-top: none; padding-top: 4px; }
+
+/* ── C4 · 排印主导：去容器 · 大数字幽灵序号 · 细分隔线 ── */
+.v-c4 .complete-hero-badge { width: 52px; height: 52px; background: none; box-shadow: inset 0 0 0 1.5px rgba(72,184,120,.5); }
+.v-c4 .complete-receipt { gap: 40px; max-width: 600px; margin-top: 38px; }
+.v-c4 .section-card { background: none; border: none; border-radius: 0; box-shadow: none; overflow: visible; }
+.v-c4 .section-head { display: flex; align-items: baseline; gap: 16px; padding: 0 0 14px; border-bottom: 1px solid var(--line-strong); background: none; }
+.v-c4 .section-no { display: inline; width: auto; height: auto; border-radius: 0; background: none !important; font-size: 38px; font-weight: 300; line-height: 1; letter-spacing: -.04em; color: var(--line-strong); }
+.v-c4 .section-head h3 { font-size: 18px; letter-spacing: -.01em; }
+.v-c4 .section-count { background: none !important; color: var(--muted); padding: 0; font-weight: 600; }
+.v-c4 .section-body { padding: 22px 0 0; gap: 18px; }
+.v-c4 .section-card.gap .section-body { background: #fffaf1; border-radius: 16px; padding: 20px 22px; }
+.v-c4 .receipt-points li::before { background: var(--line-strong); }
+.v-c4 .receipt-sentences li + li { border-top: 1px solid var(--line); }
+.v-c4 .receipt-queue-note { border-top: 1px solid var(--line); }
+</style>
+
+<script>
+(function () {
+  const L = {
+    number: 5,
+    grammarLabel: "like + 名词",
+    rule: "喜欢一整类东西：能数的一个变好几个（dogs），数不清的原样（music）。",
+    points: [
+      ["I like music.", "数不清的词原样"],
+      ["I like dogs.", "一整类可数加 s"],
+      ["Do you like tea?", "问对方：Do 搬到句首"]
+    ],
+    sentences: [
+      [null, "I like music."],
+      ["肯定", "I like music."],
+      ["否定", "I don't like coffee."],
+      ["疑问", "Do you like music?"]
+    ],
+    gaps: [
+      "练「I like music.」这句时多试了几次，明天会再帮你过一遍。",
+      "「Do you like music?」的疑问说法还没一次说顺。"
+    ],
+    pretest: "前测里拿不准的 1 处，这一课已经讲过、也练过了。",
+    aiSummary: "今天是「喜欢」的用法：能数的加 s，数不清的原样——你已经能自己说出三句了。",
+    contrasts: [
+      ["I don't like coffee.", "I not like coffee."],
+      ["Do you like coffee?", "Does you like coffee?"]
+    ]
+  };
+  const S = (w, body, extra) => '<svg width="' + w + '" height="' + w + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (extra || 2.4) + '" stroke-linecap="round" stroke-linejoin="round">' + body + '</svg>';
+  const I = {
+    check: S(15, '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>', 2.6),
+    checkBig: S(28, '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>', 2.4),
+    volume: S(16, '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>', 2),
+    flag: S(14, '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>', 2.6),
+    spark: S(14, '<path d="M12 3v4M12 17v4M3 12h4M17 12h4"/>', 2),
+    flame: S(16, '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>', 2.2)
+  };
+  const speakBtn = () => '<button class="icon-button" type="button">' + I.volume + '</button>';
+
+  const heroPlain = () =>
+    '<div class="complete-hero">' +
+      '<span class="complete-hero-badge">' + I.checkBig + '</span>' +
+      '<h2>第 ' + L.number + ' 课完成</h2>' +
+      '<p class="complete-hero-sub">一课一课积累，你已经能用英语介绍自己、讲正在做的事、说明天的计划。</p>' +
+    '</div>';
+
+  const journeyCard = () =>
+    '<div class="journey-card">' +
+      '<div class="journey-top"><span class="journey-label">课程地图进度</span>' +
+      '<span class="journey-count"><strong>' + L.number + '</strong> / 127 课</span></div>' +
+      '<div class="journey-bar"><span style="width:4%"></span></div>' +
+      '<div class="journey-foot"><span>今天完成 1 课</span><span>·</span><span>本课已进复习队列</span></div>' +
+    '</div>';
+
+  // 掌握卡主体：C3 用「例句 ↔ 说明」对齐行，其余用圆点列表
+  const gainBody = (v) => {
+    const list = v === "c3"
+      ? '<ul class="point-rows">' + L.points.map(p =>
+          '<li><span class="point-en">' + p[0] + '</span><span class="point-note">' + p[1] + '</span></li>').join("") + '</ul>'
+      : '<ul class="receipt-points">' + L.points.map(p => '<li>' + p[0] + ' —— ' + p[1] + '</li>').join("") + '</ul>';
+    const chip = '<span class="receipt-chip">' + L.grammarLabel + '</span>';
+    const rule = v === "c3"
+      ? '<div class="rule-block"><span class="lesson-rule-label">一句话</span><p class="rule-text">' + L.rule + '</p></div>'
+      : '<p class="receipt-rule"><span class="lesson-rule-label">一句话</span>' + L.rule + '</p>';
+    return chip + rule + list;
+  };
+
+  const sentencesBody = () =>
+    '<ul class="receipt-sentences">' + L.sentences.map(s =>
+      '<li><span class="receipt-sentence-text">' +
+      (s[0] ? '<em class="receipt-sentence-label">' + s[0] + '</em>' : '') + s[1] +
+      '</span>' + speakBtn() + '</li>').join("") + '</ul>';
+
+  const gapBody = (v) => {
+    const items = v === "c3"
+      ? '<ul class="todo-rows">' + L.gaps.map(g => '<li>' + g + '</li>').join("") + '</ul>'
+      : '<ul class="receipt-points">' + L.gaps.map(g => '<li>' + g + '</li>').join("") + '</ul>';
+    return items +
+      '<p class="receipt-rule">' + L.pretest + '</p>' +
+      '<p class="receipt-ai-summary">' + I.spark + L.aiSummary + '</p>' +
+      '<p class="receipt-queue-note">上面这些句子已排进复习队列，明天会自动来见你' +
+      '<a class="receipt-queue-link" href="#">去复习</a></p>';
+  };
+
+  const sectionCard = (cls, no, title, count, bodyHtml) =>
+    '<section class="section-card ' + cls + '">' +
+      '<header class="section-head"><span class="section-no">' + no + '</span>' +
+      '<h3>' + title + '</h3><span class="section-count">' + count + '</span></header>' +
+      '<div class="section-body">' + bodyHtml + '</div>' +
+    '</section>';
+
+  const practice = () =>
+    '<div class="practice-block"><p class="practice-title">出发前，最后再帮他看两句</p>' +
+    L.contrasts.map(c =>
+      '<div class="contrast-card"><p class="contrast-prompt">两句话只有一句是对的——点出你认为对的那句：</p>' +
+      '<div class="option-row"><div class="option"><b>A</b>' + c[0] + '</div><div class="option"><b>B</b>' + c[1] + '</div></div></div>'
+    ).join("") + '</div>';
+
+  const actions = () =>
+    '<div class="lesson-actions">' +
+      '<a class="primary-button" href="#">' + I.flame + '趁热再练 2 分钟</a>' +
+      '<a class="secondary-button" href="#">下一课：第 6 课 · 现在几点了</a>' +
+      '<a class="ghost-link" href="#">返回课程地图</a>' +
+    '</div>';
+
+  const page = (v) =>
+    '<div class="frame cbase v-' + v + '">' +
+      heroPlain() + (v === "c2" ? journeyCard() : "") +
+      '<div class="complete-receipt">' +
+        sectionCard("gain", "1", "这一课掌握了什么", "1 个知识点", gainBody(v)) +
+        sectionCard("speak", "2", "你现在能说出这些新句子", "4 句", sentencesBody()) +
+        sectionCard("gap", "3", "还差什么", "2 处待巩固", gapBody(v)) +
+      '</div>' +
+      practice() + actions() +
+    '</div>';
+
+  const variants = [
+    { key: "c1", label: "C1 · 收敛配色", title: "C1 · 收敛配色 —— 把三色收进「数字」，容器全部中性",
+      notes: ["彩色胶囊序号 → 彩色数字（21px），去掉渐变头与描边徽标", "卡片阴影减到极轻、虚线分隔改实线，容器本身退到背景里", "语义仍靠数字颜色区分（绿/蓝/琥珀），但页面不再「花花绿绿」"] },
+    { key: "c2", label: "C2 · 旅程进度", title: "C2 · 旅程进度 —— 在结果页上补「我在整条路的哪儿」",
+      notes: ["hero 下新增「课程地图进度」卡：5 / 127 课 + 进度条 + 今日完成", "把「一课一课积累」从一句文案变成一个看得见的刻度", "段落卡片与 C 完全一致，只加不改"] },
+    { key: "c3", label: "C3 · 内容重构", title: "C3 · 内容重构 —— 让内容本身被设计过，而不只是装进好看的盒子",
+      notes: ["规则升级为暖色引用块（左侧色条 + 浅底）", "三条要点改成「例句 ↔ 说明」左右对齐行，像一张对照表", "句子各自成浅底小卡；待巩固改成琥珀待办条"] },
+    { key: "c4", label: "C4 · 排印主导", title: "C4 · 排印主导 —— 去掉容器，用字号/留白/分隔线说话",
+      notes: ["卡片的边框、阴影、圆角全部撤掉，靠 40px 大留白和细分隔线分区", "序号变成 38px 浅灰「幽灵数字」，page 更像编辑设计而非 App", "只给「还差什么」保留一块暖色面板——唯一的行动项最醒目"] }
+  ];
+
+  const panels = document.querySelector(".panels");
+  const tabs = document.getElementById("tabs");
+  for (const v of variants) {
+    const section = document.createElement("section");
+    section.className = "panel";
+    section.id = "panel-" + v.key;
+    section.innerHTML = '<div class="note"><h3>' + v.title + '</h3><ul>' +
+      v.notes.map(n => "<li>" + n + "</li>").join("") + "</ul></div>" + page(v.key);
+    panels.appendChild(section);
+    const btn = document.createElement("button");
+    btn.dataset.tab = v.key;
+    btn.textContent = v.label;
+    tabs.appendChild(btn);
+  }
+})();
+</script>
+
+<style>
+/* ═══ D 系：每版一个「视觉主角」，其余按主次降级 ═══ */
+.dbase .complete-hero { display: grid; justify-items: center; gap: 10px; }
+.dbase .complete-hero-badge { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; background: var(--secondary-soft); color: var(--secondary); box-shadow: inset 0 0 0 2px rgba(72,184,120,.3); }
+.dbase .complete-hero h2 { font-size: 28px; font-weight: 800; letter-spacing: -.01em; margin: 2px 0 0; color: var(--ink); }
+.dbase .complete-hero-sub { font-size: 13.5px; color: var(--muted); max-width: 460px; margin: 0; text-align: center; line-height: 1.7; }
+.dbase .icon-button { display: grid; place-items: center; border: none; cursor: pointer; }
+.dbase .practice-block { display: grid; gap: 12px; width: 100%; max-width: 580px; margin: 34px auto 0; }
+.dbase .practice-title { margin: 0; font-size: 14px; font-weight: 700; color: var(--ink-soft); text-align: center; }
+.dbase .lesson-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 32px; }
+.dbase .lesson-actions .primary-button { padding: 13px 26px; font-size: 15px; }
+.dbase .frame { max-width: 880px; margin: 0 auto; padding: 40px 32px 56px; background: var(--bg); border-radius: 20px; border: 1px solid var(--line-strong); }
+.dbase .contrast-card { border-radius: var(--radius-md); border: 1px solid var(--line); background: var(--surface); padding: 16px 18px; display: grid; gap: 12px; }
+.dbase .contrast-prompt { margin: 0; font-size: 14px; color: var(--ink-soft); }
+.dbase .option-row { display: grid; gap: 9px; }
+.dbase .option { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface-muted); font-size: 15px; color: var(--ink); }
+.dbase .option b { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-ink); font-size: 12px; flex-shrink: 0; }
+.dbase .speak-sm { width: 32px; height: 32px; border-radius: 10px; color: var(--blue); background: var(--blue-soft); flex-shrink: 0; }
+
+/* ── D1 · 规则主角：整页最大的一块内容就是「规则」 ── */
+.v-d1 .rule-hero {
+  display: grid; gap: 12px; width: 100%; max-width: 580px; margin: 30px auto 0;
+  padding: 26px 28px; border-radius: 22px;
+  background: linear-gradient(135deg, #fff3e8 0%, #fffdfb 68%);
+  border: 1px solid #ffe0c9; box-shadow: 0 10px 30px rgba(242, 106, 27, .09);
+}
+.v-d1 .rule-hero .cap { font-size: 11.5px; font-weight: 800; letter-spacing: .18em; color: var(--accent-ink); }
+.v-d1 .rule-hero .rl { margin: 0; font-size: 24px; font-weight: 700; line-height: 1.6; letter-spacing: -.015em; color: var(--ink); }
+.v-d1 .rule-hero .tag { justify-self: start; padding: 3px 11px; border-radius: 999px; background: #fff; border: 1px solid #ffd9bd; color: var(--accent-ink); font-size: 12px; font-weight: 700; }
+.v-d1 .support { width: 100%; max-width: 580px; margin: 30px auto 0; }
+.v-d1 .support-head { display: flex; align-items: baseline; gap: 10px; padding-bottom: 10px; }
+.v-d1 .support-head h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--ink-soft); }
+.v-d1 .support-head .n { font-size: 12.5px; color: var(--muted); }
+.v-d1 .support-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 2px; border-top: 1px solid var(--line); }
+.v-d1 .support-row .en { font-size: 15.5px; color: var(--ink); }
+.v-d1 .support-row .lb { display: inline-block; margin-right: 9px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.v-d1 .gap-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; width: 100%; max-width: 580px; margin: 22px auto 0; padding: 14px 18px; border-radius: 14px; background: #fffbef; border: 1px solid #f7e7ba; font-size: 13.5px; line-height: 1.7; color: var(--ink-soft); }
+.v-d1 .gap-strip .qlink { padding: 3px 12px; border-radius: 999px; background: #fff; border: 1px solid #f0dca6; color: var(--amber-ink); font-size: 12.5px; font-weight: 600; text-decoration: none; }
+
+/* ── D2 · 核心句主角：本课那句话是整页最大字号 ── */
+.v-d2 .complete-hero h2 { font-size: 21px; font-weight: 700; color: var(--ink-soft); }
+.v-d2 .sentence-hero {
+  display: grid; justify-items: center; gap: 13px; width: 100%; max-width: 600px;
+  margin: 24px auto 0; padding: 32px 26px 28px; border-radius: 24px;
+  background: var(--surface); border: 1px solid var(--line); box-shadow: 0 12px 34px rgba(31, 43, 58, .08);
+}
+.v-d2 .sentence-hero .cap { font-size: 11.5px; font-weight: 800; letter-spacing: .18em; color: var(--muted); }
+.v-d2 .sentence-hero .en { font-size: 34px; font-weight: 800; letter-spacing: -.02em; line-height: 1.25; text-align: center; color: var(--ink); }
+.v-d2 .sentence-hero .zh { font-size: 14px; color: var(--muted); }
+.v-d2 .sentence-hero .rl { max-width: 470px; margin: 4px 0 0; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 15px; line-height: 1.75; text-align: center; color: var(--ink-soft); }
+.v-d2 .variant-strip { width: 100%; max-width: 600px; margin: 18px auto 0; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.v-d2 .variant-row { display: flex; align-items: center; gap: 14px; padding: 13px 18px; }
+.v-d2 .variant-row + .variant-row { border-top: 1px solid var(--line); }
+.v-d2 .variant-row .lb { width: 42px; flex-shrink: 0; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.v-d2 .variant-row .en { flex: 1; font-size: 15px; color: var(--ink-soft); }
+.v-d2 .gap-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; width: 100%; max-width: 600px; margin: 20px auto 0; padding: 14px 18px; border-radius: 14px; background: #fffbef; border: 1px solid #f7e7ba; font-size: 13.5px; line-height: 1.7; color: var(--ink-soft); }
+.v-d2 .gap-strip .qlink { padding: 3px 12px; border-radius: 999px; background: #fff; border: 1px solid #f0dca6; color: var(--amber-ink); font-size: 12.5px; font-weight: 600; text-decoration: none; }
+
+/* ── D3 · 权重阶梯：第 1 段重、第 2 段中、第 3 段轻 ── */
+.v-d3 .lead-card { width: 100%; max-width: 580px; margin: 28px auto 0; border-radius: 22px; background: var(--surface); border: 1px solid #d2ecdd; box-shadow: 0 14px 34px rgba(31, 43, 58, .09); overflow: hidden; }
+.v-d3 .lead-band { display: flex; align-items: center; gap: 10px; padding: 15px 26px; background: linear-gradient(135deg, #e9f9f0 0%, #f8fdfa 100%); border-bottom: 1px solid #dcf1e5; }
+.v-d3 .lead-band .n { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 9px; background: #fff; color: var(--green-ink); font-size: 14px; font-weight: 800; box-shadow: 0 1px 3px rgba(36,120,76,.14); }
+.v-d3 .lead-band .cap { font-size: 13.5px; font-weight: 800; letter-spacing: .04em; color: var(--green-ink); }
+.v-d3 .lead-band .cnt { margin-left: auto; font-size: 12.5px; font-weight: 600; color: #4e9a72; }
+.v-d3 .lead-body { display: grid; gap: 18px; padding: 24px 26px 26px; }
+.v-d3 .lead-body .rule { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.65; letter-spacing: -.01em; color: var(--ink); }
+.v-d3 .lead-body .rule em { font-style: normal; padding: 1px 7px; border-radius: 6px; background: #fff4e6; color: var(--accent-ink); }
+.v-d3 .point-line { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 11px 2px; border-top: 1px solid var(--line); }
+.v-d3 .point-line .en { font-size: 15.5px; font-weight: 600; color: var(--ink); }
+.v-d3 .point-line .note { flex-shrink: 0; font-size: 12.5px; color: var(--muted); }
+.v-d3 .mid-block { width: 100%; max-width: 580px; margin: 30px auto 0; }
+.v-d3 .mid-head { display: flex; align-items: baseline; gap: 10px; padding-bottom: 8px; }
+.v-d3 .mid-head h3 { margin: 0; font-size: 14px; font-weight: 700; color: var(--ink-soft); }
+.v-d3 .mid-head .n { font-size: 12px; color: var(--muted); }
+.v-d3 .mid-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 2px; border-top: 1px solid var(--line); }
+.v-d3 .mid-row .en { font-size: 15px; color: var(--ink-soft); }
+.v-d3 .mid-row .lb { display: inline-block; margin-right: 9px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.v-d3 .light-strip { width: 100%; max-width: 580px; margin: 26px auto 0; font-size: 13px; line-height: 1.75; color: var(--muted); }
+.v-d3 .light-strip .item { display: block; padding-left: 12px; border-left: 2px solid #efdca8; }
+.v-d3 .light-strip .item + .item { margin-top: 7px; }
+.v-d3 .light-strip .qlink { margin-left: 6px; color: var(--accent-ink); font-weight: 600; text-decoration: none; }
+
+/* ── D4 · 单卡收据：一个对象，内部用字号分层 ── */
+.v-d4 .receipt-one { width: 100%; max-width: 580px; margin: 28px auto 0; border-radius: 22px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 12px 32px rgba(31, 43, 58, .08); overflow: hidden; }
+.v-d4 .receipt-top { display: flex; align-items: center; gap: 12px; padding: 17px 26px; background: var(--surface-muted); border-bottom: 1px dashed var(--line-strong); }
+.v-d4 .receipt-top .cap { font-size: 11.5px; font-weight: 800; letter-spacing: .18em; color: var(--muted); }
+.v-d4 .receipt-top .chip { margin-left: auto; padding: 3px 11px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); font-size: 12px; font-weight: 700; }
+.v-d4 .receipt-sec { padding: 22px 26px; }
+.v-d4 .receipt-sec + .receipt-sec { border-top: 1px dashed var(--line-strong); }
+.v-d4 .receipt-sec .sec-cap { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 11.5px; font-weight: 800; letter-spacing: .16em; color: var(--muted); }
+.v-d4 .receipt-sec .rule { margin: 0; font-size: 17.5px; font-weight: 700; line-height: 1.7; letter-spacing: -.01em; color: var(--ink); }
+.v-d4 .srow { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 0; border-top: 1px dashed var(--line); }
+.v-d4 .srow:first-of-type { border-top: none; }
+.v-d4 .srow .en { font-size: 15px; color: var(--ink-soft); }
+.v-d4 .srow .lb { display: inline-block; margin-right: 9px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.v-d4 .srow.lead .en { font-size: 19px; font-weight: 800; letter-spacing: -.015em; color: var(--ink); }
+.v-d4 .gap-line { margin: 0 0 9px; padding-left: 13px; border-left: 3px solid var(--amber); font-size: 14px; line-height: 1.7; color: var(--ink-soft); }
+.v-d4 .receipt-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 15px 26px; background: var(--surface-muted); border-top: 1px dashed var(--line-strong); font-size: 13px; color: var(--muted); }
+.v-d4 .receipt-foot .qlink { padding: 3px 13px; border-radius: 999px; background: #fff; border: 1px solid var(--line-strong); color: var(--accent-ink); font-size: 12.5px; font-weight: 600; text-decoration: none; }
+</style>
+
+<script>
+(function () {
+  const L = {
+    n: 5, label: "like + 名词",
+    rule: "喜欢一整类东西：能数的一个变好几个（dogs），数不清的原样（music）。",
+    ruleEm: "能数的一个变好几个（dogs），数不清的原样（music）",
+    target: "I like music.", targetZh: "我喜欢音乐。",
+    points: [["I like music.", "数不清的词原样"], ["I like dogs.", "一整类可数加 s"], ["Do you like tea?", "问对方：Do 搬到句首"]],
+    variants: [["肯定", "I like music."], ["否定", "I don't like coffee."], ["疑问", "Do you like music?"]],
+    gaps: ["练「I like music.」这句时多试了几次，明天会再帮你过一遍。", "「Do you like music?」的疑问说法还没一次说顺。"],
+    contrasts: [["I don't like coffee.", "I not like coffee."], ["Do you like coffee?", "Does you like coffee?"]],
+    ai: "今天是「喜欢」的用法：能数的加 s，数不清的原样——你已经能自己说出三句了。"
+  };
+  const vol = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+  const check = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+  const flame = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>';
+  const sbtn = '<button class="icon-button speak-sm" type="button">' + vol + '</button>';
+
+  const hero = (small) =>
+    '<div class="complete-hero"><span class="complete-hero-badge">' + check + '</span>' +
+    '<h2>第 ' + L.n + ' 课完成</h2>' +
+    '<p class="complete-hero-sub">一课一课积累，你已经能用英语介绍自己、讲正在做的事、说明天的计划。</p></div>';
+
+  // 非目标句的变体（去重：与核心句相同的变体并进核心句标签）
+  const extraVariants = L.variants.filter(v => v[1] !== L.target);
+  const targetLabel = (L.variants.find(v => v[1] === L.target) || [null])[0];
+
+  const gapStrip = (maxw) =>
+    '<div class="gap-strip">' +
+    '<span>还差什么：' + L.gaps[0] + '</span>' +
+    '<a class="qlink" href="#">去复习</a></div>';
+
+  const practice = () =>
+    '<div class="practice-block"><p class="practice-title">出发前，最后再帮他看两句</p>' +
+    L.contrasts.map(c => '<div class="contrast-card"><p class="contrast-prompt">两句话只有一句是对的——点出你认为对的那句：</p>' +
+      '<div class="option-row"><div class="option"><b>A</b>' + c[0] + '</div><div class="option"><b>B</b>' + c[1] + '</div></div></div>').join("") + '</div>';
+
+  const actions = () => '<div class="lesson-actions"><a class="primary-button" href="#">' + flame + '趁热再练 2 分钟</a>' +
+    '<a class="secondary-button" href="#">下一课：第 6 课 · 现在几点了</a><a class="ghost-link" href="#">返回课程地图</a></div>';
+
+  // ── D1 · 规则主角 ──
+  const bodyD1 = () => hero() +
+    '<div class="rule-hero"><span class="cap">本课规则</span><p class="rl">' + L.rule + '</p><span class="tag">' + L.label + '</span></div>' +
+    '<div class="support"><div class="support-head"><h3>现在能说</h3><span class="n">' + (extraVariants.length + 1) + ' 句</span></div>' +
+      '<div class="support-row"><span class="en">' + L.target + '</span>' + sbtn + '</div>' +
+      extraVariants.map(v => '<div class="support-row"><span class="en"><em class="lb">' + v[0] + '</em>' + v[1] + '</span>' + sbtn + '</div>').join("") +
+    '</div>' + gapStrip() + practice() + actions();
+
+  // ── D2 · 核心句主角 ──
+  const bodyD2 = () => hero() +
+    '<div class="sentence-hero"><span class="cap">本课核心句' + (targetLabel ? ' · ' + targetLabel : '') + '</span>' +
+      '<span class="en">' + L.target + '</span><span class="zh">' + L.targetZh + '</span>' +
+      '<p class="rl">' + L.rule + '</p></div>' +
+    '<div class="variant-strip">' + extraVariants.map(v =>
+      '<div class="variant-row"><span class="lb">' + v[0] + '</span><span class="en">' + v[1] + '</span>' + sbtn + '</div>').join("") + '</div>' +
+    gapStrip() + practice() + actions();
+
+  // ── D3 · 权重阶梯 ──
+  const bodyD3 = () => hero() +
+    '<div class="lead-card"><div class="lead-band"><span class="n">1</span><span class="cap">这一课掌握了什么</span><span class="cnt">1 个知识点</span></div>' +
+      '<div class="lead-body"><p class="rule">喜欢一整类东西：<em>' + L.ruleEm + '</em>。</p>' +
+      L.points.map(p => '<div class="point-line"><span class="en">' + p[0] + '</span><span class="note">' + p[1] + '</span></div>').join("") +
+      '</div></div>' +
+    '<div class="mid-block"><div class="mid-head"><h3>现在能说出这些句子</h3><span class="n">' + (extraVariants.length + 1) + ' 句</span></div>' +
+      '<div class="mid-row"><span class="en">' + L.target + '</span>' + sbtn + '</div>' +
+      extraVariants.map(v => '<div class="mid-row"><span class="en"><em class="lb">' + v[0] + '</em>' + v[1] + '</span>' + sbtn + '</div>').join("") +
+    '</div>' +
+    '<div class="light-strip">' + L.gaps.map(g => '<span class="item">' + g + '</span>').join("") +
+      '<span class="item">已排进复习队列，明天自动来见你<a class="qlink" href="#">去复习</a></span></div>' +
+    practice() + actions();
+
+  // ── D4 · 单卡收据 ──
+  const bodyD4 = () => hero() +
+    '<div class="receipt-one">' +
+      '<div class="receipt-top"><span class="cap">本课收据</span><span class="chip">' + L.label + '</span></div>' +
+      '<div class="receipt-sec"><div class="sec-cap">一句话记住</div><p class="rule">' + L.rule + '</p></div>' +
+      '<div class="receipt-sec"><div class="sec-cap">现在能说</div>' +
+        '<div class="srow lead"><span class="en">' + L.target + '</span>' + sbtn + '</div>' +
+        extraVariants.map(v => '<div class="srow"><span class="en"><em class="lb">' + v[0] + '</em>' + v[1] + '</span>' + sbtn + '</div>').join("") +
+        L.points.slice(1).map(p => '<div class="srow"><span class="en">' + p[0] + '</span><span class="lb">' + p[1] + '</span></div>').join("") +
+      '</div>' +
+      '<div class="receipt-sec"><div class="sec-cap">还差什么</div>' +
+        L.gaps.map(g => '<p class="gap-line">' + g + '</p>').join("") +
+        '<p style="margin:0;font-size:13px;color:var(--muted)">' + L.ai + '</p></div>' +
+      '<div class="receipt-foot">这些句子已排进复习队列，明天自动来见你<a class="qlink" href="#">去复习</a></div>' +
+    '</div>' + practice() + actions();
+
+  const variants = [
+    { key: "d1", label: "D1 · 规则主角", title: "D1 · 规则主角 —— 全页最大的字给「规则」",
+      notes: ["重心策略：整页最大的内容块是规则（24px + 暖色底 + 描边 + 阴影），其余全部降级为无卡片的朴素列表", "「现在能说」退成一条条细分隔线列表，还差什么退成一条浅色提示条", "适合本项目的定位：这是语法训练，规则才是要带走的东西"] },
+    { key: "d2", label: "D2 · 核心句主角", title: "D2 · 核心句主角 —— 全页最大的字给「你能说的那句话」",
+      notes: ["重心策略：本课核心句以 34px 居中成为绝对主角，规则降为它下方的一行小注", "变体（否定/疑问）收成一条紧凑列表，只是主角的补充说明", "与目标句完全重复的「肯定」变体被吸进核心句标签，不再重复出现（现状重复）"] },
+    { key: "d3", label: "D3 · 权重阶梯", title: "D3 · 权重阶梯 —— 三段不等重，眼睛顺着往下走",
+      notes: ["重心策略：第 1 段「掌握了什么」用绿色标题带 + 大圆角 + 深阴影做成明确的头等舱", "第 2 段退成无卡片的列表（中等），第 3 段退成左侧细黄线的淡字条（最轻）", "保留三段结构，但主次由容器重量直接表达——不再三张等重卡"] },
+    { key: "d4", label: "D4 · 单卡收据", title: "D4 · 单卡收据 —— 整页只有一个对象，内部用字号分层",
+      notes: ["重心策略：所有内容收进一张「收据」，页面只有一个边界、一个阴影、一套虚线分隔", "收据内部靠字号分层：规则 17.5px 粗体 → 核心句 19px 最粗 → 变体 15px → 待巩固 14px", "最像一张真正的价值凭证，也最省纵向空间"] }
+  ];
+
+  const panels = document.querySelector(".panels");
+  const tabs = document.getElementById("tabs");
+  const bodies = { d1: bodyD1, d2: bodyD2, d3: bodyD3, d4: bodyD4 };
+  for (const v of variants) {
+    const section = document.createElement("section");
+    section.className = "panel";
+    section.id = "panel-" + v.key;
+    section.innerHTML = '<div class="note"><h3>' + v.title + '</h3><ul>' +
+      v.notes.map(n => "<li>" + n + "</li>").join("") + "</ul></div>" +
+      '<div class="frame dbase v-' + v.key + '">' + bodies[v.key]() + '</div>';
+    panels.appendChild(section);
+    const btn = document.createElement("button");
+    btn.dataset.tab = v.key;
+    btn.textContent = v.label;
+    tabs.appendChild(btn);
+  }
+})();
+</script>
+
+<style>
+/* ═══ E 系：D2 基础 + 顶部左右布局 + 规则区四种处理 ═══ */
+.ebase .hero-lr { display: flex; align-items: center; gap: 16px; width: 100%; max-width: 600px; margin: 0 auto; text-align: left; }
+.ebase .hero-lr .hero-badge { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: var(--secondary-soft); color: var(--secondary); box-shadow: inset 0 0 0 2px rgba(72,184,120,.3); flex-shrink: 0; }
+.ebase .hero-lr .hero-text { display: grid; gap: 3px; min-width: 0; }
+.ebase .hero-lr h2 { margin: 0; font-size: 23px; font-weight: 800; letter-spacing: -.01em; color: var(--ink); }
+.ebase .hero-lr p { margin: 0; font-size: 13px; line-height: 1.6; color: var(--muted); }
+.ebase .hero-lr .hero-side { display: grid; gap: 6px; justify-items: end; margin-left: auto; flex-shrink: 0; }
+.ebase .hero-lr .pct { font-size: 12px; color: var(--muted); }
+.ebase .hero-lr .pct b { font-size: 15px; color: var(--accent-ink); }
+.ebase .hero-lr .bar { display: block; width: 104px; height: 5px; border-radius: 999px; background: #eef1f4; overflow: hidden; }
+.ebase .hero-lr .bar i { display: block; height: 100%; border-radius: 999px; background: var(--accent); }
+
+.ebase .sentence-hero { display: grid; justify-items: center; gap: 13px; width: 100%; max-width: 600px; margin: 26px auto 0; padding: 30px 28px 26px; border-radius: 24px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 12px 34px rgba(31,43,58,.08); }
+.ebase .sentence-hero .cap { font-size: 11.5px; font-weight: 800; letter-spacing: .18em; color: var(--muted); }
+.ebase .sentence-hero .en { font-size: 34px; font-weight: 800; letter-spacing: -.02em; line-height: 1.25; text-align: center; color: var(--ink); }
+.ebase .sentence-hero .zh { font-size: 14px; color: var(--muted); }
+.ebase .rule-zone { width: 100%; margin-top: 4px; padding-top: 18px; border-top: 1px dashed var(--line); }
+.ebase .variant-strip { width: 100%; max-width: 600px; margin: 18px auto 0; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.ebase .variant-row { display: flex; align-items: center; gap: 14px; padding: 13px 18px; }
+.ebase .variant-row + .variant-row { border-top: 1px solid var(--line); }
+.ebase .variant-row .lb { width: 42px; flex-shrink: 0; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.ebase .variant-row .en { flex: 1; font-size: 15px; color: var(--ink-soft); }
+.ebase .gap-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; width: 100%; max-width: 600px; margin: 20px auto 0; padding: 14px 18px; border-radius: 14px; background: #fffbef; border: 1px solid #f7e7ba; font-size: 13.5px; line-height: 1.7; color: var(--ink-soft); }
+.ebase .gap-strip .qlink { padding: 3px 12px; border-radius: 999px; background: #fff; border: 1px solid #f0dca6; color: var(--amber-ink); font-size: 12.5px; font-weight: 600; text-decoration: none; }
+
+/* ── E1 · 规则两行条 ── */
+.v-e1 .rule-rows { display: grid; width: 100%; }
+.v-e1 .rule-row { display: flex; align-items: center; gap: 12px; padding: 12px 2px; }
+.v-e1 .rule-row + .rule-row { border-top: 1px solid var(--line); }
+.v-e1 .rule-cap { flex-shrink: 0; padding: 3px 11px; border-radius: 999px; font-size: 12.5px; font-weight: 700; }
+.v-e1 .rule-cap.num { background: var(--blue-soft); color: var(--blue-ink); }
+.v-e1 .rule-cap.unc { background: var(--secondary-soft); color: var(--green-ink); }
+.v-e1 .rule-act { font-size: 17px; font-weight: 700; letter-spacing: -.01em; color: var(--ink); }
+.v-e1 .rule-eg { margin-left: auto; font-size: 15px; color: var(--muted); }
+
+/* ── E2 · 口诀大字 ── */
+.v-e2 .mantra { margin: 0; font-size: 21px; font-weight: 800; line-height: 1.7; letter-spacing: -.015em; text-align: center; color: var(--ink); }
+.v-e2 .mantra mark { padding: 1px 7px; border-radius: 7px; background: #fff1e2; color: var(--accent-ink); }
+
+/* ── E3 · 两栏对照 ── */
+.v-e3 .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+.v-e3 .duo-col { display: grid; gap: 7px; padding: 15px 16px; border-radius: 15px; text-align: left; }
+.v-e3 .duo-col.num { background: var(--blue-soft); }
+.v-e3 .duo-col.unc { background: var(--secondary-soft); }
+.v-e3 .duo-col .cap { font-size: 12px; font-weight: 800; letter-spacing: .04em; }
+.v-e3 .duo-col.num .cap { color: var(--blue-ink); }
+.v-e3 .duo-col.unc .cap { color: var(--green-ink); }
+.v-e3 .duo-col .en { font-size: 16px; font-weight: 700; color: var(--ink); }
+.v-e3 .duo-col .note { font-size: 12.5px; line-height: 1.55; color: var(--ink-soft); }
+
+/* ── E4 · 人话讲解 + 证据 ── */
+.v-e4 .plain { display: grid; gap: 13px; width: 100%; text-align: left; }
+.v-e4 .plain > p { margin: 0; font-size: 17px; line-height: 1.85; color: var(--ink); }
+.v-e4 .plain mark { padding: 1px 6px; border-radius: 6px; background: #fff1e2; color: var(--accent-ink); font-weight: 700; }
+.v-e4 .evidence { display: grid; gap: 8px; }
+.v-e4 .ev-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; background: var(--surface-muted); }
+.v-e4 .ev-row .en { font-size: 15px; font-weight: 600; color: var(--ink); }
+.v-e4 .ev-row .note { margin-left: auto; font-size: 12.5px; color: var(--muted); }
+</style>
+
+<script>
+(function () {
+  const L = { n: 5, target: "I like music.", targetZh: "我喜欢音乐。",
+    variants: [["肯定", "I like music."], ["否定", "I don't like coffee."], ["疑问", "Do you like music?"]],
+    gaps: ["练「I like music.」这句时多试了几次，明天会再帮你过一遍。"],
+    contrasts: [["I don't like coffee.", "I not like coffee."], ["Do you like coffee?", "Does you like coffee?"]] };
+  const vol = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+  const check = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+  const flame = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>';
+  const sbtn = '<button class="icon-button speak-sm" type="button">' + vol + '</button>';
+  const extraVariants = L.variants.filter(v => v[1] !== L.target);
+
+  const heroLr = () =>
+    '<div class="hero-lr">' +
+      '<span class="hero-badge">' + check + '</span>' +
+      '<div class="hero-text"><h2>第 ' + L.n + ' 课完成</h2>' +
+        '<p>一课一课积累，你已经能用英语介绍自己、讲正在做的事、说明天的计划。</p></div>' +
+      '<div class="hero-side"><span class="pct">第 <b>' + L.n + '</b> / 127 课</span>' +
+        '<span class="bar"><i style="width:4%"></i></span></div>' +
+    '</div>';
+
+  const ruleZone = {
+    e1: '<div class="rule-zone"><div class="rule-rows">' +
+        '<div class="rule-row"><span class="rule-cap num">数得清</span><span class="rule-act">一个变好几个</span><span class="rule-eg">I like dogs.</span></div>' +
+        '<div class="rule-row"><span class="rule-cap unc">数不清</span><span class="rule-act">原样不动</span><span class="rule-eg">I like music.</span></div>' +
+        '</div></div>',
+    e2: '<div class="rule-zone"><p class="mantra">喜欢一整类东西：<mark>能数的</mark>一个变好几个，<mark>数不清的</mark>原样不动。</p></div>',
+    e3: '<div class="rule-zone"><div class="duo">' +
+        '<div class="duo-col num"><span class="cap">数得清</span><span class="en">I like dogs.</span><span class="note">一个变好几个，加 s</span></div>' +
+        '<div class="duo-col unc"><span class="cap">数不清</span><span class="en">I like music.</span><span class="note">原样不动，不加 s</span></div>' +
+        '</div></div>',
+    e4: '<div class="rule-zone"><div class="plain">' +
+        '<p>说「我喜欢音乐」——music <mark>数不清</mark>，原样说就行；说「我喜欢狗」——个数<mark>数得清</mark>，一个要变好几个。</p>' +
+        '<div class="evidence">' +
+        '<div class="ev-row"><span class="en">I like music.</span><span class="note">数不清 → 原样</span>' + sbtn + '</div>' +
+        '<div class="ev-row"><span class="en">I like dogs.</span><span class="note">数得清 → 加 s</span>' + sbtn + '</div>' +
+        '</div></div></div>'
+  };
+
+  const sentenceHero = (v) =>
+    '<div class="sentence-hero"><span class="cap">本课核心句 · 肯定</span>' +
+      '<span class="en">' + L.target + '</span><span class="zh">' + L.targetZh + '</span>' +
+      ruleZone[v] + '</div>';
+
+  const variantStrip = () =>
+    '<div class="variant-strip">' + extraVariants.map(v2 =>
+      '<div class="variant-row"><span class="lb">' + v2[0] + '</span><span class="en">' + v2[1] + '</span>' + sbtn + '</div>').join("") + '</div>';
+
+  const gapStrip = () =>
+    '<div class="gap-strip"><span>还差什么：' + L.gaps[0] + '</span><a class="qlink" href="#">去复习</a></div>';
+
+  const practice = () =>
+    '<div class="practice-block"><p class="practice-title">出发前，最后再帮他看两句</p>' +
+    L.contrasts.map(c => '<div class="contrast-card"><p class="contrast-prompt">两句话只有一句是对的——点出你认为对的那句：</p>' +
+      '<div class="option-row"><div class="option"><b>A</b>' + c[0] + '</div><div class="option"><b>B</b>' + c[1] + '</div></div></div>').join("") + '</div>';
+
+  const actions = () => '<div class="lesson-actions"><a class="primary-button" href="#">' + flame + '趁热再练 2 分钟</a>' +
+    '<a class="secondary-button" href="#">下一课：第 6 课 · 现在几点了</a><a class="ghost-link" href="#">返回课程地图</a></div>';
+
+  const body = (v) => heroLr() + sentenceHero(v) + variantStrip() + gapStrip() + practice() + actions();
+
+  const variants = [
+    { key: "e1", label: "E1 · 规则两行条", title: "E1 · 规则两行条 —— 把规则拆成「条件 → 动作 → 例句」两行",
+      notes: ["通俗化：规则拆成两行对仗——「数得清 → 一个变好几个 → I like dogs.」「数不清 → 原样不动 → I like music.」", "显眼化：动作用 17px 粗体（比原规则的居中灰字大一号），例句右对齐做证据", "顶部改为左右布局：徽章在左、标题与说明在右，右侧顺带放课程进度（5 / 127 课）"] },
+    { key: "e2", label: "E2 · 口诀大字", title: "E2 · 口诀大字 —— 规则放大到 21px，关键词高亮",
+      notes: ["通俗化：把规则压缩成一句口诀，只留「能数的 / 数不清的」两个关键词，其余删掉", "显眼化：21px 特粗 + 关键词橙色高亮底，是整张句卡里除核心句外最大的字", "适合想要「一眼记住」的效果；信息量最少，可能丢失原规则的细节"] },
+    { key: "e3", label: "E3 · 两栏对照", title: "E3 · 两栏对照 —— 规则变成一张可对照的小表",
+      notes: ["通俗化：拆成「数得清 / 数不清」左右两栏，各自配例句和一句话说明——像查表一样读", "显眼化：两栏各用淡蓝/淡绿底，色块本身就把视线拉过去，也顺手区分了两种情况", "信息最结构化，适合容易混淆的知识点（可数/不可数正是典型）"] },
+    { key: "e4", label: "E4 · 人话讲解", title: "E4 · 人话讲解 —— 用「你自己那句话」开头讲一遍，再给证据",
+      notes: ["通俗化：不再是定义式的「喜欢一整类东西：……」，而是「说『我喜欢音乐』——music 数不清，原样说就行」", "显眼化：17px 正文 + 关键词高亮，下方跟两条带发音按钮的例句作为证据链", "最贴近真人讲解的语感；若选此版，数据层需要为规则补一句「口语版」文案（或直接用现有 oneLineRule）"] }
+  ];
+
+  const panels = document.querySelector(".panels");
+  const tabs = document.getElementById("tabs");
+  for (const v of variants) {
+    const section = document.createElement("section");
+    section.className = "panel";
+    section.id = "panel-" + v.key;
+    section.innerHTML = '<div class="note"><h3>' + v.title + '</h3><ul>' +
+      v.notes.map(n => "<li>" + n + "</li>").join("") + "</ul></div>" +
+      '<div class="frame dbase ebase v-' + v.key + '">' + body(v.key) + '</div>';
+    panels.appendChild(section);
+    const btn = document.createElement("button");
+    btn.dataset.tab = v.key;
+    btn.textContent = v.label;
+    tabs.appendChild(btn);
+  }
+})();
+</script>
+
+<style>
+/* ═══ F 系：右上角角标区的四种展示方式（基于 E1 其余部分不变）═══ */
+.fbase .hero-lr { display: flex; align-items: center; gap: 16px; width: 100%; max-width: 600px; margin: 0 auto; }
+.fbase .hero-lr .hero-badge { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: var(--secondary-soft); color: var(--secondary); box-shadow: inset 0 0 0 2px rgba(72,184,120,.3); flex-shrink: 0; }
+.fbase .hero-lr .hero-text { display: grid; gap: 3px; min-width: 0; }
+.fbase .hero-lr h2 { margin: 0; font-size: 23px; font-weight: 800; letter-spacing: -.01em; color: var(--ink); }
+.fbase .hero-lr p { margin: 0; font-size: 13px; line-height: 1.6; color: var(--muted); }
+.fbase .sentence-hero { display: grid; justify-items: center; gap: 13px; width: 100%; max-width: 600px; margin: 26px auto 0; padding: 30px 28px 26px; border-radius: 24px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 12px 34px rgba(31,43,58,.08); }
+.fbase .sentence-hero .cap { font-size: 11.5px; font-weight: 800; letter-spacing: .18em; color: var(--muted); }
+.fbase .sentence-hero .en { font-size: 34px; font-weight: 800; letter-spacing: -.02em; line-height: 1.25; text-align: center; color: var(--ink); }
+.fbase .sentence-hero .zh { font-size: 14px; color: var(--muted); }
+.fbase .rule-zone { width: 100%; margin-top: 4px; padding-top: 18px; border-top: 1px dashed var(--line); }
+.fbase .rule-rows { display: grid; width: 100%; }
+.fbase .rule-row { display: flex; align-items: center; gap: 12px; padding: 12px 2px; }
+.fbase .rule-row + .rule-row { border-top: 1px solid var(--line); }
+.fbase .rule-cap { flex-shrink: 0; padding: 3px 11px; border-radius: 999px; font-size: 12.5px; font-weight: 700; }
+.fbase .rule-cap.num { background: var(--blue-soft); color: var(--blue-ink); }
+.fbase .rule-cap.unc { background: var(--secondary-soft); color: var(--green-ink); }
+.fbase .rule-act { font-size: 17px; font-weight: 700; letter-spacing: -.01em; color: var(--ink); }
+.fbase .rule-eg { margin-left: auto; font-size: 15px; color: var(--muted); }
+.fbase .variant-strip { width: 100%; max-width: 600px; margin: 18px auto 0; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.fbase .variant-row { display: flex; align-items: center; gap: 14px; padding: 13px 18px; }
+.fbase .variant-row + .variant-row { border-top: 1px solid var(--line); }
+.fbase .variant-row .lb { width: 42px; flex-shrink: 0; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.fbase .variant-row .en { flex: 1; font-size: 15px; color: var(--ink-soft); }
+.fbase .gap-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; width: 100%; max-width: 600px; margin: 20px auto 0; padding: 14px 18px; border-radius: 14px; background: #fffbef; border: 1px solid #f7e7ba; font-size: 13.5px; line-height: 1.7; color: var(--ink-soft); }
+.fbase .gap-strip .qlink { padding: 3px 12px; border-radius: 999px; background: #fff; border: 1px solid #f0dca6; color: var(--amber-ink); font-size: 12.5px; font-weight: 600; text-decoration: none; }
+
+/* 右上角色标（各方案） */
+.hero-side { margin-left: auto; flex-shrink: 0; }
+
+/* F1 · 季名 + 季内点数 */
+.s-f1 { display: grid; gap: 5px; justify-items: end; }
+.s-f1 .season { font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+.s-f1 .dots { display: flex; gap: 4px; align-items: center; }
+.s-f1 .dot { width: 7px; height: 7px; border-radius: 50%; background: #e2e7ec; }
+.s-f1 .dot.on { background: var(--accent); box-shadow: 0 0 0 2px rgba(242,106,27,.14); }
+.s-f1 .sub { font-size: 11.5px; color: var(--muted); }
+
+/* F2 · 大数字 + 季标签 */
+.s-f2 { display: grid; gap: 2px; justify-items: end; }
+.s-f2 .big { font-size: 30px; font-weight: 800; line-height: 1; letter-spacing: -.03em; color: var(--accent-ink); }
+.s-f2 .big small { font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: 0; }
+.s-f2 .season { font-size: 11.5px; color: var(--muted); }
+
+/* F3 · 进度胶囊条 */
+.s-f3 { display: grid; gap: 7px; justify-items: end; }
+.s-f3 .row { display: flex; align-items: baseline; gap: 6px; font-size: 12px; color: var(--muted); }
+.s-f3 .row b { font-size: 14px; color: var(--ink); font-weight: 800; }
+.s-f3 .track { display: block; width: 116px; height: 7px; border-radius: 999px; background: #ecf0f4; overflow: hidden; }
+.s-f3 .track i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), #f79256); }
+.s-f3 .season { font-size: 11.5px; color: var(--muted); }
+.s-f3 .season b { color: var(--green-ink); font-weight: 700; }
+
+/* F4 · 徽章式排行 */
+.s-f4 { display: grid; gap: 6px; justify-items: end; }
+.s-f4 .pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 999px; background: var(--accent-soft); border: 1px solid #ffdcc4; }
+.s-f4 .pill .n { font-size: 16px; font-weight: 800; color: var(--accent-ink); letter-spacing: -.02em; }
+.s-f4 .pill .t { font-size: 11.5px; color: var(--accent-ink); }
+.s-f4 .season { font-size: 11.5px; color: var(--muted); }
+.s-f4 .season b { color: var(--ink-soft); font-weight: 700; }
+</style>
+
+<script>
+(function () {
+  const L = { n: 5, target: "I like music.", targetZh: "我喜欢音乐。",
+    variants: [["否定", "I don't like coffee."], ["疑问", "Do you like music?"]],
+    gap: "练「I like music.」这句时多试了几次，明天会再帮你过一遍。",
+    contrasts: [["I don't like coffee.", "I not like coffee."], ["Do you like coffee?", "Does you like coffee?"]],
+    season: "第一季 · 初级篇", seasonMin: 1, seasonMax: 12, seasonIdx: 5 };
+  const vol = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+  const check = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+  const flame = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>';
+  const sbtn = '<button class="icon-button speak-sm" type="button">' + vol + '</button>';
+
+  const sideByVariant = {
+    f1: '<div class="hero-side s-f1"><span class="season">' + L.season + '</span>' +
+        '<span class="dots">' + Array.from({length: L.seasonMax}, (_, i) =>
+          '<i class="dot' + (i < L.seasonIdx ? ' on' : '') + '"></i>').join("") + '</span>' +
+        '<span class="sub">本季第 ' + L.seasonIdx + ' / ' + L.seasonMax + ' 课</span></div>',
+    f2: '<div class="hero-side s-f2"><span class="big">' + L.n + '<small> / 158</small></span>' +
+        '<span class="season">' + L.season + '</span></div>',
+    f3: '<div class="hero-side s-f3"><span class="row">课程进度 <b>' + L.n + '</b> / 158</span>' +
+        '<span class="track"><i style="width:3.2%"></i></span>' +
+        '<span class="season">' + L.season + ' · 本季 <b>' + L.seasonIdx + '/' + L.seasonMax + '</b></span></div>',
+    f4: '<div class="hero-side s-f4"><span class="pill"><span class="n">' + L.n + '</span><span class="t">课完成</span></span>' +
+        '<span class="season">' + L.season + ' · <b>还剩 ' + (L.seasonMax - L.seasonIdx) + ' 课出师</b></span></div>'
+  };
+
+  const heroLr = (v) =>
+    '<div class="hero-lr"><span class="hero-badge">' + check + '</span>' +
+      '<div class="hero-text"><h2>第 ' + L.n + ' 课完成</h2>' +
+        '<p>一课一课积累，你已经能用英语介绍自己、讲正在做的事、说明天的计划。</p></div>' +
+      sideByVariant[v] + '</div>';
+
+  const ruleRows = () =>
+    '<div class="rule-zone"><div class="rule-rows">' +
+      '<div class="rule-row"><span class="rule-cap num">数得清</span><span class="rule-act">一个变好几个</span><span class="rule-eg">I like dogs.</span></div>' +
+      '<div class="rule-row"><span class="rule-cap unc">数不清</span><span class="rule-act">原样不动</span><span class="rule-eg">I like music.</span></div>' +
+    '</div></div>';
+
+  const sentenceHero = () =>
+    '<div class="sentence-hero"><span class="cap">本课核心句 · 肯定</span>' +
+      '<span class="en">' + L.target + '</span><span class="zh">' + L.targetZh + '</span>' + ruleRows() + '</div>';
+
+  const variantStrip = () =>
+    '<div class="variant-strip">' + L.variants.map(v2 =>
+      '<div class="variant-row"><span class="lb">' + v2[0] + '</span><span class="en">' + v2[1] + '</span>' + sbtn + '</div>').join("") + '</div>';
+
+  const gapStrip = () =>
+    '<div class="gap-strip"><span>还差什么：' + L.gap + '</span><a class="qlink" href="#">去复习</a></div>';
+
+  const practice = () =>
+    '<div class="practice-block"><p class="practice-title">出发前，最后再帮他看两句</p>' +
+    L.contrasts.map(c => '<div class="contrast-card"><p class="contrast-prompt">两句话只有一句是对的——点出你认为对的那句：</p>' +
+      '<div class="option-row"><div class="option"><b>A</b>' + c[0] + '</div><div class="option"><b>B</b>' + c[1] + '</div></div></div>').join("") + '</div>';
+
+  const actions = () => '<div class="lesson-actions"><a class="primary-button" href="#">' + flame + '趁热再练 2 分钟</a>' +
+    '<a class="secondary-button" href="#">下一课：第 6 课 · 现在几点了</a><a class="ghost-link" href="#">返回课程地图</a></div>';
+
+  const body = (v) => heroLr(v) + sentenceHero() + variantStrip() + gapStrip() + practice() + actions();
+
+  const variants = [
+    { key: "f1", label: "F1 · 季内点数", title: "F1 · 季内点数 —— 右上角回答「这一季我还差几课」",
+      notes: ["换成季的维度：季名 + 12 个小圆点（已完成填橙）+「本季第 5 / 12 课」", "解决原设计的问题：158 课总进度只有 3%，几乎看不出进展；季内 5/12 是真实可感的刻度", "点数本身有「集邮」的满足感，每完成一课点亮一个"] },
+    { key: "f2", label: "F2 · 大数字", title: "F2 · 大数字 —— 用 30px 的数字做视觉锚点",
+      notes: ["右上角放一个 30px 粗体大数字「5 / 158」，下方一行季名", "数字比进度条更有冲击力，视觉上和左侧 34px 核心句形成呼应", "缺点：5/158 依然显得「刚开始」，总课数大的焦虑感没被化解"] },
+    { key: "f3", label: "F3 · 进度胶囊条", title: "F3 · 进度胶囊条 —— 保留进度条但补上季内刻度",
+      notes: ["上层保留课程进度条（5 / 158），下层补「第一季 · 本季 5/12」", "两个维度都在：既不丢总进度，也给出可感的季内刻度", "信息量最大，但右上角会比较满，视线可能被两次拉扯"] },
+    { key: "f4", label: "F4 · 成就徽章", title: "F4 · 成就徽章 —— 把数字包成勋章，配「还剩几课出师」",
+      notes: ["右上角是一枚暖色勋章胶囊：「5 课完成」，下方配「第一季 · 还剩 7 课出师」", "「还剩 7 课出师」把进度翻译成目标承诺（完形动机），比百分比更驱动人", "最有人味、最鼓励；但如果季内课数多（如 8 课大章）文案要小心措辞"] }
+  ];
+
+  const panels = document.querySelector(".panels");
+  const tabs = document.getElementById("tabs");
+  for (const v of variants) {
+    const section = document.createElement("section");
+    section.className = "panel";
+    section.id = "panel-" + v.key;
+    section.innerHTML = '<div class="note"><h3>' + v.title + '</h3><ul>' +
+      v.notes.map(n => "<li>" + n + "</li>").join("") + "</ul></div>" +
+      '<div class="frame dbase fbase v-' + v.key + '">' + body(v.key) + '</div>';
+    panels.appendChild(section);
+    const btn = document.createElement("button");
+    btn.dataset.tab = v.key;
+    btn.textContent = v.label;
+    tabs.appendChild(btn);
+  }
+})();
+</script>
+
+<style>
+/* ═══ G 系：角标脱离内容流，绝对定位右上角 ═══ */
+.gbase { position: relative; }
+.gbase .hero-lr { display: flex; align-items: center; gap: 16px; width: 100%; max-width: 600px; margin: 0 auto; }
+.gbase .hero-lr .hero-badge { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: var(--secondary-soft); color: var(--secondary); box-shadow: inset 0 0 0 2px rgba(72,184,120,.3); flex-shrink: 0; }
+.gbase .hero-lr .hero-text { display: grid; gap: 3px; min-width: 0; }
+.gbase .hero-lr h2 { margin: 0; font-size: 23px; font-weight: 800; letter-spacing: -.01em; color: var(--ink); }
+.gbase .hero-lr p { margin: 0; font-size: 13px; line-height: 1.6; color: var(--muted); }
+/* 关键：角标绝对定位，脱离文档流，不再与标题/说明同排 */
+.gbase .hero-corner { position: absolute; top: 26px; right: 30px; z-index: 2; }
+.gbase .sentence-hero { display: grid; justify-items: center; gap: 13px; width: 100%; max-width: 600px; margin: 26px auto 0; padding: 30px 28px 26px; border-radius: 24px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 12px 34px rgba(31,43,58,.08); }
+.gbase .sentence-hero .cap { font-size: 11.5px; font-weight: 800; letter-spacing: .18em; color: var(--muted); }
+.gbase .sentence-hero .en { font-size: 34px; font-weight: 800; letter-spacing: -.02em; line-height: 1.25; text-align: center; color: var(--ink); }
+.gbase .sentence-hero .zh { font-size: 14px; color: var(--muted); }
+.gbase .rule-zone { width: 100%; margin-top: 4px; padding-top: 18px; border-top: 1px dashed var(--line); }
+.gbase .rule-rows { display: grid; width: 100%; }
+.gbase .rule-row { display: flex; align-items: center; gap: 12px; padding: 12px 2px; }
+.gbase .rule-row + .rule-row { border-top: 1px solid var(--line); }
+.gbase .rule-cap { flex-shrink: 0; padding: 3px 11px; border-radius: 999px; font-size: 12.5px; font-weight: 700; }
+.gbase .rule-cap.num { background: var(--blue-soft); color: var(--blue-ink); }
+.gbase .rule-cap.unc { background: var(--secondary-soft); color: var(--green-ink); }
+.gbase .rule-act { font-size: 17px; font-weight: 700; letter-spacing: -.01em; color: var(--ink); }
+.gbase .rule-eg { margin-left: auto; font-size: 15px; color: var(--muted); }
+.gbase .variant-strip { width: 100%; max-width: 600px; margin: 18px auto 0; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.gbase .variant-row { display: flex; align-items: center; gap: 14px; padding: 13px 18px; }
+.gbase .variant-row + .variant-row { border-top: 1px solid var(--line); }
+.gbase .variant-row .lb { width: 42px; flex-shrink: 0; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.gbase .variant-row .en { flex: 1; font-size: 15px; color: var(--ink-soft); }
+.gbase .gap-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; width: 100%; max-width: 600px; margin: 20px auto 0; padding: 14px 18px; border-radius: 14px; background: #fffbef; border: 1px solid #f7e7ba; font-size: 13.5px; line-height: 1.7; color: var(--ink-soft); }
+.gbase .gap-strip .qlink { padding: 3px 12px; border-radius: 999px; background: #fff; border: 1px solid #f0dca6; color: var(--amber-ink); font-size: 12.5px; font-weight: 600; text-decoration: none; }
+/* 窄屏回退：角标回内容流 */
+@media (max-width: 800px) { .gbase .hero-corner { position: static; margin: 0 auto 12px; } }
+
+/* G1 · 角标点数（最轻） */
+.s-g1 { display: grid; gap: 5px; justify-items: end; }
+.s-g1 .season { font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+.s-g1 .dots { display: flex; gap: 4px; align-items: center; }
+.s-g1 .dot { width: 7px; height: 7px; border-radius: 50%; background: #e2e7ec; }
+.s-g1 .dot.on { background: var(--accent); box-shadow: 0 0 0 2px rgba(242,106,27,.14); }
+.s-g1 .sub { font-size: 11.5px; color: var(--muted); }
+
+/* G2 · 角标 HUD 胶囊 */
+.s-g2 { display: grid; gap: 7px; justify-items: end; padding: 11px 15px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 2px 10px rgba(31,43,58,.05); }
+.s-g2 .r1 { display: flex; align-items: baseline; gap: 6px; }
+.s-g2 .n { font-size: 18px; font-weight: 800; letter-spacing: -.02em; color: var(--accent-ink); }
+.s-g2 .t { font-size: 11.5px; color: var(--muted); }
+.s-g2 .bar { display: block; width: 118px; height: 6px; border-radius: 999px; background: #eef1f4; overflow: hidden; }
+.s-g2 .bar i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), #f79256); }
+
+/* G3 · 角标进度环 */
+.s-g3 { display: flex; align-items: center; gap: 10px; }
+.s-g3 .txt { display: grid; gap: 2px; justify-items: end; }
+.s-g3 .season { font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+.s-g3 .sub { font-size: 11.5px; color: var(--muted); }
+.s-g3 .ring { flex-shrink: 0; }
+</style>
+
+<script>
+(function () {
+  const L = { n: 5, target: "I like music.", targetZh: "我喜欢音乐。",
+    variants: [["否定", "I don't like coffee."], ["疑问", "Do you like music?"]],
+    gap: "练「I like music.」这句时多试了几次，明天会再帮你过一遍。",
+    contrasts: [["I don't like coffee.", "I not like coffee."], ["Do you like coffee?", "Does you like coffee?"]],
+    season: "第一季 · 初级篇", seasonIdx: 5, seasonMax: 12 };
+  const vol = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+  const check = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+  const flame = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>';
+  const sbtn = '<button class="icon-button speak-sm" type="button">' + vol + '</button>';
+
+  const dots = (on, n) => '<span class="dots">' + Array.from({length: n}, (_, i) =>
+    '<i class="dot' + (i < on ? ' on' : '') + '"></i>').join("") + '</span>';
+
+  const ring = () => {
+    const r = 18, C = 2 * Math.PI * r, dash = C * (L.seasonIdx / L.seasonMax);
+    return '<svg class="ring" width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">' +
+      '<circle cx="23" cy="23" r="' + r + '" fill="none" stroke="#eef1f4" stroke-width="5"/>' +
+      '<circle cx="23" cy="23" r="' + r + '" fill="none" stroke="#f26a1b" stroke-width="5" stroke-linecap="round" stroke-dasharray="' + dash.toFixed(1) + ' ' + C.toFixed(1) + '" transform="rotate(-90 23 23)"/>' +
+      '<text x="23" y="27" text-anchor="middle" font-size="11" font-weight="800" fill="#c04a0b">' + L.seasonIdx + '/' + L.seasonMax + '</text></svg>';
+  };
+
+  const cornerByVariant = {
+    g1: '<div class="hero-corner s-g1"><span class="season">' + L.season + '</span>' +
+        dots(L.seasonIdx, L.seasonMax) +
+        '<span class="sub">本季第 ' + L.seasonIdx + ' / ' + L.seasonMax + ' 课</span></div>',
+    g2: '<div class="hero-corner s-g2"><span class="r1"><span class="n">' + L.seasonIdx + '</span>' +
+        '<span class="t">/ ' + L.seasonMax + ' 课 · ' + L.season + '</span></span>' +
+        '<span class="bar"><i style="width:' + (L.seasonIdx / L.seasonMax * 100).toFixed(1) + '%"></i></span></div>',
+    g3: '<div class="hero-corner s-g3"><span class="txt"><span class="season">' + L.season + '</span>' +
+        '<span class="sub">还剩 ' + (L.seasonMax - L.seasonIdx) + ' 课</span></span>' + ring() + '</div>'
+  };
+
+  const heroLr = (v) =>
+    cornerByVariant[v] +
+    '<div class="hero-lr"><span class="hero-badge">' + check + '</span>' +
+      '<div class="hero-text"><h2>第 ' + L.n + ' 课完成</h2>' +
+        '<p>一课一课积累，你已经能用英语介绍自己、讲正在做的事、说明天的计划。</p></div></div>';
+
+  const ruleRows = () =>
+    '<div class="rule-zone"><div class="rule-rows">' +
+      '<div class="rule-row"><span class="rule-cap num">数得清</span><span class="rule-act">一个变好几个</span><span class="rule-eg">I like dogs.</span></div>' +
+      '<div class="rule-row"><span class="rule-cap unc">数不清</span><span class="rule-act">原样不动</span><span class="rule-eg">I like music.</span></div>' +
+    '</div></div>';
+
+  const sentenceHero = () =>
+    '<div class="sentence-hero"><span class="cap">本课核心句 · 肯定</span>' +
+      '<span class="en">' + L.target + '</span><span class="zh">' + L.targetZh + '</span>' + ruleRows() + '</div>';
+
+  const variantStrip = () =>
+    '<div class="variant-strip">' + L.variants.map(v2 =>
+      '<div class="variant-row"><span class="lb">' + v2[0] + '</span><span class="en">' + v2[1] + '</span>' + sbtn + '</div>').join("") + '</div>';
+
+  const gapStrip = () =>
+    '<div class="gap-strip"><span>还差什么：' + L.gap + '</span><a class="qlink" href="#">去复习</a></div>';
+
+  const practice = () =>
+    '<div class="practice-block"><p class="practice-title">出发前，最后再帮他看两句</p>' +
+    L.contrasts.map(c => '<div class="contrast-card"><p class="contrast-prompt">两句话只有一句是对的——点出你认为对的那句：</p>' +
+      '<div class="option-row"><div class="option"><b>A</b>' + c[0] + '</div><div class="option"><b>B</b>' + c[1] + '</div></div></div>').join("") + '</div>';
+
+  const actions = () => '<div class="lesson-actions"><a class="primary-button" href="#">' + flame + '趁热再练 2 分钟</a>' +
+    '<a class="secondary-button" href="#">下一课：第 6 课 · 现在几点了</a><a class="ghost-link" href="#">返回课程地图</a></div>';
+
+  const body = (v) => heroLr(v) + sentenceHero() + variantStrip() + gapStrip() + practice() + actions();
+
+  const variants = [
+    { key: "g1", label: "G1 · 角标点数", title: "G1 · 角标点数（最轻）—— 移到右上角，三行轻信息",
+      notes: ["角标绝对定位在页面右上角，脱离内容流——不再和标题、说明挤在同一条水平带上", "内容保持 F1 的三行：季名 / 12 个点 / 本季第 5 / 12 课；视觉重量最轻", "窄屏（<800px）自动回退成内容流里的居中块，不会压住标题"] },
+    { key: "g2", label: "G2 · 角标 HUD", title: "G2 · 角标 HUD —— 做成一块紧凑的小仪表",
+      notes: ["右上角是一块独立小卡：大数字 5 +「/ 12 课 · 第一季」+ 一条细进度条", "有边框和轻阴影，明确「这是一块独立信息」，和主体内容彻底分离", "信息最紧凑（一行数字 + 一条线），占用面积最小"] },
+    { key: "g3", label: "G3 · 角标进度环", title: "G3 · 角标进度环 —— 圆环进度 + 「还剩 7 课」",
+      notes: ["右上角是 46px 进度环（环内显示 5/12），左侧配季名与「还剩 7 课」", "圆环的完成度是图形化的——不读数字也能一眼看出「快一半了」", "「还剩 7 课」把进度翻译成下一步目标，比百分比更有推动力"] }
+  ];
+
+  const panels = document.querySelector(".panels");
+  const tabs = document.getElementById("tabs");
+  for (const v of variants) {
+    const section = document.createElement("section");
+    section.className = "panel";
+    section.id = "panel-" + v.key;
+    section.innerHTML = '<div class="note"><h3>' + v.title + '</h3><ul>' +
+      v.notes.map(n => "<li>" + n + "</li>").join("") + "</ul></div>" +
+      '<div class="frame dbase gbase v-' + v.key + '">' + body(v.key) + '</div>';
+    panels.appendChild(section);
+    const btn = document.createElement("button");
+    btn.dataset.tab = v.key;
+    btn.textContent = v.label;
+    tabs.appendChild(btn);
+  }
+})();
+</script>
+</body>
+</html>

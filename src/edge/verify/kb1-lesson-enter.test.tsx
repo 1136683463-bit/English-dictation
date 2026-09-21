@@ -199,19 +199,21 @@ describe("KB1 课程页输入框键盘路径", () => {
     // 通过后输入框整体被替换成反馈卡（元素被卸载）
     const stillThere = page.container.contains(field);
     expect(stillThere, "通过后输入框应被卸载").toBe(false);
-    // willing-to-fail：当前行为是焦点掉到 body（全仓库唯一一处 .focus() 在 ConfirmDialog.tsx:38，
-    // 课程页没有任何「判题后归还焦点」的代码）。修好后把断言翻成 toBe(true)。
+    /**
+     * 修复后：判题后焦点被交回内容区（`useReturnFocus` + 依赖键含 recallOutcome）。
+     * 修复前这里恒为 false——被点/被卸载的元素把焦点退回 body，无任何补偿。
+     */
     const active = document.activeElement as HTMLElement | null;
     const landedInPage = active ? page.container.contains(active) : false;
     expect(
       landedInPage,
-      "当前行为（缺陷）：判题后焦点掉到 body（实际 activeElement=" +
+      "判题后焦点应仍在页面内（实际 activeElement=" +
         (active ? `${active.tagName}.${active.className}` : "null") + "）"
-    ).toBe(false);
-    // 对比：反馈卡里就有可继续的按钮，只是没人把焦点交给它
+    ).toBe(true);
+    // 落点就是反馈卡里的可继续按钮
     expect(
       page.container.querySelector(".lesson-feedback.pass .primary-button"),
-      "反馈卡里有可继续的按钮（有靶子但没落焦）"
+      "反馈卡里应有可继续的按钮"
     ).toBeTruthy();
     page.unmount();
   });

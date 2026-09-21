@@ -1,0 +1,568 @@
+{
+  "scannedAt": "2026-09-21",
+  "cards": 3666,
+  "tasks": 10998,
+  "byMode": {
+    "cloze": 3666,
+    "rebuild": 3666,
+    "free_type": 3666
+  },
+  "counts": {
+    "sentenceNotASentence": 1461,
+    "clozeBlankNotContentWord": 118,
+    "clozeAnswerVisibleInPrompt": 4,
+    "clozeFewerThanFourOptions": 656,
+    "clozeSingleOption": 291,
+    "rebuildTooFewChunks": 371,
+    "rebuildAlreadySolved": 1,
+    "rebuildFallbackIneffective": 1,
+    "freeTypePromptEchoesAnswer": 1,
+    "huntDuplicateCardsSameFront": 202,
+    "distractorNotRealWord": 3,
+    "weakDistractors": 1827
+  },
+  "severities": {
+    "sentenceNotASentence": "P2",
+    "clozeBlankNotContentWord": "P1",
+    "clozeAnswerVisibleInPrompt": "P1",
+    "clozeFewerThanFourOptions": "P1",
+    "clozeSingleOption": "P1",
+    "rebuildTooFewChunks": "P0",
+    "rebuildAlreadySolved": "P0",
+    "rebuildFallbackIneffective": "P0",
+    "freeTypePromptEchoesAnswer": "P2",
+    "huntDuplicateCardsSameFront": "P1",
+    "distractorNotRealWord": "P0",
+    "weakDistractors": "P1"
+  },
+  "samples": [
+    {
+      "check": "sentenceNotASentence",
+      "severity": "P2",
+      "cardId": "lesson:lesson-01-am#guided0",
+      "origin": "lesson-01-am guided[0].choose",
+      "detail": "sentence 只有 1 个词（课内 guided 单词语答案是入队来源）",
+      "sample": "sentence=\"am\""
+    },
+    {
+      "check": "sentenceNotASentence",
+      "severity": "P2",
+      "cardId": "lesson:lesson-01-am#guided0",
+      "origin": "lesson-01-am guided[0].choose",
+      "detail": "sentence 只有 1 个词（课内 guided 单词语答案是入队来源）",
+      "sample": "sentence=\"am\""
+    },
+    {
+      "check": "sentenceNotASentence",
+      "severity": "P2",
+      "cardId": "lesson:lesson-01-am#guided0",
+      "origin": "lesson-01-am guided[0].choose",
+      "detail": "sentence 只有 1 个词（课内 guided 单词语答案是入队来源）",
+      "sample": "sentence=\"am\""
+    },
+    {
+      "check": "sentenceNotASentence",
+      "severity": "P2",
+      "cardId": "lesson:lesson-01-am#guided3",
+      "origin": "lesson-01-am guided[3].spot",
+      "detail": "sentence 只有 1 个词（课内 guided 单词语答案是入队来源）",
+      "sample": "sentence=\"is\""
+    },
+    {
+      "check": "sentenceNotASentence",
+      "severity": "P2",
+      "cardId": "lesson:lesson-01-am#guided3",
+      "origin": "lesson-01-am guided[3].spot",
+      "detail": "sentence 只有 1 个词（课内 guided 单词语答案是入队来源）",
+      "sample": "sentence=\"is\""
+    },
+    {
+      "check": "sentenceNotASentence",
+      "severity": "P2",
+      "cardId": "lesson:lesson-01-am#guided3",
+      "origin": "lesson-01-am guided[3].spot",
+      "detail": "sentence 只有 1 个词（课内 guided 单词语答案是入队来源）",
+      "sample": "sentence=\"is\""
+    },
+    {
+      "check": "sentenceNotASentence",
+      "severity": "P2",
+      "cardId": "lesson:lesson-01-am#guided4",
+      "origin": "lesson-01-am guided[4].replace",
+      "detail": "sentence 只有 1 个词（课内 guided 单词语答案是入队来源）",
+      "sample": "sentence=\"am\""
+    },
+    {
+      "check": "sentenceNotASentence",
+      "severity": "P2",
+      "cardId": "lesson:lesson-01-am#guided4",
+      "origin": "lesson-01-am guided[4].replace",
+      "detail": "sentence 只有 1 个词（课内 guided 单词语答案是入队来源）",
+      "sample": "sentence=\"am\""
+    },
+    {
+      "check": "clozeBlankNotContentWord",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#guided0",
+      "origin": "lesson-01-am guided[0].choose",
+      "detail": "挖空词 \"am\" 不满足「可挖实词」口径（<3 字母或非字母）",
+      "sample": "prompt=\"语法课：小美的一天 ① 我是谁——这句里的词是什么？\""
+    },
+    {
+      "check": "clozeBlankNotContentWord",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#guided3",
+      "origin": "lesson-01-am guided[3].spot",
+      "detail": "挖空词 \"is\" 不满足「可挖实词」口径（<3 字母或非字母）",
+      "sample": "prompt=\"语法课：小美的一天 ① 我是谁——这句里的词是什么？\""
+    },
+    {
+      "check": "clozeBlankNotContentWord",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#guided4",
+      "origin": "lesson-01-am guided[4].replace",
+      "detail": "挖空词 \"am\" 不满足「可挖实词」口径（<3 字母或非字母）",
+      "sample": "prompt=\"语法课：小美的一天 ① 我是谁——这句里的词是什么？\""
+    },
+    {
+      "check": "clozeBlankNotContentWord",
+      "severity": "P1",
+      "cardId": "lesson:lesson-02-is#guided0",
+      "origin": "lesson-02-is guided[0].choose",
+      "detail": "挖空词 \"is\" 不满足「可挖实词」口径（<3 字母或非字母）",
+      "sample": "prompt=\"语法课：小美的一天 ② 你是谁，他是谁——这句里的词是什么？\""
+    },
+    {
+      "check": "clozeBlankNotContentWord",
+      "severity": "P1",
+      "cardId": "lesson:lesson-02-is#guided3",
+      "origin": "lesson-02-is guided[3].spot",
+      "detail": "挖空词 \"am\" 不满足「可挖实词」口径（<3 字母或非字母）",
+      "sample": "prompt=\"语法课：小美的一天 ② 你是谁，他是谁——这句里的词是什么？\""
+    },
+    {
+      "check": "clozeBlankNotContentWord",
+      "severity": "P1",
+      "cardId": "lesson:lesson-02-is#guided5",
+      "origin": "lesson-02-is guided[5].replace",
+      "detail": "挖空词 \"is\" 不满足「可挖实词」口径（<3 字母或非字母）",
+      "sample": "prompt=\"语法课：小美的一天 ② 你是谁，他是谁——这句里的词是什么？\""
+    },
+    {
+      "check": "clozeBlankNotContentWord",
+      "severity": "P1",
+      "cardId": "lesson:lesson-04-want#guided0",
+      "origin": "lesson-04-want guided[0].choose",
+      "detail": "挖空词 \"an\" 不满足「可挖实词」口径（<3 字母或非字母）",
+      "sample": "prompt=\"语法课：小美的一天 ④ 我想要一杯奶茶——这句里的词是什么？\""
+    },
+    {
+      "check": "clozeBlankNotContentWord",
+      "severity": "P1",
+      "cardId": "lesson:lesson-04-want#guided3",
+      "origin": "lesson-04-want guided[3].spot",
+      "detail": "挖空词 \"a\" 不满足「可挖实词」口径（<3 字母或非字母）",
+      "sample": "prompt=\"语法课：小美的一天 ④ 我想要一杯奶茶——这句里的词是什么？\""
+    },
+    {
+      "check": "clozeAnswerVisibleInPrompt",
+      "severity": "P1",
+      "cardId": "hunt:hunt-had-lost-key#err689",
+      "origin": "hunt-had-lost-key · addHuntGapSentences[[verb_form:lose] 动词形式：lose → lost。…]",
+      "detail": "答案词 \"had\" 仍出现在题面里（可直接照抄）",
+      "sample": "prompt=\"I ____ lost my key before I got home. I had lost my key before I got home.\""
+    },
+    {
+      "check": "clozeAnswerVisibleInPrompt",
+      "severity": "P1",
+      "cardId": "hunt:hunt-had-lost-key#err690",
+      "origin": "hunt-had-lost-key · addHuntGapSentences[[tense:have] 时态变形：have → had。两件都是过…]",
+      "detail": "答案词 \"got\" 仍出现在题面里（可直接照抄）",
+      "sample": "prompt=\"I had lost my key before I ____ home. I had lost my key before I got home.\""
+    },
+    {
+      "check": "clozeAnswerVisibleInPrompt",
+      "severity": "P1",
+      "cardId": "hunt:hunt-shall-we-quiet#err691",
+      "origin": "hunt-shall-we-quiet · addHuntGapSentences[[verb_form:to] 动词形式：to → （去掉 to）。S…]",
+      "detail": "答案词 \"take\" 仍出现在题面里（可直接照抄）",
+      "sample": "prompt=\"Shall we ____ the quiet way? Shall we take the quiet way?\""
+    },
+    {
+      "check": "clozeAnswerVisibleInPrompt",
+      "severity": "P1",
+      "cardId": "hunt:hunt-shall-we-quiet#err692",
+      "origin": "hunt-shall-we-quiet · addHuntGapSentences[[word_order:you] 语序：you → we。Shall…]",
+      "detail": "答案词 \"quiet\" 仍出现在题面里（可直接照抄）",
+      "sample": "prompt=\"Shall we take the ____ way? Shall we take the quiet way?\""
+    },
+    {
+      "check": "clozeFewerThanFourOptions",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am",
+      "origin": "lesson-01-am · addLessonCoreSentence",
+      "detail": "只有 3 个选项（设计为四选一）",
+      "sample": "options=[\"i\",\"Xiaomei\",\"am\"] prompt=\"I am ____\""
+    },
+    {
+      "check": "clozeFewerThanFourOptions",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#guided0",
+      "origin": "lesson-01-am guided[0].choose",
+      "detail": "只有 3 个选项（设计为四选一）",
+      "sample": "options=[\"is\",\"are\",\"am\"] prompt=\"语法课：小美的一天 ① 我是谁——这句里的词是什么？\""
+    },
+    {
+      "check": "clozeFewerThanFourOptions",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#guided2",
+      "origin": "lesson-01-am guided[2].arrange",
+      "detail": "只有 3 个选项（设计为四选一）",
+      "sample": "options=[\"Xiaoming\",\"i\",\"am\"] prompt=\"I am ____\""
+    },
+    {
+      "check": "clozeFewerThanFourOptions",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#guided3",
+      "origin": "lesson-01-am guided[3].spot",
+      "detail": "只有 3 个选项（设计为四选一）",
+      "sample": "options=[\"am\",\"is\",\"are\"] prompt=\"语法课：小美的一天 ① 我是谁——这句里的词是什么？\""
+    },
+    {
+      "check": "clozeFewerThanFourOptions",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#guided4",
+      "origin": "lesson-01-am guided[4].replace",
+      "detail": "只有 3 个选项（设计为四选一）",
+      "sample": "options=[\"is\",\"are\",\"am\"] prompt=\"语法课：小美的一天 ① 我是谁——这句里的词是什么？\""
+    },
+    {
+      "check": "clozeFewerThanFourOptions",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#practice0",
+      "origin": "lesson-01-am practice[0]",
+      "detail": "只有 3 个选项（设计为四选一）",
+      "sample": "options=[\"am\",\"i\",\"tired\"] prompt=\"I am ____\""
+    },
+    {
+      "check": "clozeFewerThanFourOptions",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#practice2",
+      "origin": "lesson-01-am practice[2]",
+      "detail": "只有 3 个选项（设计为四选一）",
+      "sample": "options=[\"hungry\",\"am\",\"i\"] prompt=\"I am ____\""
+    },
+    {
+      "check": "clozeFewerThanFourOptions",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#recall",
+      "origin": "lesson-01-am recall",
+      "detail": "只有 3 个选项（设计为四选一）",
+      "sample": "options=[\"i\",\"Xiaomei\",\"am\"] prompt=\"I am ____\""
+    },
+    {
+      "check": "clozeSingleOption",
+      "severity": "P1",
+      "cardId": "lesson:lesson-05-like#guided0",
+      "origin": "lesson-05-like guided[0].choose",
+      "detail": "只有一个选项：点一下即通过（没有干扰项的选择题）",
+      "sample": "answer=\"dogs\" options=[\"dogs\"] card.front=\"dogs\""
+    },
+    {
+      "check": "clozeSingleOption",
+      "severity": "P1",
+      "cardId": "lesson:lesson-05-like#guided5",
+      "origin": "lesson-05-like guided[5].replace",
+      "detail": "只有一个选项：点一下即通过（没有干扰项的选择题）",
+      "sample": "answer=\"likes\" options=[\"likes\"] card.front=\"likes\""
+    },
+    {
+      "check": "clozeSingleOption",
+      "severity": "P1",
+      "cardId": "lesson:lesson-08-my#guided3",
+      "origin": "lesson-08-my guided[3].spot",
+      "detail": "只有一个选项：点一下即通过（没有干扰项的选择题）",
+      "sample": "answer=\"I\" options=[\"I\"] card.front=\"I\""
+    },
+    {
+      "check": "clozeSingleOption",
+      "severity": "P1",
+      "cardId": "lesson:lesson-08-my#guided5",
+      "origin": "lesson-08-my guided[5].replace",
+      "detail": "只有一个选项：点一下即通过（没有干扰项的选择题）",
+      "sample": "answer=\"her\" options=[\"her\"] card.front=\"her\""
+    },
+    {
+      "check": "clozeSingleOption",
+      "severity": "P1",
+      "cardId": "lesson:lesson-09-go#guided0",
+      "origin": "lesson-09-go guided[0].choose",
+      "detail": "只有一个选项：点一下即通过（没有干扰项的选择题）",
+      "sample": "answer=\"to\" options=[\"to\"] card.front=\"to\""
+    },
+    {
+      "check": "clozeSingleOption",
+      "severity": "P1",
+      "cardId": "lesson:lesson-09-go#guided3",
+      "origin": "lesson-09-go guided[3].spot",
+      "detail": "只有一个选项：点一下即通过（没有干扰项的选择题）",
+      "sample": "answer=\"school\" options=[\"school\"] card.front=\"school.\""
+    },
+    {
+      "check": "clozeSingleOption",
+      "severity": "P1",
+      "cardId": "lesson:lesson-10-went#guided0",
+      "origin": "lesson-10-went guided[0].choose",
+      "detail": "只有一个选项：点一下即通过（没有干扰项的选择题）",
+      "sample": "answer=\"went\" options=[\"went\"] card.front=\"went\""
+    },
+    {
+      "check": "clozeSingleOption",
+      "severity": "P1",
+      "cardId": "lesson:lesson-10-went#guided3",
+      "origin": "lesson-10-went guided[3].spot",
+      "detail": "只有一个选项：点一下即通过（没有干扰项的选择题）",
+      "sample": "answer=\"go\" options=[\"go\"] card.front=\"go\""
+    },
+    {
+      "check": "rebuildTooFewChunks",
+      "severity": "P0",
+      "cardId": "lesson:lesson-01-am#guided0",
+      "origin": "lesson-01-am guided[0].choose",
+      "detail": "词块数 1 < 2：只有一个块，点一下即通过（题目无意义；卡源是课内 guided 单词语答案）",
+      "sample": "sentence=\"am\" scrambled=[\"am\"]"
+    },
+    {
+      "check": "rebuildTooFewChunks",
+      "severity": "P0",
+      "cardId": "lesson:lesson-01-am#guided3",
+      "origin": "lesson-01-am guided[3].spot",
+      "detail": "词块数 1 < 2：只有一个块，点一下即通过（题目无意义；卡源是课内 guided 单词语答案）",
+      "sample": "sentence=\"is\" scrambled=[\"is\"]"
+    },
+    {
+      "check": "rebuildTooFewChunks",
+      "severity": "P0",
+      "cardId": "lesson:lesson-01-am#guided4",
+      "origin": "lesson-01-am guided[4].replace",
+      "detail": "词块数 1 < 2：只有一个块，点一下即通过（题目无意义；卡源是课内 guided 单词语答案）",
+      "sample": "sentence=\"am\" scrambled=[\"am\"]"
+    },
+    {
+      "check": "rebuildTooFewChunks",
+      "severity": "P0",
+      "cardId": "lesson:lesson-02-is#guided0",
+      "origin": "lesson-02-is guided[0].choose",
+      "detail": "词块数 1 < 2：只有一个块，点一下即通过（题目无意义；卡源是课内 guided 单词语答案）",
+      "sample": "sentence=\"is\" scrambled=[\"is\"]"
+    },
+    {
+      "check": "rebuildTooFewChunks",
+      "severity": "P0",
+      "cardId": "lesson:lesson-02-is#guided3",
+      "origin": "lesson-02-is guided[3].spot",
+      "detail": "词块数 1 < 2：只有一个块，点一下即通过（题目无意义；卡源是课内 guided 单词语答案）",
+      "sample": "sentence=\"am\" scrambled=[\"am\"]"
+    },
+    {
+      "check": "rebuildTooFewChunks",
+      "severity": "P0",
+      "cardId": "lesson:lesson-02-is#guided5",
+      "origin": "lesson-02-is guided[5].replace",
+      "detail": "词块数 1 < 2：只有一个块，点一下即通过（题目无意义；卡源是课内 guided 单词语答案）",
+      "sample": "sentence=\"is\" scrambled=[\"is\"]"
+    },
+    {
+      "check": "rebuildTooFewChunks",
+      "severity": "P0",
+      "cardId": "lesson:lesson-03-have#guided0",
+      "origin": "lesson-03-have guided[0].choose",
+      "detail": "词块数 1 < 2：只有一个块，点一下即通过（题目无意义；卡源是课内 guided 单词语答案）",
+      "sample": "sentence=\"have\" scrambled=[\"have\"]"
+    },
+    {
+      "check": "rebuildTooFewChunks",
+      "severity": "P0",
+      "cardId": "lesson:lesson-03-have#guided3",
+      "origin": "lesson-03-have guided[3].spot",
+      "detail": "词块数 1 < 2：只有一个块，点一下即通过（题目无意义；卡源是课内 guided 单词语答案）",
+      "sample": "sentence=\"have\" scrambled=[\"have\"]"
+    },
+    {
+      "check": "rebuildAlreadySolved",
+      "severity": "P0",
+      "cardId": "lesson:lesson-65-as-as#guided5",
+      "origin": "lesson-65-as-as guided[5].replace",
+      "detail": "多词句打乱结果恰好等于原句：不用做就对了（「若相等则交换首尾」兜底在首尾词相同时失效）",
+      "sample": "sentence=\"as smart as\" scrambled=[\"as\",\"smart\",\"as\"]"
+    },
+    {
+      "check": "rebuildFallbackIneffective",
+      "severity": "P0",
+      "cardId": "lesson:lesson-65-as-as#guided5",
+      "origin": "lesson-65-as-as guided[5].replace",
+      "detail": "首尾词相同导致「若相等则交换首尾」兜底失效，打乱后仍等于原句",
+      "sample": "sentence=\"as smart as\" scrambled=[\"as\",\"smart\",\"as\"]"
+    },
+    {
+      "check": "freeTypePromptEchoesAnswer",
+      "severity": "P2",
+      "cardId": "lesson:lesson-127-two-look-faces#guided3",
+      "origin": "lesson-127-two-look-faces guided[3].spot",
+      "detail": "卡片 note 里含完整答案文本，free_type 题面直接引用 note（泄题）",
+      "sample": "note=\"语法课：小美的一天 一百二十七 同一个 look，两张脸（收口）\" front=\"look\""
+    },
+    {
+      "check": "huntDuplicateCardsSameFront",
+      "severity": "P1",
+      "cardId": "hunt:hunt-moving-day#err0",
+      "origin": "hunt-moving-day · addHuntGapSentences[[tense:move] 时态变形：move → moved。Las…]",
+      "detail": "同一案件的 4 张卡正面完全相同（同一句话会在一次复习里出现 4 次）",
+      "sample": "front=\"Last week I moved to a new home. It was small but quiet. My sister helped me car…\" ids=hunt:hunt-moving-day#err0, hunt:hunt-moving-day#err1, hunt:hunt-moving-day#err2, hunt:hunt-moving-day#err3"
+    },
+    {
+      "check": "huntDuplicateCardsSameFront",
+      "severity": "P1",
+      "cardId": "hunt:hunt-yesterday-park#err4",
+      "origin": "hunt-yesterday-park · addHuntGapSentences[[tense:go] 时态变形：go → went。Yesterda…]",
+      "detail": "同一案件的 2 张卡正面完全相同（同一句话会在一次复习里出现 2 次）",
+      "sample": "front=\"Yesterday I went to the park with my friend. We saw a lot of birds.…\" ids=hunt:hunt-yesterday-park#err4, hunt:hunt-yesterday-park#err5"
+    },
+    {
+      "check": "huntDuplicateCardsSameFront",
+      "severity": "P1",
+      "cardId": "hunt:hunt-my-sister#err6",
+      "origin": "hunt-my-sister · addHuntGapSentences[[sv_agreement:like] 主谓一致：like → li…]",
+      "detail": "同一案件的 2 张卡正面完全相同（同一句话会在一次复习里出现 2 次）",
+      "sample": "front=\"My sister likes reading books. She goes to the library every week.…\" ids=hunt:hunt-my-sister#err6, hunt:hunt-my-sister#err7"
+    },
+    {
+      "check": "huntDuplicateCardsSameFront",
+      "severity": "P1",
+      "cardId": "hunt:hunt-breakfast#err8",
+      "origin": "hunt-breakfast · addHuntGapSentences[[article:a] 冠词：a → an。egg 以元音音素开头，…]",
+      "detail": "同一案件的 4 张卡正面完全相同（同一句话会在一次复习里出现 4 次）",
+      "sample": "front=\"I have an egg and three sandwiches for breakfast. My brother eats two bananas.…\" ids=hunt:hunt-breakfast#err8, hunt:hunt-breakfast#err9, hunt:hunt-breakfast#err10, hunt:hunt-breakfast#err11"
+    },
+    {
+      "check": "huntDuplicateCardsSameFront",
+      "severity": "P1",
+      "cardId": "hunt:hunt-call-mother#err12",
+      "origin": "hunt-call-mother · addHuntGapSentences[[missing_be:happy] 缺 be 动词：happy →…]",
+      "detail": "同一案件的 2 张卡正面完全相同（同一句话会在一次复习里出现 2 次）",
+      "sample": "front=\"My mother is happy today because I called her from the station. She very is glad…\" ids=hunt:hunt-call-mother#err12, hunt:hunt-call-mother#err13"
+    },
+    {
+      "check": "huntDuplicateCardsSameFront",
+      "severity": "P1",
+      "cardId": "hunt:hunt-prepositions#err14",
+      "origin": "hunt-prepositions · addHuntGapSentences[[preposition:at] 介词：at → in。国家、城市这…]",
+      "detail": "同一案件的 3 张卡正面完全相同（同一句话会在一次复习里出现 3 次）",
+      "sample": "front=\"I live in China. She is good at math. We arrived at the station late.…\" ids=hunt:hunt-prepositions#err14, hunt:hunt-prepositions#err15, hunt:hunt-prepositions#err16"
+    },
+    {
+      "check": "huntDuplicateCardsSameFront",
+      "severity": "P1",
+      "cardId": "hunt:hunt-because-so#err17",
+      "origin": "hunt-because-so · addHuntGapSentences[[run_on:so] 连接词误用：so → 去掉 so。中文的「因…]",
+      "detail": "同一案件的 2 张卡正面完全相同（同一句话会在一次复习里出现 2 次）",
+      "sample": "front=\"Because I was tired, I went to bed early. Though it was cold, we went out.…\" ids=hunt:hunt-because-so#err17, hunt:hunt-because-so#err18"
+    },
+    {
+      "check": "huntDuplicateCardsSameFront",
+      "severity": "P1",
+      "cardId": "hunt:hunt-tense-jump#err19",
+      "origin": "hunt-tense-jump · addHuntGapSentences[[tense:talk] 时态变形：talk → talked。前面…]",
+      "detail": "同一案件的 2 张卡正面完全相同（同一句话会在一次复习里出现 2 次）",
+      "sample": "front=\"I met my old friend yesterday. We talked for hours and laughed a lot.…\" ids=hunt:hunt-tense-jump#err19, hunt:hunt-tense-jump#err20"
+    },
+    {
+      "check": "distractorNotRealWord",
+      "severity": "P0",
+      "cardId": "lesson:lesson-14-can#variant1",
+      "origin": "lesson-14-can variants[1](否定)",
+      "detail": "干扰项 \"mustn't\" 不是英语词",
+      "sample": "lesson:lesson-14-can#variant1 answer=\"can't\""
+    },
+    {
+      "check": "distractorNotRealWord",
+      "severity": "P0",
+      "cardId": "hunt:hunt-late-note#err84",
+      "origin": "hunt-late-note · addHuntGapSentences[[fragment:Because] 句子残缺：Because → …]",
+      "detail": "干扰项 \"wore\" 不是英语词",
+      "sample": "hunt:hunt-late-note#err84 answer=\"two\""
+    },
+    {
+      "check": "distractorNotRealWord",
+      "severity": "P0",
+      "cardId": "hunt:hunt-enough-bag#err287",
+      "origin": "hunt-enough-bag · addHuntGapSentences[[preposition:for] 介词：for → to。后面接动…]",
+      "detail": "干扰项 \"heavier\" 不是英语词",
+      "sample": "hunt:hunt-enough-bag#err287 answer=\"light\""
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am",
+      "origin": "lesson-01-am · addLessonCoreSentence",
+      "detail": "有效干扰项只有 1 个（题目近似白送）",
+      "sample": "lesson:lesson-01-am answer=\"Xiaomei\" options=[\"i\",\"Xiaomei\",\"am\"] prompt=\"I am ____\" 有效=1"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#guided2",
+      "origin": "lesson-01-am guided[2].arrange",
+      "detail": "有效干扰项只有 0 个（题目近似白送）",
+      "sample": "lesson:lesson-01-am#guided2 answer=\"Xiaoming\" options=[\"Xiaoming\",\"i\",\"am\"] prompt=\"I am ____\" 有效=0"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#practice0",
+      "origin": "lesson-01-am practice[0]",
+      "detail": "有效干扰项只有 0 个（题目近似白送）",
+      "sample": "lesson:lesson-01-am#practice0 answer=\"tired\" options=[\"am\",\"i\",\"tired\"] prompt=\"I am ____\" 有效=0"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#practice2",
+      "origin": "lesson-01-am practice[2]",
+      "detail": "有效干扰项只有 1 个（题目近似白送）",
+      "sample": "lesson:lesson-01-am#practice2 answer=\"hungry\" options=[\"hungry\",\"am\",\"i\"] prompt=\"I am ____\" 有效=1"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#practice3",
+      "origin": "lesson-01-am practice[3]",
+      "detail": "有效干扰项只有 1 个（题目近似白送）",
+      "sample": "lesson:lesson-01-am#practice3 answer=\"not\" options=[\"tired\",\"i\",\"not\",\"am\"] prompt=\"I am ____ tired.\" 有效=1"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#recall",
+      "origin": "lesson-01-am recall",
+      "detail": "有效干扰项只有 1 个（题目近似白送）",
+      "sample": "lesson:lesson-01-am#recall answer=\"Xiaomei\" options=[\"i\",\"Xiaomei\",\"am\"] prompt=\"I am ____\" 有效=1"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "cardId": "lesson:lesson-01-am#variant1",
+      "origin": "lesson-01-am variants[1](否定)",
+      "detail": "有效干扰项只有 1 个（题目近似白送）",
+      "sample": "lesson:lesson-01-am#variant1 answer=\"not\" options=[\"tired\",\"i\",\"not\",\"am\"] prompt=\"I am ____ tired.\" 有效=1"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "cardId": "lesson:lesson-02-is#guided1",
+      "origin": "lesson-02-is guided[1].arrange",
+      "detail": "有效干扰项只有 0 个（题目近似白送）",
+      "sample": "lesson:lesson-02-is#guided1 answer=\"are\" options=[\"are\",\"my\",\"you\",\"friend\"] prompt=\"You ____ my friend.\" 有效=0"
+    }
+  ]
+}

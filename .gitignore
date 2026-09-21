@@ -23,3 +23,8 @@ deliverables/sync/
 # 本地产物（ZCode 会话计划与封面处理临时目录）
 .zcode/
 .covers-tmp/
+
+# 外部审计进程的过程产物（无障碍/拖拽/键盘/阶段报告）
+.ixfind/
+.rvfind/
+/design-verify.html

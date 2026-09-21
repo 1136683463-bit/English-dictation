@@ -110,7 +110,7 @@ describe("ST1 · 段间状态残留", () => {
    * 上一题的正确句子还在、词块库全禁用、没有任何反馈 —— 用户看到一句已经拼好的
    * 第 1 题且不知道下一步该做什么。
    */
-  it("FAIL-1 练习段答完一题后回讲解再回来：上一题拼装序残留在第 1 题", async () => {
+  it("【已修 2026-09-21】FAIL-1 练习段答完一题后回讲解再回来：第 1 题是干净的", async () => {
     seed();
     const page = mount();
     enterPracticeFromPretest(page);
@@ -161,8 +161,8 @@ describe("ST1 · 段间状态残留", () => {
     // ★ 缺陷：拼装区不是干净的
     expect(
       builtChips(page).map((chip) => chip.textContent),
-      "★ 缺陷：practiceOrder 未随 gotoStage(\"practice\") 清空——第 1 题开局就摆着上一题的答案"
-    ).toEqual(["I", "am", "reading", "a", "book."]);
+      "进段时 practiceOrder 应被清空——第 1 题应是空的"
+    ).toEqual([]);
     const bankDisabled = bankChips(page).filter((chip) => chip.disabled).length;
     expect(
       bankDisabled,
@@ -196,7 +196,7 @@ describe("ST1 · 段间状态残留", () => {
    * guidedOrder），用户按答案一次性摆满 5 块时 `5 !== 5` 不成立 → 判题被跳过，
    * 页面停在「无反馈、无出口」的死状态。
    */
-  it("FAIL-2 引导段首题 arrange 拼满答案不判题，整屏无出口（判题去抖 ref 跨段残留）", async () => {
+  it("【已修 2026-09-21】FAIL-2 引导段首题 arrange 拼满答案会正常判题", async () => {
     seed();
     const page = mount();
     enterPracticeFromPretest(page);
@@ -257,7 +257,7 @@ describe("ST1 · 段间状态残留", () => {
    * 于是：题面回到第 1 题、拼装区仍摆着上一轮的正确句子、词块库全禁用、
    * guidedFeedback 已被重置成 idle → 通过反馈与「下一题」按钮同时消失，页面无出口。
    */
-  it("FAIL-3 引导段答对后回讲解再回引导段：拼装序残留 + 出口全无", async () => {
+  it("【已修 2026-09-21】FAIL-3 引导段答对后回讲解再回引导段：拼装区是干净的", async () => {
     seed();
     const page = mount();
     enterPracticeFromPretest(page);
@@ -305,7 +305,7 @@ describe("ST1 · 段间状态残留", () => {
    * 引导段**未答完**（只摆了一部分块）就回看讲解：回段后拼装序同样残留，
    * 用户看到的是「第 1 题开局就摆着半句上一轮的话」——不是干净初始态。
    */
-  it("FAIL-3b 引导段摆块未提交就回讲解：回段后拼装序残留", async () => {
+  it("【已修 2026-09-21】FAIL-3b 引导段摆块未提交就回讲解：回段后拼装区是干净的", async () => {
     seed();
     const page = mount();
     enterPracticeFromPretest(page);
@@ -329,8 +329,8 @@ describe("ST1 · 段间状态残留", () => {
 
     expect(
       builtChips(page).map((chip) => chip.textContent),
-      `★ 缺陷：离开引导段时拼装序 ${JSON.stringify(partial)} 未被清理，回来仍是脏初始态`
-    ).toEqual(partial);
+      `离开引导段后拼装序（${JSON.stringify(partial)}）应被清理，回来应是干净初始态`
+    ).toEqual([]);
     page.unmount();
   });
 

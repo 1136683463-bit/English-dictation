@@ -1,0 +1,1213 @@
+{
+  "scannedAt": "2026-09-21",
+  "lessons": 193,
+  "forcedRounds": 16,
+  "weakSpotTags": 11,
+  "callSamples": 62532,
+  "uniqueItems": 6575,
+  "kinds": {
+    "contrast": 4107,
+    "rebuild": 386,
+    "arrange": 211,
+    "spot": 193,
+    "listen": 193,
+    "cloze": 193,
+    "replace": 193,
+    "recall": 193,
+    "produce": 193,
+    "variant": 193,
+    "fix": 193,
+    "translate": 175,
+    "bothright": 152
+  },
+  "counts": {
+    "bothRightAsWrong": 11,
+    "listenDistractorBothRight": 1,
+    "variantLabelMismatch": 2,
+    "zhMultiAnswerSingleKey": 34,
+    "fabricatedDistractor": 2,
+    "weakDistractors": 66,
+    "clozeAnswerVisible": 1
+  },
+  "severities": {
+    "bothRightAsWrong": "P0",
+    "listenDistractorBothRight": "P1",
+    "variantLabelMismatch": "P1",
+    "zhMultiAnswerSingleKey": "P1",
+    "fabricatedDistractor": "P0",
+    "weakDistractors": "P1",
+    "clozeAnswerVisible": "P1"
+  },
+  "samples": [
+    {
+      "check": "bothRightAsWrong",
+      "severity": "P0",
+      "lessonId": "lesson-76-much-better",
+      "itemId": "boost-lesson-76-much-better-t1-contrast-0",
+      "kind": "contrast",
+      "tier": 1,
+      "detail": "bothRight（两句都对）素材被当成「这句写错了」的题面：用户选「没问题」反被判错",
+      "sample": "boost-lesson-76-much-better-t1-contrast-0 t1 kind=contrast contrast.sentence=\"How much milk is there?\" correct=\"I feel much better.\""
+    },
+    {
+      "check": "bothRightAsWrong",
+      "severity": "P0",
+      "lessonId": "lesson-76-much-better",
+      "itemId": "boost-lesson-76-much-better-t3-fix-0",
+      "kind": "fix",
+      "tier": 3,
+      "detail": "bothRight（两句都对）素材被当成「这句写错了」的题面：用户选「没问题」反被判错",
+      "sample": "boost-lesson-76-much-better-t3-fix-0 t3 kind=fix shapedFrom=\"How much milk is there?\" answer=\"I feel much better.\""
+    },
+    {
+      "check": "bothRightAsWrong",
+      "severity": "P0",
+      "lessonId": "lesson-77-keep-doing-review-lesson-76-much-better-0",
+      "itemId": "boost-lesson-77-keep-doing-review-lesson-76-much-better-0",
+      "kind": "contrast",
+      "tier": 1,
+      "detail": "bothRight（两句都对）素材被当成「这句写错了」的题面：用户选「没问题」反被判错",
+      "sample": "boost-lesson-77-keep-doing-review-lesson-76-much-better-0 t1 kind=contrast contrast.sentence=\"How much milk is there?\" correct=\"I feel much better.\""
+    },
+    {
+      "check": "bothRightAsWrong",
+      "severity": "P0",
+      "lessonId": "lesson-77-keep-doing-review-lesson-76-much-better-0",
+      "itemId": "boost-lesson-77-keep-doing-review-lesson-76-much-better-0-t2",
+      "kind": "contrast",
+      "tier": 2,
+      "detail": "bothRight（两句都对）素材被当成「这句写错了」的题面：用户选「没问题」反被判错",
+      "sample": "boost-lesson-77-keep-doing-review-lesson-76-much-better-0-t2 t2 kind=contrast contrast.sentence=\"How much milk is there?\" correct=\"I feel much better.\""
+    },
+    {
+      "check": "bothRightAsWrong",
+      "severity": "P0",
+      "lessonId": "lesson-87-its-cold",
+      "itemId": "boost-lesson-87-its-cold-t1-contrast-0",
+      "kind": "contrast",
+      "tier": 1,
+      "detail": "bothRight（两句都对）素材被当成「这句写错了」的题面：用户选「没问题」反被判错",
+      "sample": "boost-lesson-87-its-cold-t1-contrast-0 t1 kind=contrast contrast.sentence=\"It's cold today.\" correct=\"It is cold today.\""
+    },
+    {
+      "check": "bothRightAsWrong",
+      "severity": "P0",
+      "lessonId": "lesson-87-its-cold",
+      "itemId": "boost-lesson-87-its-cold-t3-fix-0",
+      "kind": "fix",
+      "tier": 3,
+      "detail": "bothRight（两句都对）素材被当成「这句写错了」的题面：用户选「没问题」反被判错",
+      "sample": "boost-lesson-87-its-cold-t3-fix-0 t3 kind=fix shapedFrom=\"It's cold today.\" answer=\"It is cold today.\""
+    },
+    {
+      "check": "bothRightAsWrong",
+      "severity": "P0",
+      "lessonId": "lesson-114-a-few",
+      "itemId": "boost-lesson-114-a-few-t1-contrast-0",
+      "kind": "contrast",
+      "tier": 1,
+      "detail": "bothRight（两句都对）素材被当成「这句写错了」的题面：用户选「没问题」反被判错",
+      "sample": "boost-lesson-114-a-few-t1-contrast-0 t1 kind=contrast contrast.sentence=\"There are few apples.\" correct=\"There are a few apples.\""
+    },
+    {
+      "check": "bothRightAsWrong",
+      "severity": "P0",
+      "lessonId": "lesson-114-a-few",
+      "itemId": "boost-lesson-114-a-few-t3-fix-0",
+      "kind": "fix",
+      "tier": 3,
+      "detail": "bothRight（两句都对）素材被当成「这句写错了」的题面：用户选「没问题」反被判错",
+      "sample": "boost-lesson-114-a-few-t3-fix-0 t3 kind=fix shapedFrom=\"There are few apples.\" answer=\"There are a few apples.\""
+    },
+    {
+      "check": "bothRightAsWrong",
+      "severity": "P0",
+      "lessonId": "lesson-115-have-got-review-lesson-114-a-few-0",
+      "itemId": "boost-lesson-115-have-got-review-lesson-114-a-few-0",
+      "kind": "contrast",
+      "tier": 1,
+      "detail": "bothRight（两句都对）素材被当成「这句写错了」的题面：用户选「没问题」反被判错",
+      "sample": "boost-lesson-115-have-got-review-lesson-114-a-few-0 t1 kind=contrast contrast.sentence=\"There are few apples.\" correct=\"There are a few apples.\""
+    },
+    {
+      "check": "bothRightAsWrong",
+      "severity": "P0",
+      "lessonId": "lesson-115-have-got-review-lesson-114-a-few-0",
+      "itemId": "boost-lesson-115-have-got-review-lesson-114-a-few-0-t2",
+      "kind": "contrast",
+      "tier": 2,
+      "detail": "bothRight（两句都对）素材被当成「这句写错了」的题面：用户选「没问题」反被判错",
+      "sample": "boost-lesson-115-have-got-review-lesson-114-a-few-0-t2 t2 kind=contrast contrast.sentence=\"There are few apples.\" correct=\"There are a few apples.\""
+    },
+    {
+      "check": "bothRightAsWrong",
+      "severity": "P0",
+      "lessonId": "lesson-169-id-like",
+      "itemId": "boost-lesson-169-id-like-t3-fix-1",
+      "kind": "fix",
+      "tier": 3,
+      "detail": "bothRight（两句都对）素材被当成「这句写错了」的题面：用户选「没问题」反被判错",
+      "sample": "boost-lesson-169-id-like-t3-fix-1 t3 kind=fix shapedFrom=\"I'd like a cup of tea.\" answer=\"I would like a cup of tea.\""
+    },
+    {
+      "check": "listenDistractorBothRight",
+      "severity": "P1",
+      "lessonId": "lesson-114-a-few",
+      "itemId": "boost-lesson-114-a-few-t1-listen-0",
+      "kind": "listen",
+      "tier": 1,
+      "detail": "听力二选一的干扰项本身也是合法句子（只听语法差异，语义无提示力）",
+      "sample": "boost-lesson-114-a-few-t1-listen-0 t1 listen 干扰项=\"There are few apples.\"（播放=\"There are a few apples.\"）"
+    },
+    {
+      "check": "variantLabelMismatch",
+      "severity": "P1",
+      "lessonId": "lesson-66",
+      "itemId": "boost-lesson-66-too-to-t3-variant-否定",
+      "kind": "variant",
+      "tier": 3,
+      "detail": "题面要求写成「否定」形态，答案却不是否定句",
+      "sample": "promptZh=\"这句话还能换个说法——把它说成「否定」的样子。\" answer=\"It is too heavy for me.\""
+    },
+    {
+      "check": "variantLabelMismatch",
+      "severity": "P1",
+      "lessonId": "lesson-89-what-a-day",
+      "itemId": "boost-lesson-89-what-a-day-t3-variant-否定",
+      "kind": "variant",
+      "tier": 3,
+      "detail": "题面要求写成「否定」形态，答案却不是否定句",
+      "sample": "promptZh=\"这句话还能换个说法——把它说成「否定」的样子。\" answer=\"What a bad day!\""
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-05-like",
+      "itemId": "boost-lesson-05-like-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"我喜欢音乐。\" answer=\"I like music.\" 另一解=i like reading(lesson-05-like:example)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-05-like",
+      "itemId": "boost-lesson-05-like-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"我喜欢音乐。\" answer=\"I like music.\" 另一解=i like reading(lesson-05-like:example)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-10-went",
+      "itemId": "boost-lesson-10-went-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"我昨天去了公园。\" answer=\"Yesterday I went to the park.\" 另一解=i went to the park yesterday(lesson-24-past-vs-perfect:swing)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-10-went",
+      "itemId": "boost-lesson-10-went-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"我昨天去了公园。\" answer=\"Yesterday I went to the park.\" 另一解=i went to the park yesterday(lesson-24-past-vs-perfect:swing)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-15-want",
+      "itemId": "boost-lesson-15-want-to-t2-translate-examples-0",
+      "kind": "translate",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"我想睡觉。\" answer=\"I want to sleep.\" 另一解=i would like to sleep(lesson-62-would-like:example)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-24-past-vs-perfect",
+      "itemId": "boost-lesson-24-past-vs-perfect-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"我昨天去了公园。\" answer=\"Yesterday I went to the park.\" 另一解=i went to the park yesterday(lesson-24-past-vs-perfect:swing)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-24-past-vs-perfect",
+      "itemId": "boost-lesson-24-past-vs-perfect-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"我昨天去了公园。\" answer=\"Yesterday I went to the park.\" 另一解=i went to the park yesterday(lesson-24-past-vs-perfect:swing)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-54-focus",
+      "itemId": "boost-lesson-54-focus-t2-translate-examples-1",
+      "kind": "translate",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"窗户昨天被打扫了。\" answer=\"The window was cleaned yesterday.\" 另一解=the windows were cleaned yesterday(lesson-51-plural:example)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-68-buy-for",
+      "itemId": "boost-lesson-68-buy-for-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"我给妈妈买了份礼物。\" answer=\"I bought a gift for my mom.\" 另一解=i bought my mom a gift(lesson-68-buy-for:swing)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-68-buy-for",
+      "itemId": "boost-lesson-68-buy-for-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"我给妈妈买了份礼物。\" answer=\"I bought a gift for my mom.\" 另一解=i bought my mom a gift(lesson-68-buy-for:swing)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-103-makes-me",
+      "itemId": "boost-lesson-103-makes-me-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"妈妈让我先写作业。\" answer=\"My mom makes me do my homework.\" 另一解=my mom makes me do my homework she lets him play after dinner the teacher had me come early i got him to go with me(lesson-110-who-makes-who:recall)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-103-makes-me",
+      "itemId": "boost-lesson-103-makes-me-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"妈妈让我先写作业。\" answer=\"My mom makes me do my homework.\" 另一解=my mom makes me do my homework she lets him play after dinner the teacher had me come early i got him to go with me(lesson-110-who-makes-who:recall)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-110-who-makes-who",
+      "itemId": "boost-lesson-110-who-makes-who-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这些事串起来说一遍。\" answer=\"My mom makes me do my homework.\" 另一解=grandmas birthday is in may(lesson-117-all-i-wanted:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-110-who-makes-who",
+      "itemId": "boost-lesson-110-who-makes-who-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这些事串起来说一遍。\" answer=\"My mom makes me do my homework.\" 另一解=grandmas birthday is in may(lesson-117-all-i-wanted:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-112",
+      "itemId": "boost-lesson-112-this-is-mine-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"这本是我的。\" answer=\"This book is mine.\" 另一解=this one is mine(lesson-85-whose:swing)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-112",
+      "itemId": "boost-lesson-112-this-is-mine-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"这本是我的。\" answer=\"This book is mine.\" 另一解=this one is mine(lesson-85-whose:swing)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-117-all-i-wanted",
+      "itemId": "boost-lesson-117-all-i-wanted-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这些事串起来说一遍。\" answer=\"Grandma's birthday is in May.\" 另一解=my mom makes me do my homework(lesson-110-who-makes-who:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-117-all-i-wanted",
+      "itemId": "boost-lesson-117-all-i-wanted-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这些事串起来说一遍。\" answer=\"Grandma's birthday is in May.\" 另一解=my mom makes me do my homework(lesson-110-who-makes-who:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-118-close-17",
+      "itemId": "boost-lesson-118-close-17-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的说法一次说一遍。\" answer=\"Grandma's birthday is in May.\" 另一解=i used to walk to school(lesson-124-close-18:target) | it looks nice(lesson-133-five-senses:target) | i am used to getting up early(lesson-138-two-stations:target) | as soon as i finish i will eat(lesson-144-close-23:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-118-close-17",
+      "itemId": "boost-lesson-118-close-17-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的说法一次说一遍。\" answer=\"Grandma's birthday is in May.\" 另一解=i used to walk to school(lesson-124-close-18:target) | it looks nice(lesson-133-five-senses:target) | i am used to getting up early(lesson-138-two-stations:target) | as soon as i finish i will eat(lesson-144-close-23:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-124-close-18",
+      "itemId": "boost-lesson-124-close-18-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的说法一次说一遍。\" answer=\"I used to walk to school.\" 另一解=grandmas birthday is in may(lesson-118-close-17:target) | it looks nice(lesson-133-five-senses:target) | i am used to getting up early(lesson-138-two-stations:target) | as soon as i finish i will eat(lesson-144-close-23:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-124-close-18",
+      "itemId": "boost-lesson-124-close-18-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的说法一次说一遍。\" answer=\"I used to walk to school.\" 另一解=grandmas birthday is in may(lesson-118-close-17:target) | it looks nice(lesson-133-five-senses:target) | i am used to getting up early(lesson-138-two-stations:target) | as soon as i finish i will eat(lesson-144-close-23:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-133-five-senses",
+      "itemId": "boost-lesson-133-five-senses-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的说法一次说一遍。\" answer=\"It looks nice.\" 另一解=grandmas birthday is in may(lesson-118-close-17:target) | i used to walk to school(lesson-124-close-18:target) | i am used to getting up early(lesson-138-two-stations:target) | as soon as i finish i will eat(lesson-144-close-23:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-133-five-senses",
+      "itemId": "boost-lesson-133-five-senses-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的说法一次说一遍。\" answer=\"It looks nice.\" 另一解=grandmas birthday is in may(lesson-118-close-17:target) | i used to walk to school(lesson-124-close-18:target) | i am used to getting up early(lesson-138-two-stations:target) | as soon as i finish i will eat(lesson-144-close-23:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-138",
+      "itemId": "boost-lesson-138-two-stations-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的说法一次说一遍。\" answer=\"I am used to getting up early.\" 另一解=grandmas birthday is in may(lesson-118-close-17:target) | i used to walk to school(lesson-124-close-18:target) | it looks nice(lesson-133-five-senses:target) | as soon as i finish i will eat(lesson-144-close-23:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-138",
+      "itemId": "boost-lesson-138-two-stations-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的说法一次说一遍。\" answer=\"I am used to getting up early.\" 另一解=grandmas birthday is in may(lesson-118-close-17:target) | i used to walk to school(lesson-124-close-18:target) | it looks nice(lesson-133-five-senses:target) | as soon as i finish i will eat(lesson-144-close-23:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-144-close-23",
+      "itemId": "boost-lesson-144-close-23-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的说法一次说一遍。\" answer=\"As soon as I finish, I will eat.\" 另一解=grandmas birthday is in may(lesson-118-close-17:target) | i used to walk to school(lesson-124-close-18:target) | it looks nice(lesson-133-five-senses:target) | i am used to getting up early(lesson-138-two-stations:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-144-close-23",
+      "itemId": "boost-lesson-144-close-23-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的说法一次说一遍。\" answer=\"As soon as I finish, I will eat.\" 另一解=grandmas birthday is in may(lesson-118-close-17:target) | i used to walk to school(lesson-124-close-18:target) | it looks nice(lesson-133-five-senses:target) | i am used to getting up early(lesson-138-two-stations:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-147-close-24",
+      "itemId": "boost-lesson-147-close-24-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的两张脸一次说一遍。\" answer=\"I like tea too.\" 另一解=both books are good(lesson-150-close-25:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-147-close-24",
+      "itemId": "boost-lesson-147-close-24-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的两张脸一次说一遍。\" answer=\"I like tea too.\" 另一解=both books are good(lesson-150-close-25:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-150-close-25",
+      "itemId": "boost-lesson-150-close-25-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的两张脸一次说一遍。\" answer=\"Both books are good.\" 另一解=i like tea too(lesson-147-close-24:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-150-close-25",
+      "itemId": "boost-lesson-150-close-25-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"把这章学过的两张脸一次说一遍。\" answer=\"Both books are good.\" 另一解=i like tea too(lesson-147-close-24:target)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-175-so-do-i",
+      "itemId": "boost-lesson-175-so-do-i-t2-recall-target-0",
+      "kind": "recall",
+      "tier": 2,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"我也是。\" answer=\"So do I.\" 另一解=so am i(lesson-175-so-do-i:swing)"
+    },
+    {
+      "check": "zhMultiAnswerSingleKey",
+      "severity": "P1",
+      "lessonId": "lesson-175-so-do-i",
+      "itemId": "boost-lesson-175-so-do-i-t3-produce-target-0",
+      "kind": "produce",
+      "tier": 3,
+      "detail": "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+      "sample": "intentZh=\"我也是。\" answer=\"So do I.\" 另一解=so am i(lesson-175-so-do-i:swing)"
+    },
+    {
+      "check": "fabricatedDistractor",
+      "severity": "P0",
+      "lessonId": "lesson-139-although",
+      "itemId": "boost-lesson-139-although-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "干扰项 \"to's\" 不是英语词（加后缀硬造）",
+      "sample": "boost-lesson-139-although-t1-cloze-variants-1 answer=\"stay\""
+    },
+    {
+      "check": "fabricatedDistractor",
+      "severity": "P0",
+      "lessonId": "lesson-161-need",
+      "itemId": "boost-lesson-161-need-to-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "干扰项 \"ned\" 不是英语词（加后缀硬造）",
+      "sample": "boost-lesson-161-need-to-t1-cloze-variants-1 answer=\"need\""
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-01-am",
+      "itemId": "boost-lesson-01-am-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"tired\" options=[\"new\",\"give\",\"tired\",\"last\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-04-want",
+      "itemId": "boost-lesson-04-want-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"want\" options=[\"want\",\"wanting\",\"wanted\",\"wants\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-10-went",
+      "itemId": "boost-lesson-10-went-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"out\" options=[\"takes\",\"out\",\"will\",\"phone\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-15-want",
+      "itemId": "boost-lesson-15-want-to-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"want\" options=[\"want\",\"wanting\",\"wants\",\"wanted\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-17-comparative",
+      "itemId": "boost-lesson-17-comparative-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"not\" options=[\"nine\",\"are\",\"food\",\"not\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-23-have-lost",
+      "itemId": "boost-lesson-23-have-lost-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"cleaned\" options=[\"classroom\",\"cleaned\",\"cleans\",\"cleaning\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-28-frequency",
+      "itemId": "boost-lesson-28-frequency-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"candy\" options=[\"boxes\",\"candy\",\"guests\",\"wall\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-30-some-any",
+      "itemId": "boost-lesson-30-some-any-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"apples\" options=[\"doesn't\",\"live\",\"apples\",\"keep\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-33-pronouns",
+      "itemId": "boost-lesson-33-pronouns-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"not\" options=[\"pen\",\"stops\",\"not\",\"hand\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-34-past-continuous",
+      "itemId": "boost-lesson-34-past-continuous-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"sleeping\" options=[\"sleeping\",\"teacher\",\"sports\",\"someone\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-36",
+      "itemId": "boost-lesson-36-think-that-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"tired\" options=[\"where\",\"tired\",\"done\",\"door\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-38-she-says",
+      "itemId": "boost-lesson-38-she-says-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"think\" options=[\"three\",\"second\",\"think\",\"always\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-41",
+      "itemId": "boost-lesson-41-two-things-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"wears\" options=[\"studies\",\"feel\",\"wears\",\"right\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-42-like-reading",
+      "itemId": "boost-lesson-42-like-reading-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"reading\" options=[\"reading\",\"there\",\"circles\",\"weren't\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-49-advice-if",
+      "itemId": "boost-lesson-49-advice-if-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"rains\" options=[\"rains\",\"photo\",\"sunny\",\"have\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-61-could-you",
+      "itemId": "boost-lesson-61-could-you-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"help\" options=[\"helping\",\"helped\",\"helps\",\"help\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-66",
+      "itemId": "boost-lesson-66-too-to-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"too\" options=[\"board\",\"sing\",\"names\",\"too\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-67-good-at",
+      "itemId": "boost-lesson-67-good-at-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"good\" options=[\"good\",\"while\",\"walk\",\"same\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-74-help-let",
+      "itemId": "boost-lesson-74-help-let-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"help\" options=[\"help\",\"helps\",\"helping\",\"helped\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-75-lets",
+      "itemId": "boost-lesson-75-lets-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"Let's\" options=[\"bitter\",\"Let's\",\"mean\",\"walk\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-78-day-story",
+      "itemId": "boost-lesson-78-day-story-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"reading\" options=[\"could\",\"notebook\",\"reading\",\"plays\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-86-lost-and-found",
+      "itemId": "boost-lesson-86-lost-and-found-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"nothing\" options=[\"bigger\",\"helps\",\"nothing\",\"drink\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-87-its-cold",
+      "itemId": "boost-lesson-87-its-cold-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"cold\" options=[\"dream\",\"for\",\"asleep\",\"cold\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-90-after",
+      "itemId": "boost-lesson-90-after-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"homework\" options=[\"october\",\"homework\",\"friends\",\"students\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-93-used",
+      "itemId": "boost-lesson-93-used-to-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"play\" options=[\"plays\",\"play\",\"played\",\"playing\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-96-was-raining",
+      "itemId": "boost-lesson-96-was-raining-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"raining\" options=[\"travel\",\"right\",\"anyone\",\"raining\"]"
+    },
+    {
+      "check": "clozeAnswerVisible",
+      "severity": "P1",
+      "lessonId": "lesson-98-while",
+      "itemId": "boost-lesson-98-while-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "答案词仍出现在题面里（可照抄）",
+      "sample": "clozeText=\"While I was reading, he ___ not sleeping.\" answer=\"was\""
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-100-used",
+      "itemId": "boost-lesson-100-used-to-story-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"play\" options=[\"play\",\"plays\",\"playing\",\"played\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-105-doesnt-let",
+      "itemId": "boost-lesson-105-doesnt-let-t1-cloze-variants-2",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"let\" options=[\"had\",\"kind\",\"happy\",\"let\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-108-got-him",
+      "itemId": "boost-lesson-108-got-him-to-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"get\" options=[\"walk\",\"hands\",\"get\",\"tips\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-117-all-i-wanted",
+      "itemId": "boost-lesson-117-all-i-wanted-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"There\" options=[\"There\",\"feels\",\"plays\",\"weren't\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-118-close-17",
+      "itemId": "boost-lesson-118-close-17-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"apples\" options=[\"apples\",\"broke\",\"asleep\",\"cloud\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-119-used",
+      "itemId": "boost-lesson-119-used-to-it-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"used\" options=[\"used\",\"math\",\"draw\",\"spicy\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-120-used",
+      "itemId": "boost-lesson-120-used-to-doing-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"getting\" options=[\"story\",\"getting\",\"yourself\",\"window\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-121-get-used",
+      "itemId": "boost-lesson-121-get-used-to-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"used\" options=[\"beach\",\"used\",\"bird\",\"came\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-123-not-used",
+      "itemId": "boost-lesson-123-not-used-to-t1-cloze-variants-2",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"used\" options=[\"cousin\",\"used\",\"first\",\"book\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-124-close-18",
+      "itemId": "boost-lesson-124-close-18-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"used\" options=[\"soup\",\"eat\",\"used\",\"table\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-126-you-look",
+      "itemId": "boost-lesson-126-you-look-tired-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"tired\" options=[\"tired\",\"visit\",\"than\",\"jane\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-128-it-sounds-great",
+      "itemId": "boost-lesson-128-it-sounds-great-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"sound\" options=[\"right\",\"very\",\"sound\",\"green\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-130-it",
+      "itemId": "boost-lesson-130-it-tastes-good-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"not\" options=[\"eats\",\"with\",\"this\",\"not\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-133-five-senses",
+      "itemId": "boost-lesson-133-five-senses-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"good\" options=[\"good\",\"wall\",\"cheese\",\"eleven\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-134-looking-forward",
+      "itemId": "boost-lesson-134-looking-forward-to-the-weekend-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"looking\" options=[\"looking\",\"should\",\"today\",\"yesterday\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-135-she-looks-forward",
+      "itemId": "boost-lesson-135-she-looks-forward-to-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"forward\" options=[\"everyone\",\"already\",\"eight\",\"forward\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-136-looking-forward",
+      "itemId": "boost-lesson-136-looking-forward-to-seeing-you-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"forward\" options=[\"people\",\"march\",\"forward\",\"watch\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-137-are-you-looking-forward",
+      "itemId": "boost-lesson-137-are-you-looking-forward-to-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"saying\" options=[\"looks\",\"month\",\"watch\",\"saying\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-138",
+      "itemId": "boost-lesson-138-two-stations-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"forward\" options=[\"taken\",\"herself\",\"forward\",\"begins\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-142-as-soon-as",
+      "itemId": "boost-lesson-142-as-soon-as-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"soon\" options=[\"three\",\"eats\",\"soon\",\"says\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-147-close-24",
+      "itemId": "boost-lesson-147-close-24-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"like\" options=[\"ran\",\"like\",\"did\",\"liked\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-148-both",
+      "itemId": "boost-lesson-148-both-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"coffee\" options=[\"cousin\",\"coffee\",\"hand\",\"pictures\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-149-neither",
+      "itemId": "boost-lesson-149-neither-t1-cloze-variants-2",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"books\" options=[\"either\",\"books\",\"stay\",\"times\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-151-all",
+      "itemId": "boost-lesson-151-all-three-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"like\" options=[\"cat\",\"like\",\"liked\",\"times\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-153-yet-already",
+      "itemId": "boost-lesson-153-yet-already-t1-cloze-variants-2",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"finished\" options=[\"finishs\",\"finished\",\"garden\",\"finishing\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-154-still",
+      "itemId": "boost-lesson-154-still-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"waiting\" options=[\"behind\",\"leave\",\"library\",\"waiting\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-157-none",
+      "itemId": "boost-lesson-157-none-t1-cloze-variants-2",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"yours\" options=[\"sit\",\"plan\",\"yours\",\"lake\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-161-need",
+      "itemId": "boost-lesson-161-need-to-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"need\" options=[\"bus\",\"guests\",\"need\",\"ned\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-162-most-of",
+      "itemId": "boost-lesson-162-most-of-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"students\" options=[\"students\",\"pictures\",\"someone\",\"brother's\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-167-a-lot-of",
+      "itemId": "boost-lesson-167-a-lot-of-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"friends\" options=[\"happy\",\"months\",\"friends\",\"cousin\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-169-id-like",
+      "itemId": "boost-lesson-169-id-like-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"like\" options=[\"drinks\",\"like\",\"liked\",\"drank\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-171-neither-nor",
+      "itemId": "boost-lesson-171-neither-nor-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"noodles\" options=[\"short\",\"because\",\"noodles\",\"breakfast\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-173-in-order",
+      "itemId": "boost-lesson-173-in-order-to-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"order\" options=[\"order\",\"find\",\"does\",\"other\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-180-whole",
+      "itemId": "boost-lesson-180-whole-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"finish\" options=[\"finishing\",\"finishs\",\"finish\",\"finished\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-182-close-24",
+      "itemId": "boost-lesson-182-close-24-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"yet\" options=[\"seems\",\"yet\",\"pass\",\"get\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-183-close-25",
+      "itemId": "boost-lesson-183-close-25-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"boat\" options=[\"says\",\"pass\",\"our\",\"boat\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-184-close-26",
+      "itemId": "boost-lesson-184-close-26-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"help\" options=[\"help\",\"helps\",\"helped\",\"helping\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-185-close-27",
+      "itemId": "boost-lesson-185-close-27-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"likes\" options=[\"likes\",\"must\",\"liked\",\"week\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-189",
+      "itemId": "boost-lesson-189-their-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"books\" options=[\"back\",\"books\",\"meet\",\"quick\"]"
+    },
+    {
+      "check": "weakDistractors",
+      "severity": "P1",
+      "lessonId": "lesson-190-learning",
+      "itemId": "boost-lesson-190-learning-to-swim-t1-cloze-variants-1",
+      "kind": "cloze",
+      "tier": 1,
+      "detail": "有效干扰项 < 2（题目近似白送）",
+      "sample": "answer=\"learning\" options=[\"circle\",\"although\",\"eleven\",\"learning\"]"
+    }
+  ]
+}
