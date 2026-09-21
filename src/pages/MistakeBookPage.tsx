@@ -916,7 +916,7 @@ export default function MistakeBookPage() {
                 <span className="icon-slot" data-slot="b"><ChevronDown size={17} /></span>
               </span>
             </button>
-            <button className="icon-button" type="button" title="复制内容" onClick={() => copyContent(generation.id, generation.content)}>
+            <button className="icon-button" type="button" aria-label="复制内容" title="复制内容" onClick={() => copyContent(generation.id, generation.content)}>
               <span className="icon-swap" data-state={copiedId === generation.id ? "b" : "a"} aria-hidden="true">
                 <span className="icon-slot" data-slot="a"><MbCopy size={17} /></span>
                 <span className="icon-slot" data-slot="b"><MbCheck size={17} /></span>

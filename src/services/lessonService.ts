@@ -1,6 +1,7 @@
 import type { AppData, GrammarLesson, LessonGuidedStep, LessonPracticeStep } from "../types";
 import { GRAMMAR_LESSON_BY_ID, grammarLessons } from "../data/grammarLessons";
 import { addSentence } from "./cardService";
+import { expandWithSource, tokenSequencesEquivalent } from "./diffService";
 import { nowIso } from "./storage";
 
 /** 英文句子判分用的归一化：小写、去掉标点、压缩空白。 */
@@ -25,24 +26,36 @@ export const hashGrammarSentence = (sentence: string): string => {
   return (hash >>> 0).toString(36);
 };
 
-/** 点词成句判分：顺序与内容都对才算通过（标点与大小写宽容）。 */
+/**
+ * 点词成句判分：顺序与内容都对才算通过（标点与大小写宽容）。
+ *
+ * 缩写与全称互通——选 [It, is, ...] 拼出 "It is cold today." 与选 [It's, ...] 一样算对；
+ * 但选干扰项 Its（丢了一小撇）仍然判错，正是 L87/L88 要教的差别。
+ */
 export const checkLessonTokens = (selected: string[], answer: string): boolean =>
-  normalizeLessonSentence(selected.join(" ")) === normalizeLessonSentence(answer);
+  tokenSequencesEquivalent(selected, answer);
 
 /** 点选题判分。 */
 export const checkLessonChoice = (picked: string, answer: string): boolean =>
   picked.trim().toLowerCase() === answer.trim().toLowerCase();
 
 /**
- * 点词成句答错时，找出第一个对不上的位置（0 起）。
+ * 点词成句答错时，找出第一个对不上的**词块**位置（0 起）。
  * 用于温和提示「从第 N 个词开始有点不对」，全部对上返回 -1。
+ *
+ * 比较在展开口径下进行（用户选的 It's 与答案的 It is 是同一个词，不该算不同），
+ * 但返回的位置要落回用户看得见的词块——答案写 It's、用户选了 It is 时，
+ * 展开后多出的 is 不能把后面所有位置都推后一位。
  */
 export const firstMismatchIndex = (selected: string[], answer: string): number => {
-  const answerTokens = normalizeLessonSentence(answer).split(" ").filter(Boolean);
-  const pickedTokens = selected.map((token) => normalizeLessonSentence(token)).filter(Boolean);
-  const length = Math.max(answerTokens.length, pickedTokens.length);
+  const answerWords = expandWithSource([answer]);
+  const pickedWords = expandWithSource(selected);
+  const length = Math.max(answerWords.length, pickedWords.length);
   for (let index = 0; index < length; index += 1) {
-    if (pickedTokens[index] !== answerTokens[index]) return index;
+    if (pickedWords[index]?.token !== answerWords[index]?.token) {
+      // 落回词块口径：用户侧能定位就定位，否则用答案侧的位置。
+      return pickedWords[index]?.chunkIndex ?? answerWords[index]?.chunkIndex ?? index;
+    }
   }
   return -1;
 };
@@ -167,6 +180,19 @@ export const getNextLesson = (data: AppData): GrammarLesson | null => {
   return grammarLessons.find((lesson) => !done.has(lesson.id)) ?? null;
 };
 
+/**
+ * 紧接某课之后的下一节（按编号，不要求未完成）。
+ *
+ * 与 getNextLesson 的区别：那个返回「全局第一个未完成的课」，用于地图主 CTA；
+ * 这个用于**完课后的「下一课」按钮**——用户刚学完 L13，就该去 L14，
+ * 而不是因为中间有跳着没学的课被弹回地图（此前两个按钮都只跳 /grammar，动线不闭合）。
+ */
+export const getFollowingLesson = (lessonId: string): GrammarLesson | null => {
+  const current = GRAMMAR_LESSON_BY_ID.get(lessonId);
+  if (!current) return null;
+  return grammarLessons.find((lesson) => lesson.number === current.number + 1) ?? null;
+};
+
 /** 完成一课（幂等，不可变返回新 AppData）。完课时把本课核心句型一并送入复习队列（R03：核心句型+错句均入队）。 */
 export const markLessonDone = (data: AppData, lessonId: string): AppData => {
   if (!GRAMMAR_LESSON_BY_ID.has(lessonId)) return data;
@@ -189,13 +215,44 @@ export const addLessonCoreSentence = (data: AppData, lesson: GrammarLesson): App
   if (duplicated) return data;
   return addSentence(data, {
     sentence,
-    translation: "",
+    /**
+     * 中文意思（2026-09-21 修）。
+     *
+     * 此前写死 `translation: ""`，导致两个真实缺陷：
+     * ① 通用复习页（/review）对句子卡的题面取 `back || front`（ReviewPage.tsx:223），
+     *    back 为空时**题面 = 答案本身**——用户照着屏幕抄一遍就算满分，这道题零检验力；
+     * ② 该页写回 `review.answer` 后，错题本会把「答案」当成「用户写的答案」展示。
+     * 课的 `intentZh` 本来就是这句话的中文意图（全库 193 课都齐全），直接用它。
+     */
+    translation: lesson.intentZh?.trim() ?? "",
     keywords: "",
     grammarNote: lesson.oneLineRule,
     sourceId: `lesson:${lesson.id}`,
     note: `语法课核心句：${lesson.episode} ${lesson.title}`,
     tags: "语法"
   });
+};
+
+/**
+ * 补写存量核心句卡的中文意思（2026-09-21）。
+ *
+ * 上面那处修复只对**新建**的卡生效：此前已入队的核心句卡 back 仍是空串，
+ * 它们在 /review 里的题面依旧等于答案本身。这里按 `sourceId = lesson:<id>`
+ * 找回对应课程，把空 back 补成 intentZh。
+ * 幂等且克制：只补 back 为空白的卡，已有中文的一律不动（用户可能自己编辑过）。
+ */
+export const repairLessonCoreSentenceTranslations = (data: AppData): { data: AppData; repaired: number } => {
+  let repaired = 0;
+  const cards = data.cards.map((card) => {
+    if (card.type !== "sentence" || card.back.trim()) return card;
+    const lessonId = card.sourceId?.startsWith("lesson:") ? card.sourceId.slice("lesson:".length) : "";
+    const lesson = lessonId ? GRAMMAR_LESSON_BY_ID.get(lessonId) : undefined;
+    const meaning = lesson?.intentZh?.trim();
+    if (!meaning) return card;
+    repaired += 1;
+    return { ...card, back: meaning };
+  });
+  return repaired > 0 ? { data: { ...data, cards }, repaired } : { data, repaired: 0 };
 };
 
 /**
@@ -226,6 +283,69 @@ export interface LessonGuidedState {
 }
 
 export const createGuidedState = (): LessonGuidedState => ({ index: 0, picked: [], checked: false, passed: false });
+
+/**
+ * 跟段（guided）题型顺序的模板轮换（2026-09-20 阶段二）。
+ *
+ * 背景：原先 151/158 课的 6 题顺序完全相同（choose→arrange→arrange→spot→arrange→replace），
+ * 第 1 题 100% 是 choose、第 4 题 97% 是 spot、末题 99% 是 replace——
+ * 学习者在点开下一题之前就能猜出题型，注意力因此松懈
+ * （问题不是「答不出来」，而是「不用集中」）。
+ *
+ * 做法：按 lessonId 哈希确定性选取一套顺序模板。同一课每次进入顺序一致（可复习、可重做），
+ * 不同课之间顺序不同。模板只重排**题位**，不改题目内容与题量，也不改判题逻辑
+ * （judgeGuidedStep 只看 step.kind）。
+ *
+ * 模板设计约束（保证每课覆盖完整的四种交互）：
+ * - 四种题型各至少出现一次；
+ * - arrange 出现 ≥2 次（它是本段主力形态）；
+ * - spot 不固定在同一个题位（原设计恒为第 4 题）。
+ */
+const GUIDED_ORDER_TEMPLATES: string[][] = [
+  // 模板 A（原顺序，作为基准之一）
+  ["choose", "arrange", "arrange", "spot", "arrange", "replace"],
+  // 模板 B：spot 提前到第 2 位，choose 挪到中段
+  ["arrange", "spot", "choose", "arrange", "replace", "arrange"],
+  // 模板 C：replace 提前，spot 落在第 5 位
+  ["arrange", "arrange", "replace", "choose", "spot", "arrange"],
+  // 模板 D：choose 开场但 spot 落在第 3 位，末题是 arrange
+  ["choose", "arrange", "spot", "replace", "arrange", "arrange"]
+];
+
+/** 与 shuffleTokenOrder 同款的稳定字符串哈希（无依赖、可复现）。 */
+const hashGuidedSeed = (text: string): number => {
+  let hash = 2_166_136_261;
+  for (let i = 0; i < text.length; i += 1) {
+    hash ^= text.charCodeAt(i);
+    hash = Math.imul(hash, 16_777_619);
+  }
+  return hash >>> 0;
+};
+
+/**
+ * 返回该课跟段题目的取题顺序（原数组下标序列）。
+ *
+ * - 题量与模板不符时（如 L1 只有 5 题、部分课有 2 个 spot）回退原顺序，保证向后兼容；
+ * - 用 lessonId 作种子，同一课恒定，不随重进/重做变化。
+ */
+export const guidedDisplayOrder = (steps: LessonGuidedStep[], lessonId: string): number[] => {
+  const identity = steps.map((_step, index) => index);
+  if (steps.length < 4) return identity;
+
+  const template = GUIDED_ORDER_TEMPLATES[hashGuidedSeed(lessonId) % GUIDED_ORDER_TEMPLATES.length];
+  // 按模板给出的题型顺序，依次从原数组里取「下一个该类型的题」
+  const used = new Set<number>();
+  const order: number[] = [];
+  for (const kind of template) {
+    const found = steps.findIndex((step, index) => !used.has(index) && step.kind === kind);
+    if (found === -1) return identity; // 模板要求的题型本课没有 → 整体回退
+    used.add(found);
+    order.push(found);
+  }
+  // 模板未覆盖的题（本课题型更多时）按原顺序追加到末尾，保证不漏题
+  for (const index of identity) if (!used.has(index)) order.push(index);
+  return order;
+};
 
 /** 判当前引导题：全部词块用上后调用（spot 为单选命中制；replace 复用 choose 单选内核）。 */
 export const judgeGuidedStep = (step: LessonGuidedStep, picked: string[]): boolean => {
@@ -291,12 +411,15 @@ export const detectThirdPersonMiss = (input: string): string | null => {
   return pattern.test(input) ? "他 / 她 / 它做事，动词要加 s——检查一下动词有没有小尾巴。" : null;
 };
 
+/**
+ * 差异说明用的分词：在判分口径（缩写展成全称）下取词。
+ *
+ * 不能直接用字面分词——用户写长版 "It is cold today."、核心句是短版 "It's cold today." 时，
+ * 字面上看是 4 词对 3 词，提示就会说「多了 it、is 一个词」，
+ * 可这恰恰是课程自己承认的另一种正确写法。展开口径下两者词数相同，不会出现这句假指控。
+ */
 const outputWords = (value: string): string[] =>
-  value
-    .replace(/[.,!?;:]/g, "")
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((word) => word.toLowerCase());
+  expandWithSource(value.split(/\s+/).filter(Boolean)).map((item) => item.token);
 
 /**
  * R04 输出题的差异说明：告诉用户「多了哪个词 / 少了词 / 哪个位置不一样」，

@@ -298,7 +298,23 @@ export default function SpellingPage() {
         event.preventDefault();
         speak(card.front, details?.audioUrl);
       }
-      if (event.key === "Tab") {
+      /**
+       * Tab 出声（2026-09-21 修，P1 无障碍）。
+       *
+       * 此前这里无条件 `preventDefault()`，把**整页的 Tab 键吃掉**了：
+       * 用户的焦点从此离不开当前位置，输入框里也按不出 Tab，Shift+Tab 同样被吞——
+       * 整个拼写页用键盘无法导航（实测三种情形 `defaultPrevented` 全为 true）。
+       * 交互设计本意是「在正文（非输入态）按 Tab 顺便听一遍」，
+       * 所以补上与上面 Space 相同的守卫：只在焦点不落在可编辑元素上时才接管，
+       * 并且**放行 Shift+Tab**（反向导航必须始终可用）。
+       */
+      const target = event.target as HTMLElement | null;
+      const isEditable =
+        target?.tagName === "INPUT" ||
+        target?.tagName === "TEXTAREA" ||
+        target?.isContentEditable === true ||
+        target?.tagName === "SELECT";
+      if (event.key === "Tab" && !event.shiftKey && !isEditable) {
         event.preventDefault();
         if (!event.repeat) {
           speak(card.front, details?.audioUrl);
@@ -775,7 +791,7 @@ export default function SpellingPage() {
 
         <div className="spelling-definition">
           <p>{details?.partOfSpeech} {card.back}</p>
-          <button type="button" className="spelling-sound" onClick={() => speak(card.front, details?.audioUrl)} title="播放发音">
+          <button type="button" className="spelling-sound" onClick={() => speak(card.front, details?.audioUrl)} aria-label="播放发音" title="播放发音">
             <Volume2 size={40} />
           </button>
         </div>

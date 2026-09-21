@@ -27,7 +27,8 @@ const modeLabel: Record<ReviewMode, string> = {
   recall: "回忆",
   spelling: "拼写",
   cloze: "挖空",
-  dictation: "听写"
+  dictation: "听写",
+  rebuild: "拼句"
 };
 
 const cardTypeLabel: Record<CardType, string> = {

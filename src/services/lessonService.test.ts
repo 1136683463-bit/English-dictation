@@ -72,6 +72,29 @@ describe("lessonService · 判分", () => {
     expect(checkLessonTokens(["I", "am", "happy"], "I am happy")).toBe(true);
   });
 
+  it("checkLessonTokens：缩写与全称互通（It is 与 It's 都算对）", () => {
+    // 旧口径把撇号也删掉，于是 Its（少一撇）反而判对——两个方向都修了。
+    expect(checkLessonTokens(["It", "is", "cold", "today."], "It's cold today.")).toBe(true);
+    expect(checkLessonTokens(["It's", "cold", "today."], "It is cold today.")).toBe(true);
+    expect(checkLessonTokens(["I", "do", "not", "have", "a", "pen."], "I don't have a pen.")).toBe(true);
+    expect(checkLessonTokens(["Let", "us", "go", "to", "the", "park."], "Let's go to the park.")).toBe(true);
+  });
+
+  it("checkLessonTokens：干扰项 Its / Lets 仍判错（L87 / L75 的考点）", () => {
+    expect(checkLessonTokens(["Its", "cold", "today."], "It's cold today.")).toBe(false);
+    expect(checkLessonTokens(["Lets", "go", "to", "the", "park."], "Let's go to the park.")).toBe(false);
+    expect(checkLessonTokens(["Were", "classmates."], "We're classmates.")).toBe(false);
+  });
+
+  it("firstMismatchIndex：缩写展开后对位，不给出假警报", () => {
+    // 用户写 It's、答案写 It is——说的是同一句，不该提示「第 1 个词不对」
+    expect(firstMismatchIndex(["It's", "cold", "today."], "It is cold today.")).toBe(-1);
+    expect(firstMismatchIndex(["It", "is", "cold", "today."], "It's cold today.")).toBe(-1);
+    // 真的不同仍要准确定位
+    expect(firstMismatchIndex(["Its", "cold", "today."], "It's cold today.")).toBe(0);
+    expect(firstMismatchIndex(["It's", "hot", "today."], "It's cold today.")).toBe(1);
+  });
+
   it("checkLessonChoice：大小写宽容的单选判分", () => {
     expect(checkLessonChoice(" AM ", "am")).toBe(true);
     expect(checkLessonChoice("is", "am")).toBe(false);

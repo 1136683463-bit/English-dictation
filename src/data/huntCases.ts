@@ -264,10 +264,12 @@ export const huntCases: HuntCase[] = [
           "英语的句子必须有动词。主语和形容词之间少了 be：My mother is happy。中文说「我妈妈今天高兴」不需要动词，所以这里特别容易漏。",
       },
       {
-        tokenIndex: 13,
+        // 2026-09-21 批四十：插入点上移到 very（is 该插在 very 之前，不是 glad 之前）——
+        // 原写法让机械修正生成「She very is glad」这个病句（错词本例句会显示它）。
+        tokenIndex: 12,
         tag: "missing_be",
-        original: "glad",
-        correction: "is glad",
+        original: "very",
+        correction: "is very",
         explanation:
           "同样少了 be 动词：She is very glad。没有它就只剩一个主语加一个形容词，句子是塌的。",
       },
@@ -6594,4 +6596,4009 @@ export const huntCases: HuntCase[] = [
     ],
     reviewed: true,
   },
+  {
+    // ── 第十六批 · L103 开篇案件（规格：prd-grammar-causative-2026-09-19.md §6；新错 make→makes／does→do，旧错回流 L25 三单＋L11 复数）──
+    id: "hunt-mom-makes",
+    number: 112,
+    title: "妈妈让我写作业",
+    scene: "书桌上摊开的作业本，第一页写着四行字",
+    tokens: [
+      "My", "mom", "make", "me", "clean", "my", "room.",
+      "My", "dad", "makes", "me", "does", "my", "homework.",
+      "He", "drink", "milk", "every", "day.",
+      "We", "have", "two", "apple."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "sv_agreement",
+        original: "make",
+        correction: "makes",
+        explanation: "妈妈是「她」——动词要加 -s：My mom 【makes】 me clean my room。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "verb_form",
+        original: "does",
+        correction: "do",
+        explanation: "口令块后面穿原样：makes me 【do】——-s 前面已经用过一次了。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "sv_agreement",
+        original: "drink",
+        correction: "drinks",
+        explanation: "第 25 课回流：他/她/它后面的动词加 -s——He 【drinks】 milk every day。"
+      },
+      {
+        tokenIndex: 22,
+        tag: "plural",
+        original: "apple.",
+        correction: "apples.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【apples】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十六批 · L104 案件（规格：prd-grammar-causative-2026-09-19.md §6；新错 make→made／waited→wait，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-made-me-wait",
+    number: 113,
+    title: "等了半小时",
+    scene: "在街角等人时，便签本上写的四行字",
+    tokens: [
+      "He", "make", "me", "wait.",
+      "She", "made", "me", "waited.",
+      "Yesterday", "I", "go", "home.",
+      "I", "went", "with", "two", "friend."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "tense",
+        original: "make",
+        correction: "made",
+        explanation: "说昨天的事要换昨天版：make → 【made】——昨天版不带 -s。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "verb_form",
+        original: "waited.",
+        correction: "wait.",
+        explanation: "第 103 课规矩：口令块后面穿原样——made me 【wait】。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "plural",
+        original: "friend.",
+        correction: "friends.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【friends】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十六批 · L105 案件（规格：prd-grammar-causative-2026-09-19.md §6；新错 lets→let／let me to go，旧错回流 L19 was/were＋L11 复数）──
+    id: "hunt-not-let-me",
+    number: 114,
+    title: "不让我去",
+    scene: "晚上家门口，门垫上压着的字条",
+    tokens: [
+      "She", "doesn't", "lets", "me", "go.",
+      "He", "doesn't", "let", "me", "to", "go.",
+      "We", "was", "happy.",
+      "I", "have", "two", "cat."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "verb_form",
+        original: "lets",
+        correction: "let",
+        explanation: "帮手已经接了 -s 的活儿：doesn't 【let】 me go。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "verb_form",
+        original: "to",
+        correction: "去掉 to",
+        explanation: "第 103 课规矩：家族不认 to——let me 【go】，不垫板。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "第 19 课回流：We 是一伙人，用 were 搭档——We 【were】 happy。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "plural",
+        original: "cat.",
+        correction: "cats.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【cats】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十六批 · L106 案件（规格：prd-grammar-causative-2026-09-19.md §6；新错 let→lets／plays→play，旧错回流 L25 三单＋L11 复数）──
+    id: "hunt-let-him-play",
+    number: 115,
+    title: "让他玩",
+    scene: "客厅茶几上摆着的练习本，写着他家饭后的事",
+    tokens: [
+      "She", "let", "him", "play.",
+      "She", "lets", "him", "plays.",
+      "My", "brother", "watch", "TV.",
+      "We", "have", "two", "dog."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "sv_agreement",
+        original: "let",
+        correction: "lets",
+        explanation: "她是「她」——lets 要带 -s：She 【lets】 him play。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "verb_form",
+        original: "plays.",
+        correction: "play.",
+        explanation: "第 103 课规矩：后面穿原样——lets him 【play】。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "sv_agreement",
+        original: "watch",
+        correction: "watches",
+        explanation: "第 25 课回流：他/她/它后面的动词加 -s——My brother 【watches】 TV。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "plural",
+        original: "dog.",
+        correction: "dogs.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【dogs】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十六批 · L107 案件（规格：prd-grammar-causative-2026-09-19.md §6；新错 has→had／came→come，旧错回流 L25 三单＋L11 复数）──
+    id: "hunt-teacher-had-me",
+    number: 116,
+    title: "老师叫我",
+    scene: "办公室门口的通知板上，钉着一张便条",
+    tokens: [
+      "The", "teacher", "has", "me", "come", "early.",
+      "The", "teacher", "had", "me", "came", "early.",
+      "He", "go", "to", "school.",
+      "I", "have", "two", "book."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "tense",
+        original: "has",
+        correction: "had",
+        explanation: "说已经发生过的事要用昨天版：has → 【had】——The teacher had me come early。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "verb_form",
+        original: "came",
+        correction: "come",
+        explanation: "第 103 课规矩：后面穿原样——had me 【come】，换版本只换前面那一个词。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "sv_agreement",
+        original: "go",
+        correction: "goes",
+        explanation: "第 25 课回流：他/她/它后面的动词加 -s——He 【goes】 to school。"
+      },
+      {
+        tokenIndex: 19,
+        tag: "plural",
+        original: "book.",
+        correction: "books.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【books】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十六批 · L108 案件（规格：prd-grammar-causative-2026-09-19.md §6；新错漏 to／get→got，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-got-him-to",
+    number: 117,
+    title: "说服他去",
+    scene: "放学路上，路边长椅上落下的一张便签",
+    tokens: [
+      "I", "got", "him", "go", "with", "me.",
+      "I", "get", "him", "to", "go", "with", "me.",
+      "Yesterday", "I", "see", "him.",
+      "We", "have", "two", "banana."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "verb_form",
+        original: "go",
+        correction: "to go",
+        explanation: "这一家就 get 垫板：got him 【to go】——前面几课练的是不垫，到它这要垫。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "tense",
+        original: "get",
+        correction: "got",
+        explanation: "说已经说动过的那次，要用昨天版：get → 【got】。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "tense",
+        original: "see",
+        correction: "saw",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——see → 【saw】。"
+      },
+      {
+        tokenIndex: 20,
+        tag: "plural",
+        original: "banana.",
+        correction: "bananas.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【bananas】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十六批 · L109 案件（规格：prd-grammar-causative-2026-09-19.md §6；新错 stops→stopped／wait→waited，旧错回流 L11 复数＋L19 have/has）──
+    id: "hunt-until-rain",
+    number: 118,
+    title: "等雨停",
+    scene: "屋檐下的长椅上，一张被雨气泡过的练习纸",
+    tokens: [
+      "I", "wait", "until", "the", "rain", "stopped.",
+      "I", "waited", "until", "the", "rain", "stops.",
+      "We", "have", "two", "bus.",
+      "She", "have", "a", "dog."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "verb_form",
+        original: "wait",
+        correction: "waited",
+        explanation: "两边都得用昨天版：前面也要过去版——I 【waited】 until the rain stopped。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "tense",
+        original: "stops.",
+        correction: "stopped.",
+        explanation: "前面用了昨天版 waited，后面也得跟昨天版——until the rain 【stopped】。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "plural",
+        original: "bus.",
+        correction: "buses.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【buses】。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "sv_agreement",
+        original: "have",
+        correction: "has",
+        explanation: "第 25 课回流：她/他/它做事动词要变——She 【has】 a dog（第 3 课的 has 也是它）。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十六批 · L110 收官案件（规格：prd-grammar-causative-2026-09-19.md §6；全回流、不新增错型——四点分别锚 #112/#114/#117/#118）──
+    id: "hunt-who-makes-who",
+    number: 119,
+    title: "谁让谁做什么",
+    scene: "把这一章的话摆一摆——本子最后一页上的四行字",
+    tokens: [
+      "My", "mom", "make", "me", "do", "my", "homework.",
+      "She", "doesn't", "lets", "me", "go.",
+      "I", "got", "him", "go", "with", "me.",
+      "I", "waited", "until", "the", "rain", "stop."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "sv_agreement",
+        original: "make",
+        correction: "makes",
+        explanation: "第 103 课回流：妈妈是「她」——动词要加 -s：My mom 【makes】 me do my homework。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "verb_form",
+        original: "lets",
+        correction: "let",
+        explanation: "第 105 课回流：帮手已经接了 -s 的活儿——doesn't 【let】 me go。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "verb_form",
+        original: "go",
+        correction: "to go",
+        explanation: "第 108 课回流：这一家就 get 垫板——got him 【to go】。"
+      },
+      {
+        tokenIndex: 23,
+        tag: "tense",
+        original: "stop.",
+        correction: "stopped.",
+        explanation: "第 109 课回流：两边都用昨天版——until the rain 【stopped】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十七批 · L111 开篇案件（规格：prd-grammar-a2-closeout-2026-09-19.md §6；新错漏撇号／月份 on→in，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-grandmas-birthday",
+    number: 120,
+    title: "挂历上的生日",
+    scene: "家里挂历前，十二个月格子上圈着全家的生日",
+    tokens: [
+      "Grandma", "birthday", "is", "in", "May.",
+      "My", "birthday", "is", "on", "May.",
+      "Yesterday", "I", "go", "to", "the", "park.",
+      "We", "have", "two", "apple."
+    ],
+    errors: [
+      {
+        tokenIndex: 0,
+        tag: "word_order",
+        original: "Grandma",
+        correction: "Grandma's",
+        explanation: "「谁的」不能光着说：人后面要加撇号 s——Grandma【's】birthday。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "preposition",
+        original: "on",
+        correction: "in",
+        explanation: "第 56 课回流：只说哪个月用 in——月份是一个大格子，某一天才用 on。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 19,
+        tag: "plural",
+        original: "apple.",
+        correction: "apples.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【apples】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十七批 · L112 案件（规格：prd-grammar-a2-closeout-2026-09-19.md §6；新错短版站句尾／人前缺小标签，旧错回流 L25 三单＋L11 复数）──
+    id: "hunt-whose-book-mine",
+    number: 121,
+    title: "两本一样的书",
+    scene: "茶几上两本封面一样的书，旁边压着一张字条",
+    tokens: [
+      "This", "book", "is", "my.",
+      "That", "book", "is", "brother's.",
+      "He", "drink", "milk", "every", "day.",
+      "We", "have", "two", "book."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "verb_form",
+        original: "my.",
+        correction: "mine.",
+        explanation: "短版不能站句尾：my 后面得跟着东西——句尾收住要用长版 【mine】。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "article",
+        original: "brother's.",
+        correction: "my brother's.",
+        explanation: "人加撇号 s 前面还要有小标签：my brother's——光着说站不住。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "sv_agreement",
+        original: "drink",
+        correction: "drinks",
+        explanation: "第 25 课回流：他/她/它后面的动词加 -s——He 【drinks】 milk every day。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "plural",
+        original: "book.",
+        correction: "books.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【books】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十七批 · L113 案件（规格：prd-grammar-a2-closeout-2026-09-19.md §6；新错 let→lets／plays→play 同型，旧错回流 L19 was/were＋L11 复数）──
+    id: "hunt-bored-boring",
+    number: 122,
+    title: "雨天下午",
+    scene: "沙发上摊着的作业本，最后一页写着四行字",
+    tokens: [
+      "The", "book", "is", "bored.",
+      "I", "bored.",
+      "We", "was", "happy.",
+      "We", "have", "two", "sandwich."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "verb_form",
+        original: "bored.",
+        correction: "boring.",
+        explanation: "书不会「感到」——只有人会。说东西让人没劲，用让人版：The book is 【boring】。"
+      },
+      {
+        tokenIndex: 5,
+        tag: "missing_be",
+        original: "bored.",
+        correction: "am bored.",
+        explanation: "搭档不能丢：I 和 am 一起出场（第 1 课的老规矩）——I 【am】 bored。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "第 19 课回流：We 是一伙人，用 were 搭档——We 【were】 happy。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "plural",
+        original: "sandwich.",
+        correction: "sandwiches.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【sandwiches】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十七批 · L114 案件（规格：prd-grammar-a2-closeout-2026-09-19.md §6；新错丢 a／a few 后跟单数，旧错回流 L11 复数＋L25 三单）──
+    id: "hunt-few-apples",
+    number: 123,
+    title: "果盘见底了",
+    scene: "果盘端上桌，旁边压着一张小纸条",
+    tokens: [
+      "There", "are", "few", "apples.",
+      "There", "are", "a", "few", "apple.",
+      "We", "have", "two", "bus.",
+      "She", "have", "a", "dog."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "article",
+        original: "few",
+        correction: "a few",
+        explanation: "「还有几个」（够）要说 a few——差一个小 a，意思就反了。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "plural",
+        original: "apple.",
+        correction: "apples.",
+        explanation: "第 11 课回流：a few 后面跟着的是好几个东西，要加尾巴——a few 【apples】。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "plural",
+        original: "bus.",
+        correction: "buses.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【buses】。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "sv_agreement",
+        original: "have",
+        correction: "has",
+        explanation: "第 25 课回流：她/他/它做事动词要变——She 【has】 a dog。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十七批 · L115 案件（规格：prd-grammar-a2-closeout-2026-09-19.md §6；新错多补动词／the→a，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-have-got-bike",
+    number: 124,
+    title: "新车棚",
+    scene: "楼下新车棚，车把上挂着的一张便签",
+    tokens: [
+      "I", "have", "got", "a", "new", "bike", "is.",
+      "I", "have", "got", "the", "new", "bike.",
+      "Yesterday", "I", "go", "home.",
+      "We", "have", "two", "bag."
+    ],
+    errors: [
+      {
+        tokenIndex: 6,
+        tag: "verb_form",
+        original: "is.",
+        correction: "去掉 is.",
+        explanation: "got 后面直接接东西，句子就完了——不用再补 is，一句话只要一个「发动机」。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "article",
+        original: "the",
+        correction: "a",
+        explanation: "第一次说这辆车要用 a：a new bike。the 是说双方都知道的那一辆。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 20,
+        tag: "plural",
+        original: "bag.",
+        correction: "bags.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【bags】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十七批 · L116 案件（规格：prd-grammar-a2-closeout-2026-09-19.md §6；新错 have→has／多补动词，旧错回流 L19 was/were＋L11 复数）──
+    id: "hunt-she-has-got",
+    number: 125,
+    title: "姐姐的新包",
+    scene: "沙发上并排摆着的两个包，旁边一张购物单",
+    tokens: [
+      "She", "have", "got", "a", "new", "bag.",
+      "She", "has", "got", "a", "new", "bag", "is.",
+      "They", "was", "happy.",
+      "We", "have", "two", "book."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "sv_agreement",
+        original: "have",
+        correction: "has",
+        explanation: "她是「她」——have 要换成 【has】（第 25 课的老规矩）。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "verb_form",
+        original: "is.",
+        correction: "去掉 is.",
+        explanation: "第 115 课规矩：got 后面直接接东西，句子就完了——不用再补 is。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+      },
+      {
+        tokenIndex: 19,
+        tag: "plural",
+        original: "book.",
+        correction: "books.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【books】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十七批 · L117 案件（规格：prd-grammar-a2-closeout-2026-09-19.md §6；新错 boring→bored／门牌 in→at，旧错回流 L10 型 tense＋L11 复数）──
+    id: "hunt-all-i-wanted",
+    number: 126,
+    title: "本子上的四行",
+    scene: "本子上排成四行的话，边上画着几个小圈",
+    tokens: [
+      "I", "am", "boring.",
+      "I", "am", "good", "in", "drawing.",
+      "I", "waited", "until", "the", "rain", "stop.",
+      "We", "have", "two", "friend."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "verb_form",
+        original: "boring.",
+        correction: "bored.",
+        explanation: "第 113 课回流：说自己没劲用感到版——I am 【bored】。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "preposition",
+        original: "in",
+        correction: "at",
+        explanation: "第 67 课回流：擅长做什么用 at——good 【at】 drawing。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "tense",
+        original: "stop.",
+        correction: "stopped.",
+        explanation: "第 109 课回流：until 两边都用昨天版——until the rain 【stopped】。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "plural",
+        original: "friend.",
+        correction: "friends.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【friends】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十七批 · L118 收官案件（规格：prd-grammar-a2-closeout-2026-09-19.md §6；全回流、不新增错型——四点分别锚 #120/#122/#123/#125）──
+    id: "hunt-close-17",
+    number: 127,
+    title: "最后一页",
+    scene: "本子最后一页，这一章学过的几句话排在下面",
+    tokens: [
+      "Grandma", "birthday", "is", "in", "May.",
+      "I", "am", "boring.",
+      "There", "are", "few", "apples.",
+      "She", "have", "got", "a", "new", "bag."
+    ],
+    errors: [
+      {
+        tokenIndex: 0,
+        tag: "word_order",
+        original: "Grandma",
+        correction: "Grandma's",
+        explanation: "第 111 课回流：「谁的」不能光着说——人后面要加撇号 s。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "verb_form",
+        original: "boring.",
+        correction: "bored.",
+        explanation: "第 113 课回流：说自己没劲用感到版——I am 【bored】。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "article",
+        original: "few",
+        correction: "a few",
+        explanation: "第 114 课回流：「还有几个」要说 a few——差一个小 a，意思就反了。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "sv_agreement",
+        original: "have",
+        correction: "has",
+        explanation: "第 116 课回流：她是「她」——have 要换成 【has】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十八批 · L119 开篇案件（规格：prd-grammar-used-to-2026-09-19.md §7；新错 use→used／漏 be，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-used-to-it",
+    number: 128,
+    title: "新住处第一周",
+    scene: "新住处窗台上压着的一张便条，记着这一周的事",
+    tokens: [
+      "I", "am", "use", "to", "the", "cold.",
+      "I", "used", "to", "the", "city.",
+      "Yesterday", "I", "go", "home.",
+      "We", "have", "two", "bag."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "verb_form",
+        original: "use",
+        correction: "used",
+        explanation: "习惯的记号是 used（带 d）——前面有 am 站着，它也不动：am 【used】 to the cold。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "missing_be",
+        original: "used",
+        correction: "am used",
+        explanation: "说「习惯了」要有 am／is／are 站着——I 【am】 used to the city。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 18,
+        tag: "plural",
+        original: "bag.",
+        correction: "bags.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【bags】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十八批 · L120 案件（规格：prd-grammar-used-to-2026-09-19.md §7；新错 get→getting／漏 to，旧错回流 L25 三单＋L11 复数）──
+    id: "hunt-getting-up-early",
+    number: 129,
+    title: "六点的闹钟",
+    scene: "新家床头柜上的一张作息便签",
+    tokens: [
+      "I", "am", "used", "to", "get", "up", "early.",
+      "She", "is", "used", "getting", "up", "early.",
+      "He", "drink", "milk", "every", "day.",
+      "We", "have", "two", "clock."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "verb_form",
+        original: "get",
+        correction: "getting",
+        explanation: "做的事要穿名字版：get → 【getting】 up early（有 be 站着的 to 认名字版）。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "preposition",
+        original: "getting",
+        correction: "to getting",
+        explanation: "to 不能丢：used 【to】 getting——有 be 站着，它照样带着 to。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "sv_agreement",
+        original: "drink",
+        correction: "drinks",
+        explanation: "第 25 课回流：他/她/它后面的动词加 -s——He 【drinks】 milk every day。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "plural",
+        original: "clock.",
+        correction: "clocks.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【clocks】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十八批 · L121 案件（规格：prd-grammar-used-to-2026-09-19.md §7；新错 get→getting／use→used，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-getting-used-to",
+    number: 130,
+    title: "第二周",
+    scene: "新学校课桌上摊着的日记本，写着这一周",
+    tokens: [
+      "I", "am", "get", "used", "to", "it.",
+      "She", "is", "getting", "use", "to", "the", "noise.",
+      "Yesterday", "I", "see", "him.",
+      "We", "have", "two", "book."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "verb_form",
+        original: "get",
+        correction: "getting",
+        explanation: "「慢慢」是正在发生的过程——get 要穿 -ing：am 【getting】 used to it。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "verb_form",
+        original: "use",
+        correction: "used",
+        explanation: "习惯的记号照样是 used（带 d）——getting 【used】 to the noise。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "tense",
+        original: "see",
+        correction: "saw",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——see → 【saw】。"
+      },
+      {
+        tokenIndex: 20,
+        tag: "plural",
+        original: "book.",
+        correction: "books.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【books】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十八批 · L122 案件（脊柱课；规格：prd-grammar-used-to-2026-09-19.md §7；新错两张脸混形／漏 to，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-two-faces",
+    number: 131,
+    title: "两张脸排一行",
+    scene: "本子上并排写着两行——一行「从前」，一行「现在」",
+    tokens: [
+      "She", "used", "to", "working", "late.",
+      "I", "am", "used", "walking", "to", "school.",
+      "Yesterday", "I", "go", "home.",
+      "We", "have", "two", "clock."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "verb_form",
+        original: "working",
+        correction: "work",
+        explanation: "第 93 课规矩：只有 used、没有 be 的时候，后面穿原样——used to 【work】 late。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "preposition",
+        original: "walking",
+        correction: "to walking",
+        explanation: "有 be 站着的时候，to 不能丢：used 【to】 walking to school。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 18,
+        tag: "plural",
+        original: "clock.",
+        correction: "clocks.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【clocks】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十八批 · L123 案件（规格：prd-grammar-used-to-2026-09-19.md §7；新错 don't→am not／Are 语序，旧错回流 L19 was/were＋L11 复数）──
+    id: "hunt-not-used-to",
+    number: 132,
+    title: "操场上的一句话",
+    scene: "操场上接力棒旁边的一张记分纸",
+    tokens: [
+      "I", "don't", "used", "to", "it.",
+      "You", "are", "used", "to", "the", "noise?",
+      "They", "was", "happy.",
+      "We", "have", "two", "ball."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "verb_form",
+        original: "don't",
+        correction: "am not",
+        explanation: "说「习惯了」的「不」动 be：not 跟在 am 后面——I 【am not】 used to it。"
+      },
+      {
+        tokenIndex: 5,
+        tag: "word_order",
+        original: "You",
+        correction: "去掉 You（Are 搬句首）",
+        explanation: "想问别人，be 要站到句首：Are you used to the noise?——光说 You are 是在陈述，不是问。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "plural",
+        original: "ball.",
+        correction: "balls.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【balls】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十八批 · L124 收官案件（规格：prd-grammar-used-to-2026-09-19.md §7；全回流、不新增错型——四点分别锚 #128/#129/#130/#131）──
+    id: "hunt-close-18",
+    number: 133,
+    title: "最后一页",
+    scene: "本子最后一页，这一章学过的几行排在下面",
+    tokens: [
+      "I", "use", "to", "the", "cold.",
+      "I", "am", "used", "to", "get", "up", "early.",
+      "I", "am", "get", "used", "to", "it.",
+      "She", "used", "to", "walking", "late."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "verb_form",
+        original: "use",
+        correction: "used",
+        explanation: "第 119 课回流：习惯的记号是 used（带 d）——前面有 am 站着，它也不动。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "verb_form",
+        original: "get",
+        correction: "getting",
+        explanation: "第 120 课回流：做的事要穿名字版——used to 【getting】 up early。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "verb_form",
+        original: "get",
+        correction: "getting",
+        explanation: "第 121 课回流：「慢慢」是正在发生的过程——am 【getting】 used to it。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "verb_form",
+        original: "walking",
+        correction: "work",
+        explanation: "第 122 课回流：只有 used、没有 be 的时候，后面穿原样——used to 【work】 late。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十九批 · L125 开篇案件（规格：prd-grammar-look-2026-09-19.md §7；新错中间站 is／漏 -s，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-it-looks-nice",
+    number: 134,
+    title: "画纸上的那句话",
+    scene: "书桌上摊着的画纸，背面写着几行字",
+    tokens: [
+      "It", "looks", "is", "nice.",
+      "It", "look", "nice.",
+      "Yesterday", "I", "go", "home.",
+      "We", "have", "two", "box."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "verb_form",
+        original: "is",
+        correction: "去掉 is",
+        explanation: "中间不站 is：look 自己站中间就够了——It looks 【nice】。"
+      },
+      {
+        tokenIndex: 5,
+        tag: "sv_agreement",
+        original: "look",
+        correction: "looks",
+        explanation: "「它」是单个的，look 要带上 s——It 【looks】 nice。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "plural",
+        original: "box.",
+        correction: "boxes.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【boxes】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十九批 · L126 案件（规格：prd-grammar-look-2026-09-19.md §7；新错 looks→look／look→looks，旧错回流 L19 was/were＋L11 复数）──
+    id: "hunt-you-look-tired",
+    number: 135,
+    title: "走廊里的那句话",
+    scene: "学校走廊的长椅上，落着一张记分纸",
+    tokens: [
+      "You", "looks", "tired.",
+      "She", "look", "tired.",
+      "They", "was", "happy.",
+      "We", "have", "two", "cup."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "sv_agreement",
+        original: "looks",
+        correction: "look",
+        explanation: "「你」配原样的 look——不带 s：You 【look】 tired。"
+      },
+      {
+        tokenIndex: 4,
+        tag: "sv_agreement",
+        original: "look",
+        correction: "looks",
+        explanation: "「她」配带 s 的 looks（第 25 课的老规矩）：She 【looks】 tired。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "plural",
+        original: "cup.",
+        correction: "cups.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【cups】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第十九批 · L127 收官案件（规格：prd-grammar-look-2026-09-19.md §7；全回流、不新增错型——三点锚 #134/#135，旧错取 L10 型）──
+    id: "hunt-two-look-faces",
+    number: 136,
+    title: "放学前的那句话",
+    scene: "教室黑板上留着的一行板书",
+    tokens: [
+      "The", "sky", "look", "dark.",
+      "You", "looks", "tired.",
+      "It", "looks", "is", "nice.",
+      "Yesterday", "I", "go", "home."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "sv_agreement",
+        original: "look",
+        correction: "looks",
+        explanation: "第 125 课回流：「天」是单个的，look 要带上 s——The sky 【looks】 dark。"
+      },
+      {
+        tokenIndex: 5,
+        tag: "sv_agreement",
+        original: "looks",
+        correction: "look",
+        explanation: "第 126 课回流：「你」配原样的 look——不带 s。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "verb_form",
+        original: "is",
+        correction: "去掉 is",
+        explanation: "第 125 课回流：中间不站 is——look 自己站中间就够了。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十批 · L128 开篇案件（规格：prd-grammar-five-senses-2026-09-19.md §7；新错中间站 is／漏 -s，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-it-sounds-great",
+    number: 137,
+    title: "厨房里的声音",
+    scene: "厨房料理台上压着的一张便条",
+    tokens: [
+      "It", "sounds", "is", "great.",
+      "It", "sound", "great.",
+      "Yesterday", "I", "go", "home.",
+      "We", "have", "two", "box."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "verb_form",
+        original: "is",
+        correction: "去掉 is",
+        explanation: "中间不站 is：听的那个词自己站中间就够了——It sounds 【great】。"
+      },
+      {
+        tokenIndex: 5,
+        tag: "sv_agreement",
+        original: "sound",
+        correction: "sounds",
+        explanation: "「它」是单个的，sound 要带上 s——It 【sounds】 great。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "plural",
+        original: "box.",
+        correction: "boxes.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【boxes】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十批 · L129 案件（规格：prd-grammar-five-senses-2026-09-19.md §7；新错 well→good／漏 -s，旧错回流 L19 was/were＋L25 三单）──
+    id: "hunt-it-smells-good",
+    number: 138,
+    title: "锅里的香味",
+    scene: "灶台边贴着的一张炖汤步骤纸",
+    tokens: [
+      "It", "smells", "well.",
+      "It", "smell", "good.",
+      "They", "was", "happy.",
+      "He", "drink", "milk."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "word_order",
+        original: "well.",
+        correction: "good.",
+        explanation: "well 是「做得好」（第 59 课）——这句说的是「闻着怎么样」，要用 【good】。"
+      },
+      {
+        tokenIndex: 4,
+        tag: "sv_agreement",
+        original: "smell",
+        correction: "smells",
+        explanation: "「它」是单个的，smell 要带上 s——It 【smells】 good。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "sv_agreement",
+        original: "drink",
+        correction: "drinks",
+        explanation: "第 25 课回流：他/她/它后面的动词加 -s——He 【drinks】 milk。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十批 · L130 案件（规格：prd-grammar-five-senses-2026-09-19.md §7；新错 well→good／漏 -s，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-it-tastes-good",
+    number: 139,
+    title: "桌上的蛋糕",
+    scene: "饭桌上留着的半张蛋糕盒卡片",
+    tokens: [
+      "This", "cake", "tastes", "well.",
+      "This", "cake", "taste", "good.",
+      "Yesterday", "I", "go", "home.",
+      "We", "have", "two", "cup."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "word_order",
+        original: "well.",
+        correction: "good.",
+        explanation: "well 是「做得好」——这句说的是「尝着怎么样」，要用 【good】（第 59 课的老规矩）。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "sv_agreement",
+        original: "taste",
+        correction: "tastes",
+        explanation: "「这个蛋糕」是单个的，taste 要带上 s——This cake 【tastes】 good。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "plural",
+        original: "cup.",
+        correction: "cups.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【cups】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十批 · L131 案件（规格：prd-grammar-five-senses-2026-09-19.md §7；新错 -ly 过度套用／漏 -s，旧错回流 L19 was/were＋L25 三单）──
+    id: "hunt-water-feels-cold",
+    number: 140,
+    title: "洗手台前",
+    scene: "洗手台边贴着的值日提醒条",
+    tokens: [
+      "The", "water", "feels", "coldly.",
+      "The", "water", "feel", "cold.",
+      "They", "was", "happy.",
+      "She", "drink", "milk."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "word_order",
+        original: "coldly.",
+        correction: "cold.",
+        explanation: "不加 -ly：这句说的是「摸着怎么样」，后面直接跟 【cold】（第 58 课的老规矩）。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "sv_agreement",
+        original: "feel",
+        correction: "feels",
+        explanation: "「这水」是单个的，feel 要带上 s——The water 【feels】 cold。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "sv_agreement",
+        original: "drink",
+        correction: "drinks",
+        explanation: "第 25 课回流：他/她/它后面的动词加 -s——She 【drinks】 milk。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十批 · L132 案件（规格：prd-grammar-five-senses-2026-09-19.md §7；新错 not sounds／Does it sounds，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-does-it-sound-good",
+    number: 141,
+    title: "课间的一句话",
+    scene: "课桌角上贴着的一张周末安排小纸条",
+    tokens: [
+      "It", "not", "sounds", "good.",
+      "Does", "it", "sounds", "good?",
+      "Yesterday", "I", "go", "home.",
+      "We", "have", "two", "box."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "verb_form",
+        original: "not",
+        correction: "does not",
+        explanation: "说「不」要请帮手：does not 站前面，sound 退回原样——It 【does not】 sound good。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "verb_form",
+        original: "sounds",
+        correction: "sound",
+        explanation: "帮手 Does 已经站到句首了，sound 退回原样——Does it 【sound】 good?"
+      },
+      {
+        tokenIndex: 10,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "plural",
+        original: "box.",
+        correction: "boxes.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【boxes】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十批 · L133 收官案件（规格：prd-grammar-five-senses-2026-09-19.md §7；全回流、不新增错型——三点锚 #137/#138/#139/#140）──
+    id: "hunt-five-senses",
+    number: 142,
+    title: "本子上的五行",
+    scene: "书桌上摊开的本子，最后一行还没写完",
+    tokens: [
+      "It", "looks", "is", "nice.",
+      "It", "sound", "great.",
+      "This", "cake", "tastes", "well.",
+      "The", "water", "feel", "cold."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "verb_form",
+        original: "is",
+        correction: "去掉 is",
+        explanation: "第 125 课回流：中间不站 is——看的那个词自己站中间就够了。"
+      },
+      {
+        tokenIndex: 5,
+        tag: "sv_agreement",
+        original: "sound",
+        correction: "sounds",
+        explanation: "第 128 课回流：「它」是单个的，sound 要带上 s——It 【sounds】 great。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "word_order",
+        original: "well.",
+        correction: "good.",
+        explanation: "第 130 课回流：well 是「做得好」——说「尝着怎么样」要用 【good】。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "sv_agreement",
+        original: "feel",
+        correction: "feels",
+        explanation: "第 131 课回流：「这水」是单个的——feel 要带上 s。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十一批 · L134 开篇案件（规格：prd-grammar-look-forward-to-2026-09-20.md §9；新错 look→looking／漏 to，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-looking-forward-weekend",
+    number: 143,
+    title: "台历上的圈",
+    scene: "书桌上摊开的台历，周六那格画了个圈",
+    tokens: [
+      "I", "am", "look", "forward", "to", "the", "weekend.",
+      "I", "looking", "forward", "to", "the", "weekend.",
+      "Yesterday", "I", "go", "home.",
+      "We", "have", "two", "box."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "verb_form",
+        original: "look",
+        correction: "looking",
+        explanation: "「盼着」这个记号是 looking——前面站着 am，它穿 -ing：am 【looking】 forward to。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "preposition",
+        original: "forward",
+        correction: "forward to",
+        explanation: "to 不能丢：looking forward 【to】 the weekend——三个词是一块记号。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 20,
+        tag: "plural",
+        original: "box.",
+        correction: "boxes.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【boxes】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十一批 · L135 案件（规格：prd-grammar-look-forward-to-2026-09-20.md §9；新错漏 -s／漏 the，旧错回流 L19 was/were＋L25 三单）──
+    id: "hunt-she-looks-forward",
+    number: 144,
+    title: "画满圈的日历",
+    scene: "课桌上摊着的日历，暑假那几天画满了圈",
+    tokens: [
+      "She", "look", "forward", "to", "the", "summer.",
+      "She", "looks", "forward", "to", "summer.",
+      "They", "was", "happy.",
+      "He", "drink", "milk."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "sv_agreement",
+        original: "look",
+        correction: "looks",
+        explanation: "她是「她」——记号要带上 s：She 【looks】 forward to。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "article",
+        original: "summer.",
+        correction: "the summer.",
+        explanation: "说的是「这个夏天」（要等的那个）——前面带上 the：the summer。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "sv_agreement",
+        original: "drink",
+        correction: "drinks",
+        explanation: "第 25 课回流：他/她/它后面的动词加 -s——He 【drinks】 milk。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十一批 · L136 案件（规格：prd-grammar-look-forward-to-2026-09-20.md §9；新错 see→seeing（本批新错型）＋漏 to，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-looking-forward-seeing",
+    number: 145,
+    title: "电话里的那句话",
+    scene: "书桌上的电话便签，记着下周的安排",
+    tokens: [
+      "I", "am", "looking", "forward", "to", "see", "you.",
+      "I", "am", "looking", "forward", "seeing", "you.",
+      "Yesterday", "I", "go", "home.",
+      "We", "have", "two", "cup."
+    ],
+    errors: [
+      {
+        tokenIndex: 5,
+        tag: "verb_form",
+        original: "see",
+        correction: "seeing",
+        explanation: "盼着的是「做那件事」——那件事要穿名字版：to 【seeing】 you（第 120 课同一个规矩）。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "preposition",
+        original: "forward",
+        correction: "forward to",
+        explanation: "to 不能丢：looking forward 【to】 seeing you——三个词是一块记号。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 20,
+        tag: "plural",
+        original: "cup.",
+        correction: "cups.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【cups】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十一批 · L137 案件（规格：prd-grammar-look-forward-to-2026-09-20.md §9；新错 Do→Are（不请帮手）／look→looking，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-are-you-looking-forward",
+    number: 146,
+    title: "暑假通知单",
+    scene: "课桌上传着的暑假通知单，边上有人写了几个字",
+    tokens: [
+      "Do", "you", "looking", "forward", "to", "the", "summer?",
+      "I", "am", "not", "look", "forward", "to", "saying", "goodbye.",
+      "Yesterday", "I", "go", "home.",
+      "We", "have", "two", "cup."
+    ],
+    errors: [
+      {
+        tokenIndex: 0,
+        tag: "verb_form",
+        original: "Do",
+        correction: "Are",
+        explanation: "句子里站的是 be——问要搬 be，不请帮手：Are you looking…？（第 123 课的老规矩）"
+      },
+      {
+        tokenIndex: 10,
+        tag: "verb_form",
+        original: "look",
+        correction: "looking",
+        explanation: "说「不」不动记号的形状：am not 【looking】 forward to…。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 22,
+        tag: "plural",
+        original: "cup.",
+        correction: "cups.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【cups】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十一批 · L138 收官案件（规格：prd-grammar-look-forward-to-2026-09-20.md §9；全回流、不新增错型——四点分别锚 #143/#144/#145/#146）──
+    id: "hunt-two-stations",
+    number: 147,
+    title: "本子上的两个 to",
+    scene: "书桌上摊开的本子，两句话中间画了条竖线",
+    tokens: [
+      "I", "am", "used", "to", "get", "up", "early.",
+      "I", "am", "looking", "forward", "to", "see", "you.",
+      "She", "look", "forward", "to", "the", "summer.",
+      "We", "have", "two", "cup."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "verb_form",
+        original: "get",
+        correction: "getting",
+        explanation: "第 120 课回流：这个 to 认名字版——used to 【getting】 up early。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "verb_form",
+        original: "see",
+        correction: "seeing",
+        explanation: "第 136 课回流：这个 to 也认名字版——looking forward to 【seeing】 you。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "sv_agreement",
+        original: "look",
+        correction: "looks",
+        explanation: "第 135 课回流：她是「她」——记号带上 s：She 【looks】 forward to。"
+      },
+      {
+        tokenIndex: 23,
+        tag: "plural",
+        original: "cup.",
+        correction: "cups.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【cups】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十二批 · L139 开篇案件（规格：prd-grammar-contrast-2026-09-20.md §9；新错「虽然…但是」并存（本批新错型）／will 漏用，旧错回流 L10 昨天版＋L11 复数）──
+    id: "hunt-although-rain",
+    number: 148,
+    title: "雨里的那句话",
+    scene: "门口伞架旁压着的一张便条",
+    tokens: [
+      "Although", "it", "is", "raining,", "but", "I", "will", "go", "out.",
+      "Although", "it", "is", "raining,", "I", "go", "out.",
+      "Yesterday", "I", "go", "home.",
+      "We", "have", "two", "box."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "run_on",
+        original: "but",
+        correction: "去掉 but",
+        explanation: "中文的「虽然…但是…」成对说，英语只留一个：前面有了 Although，后面就不带 but。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "tense",
+        original: "go",
+        correction: "will go",
+        explanation: "说的是「等下要出去」（还没发生）——后面那句要用 will：I 【will】 go out。"
+      },
+      {
+        tokenIndex: 18,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 23,
+        tag: "plural",
+        original: "box.",
+        correction: "boxes.",
+        explanation: "第 11 课回流：two 后面是可数名词复数——two 【boxes】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十二批 · L140 案件（规格：prd-grammar-contrast-2026-09-20.md §9；新错两张脸同时上／逗号错位，旧错回流 L19 was/were＋L25 三单）──
+    id: "hunt-but-vs-although",
+    number: 149,
+    title: "便签上的两张脸",
+    scene: "桌上并排摆着的两张便签，写着同一个意思",
+    tokens: [
+      "It", "is", "raining,", "but", "I", "will", "go", "out.",
+      "Although", "it", "is", "raining", "but", "I", "will", "go", "out.",
+      "They", "was", "happy.",
+      "He", "drink", "milk."
+    ],
+    errors: [
+      {
+        tokenIndex: 11,
+        tag: "run_on",
+        original: "raining",
+        correction: "raining,",
+        explanation: "Although 领完那一整句要点个逗号断开——Although it is raining【,】；站中间的 but 前面也要点逗号。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "run_on",
+        original: "but",
+        correction: "去掉 but",
+        explanation: "两张脸不能同时上：前面有了 Although，后面就不用 but（只留一个）。"
+      },
+      {
+        tokenIndex: 18,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "sv_agreement",
+        original: "drink",
+        correction: "drinks",
+        explanation: "第 25 课回流：他/她/它后面的动词加 -s——He 【drinks】 milk。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十二批 · L141 收官案件（规格：prd-grammar-contrast-2026-09-20.md §9；全回流、不新增错型——四点分别锚 #148/#149）──
+    id: "hunt-close-22",
+    number: 150,
+    title: "本子上的等号",
+    scene: "书桌上摊开的本子，两句话中间画了个等号",
+    tokens: [
+      "Although", "it", "is", "raining,", "but", "I", "will", "go", "out.",
+      "It", "is", "raining", "but", "I", "will", "go", "out.",
+      "Although", "raining,", "I", "will", "go", "out.",
+      "They", "was", "happy."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "run_on",
+        original: "but",
+        correction: "去掉 but",
+        explanation: "第 139 课回流：两张脸不能同时上——前面有了 Although，后面就不用 but。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "run_on",
+        original: "raining",
+        correction: "raining,",
+        explanation: "第 140 课回流：but 站中间，前面点个逗号断一下——It is raining【,】 but I will go out。"
+      },
+      {
+        tokenIndex: 18,
+        tag: "fragment",
+        original: "raining,",
+        correction: "it is raining,",
+        explanation: "第 139 课回流：Although 后面要跟一个完整的小句子——Although 【it is raining】。"
+      },
+      {
+        tokenIndex: 24,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十三批 · L142 案件（规格：prd-grammar-as-soon-as-2026-09-20.md §11；新错 word_order 缺两头／verb_form 前面请 will，旧错回流 L10＋L11）──
+    id: "hunt-as-soon-as-comes",
+    number: 151,
+    title: "饭桌上的四行字",
+    scene: "傍晚的饭桌：位子还空着，本子上写了四行",
+    tokens: [
+      "As", "soon", "as", "I", "will", "finish,", "I", "will", "eat.",
+      "Soon", "as", "I", "finish,", "I", "will", "eat.",
+      "Yesterday", "I", "go", "home", "late.",
+      "I", "ate", "two", "sandwich."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "verb_form",
+        original: "will",
+        correction: "去掉 will",
+        explanation: "前面那件说现在，不请 will：As soon as I 【finish】——第 48 课那条规矩，as soon as 也照办。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "word_order",
+        original: "Soon",
+        correction: "As soon",
+        explanation: "两头都要卡住：少一头 as，「一到就」就散架——As 【soon as】 I finish。第 65 课那句 as tall as 是「一样」，这句是「一到就」——同一个字，两张脸。"
+      },
+      {
+        tokenIndex: 18,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      },
+      {
+        tokenIndex: 24,
+        tag: "plural",
+        original: "sandwich.",
+        correction: "sandwiches.",
+        explanation: "第 11 课回流：two 后面要加 -s——two 【sandwiches】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十三批 · L143 案件（规格：prd-grammar-as-soon-as-2026-09-20.md §11；新错 word_order 缺第二头／tense 后面漏 will，旧错回流 L19＋L25）──
+    id: "hunt-when-vs-as-soon",
+    number: 152,
+    title: "妹妹又追了一句",
+    scene: "同一张饭桌上的问句，妹妹端着碗追问",
+    tokens: [
+      "When", "I", "finish,", "I", "eat.",
+      "As", "soon", "I", "finish,", "I", "will", "eat.",
+      "My", "sister", "and", "I", "was", "happy.",
+      "She", "like", "music."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "tense",
+        original: "eat.",
+        correction: "will eat.",
+        explanation: "后面那件还没发生，要带上 will——When I finish, I 【will eat】。中文的「就」不带将来，英语这边要带。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "word_order",
+        original: "soon",
+        correction: "as soon as",
+        explanation: "两头都要卡住：第 142 课少的是第一头，这回少的是第二头——As soon 【as】 I finish。两个 as 缺一不可。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "第 19 课回流：My sister and I 是两个人，算一伙的，用 【were】 不用 was。"
+      },
+      {
+        tokenIndex: 19,
+        tag: "sv_agreement",
+        original: "like",
+        correction: "likes",
+        explanation: "第 25 课回流：「她喜欢」要加 -s——She 【likes】 music。这是英语里最顽固的小尾巴，别丢了。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十三批 · L144 收官案件（规格：prd-grammar-as-soon-as-2026-09-20.md §11；全回流、不新增错型——三点锚本批 #151/#152，一点锚旧课 L10）──
+    id: "hunt-close-23",
+    number: 153,
+    title: "本子最后一页",
+    scene: "本子翻到最后一页，六行排好了，最后一行写错了",
+    tokens: [
+      "As", "soon", "as", "I", "will", "finish,", "I", "will", "eat.",
+      "As", "soon", "I", "finish,", "I", "will", "eat.",
+      "When", "I", "finish,", "I", "eat.",
+      "Yesterday", "I", "go", "home", "late."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "verb_form",
+        original: "will",
+        correction: "去掉 will",
+        explanation: "第 142 课回流：前面那件说现在，不请 will——As soon as I 【finish】。第 48 课那条规矩，as soon as 也照办。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "word_order",
+        original: "soon",
+        correction: "as soon as",
+        explanation: "第 142 课回流：两头都要卡住——As 【soon as】 I finish，两个 as 缺一不可。"
+      },
+      {
+        tokenIndex: 20,
+        tag: "tense",
+        original: "eat.",
+        correction: "will eat.",
+        explanation: "第 143 课回流：后面那件还没发生，要带上 will——When I finish, I 【will eat】。"
+      },
+      {
+        tokenIndex: 23,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十四批 · L145 案件（规格：prd-grammar-too-either-2026-09-20.md §11；新错 word_order too 站错位置，旧错回流 L25＋L11＋L10）──
+    id: "hunt-like-tea-too",
+    number: 154,
+    title: "桌上的两杯",
+    scene: "晚饭后，桌上还剩着一杯茶和一杯咖啡",
+    tokens: [
+      "I", "too", "like", "tea.",
+      "My", "brother", "like", "apples.",
+      "I", "have", "two", "sister.",
+      "Last", "week", "I", "go", "to", "the", "library."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "word_order",
+        original: "too",
+        correction: "去掉（too 放到 tea 后面）",
+        explanation: "中文的「也」在中间（我也喜欢），英语的 too 要走到句子尾巴上——I like tea【 too】。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "sv_agreement",
+        original: "like",
+        correction: "likes",
+        explanation: "第 25 课回流：My brother 是「他」一个，后面的动词要加 -s——My brother 【likes】 apples。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "plural",
+        original: "sister.",
+        correction: "sisters.",
+        explanation: "第 11 课回流：two 后面要加 -s——two 【sisters】。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：Last week 是过去的事，要换昨天版——go → 【went】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十四批 · L146 案件（规格：prd-grammar-too-either-2026-09-20.md §11；新错 word_order 否定句尾没换词，旧错回流 L25＋L11＋L19）──
+    id: "hunt-not-coffee-either",
+    number: 155,
+    title: "弟弟的杯子",
+    scene: "弟弟把咖啡杯推到一边，皱着鼻子摇头",
+    tokens: [
+      "I", "don't", "like", "coffee", "too.",
+      "She", "don't", "like", "tea.",
+      "There", "are", "two", "table", "at", "home.",
+      "My", "sister", "and", "I", "was", "tired."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "word_order",
+        original: "too.",
+        correction: "either.",
+        explanation: "前面有了「不」，句尾就要换人：too 让位、either 上——I don't like coffee【 either】。中文的「也」不分肯定否定，英语要分。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "sv_agreement",
+        original: "don't",
+        correction: "doesn't",
+        explanation: "第 25 课回流：She 是「她」一个，帮手要用 doesn't——She 【doesn't】 like tea。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "plural",
+        original: "table",
+        correction: "tables",
+        explanation: "第 11 课回流：two 后面要加 -s——two 【tables】。"
+      },
+      {
+        tokenIndex: 19,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "第 19 课回流：My sister and I 是两个人，算一伙的，用 【were】 不用 was。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十四批 · L147 收官案件（规格：prd-grammar-too-either-2026-09-20.md §11；全回流、不新增错型——两点锚本批 #154/#155，两点锚旧课 L25/L10）──
+    id: "hunt-close-24",
+    number: 156,
+    title: "本子上的两行",
+    scene: "本子最后一页，两句话并排写着，中间画了个点",
+    tokens: [
+      "I", "too", "like", "tea.",
+      "I", "don't", "like", "coffee", "too.",
+      "My", "brother", "drink", "milk.",
+      "Yesterday", "I", "go", "to", "school", "late."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "word_order",
+        original: "too",
+        correction: "去掉（too 放到 tea 后面）",
+        explanation: "第 145 课回流：「也」要站句子尾巴上——I like tea【 too】，不站中间。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "word_order",
+        original: "too.",
+        correction: "either.",
+        explanation: "第 146 课回流：前面有「不」，句尾要换成 either——I don't like coffee【 either】。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "sv_agreement",
+        original: "drink",
+        correction: "drinks",
+        explanation: "第 25 课回流：My brother 是「他」一个，动词要加 -s——My brother 【drinks】 milk。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：Yesterday 是过去的事，要换昨天版——go → 【went】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十五批 · L148 案件（规格：prd-grammar-both-neither-2026-09-20.md §2；新错 word_order both 夹在中间 + plural 名字没带 s，旧错回流 L25＋L10）──
+    id: "hunt-both-books",
+    number: 157,
+    title: "书桌上的两本",
+    scene: "小美房间的书桌，两本书并排摊着",
+    tokens: [
+      "Books", "both", "are", "good.",
+      "Both", "book", "is", "good.",
+      "My", "brother", "like", "books.",
+      "Yesterday", "I", "go", "to", "the", "library."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "word_order",
+        original: "both",
+        correction: "去掉（both 放到 Books 前面）",
+        explanation: "中文说「两本书都很好」，「都」夹在中间；英语的 both 要走到最前面——【Both】 books are good。"
+      },
+      {
+        tokenIndex: 5,
+        tag: "plural",
+        original: "book",
+        correction: "books",
+        explanation: "第 11 课回流：两个以上，后面那个东西要带上 s——Both 【books】。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "sv_agreement",
+        original: "like",
+        correction: "likes",
+        explanation: "第 25 课回流：My brother 是「他」一个，后面的动词要加 -s——My brother 【likes】 books。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：Yesterday 是过去的事，要换昨天版——go → 【went】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十五批 · L149 案件（规格：prd-grammar-both-neither-2026-09-20.md §2；新错 word_order 有「不」没换词 + plural neither 后没去 s，旧错回流 L19＋L11）──
+    id: "hunt-neither-book",
+    number: 158,
+    title: "两本都不满意",
+    scene: "还是那张书桌，两本书被合上推到一边",
+    tokens: [
+      "Both", "books", "are", "not", "good.",
+      "Neither", "books", "are", "good.",
+      "The", "books", "was", "good.",
+      "I", "have", "two", "apple."
+    ],
+    errors: [
+      {
+        tokenIndex: 0,
+        tag: "word_order",
+        original: "Both",
+        correction: "Neither",
+        explanation: "有「不」的时候，最前面那个词整个换人：Both 让位、Neither 上——【Neither】 book is good（后面也只见一个）。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "plural",
+        original: "books",
+        correction: "book",
+        explanation: "neither 后面只说一个——Neither 【book】，不带 s，搭档也用 is。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "sv_agreement",
+        original: "was",
+        correction: "were",
+        explanation: "第 19 课回流：The books 是好几本，算一伙的，用 【were】 不用 was。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "plural",
+        original: "apple.",
+        correction: "apples.",
+        explanation: "第 11 课回流：two 后面要加 -s——two 【apples】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十五批 · L150 收官案件（规格：prd-grammar-both-neither-2026-09-20.md §2；全回流、不新增错型——三点锚本批 #157/#158，一点锚旧课 L10）──
+    id: "hunt-close-25",
+    number: 159,
+    title: "本子上的两行",
+    scene: "本子最后一页，两行并排写着，中间画了个点",
+    tokens: [
+      "Both", "book", "is", "good.",
+      "Neither", "books", "are", "good.",
+      "Books", "both", "are", "good.",
+      "Last", "week", "I", "go", "home."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "plural",
+        original: "book",
+        correction: "books",
+        explanation: "第 148 课回流：两个以上，名字要带上 s——Both 【books】。"
+      },
+      {
+        tokenIndex: 5,
+        tag: "plural",
+        original: "books",
+        correction: "book",
+        explanation: "第 149 课回流：neither 后面只说一个——Neither 【book】。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "word_order",
+        original: "both",
+        correction: "去掉（both 放到 Books 前面）",
+        explanation: "第 148 课回流：「都」要走到最前面，不夹在中间——【Both】 books are good。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：Last week 是过去的事，要换昨天版——go → 【went】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十六批 · L151 案件（规格：prd-grammar-all-every-2026-09-20.md §2；新错 plural 没带 s + word_order 多插 of，旧错回流 L7＋L11）──
+    id: "hunt-all-the-books",
+    number: 160,
+    title: "书桌上的一摞",
+    scene: "小美的书桌上，四本书摊成一排",
+    tokens: [
+      "All", "student", "is", "here.",
+      "All", "of", "books", "are", "good.",
+      "All", "the", "books", "is", "good.",
+      "We", "have", "two", "pen."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "plural",
+        original: "student",
+        correction: "students",
+        explanation: "第 11 课回流：「一个不落」说的是一群，后面那个东西要带上 s——All 【students】。"
+      },
+      {
+        tokenIndex: 5,
+        tag: "word_order",
+        original: "of",
+        correction: "去掉 of",
+        explanation: "中文说「所有的书」直接连着说，英语的 all 后面也直接接——中间不加 of：All 【the】 books。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "第 7 课回流：好几样东西一起出场，搭档要用 are——All the books 【are】 good。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "plural",
+        original: "pen.",
+        correction: "pens.",
+        explanation: "第 11 课回流：two 后面要加 -s——two 【pens】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十六批 · L152 案件（规格：prd-grammar-all-every-2026-09-20.md §2；新错 plural every 后带了 s + fragment every 单站，旧错回流 L25＋L10）──
+    id: "hunt-every-student",
+    number: 161,
+    title: "名册上的名字",
+    scene: "早读课前，讲台边摊着一本名册",
+    tokens: [
+      "Every", "students", "are", "here.",
+      "Every", "are", "here.",
+      "My", "sister", "like", "music.",
+      "Last", "night", "I", "watch", "TV."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "plural",
+        original: "students",
+        correction: "student",
+        explanation: "every 后面只说一个——Every 【student】 is here，不加 s、搭档也用 is。"
+      },
+      {
+        tokenIndex: 4,
+        tag: "fragment",
+        original: "Every",
+        correction: "Every student",
+        explanation: "every 后面必须跟着那个东西，不能自己单站——Every 【student】 are here 说不过去。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "sv_agreement",
+        original: "like",
+        correction: "likes",
+        explanation: "第 25 课回流：My sister 是「她」一个，后面的动词要加 -s——My sister 【likes】 music。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "tense",
+        original: "watch",
+        correction: "watched",
+        explanation: "第 10 课回流：Last night 是过去的事，要换昨天版——watch → 【watched】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十七批 · L153 案件（规格：prd-grammar-yet-already-2026-09-20.md §7；新错 word_order yet/already 站错位，旧错回流 L21＋L10）──
+    id: "hunt-yet-already",
+    number: 162,
+    title: "门口的两行字",
+    scene: "厨房门边贴着一张字条，桌边摆好了两副碗筷",
+    tokens: [
+      "She", "hasn't", "come", "already.",
+      "She", "hasn't", "yet", "come.",
+      "I", "have", "do", "my", "homework.",
+      "Yesterday", "we", "go", "out."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "word_order",
+        original: "already.",
+        correction: "yet.",
+        explanation: "「还没」要用 yet，而且站最末尾——She hasn't come【 yet】。already 是「已经」，两个词分工不同。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "word_order",
+        original: "yet",
+        correction: "去掉（yet 放到 come 后面）",
+        explanation: "yet 站句子最末尾，不插在中间——中文的「还」在中间，英语这个要走到最后。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "verb_form",
+        original: "do",
+        correction: "done",
+        explanation: "第 21 课回流：have 后面要用「做过版」——have 【done】 my homework。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：Yesterday 是过去的事，要换昨天版——go → 【went】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十七批 · L154 案件（规格：prd-grammar-yet-already-2026-09-20.md §7；新错 word_order still 站错位，旧错回流 L7＋L25＋L10）──
+    id: "hunt-still-waiting",
+    number: 163,
+    title: "校门口的那个人",
+    scene: "放学后的校门口，别的班都走光了",
+    tokens: [
+      "She", "still", "is", "waiting.",
+      "They", "is", "at", "home.",
+      "He", "like", "tea.",
+      "I", "see", "her", "yesterday."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "word_order",
+        original: "still",
+        correction: "去掉（still 放到 is 后面）",
+        explanation: "still 站在中间、紧挨着 is——She is【 still】 waiting。中文的「还」在「在」前面，英语这个要挤到 is 后面。"
+      },
+      {
+        tokenIndex: 5,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "第 7 课回流：They 是一伙人，算好几个，搭档要用 are——They 【are】 at home。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "sv_agreement",
+        original: "like",
+        correction: "likes",
+        explanation: "第 25 课回流：He 是「他」一个，后面的动词要加 -s——He 【likes】 tea。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "tense",
+        original: "see",
+        correction: "saw",
+        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——see → 【saw】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十八批 · L155 案件（规格：prd-grammar-ago-for-2026-09-20.md §7；新错 verb_form 前面多请了 have + word_order ago 站错位，旧错回流 L10＋L7）──
+    id: "hunt-three-days-ago",
+    number: 164,
+    title: "站台上的告示纸",
+    scene: "火车站台上，告示纸被风吹得直响",
+    tokens: [
+      "She", "has", "left", "three", "days", "ago.",
+      "She", "left", "ago", "three", "days.",
+      "I", "watch", "TV", "yesterday.",
+      "We", "is", "happy."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "verb_form",
+        original: "has",
+        correction: "去掉 has",
+        explanation: "「…以前」说的是过去某一个点，那句话穿昨天版就够——She 【left】 three days ago，前面不加 have。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "word_order",
+        original: "ago",
+        correction: "去掉（ago 放到 days 后面）",
+        explanation: "ago 要跟在那块时间后面，站最末尾——three days【 ago】。中文整块往前放，英语这块要走到最后。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "tense",
+        original: "watch",
+        correction: "watched",
+        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——watch → 【watched】。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "第 7 课回流：We 是一伙人，算好几个，搭档要用 are——We 【are】 happy。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十八批 · L156 案件（规格：prd-grammar-ago-for-2026-09-20.md §7；新错 word_order for 站错位，旧错回流 L10＋L25＋L11）──
+    id: "hunt-waited-an-hour",
+    number: 165,
+    title: "长椅上的一个小时",
+    scene: "放学后的校门口，长椅上放着一个书包",
+    tokens: [
+      "I", "waited", "an", "hour", "for.",
+      "I", "wait", "for", "an", "hour.",
+      "He", "don't", "know.",
+      "She", "have", "two", "book."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "word_order",
+        original: "for.",
+        correction: "去掉（for 放到 an 前面）",
+        explanation: "for 要接在那块时间前面，不站句尾——I waited【 for】 an hour。上一课的 ago 站句尾，这个 for 站前面。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "tense",
+        original: "wait",
+        correction: "waited",
+        explanation: "第 10 课回流：说的是已经等过了，动词要换昨天版——wait → 【waited】。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "sv_agreement",
+        original: "don't",
+        correction: "doesn't",
+        explanation: "第 25 课回流：He 是「他」一个，帮手要用 doesn't——He 【doesn't】 know。"
+      },
+      {
+        tokenIndex: 16,
+        tag: "plural",
+        original: "book.",
+        correction: "books.",
+        explanation: "第 11 课回流：two 后面要加 -s——two 【books】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十九批 · L157 案件（规格：prd-grammar-none-nobody-2026-09-20.md §7；新错 word_order none 缺 of + 多请 not，旧错回流 L10＋L7）──
+    id: "hunt-none-of-the-cups",
+    number: 166,
+    title: "失物招领处的一排杯子",
+    scene: "失物招领处的桌上，一排杯子摆得整整齐齐",
+    tokens: [
+      "None", "cups", "are", "mine.",
+      "None", "of", "the", "cups", "are", "not", "mine.",
+      "I", "watch", "TV", "last", "night.",
+      "The", "students", "is", "here."
+    ],
+    errors: [
+      {
+        tokenIndex: 0,
+        tag: "word_order",
+        original: "None",
+        correction: "None of",
+        explanation: "none 不能直接贴东西，中间要拴一个 of——None 【of】 the cups are mine。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "word_order",
+        original: "not",
+        correction: "去掉 not",
+        explanation: "none 自己已经带着「不」了，后面不要再补一个——两个「不」撞一起，意思要翻。第 84 课 nothing 也是这个规矩。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "tense",
+        original: "watch",
+        correction: "watched",
+        explanation: "第 10 课回流：last night 是过去的事，要换昨天版——watch → 【watched】。"
+      },
+      {
+        tokenIndex: 18,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "第 7 课回流：The students 是好几号人，算一伙的，搭档要用 are——The students 【are】 here。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第二十九批 · L158 案件（规格：prd-grammar-none-nobody-2026-09-20.md §7；新错 sv_agreement nobody 配 are + 多请 not，旧错回流 L11＋L25）──
+    id: "hunt-nobody-at-home",
+    number: 167,
+    title: "门口的那通电话",
+    scene: "傍晚的楼道口，小美站在家门口打电话",
+    tokens: [
+      "Nobody", "are", "at", "home.",
+      "Nobody", "is", "not", "at", "home.",
+      "She", "has", "two", "pen.",
+      "He", "want", "a", "book."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "sv_agreement",
+        original: "are",
+        correction: "is",
+        explanation: "nobody 说的是「一个人」——一个人配 is，不配 are：Nobody 【is】 at home。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "word_order",
+        original: "not",
+        correction: "去掉 not",
+        explanation: "nobody 自己已经带着「不」了，后面不要再补一个——两个「不」撞一起，意思要翻。第 84 课 nothing 也是这个规矩。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "plural",
+        original: "pen.",
+        correction: "pens.",
+        explanation: "第 11 课回流：two 后面要加 -s——two 【pens】。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "sv_agreement",
+        original: "want",
+        correction: "wants",
+        explanation: "第 25 课回流：He 是「他」一个，后面的动词要加 -s——He 【wants】 a book。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第三十批 · L159 案件（规格：prd-grammar-look-like-seem-2026-09-20.md §7；新错 article like 后丢 a + word_order 丢了 like，旧错回流 L25＋L10）──
+    id: "hunt-looks-like-boat",
+    number: 168,
+    title: "防波堤上的那朵云",
+    scene: "海边的防波堤上，两个人抬头看云",
+    tokens: [
+      "It", "looks", "like", "boat.",
+      "It", "looks", "a", "cat.",
+      "She", "want", "a", "book.",
+      "We", "go", "out", "yesterday."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "article",
+        original: "boat.",
+        correction: "a boat.",
+        explanation: "一条船要说 a boat——那个 a 不能丢。like 后面跟的是一个「什么东西」，前面要报数。"
+      },
+      {
+        tokenIndex: 5,
+        tag: "word_order",
+        original: "looks",
+        correction: "looks like",
+        explanation: "说「像什么」中间要请 like 出场——It looks 【like】 a cat。少了 like 就成了「它看着一只猫」，说不通。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "sv_agreement",
+        original: "want",
+        correction: "wants",
+        explanation: "第 25 课回流：She 是「她」一个，后面的动词要加 -s——She 【wants】 a book。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——go → 【went】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第三十批 · L160 案件（规格：prd-grammar-look-like-seem-2026-09-20.md §7；新错 word_order seem 后丢 to + verb_form to 后换了形状，旧错回流 L11＋L7）──
+    id: "hunt-seems-to-know",
+    number: 169,
+    title: "灯塔下的一眼",
+    scene: "灯塔下的石阶，等摆渡船的人朝这边招了招手",
+    tokens: [
+      "He", "seems", "know", "you.",
+      "He", "seems", "to", "knows", "you.",
+      "I", "have", "two", "bag.",
+      "They", "is", "happy."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "word_order",
+        original: "seems",
+        correction: "seems to",
+        explanation: "seem 后面要请 to 垫一下——He seems 【to】 know you。少了 to 连不上（第 15 课的老规矩）。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "verb_form",
+        original: "knows",
+        correction: "know",
+        explanation: "to 后面那个动作穿原样——to 【know】 you，不换形状。一场戏只让一个词换形状，seems 已经换过了。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "plural",
+        original: "bag.",
+        correction: "bags.",
+        explanation: "第 11 课回流：two 后面要加 -s——two 【bags】。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "第 7 课回流：They 是一伙人，算好几个，搭档要用 are——They 【are】 happy。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第三十一批 · L161 案件（规格：prd-grammar-need-most-2026-09-20.md §7；新错 word_order need 丢了 to + verb_form to 后换形状，旧错回流 L25＋L10）──
+    id: "hunt-need-to-buy",
+    number: 170,
+    title: "小本子上的采购单",
+    scene: "小卖部门口，小美掏出小本子记了一笔",
+    tokens: [
+      "I", "need", "buy", "milk.",
+      "I", "need", "to", "buys", "milk.",
+      "She", "read", "book.",
+      "They", "watch", "TV", "yesterday."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "word_order",
+        original: "need",
+        correction: "need to",
+        explanation: "need 后面要请 to 垫一下——I need 【to】 buy some milk。少了 to 连不上（第 15 课的老规矩）。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "verb_form",
+        original: "buys",
+        correction: "buy",
+        explanation: "to 后面那个动作穿原样——to 【buy】，不换形状。一场戏只让一个词换形状。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "sv_agreement",
+        original: "read",
+        correction: "reads",
+        explanation: "第 25 课回流：She 是「她」一个，后面的动词要加 -s——She 【reads】 a book。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "tense",
+        original: "watch",
+        correction: "watched",
+        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——watch → 【watched】。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    // ── 第三十一批 · L162 案件（规格：prd-grammar-need-most-2026-09-20.md §7；新错 word_order most 缺 of + sv_agreement 一群人配了单数，旧错回流 L11＋L7）──
+    id: "hunt-most-of-students",
+    number: 171,
+    title: "黑板角落的票数",
+    scene: "课间，投票纸摊在讲台上，黑板上写着一个数",
+    tokens: [
+      "Most", "students", "like", "it.",
+      "Most", "of", "the", "students", "likes", "it.",
+      "We", "need", "two", "chair.",
+      "We", "is", "at", "school."
+    ],
+    errors: [
+      {
+        tokenIndex: 0,
+        tag: "word_order",
+        original: "Most",
+        correction: "Most of",
+        explanation: "most 后面要拴一个 of——Most 【of】 the students like it。少了它，那个「大多数」就没说清是哪一群里的。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "sv_agreement",
+        original: "likes",
+        correction: "like",
+        explanation: "「大多数学生」是一群人，动词穿原样——Most of the students 【like】 it。带 s 的那件是给「他／她一个」穿的。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "plural",
+        original: "chair.",
+        correction: "chairs.",
+        explanation: "第 11 课回流：two 后面要加 -s——two 【chairs】。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "第 7 课回流：We 是一伙人，算好几个，搭档要用 are——We 【are】 at school。"
+      }
+    ],
+    reviewed: true,
+  },
+  {
+    id: "hunt-myself-cake",
+    number: 172,
+    title: "厨房里的蛋糕",
+    scene: "厨房料理台上摊着一本手写的食谱",
+    tokens: [
+      "I",
+      "made",
+      "this",
+      "cake",
+      "me.",
+      "I",
+      "cleaned",
+      "my",
+      "room",
+      "myself.",
+      "She",
+      "can",
+      "helps",
+      "you."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "word_order",
+        original: "me.",
+        correction: "myself.",
+        explanation: "说「我自己做」要用 myself，不是 me——I made this cake 【myself】。me 是「我（被做了什么的那个）」，myself 才是「我本人」。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "verb_form",
+        original: "helps",
+        correction: "help",
+        explanation: "第 14 课回流：can 后面跟原样，不能带 s——She can 【help】 you。带 s 的那件是给「他／她做事」穿的，can 后面用不上。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-herself-homework",
+    number: 173,
+    title: "晚自习的灯",
+    scene: "教室里只剩两盏灯还亮着",
+    tokens: [
+      "She",
+      "can",
+      "do",
+      "it",
+      "himself.",
+      "He",
+      "cleaned",
+      "his",
+      "room",
+      "herself.",
+      "We",
+      "are",
+      "classmate."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "word_order",
+        original: "himself.",
+        correction: "herself.",
+        explanation: "「她」要配 herself——前面那半截跟着人走：her + self。himself 是给「他」用的。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "word_order",
+        original: "herself.",
+        correction: "himself.",
+        explanation: "「他」要配 himself——He cleaned his room 【himself】。herself 是给「她」用的。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "plural",
+        original: "classmate.",
+        correction: "classmates.",
+        explanation: "第 7 课回流：We 后面跟的那群人带 -s——We are 【classmates】。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-each-other-clean",
+    number: 174,
+    title: "大扫除的抹布",
+    scene: "教室后墙的水桶边放着两块拧干的抹布",
+    tokens: ["We", "help", "each", "others.", "They", "know", "other.", "We", "are", "friend."],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "plural",
+        original: "others.",
+        correction: "other.",
+        explanation: "each other 后面不加 s——它本来就说「互相」，不用再带尾巴。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "fragment",
+        original: "other.",
+        correction: "each other.",
+        explanation: "「互相」要两个词一起出场：each other——They know 【each】【other】。少了 each，意思全歪。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "plural",
+        original: "friend.",
+        correction: "friends.",
+        explanation: "第 7 课回流：We 是一群人，后面那个东西要带 -s——We are 【friends】。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-too-many-people",
+    number: 175,
+    title: "公交站的长队",
+    scene: "站牌下的人排到了花坛边",
+    tokens: [
+      "There",
+      "are",
+      "too",
+      "much",
+      "people.",
+      "There",
+      "is",
+      "too",
+      "many",
+      "water.",
+      "We",
+      "are",
+      "classmate."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "article",
+        original: "much",
+        correction: "many",
+        explanation: "「人」能一个一个数出来，用 many——too 【many】 people。much 是给数不出来的东西用的。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "article",
+        original: "many",
+        correction: "much",
+        explanation: "水数不出来，用 much——too 【much】 water。数得出来的（人、书）才用 many。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "plural",
+        original: "classmate.",
+        correction: "classmates.",
+        explanation: "第 7 课回流：We 是一群人，后面带 -s——We are 【classmates】。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-a-lot-of-friends",
+    number: 176,
+    title: "走廊那头的一群人",
+    scene: "午休的走廊上传来一阵笑闹声",
+    tokens: [
+      "I",
+      "have",
+      "a",
+      "lot",
+      "friends.",
+      "She",
+      "have",
+      "a",
+      "lot",
+      "of",
+      "books.",
+      "They",
+      "is",
+      "here."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "fragment",
+        original: "friends.",
+        correction: "of friends.",
+        explanation: "a lot of 三个词一起出场——a lot 【of】 friends。少了 of，「很多」就接不上后面的东西。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "sv_agreement",
+        original: "have",
+        correction: "has",
+        explanation: "第 25 课回流：She 是一个人，动词要带 -s——She 【has】 a lot of books。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "第 7 课回流：They 是一伙人，搭档用 are——They 【are】 here。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-why-dont-you-rest",
+    number: 177,
+    title: "自习课的哈欠",
+    scene: "课桌上摊着写了一半的练习册",
+    tokens: [
+      "Why",
+      "don't",
+      "you",
+      "to",
+      "take",
+      "a",
+      "rest?",
+      "Why",
+      "you",
+      "don't",
+      "rest?",
+      "She",
+      "can",
+      "swim"
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "verb_form",
+        original: "to",
+        correction: "（去掉 to）",
+        explanation: "后面那个动作穿原样，去掉 to——Why don't you 【take】 a rest。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "word_order",
+        original: "you",
+        correction: "（与 don't 对调）",
+        explanation: "don't 要跟 Why 挨着——Why 【don't you】 rest。don't 和 you 得对调过来。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "fragment",
+        original: "swim",
+        correction: "swim.",
+        explanation: "句尾少了句号——一个句子说完要有个收尾的记号。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-id-like-tea",
+    number: 178,
+    title: "茶铺的玻璃罐",
+    scene: "柜台后面一排玻璃罐里装着不同的茶叶",
+    tokens: ["Id", "like", "a", "cup", "of", "tea.", "I'd", "like", "to", "a", "cup", "of", "coffee."],
+    errors: [
+      {
+        tokenIndex: 0,
+        tag: "fragment",
+        original: "Id",
+        correction: "I'd",
+        explanation: "缩写要带上那个小撇号——I【'd】 like。少了它，就成了一个不认识的词。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "verb_form",
+        original: "to",
+        correction: "（去掉 to）",
+        explanation: "后面跟东西时不垫 to——I'd like 【a cup of coffee】。要跟动作才垫 to（I'd like to go home）。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-both-and-sing",
+    number: 179,
+    title: "报名表上的两栏",
+    scene: "公告栏前围了几个看演出报名表的人",
+    tokens: [
+      "She",
+      "can",
+      "both",
+      "sing",
+      "or",
+      "dance.",
+      "She",
+      "can",
+      "both",
+      "sing",
+      "and",
+      "dance",
+      "both.",
+      "We",
+      "are",
+      "classmate."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "word_order",
+        original: "or",
+        correction: "and",
+        explanation: "「既…又…」两样都要，接的是 and——both sing 【and】 dance。or 是挑一个。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "fragment",
+        original: "both.",
+        correction: "（去掉句尾的 both）",
+        explanation: "both 只站第一样前面——句尾那个 both 是多余的，去掉它。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "plural",
+        original: "classmate.",
+        correction: "classmates.",
+        explanation: "第 7 课回流：We 是一群人，后面那个东西要带 -s——We are 【classmates】。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-neither-nor-food",
+    number: 180,
+    title: "食堂新窗口",
+    scene: "新窗口前排着队，锅里的热气往上冒",
+    tokens: [
+      "I",
+      "like",
+      "neither",
+      "spicy",
+      "food",
+      "or",
+      "noodles.",
+      "I",
+      "don't",
+      "like",
+      "neither",
+      "coffee",
+      "nor",
+      "tea."
+    ],
+    errors: [
+      {
+        tokenIndex: 5,
+        tag: "word_order",
+        original: "or",
+        correction: "nor",
+        explanation: "前面是 neither，后面就要用 nor——neither …【nor】。两个词是一对。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "fragment",
+        original: "don't",
+        correction: "（去掉 don't）",
+        explanation: "neither 自己就含「不」——这个 don't 是多余的，去掉它，否则成了「不…也不」。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-unless-rain",
+    number: 181,
+    title: "周末的爬山计划",
+    scene: "手机群里弹出天气预报的截图",
+    tokens: ["We", "will", "go", "unless", "it", "will", "rain.", "I", "won't", "go", "unless", "you", "goes."],
+    errors: [
+      {
+        tokenIndex: 5,
+        tag: "tense",
+        original: "will",
+        correction: "（去掉 will）",
+        explanation: "unless 后面那小句用现在时——去掉 will：unless it 【rains】。第 48 课的老规矩。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "sv_agreement",
+        original: "goes.",
+        correction: "go.",
+        explanation: "第 25 课回流：you 的搭档穿原样——unless you 【go】。带 s 的那件是给「他／她」穿的，you 用不上。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-in-order-to-bus",
+    number: 182,
+    title: "天没亮的站台",
+    scene: "站台的长椅上放着一个保温杯",
+    tokens: [
+      "I",
+      "got",
+      "up",
+      "early",
+      "in",
+      "order",
+      "catching",
+      "the",
+      "bus.",
+      "He",
+      "studies",
+      "hard",
+      "in",
+      "order",
+      "to",
+      "pass",
+      "the",
+      "test"
+    ],
+    errors: [
+      {
+        tokenIndex: 6,
+        tag: "verb_form",
+        original: "catching",
+        correction: "catch",
+        explanation: "in order to 后面那个动作穿原样——in order to 【catch】。和第 44 课那块小垫板一个规矩。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "fragment",
+        original: "test",
+        correction: "test.",
+        explanation: "句尾少了句号——一个句子说完要有个收尾的记号。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-able-to-go",
+    number: 183,
+    title: "地铁口的告别",
+    scene: "地铁口的闸机不停地开合",
+    tokens: [
+      "I",
+      "am",
+      "able",
+      "to",
+      "going",
+      "there",
+      "myself",
+      "now.",
+      "I",
+      "able",
+      "to",
+      "go",
+      "there",
+      "alone."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "verb_form",
+        original: "going",
+        correction: "go",
+        explanation: "be able to 后面穿原样——able to 【go】。和第 44 课那块小垫板同一个规矩。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "missing_be",
+        original: "able",
+        correction: "am able",
+        explanation: "able 是个形容类的词，前面得站个 be 才站得住——I 【am】 able to。第 1 课的老规矩。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-so-do-i",
+    number: 184,
+    title: "聊电影的课间",
+    scene: "课桌上摊着一本翻到中间的漫画",
+    tokens: ["So", "I", "do.", "So", "do", "me.", "She", "can", "both", "sing", "and", "dance", "herself."],
+    errors: [
+      {
+        tokenIndex: 0,
+        tag: "word_order",
+        original: "So",
+        correction: "（So 与 do I 对调）",
+        explanation: "这个说法的顺序是倒的——要写成 So 【do I】。帮手先站前面，我（I）跟后面。"
+      },
+      {
+        tokenIndex: 5,
+        tag: "fragment",
+        original: "me.",
+        correction: "I.",
+        explanation: "后面站的是 I，不是 me——So do 【I】。这一句里「我」是做事的那个。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "word_order",
+        original: "dance",
+        correction: "dance.",
+        explanation: "这句没问题——both sing and dance 形状对称（两个都穿原样）。这里的陷阱是要分清 two 的搭档是不是对称。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-would-rather-walk",
+    number: 185,
+    title: "堵成一条龙的路口",
+    scene: "红绿灯下排着一长串车",
+    tokens: [
+      "I",
+      "would",
+      "rather",
+      "to",
+      "walk.",
+      "I",
+      "rather",
+      "would",
+      "walk.",
+      "She",
+      "would",
+      "rather",
+      "stay",
+      "at",
+      "home"
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "verb_form",
+        original: "to",
+        correction: "（去掉 to）",
+        explanation: "would rather 后面那个动作穿原样，去掉 to——I would rather 【walk】。垫 to 的是 would like。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "word_order",
+        original: "rather",
+        correction: "（rather 跟在 would 后）",
+        explanation: "rather 站在 would 后面——I 【would】【rather】 walk。两个词的顺序是固定的。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "fragment",
+        original: "home",
+        correction: "home.",
+        explanation: "句尾少了句号——一个句子说完要有个收尾的记号。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-prefer-tea",
+    number: 186,
+    title: "茶铺里的两个罐子",
+    scene: "柜台上并排放着咖啡罐和茶叶罐",
+    tokens: [
+      "I",
+      "prefer",
+      "tea",
+      "than",
+      "coffee.",
+      "I",
+      "prefer",
+      "drink",
+      "tea.",
+      "She",
+      "prefers",
+      "walking",
+      "to",
+      "running."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "word_order",
+        original: "than",
+        correction: "to",
+        explanation: "prefer 后面那半截用 to 领——prefer tea 【to】 coffee。than 是第 17 课比较大小用的。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "verb_form",
+        original: "drink",
+        correction: "（drink → drinking 或去掉）",
+        explanation: "prefer 后面可以直接跟东西（prefer tea）；要跟动作就穿 -ing，去掉这个原样写法（prefer drinking）。光用原样两样都不像。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-had-lost-key",
+    number: 187,
+    title: "门口的电话",
+    scene: "家门口的地上放着一个塞满东西的书包",
+    tokens: [
+      "I",
+      "had",
+      "lose",
+      "my",
+      "key",
+      "before",
+      "I",
+      "got",
+      "home.",
+      "I",
+      "have",
+      "lost",
+      "my",
+      "key",
+      "before",
+      "I",
+      "got",
+      "home."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "verb_form",
+        original: "lose",
+        correction: "lost",
+        explanation: "had 后面要跟做过版——had 【lost】。第 21 课那个 have + 做过版是同一条规矩。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "tense",
+        original: "have",
+        correction: "had",
+        explanation: "两件都是过去的事，更早那件要用 had——have 是在说「到现在为止」（第 23 课那种）。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-shall-we-quiet",
+    number: 188,
+    title: "岔路口的两条路",
+    scene: "小路口的指示牌被雨打得发亮",
+    tokens: [
+      "Shall",
+      "we",
+      "to",
+      "take",
+      "the",
+      "quiet",
+      "way?",
+      "Shall",
+      "you",
+      "take",
+      "the",
+      "quiet",
+      "way?"
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "verb_form",
+        original: "to",
+        correction: "（去掉 to）",
+        explanation: "Shall we 后面那个动作穿原样，不垫 to——Shall we 【take】。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "word_order",
+        original: "you",
+        correction: "we",
+        explanation: "Shall 后面站的是 we——它问的是「咱们一起…好吗」。要说对方，用第 168 课的 Why don't you。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第三十二批 · L180 案件（规格：prd-grammar-whole-had-better-2026-09-21.md §7；新错 plural whole 后带了 s + word_order 数不清的东西误用 whole，旧错回流 L25＋L10）──
+    id: "hunt-whole-book",
+    number: 193,
+    title: "雪天读完的那本书",
+    scene: "雪天的窗边，一本书合上放在桌上",
+    tokens: [
+      "I", "finished", "the", "whole", "books.",
+      "I", "drank", "the", "whole", "milk.",
+      "He", "read", "a", "book.",
+      "I", "see", "her", "last", "week."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "plural",
+        original: "books.",
+        correction: "book.",
+        explanation: "「整个」说的是一个东西从头到尾——后面那个东西只说一个，不加 s：the whole 【book】。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "word_order",
+        original: "whole",
+        correction: "all",
+        explanation: "数不清的东西（牛奶、水）只能用 all the，不能用 the whole——I drank 【all】 the milk。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "sv_agreement",
+        original: "read",
+        correction: "reads",
+        explanation: "第 25 课回流：He 是「他」一个，后面的动词要加 -s——He 【reads】 a book。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "tense",
+        original: "see",
+        correction: "saw",
+        explanation: "第 10 课回流：last week 是过去的事，要换昨天版——see → 【saw】。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第三十二批 · L181 案件（规格：prd-grammar-whole-had-better-2026-09-21.md §7；新错 word_order had better 后垫了 to + verb_form had 换成 have，旧错回流 L11＋L7）──
+    id: "hunt-had-better-go",
+    number: 194,
+    title: "车站的末班车",
+    scene: "车站的钟下，两个人朝检票口张望",
+    tokens: [
+      "We", "had", "better", "to", "go.",
+      "We", "have", "better", "go.",
+      "They", "have", "two", "dog.",
+      "My", "friends", "is", "here."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "word_order",
+        original: "to",
+        correction: "去掉 to",
+        explanation: "后面那个动作穿原样、不垫 to——had better 【go】，中间不加东西。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "verb_form",
+        original: "have",
+        correction: "had",
+        explanation: "这句话永远是 had，不管说的是今天还是昨天——换成 have 就走样了。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "plural",
+        original: "dog.",
+        correction: "dogs.",
+        explanation: "第 11 课回流：two 后面要加 -s——two 【dogs】。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "第 7 课回流：My friends 是好几个，算一伙的，搭档要用 are——My friends 【are】 here。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-close-24-row",
+    number: 189,
+    title: "期末前的小纸条",
+    scene: "课桌上摊着一摞写满字的纸条",
+    tokens: [
+      "All",
+      "the",
+      "books",
+      "is",
+      "good.",
+      "She",
+      "doesn't",
+      "come",
+      "yet.",
+      "She",
+      "left",
+      "three",
+      "days",
+      "before."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "第 151 课回流：「这几本」是一群，搭档用 are——All the books 【are】 good。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "tense",
+        original: "doesn't",
+        correction: "hasn't",
+        explanation: "第 153 课回流：说「还没」要用 hasn't + 做过版——She 【hasn't】 come yet。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "preposition",
+        original: "before",
+        correction: "ago",
+        explanation: "第 155 课回流：往回数用 ago 站句尾——three days 【ago】。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-close-25-row",
+    number: 190,
+    title: "放学路上的云",
+    scene: "路边水洼里映着一朵云",
+    tokens: [
+      "Nobody",
+      "are",
+      "at",
+      "home.",
+      "It",
+      "looks",
+      "a",
+      "boat.",
+      "None",
+      "of",
+      "the",
+      "cups",
+      "is",
+      "mine."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "sv_agreement",
+        original: "are",
+        correction: "is",
+        explanation: "第 158 课回流：nobody 说的是「一个人」，搭档用 is——Nobody 【is】 at home。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "preposition",
+        original: "a",
+        correction: "like a",
+        explanation: "第 159 课回流：说「像」要带上 like——looks 【like】 a boat。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "第 157 课回流：cups 是一群，搭档用 are——None of the cups 【are】 mine。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-close-26-row",
+    number: 191,
+    title: "自习课的本子",
+    scene: "本子上写着两行刚记的句子",
+    tokens: ["I", "can", "do", "it", "me.", "We", "help", "each", "others.", "I", "have", "a", "lot", "friends."],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "word_order",
+        original: "me.",
+        correction: "myself.",
+        explanation: "第 163 课回流：说「我自己」用 myself——I can do it 【myself】。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "plural",
+        original: "others.",
+        correction: "other.",
+        explanation: "第 165 课回流：each other 后面不加 s——它本来就说「互相」。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "fragment",
+        original: "friends.",
+        correction: "of friends.",
+        explanation: "第 167 课回流：a lot of 三个词一起出场——a lot 【of】 friends。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-close-27-row",
+    number: 192,
+    title: "毕业前的最后一课",
+    scene: "毕业纪念册摊开在最后一页",
+    tokens: [
+      "She",
+      "can",
+      "both",
+      "sing",
+      "or",
+      "dance.",
+      "I",
+      "prefer",
+      "tea",
+      "than",
+      "coffee.",
+      "I",
+      "would",
+      "rather",
+      "to",
+      "walk."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "word_order",
+        original: "or",
+        correction: "and",
+        explanation: "第 170 课回流：两样都占接 and——both sing 【and】 dance。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "word_order",
+        original: "than",
+        correction: "to",
+        explanation: "第 177 课回流：prefer 后面那半截用 to 领——prefer tea 【to】 coffee。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "verb_form",
+        original: "to",
+        correction: "（去掉 to）",
+        explanation: "第 176 课回流：would rather 后面穿原样，不垫 to——would rather 【walk】。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第三十四批 · L186 案件（规格：prd-grammar-so-that-as-long-as-2026-09-21.md §7；新错 word_order in order to 接不住换人 + fragment so that 后丢了「谁」，旧错回流 L25＋L10）──
+    id: "hunt-so-that-early",
+    number: 195,
+    title: "天没亮的营地",
+    scene: "沙漠营地，天还没亮，水壶摆在沙地上",
+    tokens: [
+      "I", "came", "early", "in", "order", "to", "you", "can", "rest.",
+      "I", "came", "early", "so", "that", "can", "rest.",
+      "She", "read", "a", "book.",
+      "She", "go", "home", "late."
+    ],
+    errors: [
+      {
+        tokenIndex: 5,
+        tag: "word_order",
+        original: "to",
+        correction: "so that",
+        explanation: "换人要换说法：in order to 后面只跟动作、前后是同一个人——要换成另一个人，得用 【so that】 you can rest。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "fragment",
+        original: "that",
+        correction: "that you",
+        explanation: "后半截不能少「谁」：中文可以不说「你」，英语这半截得把「谁」带上——so 【that you】 can rest。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "sv_agreement",
+        original: "read",
+        correction: "reads",
+        explanation: "第 25 课回流：She 是「她」一个，后面的动词要加 -s——She 【reads】 a book。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：说的是过去的事（那天回家晚了），要换昨天版——go → 【went】。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第三十四批 · L187 案件（规格：prd-grammar-so-that-as-long-as-2026-09-21.md §7；新错 word_order 少一头 as + verb_form 前提那半句请了 will，旧错回流 L11＋L7）──
+    id: "hunt-as-long-as-forest",
+    number: 196,
+    title: "林子入口的木牌",
+    scene: "雾里的森林入口，木牌上挂着水珠",
+    tokens: [
+      "I", "will", "go", "as", "long", "you", "come.",
+      "I", "will", "go", "as", "long", "as", "you", "will", "come.",
+      "I", "see", "two", "bird.",
+      "My", "friends", "is", "happy."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "word_order",
+        original: "long",
+        correction: "long as",
+        explanation: "两个 as 一个都不能少：as 【long as】——两头各卡一个 as，少一头就散架。第 65 课 as tall as 的老规矩。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "verb_form",
+        original: "will",
+        correction: "去掉 will",
+        explanation: "前提那半句说现在：as long as you 【come】。第 48 课的老规矩——if 和 unless 都守这条。"
+      },
+      {
+        tokenIndex: 19,
+        tag: "plural",
+        original: "bird.",
+        correction: "birds.",
+        explanation: "第 11 课回流：two 后面要加 -s——two 【birds】。"
+      },
+      {
+        tokenIndex: 22,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "第 7 课回流：My friends 是好几个，算一伙的，搭档要用 are——My friends 【are】 happy。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第三十五批 · L188 案件（规格：prd-grammar-had-to-2026-09-21.md §7；新错 verb_form must 说了昨天 + verb_form had to 后换了形状，旧错回流 L10＋L7）──
+    id: "hunt-had-to-walk",
+    number: 197,
+    title: "站台上的那双湿鞋",
+    scene: "傍晚的公交站台，雨刚停，地上还有水洼",
+    tokens: [
+      "I", "must", "walk", "home", "yesterday.",
+      "I", "had", "to", "walked", "home.",
+      "She", "cook", "dinner", "last", "night.",
+      "My", "books", "is", "new."
+    ],
+    errors: [
+      {
+        tokenIndex: 1,
+        tag: "verb_form",
+        original: "must",
+        correction: "had to",
+        explanation: "must 只管现在，说昨天的事得换人——yesterday 那一类过去的事要用 【had to】 walk home。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "verb_form",
+        original: "walked",
+        correction: "walk",
+        explanation: "had to 后面那个动作穿原样——had to 【walk】。一场戏只让一个词换形状，had 已经换过了。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "tense",
+        original: "cook",
+        correction: "cooked",
+        explanation: "第 10 课回流：last night 是过去的事，要换昨天版——cook → 【cooked】。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "第 7 课回流：My books 是好几个，算一伙的，搭档要用 are——My books 【are】 new。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第三十六批 · L189 案件（规格：prd-grammar-their-2026-09-21.md §7；新错 word_order they 误代 their + theirs 贴了东西，旧错回流 L25＋L10）──
+    id: "hunt-their-books",
+    number: 198,
+    title: "讲台上的那摞本子",
+    scene: "课间讲台边，一摞作业本按名字分成两摞",
+    tokens: [
+      "These", "are", "they", "books.",
+      "These", "are", "theirs", "books.",
+      "My", "brother", "read", "book.",
+      "I", "go", "to", "school", "last", "week."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "word_order",
+        original: "they",
+        correction: "their",
+        explanation: "「他们的」要用 their，不是 they——they 是「他们」，their 才是那个贴在东西前面的小标签。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "word_order",
+        original: "theirs",
+        correction: "their",
+        explanation: "贴东西前面的是不带 s 的那个——【their】 books。带 s 的 theirs 要自己站，后面不跟东西。"
+      },
+      {
+        tokenIndex: 10,
+        tag: "sv_agreement",
+        original: "read",
+        correction: "reads",
+        explanation: "第 25 课回流：My brother 是「他」一个，后面的动词要加 -s——My brother 【reads】 a book。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "tense",
+        original: "go",
+        correction: "went",
+        explanation: "第 10 课回流：last week 是过去的事，要换昨天版——go → 【went】。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    // ── 第三十七批 · L190 案件（规格：prd-grammar-learning-to-swim-2026-09-21.md §7；新错 word_order 后面丢了 to + missing_be -ing 自己站，旧错回流 L10＋L25）──
+    id: "hunt-learning-to-swim",
+    number: 199,
+    title: "泳池边的浮板",
+    scene: "暑假的泳池边，一块浮板斜靠在池沿上",
+    tokens: [
+      "I", "am", "learning", "swim.",
+      "I", "learning", "to", "swim.",
+      "We", "play", "football", "yesterday.",
+      "He", "read", "book."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "word_order",
+        original: "learning",
+        correction: "learning to",
+        explanation: "后面那半截要垫个小垫板——learning 【to】 swim。少了 to，两个动作就粘在一起了。"
+      },
+      {
+        tokenIndex: 5,
+        tag: "missing_be",
+        original: "learning",
+        correction: "am learning",
+        explanation: "「正在」要有 be 搭着：I 【am】 learning。第 13 课的老规矩——-ing 自己站不住。"
+      },
+      {
+        tokenIndex: 9,
+        tag: "tense",
+        original: "play",
+        correction: "played",
+        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——play → 【played】。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "sv_agreement",
+        original: "read",
+        correction: "reads",
+        explanation: "第 25 课回流：He 是「他」一个，后面的动词要加 -s——He 【reads】 a book。"
+      }
+    ],
+    reviewed: true
+  }
+,
+  {
+    id: "hunt-walked-into",
+    number: 200,
+    title: "厨房门口的水果盘",
+    scene: "周末下午的厨房门口，一盘切好的水果还端在手里",
+    tokens: [
+      "She", "walked", "in", "the", "kitchen.",
+      "He", "walked", "into", "room.",
+      "They", "are", "student.",
+      "I", "eated", "an", "apple."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "preposition",
+        original: "in",
+        correction: "into",
+        explanation: "「走进厨房里面」这个动作要用 into——第 191 课：walked 【into】 the kitchen。in 只说「人在里面」，缺了「从外面动到里面」这一层。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "article",
+        original: "room.",
+        correction: "the room.",
+        explanation: "进到哪个具体的房间，前面要带上 the——into 【the】 room。第 3 课的老规矩。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "plural",
+        original: "student.",
+        correction: "students.",
+        explanation: "第 7 课回流：They 是好几个，后面那个也跟着变好几个——They are 【students】。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "tense",
+        original: "eated",
+        correction: "ate",
+        explanation: "第 10 课回流：吃这个动作有自己的昨天版，不是加 -ed——eat 的昨天版是 【ate】。"
+      }
+    ],
+    reviewed: true
+  },
+  {
+    id: "hunt-through-across",
+    number: 201,
+    title: "桥上回头喊",
+    scene: "春游的窄木桥上，有人停下来回头喊同学",
+    tokens: [
+      "We", "walked", "across", "the", "forest.",
+      "She", "walked", "through", "the", "bridge.",
+      "I", "will", "to", "draw.",
+      "They", "is", "playing", "football."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "preposition",
+        original: "across",
+        correction: "through",
+        explanation: "树林四周都是树，要从中间钻过去——第 192 课：walked 【through】 the forest。across 只在「有两个头」的地方用。"
+      },
+      {
+        tokenIndex: 7,
+        tag: "preposition",
+        original: "through",
+        correction: "across",
+        explanation: "桥是一条窄路、有两头，从这头走到那头用 across——walked 【across】 the bridge。桥没有「中间」可以钻。"
+      },
+      {
+        tokenIndex: 12,
+        tag: "verb_form",
+        original: "to",
+        correction: "（去掉 to）",
+        explanation: "第 12 课回流：will 后面那个动作穿原样，不垫 to——I will 【draw】。"
+      },
+      {
+        tokenIndex: 15,
+        tag: "sv_agreement",
+        original: "is",
+        correction: "are",
+        explanation: "第 13 课回流：They 是好几个，搭档要用 are——They 【are】 playing football。"
+      }
+    ],
+    reviewed: true
+  }
+,
+  {
+    id: "hunt-so-that-result",
+    number: 202,
+    title: "灯塔上的裂缝",
+    scene: "台风夜值班室的窗边，玻璃上裂了一道细缝",
+    tokens: [
+      "The", "wind", "was", "very", "strong", "that", "the", "window", "broke.",
+      "He", "was", "so", "tired", "that", "fell", "asleep.",
+      "She", "have", "a", "cat.",
+      "I", "buyed", "two", "books."
+    ],
+    errors: [
+      {
+        tokenIndex: 3,
+        tag: "word_order",
+        original: "very",
+        correction: "so",
+        explanation: "「太…了，所以…」这一头要用 so——第 193 课：was 【so】 strong that…。very 只说「挺…」，拉不出后面那个结果。"
+      },
+      {
+        tokenIndex: 14,
+        tag: "fragment",
+        original: "fell",
+        correction: "he fell",
+        explanation: "that 后面那半截得把「谁」放回去——睡着了的是他：that 【he】 fell asleep。少了它那句话不知道是谁。"
+      },
+      {
+        tokenIndex: 17,
+        tag: "sv_agreement",
+        original: "have",
+        correction: "has",
+        explanation: "第 3 课回流：She 是「她」一个，搭档要用 has——She 【has】 a cat。"
+      },
+      {
+        tokenIndex: 21,
+        tag: "tense",
+        original: "buyed",
+        correction: "bought",
+        explanation: "第 11 课回流：buy 的昨天版不是加 -ed，它有自己的样子——buy 的昨天版是 【bought】。"
+      }
+    ],
+    reviewed: true
+  }
+,
+  {
+    id: "hunt-such-a",
+    number: 203,
+    title: "船边的渔获",
+    scene: "海钓船边，一条大鱼摆在甲板的水桶旁",
+    tokens: [
+      "It", "was", "a", "such", "big", "fish.",
+      "She", "is", "so", "a", "kind", "teacher.",
+      "He", "go", "to", "school", "every", "day.",
+      "I", "see", "a", "bird", "yesterday."
+    ],
+    errors: [
+      {
+        tokenIndex: 2,
+        tag: "word_order",
+        original: "a",
+        correction: "such a",
+        explanation: "a 要跟在 such 后面——第 194 课：such 【a】 big fish。先说「这么」再说「一个」，两个词得挨着。"
+      },
+      {
+        tokenIndex: 8,
+        tag: "word_order",
+        original: "so",
+        correction: "such",
+        explanation: "后面跟的是「东西」（a kind teacher），要用 such——so 只跟「有多…」那个词（so kind）。第 193 课的老规矩。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "sv_agreement",
+        original: "go",
+        correction: "goes",
+        explanation: "第 25 课回流：He 是「他」一个，后面的动词要加 -s——He 【goes】 to school。"
+      },
+      {
+        tokenIndex: 19,
+        tag: "tense",
+        original: "see",
+        correction: "saw",
+        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——see 的昨天版是 【saw】。"
+      }
+    ],
+    reviewed: true
+  }
+,
+  {
+    id: "hunt-its-box",
+    number: 204,
+    title: "储物间的纸盒",
+    scene: "储物间角落里的纸盒，边上散着一件小孩的旧外套",
+    tokens: [
+      "The", "cat", "is", "in", "it", "box.",
+      "It's", "box", "is", "small.",
+      "She", "have", "two", "cat.",
+      "I", "buyed", "a", "book", "yesterday."
+    ],
+    errors: [
+      {
+        tokenIndex: 4,
+        tag: "word_order",
+        original: "it",
+        correction: "its",
+        explanation: "「它的」要写成 its——第 195 课：in 【its】 box。光写 it 是「它」，它不能贴到东西前面去。"
+      },
+      {
+        tokenIndex: 6,
+        tag: "word_order",
+        original: "It's",
+        correction: "Its",
+        explanation: "带撇的 It's 是「它是」——It's box 就成了「它是盒子」。说「它的盒子」要用不带撇的 its。"
+      },
+      {
+        tokenIndex: 11,
+        tag: "sv_agreement",
+        original: "have",
+        correction: "has",
+        explanation: "第 3 课回流：She 是「她」一个，搭档要用 has——She 【has】 a cat。"
+      },
+      {
+        tokenIndex: 13,
+        tag: "plural",
+        original: "cat.",
+        correction: "cats.",
+        explanation: "第 7 课回流：two 后面是一群，要加 s——two 【cats】。"
+      }
+    ],
+    reviewed: true
+  }
 ];

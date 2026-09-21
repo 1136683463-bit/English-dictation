@@ -422,7 +422,15 @@ const normalizeMaterialSegment = (value: unknown): MaterialSegment | null => {
 };
 
 const normalizeReviewMode = (value: unknown): ReviewMode => {
-  if (value === "recall" || value === "spelling" || value === "cloze" || value === "dictation") return value;
+  if (
+    value === "recall" ||
+    value === "spelling" ||
+    value === "cloze" ||
+    value === "dictation" ||
+    value === "rebuild"
+  ) {
+    return value;
+  }
   return "recognize";
 };
 
@@ -718,6 +726,8 @@ const normalizeDiaryEntries = (value: unknown): DiaryEntry[] =>
         .filter((issue) => issue.original || issue.correction),
       status: item.status === "done" ? ("done" as const) : ("pending" as const),
       note: asString(item.note).trim() || undefined,
+      // 逐字段重建：新字段必须显式保留，否则存一次就被抹掉（followUp 曾漏在这里）
+      followUp: asString(item.followUp).trim() || undefined,
       createdAt: validIsoOrNow(item.createdAt)
     }))
     .filter((item) => item.answerEn && item.questionId);

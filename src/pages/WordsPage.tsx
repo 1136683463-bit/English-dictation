@@ -648,7 +648,7 @@ export default function WordsPage() {
                         {details?.audioUrl && (
                           <button
                             className="icon-button danger-icon"
-                            title="移除真人发音"
+                            aria-label="移除真人发音" title="移除真人发音"
                             onClick={() => removeAudio(card.id)}
                           >
                             <Trash2 size={16} />
@@ -663,7 +663,7 @@ export default function WordsPage() {
                         </button>
                         <button
                           className="icon-button"
-                          title="删除单词"
+                          aria-label="删除单词" title="删除单词"
                           onClick={() => updateData((current) => deleteCard(current, card.id))}
                         >
                           <Trash2 size={16} />

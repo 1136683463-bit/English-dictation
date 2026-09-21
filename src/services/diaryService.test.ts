@@ -132,21 +132,37 @@ describe("diaryService", () => {
     expect(data.diaryEntries[0].answerEn).toBe("I drink three cup of tea.");
   });
 
-  it("日记句子进复习队列：优先用批改后的句子，幂等去重", () => {
+  it("日记句子进复习队列：优先用批改后的句子，带「语法」标签，幂等去重", () => {
     let data = baseData();
     const saved = saveDiaryEntry(data, { dateKey: "2026-09-12", question, answerEn: "I drink three cup of tea." });
     data = saved.data;
     const entry = data.diaryEntries[0];
-    data = applyDiaryCorrection(data, entry.id, "I drank three cups of tea.", []);
+    data = applyDiaryCorrection(data, entry.id, "I drank three cups of tea.", [
+      { original: "drink", correction: "drank", explanation: "说的是已经发生的事。" }
+    ]);
     data = addDiarySentenceToReview(data, data.diaryEntries[0]);
 
     const sentenceCards = data.cards.filter((card) => card.type === "sentence");
     expect(sentenceCards).toHaveLength(1);
     expect(sentenceCards[0].front).toBe("I drank three cups of tea.");
     expect(sentenceCards[0].sourceId).toBe(`diary:${entry.id}`);
+    // 关键：必须带「语法」标签，否则语法复习队列筛不到它（回归：此前只有「日记」标签）
+    expect(sentenceCards[0].tags).toContain("语法");
+    expect(sentenceCards[0].tags).toContain("日记");
 
     const again = addDiarySentenceToReview(data, data.diaryEntries[0]);
     expect(again.cards.filter((card) => card.type === "sentence")).toHaveLength(1);
+  });
+
+  it("写对的好句子不进复习队列（不占每次 10 张的上限）", () => {
+    let data = baseData();
+    const saved = saveDiaryEntry(data, { dateKey: "2026-09-12", question, answerEn: "I like noodles." });
+    data = saved.data;
+    const entry = data.diaryEntries[0];
+    // 批改结果：没有任何问题
+    data = applyDiaryCorrection(data, entry.id, "I like noodles.", []);
+    data = addDiarySentenceToReview(data, data.diaryEntries[0]);
+    expect(data.cards.filter((card) => card.type === "sentence")).toHaveLength(0);
   });
 
   it("进度汇总：条数、天数、今日条数、已批改数", () => {

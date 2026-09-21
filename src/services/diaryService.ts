@@ -139,7 +139,7 @@ export const saveDiaryEntry = (
   input: { dateKey: string; question: PoolQuestion; answerEn: string }
 ): { data: AppData; entry: DiaryEntry } => {
   const answer = input.answerEn.trim();
-  if (!answer) throw new Error("先写一句英文吧，哪怕只有三个词。");
+  if (!meaningfulText(answer)) throw new Error("先写一句英文吧，哪怕只有三个词。");
 
   const existing = (data.diaryEntries ?? []).find(
     (entry) => entry.dateKey === input.dateKey && entry.questionId === input.question.id
@@ -178,12 +178,25 @@ export const saveDiaryEntry = (
   return { data: { ...data, diaryEntries: [entry, ...(data.diaryEntries ?? [])] }, entry };
 };
 
-/** 把批改结果写回一条日记。 */
-export const applyDiaryCorrection = (data: AppData, entryId: string, correctedEn: string, issues: DiaryIssue[]): AppData => ({
+/** 把批改结果写回一条日记（followUp 是可选的一句中文追问）。 */
+export const applyDiaryCorrection = (
+  data: AppData,
+  entryId: string,
+  correctedEn: string,
+  issues: DiaryIssue[],
+  followUp?: string
+): AppData => ({
   ...data,
   diaryEntries: (data.diaryEntries ?? []).map((entry) =>
     entry.id === entryId
-      ? { ...entry, correctedEn: correctedEn.trim(), issues, status: "done" as const, note: undefined }
+      ? {
+          ...entry,
+          correctedEn: correctedEn.trim(),
+          issues,
+          status: "done" as const,
+          note: undefined,
+          followUp: followUp?.trim() || undefined
+        }
       : entry
   )
 });
@@ -307,18 +320,37 @@ export const requestDiaryCorrection = async (
       : [];
     if (!correctedEn) throw new Error("模型没有返回批改后的句子。");
     const recast = typeof parsed.recast === "string" && parsed.recast.trim() ? parsed.recast.trim() : undefined;
-    return { correctedEn, issues, recast };
+    // followUp 从 R11 起就在 prompt 契约里，但此前没解析——接住它（严格档一定会给）。
+    const followUp = typeof parsed.followUp === "string" && parsed.followUp.trim() ? parsed.followUp.trim() : undefined;
+    return { correctedEn, issues, recast, followUp };
   } finally {
     window.clearTimeout(timeout);
   }
 };
 
 /**
- * 日记的句子也可一键进入复习队列（SM-2）。
+ * 日记里**有问题的句子**进入复习队列（SM-2），订正后的版本作为复习内容。
+ *
+ * 两处口径修正（2026-09-19）：
+ * ① 只收「批改指出了问题」的句子。此前不判断有无 issues，写对的好句子也会占复习配额
+ *    （复习会话每次上限 10 张，被无问题的句子挤掉不划算）。
+ * ② tags 补上「语法」。此前只有「日记」，而语法复习队列的筛选条件是
+ *    `tags.includes("语法")`（grammarReviewService.isGrammarSentenceCard）——
+ *    结果日记里订正过的句子**从未真正进入语法复习队列**，只在句卡复习里出现。
  */
+/**
+ * 去掉零宽字符后的「实质内容」（2026-09-20）：
+ * JS 的 String.prototype.trim() 不剥 U+200B（零宽空格），
+ * 于是只输入零宽字符的日记会被当成有内容，存下一条肉眼看不见的条目。
+ */
+export const meaningfulText = (value: string): string =>
+  value.replace(/[\u200B-\u200D\uFEFF]/g, "").trim();
+
 export const addDiarySentenceToReview = (data: AppData, entry: DiaryEntry): AppData => {
-  const sentence = (entry.correctedEn || entry.answerEn).trim();
+  const sentence = meaningfulText(entry.correctedEn || entry.answerEn);
   if (!sentence) return data;
+  // ① 没有问题的句子不进队列
+  if (entry.issues.length === 0) return data;
   const duplicated = data.cards.some(
     (card) => card.type === "sentence" && card.front.trim() === sentence && card.sourceId === `diary:${entry.id}`
   );
@@ -330,6 +362,8 @@ export const addDiarySentenceToReview = (data: AppData, entry: DiaryEntry): AppD
     grammarNote: entry.issues.map((issue) => `${issue.original} → ${issue.correction}`).join("；"),
     sourceId: `diary:${entry.id}`,
     note: `我的英文日记 · ${entry.dateKey}`,
-    tags: "日记"
+    // ② 补「语法」标签：进入语法复习队列（cloze → rebuild → free_type 轮换），
+    //    保留「日记」标签用于来源识别与弱点归因（grammarWeakSpotsService 按 sourceId 判断）。
+    tags: "语法,日记"
   });
 };

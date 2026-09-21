@@ -1,4 +1,4 @@
-import { AppData, Card, Rating, Review, ReviewMode, Schedule } from "../types";
+import { AppData, Card, CardStatus, Rating, Review, ReviewMode, Schedule } from "../types";
 // R8：rating 判定唯一权威来源，禁止本地副本。
 import { isCorrectReview, isWrongReview } from "./reviewRating";
 import { nowIso, uid } from "./storage";
@@ -22,6 +22,21 @@ export const isMasteredBySpacedRepetition = (rating: Rating, nextReviewCount: nu
   rating === 4 && nextReviewCount >= CARD_MASTERED_MIN_REVIEW_COUNT;
 
 /**
+ * 语法句子卡已在 mastered 时不再被这一次复习降级（R09 Step2 验收项「已 mastered 卡不降级」）。
+ *
+ * 为什么只对语法句子卡：语法复习页的掌握判据是「自由输出连续 2 次一次通过」，
+ * 是一个**跨多次会话**才达成的复合条件；而 SM-2 分支每次复习都会重算
+ * `rating === 4 && reviewCount >= 4`，于是一次「想不起来了，看答案」（rating 1）
+ * 就把卡片打回 review——复习页顶部的「已掌握 N」随之**倒退**，
+ * 与 PRD「让用户看到已掌握在增长」的目标直接冲突。
+ *
+ * 词卡的降级行为（reviewService.test.ts R13）保持不变：词卡掌握判据就是 SM-2 本身，
+ * 答错了收回掌握标记是自洽的。
+ */
+const keepsMasteredStatus = (card: Card, nextStatus: CardStatus): boolean =>
+  nextStatus === "review" && card.status === "mastered" && card.type === "sentence" && card.tags.includes("语法");
+
+/**
  * 把一张卡置为 mastered（幂等；已在 mastered 时保留原 masteredAt）。
  * 两条掌握路径共用此写入，保证 status 与 masteredAt 语义一致。
  */
@@ -38,7 +53,29 @@ export const applyMasteredStatus = (data: AppData, cardId: string): AppData => {
 };
 
 const addMinutes = (minutes: number) => new Date(Date.now() + minutes * 60 * 1000).toISOString();
-const addDays = (days: number) => new Date(Date.now() + days * DAY_MS).toISOString();
+
+/**
+ * 间隔上限（2026-09-21 修，P0）。
+ *
+ * `rating === 4` 分支是 `intervalDays × easeFactor × 1.3`，easeFactor 第 6 次触顶 3.2
+ * 之后乘数固定 4.16。连续「一次答对」十几次以后 intervalDays 会指数增长：
+ *   第 7 次已 11095 天、第 13 次约 5.75e7 天，第 14 次 `Date.now() + days * DAY_MS`
+ *   超出 Date 的 ±8.64e15 ms 上限 → `new Date()` 得到 Invalid Date →
+ *   `toISOString()` 抛 `RangeError: Invalid time value`。
+ * 项目没有 ErrorBoundary，该次评分不生效、之后每次点击都抛同一错——用户卡死在复习页。
+ *
+ * 上限取 10 年：任何真实复习场景都不会需要更远，同时给存量异常数据（如 1e9）
+ * 留出「一次复习即被拉回」的自愈路径。
+ */
+export const MAX_INTERVAL_DAYS = 3650;
+
+/** 把间隔夹到 [0, MAX_INTERVAL_DAYS]；非有限数（NaN / Infinity）按 0 处理。 */
+const clampIntervalDays = (days: number): number => {
+  if (!Number.isFinite(days)) return 0;
+  return Math.min(MAX_INTERVAL_DAYS, Math.max(0, days));
+};
+
+const addDays = (days: number) => new Date(Date.now() + clampIntervalDays(days) * DAY_MS).toISOString();
 
 const isValidDate = (date: Date) => !Number.isNaN(date.getTime());
 
@@ -415,9 +452,21 @@ export const applyReviewWithUndo = (
   const previousCard = data.cards.find((item) => item.id === card.id);
   const previousSchedule = data.schedules.find((item) => item.cardId === card.id);
   const schedule = data.schedules.find((item) => item.cardId === card.id) ?? createInitialSchedule(card.id);
-  let easeFactor = schedule.easeFactor;
-  let intervalDays = schedule.intervalDays;
-  let lapseCount = schedule.lapseCount;
+  /**
+   * easeFactor 也要守一道（2026-09-21 修）。
+   *
+   * `Math.max(1.3, NaN - 0.25)` 得到的是 NaN——Math.max 对 NaN 不做保护。
+   * 一旦 easeFactor 是 NaN（非持久化路径可达：内存态、同步导入、测试构造），
+   * rating 3/4 的乘法会把 NaN 传进 intervalDays，`addDays` 随即抛
+   * `RangeError: Invalid time value`；rating 1/2 虽不抛，但会把 NaN 写回 schedule 留毒。
+   * normalizeSchedules 用 asNumber 兜住了持久化路径，这里补上非持久化路径。
+   * 落到默认值 2.5（SM-2 的标准初值）——比归零或 1.3 更合理：那是「未知」不是「很难」。
+   */
+  let easeFactor = Number.isFinite(schedule.easeFactor) ? schedule.easeFactor : 2.5;
+  // 起点就夹一次：存量里可能存着 1e9 这类异常间隔（旧版本没有上限），
+  // 不夹的话它会一直传下去（见 MAX_INTERVAL_DAYS 说明）。
+  let intervalDays = clampIntervalDays(schedule.intervalDays);
+  let lapseCount = Number.isFinite(schedule.lapseCount) ? schedule.lapseCount : 0;
   let nextReviewAt = schedule.nextReviewAt;
   const timestamp = nowIso();
   const reviewId = uid("review");
@@ -438,12 +487,12 @@ export const applyReviewWithUndo = (
     if (isGrammarSentenceCard) {
       intervalDays = Math.max(1, intervalDays || 1);
     } else {
-      intervalDays = Math.max(1, Math.round((intervalDays || 1) * easeFactor));
+      intervalDays = clampIntervalDays(Math.max(1, Math.round((intervalDays || 1) * easeFactor)));
     }
     nextReviewAt = addDays(intervalDays);
   } else {
     easeFactor = Math.min(3.2, easeFactor + 0.12);
-    intervalDays = Math.max(3, Math.round((intervalDays || 1) * easeFactor * 1.3));
+    intervalDays = clampIntervalDays(Math.max(3, Math.round((intervalDays || 1) * easeFactor * 1.3)));
     nextReviewAt = addDays(intervalDays);
   }
 
@@ -479,7 +528,13 @@ export const applyReviewWithUndo = (
     ...(participatesRecovery ? { recoveryCount: recovered ? 0 : nextRecoveryCount } : {})
   };
 
-  const nextStatus = isMasteredBySpacedRepetition(rating, nextSchedule.reviewCount) ? "mastered" : "review";
+  const spacedRepetitionStatus: CardStatus = isMasteredBySpacedRepetition(rating, nextSchedule.reviewCount)
+    ? "mastered"
+    : "review";
+  // R09 Step2：语法句子卡一旦掌握就不再被单次失误降级（见 keepsMasteredStatus 说明）。
+  const nextStatus: CardStatus = keepsMasteredStatus(card, spacedRepetitionStatus)
+    ? "mastered"
+    : spacedRepetitionStatus;
   // R2：康复摘星必须真正写入 priority:false 并清除 prioritySource。
   // R2 修复（QA 对抗发现）：lapseCount 是终身累计值，自动置位只在「本次产生新 lapse 且
   // 累计≥3」时触发；若沿用 lapseCount>=3 恒真条件，摘星后下一次复习会被历史 lapse 立即

@@ -1,5 +1,5 @@
 import type { AppData, Card, Schedule, SentenceDetails } from "../types";
-import { compareText, diffScore } from "./diffService";
+import { compareText, diffScore, tokenSequencesEquivalent } from "./diffService";
 import { normalizeLessonSentence } from "./lessonService";
 
 /**
@@ -11,7 +11,13 @@ import { normalizeLessonSentence } from "./lessonService";
  */
 
 export const GRAMMAR_REVIEW_SESSION_LIMIT = 10;
-export const GRAMMAR_REVIEW_TIME_BUDGET_MS = 5 * 60 * 1000;
+/**
+ * 注（2026-09-20）：此处原有 `GRAMMAR_REVIEW_TIME_BUDGET_MS = 5 * 60 * 1000`，
+ * 但**全库零引用**（从未实现），且与项目红线冲突——
+ * GRAMMAR_PEDAGOGY_REVIEW.md 明确把「任何形式的限时 / 排名 / 体力值」列为 Non-goals
+ * （与 Affective Filter 原则冲突）。会话长度只由 SESSION_LIMIT 间接约束，
+ * 不给用户时间压力。故删除该死常量，避免承诺一个不存在也不该有的行为。
+ */
 
 /** R09 Step2 feature flag：语法卡第 3 次出现转自由输出（free_type）。默认开；
  *  出问题时在 console 执行 localStorage.setItem("grammar-review-free-type","off") 即可回滚到 cloze/rebuild 两形态。 */
@@ -37,6 +43,21 @@ export interface GrammarReviewCard {
   schedule: Schedule;
 }
 
+/**
+ * 「从未进过复习队列」的判定。
+ *
+ * 2026-09-21 修（P0，我自己上一轮引入的回归）：此前这里单看 `intervalDays === 0`，
+ * 但 `applyReview` 的 **rating=1（看答案）分支也会把 intervalDays 归零**
+ * （语义是「10 分钟后再来」）。两者撞车后，用户刚看答案的那张卡被当成「从未排过」
+ * 而**永久排除**出复习会话——页面还写着「这张卡很快会再来见你」，实际再也不会来。
+ *
+ * 判据改成「三个字段都还是初始值」：任何一次真实复习都会让 reviewCount +1，
+ * 其中看答案还会让 lapseCount +1，所以「刚失败的卡」与「刚入队的新卡」可以干净分开。
+ * 存量/测试数据里 reviewCount: 0 但已排期（intervalDays > 0）的卡也照常到期。
+ */
+const neverQueuedSchedule = (schedule: Schedule): boolean =>
+  (schedule.intervalDays ?? 0) === 0 && (schedule.reviewCount ?? 0) === 0 && (schedule.lapseCount ?? 0) === 0;
+
 /** 到期的语法复习卡：最旧错题优先，其次按到期时间升序。 */
 export const listDueGrammarReviewCards = (data: AppData, now = new Date()): GrammarReviewCard[] => {
   const scheduleByCardId = new Map(data.schedules.map((schedule) => [schedule.cardId, schedule]));
@@ -46,9 +67,17 @@ export const listDueGrammarReviewCards = (data: AppData, now = new Date()): Gram
       const schedule = scheduleByCardId.get(card.id);
       return schedule ? { card, schedule } : null;
     })
-    .filter((item): item is GrammarReviewCard =>
-      Boolean(item && new Date(item.schedule.nextReviewAt) <= now)
-    )
+    .filter((item): item is GrammarReviewCard => {
+      if (!item) return false;
+      /**
+       * 「从未排过复习」的卡不立即到期（2026-09-20 修）：
+       * normalizeSchedules 会给缺计划的卡补一条默认计划（intervalDays: 0、nextReviewAt: now），
+       * 于是刚入队的新句子立刻出现在复习会话里——与空态文案「上完新课，错过的句子
+       * 和核心句型**明天**会排进这里」自相矛盾，也让同一页面同时显示「未开始 1」和「第 1 / 1 张」。
+       */
+      if (item.card.status === "new" || neverQueuedSchedule(item.schedule)) return false;
+      return new Date(item.schedule.nextReviewAt) <= now;
+    })
     .sort((a, b) => {
       const lapseDelta = b.schedule.lapseCount - a.schedule.lapseCount;
       if (lapseDelta !== 0) return lapseDelta;
@@ -77,11 +106,75 @@ export const interleaveBySource = <T extends { card: Card }>(items: T[]): T[] =>
   return result;
 };
 
-/** 组一次复习会话：交错混题后按上限截断。 */
+/**
+ * 会话内同一句话只出现一次（2026-09-21 加）。
+ *
+ * 为什么需要：同一个找错案件会为**每个错点**各建一张卡，而这些卡的正面都是
+ * 同一句完整正确句（见 huntService.correctedSentenceOf）——实测 745 张 hunt 卡里
+ * 有 543 张与同案其它卡正面重复，一个 4 错点的案子就能吃掉 10 张会话里的 7 个槽位，
+ * 用户在同一句话上反复做 7 道不同形态的题。
+ * 判据用归一化后的句子（忽略大小写与标点）：同一句话的 cloze/rebuild/free_type
+ * 变体也算重复。保留先出现的那个（已按 lapse / 到期时间排好序）。
+ */
+const dedupeBySentence = (items: GrammarReviewCard[]): GrammarReviewCard[] => {
+  const seen = new Set<string>();
+  return items.filter((item) => {
+    const key = normalizeLessonSentence(item.card.front) || item.card.front.trim().toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
+/**
+ * 组一次复习会话：去同句重复 → 交错混题 → 按上限截断。
+ *
+ * 去重放在交错**之前**：交错会把同案卡分散到会话各处，先交错再去重会让
+ * 「保留哪一张」取决于交错结果，不如先去重（保留排序最靠前的那个）来得稳定可回放。
+ */
 export const buildGrammarReviewSession = (
   data: AppData,
   limit = GRAMMAR_REVIEW_SESSION_LIMIT
-): GrammarReviewCard[] => interleaveBySource(listDueGrammarReviewCards(data)).slice(0, Math.max(1, limit));
+): GrammarReviewCard[] =>
+  interleaveBySource(dedupeBySentence(listDueGrammarReviewCards(data))).slice(0, Math.max(1, limit));
+
+/**
+ * R-UX9 同型不连出（2026-09-19）：会话内相邻两张卡的题型（cloze/rebuild/free_type）
+ * 尽量不同——此前题型由 reviewCount 奇偶决定，同一天入队的卡 reviewCount 相近，
+ * 会连续出同型题（亲测连续 2 张选词填空），「轮换」名存实亡。
+ * 贪心重排：逐张扫描，若与前一张同型则向后找第一个异型的交换（找不到就保持原位）。
+ * 确定性：同输入同输出，可回放。
+ */
+export const diversifyReviewModes = (
+  session: GrammarReviewCard[],
+  sentenceDetailsList: SentenceDetails[] = []
+): GrammarReviewCard[] => {
+  if (session.length <= 2) return session;
+  const modeOf = (item: GrammarReviewCard): GrammarReviewMode => {
+    const schedule = item.schedule;
+    return isFreeTypeReviewEnabled() && (schedule.reviewCount ?? 0) >= FREE_TYPE_MIN_REVIEW_COUNT
+      ? "free_type"
+      : (schedule.reviewCount ?? 0) % 2 === 0
+        ? "cloze"
+        : "rebuild";
+  };
+  const result = [...session];
+  for (let index = 1; index < result.length; index += 1) {
+    if (modeOf(result[index]) !== modeOf(result[index - 1])) continue;
+    // 同型：向后找第一个异型的换过来
+    let swapAt = -1;
+    for (let probe = index + 1; probe < result.length; probe += 1) {
+      if (modeOf(result[probe]) !== modeOf(result[index - 1]) && modeOf(result[probe]) !== modeOf(result[index])) {
+        swapAt = probe;
+        break;
+      }
+    }
+    if (swapAt > index) {
+      [result[index], result[swapAt]] = [result[swapAt], result[index]];
+    }
+  }
+  return result;
+};
 
 // ── R06 累计掌握视图 ─────────────────────────────────────────
 
@@ -175,19 +268,81 @@ const contentTokenIndexes = (sentence: string): number[] => {
   return indexes;
 };
 
-/** 造 3 个干扰项：同词族变形优先（-s/-es/-ed/-ing），不足则取句内其他实词。 */
+/**
+ * 造 3 个干扰项：同族变形优先，不足则取句内其他实词。
+ *
+ * 修正（2026-09-20）：此前对**所有**答案无条件加 `-s/-es/-ed/-ing/-d` 后缀，会造出
+ * `forwardes`、`lookinged`、`coldes` 这类不是英语的「词」——三个干扰项里至少两个
+ * 一眼可排除，题目失去意义。与 `grammarBoostService` 2026-09-19 的同款修正对齐：
+ *   ① 功能词/缩略语（含撇号或 am/is/are/do/does/have/has…）：走同族替换表
+ *   ② 只有**已知规则动词**才允许变形（不规则动词变异会造出 `drinked`、`wents`）
+ *   ③ 兜底取句内其他词（真实存在的词，不用造的）
+ */
+const FUNCTION_FAMILIES: string[][] = [
+  ["don't", "doesn't", "didn't"],
+  ["isn't", "aren't", "wasn't"],
+  ["aren't", "weren't", "isn't"],
+  ["weren't", "wasn't", "aren't"],
+  ["haven't", "hasn't", "hadn't"],
+  ["hasn't", "haven't", "hadn't"],
+  ["shouldn't", "mustn't", "can't"],
+  ["wouldn't", "shouldn't", "couldn't"],
+  ["can't", "couldn't", "won't"],
+  ["won't", "wouldn't", "can't"],
+  ["couldn't", "can't", "wouldn't"],
+  ["didn't", "don't", "doesn't"],
+  ["am", "is", "are"],
+  ["was", "were", "is"],
+  ["do", "does", "did"],
+  ["have", "has", "had"],
+  ["can", "could", "should"],
+  ["must", "should", "may"],
+  ["will", "would", "shall"],
+  ["in", "on", "at"],
+  ["a", "an", "the"],
+  ["this", "that", "these"],
+  ["my", "your", "his"]
+];
+
+/** 允许做 -s/-ed/-ing 变形的规则动词（与 boost 侧同一份口径）。 */
+const KNOWN_VERBS = new Set([
+  "go", "have", "do", "want", "like", "need", "take", "make", "come", "get", "give", "see",
+  "eat", "drink", "read", "write", "play", "watch", "study", "work", "live", "help",
+  "sleep", "rest", "open", "close", "buy", "cook", "clean", "put", "draw", "speak", "listen",
+  "walk", "run", "know", "think", "start", "finish", "swim", "find", "lose", "break", "enjoy"
+]);
+
+/** 不规则动词不做 -ed/-ing 变形（会造出 `drinked`、`wents` 这类不存在的词）。 */
+const IRREGULAR_VERBS = new Set([
+  "go", "went", "have", "has", "had", "do", "does", "did", "get", "got", "give", "gave",
+  "see", "saw", "eat", "ate", "drink", "drank", "read", "write", "wrote", "make", "made",
+  "take", "took", "come", "came", "run", "ran", "know", "knew", "think", "thought",
+  "find", "found", "lose", "lost", "break", "broke", "speak", "spoke", "draw", "drew",
+  "swim", "swam", "sleep", "slept", "buy", "bought", "put", "let", "sit", "sat"
+]);
+
 const buildClozeOptions = (answer: string, tokens: string[]): string[] => {
   const lower = answer.toLowerCase();
   const candidates: string[] = [];
-  for (const suffix of ["s", "es", "ed", "ing", "d"]) {
-    const variant = `${lower}${suffix}`;
-    if (variant !== lower && !candidates.includes(variant)) candidates.push(variant);
+  const push = (value: string) => {
+    const trimmed = value.trim().toLowerCase();
+    if (trimmed && trimmed !== lower && !candidates.includes(trimmed)) candidates.push(trimmed);
+  };
+  // ① 功能词同族替换（这些才是真会混的）
+  const family = FUNCTION_FAMILIES.find((group) => group.includes(lower));
+  if (family) for (const member of family) if (member !== lower) push(member);
+  // ② 只有已知规则动词才变形
+  else if (KNOWN_VERBS.has(lower) && !IRREGULAR_VERBS.has(lower)) {
+    for (const suffix of ["s", "ed", "ing"]) {
+      if (lower.endsWith("y")) push(`${lower.slice(0, -1)}ies`);
+      else if (/e$/.test(lower)) push(`${lower}d`);
+      else push(`${lower}${suffix}`);
+    }
   }
+  // ③ 兜底：句内其他真实词
   for (const token of tokens) {
     const clean = cleanToken(token);
-    if (clean && clean.toLowerCase() !== lower && !candidates.includes(clean.toLowerCase())) {
-      candidates.push(clean.toLowerCase());
-    }
+    if (clean) push(clean);
   }
   const random = mulberry32(hashText(answer));
   for (let index = candidates.length - 1; index > 0; index -= 1) {
@@ -264,8 +419,50 @@ export const buildGrammarReviewTask = (
   }
 
   const indexes = contentTokenIndexes(sentence);
-  const pickedIndex = indexes[(schedule.reviewCount ?? 0) % indexes.length];
+  /**
+   * 挖空只能挖「这一句里只出现一次」的词（2026-09-21 修）。
+   *
+   * 反例：`I was late because the bus was late.` 挖掉第一个 late，
+   * 题面 `I was ____ because the bus was late.` 里第二个 late 还在——
+   * 答案直接写在题干上，题目失去意义（全库实测 13 例）。
+   * 优先在「唯一出现」的词里选；整句确实只有一个候选词时退回原候选集。
+   */
+  const uniqueIndexes = indexes.filter((index) => {
+    const word = cleanToken(tokens[index] ?? "").toLowerCase();
+    return tokens.filter((token) => cleanToken(token).toLowerCase() === word).length === 1;
+  });
+  const candidates = uniqueIndexes.length > 0 ? uniqueIndexes : indexes;
+  /**
+   * 挖空位置轮换（2026-09-20 修）：此前种子只用 reviewCount，
+   * 但默认 flag 下 cloze 只在 reviewCount === 0 出现（≥2 转 free_type、1 转 rebuild），
+   * 于是下标恒为 indexes[0]——同一张卡每次复习都挖同一个位置，
+   * 设计目标「同一张卡每次形态不同，防背答案」在挖空位置层不成立。
+   * 加上 card.id 一起做种子：同一张卡稳定、不同卡分散，且同卡多次复习也会换位置。
+   */
+  const pickSeed = hashText(`${card.id}:cloze:${schedule.reviewCount ?? 0}`);
+  const pickedIndex = candidates[pickSeed % candidates.length];
   const answer = cleanToken(tokens[pickedIndex] ?? "");
+  /**
+   * 单词卡（如 front="am"）挖空后题面会变成光秃秃的 `____`——
+   * 用户看不到任何上下文，无从判断填什么（全库实测 12 例）。
+   * 这种情况改用**给出中文/来源提示**的题面（与 free_type 同款锚点），
+   * 至少让用户知道要写哪句话。
+   */
+  if (tokens.length <= 1) {
+    const sourceHint = card.note.trim()
+      ? `${card.note.trim()}——这句里的词是什么？`
+      : "把这句话里缺的那个词写出来";
+    return {
+      card,
+      mode,
+      promptText: sourceHint,
+      answer,
+      options: buildClozeOptions(answer, tokens),
+      scrambled: [],
+      sentence,
+      note
+    };
+  }
   const promptTokens = tokens.map((token, index) => (index === pickedIndex ? "____" : token));
   return {
     card,
@@ -283,9 +480,9 @@ export const buildGrammarReviewTask = (
 export const judgeGrammarCloze = (picked: string, answer: string): boolean =>
   picked.trim().toLowerCase() === answer.trim().toLowerCase();
 
-/** 重组判分（顺序与内容都对，标点与大小写宽容）。 */
+/** 重组判分（顺序与内容都对，标点与大小写宽容；缩写与全称互通，见 checkLessonTokens）。 */
 export const judgeGrammarRebuild = (built: string[], sentence: string): boolean =>
-  normalizeLessonSentence(built.join(" ")) === normalizeLessonSentence(sentence);
+  tokenSequencesEquivalent(built, sentence);
 
 /** R09 Step2 free_type 判分：diffScore ≥ 90（与课内 output 段同口径，拼写接近算半对，非严格等值）。 */
 export const FREE_TYPE_PASS_SCORE = 90;
@@ -297,9 +494,13 @@ export const judgeGrammarFreeType = (input: string, sentence: string): { passed:
 
 /**
  * R09 Step2 新掌握口径：自由输出「连续 2 次一次通过」才算掌握。
- * 判定依据本卡历史 review 事件流（reviews 里 mode="recall" 的记录即 free_type 复习——
- * reviewModeForTask 把 free_type 映射为 recall），取最近两条 free_type 结果。
- * 返回 true 表示已达「输出连续 2 次通过」。
+ * 判定依据本卡历史 review 事件流，取最近两条**自由输出**（mode="recall"）的结果。
+ *
+ * 2026-09-21 修：`rebuild`（点词块拼句）此前与 free_type 共用 mode="recall"，
+ * 于是「拼词块通过 + 自己写通过」被算成输出两次，用户只独立写出过 1 次就被判已掌握。
+ * 现 GrammarReviewPage 把 rebuild 单独记为 mode="rebuild"，这里因此只需认 recall。
+ * 历史数据里已混入的 rebuild 记录无法追溯区分（当时就记成了 recall），
+ * 但那时点词块确实通了关——按宽口径保留，不追溯撤销已有掌握状态。
  */
 export const isMasteredByOutput = (reviews: { cardId: string; mode: string; rating: number }[], cardId: string): boolean => {
   const outputReviews = reviews.filter((review) => review.cardId === cardId && review.mode === "recall");

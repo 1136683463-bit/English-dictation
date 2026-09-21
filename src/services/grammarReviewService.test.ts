@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import {
   buildGrammarReviewSession,
   buildGrammarReviewTask,
+  diversifyReviewModes,
   FREE_TYPE_MIN_REVIEW_COUNT,
   isMasteredByOutput,
   judgeGrammarCloze,
@@ -149,6 +150,46 @@ describe("grammarReviewService（R03 语法点复习）", () => {
   });
 });
 
+describe("R-UX9 diversifyReviewModes（同型不连出）", () => {
+  const itemWithCount = (id: string, reviewCount: number) => ({
+    card: makeCard(id, `Sentence ${id} is here.`, "lesson:lesson-01-am"),
+    schedule: makeSchedule(id, iso(-1), 0, reviewCount)
+  });
+  const modeOfAt = (session: ReturnType<typeof buildGrammarReviewSession>, index: number) =>
+    (session[index].schedule.reviewCount ?? 0) % 2;
+
+  it("相邻同型（reviewCount 奇偶相同）会被打散", () => {
+    // reviewCount 0,2,4 → cloze/cloze/cloze；2,3,4 → rebuild/cloze… 构造前三张同型
+    const session = [itemWithCount("a", 0), itemWithCount("b", 2), itemWithCount("c", 4), itemWithCount("d", 1)];
+    const diversified = diversifyReviewModes(session as never, []);
+    for (let index = 1; index < diversified.length; index += 1) {
+      const prevMode = (diversified[index - 1].schedule.reviewCount ?? 0) % 2;
+      const currMode = (diversified[index].schedule.reviewCount ?? 0) % 2;
+      // 只有存在异型可换时才要求不同；4 张里 3 同 1 异，前三张应至少打散出一次交错
+      if (index < diversified.length - 1) {
+        expect(prevMode === currMode && diversified.slice(index).every((item) => (item.schedule.reviewCount ?? 0) % 2 === currMode)).toBe(false);
+      }
+    }
+    // 内容守恒：同集合重排
+    expect([...diversified].sort((x, y) => x.card.id.localeCompare(y.card.id)).map((item) => item.card.id)).toEqual(
+      [...session].sort((x, y) => x.card.id.localeCompare(y.card.id)).map((item) => item.card.id)
+    );
+  });
+
+  it("已是交错序列时原样返回（不折腾）", () => {
+    const session = [itemWithCount("a", 0), itemWithCount("b", 1), itemWithCount("c", 2), itemWithCount("d", 3)];
+    const diversified = diversifyReviewModes(session as never, []);
+    expect(diversified.map((item) => item.card.id)).toEqual(["a", "b", "c", "d"]);
+  });
+
+  it("确定性：同输入同输出", () => {
+    const session = [itemWithCount("a", 0), itemWithCount("b", 2), itemWithCount("c", 4)];
+    const once = diversifyReviewModes(session as never, []);
+    const twice = diversifyReviewModes(session as never, []);
+    expect(once.map((item) => item.card.id)).toEqual(twice.map((item) => item.card.id));
+  });
+});
+
 describe("R06 summarizeGrammarMastery（累计掌握视图）", () => {  const masteryData = (cards: Card[], schedules: Schedule[]): AppData =>
     ({ cards, schedules }) as unknown as AppData;
 
@@ -249,5 +290,39 @@ describe("R09 Step2 free_type 转换与新掌握口径", () => {
       { cardId: "c1", mode: "cloze", rating: 4, id: "r2" }
     ];
     expect(isMasteredByOutput(clozeReviews, "c1")).toBe(false);
+  });
+
+  // 修正（2026-09-20）：cloze 干扰项此前对**所有**答案无条件加 -s/-es/-ed/-ing/-d，
+  // 会造出 `forwardes`、`lookinged`、`coldes` 这类不是英语的词——三个干扰项里至少两个
+  // 一眼可排除，题目失去意义。Boost 侧 2026-09-19 已修过同款问题，复习引擎此前未同步。
+  it("cloze 干扰项必须是真实存在的词（不再靠加后缀硬造）", () => {
+    const mkItem = (front: string) =>
+      ({
+        card: {
+          id: "x", type: "sentence", front, back: "", tags: ["语法"], note: "",
+          createdAt: "2026-01-01T00:00:00.000Z", dueAt: "2026-01-01T00:00:00.000Z",
+          intervalDays: 0, ease: 2.5, lapseCount: 0, reviewCount: 0
+        },
+        schedule: { cardId: "x", dueAt: "2026-01-01T00:00:00.000Z", intervalDays: 0, ease: 2.5, reviewCount: 0, lapseCount: 0 }
+      }) as never;
+    // 这些词的「加后缀变体」都不是英语词——修复前会出现在干扰项里
+    const banned = /^(forwardes|forwarded|forwardd|lookings|lookinges|lookinging|looked|coldes|colded|weekendes|summeres|seeings|seeinged)$/i;
+    const sentences = [
+      "I am looking forward to the weekend.",
+      "She looks forward to the summer.",
+      "I am looking forward to seeing you.",
+      "It is cold today.",
+      "I am used to getting up early."
+    ];
+    for (const sentence of sentences) {
+      const task = buildGrammarReviewTask(mkItem(sentence));
+      if (task.mode !== "cloze") continue;
+      for (const option of task.options) {
+        expect(banned.test(option), `${sentence} 的干扰项「${option}」不是真实词`).toBe(false);
+      }
+      // 干扰项必须互不重复，且包含正确答案
+      expect(new Set(task.options).size).toBe(task.options.length);
+      expect(task.options).toContain(task.answer);
+    }
   });
 });

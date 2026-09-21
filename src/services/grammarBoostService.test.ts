@@ -15,6 +15,8 @@ import {
   judgeBoostContrast,
   judgeBoostCloze,
   judgeBoostItem,
+  judgeBoostListen,
+  judgeBoostBothRight,
   judgeBoostProduce,
   judgeBoostRecall,
   judgeBoostSpot,
@@ -132,7 +134,7 @@ describe("grammarBoostService · 档 1 出题（再认一次）", () => {
       expect(item.answer.trim()).not.toBe("");
       // 关键：每题都必须带「为什么」——答对也要能学到东西（用户反馈）
       expect(item.explainZh.trim(), `${item.id} 缺讲解`).not.toBe("");
-      expect(["contrast", "cloze", "spot", "choose", "replace"]).toContain(item.kind);
+      expect(["contrast", "cloze", "spot", "choose", "replace", "bothright", "listen"]).toContain(item.kind);
       if (item.kind === "cloze") {
         expect(item.clozeText).toContain("___");
         expect(item.clozeAnswer).toBeTruthy();
@@ -178,6 +180,49 @@ describe("grammarBoostService · 档 1 出题（再认一次）", () => {
       if (collected.size < 2) thin.push(`${lesson.id}(${collected.size})`);
     }
     expect(thin, `改错题不足 2 道的课：${thin.slice(0, 5).join(", ")}`).toEqual([]);
+  });
+
+  it("guided.spot 的 wrongToken 必能定位（回归：L96/L102 带尾标点曾静默失效）", () => {
+    const broken: string[] = [];
+    for (const lesson of grammarLessons) {
+      const spotStep = lesson.guided?.find((step) => step.kind === "spot");
+      if (!spotStep?.wrongToken || !spotStep.tokens?.length) continue;
+      // 数据侧纪律：wrongToken 应与 tokens 元素逐字相等（不带尾标点）；
+      // 代码侧已做去标点兜底，但这里仍要求数据合规——避免依赖兜底而偷偷退化。
+      if (!spotStep.tokens.includes(spotStep.wrongToken)) {
+        broken.push(`${lesson.id}("${spotStep.wrongToken}" vs [${spotStep.tokens.join(" ")}])`);
+      }
+    }
+    expect(broken, `wrongToken 与 tokens 不逐字相等的课：${broken.slice(0, 5).join(", ")}`).toEqual([]);
+  });
+
+  it("contrast 的 wrongMark 不得是纯标点（回归：L89 的 \"?\" 无法定位）", () => {
+    const bad: string[] = [];
+    for (const lesson of grammarLessons) {
+      for (const [index, contrast] of (lesson.contrast ?? []).entries()) {
+        const mark = (contrast.wrongMark ?? "").trim();
+        if (!mark) continue;
+        if (!/[a-zA-Z0-9]/.test(mark)) bad.push(`${lesson.id}[${index}]="${mark}"`);
+      }
+    }
+    expect(bad, `wrongMark 为纯标点的条目：${bad.slice(0, 5).join(", ")}`).toEqual([]);
+  });
+
+  it("改错题都能拿到可定位的下标（全库逐课）", () => {
+    for (const lesson of grammarLessons) {
+      const seen = new Set<string>();
+      for (let round = 0; round < 6; round += 1) {
+        for (const item of buildBoostItems(lesson.id, 1, { seen, round })) {
+          if (item.kind !== "spot") continue;
+          const accepted = item.spotWrongIndexes?.length ? item.spotWrongIndexes : item.spotWrongIndex !== undefined ? [item.spotWrongIndex] : [];
+          expect(accepted.length, `${item.id} 没有可接受的下标`).toBeGreaterThan(0);
+          for (const index of accepted) {
+            expect(judgeBoostSpot(item, index), `${item.id} 下标 ${index} 应判对`).toBe(true);
+          }
+        }
+        break;
+      }
+    }
   });
 
   it("改错题的题源引用不撞号（回归：对比卡派生的改错题曾与判断题共用 target 命名空间）", () => {
@@ -344,8 +389,11 @@ describe("grammarBoostService · 档 2 出题（自己想）", () => {
       const contrastWhys = new Set((lesson.contrast ?? []).map((contrast) => contrast.whyZh.trim()));
       for (const tier of [1, 2, 3] as const) {
         for (const item of buildBoostItems(lesson.id, tier)) {
-          // 非产出类题（有明确基准句的）如果用了对比卡讲解，该句必须就是对比卡的正确句
-          if (contrastWhys.has(item.explainZh) && item.kind !== "replace" && item.kind !== "choose") {
+          // 非产出类题（有明确基准句的）如果用了对比卡讲解，该句必须就是对比卡的正确句。
+          // spot 例外（wrongMark 契约）：spot 的答案是含错词的整句，讲解可以来自
+          // wrongMark == 错词的对比卡——resolveGuidedExplain 只做这个精确匹配，
+          // 「串味」的回归守卫由 grammarExplainService.test 的全库零术语/mentionsAnswer 测试承担。
+          if (contrastWhys.has(item.explainZh) && item.kind !== "replace" && item.kind !== "choose" && item.kind !== "spot") {
             expect(
               contrastCorrects.has(normalizeLessonSentence(item.answer)),
               `${lesson.id} ${item.id} 用了对比卡讲解但句子不匹配：「${item.answer}」`
@@ -553,15 +601,30 @@ describe("grammarBoostService · 复练换池（R-B17）", () => {
     expect(thirdPass.length).toBe(secondPass.length);
   });
 
-  it("复练时题型顺序轮转（不会每次都从同一道题开头）", () => {
+  it("复练时换新题：整卷题源不复用（不会每次都是同一批题）", () => {
     const lessonId = sampleLessonId();
     const first = buildBoostItems(lessonId, 1);
     const seen = new Set(first.map((item) => item.sourceRef));
     const second = buildBoostItems(lessonId, 1, { seen, round: 1 });
-    // 题型顺序发生轮转 → 两道卷的第一题题型不同（每课只有 1 道改错题，不轮转会永远是它）
-    expect(second[0].kind).not.toBe(first[0].kind);
+    // 改错题固定占一个槽位，但内容必须换新（不再断言「第一题题型不同」——
+    // 那是旧实现的特征；真正的用户价值是整卷题目不重样）
+    const firstRefs = new Set(first.map((item) => item.sourceRef));
+    const reused = second.filter((item) => firstRefs.has(item.sourceRef));
+    expect(reused.length, `复练复用了 ${reused.length} 道旧题`).toBeLessThan(first.length);
     // 复练仍然出得来题（无限重练红线）
     expect(second.length).toBe(first.length);
+  });
+
+  it("改错题每轮都有一道（固定槽位，不参与轮空）", () => {
+    const offenders: string[] = [];
+    for (const lesson of grammarLessons) {
+      for (let round = 0; round < 5; round += 1) {
+        const hasSpot = buildBoostItems(lesson.id, 1, { round }).some((item) => item.kind === "spot");
+        if (!hasSpot) offenders.push(`${lesson.id}(round${round})`);
+      }
+    }
+    // 改错是训练价值最高的一类；固定槽位确保它不会因为「4 题 5 类」的轮转而整轮消失
+    expect(offenders.slice(0, 8), `缺改错题的课次：${offenders.length} 处`).toEqual([]);
   });
 });
 
@@ -580,5 +643,231 @@ describe("grammarBoostService · 课程 id 校验", () => {
         expect(items.length, `${lessonId} 档 ${tier} 出题失败`).toBeGreaterThan(0);
       }
     }
+  });
+});
+
+describe("档 1 · 双正解题（bothRight 素材，此前从未进过练习）", () => {
+  it("有 bothRight 素材的课会出「两句都对吗」题，且素材两句差异足够大", () => {
+    const lessonsWithBothRight = grammarLessons.filter((lesson) =>
+      (lesson.contrast ?? []).some((contrast) => contrast.bothRight)
+    );
+    expect(lessonsWithBothRight.length).toBeGreaterThan(50);
+    let found = 0;
+    for (const lesson of lessonsWithBothRight) {
+      const item = buildBoostItems(lesson.id, 1, { round: 0 }).find((entry) => entry.kind === "bothright");
+      if (!item) continue;
+      found += 1;
+      expect(item.correctPair?.first.trim(), `${item.id} 缺第一句`).toBeTruthy();
+      expect(item.correctPair?.second.trim(), `${item.id} 缺第二句`).toBeTruthy();
+      // 两句必须不同（差异太小做不成判断题，已在构造时用 diffScore 过滤）
+      expect(item.correctPair?.first).not.toBe(item.correctPair?.second);
+      expect(item.explainZh.trim(), `${item.id} 缺讲解`).not.toBe("");
+      // 判断：选「两句都对」判过；选「只有一句对」判错（考点就是"不止一种说法"）
+      expect(judgeBoostBothRight(item, true), `${item.id} 选「都对」应判过`).toBe(true);
+      expect(judgeBoostBothRight(item, false), `${item.id} 选「只有一句对」应判错`).toBe(false);
+    }
+    // 有素材的课必须全都在首轮就出到双正解题（否则素材又成了死数据）
+    expect(found, `有 bothRight 素材却没出双正解题的课：${lessonsWithBothRight.length - found} 课`).toBe(
+      lessonsWithBothRight.length
+    );
+  });
+
+  it("双正解题不占用其它题型的槽位（题型数不减少）", () => {
+    for (const lesson of grammarLessons) {
+      const kinds = new Set(buildBoostItems(lesson.id, 1).map((item) => item.kind));
+      expect(kinds.size, `${lesson.id} 题型只有 ${[...kinds].join("/")}`).toBeGreaterThanOrEqual(4);
+    }
+  });
+
+  it("档 1 每题都有讲解（含新题型）", () => {
+    for (const lesson of grammarLessons) {
+      for (const item of buildBoostItems(lesson.id, 1)) {
+        expect(item.explainZh.trim(), `${item.id} 缺讲解`).not.toBe("");
+      }
+    }
+  });
+});
+
+describe("档 1 · 听力题（全库此前完全没有的能力维度）", () => {
+  it("全库每课首轮都出到听力题（110/110）", () => {
+    const missing: string[] = [];
+    for (const lesson of grammarLessons) {
+      if (!buildBoostItems(lesson.id, 1).some((item) => item.kind === "listen")) missing.push(lesson.id);
+    }
+    expect(missing.slice(0, 8), `没有听力题的课：${missing.length} 课`).toEqual([]);
+  });
+
+  it("听力题：播放句 = 正确项，干扰项 = 同组错句，二者只差本课语法点", () => {
+    let checked = 0;
+    for (const lesson of grammarLessons) {
+      const item = buildBoostItems(lesson.id, 1).find((entry) => entry.kind === "listen");
+      if (!item) continue;
+      checked += 1;
+      expect(item.listenText?.trim(), `${item.id} 缺播放文本`).toBeTruthy();
+      expect(item.listenOptions?.length, `${item.id} 选项不是两个`).toBe(2);
+      // 正确项必须在选项里，且与播放文本一致
+      expect(item.listenOptions).toContain(item.listenText);
+      // 判题：选正确项通过、选干扰项不通过
+      for (const option of item.listenOptions ?? []) {
+        const expected = option === item.listenText;
+        expect(judgeBoostListen(item, option), `${item.id}「${option}」判定错误`).toBe(expected);
+      }
+      // 两个选项必须不同，且都够长（太短靠节奏能猜）
+      const [a, b] = item.listenOptions ?? [];
+      expect(a).not.toBe(b);
+      expect(a.split(/\s+/).length).toBeGreaterThanOrEqual(3);
+      expect(b.split(/\s+/).length).toBeGreaterThanOrEqual(3);
+      expect(item.explainZh.trim(), `${item.id} 缺讲解`).not.toBe("");
+    }
+    expect(checked, "没有任何课出到听力题").toBeGreaterThan(100);
+  });
+
+  it("听力题选项顺序确定性（同一课多次生成顺序一致，可回放）", () => {
+    const lesson = grammarLessons[12];
+    const first = buildBoostItems(lesson.id, 1).find((item) => item.kind === "listen");
+    const second = buildBoostItems(lesson.id, 1).find((item) => item.kind === "listen");
+    expect(first?.listenOptions).toEqual(second?.listenOptions);
+  });
+});
+
+describe("档 2 · 翻译题（激活从未用于练习的 examples / sceneSwings）", () => {
+  it("大多数课出到翻译题，且素材是课内没练过的句子", () => {
+    let checked = 0;
+    const lessonsWithTranslate: string[] = [];
+    for (const lesson of grammarLessons) {
+      const item = buildBoostItems(lesson.id, 2).find((entry) => entry.kind === "translate");
+      if (!item) continue;
+      lessonsWithTranslate.push(lesson.id);
+      checked += 1;
+      // 中文必须是"意思"而非场景描述
+      expect(item.intentZh.trim(), `${item.id} 缺中文意思`).not.toBe("");
+      expect(/问|说|补|回答|指着|喊|笑|递|轮到/.test(item.intentZh), `${item.id} 中文像场景描述：${item.intentZh}`).toBe(false);
+      // 必须与课内练习/核心句不同——否则这条题只是把练过的句子再问一遍
+      const practiced = new Set([
+        ...(lesson.practice ?? []).map((step) => normalizeLessonSentence(step.answer)),
+        ...(lesson.guided ?? []).filter((step) => step.answer).map((step) => normalizeLessonSentence(step.answer)),
+        normalizeLessonSentence(lesson.targetSentence)
+      ]);
+      expect(practiced.has(normalizeLessonSentence(item.answer)), `${item.id}「${item.answer}」是课内已练句`).toBe(false);
+      expect(item.explainZh.trim(), `${item.id} 缺讲解`).not.toBe("");
+      // 判题走产出线（90 分）
+      expect(judgeBoostItem(item, { text: item.answer }).passed, `${item.id} 正确答案未判过`).toBe(true);
+      expect(judgeBoostItem(item, { text: "totally wrong sentence" }).passed).toBe(false);
+    }
+    expect(checked, `出到翻译题的课只有 ${checked} 课`).toBeGreaterThan(90);
+  });
+
+  it("档 2 四种任务形态齐备（回忆 / 翻译 / 重组 / 组句）", () => {
+    const offenders: string[] = [];
+    for (const lesson of grammarLessons) {
+      const kinds = new Set(buildBoostItems(lesson.id, 2).map((item) => item.kind));
+      if (!(kinds.has("recall") && kinds.has("rebuild") && kinds.has("arrange"))) {
+        offenders.push(`${lesson.id}(${[...kinds].join("/")})`);
+      }
+      // 翻译题允许个别课缺（素材全被练习用过），但四类里至少要有三类
+      if (kinds.size < 3) offenders.push(`${lesson.id} 题型不足`);
+    }
+    expect(offenders.slice(0, 5), `档 2 题型不足的课：${offenders.length} 课`).toEqual([]);
+  });
+});
+
+describe("cloze 干扰项质量（这是「题目能不能做」的底线）", () => {
+  /**
+   * 回归背景：此前对任意答案无条件加 -s/-es/-ed/-ing，
+   * 产出 `don'ted`、`shouldn'tes`、`drinked`、`swimed`、`wents` 这类不存在的词，
+   * 实测 22% 的 cloze 题有 ≥2 个这种干扰项——用户不懂语法也能一眼排除，题目等于白送。
+   */
+  const FABRICATED = [
+    // 缩略词 + 后缀
+    /n't(ed|es|ing|s)$/,
+    // 不规则动词 + 规则后缀
+    /^(drinked|swimed|swiming|wents|wenting|wented|thinked|goed|eated|haved|seed|makeed|takeed|comeed|ranned|knowned|finded|losed|breaked|speaked|drawed|buyed|sitted|slepted|writed|readed|runed|camed|gaved|sawed|ates)$/
+  ];
+  const isFabricated = (word: string) => FABRICATED.some((pattern) => pattern.test(word.toLowerCase()));
+
+  it("全库 cloze 干扰项不得是伪造词", () => {
+    const offenders: string[] = [];
+    for (const lesson of grammarLessons) {
+      for (const item of buildBoostItems(lesson.id, 1)) {
+        if (item.kind !== "cloze") continue;
+        const wrong = (item.clozeOptions ?? []).filter((option) => option !== item.clozeAnswer);
+        const fabricated = wrong.filter(isFabricated);
+        if (fabricated.length > 0) offenders.push(`${item.id}→${fabricated.join(",")}`);
+      }
+    }
+    expect(offenders.slice(0, 6), `含伪造词的题：${offenders.length} 道`).toEqual([]);
+  });
+
+  // 修正（2026-09-20）：上面的黑名单只拦「不规则动词 + 后缀」的固定清单，实测漏了
+  // `cleaneding`／`takesed`／`plaies` 这类——因为 `cleaned` 这类**过去式也在 KNOWN_VERBS 表里**
+  // （表里混了 44 个第三人称单数形），再叠后缀就会造词。
+  // 本断言用**词形结构**判定伪造词（比黑名单彻底、比白名单准确）：
+  //   真词才允许的形态规则——`-ies` 只跟在辅音 + y 后（plaies ❌，play 是元音 + y）；
+  //   已变形的词不再叠第二个变形后缀（cleaneding／takesed／takess ❌）。
+  it("全库 cloze 干扰项不得是伪造词（词形结构判定）", () => {
+    // 允许多段后缀的例外（真词里存在的组合）
+    const LEGIT = new Set([
+      "closed", "cleaned", "played", "studied", "watched", "finished", "started",
+      "wanted", "needed", "liked", "helped", "opened", "listened", "walked", "worked"
+    ]);
+    const isFabricatedWord = (word: string): boolean => {
+      const w = word.toLowerCase().replace(/[^a-z']/g, "");
+      if (!w || LEGIT.has(w)) return false;
+      // ① 叠两个变形后缀（真词不会有这种结构）：cleaneding／takesed／played+ing 之类
+      //    注意 `-ings` 不能一律拦（`sings`／`things` 是真词），只拦「变形词 + 变形后缀」的组合。
+      if (/(eding|inged|eded|inging|iesed|iesing|seding|singed)$/.test(w)) return true;
+      if (/[a-z]{4,}(eds|eding|ings)$/.test(w) && /(clean|take|make|want|like|need|play|watch|work|live|help)$/.test(w.replace(/(eds|eding|ings)$/, ""))) return true;
+      // ② -ies 出现在非「辅音 + y」的基形后（play→plaies、enjoy→enjoies）
+      if (/[aeiou]ies$/.test(w)) return true;
+      // ③ 以 -s 结尾的**已变形动词**再叠后缀（takesed／takess／takesing）
+      //    只针对 `take` 这类「三单形与基础形只差一个 s」的词——`sings` 是真词，不在列。
+      if (/^(takes|makes|wants|likes|needs|plays|watches|works|lives|helps|cleans)(ed|es|ing|s)$/.test(w)) return true;
+      return false;
+    };
+    const offenders: string[] = [];
+    for (const lesson of grammarLessons) {
+      for (const item of buildBoostItems(lesson.id, 1)) {
+        if (item.kind !== "cloze") continue;
+        for (const option of item.clozeOptions ?? []) {
+          if (option === item.clozeAnswer) continue;
+          if (isFabricatedWord(option)) offenders.push(`${item.id}: ${item.clozeAnswer} → ${option}`);
+        }
+      }
+    }
+    expect(
+      offenders.slice(0, 8),
+      `伪造干扰项（${offenders.length} 处）：${offenders.slice(0, 8).join(" | ")}`
+    ).toEqual([]);
+  });
+
+  it("每道 cloze 有 4 个选项、含正确答案、且选项互不相同", () => {
+    for (const lesson of grammarLessons) {
+      for (const item of buildBoostItems(lesson.id, 1)) {
+        if (item.kind !== "cloze") continue;
+        const options = item.clozeOptions ?? [];
+        expect(options.length, `${item.id} 选项数 ${options.length}`).toBe(4);
+        expect(options).toContain(item.clozeAnswer);
+        expect(new Set(options.map((option) => option.toLowerCase())).size, `${item.id} 选项有重复`).toBe(options.length);
+      }
+    }
+  });
+
+  it("缩略词答案的干扰项应来自同族（真会混），而不是乱加后缀", () => {
+    let checked = 0;
+    for (const lesson of grammarLessons) {
+      for (const item of buildBoostItems(lesson.id, 1)) {
+        if (item.kind !== "cloze") continue;
+        const answer = (item.clozeAnswer ?? "").toLowerCase();
+        if (!/n't$/.test(answer)) continue;
+        checked += 1;
+        const wrong = (item.clozeOptions ?? []).filter((option) => option !== item.clozeAnswer);
+        // 至少有一个干扰项也是缩略词（don't ↔ doesn't ↔ didn't 这种真混淆项）
+        expect(
+          wrong.some((option) => /n't$/.test(option.toLowerCase())),
+          `${item.id} 的干扰项没有一个同族缩略词：${JSON.stringify(item.clozeOptions)}`
+        ).toBe(true);
+      }
+    }
+    expect(checked).toBeGreaterThan(0);
   });
 });

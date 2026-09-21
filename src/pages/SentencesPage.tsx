@@ -185,14 +185,34 @@ export default function SentencesPage() {
                         />
                       </label>
                       {details?.audioUrl && (
-                        <button className="icon-button danger-icon" onClick={() => removeAudio(card.id)}>
+                        <button
+                          className="icon-button danger-icon"
+                          onClick={() => removeAudio(card.id)}
+                          aria-label={`移除「${card.front}」的真人发音`}
+                        >
                           <Trash2 size={16} />
                         </button>
                       )}
-                      <button className={`icon-button ${card.priority ? "selected" : ""}`} onClick={() => updateData((current) => togglePriority(current, card.id))}>
+                      {/*
+                        可访问名（2026-09-21 补）：这三个图标按钮此前只有 <svg>，
+                        屏幕阅读器只会读「按钮」。同项目的 LibraryPage 同类按钮已带 aria-label，
+                        这里是漏做（不是有意取舍）。
+                        重点按钮另补 aria-pressed——状态此前只靠 className 表达，
+                        读屏用户无从知道当前是否已标重点。
+                      */}
+                      <button
+                        className={`icon-button ${card.priority ? "selected" : ""}`}
+                        onClick={() => updateData((current) => togglePriority(current, card.id))}
+                        aria-label={card.priority ? `取消「${card.front}」的重点标记` : `把「${card.front}」标为重点`}
+                        aria-pressed={Boolean(card.priority)}
+                      >
                         <Star size={16} />
                       </button>
-                      <button className="icon-button" onClick={() => updateData((current) => deleteCard(current, card.id))}>
+                      <button
+                        className="icon-button"
+                        onClick={() => updateData((current) => deleteCard(current, card.id))}
+                        aria-label={`删除「${card.front}」`}
+                      >
                         <Trash2 size={16} />
                       </button>
                     </div>

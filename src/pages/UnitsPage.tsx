@@ -1198,7 +1198,7 @@ export default function UnitsPage() {
                         <Settings2 size={15} />
                         编辑分组
                       </button>
-                      <button className="icon-button" type="button" title="删除分组" onClick={() => removeGroup(section.id)}>
+                      <button className="icon-button" type="button" aria-label="删除分组" title="删除分组" onClick={() => removeGroup(section.id)}>
                         <Trash2 size={15} />
                       </button>
                     </div>
@@ -1319,7 +1319,7 @@ export default function UnitsPage() {
             <button
               type="button"
               className="unit-import-banner-close"
-              title="关闭提示"
+              aria-label="关闭提示" title="关闭提示"
               onClick={() => setImportGuide(null)}
             >
               <X size={14} />
@@ -1331,7 +1331,7 @@ export default function UnitsPage() {
           <div className="unit-import-banner" role="status">
             <CheckCircle2 size={16} />
             <span>{importResultMessage}</span>
-            <button type="button" className="unit-import-banner-close" title="关闭提示" onClick={() => setImportResultMessage("")}>
+            <button type="button" className="unit-import-banner-close" aria-label="关闭提示" title="关闭提示" onClick={() => setImportResultMessage("")}>
               <X size={14} />
             </button>
           </div>
@@ -1397,7 +1397,7 @@ export default function UnitsPage() {
       {isCustomBookOpen && (
         <div className="custom-book-layer" role="presentation">
           <form className="custom-book-modal" role="dialog" aria-modal="true" aria-label="创建自定义词书" onSubmit={createCustomBook}>
-            <button className="custom-book-close" type="button" title="关闭弹窗" onClick={closeCustomBookModal}>
+            <button className="custom-book-close" type="button" aria-label="关闭弹窗" title="关闭弹窗" onClick={closeCustomBookModal}>
               <X size={20} />
             </button>
 
@@ -1460,15 +1460,15 @@ export default function UnitsPage() {
                     <div className="custom-chapter-actions">
                       {isReorderingChapters && (
                         <>
-                          <button type="button" title="前移章节" disabled={index === 0} onClick={() => moveCustomChapter(chapter.id, -1)}>
+                          <button type="button" aria-label="前移章节" title="前移章节" disabled={index === 0} onClick={() => moveCustomChapter(chapter.id, -1)}>
                             <ArrowLeft size={16} />
                           </button>
-                          <button type="button" title="后移章节" disabled={index === customChapters.length - 1} onClick={() => moveCustomChapter(chapter.id, 1)}>
+                          <button type="button" aria-label="后移章节" title="后移章节" disabled={index === customChapters.length - 1} onClick={() => moveCustomChapter(chapter.id, 1)}>
                             <ArrowRight size={16} />
                           </button>
                         </>
                       )}
-                      <button type="button" title="删除章节" disabled={customChapters.length === 1} onClick={() => removeCustomChapter(chapter.id)}>
+                      <button type="button" aria-label="删除章节" title="删除章节" disabled={customChapters.length === 1} onClick={() => removeCustomChapter(chapter.id)}>
                         <X size={16} />
                       </button>
                     </div>
@@ -1511,7 +1511,7 @@ export default function UnitsPage() {
             aria-label="导入词书"
             onSubmit={importBookFromFile}
           >
-            <button className="custom-book-close" type="button" title="关闭弹窗" onClick={closeImportBookModal}>
+            <button className="custom-book-close" type="button" aria-label="关闭弹窗" title="关闭弹窗" onClick={closeImportBookModal}>
               <X size={20} />
             </button>
 
@@ -1761,7 +1761,7 @@ export default function UnitsPage() {
                   </strong>
                   <span>已完成</span>
                 </div>
-                <button className="icon-button unit-modal-close" type="button" title="关闭弹窗" onClick={closeUnitModal}>
+                <button className="icon-button unit-modal-close" type="button" aria-label="关闭弹窗" title="关闭弹窗" onClick={closeUnitModal}>
                   <X size={18} />
                 </button>
               </div>
@@ -2022,7 +2022,7 @@ export default function UnitsPage() {
                             <span>{details?.phonetic}</span>
                             <p>{card.back}</p>
                           </div>
-                          <button className="icon-button word-remove" type="button" title="移出词书" onClick={() => removeFromSelected(card.id)}>
+                          <button className="icon-button word-remove" type="button" aria-label="移出词书" title="移出词书" onClick={() => removeFromSelected(card.id)}>
                             <X size={16} />
                           </button>
                         </article>
@@ -2144,7 +2144,7 @@ export default function UnitsPage() {
 
       <ConfirmDialog
         open={confirmState?.kind === "group"}
-        title="删除分组"
+        aria-label="删除分组" title="删除分组"
         message={`删除分组「${confirmState?.kind === "group" ? (unitGroupMap.get(confirmState.groupId)?.title ?? "") : ""}」？组内词书会移动到未分组。`}
         confirmLabel="删除分组"
         onConfirm={() => {
