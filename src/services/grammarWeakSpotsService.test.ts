@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { appendGrammarEvent, clearGrammarTelemetry } from "./grammarTelemetry";
-import { buildWeakSpotNarrative, computeWeakSpots, computeWeakSpotsReport, findActiveIntervention, scheduleCardsForToday } from "./grammarWeakSpotsService";
+import { buildWeakSpotNarrative, computeWeakSpots, computeWeakSpotsReport, findActiveIntervention, recommendPractice, scheduleCardsForToday } from "./grammarWeakSpotsService";
 import { findZeroTermHits } from "../data/grammarZeroTerms";
+import type { GrammarErrorTag } from "../types";
 import type { AppData, Card, DiaryEntry, Schedule } from "../types";
 
 const iso = (offsetDays: number) =>
@@ -300,6 +301,47 @@ describe("grammarWeakSpotsService（R08 弱点档案）", () => {
       appendGrammarEvent({ kind: "practice_why_wrong_result", lessonId: "L", stepIndex: 0, sentenceHash: "h", ok: true, source: "ai", errorTag: "tense", latencyMs: 1, cached: false, ts: old });
       appendGrammarEvent({ kind: "practice_why_wrong_result", lessonId: "L", stepIndex: 1, sentenceHash: "h2", ok: true, source: "ai", errorTag: "tense", latencyMs: 1, cached: false, ts: old });
       expect(findActiveIntervention(baseData({}))).toBeNull();
+    });
+  });
+
+  describe("④ 统一练习推荐（2026-09-22）", () => {
+    it("有到期复习时不推弱点（排期是最容易过期的）", () => {
+      const pick = recommendPractice({
+        dueReviewCount: 5,
+        weakSpots: [{ tag: "sv_agreement" as GrammarErrorTag, recentCount: 5 }]
+      });
+      expect(pick?.kind).toBe("review");
+      if (pick?.kind === "review") expect(pick.dueCount).toBe(5);
+    });
+
+    it("无到期复习但有明确弱点（近 7 天 ≥2 次）→ 推弱点练习", () => {
+      const pick = recommendPractice({
+        dueReviewCount: 0,
+        weakSpots: [{ tag: "article" as GrammarErrorTag, recentCount: 3 }]
+      });
+      expect(pick?.kind).toBe("replay");
+      if (pick?.kind === "replay") expect(pick.mainTag).toBe("article");
+    });
+
+    it("弱点只出现 1 次时不推（避免过度打扰）", () => {
+      expect(recommendPractice({
+        dueReviewCount: 0,
+        weakSpots: [{ tag: "tense" as GrammarErrorTag, recentCount: 1 }]
+      })).toBeNull();
+    });
+
+    it("什么都没有时不推（不硬凑）", () => {
+      expect(recommendPractice({ dueReviewCount: 0, weakSpots: [] })).toBeNull();
+    });
+
+    it("推荐理由零术语（面向用户文本红线）", () => {
+      const review = recommendPractice({ dueReviewCount: 3, weakSpots: [] });
+      const replay = recommendPractice({
+        dueReviewCount: 0,
+        weakSpots: [{ tag: "sv_agreement" as GrammarErrorTag, recentCount: 2 }]
+      });
+      expect(findZeroTermHits(review!.reason)).toEqual([]);
+      expect(findZeroTermHits(replay!.reason)).toEqual([]);
     });
   });
 

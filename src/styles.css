@@ -27690,6 +27690,20 @@ html {
   background: var(--accent-strong);
 }
 
+/* ④ 统一练习推荐：为什么系统让你现在做这个 */
+.practice-pick-reason {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 9px 14px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 /* ② 练习成效：练完之后有没有再摔 */
 .weak-spots-effect {
   margin-left: 4px;

@@ -1,4 +1,4 @@
-import { Check, Flame, GraduationCap, PlayCircle, RotateCcw, Sparkles, TrendingDown } from "lucide-react";
+import { Check, Flame, GraduationCap, PlayCircle, RotateCcw, Sparkles, TrendingDown, Target } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
@@ -11,6 +11,7 @@ import { loadLessonResume } from "../services/grammarLessonResumeService";
 import { buildGrammarReviewSession, GRAMMAR_REVIEW_SESSION_LIMIT } from "../services/grammarReviewService";
 import { buildWeakSpotNarrative, computeWeakSpotsReport, dismissIntervention, findActiveIntervention, scheduleCardsForToday, type ActiveIntervention, type HealedSpot, type WeakSpot, type WeakSpotNarrative } from "../services/grammarWeakSpotsService";
 import { buildReplayLesson } from "../services/grammarReplayService";
+import { recommendPractice } from "../services/grammarWeakSpotsService";
 import { appendGrammarEvent, buildGrammarTelemetryExport, getGrammarTelemetryStats, listGrammarEventsByKind } from "../services/grammarTelemetry";
 import { buildLastWeekReport, type WeeklyReport } from "../services/grammarOutputService";
 import {
@@ -714,6 +715,18 @@ export default function GrammarPathPage() {
     [lessons]
   );
 
+  /**
+   * ④ 统一练习推荐：四类练习并存时选「最该做的那一个」，缓解「7 种说法 4 类练习」的混乱。
+   * 优先级：到期复习（错过遗忘临界）> 明确弱点（练了立刻见效）> 不推。
+   */
+  const practicePick = useMemo(
+    () => recommendPractice({
+      dueReviewCount,
+      weakSpots: weakSpotsReport.active.map((spot) => ({ tag: spot.tag, recentCount: spot.recentCount }))
+    }),
+    [dueReviewCount, weakSpotsReport]
+  );
+
   // C4：弱点素材是否够拼一节复盘课（不够则不显示入口，不给残缺的课）
   const replayAvailable = useMemo(
     () => !buildReplayLesson(weakSpotsReport.active.map((spot) => spot.tag)).isEmpty,
@@ -991,19 +1004,33 @@ export default function GrammarPathPage() {
                 <RotateCcw size={15} /> 全部课程已完成 · 去复习巩固
               </Link>
             )}
+            {/* ④ 统一练习推荐位：只在有明确该做的事时出现，避免入口堆叠 */}
+            {practicePick?.kind === "review" && (
+              <Link to="/grammar/review" className="secondary-button">
+                <RotateCcw size={14} /> 复习 · {practicePick.dueCount} 句到期
+              </Link>
+            )}
+            {practicePick?.kind === "replay" && (
+              <Link to="/grammar/replay" className="secondary-button">
+                <Target size={14} /> 针对弱点练几题
+              </Link>
+            )}
             <Link to="/grammar/diary" className="secondary-button">
               写今日日记
             </Link>
             <Link to="/grammar/hunt" className="secondary-button">
               去侦探找错
             </Link>
-            {dueReviewCount > 0 && summary.nextLesson && (
-              <Link to="/grammar/review" className="secondary-button">
-                <RotateCcw size={14} /> 语法复习 · {dueReviewCount} 张到期
-              </Link>
-            )}
           </div>
         </div>
+      )}
+
+      {/* ④ 推荐理由：让用户知道「为什么系统让我现在做这个」 */}
+      {practicePick && (
+        <p className="practice-pick-reason">
+          <Target size={13} aria-hidden="true" />
+          {practicePick.reason}
+        </p>
       )}
 
       {weakSpots.length > 0 && (

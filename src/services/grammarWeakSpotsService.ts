@@ -119,6 +119,52 @@ export interface WeakSpotsReport {
 export const computeWeakSpots = (data: AppData, now = Date.now()): WeakSpot[] => computeWeakSpotsReport(data, now).active;
 
 /**
+ * ④ 统一的「今日练习」推荐：四类练习并存时，按场景选**最该做的那一个**。
+ *
+ * 背景（走查发现）：课程地图上同时有 6 个练习入口、7 种说法指向 4 类练习，
+ * 用户（包括走查时的我）分不清该点哪个：
+ *   趁热练（绑定本课）/ 错题重练（绑定弱点）/ 语法复习（绑定到期卡）/ 侦探找错（绑定案件）
+ *
+ * 优先级设计（由「时效性」决定——越容易过期的事越该先做）：
+ *   1. 到期复习（SM-2 排期，今天不做就忘了）→ review
+ *   2. 明确弱点（同一处摔 ≥2 次，练了立刻见效）→ replay
+ *   3. 其他 → null（不硬推，让用户自己选）
+ *
+ * 注意：这是**推荐**不是**强制**——调用方仍需保留其余入口。
+ */
+export type PracticeRecommendation =
+  | { kind: "review"; dueCount: number; reason: string }
+  | { kind: "replay"; mainTag: GrammarErrorTag; reason: string }
+  | null;
+
+export const recommendPractice = (input: {
+  /** 到期复习卡数。 */
+  dueReviewCount: number;
+  /** 当前弱点 Top（按权重排序）。 */
+  weakSpots: Array<{ tag: GrammarErrorTag; recentCount: number }>;
+}): PracticeRecommendation => {
+  const { dueReviewCount, weakSpots } = input;
+  // ① SM-2 到期最优先：排期是算好的遗忘临界点，错过就打折
+  if (dueReviewCount > 0) {
+    return {
+      kind: "review",
+      dueCount: dueReviewCount,
+      reason: `${dueReviewCount} 句到了该复习的时间——现在过一遍记得最牢`
+    };
+  }
+  // ② 明确弱点次之：近 7 天摔过 ≥2 次才算「明确」，1 次不推（避免过度打扰）
+  const strong = weakSpots.find((spot) => spot.recentCount >= 2);
+  if (strong) {
+    return {
+      kind: "replay",
+      mainTag: strong.tag,
+      reason: `你最近在这摔得比较多——针对性练几题就够`
+    };
+  }
+  return null;
+};
+
+/**
  * C1（M3，2026-09-21）弱点叙事：把已算好的加权排序讲成一句人话。
  *
  * 背景（竞析/瑞思交叉结论）：智能体缺的不是"再多一个问答框"，而是**把已有的确定性决策
