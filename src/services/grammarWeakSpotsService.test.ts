@@ -303,7 +303,58 @@ describe("grammarWeakSpotsService（R08 弱点档案）", () => {
     });
   });
 
+  describe("C4 闭环 · 复盘课反哺弱点权重（2026-09-22）", () => {
+    it("复盘课一次通过 → 该弱点权重减轻（闭环接通）", () => {
+      // 先有一次真实犯错（权重 1.5）
+      appendGrammarEvent({ kind: "diary_issue_tag", entryId: "d1", issueIndex: 0, tag: "sv_agreement", ts: new Date().toISOString() });
+      const before = computeWeakSpots(baseData({
+        diaryEntries: [makeDiaryEntry("d1", "sv_agreement", "I go", "I goes")]
+      })).find((spot) => spot.tag === "sv_agreement");
+      expect(before).toBeTruthy();
+
+      // 复盘课一次通过 → 负权重
+      appendGrammarEvent({
+        kind: "grammar_replay_completed",
+        itemCount: 3,
+        firstTryCount: 3,
+        tags: ["sv_agreement"],
+        perTag: [{ tag: "sv_agreement", total: 1, firstTry: 1 }],
+        durationMs: 60000,
+        ts: new Date().toISOString()
+      });
+      const after = computeWeakSpots(baseData({
+        diaryEntries: [makeDiaryEntry("d1", "sv_agreement", "I go", "I goes")]
+      })).find((spot) => spot.tag === "sv_agreement");
+      expect(after!.score, "练过之后权重应减轻").toBeLessThan(before!.score);
+      expect(after!.lastReplayedAt, "应记录最近练习时间").toBeTruthy();
+    });
+
+    it("复盘课多次才过 → 记一次摩擦（正权重）", () => {
+      appendGrammarEvent({
+        kind: "grammar_replay_completed",
+        itemCount: 3,
+        firstTryCount: 1,
+        tags: ["article"],
+        perTag: [{ tag: "article", total: 2, firstTry: 1 }],
+        durationMs: 90000,
+        ts: new Date().toISOString()
+      });
+      const spot = computeWeakSpots(baseData({})).find((entry) => entry.tag === "article");
+      expect(spot).toBeTruthy();
+      expect(spot!.score).toBeGreaterThan(0);
+    });
+  });
+
   describe("B3 · AI 讲解反馈接入弱点档案（M2，2026-09-21）", () => {
+    /**
+     * 时间戳用「刚刚」而不是硬编码日期。
+     *
+     * 弱点评分含「半衰期 7 天」的时间衰减，而它是对着**真实当下时间**算的。
+     * 此前这里写死 `2026-09-21T10:00:00Z`，于是随着真实日期流逝，
+     * 事件越来越旧、权重越来越小，断言 `> 1.2` 就会在某一天突然开始失败
+     * （实测 2026-09-22 时已衰减到 1.17）——一条会自己坏掉的测试。
+     */
+    const justNow = (offsetMinutes = 0) => new Date(Date.now() - offsetMinutes * 60 * 1000).toISOString();
     it("用户点「讲错了」会计入该罪名权重（此前 ai_explain_feedback 消费方 0 个）", () => {
       const data = baseData({});
       // 先有答错追问的 AI 归因（带 errorTag），再有点「讲错了」的反馈
@@ -318,21 +369,21 @@ describe("grammarWeakSpotsService（R08 弱点档案）", () => {
         errorTag: "sv_agreement",
         latencyMs: 3000,
         cached: false,
-        ts: "2026-09-21T10:00:00.000Z"
+        ts: justNow(2)
       });
       appendGrammarEvent({
         kind: "practice_why_wrong_feedback",
         lessonId: "lesson-01-am",
         stepIndex: 3,
         verdict: "wrong",
-        ts: "2026-09-21T10:01:00.000Z"
+        ts: justNow(1)
       });
 
       const spots = computeWeakSpots(data);
       const target = spots.find((spot) => spot.tag === "sv_agreement");
       expect(target, "讲错了应把该罪名带进弱点榜").toBeTruthy();
-      // 0.5（追问）+ 0.8（讲错了）= 1.3（含时间衰减，故断言区间）
-      expect(target!.score).toBeGreaterThan(1.2);
+      // 0.5（追问）+ 0.8（讲错了）= 1.3；事件是「刚刚」发生的，衰减可忽略
+      expect(target!.score, "刚发生的事件应基本不衰减").toBeGreaterThan(1.29);
       expect(target!.score).toBeLessThanOrEqual(1.3);
     });
 
@@ -348,19 +399,19 @@ describe("grammarWeakSpotsService（R08 弱点档案）", () => {
         errorTag: "article",
         latencyMs: 2000,
         cached: false,
-        ts: "2026-09-21T11:00:00.000Z"
+        ts: justNow(2)
       });
       appendGrammarEvent({
         kind: "practice_why_wrong_feedback",
         lessonId: "lesson-01-am",
         stepIndex: 5,
         verdict: "helpful",
-        ts: "2026-09-21T11:01:00.000Z"
+        ts: justNow(1)
       });
 
       const target = computeWeakSpots(data).find((spot) => spot.tag === "article");
-      // 仅追问那一份（0.5，含衰减）
-      expect(target!.score).toBeGreaterThan(0.45);
+      // 仅追问那一份（0.5）；同样按「刚刚」计，衰减可忽略
+      expect(target!.score, "刚发生的事件应基本不衰减").toBeGreaterThan(0.49);
       expect(target!.score).toBeLessThanOrEqual(0.5);
     });
   });

@@ -6,7 +6,7 @@ import {
   type GrammarReviewResultEvent,
   type HuntVerdictEvent
 } from "./grammarTelemetry";
-import type { PracticeWhyWrongResultEvent } from "./grammarTelemetry";
+import type { GrammarReplayCompletedEvent, PracticeWhyWrongResultEvent } from "./grammarTelemetry";
 import { GRAMMAR_ERROR_TAG_LABELS, GRAMMAR_ERROR_TAG_PLAIN, findErrorAt, GRAMMAR_ERROR_TAGS } from "./huntService";
 import { findZeroTermHits } from "../data/grammarZeroTerms";
 import { huntCases } from "../data/huntCases";
@@ -45,7 +45,15 @@ export const WEAK_SPOT_WEIGHTS = {
    * 高信号——用户明确说这个罪名下面的解释对不上，比「追问」（0.5）更硬，
    * 但仍低于真实犯错（diary 1.5）——避免一条错反馈把某罪名顶到榜首。
    */
-  aiExplainWrong: 0.8
+  aiExplainWrong: 0.8,
+  /**
+   * C4（M3）复盘课：一次通过 =「这个弱点确实在好转」，是**负权重**信号。
+   * 弱点档案本质是权重累加模型，此前复盘课练完不写任何信号——
+   * 用户练了，系统不知道，弱点权重照旧。这条把闭环接上。
+   */
+  replayFirstTry: -0.6,
+  /** 复盘课里多次才过：仍需巩固（正权重，低于真实犯错）。 */
+  replayStruggle: 0.4
 } as const;
 
 const decay = (ts: string, now: number): number => {
@@ -64,6 +72,7 @@ interface TagStat {
   lastTs: number;
   examples: string[];
   relatedCardIds: Set<string>;
+  lastReplayedAt?: string;
 }
 
 export interface WeakSpot {
@@ -77,6 +86,8 @@ export interface WeakSpot {
   example?: string;
   /** 可一键排进今日复习的关联卡片（来自复习失败记录 / 日记句子卡）。 */
   relatedCardIds: string[];
+  /** C4 闭环：最近一次复盘课练习该弱点的时间（用于显示「已练过」）。 */
+  lastReplayedAt?: string;
 }
 
 /** R06 确证治愈：某罪名下有卡首次跃迁 mastered，且此后未再犯——是「确证」，不是「遗忘」。 */
@@ -357,6 +368,24 @@ export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpo
     bump(errorTag as GrammarErrorTag, 0.5, event.ts, lesson ? `追问：${lesson.title}` : undefined);
   }
 
+  // C4 闭环：复盘课的表现反哺弱点权重（练得顺 → 减轻；多次才过 → 记录摩擦）。
+  // 此前复盘课完成后不写任何弱点信号，用户练了系统也不知道。
+  for (const event of listGrammarEventsByKind("grammar_replay_completed") as GrammarReplayCompletedEvent[]) {
+    for (const entry of event.perTag ?? []) {
+      const tag = entry.tag as GrammarErrorTag;
+      if (!GRAMMAR_ERROR_TAGS.includes(tag)) continue;
+      // 一次通过 = 这个弱点在好转（负权重）；否则记一次摩擦
+      const allFirstTry = entry.total > 0 && entry.firstTry === entry.total;
+      const weight = allFirstTry ? WEAK_SPOT_WEIGHTS.replayFirstTry : WEAK_SPOT_WEIGHTS.replayStruggle;
+      // 注意：不给 example ——那是给用户看的**真实错句**（如「I go → I goes」），
+      // 复盘信号只影响权重，不该把例句覆盖成「复盘课一次通过」这类元信息。
+      bump(tag, weight, event.ts);
+      const stat = statFor(tag);
+      // 只记最近一次（事件流按时间追加，后者覆盖前者）
+      stat.lastReplayedAt = event.ts;
+    }
+  }
+
   // B3：用户点过的「讲错了」终于被听见——此前 ai_explain_feedback 全库消费方 0 个。
   // 只消费 wrong 票（helpful 不降权：降权会让已掌握的罪名迟迟不消退，语义混乱）。
   // 归因路径：反馈事件只带 lessonId/stepIndex，用同课同步的 result 事件找回 errorTag。
@@ -434,7 +463,8 @@ export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpo
       recentCount: stat.recentCount,
       totalCount: stat.totalCount,
       example: stat.examples[stat.examples.length - 1],
-      relatedCardIds: [...stat.relatedCardIds]
+      relatedCardIds: [...stat.relatedCardIds],
+      ...(stat.lastReplayedAt ? { lastReplayedAt: stat.lastReplayedAt } : {})
     });
   }
 

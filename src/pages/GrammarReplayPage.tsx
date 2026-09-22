@@ -6,10 +6,11 @@ import PageHeader from "../components/PageHeader";
 import EmptyState from "../components/EmptyState";
 import { getGrammarLesson, normalizeLessonSentence } from "../services/lessonService";
 import { computeWeakSpotsReport } from "../services/grammarWeakSpotsService";
-import { buildReplayLesson, REPLAY_MIN_ITEMS } from "../services/grammarReplayService";
+import { buildReplayLesson, resolveReplayRound, REPLAY_MIN_ITEMS } from "../services/grammarReplayService";
 import { appendGrammarEvent, listGrammarEventsByKind } from "../services/grammarTelemetry";
 import { GRAMMAR_ERROR_TAG_LABELS } from "../services/huntService";
 import { nowIso } from "../services/storage";
+import { buildGrammarReviewSession, GRAMMAR_REVIEW_SESSION_LIMIT } from "../services/grammarReviewService";
 
 /**
  * C4（M3，2026-09-21）「你的三句话」复盘课。
@@ -29,7 +30,11 @@ export default function GrammarReplayPage() {
   // 弱点榜 → 复盘课（进页一次性拼好，稳定不跳变）
   const lesson = useMemo(() => {
     const { active } = computeWeakSpotsReport(data);
-    return buildReplayLesson(active.map((spot) => spot.tag));
+    const tags = active.map((spot) => spot.tag);
+    // 换一批：同一组弱点练过 N 次 → 用第 N+1 轮素材（同轮内进出保持同一套题）
+    const completed = listGrammarEventsByKind("grammar_replay_completed");
+    const round = resolveReplayRound(tags, completed);
+    return buildReplayLesson(tags, round);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -37,6 +42,13 @@ export default function GrammarReplayPage() {
   const [pickedToken, setPickedToken] = useState<number | null>(null);
   const [outcome, setOutcome] = useState<"idle" | "pass" | "retry">("idle");
   const [firstTryCount, setFirstTryCount] = useState(0);
+  // C4 闭环：按罪名拆分表现（供弱点档案消费——练得顺则该弱点权重减轻）
+  const [perTag, setPerTag] = useState<Record<string, { total: number; firstTry: number }>>({});
+  // 到期卡数量：决定「去复习」是否出现（避免空页面）
+  const dueReviewCount = useMemo(
+    () => buildGrammarReviewSession(data, GRAMMAR_REVIEW_SESSION_LIMIT).length,
+    [data]
+  );
   const [attempts, setAttempts] = useState(0);
   const [done, setDone] = useState(false);
   const [startedAt] = useState(() => Date.now());
@@ -72,7 +84,10 @@ export default function GrammarReplayPage() {
             </p>
             <div className="lesson-stage-actions">
               <Link to="/grammar" className="primary-button">返回课程地图</Link>
-              <Link to="/grammar/review" className="secondary-button">去复习</Link>
+              {/* 走查修复：无到期卡时「去复习」会落到 0/0 的空页面——改为只在真有卡时出现 */}
+              {dueReviewCount > 0 && (
+                <Link to="/grammar/review" className="secondary-button">去复习 · {dueReviewCount} 张</Link>
+              )}
             </div>
           </div>
         </section>
@@ -89,6 +104,18 @@ export default function GrammarReplayPage() {
     const picked = current.tokens?.[tokenIndex] ?? "";
     const passed = normalizeLessonSentence(picked) === normalizeLessonSentence(current.answer);
     if (passed && nextAttempts === 1) setFirstTryCount((count) => count + 1);
+    // 按罪名累计（无论对错都计一次尝试；一次通过的才计 firstTry）
+    const tagOfCurrent = current.tag;
+    setPerTag((byTag) => {
+      const bucket = byTag[tagOfCurrent] ?? { total: 0, firstTry: 0 };
+      return {
+        ...byTag,
+        [tagOfCurrent]: {
+          total: bucket.total + 1,
+          firstTry: bucket.firstTry + (passed && nextAttempts === 1 ? 1 : 0)
+        }
+      };
+    });
     setOutcome(passed ? "pass" : "retry");
   };
 
@@ -100,6 +127,11 @@ export default function GrammarReplayPage() {
         itemCount: lesson.items.length,
         firstTryCount,
         tags: lesson.tags,
+        perTag: Object.entries(perTag).map(([tag, entry]) => ({
+          tag,
+          total: entry.total,
+          firstTry: entry.firstTry
+        })),
         durationMs: Date.now() - startedAt,
         ts: nowIso()
       });

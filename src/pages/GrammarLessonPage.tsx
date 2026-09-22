@@ -13,6 +13,7 @@ import type { AdventureSceneId } from "../components/AdventureScene";
 import type { DiffToken, LessonContrast, LessonDeepDive, LessonGuidedStep, LessonPracticeStep } from "../types";
 import { appendGrammarEvent, type LessonSection } from "../services/grammarTelemetry";
 import { nowIso } from "../services/storage";
+import { buildGrammarReviewSession, GRAMMAR_REVIEW_SESSION_LIMIT } from "../services/grammarReviewService";
 import { speakTextWithLifecycle, stopSpeaking } from "../services/speechService";
 
 // ── R-UX8：例句连播偏好（localStorage，默认关）──────────────────────
@@ -560,6 +561,12 @@ export default function GrammarLessonPage() {
   const [recallOutcome, setRecallOutcome] = useState<"idle" | "pass" | "revealed">("idle");
   const [recallHint, setRecallHint] = useState<string | null>(null);
 
+  /** 完课收据的「去复习」出口：到期卡数量（0 时改指向错题重练，避免空页面）。 */
+  const receiptDueReviewCount = useMemo(
+    () => buildGrammarReviewSession(data, GRAMMAR_REVIEW_SESSION_LIMIT).length,
+    [data]
+  );
+
   /**
    * G1 角标数据：本季进度（季名 + 本季第几课 / 本季总课数）。
    * 用「季」而不是总课数做刻度——158 课的总进度只有 3%，看不出进展；
@@ -995,6 +1002,15 @@ export default function GrammarLessonPage() {
     setGuidedMisses(0);
     setGuidedHint(null);
     setMistakeSaved(false);
+    /**
+     * `guidedOrder` 也要清（2026-09-21 修，P0）。
+     *
+     * 此前漏了这一句：答对 guided 第 1 题后「回看讲解」再回来，
+     * 拼装区里还摆着刚才那句（所有词块因已选中而被禁用），
+     * 而 feedback 被重置成 idle、也没有「下一题」——
+     * 整题锁死，用户既改不了也没有出口。
+     */
+    setGuidedOrder([]);
   };
 
   /** R02：前测作答。不判分不排名；答错的题直接进入复习队列（已拍板）。 */
@@ -1123,6 +1139,24 @@ export default function GrammarLessonPage() {
 
   const gotoStage = (next: LessonStage) => {
     setStage(next);
+    /**
+     * 进段时统一清理「跨段会撞车的残余状态」（2026-09-21 修，两处 P0 死结）。
+     *
+     * 下面各分支只重置自己那段的状态，但有两个**跨段共享**的状态一直没人清：
+     *
+     * ① `practiceOrder`（拼装区已摆的词块）：
+     *    从 practice 离开再回来时，第一题上已经摆着上次的答案——
+     *    词块全被禁用、没有反馈、没有出口，看起来就是「页面卡住了」。
+     * ② `lastJudgedLengthRef`（判题去抖的「上次判过的块数」）：
+     *    guided 首题若是 arrange（arrange 占 guided 题量 50%），
+     *    其答案词数常与 practice 某题相同；带着上一段的值进来，
+     *    `next.length !== lastJudged` 不成立 → **摆满也永远不判题**，
+     *    既无反馈也无出口。实测 195 课里 82 课会撞到。
+     *
+     * 进段时一并清掉最安全：段内自己的重置逻辑不变，跨段的脏状态不再泄漏。
+     */
+    setPracticeOrder([]);
+    lastJudgedLengthRef.current = null;
     if (next === "guided") resetGuided();
     if (next === "watch") setWatchStep(0);
     if (next === "recall") {
@@ -3574,9 +3608,17 @@ export default function GrammarLessonPage() {
                   )}
                   <p className="receipt-queue-note">
                     上面这些句子已排进复习队列，明天会自动来见你
-                    <Link to="/grammar/review" className="receipt-queue-link">
-                      去复习
-                    </Link>
+                    {/* 走查修复：刚上完课时队列里通常没有到期卡（次日才到期），
+                        「去复习」会落到 0/0 空页面。有到期卡才给这个出口，否则指向能立刻练的重练课。 */}
+                    {receiptDueReviewCount > 0 ? (
+                      <Link to="/grammar/review" className="receipt-queue-link">
+                        去复习 · {receiptDueReviewCount} 张
+                      </Link>
+                    ) : (
+                      <Link to="/grammar/replay" className="receipt-queue-link">
+                        练个弱点
+                      </Link>
+                    )}
                   </p>
                 </div>
               </section>

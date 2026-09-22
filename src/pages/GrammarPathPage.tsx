@@ -40,6 +40,17 @@ function HealedSpotsRow({ spots }: { spots: HealedSpot[] }) {
   );
 }
 
+/** C4：把「最近练过」的时间显示成人话（今天 / 昨天 / N 天前）。 */
+const formatReplayDate = (iso: string): string => {
+  const at = new Date(iso).getTime();
+  if (!Number.isFinite(at)) return "最近";
+  const days = Math.floor((Date.now() - at) / (24 * 60 * 60 * 1000));
+  if (days <= 0) return "今天";
+  if (days === 1) return "昨天";
+  if (days < 7) return `${days} 天前`;
+  return `${Math.floor(days / 7)} 周前`;
+};
+
 /** R08：本周反复犯的语法错 Top 3——频率×新近加权，一键排进今日复习。 */
 function WeakSpotsCard({ spots, narrative, replayAvailable }: { spots: WeakSpot[]; narrative: WeakSpotNarrative | null; replayAvailable: boolean }) {
   const { updateData } = useAppData();
@@ -77,6 +88,13 @@ function WeakSpotsCard({ spots, narrative, replayAvailable }: { spots: WeakSpot[
                 </div>
                 <p className="weak-spots-plain">{spot.plain}</p>
                 {spot.example && <p className="weak-spots-example">{spot.example}</p>}
+                {/* C4 闭环：练过之后让用户看到「练过了」，而不是练完没回声 */}
+                {spot.lastReplayedAt && (
+                  <p className="weak-spots-replayed">
+                    <Check size={12} aria-hidden="true" />
+                    最近练过：{formatReplayDate(spot.lastReplayedAt)}
+                  </p>
+                )}
               </div>
               {spot.relatedCardIds.length > 0 ? (
                 <button
@@ -485,6 +503,20 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     title: "我能说「有些词的昨天版要单独记」",
     zh: "老朋友自己的昨天版（think 的昨天版是 thought、know 的是 knew——不加 -ed，要一个个记）+ 说「不」和问句里它们反而变回原样（I didn't think about it）。这一批还有 went／ate／saw／bought（第 10 课）。",
     samples: ["I thought about it and knew the answer.", "She thought about it.", "I went to the park yesterday."]
+  },
+  {
+    id: "can-do-m45",
+    afterLesson: 198,
+    title: "我能说「游过泳、唱过歌」",
+    zh: "换零件的昨天版（swim 变 swam、sing 变 sang——里面的 i 换成 a，不加 -ed：We swam in the water and sang together）+ 说「不」和问句里它们穿回原样（didn't swim）。",
+    samples: ["We swam in the water and sang together.", "We swam in the water.", "She sang a song."]
+  },
+  {
+    id: "can-do-m46",
+    afterLesson: 199,
+    title: "我能说「坐旁边、赶上了」",
+    zh: "两种换法（sit 变 sat 是换里面的元音；catch 变 caught 是整个换成 -aught、那个 gh 不发音：I sat next to her and caught the bus）+ 这批老朋友说「不」和问句里都穿回原样。",
+    samples: ["I sat next to her and caught the bus.", "I caught the bus.", "I didn't catch the bus."]
   }
 ];
 

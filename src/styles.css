@@ -27690,6 +27690,17 @@ html {
   background: var(--accent-strong);
 }
 
+/* C4 闭环：弱点卡里的「最近练过」标记 */
+.weak-spots-replayed {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 4px 0 0;
+  color: var(--green-ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+
 /* C4（M3）：弱点卡上的复盘课入口（次级按钮，与「去第 N 课」并列） */
 .weak-spots-narrative-cta.secondary {
   background: #fff;
@@ -28038,4 +28049,26 @@ p.lesson-hint-minor,
 .lesson-feedback.retry p.lesson-hint-minor {
   color: var(--muted);
   font-size: 12px;
+}
+
+
+/* 落盘失败告警（2026-09-22）：常驻内容区顶部，任何页面都可见。
+   配色刻意用「警示橙」而不是项目里的「错误红」——它不是学习者做错了什么，
+   是本机存储满了，与 Affective Filter 红线一致。 */
+.save-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border: 1px solid #f0b27a;
+  border-radius: 10px;
+  background: #fff7ed;
+  color: #9a4a00;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.save-error-banner svg {
+  flex: 0 0 auto;
 }

@@ -13,6 +13,9 @@ import { nowIso } from "./storage";
 
 const TELEMETRY_KEY = "grammar-telemetry-events-v1";
 const MAX_EVENTS = 3000;
+
+/** 主键事件上限（导出供性能测试构造「满仓」场景，避免测试里硬编码 3000）。 */
+export const MAX_TELEMETRY_EVENTS_FOR_TEST = MAX_EVENTS;
 /** R16：溢出归档键——主键写满后，被挤出的旧事件挪到这里长期留存（导出复盘用）。 */
 const TELEMETRY_ARCHIVE_KEY = "grammar-telemetry-archive-v1";
 const ARCHIVE_MAX_EVENTS = 12000;
@@ -262,6 +265,8 @@ export interface GrammarReplayCompletedEvent {
   firstTryCount: number;
   tags: string[];
   durationMs: number;
+  /** 按罪名拆分的表现（用于弱点闭环：一次通过=练得不错，多次才过=还需巩固）。 */
+  perTag?: Array<{ tag: string; total: number; firstTry: number }>;
   ts: string;
 }
 
@@ -610,6 +615,27 @@ export type GrammarTelemetryEvent =
 
 const memoryEvents: GrammarTelemetryEvent[] = [];
 
+/**
+ * 主键事件的内存缓存（2026-09-22 加，修 P1 性能）。
+ *
+ * 背景：`appendGrammarEvent` 曾是「读全部 → push → 写全部」——每次追加都要
+ * `JSON.parse` + `JSON.stringify` 整个 3000 条 / 450KB 的数组。
+ * 实测满仓时单条追加 1.5ms，而每答一题至少记一条事件，
+ * 一节课下来是几百毫秒的同步阻塞（都在主线程上）。
+ *
+ * 缓存策略：内存里保留一份「主键当前内容」的权威副本，
+ * 追加时只改内存并写回（仍需一次 stringify，但省掉 parse 与数组重建），
+ * 读取时直接命中内存。
+ *
+ * 失效与一致性：
+ *   - 任何写操作后缓存与存储同步；
+ *   - 其他代码直接改 storage（测试、导入恢复、迁移）时，
+ *     通过比对原始字符串判断缓存是否过期（`cachedRaw`）。
+ * 判据用原始字符串而非长度/版本号，因为任何一次外部写入都会改变它。
+ */
+let cachedEvents: GrammarTelemetryEvent[] | null = null;
+let cachedRaw: string | null = null;
+
 const hasLocalStorage = (): boolean => {
   try {
     return typeof window !== "undefined" && Boolean(window.localStorage);
@@ -622,9 +648,18 @@ const readEvents = (): GrammarTelemetryEvent[] => {
   if (!hasLocalStorage()) return memoryEvents;
   try {
     const raw = window.localStorage.getItem(TELEMETRY_KEY);
-    if (!raw) return [];
+    if (!raw) {
+      cachedEvents = null;
+      cachedRaw = null;
+      return [];
+    }
+    // 命中缓存：外部没有改过存储（原始字符串一致）就直接返回内存副本
+    if (cachedEvents && cachedRaw === raw) return cachedEvents;
     const parsed = JSON.parse(raw) as { events?: unknown };
-    return Array.isArray(parsed.events) ? (parsed.events as GrammarTelemetryEvent[]) : [];
+    const events = Array.isArray(parsed.events) ? (parsed.events as GrammarTelemetryEvent[]) : [];
+    cachedEvents = events;
+    cachedRaw = raw;
+    return events;
   } catch {
     return [];
   }
@@ -634,12 +669,19 @@ const writeEvents = (events: GrammarTelemetryEvent[]) => {
   if (!hasLocalStorage()) {
     memoryEvents.length = 0;
     memoryEvents.push(...events);
+    cachedEvents = memoryEvents;
+    cachedRaw = null;
     return;
   }
+  const raw = JSON.stringify({ version: 1, events });
   try {
-    window.localStorage.setItem(TELEMETRY_KEY, JSON.stringify({ version: 1, events }));
+    window.localStorage.setItem(TELEMETRY_KEY, raw);
+    // 写成功后缓存与存储一致
+    cachedEvents = events;
+    cachedRaw = raw;
   } catch {
     // 存储满 / 隐私模式：遥测失败静默，绝不影响学习主流程。
+    // 缓存不更新——避免「内存说有、磁盘没有」的错觉。
   }
 };
 
@@ -798,6 +840,16 @@ export interface ExplainSummary {
   whyWrongFeedback: Record<string, number>;
   /** 按模型拆分（explain 线）。 */
   byModel: Record<string, { calls: number; degraded: number }>;
+  /** C4 复盘课：开启次数 / 完成次数 / 平均一次通过率 / 按罪名分布。 */
+  replay: {
+    completed: number;
+    /** 平均一次通过率（0–1）：firstTryCount / itemCount 的平均。 */
+    firstTryRate: number;
+    /** 平均用时 ms。 */
+    avgDurationMs: number;
+    /** 按罪名：被练次数与一次通过率。 */
+    byTag: Record<string, { times: number; firstTry: number; total: number }>;
+  };
 }
 
 export interface GrammarTelemetrySummary {
@@ -1052,6 +1104,27 @@ const summarizeExplain = (events: GrammarTelemetryEvent[]): ExplainSummary => {
     byModel[model] = bucket;
   }
 
+  const replayCompletions = events.filter(
+    (event): event is GrammarReplayCompletedEvent => event.kind === "grammar_replay_completed"
+  );
+  const replayByTag: Record<string, { times: number; firstTry: number; total: number }> = {};
+  for (const event of replayCompletions) {
+    for (const entry of event.perTag ?? []) {
+      const bucket = replayByTag[entry.tag] ?? { times: 0, firstTry: 0, total: 0 };
+      bucket.times += 1;
+      bucket.firstTry += entry.firstTry;
+      bucket.total += entry.total;
+      replayByTag[entry.tag] = bucket;
+    }
+  }
+  const replayFirstTryRate =
+    replayCompletions.length === 0
+      ? 0
+      : replayCompletions.reduce(
+          (sum, event) => sum + (event.itemCount > 0 ? event.firstTryCount / event.itemCount : 0),
+          0
+        ) / replayCompletions.length;
+
   return {
     askRequested: askRequested.length,
     askResults: askResults.length,
@@ -1072,7 +1145,18 @@ const summarizeExplain = (events: GrammarTelemetryEvent[]): ExplainSummary => {
     // 归因层优先读新字段；旧事件回退到 matchSource/source（向后兼容历史数据）
     whyWrongByLayer: countBy(whyResults, (event) => event.layer ?? event.source),
     whyWrongFeedback: countBy(whyFeedbacks, (event) => event.verdict),
-    byModel
+    byModel,
+    replay: {
+      completed: replayCompletions.length,
+      firstTryRate: replayFirstTryRate,
+      avgDurationMs:
+        replayCompletions.length === 0
+          ? 0
+          : Math.round(
+              replayCompletions.reduce((sum, event) => sum + event.durationMs, 0) / replayCompletions.length
+            ),
+      byTag: replayByTag
+    }
   };
 };
 

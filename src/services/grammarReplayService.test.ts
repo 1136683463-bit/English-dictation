@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildReplayLesson, hasReplayLesson, REPLAY_MAX_ITEMS, REPLAY_MIN_ITEMS } from "./grammarReplayService";
+import { buildReplayLesson, hasReplayLesson, resolveReplayRound, REPLAY_MAX_ITEMS, REPLAY_MIN_ITEMS } from "./grammarReplayService";
 import { findZeroTermHits } from "../data/grammarZeroTerms";
 import { GRAMMAR_ERROR_TAG_PLAIN, GRAMMAR_ERROR_TAGS } from "./huntService";
 import type { GrammarErrorTag } from "../types";
@@ -105,5 +105,48 @@ describe("grammarReplayService（C4 错题重练）", () => {
   it("无弱点时不成课（宁可不给，不给残缺的课）", () => {
     expect(buildReplayLesson([]).isEmpty).toBe(true);
     expect(hasReplayLesson([])).toBe(false);
+  });
+});
+
+describe("复盘课换一批（走查修复：同弱点不重复出同一套题）", () => {
+  const tags: GrammarErrorTag[] = ["sv_agreement", "plural", "tense"];
+
+  it("轮次递增会换出新素材（素材充足的罪名至少换掉一题）", () => {
+    const r1 = buildReplayLesson(tags, 1);
+    const r2 = buildReplayLesson(tags, 2);
+    const set1 = new Set(r1.items.map((item) => `${item.tag}:${item.answer}`));
+    const set2 = new Set(r2.items.map((item) => `${item.tag}:${item.answer}`));
+    const fresh = [...set2].filter((key) => !set1.has(key));
+    expect(fresh.length, "第 2 轮应有新素材").toBeGreaterThan(0);
+  });
+
+  it("轮次回绕安全（素材用尽后回到第一轮，不崩不空）", () => {
+    for (const round of [1, 5, 20]) {
+      const lesson = buildReplayLesson(tags, round);
+      expect(lesson.isEmpty, `轮次 ${round} 不应为空`).toBe(false);
+      expect(lesson.items.length).toBeGreaterThanOrEqual(REPLAY_MIN_ITEMS);
+    }
+  });
+
+  it("轮次内保持确定性（同一轮反复进出看到同一套题）", () => {
+    const a = buildReplayLesson(tags, 2);
+    const b = buildReplayLesson(tags, 2);
+    expect(a.items.map((i) => i.answer)).toEqual(b.items.map((i) => i.answer));
+  });
+
+  it("resolveReplayRound：同组弱点练过 N 次 → 第 N+1 轮", () => {
+    const empty: Array<{ tags: string[] }> = [];
+    expect(resolveReplayRound(tags, empty)).toBe(1);
+    // 练过 1 次同一组（顺序无关）
+    expect(resolveReplayRound(tags, [{ tags: ["tense", "sv_agreement", "plural"] }])).toBe(2);
+    // 练过 2 次 → 第 3 轮
+    expect(
+      resolveReplayRound(tags, [
+        { tags: ["sv_agreement", "plural", "tense"] },
+        { tags: ["plural", "tense", "sv_agreement"] }
+      ])
+    ).toBe(3);
+    // 不同弱点组合不计入
+    expect(resolveReplayRound(tags, [{ tags: ["article", "fragment"] }])).toBe(1);
   });
 });

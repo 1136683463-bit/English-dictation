@@ -103,9 +103,19 @@ const isEnglishToken = (token: string): boolean =>
  *
  * @param topTags 按权重排序的罪名（来自 computeWeakSpotsReport().active）
  */
-export const buildReplayLesson = (topTags: GrammarErrorTag[]): ReplayLesson => {
+export const buildReplayLesson = (
+  topTags: GrammarErrorTag[],
+  /**
+   * 轮次（从 1 起）：同一弱点下换一批素材。
+   * 走查发现：确定性拼题导致「今天做完 5 题，明天点开还是那 5 题」——
+   * 弱点构成没变就完全重复，第二遍没有练习价值（与趁热练复练换池同类问题）。
+   * 用法：轮次 N 跳过前 (N-1)×REPLAY_MAX_ITEMS 个候选素材。
+   */
+  round = 1
+): ReplayLesson => {
   const tags = topTags.slice(0, 3);
   if (tags.length === 0) return { tags, items: [], isEmpty: true };
+  const skipPerTag = Math.max(0, (Math.max(1, round) - 1));
 
   const items: ReplayItem[] = [];
   const usedCases = new Set<string>();
@@ -128,7 +138,9 @@ export const buildReplayLesson = (topTags: GrammarErrorTag[]): ReplayLesson => {
       errors: Array<{ tokenIndex: number; tag: GrammarErrorTag; original: string; correction: string; explanation: string }>;
     }>).filter((item) => item.errors.some((error) => error.tag === tag));
 
-    for (const huntCase of candidateCases) {
+    // 轮换：本轮跳过前 (round-1) 个候选，使同一弱点在不同轮次给出不同素材
+    const rotated = [...candidateCases.slice(skipPerTag), ...candidateCases.slice(0, skipPerTag)];
+    for (const huntCase of rotated) {
       if (items.length >= REPLAY_MAX_ITEMS) break;
       if (usedCases.has(huntCase.id)) continue;
       const error = huntCase.errors.find((entry) => entry.tag === tag);
@@ -179,7 +191,8 @@ export const buildReplayLesson = (topTags: GrammarErrorTag[]): ReplayLesson => {
         tokens: string[];
         errors: Array<{ tokenIndex: number; tag: GrammarErrorTag; original: string; correction: string; explanation: string }>;
       }>).filter((item) => item.errors.some((error) => error.tag === tag));
-      for (const huntCase of candidateCases) {
+      const rotated2 = [...candidateCases.slice(skipPerTag), ...candidateCases.slice(0, skipPerTag)];
+      for (const huntCase of rotated2) {
         if (items.length >= REPLAY_MAX_ITEMS) break;
         if (usedCases.has(huntCase.id)) continue;
         const error = huntCase.errors.find((entry) => entry.tag === tag);
@@ -214,6 +227,23 @@ export const buildReplayLesson = (topTags: GrammarErrorTag[]): ReplayLesson => {
     items,
     isEmpty: items.length < REPLAY_MIN_ITEMS
   };
+};
+
+/**
+ * 推算出本轮该用第几轮素材：统计「同一组 Top3 弱点」此前完成过几次复盘课。
+ * 换一批的语义是「练过一遍就换新素材」，而不是每次进页面都换
+ * （同一轮内反复进出应看到同一套题，做题中途退出再进不该换题）。
+ */
+export const resolveReplayRound = (
+  topTags: GrammarErrorTag[],
+  completed: Array<{ tags: string[] }>
+): number => {
+  const signature = [...topTags.slice(0, 3)].sort().join("|");
+  if (!signature) return 1;
+  const sameSet = completed.filter(
+    (event) => [...(event.tags ?? [])].sort().join("|") === signature
+  );
+  return sameSet.length + 1;
 };
 
 /** 复盘课是否值得开（素材够且有弱点）。 */
