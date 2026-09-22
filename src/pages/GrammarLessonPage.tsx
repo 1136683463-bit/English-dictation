@@ -59,7 +59,7 @@ import {
   saveLessonResume,
   type LessonResumeState
 } from "../services/grammarLessonResumeService";
-import { BOOST_TIERS, BOOST_TIER_META, getLessonBoostTiersDone } from "../services/grammarBoostService";
+import { BOOST_TIERS, BOOST_TIER_META, getLessonBoostTiersDone, locateMarkedTokens } from "../services/grammarBoostService";
 import {
   addLessonMistakeSentence,
   checkLessonTokens,
@@ -239,19 +239,33 @@ function LessonContrastCard({
   const passed = item.bothRight || (picked === "first") === correctFirst;
 
   const markedWrongNode: ReactNode = (() => {
-    if (mark && item.wrong.includes(mark)) {
-      const at = item.wrong.indexOf(mark);
-      return (
-        <>
-          {item.wrong.slice(0, at)}
-          <span className="lesson-contrast-mark" style={{ textDecoration: "line-through" }}>
-            {mark}
-          </span>
-          {item.wrong.slice(at + mark.length)}
-        </>
-      );
-    }
-    return item.wrong;
+    if (!mark) return item.wrong;
+    /**
+     * 用**词边界 + 正确句消歧**定位（批五十修）。
+     *
+     * 此前这里用裸 `indexOf`——子串匹配会让 `mark="a"` 命中 `have` 里的 a、
+     * `mark="is"` 命中 `sister` 里的 is，删除线就划在了别的单词内部。
+     * 全库实测 14 张卡因此错位。`locateMarkedTokens` 是判题侧已有的同一套定位逻辑，
+     * 复用它可保证「用户看到的划线」与「判题认定的错处」永远是同一个词。
+     */
+    const tokens = item.wrong.split(/(\s+)/);
+    const wordIndexes: number[] = [];
+    tokens.forEach((token, index) => {
+      if (!/^\s+$/.test(token) && token) wordIndexes.push(index);
+    });
+    const wordList = wordIndexes.map((index) => tokens[index]);
+    const hits = locateMarkedTokens(wordList, mark, item.correct);
+    if (hits.length === 0) return item.wrong;
+    const targetTokenIndex = wordIndexes[hits[0]];
+    return (
+      <>
+        {tokens.slice(0, targetTokenIndex).join("")}
+        <span className="lesson-contrast-mark" style={{ textDecoration: "line-through" }}>
+          {tokens[targetTokenIndex]}
+        </span>
+        {tokens.slice(targetTokenIndex + 1).join("")}
+      </>
+    );
   })();
 
   const judge = (choice: "first" | "second") => {
