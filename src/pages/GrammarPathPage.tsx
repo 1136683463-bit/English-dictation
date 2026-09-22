@@ -23,7 +23,7 @@ import { downloadTextFile, nowIso } from "../services/storage";
 // R20：课程分组——按季划分（2026-09-14 第四批上线：season-3 收口至 34，新增 season-4 从句篇）。
 // 2026-09-17 排版优化：分组表迁至 src/data/grammarSeasons.ts（路径页 + 侦探页共用），
 // 并有 grammarSeasons.test.ts 守门「课号必须落区间」（静默过滤是登记过的头号展示层风险）。
-import { LESSON_GROUPS } from "../data/grammarSeasons";
+import { buildDisplaySeasons, LESSON_GROUPS } from "../data/grammarSeasons";
 import { buildWeeklySummaryFacts, requestWeeklySummary } from "../services/grammarWeeklySummaryService";
 
 /** R06：已战胜的弱点——确证治愈（不是 7 天没犯被遗忘，而是有卡跃迁 mastered 且此后未再犯）。 */
@@ -532,6 +532,20 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     title: "我能说「觉得冷、一直读着」",
     zh: "一对换法一样的昨天版（feel 变 felt、keep 变 kept——中间两个 e 只剩一个、尾巴加个 t：I felt cold, but I kept reading）+ 说「不」和问句里它们穿回原样（didn't feel）。这一批还有第 198 课的 swam／sang、第 199 课的 sat／caught。",
     samples: ["I felt cold in the snow, but I kept reading.", "I felt cold.", "I kept reading."]
+  },
+  {
+    id: "can-do-m48",
+    afterLesson: 201,
+    title: "我能说「昨晚睡得好」",
+    zh: "sleep 的昨天版是 slept（跟第 200 课的 kept／felt 一个换法：两个 e 只剩一个、加个 t）+ 分清「睡了一整觉」和「正做着」——说「做完了这件事」用 slept，说「（那阵子）正睡着」穿 -ing（was sleeping，第 98 课）。同一个形式，地方不一样，对错不一样。",
+    samples: ["I slept well last night.", "He was sleeping at eight.", "I slept well last night, so I felt great this morning."]
+  },
+  {
+    id: "can-do-m49",
+    afterLesson: 202,
+    title: "我能说「画了张画」",
+    zh: "draw 的昨天版是 drew（aw 换成 ew）+ 分清「前面是 will 还是说昨天的事」——will 后面穿原样（will draw，第 12 课）；说昨天做的用 drew。顺便记 put 三态同形（第 82 课），昨天版还是 put。",
+    samples: ["I drew a picture of the boat and put it on the wall.", "She drew a cat.", "I will draw tomorrow."]
   }
 ];
 
@@ -691,6 +705,15 @@ export default function GrammarPathPage() {
     () => buildWeakSpotNarrative(data, Date.now(), { interventionPresent: Boolean(activeIntervention) }),
     [data, activeIntervention]
   );
+  /**
+   * ③ 显示用季列表：未归季的课进「新章节」兜底分组，而不是被区间过滤静默丢弃。
+   * （内容进程一天内从 158 加到 200 课，只要一次忘记同步季分组，课就会凭空消失。）
+   */
+  const displaySeasons = useMemo(
+    () => buildDisplaySeasons(lessons.map((lesson) => lesson.number)),
+    [lessons]
+  );
+
   // C4：弱点素材是否够拼一节复盘课（不够则不显示入口，不给残缺的课）
   const replayAvailable = useMemo(
     () => !buildReplayLesson(weakSpotsReport.active.map((spot) => spot.tag)).isEmpty,
@@ -999,7 +1022,7 @@ export default function GrammarPathPage() {
           点卡片才展开该季课表（同时只开一季，方位置焦）。
           此前是 20 个折叠行全部平铺，滚动长、季与季的进度要逐行扫。 */}
       <div className="season-map">
-        {LESSON_GROUPS.map((group) => {
+        {displaySeasons.map((group) => {
           const groupLessons = lessons.filter((lesson) => lesson.number >= group.min && lesson.number <= group.max);
           if (groupLessons.length === 0) return null;
           const groupDone = groupLessons.filter((lesson) => data.grammarLessonsDone.includes(lesson.id)).length;

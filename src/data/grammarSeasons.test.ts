@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { grammarLessons } from "./grammarLessons";
-import { LESSON_GROUPS, findSeasonByLessonNumber } from "./grammarSeasons";
+import { buildDisplaySeasons, FALLBACK_SEASON_ID, LESSON_GROUPS, findSeasonByLessonNumber } from "./grammarSeasons";
 import { ADVENTURE_SCENE_IDS } from "../components/AdventureScene";
 import { GRAMMAR_ZERO_TERMS } from "./grammarZeroTerms";
 
@@ -136,5 +136,48 @@ describe("课程 scene 必须是合法场景 ID（静默回退守门）", () => 
       offenders,
       `scene 不是合法场景 ID 的课（渲染会静默回退 sparkle 插画）：\n${offenders.join("\n")}`
     ).toEqual([]);
+  });
+});
+
+/**
+ * 兜底分组（2026-09-22 防御性修复）：
+ * 上面的守门测试能「先红」，但若内容进程不等测试就上线新批次，
+ * 课仍会静默消失。本组测试锁定兜底机制——把静默丢失变成显式可见。
+ */
+describe("grammarSeasons 兜底分组（静默故障的第二道防线）", () => {
+  it("全部归季时：不产生兜底分组（不影响现状）", () => {
+    const numbers = grammarLessons.map((lesson) => lesson.number);
+    const seasons = buildDisplaySeasons(numbers);
+    expect(seasons.length).toBe(LESSON_GROUPS.length);
+    expect(seasons.some((group) => group.id === FALLBACK_SEASON_ID)).toBe(false);
+  });
+
+  it("出现未归季的课：自动补兜底分组，且区间能捞到那些课", () => {
+    const numbers = grammarLessons.map((lesson) => lesson.number);
+    const orphans = [999, 1000];
+    const seasons = buildDisplaySeasons([...numbers, ...orphans]);
+    const fallback = seasons.find((group) => group.id === FALLBACK_SEASON_ID);
+    expect(fallback, "未归季的课应触发兜底分组").toBeDefined();
+    // 关键：兜底区间必须真的包含那些课（否则课照样丢）
+    for (const orphan of orphans) {
+      expect(
+        orphan >= fallback!.min && orphan <= fallback!.max,
+        `课号 ${orphan} 未被兜底区间覆盖`
+      ).toBe(true);
+    }
+  });
+
+  it("兜底分组排在最后、标签可读（用户看得出是待归季而非正式季）", () => {
+    const seasons = buildDisplaySeasons([...grammarLessons.map((l) => l.number), 500]);
+    const last = seasons[seasons.length - 1];
+    expect(last.id).toBe(FALLBACK_SEASON_ID);
+    expect(last.label).toContain("新章节");
+    expect(last.hint.length).toBeGreaterThan(0);
+  });
+
+  it("现状 200 课全部安全（当前无静默丢失风险）", () => {
+    const numbers = grammarLessons.map((lesson) => lesson.number);
+    expect(numbers.length).toBeGreaterThan(190);
+    expect(buildDisplaySeasons(numbers).some((g) => g.id === FALLBACK_SEASON_ID)).toBe(false);
   });
 });

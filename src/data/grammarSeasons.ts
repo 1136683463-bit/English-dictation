@@ -66,9 +66,43 @@ export const LESSON_GROUPS: GrammarSeason[] = [
   { id: "season-25", label: "第二十五季 · 一个都不、看起来像、需要", hint: "家里一个人都没有、它看起来像一条船、我需要买点牛奶——身边的事一件件说", min: 157, max: 162 },
   { id: "season-26", label: "第二十六季 · 自己、日常四句", hint: "我自己能做、我们互相帮忙、人太多了、你怎么不歇会儿——日常里最顺口的几句", min: 163, max: 169 },
   { id: "season-27", label: "第二十七季 · 一对一对的说法", hint: "既…又…／既不…也不…、除非／为了、能够／我也是、宁愿／更喜欢、更早的事／征求同意，再加整个和最好——成对学，记得牢", min: 170, max: 181 },
-  { id: "season-28", label: "第二十八季 · 收口、目的、条件、不得不、他们的与走向哪儿", hint: "把整季的句型排一行，再加七格：做这事是为了让谁做什么（so that）、只要你来我就去（as long as）、昨天不得不走回家（had to）、他们的东西（their／theirs）、我正在学游泳（be 后面穿 -ing，再垫 to）、她走进了厨房（进到里面用 into）、我们穿过了树林、横过了小桥（中间钻过去用 through，一头到另一头用 across）、风太大把窗吹破了（太…了用 so…that 一头一尾）、好大的一条鱼（这么…的一个用 such a，a 紧跟 such）、猫在它的盒子里（「它的」写 its，不带小撇）", min: 182, max: 195 }
+  { id: "season-28", label: "第二十八季 · 收口、目的、条件、不得不、他们的与走向哪儿", hint: "把整季的句型排一行，再加七格：做这事是为了让谁做什么（so that）、只要你来我就去（as long as）、昨天不得不走回家（had to）、他们的东西（their／theirs）、我正在学游泳（be 后面穿 -ing，再垫 to）、她走进了厨房（进到里面用 into）、我们穿过了树林、横过了小桥（中间钻过去用 through，一头到另一头用 across）、风太大把窗吹破了（太…了用 so…that 一头一尾）、好大的一条鱼（这么…的一个用 such a，a 紧跟 such）、猫在它的盒子里（「它的」写 its，不带小撇）、猫在一堆箱子中间（一群里用 among，两个才用 between）、想了一晚上想通了（think 的昨天版是 thought、know 的是 knew）、又游泳又唱歌（swim 变 swam、sing 变 sang）、坐旁边赶上了（sit 变 sat、catch 变 caught）、雪里读完了那本书（feel 变 felt、keep 变 kept——两个 e 只剩一个再加 t）、昨晚睡得好（sleep 变 slept）、画了条船贴在墙上（draw 变 drew，aw 换成 ew）", min: 182, max: 202 }
 ];
 
 /** 按课号查所属季（找不到返回 undefined——出现即数据缺口，宁可显式暴露）。 */
 export const findSeasonByLessonNumber = (lessonNumber: number): GrammarSeason | undefined =>
   LESSON_GROUPS.find((group) => lessonNumber >= group.min && lessonNumber <= group.max);
+
+/** 兜底分组 id：内容批次先于赛季分组上线时，课程落进这里而不是被静默过滤。 */
+export const FALLBACK_SEASON_ID = "season-fallback";
+
+/**
+ * 显示用季列表：在官方分组之外，若有课号未落进任何 season-N 区间，
+ * 自动补一个「新章节」兜底分组。
+ *
+ * 背景（2026-09-22 防御性修复）：区间过滤是**必需机制**（季卡片按区间取课），
+ * 但它的失败模式是**静默的**——课号不落区间就整课不显示、无报错。
+ * 内容进程曾在一天内把课程从 158 加到 200，只要有一次「加了课、忘了加季分组」，
+ * 那课就会在路径页凭空消失且无人察觉。
+ * 兜底分组把这类缺口从「静默丢失」变成「显式可见」。
+ */
+export const buildDisplaySeasons = (
+  lessonNumbers: readonly number[]
+): GrammarSeason[] => {
+  const covered = (num: number) =>
+    LESSON_GROUPS.some((group) => num >= group.min && num <= group.max);
+  const orphans = lessonNumbers.filter((num) => !covered(num));
+  if (orphans.length === 0) return LESSON_GROUPS;
+  const min = Math.min(...orphans);
+  const max = Math.max(...orphans);
+  return [
+    ...LESSON_GROUPS,
+    {
+      id: FALLBACK_SEASON_ID,
+      label: "新章节 · 待归季",
+      hint: `${orphans.length} 课已上线但还没归入季分组——不影响学习，只是分类待补。`,
+      min,
+      max
+    }
+  ];
+};
