@@ -1,4 +1,5 @@
 import {
+  AlertTriangle,
   BookOpenCheck,
   BookMarked,
   FileText,
@@ -38,6 +39,7 @@ import GatePlayPage from "./pages/GatePlayPage";
 import GrammarPathPage from "./pages/GrammarPathPage";
 import GrammarReviewPage from "./pages/GrammarReviewPage";
 import GrammarReplayPage from "./pages/GrammarReplayPage";
+import GrammarProfilePage from "./pages/GrammarProfilePage";
 import GrammarLessonPage from "./pages/GrammarLessonPage";
 import GrammarRevisitPage from "./pages/GrammarRevisitPage";
 import GrammarReauditPage from "./pages/GrammarReauditPage";
@@ -90,7 +92,7 @@ const GrammarBoostPageRoute = () => {
 
 const AppLayout = () => {
   const location = useLocation();
-  const { data } = useAppData();
+  const { data, saveError } = useAppData();
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
 
   useEffect(() => {
@@ -185,6 +187,17 @@ const AppLayout = () => {
         </div>
       </aside>
       <main className="main">
+        {/*
+          落盘失败告警（2026-09-22 新增）：配额满时 commitData 会捕获异常并设这一状态。
+          此前失败是静默的——界面显示「已生效」而磁盘上是旧数据，用户在下次重启才发现回退。
+          这条横幅与页面无关，常驻在内容区顶部，确保用户在任何页面都能看到。
+        */}
+        {saveError && (
+          <div className="save-error-banner" role="alert">
+            <AlertTriangle size={16} aria-hidden="true" />
+            <span>{saveError}</span>
+          </div>
+        )}
         <Routes>
           <Route path="/today" element={<TodayPage />} />
           <Route path="/training" element={<TrainingPage />} />
@@ -196,6 +209,8 @@ const AppLayout = () => {
           <Route path="/grammar/review" element={<GrammarReviewPage />} />
           {/* C4：从 Top3 弱点拼出的复盘课（素材 100% 溯源，即时提取练习） */}
           <Route path="/grammar/replay" element={<GrammarReplayPage />} />
+          {/* ④ 语法能力画像：全貌 + 趋势 + 已战胜（与弱点卡分工：弱点卡只讲 Top3 待修） */}
+          <Route path="/grammar/profile" element={<GrammarProfilePage />} />
           {/* :lessonId 参数路由必须带 key——同路由换参数时 React Router 会复用组件实例，
               上一课的 stage/practiceDone 等状态会带进下一课（表现为「点下一课直接停在结尾」）。 */}
           <Route path="/grammar/lesson/:lessonId" element={<GrammarLessonPageRoute />} />

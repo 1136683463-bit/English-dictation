@@ -27690,6 +27690,241 @@ html {
   background: var(--accent-strong);
 }
 
+/* ④ 语法能力画像（/grammar/profile） */
+.grammar-path-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lesson-progress-pill.ghost {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: var(--ease-ui);
+}
+
+.lesson-progress-pill.ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* 一句话概括 */
+.profile-hero {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 20px 22px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #f7fbff 0%, #fdfefe 72%);
+  border: 1px solid #e3edf8;
+}
+
+.profile-hero-line {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+.profile-hero-trend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.profile-hero-trend.good {
+  color: var(--green-ink);
+  font-weight: 600;
+}
+
+/* 分区 */
+.profile-block {
+  margin-bottom: 24px;
+  padding: 20px 22px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.profile-block.healed {
+  border-color: #cfeadd;
+  background: linear-gradient(135deg, #f4fcf7 0%, #fdfefd 72%);
+}
+
+.profile-block-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 14px;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.profile-block.healed .profile-block-title {
+  color: var(--green-ink);
+}
+
+/* 数字统计 */
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.profile-stat {
+  display: grid;
+  gap: 3px;
+  justify-items: center;
+  padding: 10px 6px;
+  border-radius: 12px;
+  background: var(--surface-muted);
+}
+
+.profile-stat b {
+  color: var(--ink);
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.profile-stat span {
+  color: var(--muted);
+  font-size: 11.5px;
+  text-align: center;
+}
+
+.profile-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: #eef1f4;
+  overflow: hidden;
+}
+
+.profile-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), #f79256);
+}
+
+.profile-bar-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+/* 四周趋势 */
+.profile-trend {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 10px;
+  height: 130px;
+  padding: 0 4px;
+}
+
+.profile-trend-col {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  height: 100%;
+}
+
+.profile-trend-count {
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.profile-trend-bar {
+  width: 100%;
+  max-width: 44px;
+  min-height: 4px;
+  border-radius: 8px 8px 3px 3px;
+  background: linear-gradient(180deg, #f7a86b 0%, var(--accent) 100%);
+  transition: height var(--ease-ui);
+}
+
+.profile-trend-label {
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+/* 罪名标签列表 */
+.profile-tag-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.profile-tag-list.compact {
+  gap: 7px;
+}
+
+.profile-tag {
+  display: grid;
+  gap: 3px;
+  padding: 12px 15px;
+  border-radius: 13px;
+  border-left: 3px solid var(--line-strong);
+  background: var(--surface-muted);
+}
+
+.profile-tag.healed {
+  border-left-color: var(--secondary);
+  background: #fff;
+}
+
+.profile-tag.attention {
+  border-left-color: var(--amber);
+  background: #fffdf7;
+}
+
+.profile-tag.stable {
+  border-left-color: var(--blue);
+}
+
+.profile-tag strong {
+  color: var(--ink);
+  font-size: 14.5px;
+  font-weight: 700;
+}
+
+.profile-tag span {
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.profile-tag-meta {
+  color: var(--muted);
+  font-size: 12px;
+  font-style: normal;
+}
+
+@media (max-width: 640px) {
+  .profile-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ④ 统一练习推荐：为什么系统让你现在做这个 */
 .practice-pick-reason {
   display: flex;

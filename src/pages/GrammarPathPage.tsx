@@ -547,6 +547,13 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     title: "我能说「画了张画」",
     zh: "draw 的昨天版是 drew（aw 换成 ew）+ 分清「前面是 will 还是说昨天的事」——will 后面穿原样（will draw，第 12 课）；说昨天做的用 drew。顺便记 put 三态同形（第 82 课），昨天版还是 put。",
     samples: ["I drew a picture of the boat and put it on the wall.", "She drew a cat.", "I will draw tomorrow."]
+  },
+  {
+    id: "can-do-m50",
+    afterLesson: 203,
+    title: "我能说「昨天戴了新帽子」",
+    zh: "wear 的昨天版是 wore（不加 -ed：I wore my new hat yesterday）+ 分清 wear 家的三个形状——穿原样（to／don't 后面：want to wear）／「他/她」一个多一个小 s（wears，第 39 课）／说昨天用它自己的样子（wore）。",
+    samples: ["I wore my new hat yesterday.", "The boy who wears glasses is my brother.", "I want to wear it again today."]
   }
 ];
 
@@ -952,11 +959,18 @@ export default function GrammarPathPage() {
         title="小美的一天"
         description={`跟着小美，从第一句英语到讲清楚一天的事。先看句子怎么搭出来，再动手试，每课 6–10 分钟。`}
         action={
-          <div className="lesson-progress-pill" aria-label="课程进度">
-            <GraduationCap size={16} />
-            <span>
-              {summary.done} / {summary.total} 课
-            </span>
+          <div className="grammar-path-actions">
+            <div className="lesson-progress-pill" aria-label="课程进度">
+              <GraduationCap size={16} />
+              <span>
+                {summary.done} / {summary.total} 课
+              </span>
+            </div>
+            {/* ④ 画像入口：全貌与趋势（弱点卡只讲 Top3 待修） */}
+            <Link to="/grammar/profile" className="lesson-progress-pill ghost" aria-label="我的语法画像">
+              <Sparkles size={15} />
+              <span>我的画像</span>
+            </Link>
           </div>
         }
       />

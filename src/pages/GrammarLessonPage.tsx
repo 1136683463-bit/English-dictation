@@ -1145,12 +1145,61 @@ export default function GrammarLessonPage() {
         guidedIndex: -1
       });
       resumeSourceRef.current = "reread";
+      // 已有练习进度快照：直接切段，跳过 snapshotStage 覆盖
+      setStage(to);
+      setPracticeOrder([]);
+      lastJudgedLengthRef.current = null;
+      if (to === "guided") resetGuided();
+      if (to === "watch") setWatchStep(0);
+      return;
     }
     gotoStage(to);
   };
 
+  /**
+   * ⑤ 段位快照（2026-09-22）：把「当前停在哪一段」写进续学快照。
+   *
+   * 为什么需要：此前只有练习段内会写快照，用户做完前测/看完讲解就关掉浏览器时，
+   * 刷新回来又被扔回前测第 1 题（走查实测确认）。现在任何段位推进都记一笔。
+   *
+   * 与练习段细粒度快照的关系：practice 段有更细的进度（题目序号），
+   * 由练习推进逻辑单独维护并**优先**——本函数在 practice 段不写，避免覆盖。
+   */
+  const snapshotStage = (next: LessonStage) => {
+    if (!lesson) return;
+    if (next === "challenge") return;
+    /**
+     * 「回看讲解」期间**一律不覆盖快照**（2026-09-22 修，P0 进度丢失）。
+     *
+     * `reread()` 已经把练习进度（如第 4 题）写进快照并置 `resumeSourceRef = "reread"`，
+     * 等用户原路走回练习段时消费它。但返回路径是
+     * `practice → 讲解 → guided → recall → practice`，中间**每次 `gotoStage` 都会调本函数**，
+     * 于是 `snapshotStage("recall")` 把那份快照覆盖成 `stage: "recall", practiceIndex: -1`——
+     * 回到练习段时读到 -1，用户被弹回第 1 题（实测：回看前第 4 题 → 回来后第 1 题）。
+     *
+     * 判据用 `resumeSourceRef`：它是「有一份待消费的练习快照」的准确标志，
+     * 在 `gotoStage("practice")` 的分支里消费后会被置回 "session"，
+     * 所以正常的段位推进不受影响。
+     */
+    if (resumeSourceRef.current === "reread") return;
+    // practice 段：仅当**尚无练习细粒度快照**时兜底写一条（如从前测直接跳到练习），
+    // 已有进度则保留（练习推进逻辑维护的题目序号更精确）。
+    if (next === "practice") {
+      const existing = loadLessonResume(lesson.id);
+      if (existing && existing.stage === "practice") return;
+    }
+    saveLessonResume(lesson.id, {
+      stage: next,
+      step: 0,
+      practiceIndex: -1,
+      outputStep: -1,
+      guidedIndex: -1
+    });
+  };
+
   const gotoStage = (next: LessonStage) => {
     setStage(next);
+    snapshotStage(next);
     /**
      * 进段时统一清理「跨段会撞车的残余状态」（2026-09-21 修，两处 P0 死结）。
      *
@@ -1171,6 +1220,7 @@ export default function GrammarLessonPage() {
     lastJudgedLengthRef.current = null;
     if (next === "guided") resetGuided();
     if (next === "watch") setWatchStep(0);
+
     if (next === "recall") {
       // R5「忆」段：进入时重置状态
       setRecallValue("");
@@ -1243,8 +1293,21 @@ export default function GrammarLessonPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lessonKey]);
 
-  /** 「继续刚才」：按快照恢复到 practice（含 output 子段）。 */
+  /**
+   * 「继续刚才」：按快照恢复。
+   * ⑤ 扩展：不止恢复 practice——若快照停在 watch/pretest 等段，也要还原段位与
+   * 「前测已过」这个派生状态（此前只在练习段恢复，前测进度刷新即丢）。
+   */
   const applyResume = (snapshot: LessonResumeState) => {
+    // 快照段位早于 practice（前测/讲解段）→ 还原段位，并把 pretestFinished 置真
+    const earlyStages = ["pretest", "watch", "guided", "recall"];
+    if (earlyStages.includes(snapshot.stage)) {
+      setPretestFinished(true);
+      setStage(snapshot.stage as typeof stage);
+      setResumeOffer(null);
+      window.scrollTo({ top: 0 });
+      return;
+    }
     setStage("practice");
     setPracticeIndex(Math.max(0, snapshot.practiceIndex));
     setPracticePicked([]);
@@ -2332,7 +2395,14 @@ export default function GrammarLessonPage() {
                 ))}
               </div>
               <div className="lesson-stage-actions">
-                <button type="button" className="primary-button" onClick={() => { setPretestFinished(true); gotoStage("watch"); }}>
+                <button
+                  type="button"
+                  className="primary-button"
+                  onClick={() => {
+                    setPretestFinished(true);
+                    gotoStage("watch");
+                  }}
+                >
                   去讲解里揭晓
                 </button>
               </div>
@@ -2997,8 +3067,38 @@ export default function GrammarLessonPage() {
               </span>
             </div>
             <p className="lesson-quiz-prompt">
-              刚才练到 <strong>第 {Math.max(0, resumeOffer.practiceIndex) + 1} 题</strong>
-              {resumeOffer.outputStep >= 0 ? "（含「说出来」环节）" : ""}——接着练，还是从头来？
+              {/**
+                * 两种快照要分开说（2026-09-22 修）：
+                *  - `practiceIndex >= 0`：练习段内有真实进度 → 报第几题。
+                *  - `practiceIndex < 0`：只是「停在练习段、还没推进」（从前测直接跳过来时
+                *    兜底写的那条）→ 报「第 1 题」是在**编造进度**，用户会以为自己做过了。
+                *    这时如实说「上次停在练习段」。
+                */}
+              {/**
+                * ⑤ 段位感知文案（2026-09-22）：快照可能停在**任何段**（前测后/讲解中/
+                * 练习中）。此前非 practice 段一律显示「上次停在练习这一段」——
+                * 与事实不符（实测：快照是 watch 却报练习）。
+                */}
+              {(() => {
+                const stageLabels: Record<string, string> = {
+                  pretest: "课前试一试",
+                  watch: "情景讲解",
+                  guided: "跟着练",
+                  recall: "回忆",
+                  practice: "练习",
+                  challenge: "挑战"
+                };
+                const where = stageLabels[resumeOffer.stage] ?? "练习";
+                if (resumeOffer.practiceIndex >= 0) {
+                  return (
+                    <>
+                      刚才练到 <strong>第 {resumeOffer.practiceIndex + 1} 题</strong>
+                      {resumeOffer.outputStep >= 0 ? "（含「说出来」环节）" : ""}——接着练，还是从头来？
+                    </>
+                  );
+                }
+                return <>上次停在<strong>{where}</strong>这一段——继续，还是从头来？</>;
+              })()}
             </p>
             <div className="lesson-stage-actions center">
               <button type="button" className="primary-button" onClick={() => applyResume(resumeOffer)}>

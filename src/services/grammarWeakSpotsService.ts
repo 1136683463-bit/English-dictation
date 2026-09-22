@@ -372,7 +372,15 @@ export const findActiveIntervention = (
   return { tag, label, count, lessonId, lessonTitle, lessonNumber, text };
 };
 
-export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpotsReport => {
+export const computeWeakSpotsReport = (
+  data: AppData,
+  now = Date.now(),
+  /**
+   * 活跃榜返回条数。默认 TOP_LIMIT（3）——弱点卡只展示最该修的三个。
+   * 画像页需要**全貌**，传 Infinity 取全部（否则 Top3 之外的问题被静默截断）。
+   */
+  limit = TOP_LIMIT
+): WeakSpotsReport => {
   const stats = new Map<GrammarErrorTag, TagStat>();
   const statFor = (tag: GrammarErrorTag): TagStat => {
     let stat = stats.get(tag);
@@ -534,7 +542,7 @@ export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpo
 
   active.sort((a, b) => b.score - a.score || b.recentCount - a.recentCount);
   healed.sort((a, b) => b.healedAt.localeCompare(a.healedAt));
-  return { active: active.slice(0, TOP_LIMIT), healed };
+  return { active: Number.isFinite(limit) ? active.slice(0, limit) : active, healed };
 };
 
 /** 日记句子卡在复习队列里的定位方式与 addDiarySentenceToReview 一致：sourceId = diary:<entryId>。 */
