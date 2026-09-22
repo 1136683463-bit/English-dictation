@@ -246,6 +246,32 @@ export const resolveReplayRound = (
   return sameSet.length + 1;
 };
 
+/**
+ * ① 完课后的针对性推荐：找出**与本课相关**的弱点。
+ *
+ * 时机洞察：刚做完某课、弱点最鲜明的完课收据页，推荐位原先只给「趁热练」
+ * （再练一遍本课内容）。但如果用户在本课的错因上摔过 N 次，
+ * 「针对这个弱点练」比「再练一遍」更对症。
+ *
+ * 相关性判定：本课 huntCaseIds 引用的案件里出现的罪名 ∩ 当前弱点榜。
+ * 依赖：弱点榜由调用方传入（避免本服务反向依赖弱点服务）。
+ */
+export const findLessonWeakSpots = <T extends { tag: GrammarErrorTag }>(
+  lessonId: string,
+  weakSpots: T[],
+  lessonCaseIds: string[]
+): T[] => {
+  if (lessonCaseIds.length === 0) return [];
+  const lessonTags = new Set<GrammarErrorTag>();
+  for (const caseId of lessonCaseIds) {
+    const huntCase = (huntCases as Array<{ id: string; errors?: Array<{ tag: GrammarErrorTag }> }>)
+      .find((item) => item.id === caseId);
+    for (const error of huntCase?.errors ?? []) lessonTags.add(error.tag);
+  }
+  if (lessonTags.size === 0) return [];
+  return weakSpots.filter((spot) => lessonTags.has(spot.tag));
+};
+
 /** 复盘课是否值得开（素材够且有弱点）。 */
 export const hasReplayLesson = (topTags: GrammarErrorTag[]): boolean =>
   !buildReplayLesson(topTags).isEmpty;

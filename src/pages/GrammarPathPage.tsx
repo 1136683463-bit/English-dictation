@@ -93,6 +93,14 @@ function WeakSpotsCard({ spots, narrative, replayAvailable }: { spots: WeakSpot[
                   <p className="weak-spots-replayed">
                     <Check size={12} aria-hidden="true" />
                     最近练过：{formatReplayDate(spot.lastReplayedAt)}
+                    {/* ② 成效可见：练完之后有没有再摔——这是「练了有没有用」的直接答案 */}
+                    {typeof spot.mistakesSinceReplay === "number" && (
+                      <span className="weak-spots-effect">
+                        {spot.mistakesSinceReplay === 0
+                          ? "· 之后没再摔过 👍"
+                          : `· 之后又摔了 ${spot.mistakesSinceReplay} 次`}
+                      </span>
+                    )}
                   </p>
                 )}
               </div>
@@ -517,6 +525,13 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     title: "我能说「坐旁边、赶上了」",
     zh: "两种换法（sit 变 sat 是换里面的元音；catch 变 caught 是整个换成 -aught、那个 gh 不发音：I sat next to her and caught the bus）+ 这批老朋友说「不」和问句里都穿回原样。",
     samples: ["I sat next to her and caught the bus.", "I caught the bus.", "I didn't catch the bus."]
+  },
+  {
+    id: "can-do-m47",
+    afterLesson: 200,
+    title: "我能说「觉得冷、一直读着」",
+    zh: "一对换法一样的昨天版（feel 变 felt、keep 变 kept——中间两个 e 只剩一个、尾巴加个 t：I felt cold, but I kept reading）+ 说「不」和问句里它们穿回原样（didn't feel）。这一批还有第 198 课的 swam／sang、第 199 课的 sat／caught。",
+    samples: ["I felt cold in the snow, but I kept reading.", "I felt cold.", "I kept reading."]
   }
 ];
 

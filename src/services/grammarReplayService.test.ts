@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { buildReplayLesson, hasReplayLesson, resolveReplayRound, REPLAY_MAX_ITEMS, REPLAY_MIN_ITEMS } from "./grammarReplayService";
+import { buildReplayLesson, findLessonWeakSpots, hasReplayLesson, resolveReplayRound, REPLAY_MAX_ITEMS, REPLAY_MIN_ITEMS } from "./grammarReplayService";
 import { findZeroTermHits } from "../data/grammarZeroTerms";
+import { grammarLessons } from "../data/grammarLessons";
+import { huntCases } from "../data/huntCases";
 import { GRAMMAR_ERROR_TAG_PLAIN, GRAMMAR_ERROR_TAGS } from "./huntService";
 import type { GrammarErrorTag } from "../types";
 
@@ -148,5 +150,31 @@ describe("复盘课换一批（走查修复：同弱点不重复出同一套题�
     ).toBe(3);
     // 不同弱点组合不计入
     expect(resolveReplayRound(tags, [{ tags: ["article", "fragment"] }])).toBe(1);
+  });
+});
+
+describe("① 完课后的针对性推荐（findLessonWeakSpots）", () => {
+  it("命中本课相关弱点（罪名来自本课引用的案件）", () => {
+    // L1 引用的案件里含 sv_agreement 类错误
+    const lesson = (grammarLessons as Array<{ id: string; huntCaseIds?: string[] }>)
+      .find((item) => (item.huntCaseIds ?? []).length > 0)!;
+    const tags = new Set<string>();
+    for (const caseId of lesson.huntCaseIds ?? []) {
+      const huntCase = (huntCases as Array<{ id: string; errors?: Array<{ tag: string }> }>)
+        .find((item) => item.id === caseId);
+      for (const error of huntCase?.errors ?? []) tags.add(error.tag);
+    }
+    const firstTag = [...tags][0] as GrammarErrorTag;
+    const weakSpots = [{ tag: firstTag }, { tag: "comparison" as GrammarErrorTag }];
+    const hit = findLessonWeakSpots(lesson.id, weakSpots, lesson.huntCaseIds ?? []);
+    expect(hit.map((spot) => spot.tag)).toContain(firstTag);
+    // 与本课无关的弱点不应出现
+    expect(hit.map((spot) => spot.tag)).not.toContain("comparison");
+  });
+
+  it("本课无案件时不推荐（不硬凑）", () => {
+    expect(findLessonWeakSpots("lesson-01-am", [{ tag: "sv_agreement" }], [])).toEqual([]);
+    // 不存在的课也安全
+    expect(findLessonWeakSpots("无此课", [{ tag: "sv_agreement" }], ["x"])).toEqual([]);
   });
 });

@@ -329,6 +329,40 @@ describe("grammarWeakSpotsService（R08 弱点档案）", () => {
       expect(after!.lastReplayedAt, "应记录最近练习时间").toBeTruthy();
     });
 
+    it("② 练习成效：练完之后没再摔 → mistakesSinceReplay = 0（最好的信号）", () => {
+      const twoDaysAgo = new Date(Date.now() - 2 * 24 * 3600e3).toISOString();
+      const yesterday = new Date(Date.now() - 24 * 3600e3).toISOString();
+      // 先犯错，再练（一次通过），之后没再摔
+      appendGrammarEvent({ kind: "diary_issue_tag", entryId: "e1", issueIndex: 0, tag: "sv_agreement", ts: twoDaysAgo });
+      appendGrammarEvent({
+        kind: "grammar_replay_completed", itemCount: 3, firstTryCount: 3, tags: ["sv_agreement"],
+        perTag: [{ tag: "sv_agreement", total: 1, firstTry: 1 }], durationMs: 60000, ts: yesterday
+      });
+      const spot = computeWeakSpots(baseData({
+        diaryEntries: [makeDiaryEntry("e1", "sv_agreement", "I go", "I goes")]
+      })).find((entry) => entry.tag === "sv_agreement");
+      expect(spot!.mistakesSinceReplay).toBe(0);
+    });
+
+    it("② 练习成效：练完之后又摔 → 计数（诚实的负反馈）", () => {
+      const threeDaysAgo = new Date(Date.now() - 3 * 24 * 3600e3).toISOString();
+      const twoDaysAgo = new Date(Date.now() - 2 * 24 * 3600e3).toISOString();
+      const today = new Date().toISOString();
+      appendGrammarEvent({ kind: "diary_issue_tag", entryId: "e1", issueIndex: 0, tag: "sv_agreement", ts: threeDaysAgo });
+      appendGrammarEvent({
+        kind: "grammar_replay_completed", itemCount: 3, firstTryCount: 3, tags: ["sv_agreement"],
+        perTag: [{ tag: "sv_agreement", total: 1, firstTry: 1 }], durationMs: 60000, ts: twoDaysAgo
+      });
+      appendGrammarEvent({ kind: "diary_issue_tag", entryId: "e2", issueIndex: 0, tag: "sv_agreement", ts: today });
+      const spot = computeWeakSpots(baseData({
+        diaryEntries: [
+          makeDiaryEntry("e1", "sv_agreement", "I go", "I goes"),
+          makeDiaryEntry("e2", "sv_agreement", "She go", "She goes")
+        ]
+      })).find((entry) => entry.tag === "sv_agreement");
+      expect(spot!.mistakesSinceReplay).toBe(1);
+    });
+
     it("复盘课多次才过 → 记一次摩擦（正权重）", () => {
       appendGrammarEvent({
         kind: "grammar_replay_completed",

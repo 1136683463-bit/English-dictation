@@ -1,4 +1,4 @@
-import { ArrowLeft, CheckCircle2, Eraser, Flag, Flame, Lightbulb, Search, Sparkles, Volume2, X } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Eraser, Flag, Flame, Lightbulb, Search, Sparkles, Target, Volume2, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
@@ -13,6 +13,8 @@ import type { AdventureSceneId } from "../components/AdventureScene";
 import type { DiffToken, LessonContrast, LessonDeepDive, LessonGuidedStep, LessonPracticeStep } from "../types";
 import { appendGrammarEvent, type LessonSection } from "../services/grammarTelemetry";
 import { nowIso } from "../services/storage";
+import { findLessonWeakSpots } from "../services/grammarReplayService";
+import { computeWeakSpots } from "../services/grammarWeakSpotsService";
 import { buildGrammarReviewSession, GRAMMAR_REVIEW_SESSION_LIMIT } from "../services/grammarReviewService";
 import { speakTextWithLifecycle, stopSpeaking } from "../services/speechService";
 
@@ -560,6 +562,16 @@ export default function GrammarLessonPage() {
   const [recallAttempts, setRecallAttempts] = useState(0);
   const [recallOutcome, setRecallOutcome] = useState<"idle" | "pass" | "revealed">("idle");
   const [recallHint, setRecallHint] = useState<string | null>(null);
+
+  /**
+   * ① 完课推荐位：本课相关的弱点（有则在收据页给「针对这个弱点练」入口）。
+   * 时机：刚做完这课、弱点最鲜明——此时「针对弱点练」比「再练一遍本课」更对症。
+   */
+  const lessonWeakSpots = useMemo(() => {
+    if (!lesson) return [];
+    return findLessonWeakSpots(lesson.id, computeWeakSpots(data), lesson.huntCaseIds ?? []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lesson?.id, data]);
 
   /** 完课收据的「去复习」出口：到期卡数量（0 时改指向错题重练，避免空页面）。 */
   const receiptDueReviewCount = useMemo(
@@ -3645,9 +3657,27 @@ export default function GrammarLessonPage() {
             <div className="lesson-stage-actions">
               {/* R-B5：「趁热练」是完课当下的唯一推荐位——此处情绪最高、且有"还差什么"的未闭合块。
                   原有「去挑战 / 下一课」降为次级（仍可达），避免 4 个平级动作互相稀释。 */}
+              {/* ① 针对性推荐：本课弱点命中时，它比「再练一遍本课」更对症——先说它 */}
+              {lessonWeakSpots.length > 0 && (
+                <Link
+                  to="/grammar/replay"
+                  className="primary-button"
+                  onClick={() =>
+                    appendGrammarEvent({
+                      kind: "grammar_replay_offered",
+                      lessonId: lesson.id,
+                      entryPoint: "settlement",
+                      weakSpotTags: lessonWeakSpots.map((spot) => spot.tag),
+                      ts: nowIso()
+                    })
+                  }
+                >
+                  <Target size={16} /> 练这个弱点 · {lessonWeakSpots[0].label}
+                </Link>
+              )}
               <Link
                 to={`/grammar/boost/${lesson.id}?tier=1&from=receipt`}
-                className="primary-button"
+                className={lessonWeakSpots.length > 0 ? "secondary-button" : "primary-button"}
                 onClick={() => {
                   if (!settlementBoostOfferedRef.current) {
                     settlementBoostOfferedRef.current = true;
@@ -3663,6 +3693,12 @@ export default function GrammarLessonPage() {
               >
                 <Flame size={16} /> 趁热再练 2 分钟
               </Link>
+              {/* 有针对性推荐时，「去挑战」降为文字链，避免三个按钮平级稀释 */}
+              {lessonWeakSpots.length > 0 && lesson.huntCaseIds.length > 0 && stage === "practice" ? (
+                <Link to="#" className="ghost-link" onClick={(event) => { event.preventDefault(); gotoStage("challenge"); }}>
+                  或者去挑战：找一找漏洞
+                </Link>
+              ) : null}
               {lesson.huntCaseIds.length > 0 && stage === "practice" ? (
                 <button type="button" className="secondary-button" onClick={() => gotoStage("challenge")}>
                   <Sparkles size={16} /> 去挑战：找一找漏洞

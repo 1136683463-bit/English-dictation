@@ -258,6 +258,15 @@ export interface PracticeWhyWrongFeedbackEvent {
   ts: string;
 }
 
+/** ① 复盘课被推荐（与 boost_offered 同口径，用于度量「针对性推荐」的采纳率）。 */
+export interface GrammarReplayOfferedEvent {
+  kind: "grammar_replay_offered";
+  lessonId: string;
+  entryPoint: "settlement" | "path";
+  weakSpotTags: string[];
+  ts: string;
+}
+
 /** C4（M3）复盘课完成：从 Top3 弱点拼出的即时提取练习。 */
 export interface GrammarReplayCompletedEvent {
   kind: "grammar_replay_completed";
@@ -607,6 +616,7 @@ export type GrammarTelemetryEvent =
   | PracticeWhyWrongResultEvent
   | PracticeWhyWrongFeedbackEvent
   | GrammarReplayCompletedEvent
+  | GrammarReplayOfferedEvent
   | LessonExitEvent
   | LessonSummaryAiResultEvent
   | DiaryWriteEvent

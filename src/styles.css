@@ -27690,6 +27690,13 @@ html {
   background: var(--accent-strong);
 }
 
+/* ② 练习成效：练完之后有没有再摔 */
+.weak-spots-effect {
+  margin-left: 4px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
 /* C4 闭环：弱点卡里的「最近练过」标记 */
 .weak-spots-replayed {
   display: inline-flex;

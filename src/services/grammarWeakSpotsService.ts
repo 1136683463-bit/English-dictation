@@ -73,6 +73,8 @@ interface TagStat {
   examples: string[];
   relatedCardIds: Set<string>;
   lastReplayedAt?: string;
+  /** 该罪名下的犯错事件时间戳（仅用于算「练后新增」，不含复盘事件本身）。 */
+  mistakeTimes: number[];
 }
 
 export interface WeakSpot {
@@ -88,6 +90,12 @@ export interface WeakSpot {
   relatedCardIds: string[];
   /** C4 闭环：最近一次复盘课练习该弱点的时间（用于显示「已练过」）。 */
   lastReplayedAt?: string;
+  /**
+   * ② 练习成效：上次复盘练习**之后**的新增犯错次数。
+   * 0 = 练完之后没再摔过（最好的信号）；undefined = 还没练过。
+   * 这是「练了有没有用」的直接答案——此前只有「最近练过：今天」，看不到成效。
+   */
+  mistakesSinceReplay?: number;
 }
 
 /** R06 确证治愈：某罪名下有卡首次跃迁 mastered，且此后未再犯——是「确证」，不是「遗忘」。 */
@@ -323,7 +331,7 @@ export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpo
   const statFor = (tag: GrammarErrorTag): TagStat => {
     let stat = stats.get(tag);
     if (!stat) {
-      stat = { score: 0, recentCount: 0, totalCount: 0, lastTs: 0, examples: [], relatedCardIds: new Set() };
+      stat = { score: 0, recentCount: 0, totalCount: 0, lastTs: 0, examples: [], relatedCardIds: new Set(), mistakeTimes: [] };
       stats.set(tag, stat);
     }
     return stat;
@@ -331,6 +339,8 @@ export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpo
   const bump = (tag: GrammarErrorTag, weight: number, ts: string, example?: string, cardId?: string) => {
     const stat = statFor(tag);
     const time = new Date(ts).getTime();
+    // 记下犯错时刻（正权重才算犯错；复盘负权重不是犯错，另行处理）
+    if (weight > 0 && Number.isFinite(time)) stat.mistakeTimes.push(time);
     stat.score += weight * decay(ts, now);
     stat.totalCount += 1;
     if (Number.isFinite(time) && now - time <= RECENT_WINDOW_MS) stat.recentCount += 1;
@@ -464,7 +474,15 @@ export const computeWeakSpotsReport = (data: AppData, now = Date.now()): WeakSpo
       totalCount: stat.totalCount,
       example: stat.examples[stat.examples.length - 1],
       relatedCardIds: [...stat.relatedCardIds],
-      ...(stat.lastReplayedAt ? { lastReplayedAt: stat.lastReplayedAt } : {})
+      ...(stat.lastReplayedAt ? { lastReplayedAt: stat.lastReplayedAt } : {}),
+      // ② 练习成效：练完之后又摔了几次（0 = 没再摔，最好的信号）
+      ...(stat.lastReplayedAt
+        ? {
+            mistakesSinceReplay: stat.mistakeTimes.filter(
+              (at) => at > new Date(stat.lastReplayedAt!).getTime()
+            ).length
+          }
+        : {})
     });
   }
 
