@@ -19762,12 +19762,51 @@ html {
   color: var(--secondary);
 }
 
+/* 答对/找对反馈的三层结构（2026-09-22）：
+   ① .lesson-feedback-lead  修正句——「答案就是这句」，最深最粗，一眼看到
+   ② .lesson-feedback-why   讲解——「为什么」，次级弱化
+   ③ 按钮
+   此前三层塞在同一 <p> + 横向 flex 里，被读成一长句流水且与按钮挤在一行。
+   有 lead 时整卡改纵向堆叠（旧场景无 lead，保持原横向布局不变）。 */
+.lesson-feedback.pass:has(.lesson-feedback-lead) {
+  display: grid;
+  justify-content: stretch;
+  gap: 8px;
+}
+
+.lesson-feedback-lead {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.lesson-feedback-lead .lesson-correction {
+  color: var(--ink);
+}
+
+.lesson-feedback-why {
+  margin: 0;
+  padding-left: 23px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
 .lesson-feedback.pass p {
   display: flex;
   align-items: center;
   gap: 7px;
   margin: 0;
   font-size: 13px;
+}
+
+/* 新版讲解段不用 flex 行内布局（承接上面的 p 规则会挤压换行） */
+.lesson-feedback.pass .lesson-feedback-why {
+  display: block;
 }
 
 .lesson-feedback.pass strong {
@@ -20481,6 +20520,16 @@ html {
   margin: 0;
   color: var(--ink-soft);
   font-size: 16px;
+}
+
+/* 纯指令态（如「句子变身：…要怎么变？」）：这是「要我做什么」，
+   与下方题干（.lesson-choose-sentence 17px 深墨）拉开层级——
+   否则两行同权重会被连读成一句话。字号降一级 + 弱色 + 下留间距。 */
+.lesson-quiz-prompt.is-instruction {
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .lesson-option-row {
@@ -21734,7 +21783,7 @@ html {
 
 .lesson-deepdive-body {
   display: grid;
-  gap: 8px;
+  gap: 10px;
   padding: 2px 14px 12px;
 }
 
@@ -21743,6 +21792,70 @@ html {
   color: var(--muted);
   font-size: 12.5px;
   line-height: 1.7;
+}
+
+/* 深挖卡段落块（2026-09-22）：每段独立成块——编号 + 间距，
+   让「四段说明」有节奏而不是一坨同权重文字。 */
+.deepdive-item {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+}
+
+.deepdive-item-no {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: var(--surface-muted);
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.deepdive-item-text {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* 语法对比项（There be / have 这类）：术语做左侧标签，正文本体化，侧注单独一行弱化 */
+.deepdive-contrast {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+}
+
+.deepdive-contrast-term {
+  grid-row: span 2;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--blue-soft);
+  color: var(--blue);
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  align-self: start;
+}
+
+.deepdive-contrast-main {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.deepdive-contrast-focus {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
 }
 
 /* ② 段 · spot 找茬题 */

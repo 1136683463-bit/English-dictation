@@ -14,6 +14,12 @@ import type { DiffToken, LessonContrast, LessonDeepDive, LessonGuidedStep, Lesso
 import { appendGrammarEvent, type LessonSection } from "../services/grammarTelemetry";
 import { nowIso } from "../services/storage";
 import { findLessonWeakSpots } from "../services/grammarReplayService";
+import { parseContrastParagraph } from "../services/grammarContrastParser";
+
+// 兼容再导出（2026-09-23）：`parseContrastParagraph` 的实现已移至
+// services/grammarContrastParser（页面文件只导出组件，Fast Refresh 才能正常工作）。
+// 这里保留再导出，供既有测试继续从本模块导入。
+export { parseContrastParagraph } from "../services/grammarContrastParser";
 import { computeWeakSpots } from "../services/grammarWeakSpotsService";
 import { buildGrammarReviewSession, GRAMMAR_REVIEW_SESSION_LIMIT } from "../services/grammarReviewService";
 import { speakTextWithLifecycle, stopSpeaking } from "../services/speechService";
@@ -354,7 +360,11 @@ function LessonContrastCard({
         <>
           <p className="lesson-contrast-wrong">
             {markedWrongNode}
-            {!mark && <span className="lesson-contrast-hole">缺了一块</span>}
+            {/* 2026-09-23 批五十一修：原文案「缺了一块」只对 52 张无标注卡里的 39 张成立——
+                另有 9 张是词的先后不对、2 张是「多了一个 not」、2 张是等长替换。
+                这枚标签是**揭示后**的诊断文案（不在答题前的猜句分支里），说错就是缺陷。
+                「整句都要看」对 52/52 都成立（放宽是安全的，缩小才必须正确）。 */}
+            {!mark && <span className="lesson-contrast-hole">整句都要看</span>}
             <span className="lesson-contrast-hole">← 有问题的是这句</span>
           </p>
           <div className="lesson-contrast-reveal">
@@ -532,9 +542,30 @@ function LessonDeepDiveCard({
       </button>
       {open && (
         <div className="lesson-deepdive-body">
-          {dive.paragraphs.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-          ))}
+          {/* 段落分层（2026-09-22）：paragraphs 是纯文本，此前四段同权重同间距、
+              读起来像一坨。现在每段独立成块（编号 + 卡片底 + 间距），
+              真正「X 说…：…——重点是…」的语法对比项额外套一层术语标签。
+              识别失败的段仍按普通块渲染，不丢内容。 */}
+          {dive.paragraphs.map((paragraph, index) => {
+            const contrast = parseContrastParagraph(paragraph);
+            if (contrast) {
+              return (
+                <div className="deepdive-contrast" key={index}>
+                  <span className="deepdive-contrast-term">{contrast.term}</span>
+                  <span className="deepdive-contrast-main">
+                    {contrast.body}
+                    {contrast.focus && <span className="deepdive-contrast-focus">重点是{contrast.focus}</span>}
+                  </span>
+                </div>
+              );
+            }
+            return (
+              <div className="deepdive-item" key={index}>
+                <span className="deepdive-item-no" aria-hidden="true">{index + 1}</span>
+                <p className="deepdive-item-text">{paragraph}</p>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
@@ -741,8 +772,12 @@ export default function GrammarLessonPage() {
   const [practiceOrder, setPracticeOrder] = useState<number[]>([]);
   const [dragChip, setDragChip] = useState<{ from: "bank" | "build"; index: number } | null>(null);
   const [insertAt, setInsertAt] = useState<number | null>(null);
-  /** 上次判题时的词块数（判题去抖：同长度不重复判；超载后变化则重判）。 */
-  const lastJudgedLengthRef = useRef<number | null>(null);
+  /**
+   * 上次判题的词块序列指纹（判题去抖）。
+   * 2026-09-22：原为「上次判题的块数」，但长度相同而内容不同的修正动作会被误挡
+   * （移除一块→换一块→摆回同长度 → 不判题）。改用序列指纹：只有完全相同的排列才跳过。
+   */
+  const lastJudgedSignatureRef = useRef<string | null>(null);
   /** 上次判错是否用了干扰项（「为什么错了」首错即出的条件）。 */
   const [lastAttemptUsedDistractor, setLastAttemptUsedDistractor] = useState(false);
   /** R3 对比题分布：练段常规题做完后、产出题前，插入「再看两组对错」位点（讲解段已放 2 组，此处再放 2 组）。 */
@@ -1172,7 +1207,7 @@ export default function GrammarLessonPage() {
       // 已有练习进度快照：直接切段，跳过 snapshotStage 覆盖
       setStage(to);
       setPracticeOrder([]);
-      lastJudgedLengthRef.current = null;
+      lastJudgedSignatureRef.current = null;
       if (to === "guided") resetGuided();
       if (to === "watch") setWatchStep(0);
       return;
@@ -1232,16 +1267,15 @@ export default function GrammarLessonPage() {
      * ① `practiceOrder`（拼装区已摆的词块）：
      *    从 practice 离开再回来时，第一题上已经摆着上次的答案——
      *    词块全被禁用、没有反馈、没有出口，看起来就是「页面卡住了」。
-     * ② `lastJudgedLengthRef`（判题去抖的「上次判过的块数」）：
+     * ② `lastJudgedSignatureRef`（判题去抖的序列指纹，2026-09-22 由「块数」改为「序列」）：
      *    guided 首题若是 arrange（arrange 占 guided 题量 50%），
-     *    其答案词数常与 practice 某题相同；带着上一段的值进来，
-     *    `next.length !== lastJudged` 不成立 → **摆满也永远不判题**，
-     *    既无反馈也无出口。实测 195 课里 82 课会撞到。
+     *    其答案序列常与 practice 某题相似；带着上一段的值进来，
+     *    指纹相同 → **摆满也永远不判题**，既无反馈也无出口。实测 195 课里 82 课会撞到。
      *
      * 进段时一并清掉最安全：段内自己的重置逻辑不变，跨段的脏状态不再泄漏。
      */
     setPracticeOrder([]);
-    lastJudgedLengthRef.current = null;
+    lastJudgedSignatureRef.current = null;
     if (next === "guided") resetGuided();
     if (next === "watch") setWatchStep(0);
 
@@ -1436,10 +1470,21 @@ export default function GrammarLessonPage() {
     // 改为「≥ 答案词数 且 块数与上次判题不同」：多摆/移除后到达新长度都会重新判题，
     // 用户在超载状态下也能拿到「不对」的反馈，不卡死。
     const answerLen = answerWordCount(step.answer);
-    const lastJudged = lastJudgedLengthRef.current;
-    if (next.length >= answerLen && next.length !== lastJudged) {
-      lastJudgedLengthRef.current = next.length;
-      judgeArrange(stage, next);
+    if (next.length >= answerLen) {
+      /**
+       * 2026-09-22 修复（用户实测「答错一次后不再判题/入口消失」）：
+       * 原判据是「长度 ≠ 上次判过的长度」，用于防同一次尝试内重复判题。
+       * 但它把「移除一块再换一块、长度不变」的真实修正动作也挡掉了——
+       * 用户摆 6 块判错 → 移除 1 块（去抖重置）→ 换一块再摆回 6 块
+       * → 长度与上次相同 → **不判题** → 没有新反馈，入口也不出现。
+       *
+       * 正确判据是**内容指纹**：同样的词块序列才跳过，换过块即便长度相同也要判。
+       */
+      const signature = next.join(",");
+      if (signature !== lastJudgedSignatureRef.current) {
+        lastJudgedSignatureRef.current = signature;
+        judgeArrange(stage, next);
+      }
     }
   };
 
@@ -1448,7 +1493,7 @@ export default function GrammarLessonPage() {
     const setOrder = stage === "guided" ? setGuidedOrder : setPracticeOrder;
     const next = order.filter((_, index) => index !== pos);
     // 用户主动移除 = 主动修正，重置判题去抖（否则移除后再摆回同长度不判题）
-    lastJudgedLengthRef.current = null;
+    lastJudgedSignatureRef.current = null;
     /**
      * 与橡皮擦同口径：**已通过的题不因移除一块而变成无反馈死结**（2026-09-21 修）。
      *
@@ -1478,7 +1523,7 @@ export default function GrammarLessonPage() {
     const adjusted = to > from ? to - 1 : to;
     next.splice(Math.max(0, Math.min(next.length, adjusted)), 0, moved);
     // 拖动 = 主动重排，判题去抖复位（与 arrangeRemove 同口径，2026-09-21 补）
-    lastJudgedLengthRef.current = null;
+    lastJudgedSignatureRef.current = null;
     setOrder(next);
     if (stage === "guided") {
       setGuidedFeedback("idle");
@@ -1505,8 +1550,8 @@ export default function GrammarLessonPage() {
      * 橡皮擦的两处修正（2026-09-21 修，P1）：
      *
      * ① 判题去抖复位：与 `arrangeRemove` 同口径。
-     *    此前不重置 `lastJudgedLengthRef`，于是「橡皮擦擦掉一块 → 再摆回同长度」时
-     *    `next.length === lastJudged` 成立、不再判题——用户摆出完整句子却拿不到任何反馈。
+     *    此前不重置去抖 ref，于是「橡皮擦擦掉一块 → 再摆回同长度」时
+     *    会被判为「同一排列」而不再判题——用户摆出完整句子却拿不到任何反馈。
      *
      * ② **已通过的题不能因为擦一块就变成无反馈死结**：
      *    此前无条件把反馈置 `idle`。若这题已经判过「通过」，
@@ -1516,7 +1561,7 @@ export default function GrammarLessonPage() {
      *    现在保住「通过」态：已过关的题，擦除只是允许回头修改，不撤销通关。
      *    （真想重做就擦完再摆满——摆满会重新判题并给出新结果。）
      */
-    lastJudgedLengthRef.current = null;
+    lastJudgedSignatureRef.current = null;
     const alreadyPassed = stage === "guided" ? guidedFeedback === "pass" : practiceFeedback === "pass";
     setOrder(order.slice(0, -1));
     if (alreadyPassed) return;
@@ -1583,7 +1628,7 @@ export default function GrammarLessonPage() {
   void guidedUndo;
 
   const guidedNext = () => {
-    lastJudgedLengthRef.current = null;
+    lastJudgedSignatureRef.current = null;
     if (guided.index + 1 >= guidedDisplayOrderMemo.length) {
       // R10 六段式：跟段之后进「忆」段（无 recall 数据的旧课直接进练段）
       gotoStage(lesson.recall ? "recall" : "practice");
@@ -2137,7 +2182,7 @@ export default function GrammarLessonPage() {
   }, [practiceDone, lesson.id]);
 
   const practiceNext = () => {
-    lastJudgedLengthRef.current = null;
+    lastJudgedSignatureRef.current = null;
     if (practiceIndex + 1 >= lesson.practice.length) {
       // R3 分布位点②：讲解段只放了 2 组对比，若本课对比题更多（≥3 组），
       // 练段末尾、产出题前先插入「再看两组对错」——分布到 ≥2 个位置，避免集中开头。
@@ -2324,7 +2369,14 @@ export default function GrammarLessonPage() {
           <button type="button" className="icon-button" onClick={undoLast} aria-label="移除最后一个词" title="移除最后一个词">
             <Eraser size={15} />
           </button>
-          <span className="lesson-token-tools-hint">点词块选上、再点取消；拖动词块可以调整位置</span>
+          <span className="lesson-token-tools-hint">
+            {/**
+              * 2026-09-23：加上「已摆 / 需摆」进度。
+              * 用户实测「摆了 4 块以为完事，实际答案 5 词 → 判题门槛不成立 → 什么都不说」——
+              * 明示进度让用户随时知道还差几块（不改变「摆满才判」的设计，只消除信息盲区）。
+              */}
+            {order.length} / {answerWordCount(step.answer)} 块 · 点词块选上、再点取消
+          </span>
         </div>
       </div>
     );
@@ -2905,7 +2957,12 @@ export default function GrammarLessonPage() {
               <span className="lesson-quiz-step">第 {guided.index + 1} / {guidedDisplayOrderMemo.length} 题</span>
               <span className="lesson-quiz-note">{guidedStep.kind === "spot" ? "找出藏起来的小问题，随便点" : "几乎不会错，放心点"}</span>
             </div>
-            <p className="lesson-quiz-prompt">{guidedStep.promptZh}</p>
+            {/* 变形/找错题的 promptZh 是「要我做什么」的纯指令（如「句子变身：…要怎么变？」），
+                与下方题干同权重时会被连读成一句。这里标记为指令态降一级；
+                choose 类题的 promptZh 本身是题目内容（「你想说：我很开心」），保持原样。 */}
+            <p className={`lesson-quiz-prompt${guidedStep.kind === "replace" ? " is-instruction" : ""}`}>
+              {guidedStep.promptZh}
+            </p>
 
             {guidedStep.kind === "spot" ? (
               <div className="lesson-spot" aria-label="找一找">
@@ -2962,12 +3019,18 @@ export default function GrammarLessonPage() {
 
             {guidedFeedback === "pass" && (
               <div className="lesson-feedback pass" aria-live="polite">
-                <p>
+                {/* 修正句与讲解拆开：前者是「答案就是这句」（具体、要一眼看到），
+                    后者是「为什么」（解释、次级）——同段落时会被读成一长句流水。 */}
+                <div className="lesson-feedback-lead">
                   <CheckCircle2 size={16} />
-                  {guidedStep.correctionZh ? <span> {guidedStep.correctionZh} </span> : " "}
-                  {guidedExplainResolved}
+                  {guidedStep.correctionZh ? (
+                    <span className="lesson-correction">{guidedStep.correctionZh}</span>
+                  ) : null}
                   {mistakeSaved && <span className="lesson-saved-hint">（刚才错过的句子已进入复习队列）</span>}
-                </p>
+                </div>
+                {guidedExplainResolved && (
+                  <p className="lesson-feedback-why">{guidedExplainResolved}</p>
+                )}
                 <button type="button" className="primary-button" onClick={guidedNext}>
                   {guided.index + 1 >= guidedDisplayOrderMemo.length ? "下面自己来" : "下一题"}
                 </button>
@@ -3190,9 +3253,15 @@ export default function GrammarLessonPage() {
             <div className="lesson-quiz-head">
               <span className="lesson-quiz-step">第 {practiceIndex + 1} / {lesson.practice.length} 题</span>
               <span className="lesson-quiz-note">
+                {/**
+                  * 2026-09-23 用户实测修复：此前只提示「有干扰项，只挑你要用的词」，
+                  * 但用户**不知道要挑几个**——摆 4 块以为完事，实际答案 5 词，
+                  * 判题门槛（>= 答案词数）不成立 → 不判题 → 无反馈 → AI 入口不出现。
+                  * 用户视角就是「答错了却什么都不说」。明示词数即可消除这个死结。
+                  */}
                 {practiceStep.distractors?.length
-                  ? "词块库里混进了干扰项——只挑你要用的词"
-                  : "这次没有干扰项，全靠自己"}
+                  ? `词块库混进了干扰项——挑 ${answerWordCount(practiceStep.answer)} 个词拼出你要说的句子`
+                  : `挑 ${answerWordCount(practiceStep.answer)} 个词拼出你要说的句子`}
               </span>
             </div>
             <p className="lesson-quiz-prompt">{practiceStep.promptZh}</p>
@@ -3223,7 +3292,13 @@ export default function GrammarLessonPage() {
                 <p className={practiceMisses >= 2 || lastAttemptUsedDistractor ? "lesson-hint-minor" : undefined}>
                   {practiceHint ?? "顺序还差一点。提示：先说「谁」，再说「怎么样 / 做什么」。"}
                 </p>
-                {(practiceMisses >= 1 || lastAttemptUsedDistractor) && (
+                {/**
+                   * 2026-09-22 修复：入口此前依赖 `practiceMisses >= 1 || lastAttemptUsedDistractor`，
+                   * 但这两个是**累积/瞬时**状态——用户「摆错 → 移除 → 重摆」后可能都不同时为真，
+                   * 于是答错态下入口消失（用户实测：「还是只出现了一次 AI 问答，然后又不出现了」）。
+                   * 判据改为**当前反馈态**：只要这一题正在显示答错反馈，就该能问为什么。
+                   */}
+                {practiceFeedback === "retry" && (
                   <>
                     {!whyWrongOpen && (
                       <div className="lesson-stage-actions center">
