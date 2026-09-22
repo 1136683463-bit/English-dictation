@@ -77,6 +77,31 @@ describe("grammarReplayService（C4 错题重练）", () => {
     }
   });
 
+  it("题目只呈现目标那一句（走查修复：案件多句会混成一屏）", () => {
+    // 全库 205/206 个案件是多句、平均 3.7 个错误——整段铺出来用户不知道「这句」是哪句
+    for (const tags of sampleTags) {
+      for (const item of buildReplayLesson(tags).items) {
+        const board = item.tokens ?? [];
+        // 词块数必须像「一句话」而不是「一整段」
+        expect(board.length, `${item.tag} 题面过长（${board.length} 块）`).toBeLessThanOrEqual(14);
+        // 题面里最多只有一个句末标点（即只有一个句子）
+        const sentenceEnds = board.filter((token) => /[.!?]$/.test(token.trim())).length;
+        expect(sentenceEnds, `${item.tag} 题面含多个句子：${board.join(" ")}`).toBeLessThanOrEqual(1);
+      }
+    }
+  });
+
+  it("目标错误必定出现在题面词块里（切句不得切掉答案）", () => {
+    for (const tags of sampleTags) {
+      for (const item of buildReplayLesson(tags).items) {
+        const onBoard = (item.tokens ?? []).some(
+          (token) => token.replace(/[.,!?;:]+$/, "").trim() === item.answer
+        );
+        expect(onBoard, `${item.tag} 切句后答案「${item.answer}」丢失：${item.tokens?.join(" ")}`).toBe(true);
+      }
+    }
+  });
+
   it("无弱点时不成课（宁可不给，不给残缺的课）", () => {
     expect(buildReplayLesson([]).isEmpty).toBe(true);
     expect(hasReplayLesson([])).toBe(false);

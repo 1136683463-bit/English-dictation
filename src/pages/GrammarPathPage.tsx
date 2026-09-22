@@ -6,7 +6,7 @@ import AdventureScene from "../components/AdventureScene";
 import PageHeader from "../components/PageHeader";
 import type { AdventureSceneId } from "../components/AdventureScene";
 import type { GrammarLesson } from "../types";
-import { backfillLessonCoreSentences, getLessonStageLock, repairLessonCoreSentenceTranslations, listGrammarLessons, summarizeLessonProgress, type LessonStageIndex } from "../services/lessonService";
+import { backfillLessonCoreSentences, getLessonStageLock, repairDiaryCardTags, repairLessonCoreSentenceTranslations, listGrammarLessons, summarizeLessonProgress, type LessonStageIndex } from "../services/lessonService";
 import { loadLessonResume } from "../services/grammarLessonResumeService";
 import { buildGrammarReviewSession, GRAMMAR_REVIEW_SESSION_LIMIT } from "../services/grammarReviewService";
 import { buildWeakSpotNarrative, computeWeakSpotsReport, dismissIntervention, findActiveIntervention, scheduleCardsForToday, type ActiveIntervention, type HealedSpot, type WeakSpot, type WeakSpotNarrative } from "../services/grammarWeakSpotsService";
@@ -94,8 +94,10 @@ function WeakSpotsCard({ spots, narrative, replayAvailable }: { spots: WeakSpot[
                   )}
                 </button>
               ) : (
-                <Link to="/grammar/review" className="weak-spots-cta">
-                  去复习
+                /* P1 走查修复：无关联卡时原先是「去复习」→ 但复习队列为空（0/0 张），
+                   用户点进去无事可做。改为直达能立刻练这个弱点的错题重练课。 */
+                <Link to="/grammar/replay" className="weak-spots-cta">
+                  练这个弱点
                 </Link>
               )}
             </li>
@@ -469,6 +471,20 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     title: "我能说「它的」",
     zh: "它的（its 不带小撇，跟 my／her 站同一个位置，贴在东西前面：The cat is in its box）+ 分清同一个音的两张脸——带撇的 It's 是「它是」（第 87 课）／不带撇的 its 是「它的」（今天）。判断只看一件事：能不能换成 it is。",
     samples: ["The cat is in its box.", "Its box is small.", "It's cold today."]
+  },
+  {
+    id: "can-do-m43",
+    afterLesson: 196,
+    title: "我能说「在一堆东西中间」",
+    zh: "混在一群里用 among（不点名，只说在这群里的中间：The cat is among the boxes）+ 分清和 between 的分工——两个、两头点名用 between（第 81 课：between Tom and Amy）／说不清哪几个、是一群，用 among。判断只看一件事：这几个东西你能一个个叫出来吗？",
+    samples: ["The cat is among the boxes.", "She is among her friends.", "I sit between Tom and Amy."]
+  },
+  {
+    id: "can-do-m44",
+    afterLesson: 197,
+    title: "我能说「有些词的昨天版要单独记」",
+    zh: "老朋友自己的昨天版（think 的昨天版是 thought、know 的是 knew——不加 -ed，要一个个记）+ 说「不」和问句里它们反而变回原样（I didn't think about it）。这一批还有 went／ate／saw／bought（第 10 课）。",
+    samples: ["I thought about it and knew the answer.", "She thought about it.", "I went to the park yesterday."]
   }
 ];
 
@@ -609,17 +625,25 @@ export default function GrammarPathPage() {
   useEffect(() => {
     if (backfillRan.current) return;
     backfillRan.current = true;
-    updateData((latest) => repairLessonCoreSentenceTranslations(backfillLessonCoreSentences(latest).data).data);
+    updateData(
+      (latest) =>
+        repairDiaryCardTags(
+          repairLessonCoreSentenceTranslations(backfillLessonCoreSentences(latest).data).data
+        ).data
+    );
   }, [updateData]);
 
   const summary = useMemo(() => summarizeLessonProgress(data), [data]);
   const nextId = summary.nextLesson?.id ?? null;
   const dueReviewCount = useMemo(() => buildGrammarReviewSession(data, GRAMMAR_REVIEW_SESSION_LIMIT).length, [data]);
   const weakSpotsReport = useMemo(() => computeWeakSpotsReport(data), [data]);
-  // C1：弱点叙事（纯本地模板，零 AI）
-  const weakSpotNarrative = useMemo(() => buildWeakSpotNarrative(data), [data]);
   // C2：主动介入（连续 2 次同错因 → 顶部推荐卡，48 小时冷却）
   const activeIntervention = useMemo(() => findActiveIntervention(data), [data]);
+  // C1：弱点叙事（纯本地模板，零 AI）——P2：介入卡在场时换视角，避免同屏重复同一句话
+  const weakSpotNarrative = useMemo(
+    () => buildWeakSpotNarrative(data, Date.now(), { interventionPresent: Boolean(activeIntervention) }),
+    [data, activeIntervention]
+  );
   // C4：弱点素材是否够拼一节复盘课（不够则不显示入口，不给残缺的课）
   const replayAvailable = useMemo(
     () => !buildReplayLesson(weakSpotsReport.active.map((spot) => spot.tag)).isEmpty,

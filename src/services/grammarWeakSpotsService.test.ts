@@ -259,6 +259,22 @@ describe("grammarWeakSpotsService（R08 弱点档案）", () => {
       expect(findZeroTermHits(narrative!.text)).toEqual([]);
     });
 
+    it("介入卡在场时叙事换视角（走查修复：同屏不重复同一句话）", () => {
+      appendGrammarEvent({ kind: "diary_issue_tag", entryId: "d1", issueIndex: 0, tag: "sv_agreement", ts: new Date().toISOString() });
+      const data = baseData({
+        diaryEntries: [makeDiaryEntry("d1", "sv_agreement", "I go", "I goes")]
+      });
+      const withCard = buildWeakSpotNarrative(data, Date.now(), { interventionPresent: true });
+      const withoutCard = buildWeakSpotNarrative(data, Date.now(), { interventionPresent: false });
+      expect(withCard).not.toBeNull();
+      expect(withoutCard).not.toBeNull();
+      // 无介入卡时用完整叙事；有介入卡时不再重复「总在同一个地方摔」
+      expect(withoutCard!.text).toContain("总在同一个地方摔");
+      expect(withCard!.text).not.toContain("总在同一个地方摔");
+      expect(withCard!.text).toContain("近 7 天");
+      expect(findZeroTermHits(withCard!.text)).toEqual([]);
+    });
+
     it("无数据时不叙事（不硬凑，宁可不说）", () => {
       expect(buildWeakSpotNarrative(baseData({}))).toBeNull();
     });

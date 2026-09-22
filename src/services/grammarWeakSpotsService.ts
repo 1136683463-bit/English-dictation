@@ -129,8 +129,10 @@ const NARRATIVE_WINDOW_DAYS = 7;
  */
 export const buildWeakSpotNarrative = (
   data: AppData,
-  now = Date.now()
+  now = Date.now(),
+  options?: { interventionPresent?: boolean }
 ): WeakSpotNarrative | null => {
+  const interventionPresent = options?.interventionPresent ?? false;
   const { active } = computeWeakSpotsReport(data, now);
   const top = active[0];
   if (!top || top.totalCount === 0) return null;
@@ -181,7 +183,11 @@ export const buildWeakSpotNarrative = (
           : "，和上上周持平";
 
   const where = lesson ? `第 ${lesson.number} 课就是讲这个的，去练一遍？` : "点下面的「排进今日复习」练一轮。";
-  const text = `你最近总在同一个地方摔：「${top.plain}」——近 7 天 ${top.recentCount} 次${trend}。${where}`;
+  // P2 走查修复：顶部介入卡（C2）已说过「你这两天都在这摔」，
+  // 叙事句若原样重复会出现同屏两遍。改为在介入卡存在时换一个视角（趋势 + 下一步）。
+  const text = interventionPresent
+    ? `这个弱点近 7 天出现 ${top.recentCount} 次${trend}。${where}`
+    : `你最近总在同一个地方摔：「${top.plain}」——近 7 天 ${top.recentCount} 次${trend}。${where}`;
   // 零术语红线优先于覆盖率：plain 文案里若带术语（如「可数名词单数」），宁可不出这句叙事
   if (findZeroTermHits(text).length > 0) return null;
   return { text, lessonId, lessonTitle, lessonNumber };

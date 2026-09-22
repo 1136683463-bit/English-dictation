@@ -26,7 +26,11 @@ export interface ReplayItem {
   plain: string;
   /** 题面提示（中文）。 */
   promptZh: string;
-  /** spot：含错的词块序列（点出那个错词）。 */
+  /**
+   * spot：**只含目标错误所在那一句**的词块序列（点出那个错词）。
+   * 案件本身是「一段含若干错误的英文」（全库 205/206 个案件是多句、平均 3.7 个错误），
+   * 直接把整个案件的词块铺出来会让用户面对一屏 20+ 词块、不知道题面说的「这句」是哪句。
+   */
   tokens?: string[];
   /** spot：藏了问题的词块（命中即通过）。 */
   wrongToken?: string;
@@ -56,6 +60,36 @@ export const REPLAY_MAX_ITEMS = 5;
 export const REPLAY_MIN_ITEMS = 3;
 
 const cleanToken = (token: string): string => token.replace(/[.,!?;:]+$/, "").trim();
+
+/**
+ * 把案件的词块序列按句切分，返回目标词块所在那一句的词块（含其在句内的新下标）。
+ * 切句依据：词块本身以句末标点结尾（案件 tokens 保留了标点）。
+ * 找不到（未标点结尾的脏数据）时退回整段——宁可给长题，不可给错题。
+ */
+const sentenceWindowForToken = (
+  tokens: string[],
+  tokenIndex: number
+): { tokens: string[]; index: number } => {
+  const boundaries: number[] = [];
+  tokens.forEach((token, at) => {
+    if (/[.!?]$/.test(token.trim())) boundaries.push(at);
+  });
+  if (boundaries.length === 0) return { tokens, index: tokenIndex };
+  let start = 0;
+  let end = tokens.length - 1;
+  for (const boundary of boundaries) {
+    if (boundary >= tokenIndex) { end = boundary; break; }
+  }
+  for (const boundary of boundaries) {
+    if (boundary >= end) break;
+    start = boundary + 1;
+  }
+  const window = tokens.slice(start, end + 1);
+  const index = tokenIndex - start;
+  // 兜底：窗口必须包含目标下标
+  if (index < 0 || index >= window.length) return { tokens, index: tokenIndex };
+  return { tokens: window, index };
+};
 
 /**
  * 可点的答案必须是真的英文词块——案件 explanation 的 correction 字段有时是
@@ -101,9 +135,10 @@ export const buildReplayLesson = (topTags: GrammarErrorTag[]): ReplayLesson => {
       if (!error) continue;
       // 讲解必须零术语（案件 explanation 是预写素材，仍要过红线）
       if (findZeroTermHits(error.explanation).length > 0) continue;
-      const wrongToken = huntCase.tokens[error.tokenIndex];
+      const window = sentenceWindowForToken(huntCase.tokens, error.tokenIndex);
+      const wrongToken = window.tokens[window.index];
       if (!wrongToken || cleanToken(wrongToken).length === 0) continue;
-      // 答案词 = 被点出的那个词块本身（tokens[tokenIndex] 必定是题面里的真实词块）。
+      // 答案词 = 被点出的那个词块本身（题面里的真实词块）。
       // 注意 correction 是「改成什么」的说明，常含中文（「去掉 so,」），不能当答案。
       if (!isEnglishToken(wrongToken)) continue;
       // 溯源：找到引用了该案件的课（用于「出自第 N 课」）
@@ -117,7 +152,7 @@ export const buildReplayLesson = (topTags: GrammarErrorTag[]): ReplayLesson => {
         tag,
         plain,
         promptZh: `这句里藏着一个「${plain}」的毛病——点出来。`,
-        tokens: huntCase.tokens,
+        tokens: window.tokens,
         wrongToken,
         correctionZh: `${error.original} → ${error.correction}`,
         answer: cleanToken(wrongToken),
@@ -149,7 +184,8 @@ export const buildReplayLesson = (topTags: GrammarErrorTag[]): ReplayLesson => {
         if (usedCases.has(huntCase.id)) continue;
         const error = huntCase.errors.find((entry) => entry.tag === tag);
         if (!error || findZeroTermHits(error.explanation).length > 0) continue;
-        const wrongToken = huntCase.tokens[error.tokenIndex];
+        const window2 = sentenceWindowForToken(huntCase.tokens, error.tokenIndex);
+        const wrongToken = window2.tokens[window2.index];
         if (!wrongToken || cleanToken(wrongToken).length === 0) continue;
         if (!isEnglishToken(wrongToken)) continue;
         const sourceLesson = (grammarLessons as Array<{ id: string; huntCaseIds?: string[] }>)
@@ -161,7 +197,7 @@ export const buildReplayLesson = (topTags: GrammarErrorTag[]): ReplayLesson => {
           tag,
           plain,
           promptZh: `再来一句——找出「${plain}」这处毛病。`,
-          tokens: huntCase.tokens,
+          tokens: window2.tokens,
           wrongToken,
           correctionZh: `${error.original} → ${error.correction}`,
           answer: cleanToken(wrongToken),
