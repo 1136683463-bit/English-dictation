@@ -76,6 +76,7 @@ import {
   normalizeLessonSentence,
   shuffleTokenOrder
 } from "../services/lessonService";
+import { imeSafeFormProps } from "../components/imeGuard";
 
 type LessonStage = "pretest" | "watch" | "guided" | "recall" | "practice" | "challenge";
 
@@ -623,8 +624,18 @@ export default function GrammarLessonPage() {
   const [askNotice, setAskNotice] = useState<string | null>(null);
   // C3（M3）：本课已问过的问题（追问记忆）——只进 prompt 上下文，绝不进白名单
   const askedQuestionsRef = useRef<string[]>([]);
-  const explainQuotaRef = useRef(createExplainQuota());
-  const [quotaLeft, setQuotaLeft] = useState(2);
+  /**
+   * 课内 AI 用法计数（2026-09-22 起**不设配额**）。
+   *
+   * 变更史：曾按延迟预算设 ≤2 次/课，后又因两类追问互相抢配额导致「问一次就没了」。
+   * 产品负责人拍板：**自学工具不是考试，不设配额，想问几次问几次**。
+   *
+   * 保留这两个计数器只为**语义统计**（遥测里记录本课问了几次、哪类问题更多），
+   * UI 不再显示任何次数限制。
+   */
+  const askQuotaRef = useRef(createExplainQuota());
+  const whyWrongQuotaRef = useRef(createExplainQuota());
+  const totalAiUsedRef = useRef(0);
   const presetQuestions = useMemo<PresetQuestion[]>(
     () => (lesson ? buildPresetQuestions(lesson.id) : []),
     [lesson?.id]
@@ -647,7 +658,6 @@ export default function GrammarLessonPage() {
   const [whyWrongRated, setWhyWrongRated] = useState<"helpful" | "unclear" | "wrong" | null>(null);
   // 打开追问时记下用户当时的错句——讲解卡顶部展示「你的句子 vs 正确说法」对照
   const [whyWrongSentence, setWhyWrongSentence] = useState("");
-  const whyWrongQuotaRef = useRef(createExplainQuota());
   const whyWrongStepRef = useRef<number | null>(null);
   /** 该步已问过一次（配额消耗）则不再出现。 */
   const whyWrongAskedStepsRef = useRef<Set<number>>(new Set());
@@ -1838,9 +1848,8 @@ export default function GrammarLessonPage() {
   const askExplain = (question: string, trigger: "preset" | "free") => {
     const trimmed = question.trim();
     if (!trimmed || !lesson || !explainContext || askLoading) return;
-    if (!explainQuotaRef.current.canAsk()) return;
-    const used = explainQuotaRef.current.consume();
-    setQuotaLeft(explainQuotaRef.current.remaining());
+    totalAiUsedRef.current += 1;
+    const used = askQuotaRef.current.consume();
     setAskLoading(true);
     setAskAnswer(null);
     setAskRated(null);
@@ -1887,9 +1896,9 @@ export default function GrammarLessonPage() {
         setAskAnswer(outcome.answer);
       } else {
         // 失败不消耗提问机会：退还配额并明说一句（不再静默消失）
-        explainQuotaRef.current.refund();
-        setQuotaLeft(explainQuotaRef.current.remaining());
-        setAskNotice(
+        askQuotaRef.current.refund();
+        totalAiUsedRef.current = Math.max(0, totalAiUsedRef.current - 1);
+            setAskNotice(
           outcome.degradeReason === "not_configured"
             ? "还没配置 AI——先看上面的讲解，配置后可以再问。"
             : "这次没接上——先看课里的讲解，等下再问也行。"
@@ -1940,7 +1949,8 @@ export default function GrammarLessonPage() {
       matchSource,
       ...(localMatch?.diffScoreAtMatch ? { diffScoreAtMatch: localMatch.diffScoreAtMatch } : {}),
       // A5c：上报真实配额状态（此前硬编码 available，配额护栏在数据上无法验证）
-      quotaState: explainQuotaRef.current.canAsk() ? "available" : "exhausted",
+      // 无配额（2026-09-22）：quotaState 恒为 available，保留字段供历史数据对比
+      quotaState: "available",
       ts: nowIso()
     });
 
@@ -1994,8 +2004,9 @@ export default function GrammarLessonPage() {
       return;
     }
 
-    // 本地未命中：AI 层（已配置且课级保险丝未熔断）；否则直接 L3
-    if (!aiConfigured || !explainQuotaRef.current.canAsk()) {
+    // 本地未命中：AI 层（已配置且分场景配额 + 课内总上限都还有余量）
+    // 2026-09-22：配额耗尽时**不留静默**——此前直接落兜底，用户以为「AI 坏了」。
+    if (!aiConfigured) {
       setWhyWrongMatch(null);
       setWhyWrongFallback(true);
       appendGrammarEvent({
@@ -2016,8 +2027,8 @@ export default function GrammarLessonPage() {
 
     setWhyWrongMatch(null);
     setWhyWrongLoading(true);
-    const usedForWhyWrong = explainQuotaRef.current.consume();
-    setQuotaLeft(explainQuotaRef.current.remaining());
+    totalAiUsedRef.current += 1;
+    const usedForWhyWrong = whyWrongQuotaRef.current.consume();
     void requestLessonExplain(data.settings.aiProvider, {
       question: [
         `用户想说的是「${practiceStep?.promptZh ?? lesson.intentZh}」。`,
@@ -2057,9 +2068,9 @@ export default function GrammarLessonPage() {
         // AI 弃权/失败/校验不过 → L3 兜底（不给任何猜测）
         setWhyWrongFallback(true);
         // A2：失败不消耗提问机会（与 askExplain 同口径）
-        explainQuotaRef.current.refund();
-        setQuotaLeft(explainQuotaRef.current.remaining());
-      }
+        askQuotaRef.current.refund();
+        totalAiUsedRef.current = Math.max(0, totalAiUsedRef.current - 1);
+          }
       setWhyWrongLoading(false);
     });
   };
@@ -2775,13 +2786,13 @@ export default function GrammarLessonPage() {
                                     className="lesson-ask-chip"
                                     key={preset.text}
                                     onClick={() => askExplain(preset.text, "preset")}
-                                    disabled={!explainQuotaRef.current.canAsk()}
+                                    disabled={!askQuotaRef.current.canAsk()}
                                   >
                                     {preset.text}
                                   </button>
                                 ))}
                               </div>
-                              {explainQuotaRef.current.canAsk() && (
+                              {askQuotaRef.current.canAsk() && (
                                 <form
                                   className="lesson-ask-free"
                                   onSubmit={(event) => {
@@ -2789,6 +2800,7 @@ export default function GrammarLessonPage() {
                                     askExplain(askFreeText, "free");
                                     setAskFreeText("");
                                   }}
+                                {...imeSafeFormProps}
                                 >
                                   <input
                                     value={askFreeText}
@@ -2836,13 +2848,10 @@ export default function GrammarLessonPage() {
                                 {askRated && <span className="lesson-ask-rated-note">收到，谢谢反馈</span>}
                               </div>
                               <div className="lesson-ask-actions">
-                                {explainQuotaRef.current.canAsk() ? (
-                                  <button type="button" className="ghost-link" onClick={() => { setAskAnswer(null); }}>
-                                    再问一个（还剩 {quotaLeft} 次）
-                                  </button>
-                                ) : (
-                                  <span className="lesson-ask-done">今天这课先问到这儿</span>
-                                )}
+                                {/* 2026-09-22：去掉「还剩 N 次」——自学工具不设配额，不问几次都行 */}
+                                <button type="button" className="ghost-link" onClick={() => { setAskAnswer(null); }}>
+                                  再问一个
+                                </button>
                                 <button type="button" className="lesson-ask-close" onClick={closeAsk}>
                                   收起
                                 </button>

@@ -2945,3 +2945,210 @@ cloze 传点选的词、rebuild 传拼出的顺序、free_type 传写下的整�
 - 新增 8 项画像测试（覆盖面 / isEmpty / 趋势标签与口径 / 全量不截断 / 不列未出现的罪名 / 零术语守门 / 状态排序）
 - **全量 892/892 通过**、`tsc` 零错误、`npx vite build` 通过
 - 浏览器实测：画像页渲染正确、趋势标签正确、两处结论一致、无 NaN
+
+---
+
+## 2026-09-22 · 第 9 轮：跨环境差异验证（桌面端 vs 浏览器、输入法、存储配额）
+
+前八轮所有结论都建立在 **jsdom** 之上。这轮把「环境本身」当成被测对象：
+同一段代码在 Tauri 桌面（WebKit/WKWebView）与 Chrome/Edge（Chromium）上
+是否真的表现一致。三个并行 agent 分别做 Web API 兼容、存储持久化、输入法键盘，
+我自己查最高风险项（数据出口与配额口径）。
+
+**结果：这是九轮里 P0 密度最高的一轮，共 9 个 P0。**
+
+### 一、最重要的发现：配额口径在 WebKit 上按「字节」，汉字让整串翻倍
+
+前几轮把「约 30 个月撞墙」算在 jsdom 的 5,000,000 **字符** 上。
+真机实测（Playwright + 真实 Chromium/WebKit，每次写 100,000 字符直到 `QuotaExceededError`）：
+
+| 填充内容 | Chromium | WebKit（= macOS 桌面端） |
+|---|---|---|
+| `a`（纯 ASCII） | 5,200,000 | 5,200,000 |
+| `é` U+00E9（Latin-1 内） | — | 5,200,000 |
+| 99,999 个 `a` + **1 个** `中` | — | **2,600,000** |
+| 1% 汉字 + 99% ASCII | — | **2,600,000** |
+| `中`（纯汉字） | 5,200,000 | **2,600,000** |
+
+结论：WebKit 沿用其 16-bit 字符串规则——**只要出现一个 U+00FF 以上的字符，
+整串按 2 字节/字符计费**。而本应用的数据里必然含汉字（课程标题、中文笔记、释义）。
+
+**这条缺陷的致命处不是「容量减半」，而是「唯一的提前警告从不出现」**：
+`LOCAL_STORAGE_SOFT_LIMIT_KB = 4096` 参与比较时被当作 4,194,304 **字符**，
+按字节算等于 8,388,608 字节——**阈值比真实容量还大**。
+用户在桌面端会从「一切正常」直接跳到「写入失败」。
+
+**修复**：新增 `storageCostBytes()`（返回两个内核里更紧的那个账单）+
+`STORAGE_SOFT_LIMIT_BYTES = 4MB`，`DataDiagnosis.sizeKb` 改名 `storageCostKb`。
+方向是刻意选的：对 Chromium 上的含中文数据高估一倍（会更早提醒），
+对 WebKit 精确——**宁可早提醒，也不要在写不下的那一刻才第一次知道**。
+
+### 二、用户数据会被静默清空（P0，agent 无桩真实复现）
+
+`loadData` 里 `writeRaw(migrated)` 在 try 内，它抛出的 `QuotaExceededError`
+被语义为「**本地数据损坏（无法解析）**」的 catch 接住。于是：
+
+- 一次纯粹的「写不下」被当成「数据坏了」→ 返回初始数据；
+- catch 分支还 `writeRaw(initial)`，而 85KB 的初始数据**装得下**那块剩余空间
+  → 把磁盘上 2.7MB 的真实进度**原地覆盖**；
+- `diagnoseStoredData` 读的是刚写回去的内容 → 诊断报 **`ok = true`**。
+
+**用户视角：照常打开应用，两年进度归零，无提示，不可恢复。**
+
+agent 用「真实把配额灌满」的方式复现（非打桩）：
+20000 条复习记录 → `cards=0→115`、`reviews=20000→0`、磁盘 2764KB→85KB、`ok=true`。
+
+**修复**：把「读/解析失败」与「写回失败」彻底分开。
+解析失败才重置；写回失败保留已解析出来的真实数据，失败信号留给 `commitData` 的提示通道
+（**写不下 ≠ 数据没了**——后者才是不可逆的）。
+
+### 三、三种启动白屏（P0）
+
+`localStorage` 不存在 / `getItem` 抛 SecurityError / 全新用户 + `setItem` 被拒，
+三条路径都让 `loadData` 抛 → `AppContext` 的 `useState` 初始化抛 → **无 ErrorBoundary → 白屏**。
+讽刺的是 `diagnoseStoredData` 早已写好「检查隐私模式或站点权限设置」的文案，用户到不了能看见它的页面。
+
+**修复**：三处都改为可降级——进得来界面，才有机会看提示、导出备份自救。
+
+### 四、输入法（IME）：中文用户的高频误伤（4 个 P0）
+
+agent 用 **CDP `Input.imeSetComposition` 造真实组词态**（不是伪造 `isComposing`）复现：
+
+| 场景 | 后果 |
+|---|---|
+| 拼写页组词态回车 | 半截 `pict` 被提交、记为低分复习、卡片进错词书 |
+| 复习页数字键 | **输入法候选窗正是 1-4 选词** → 按一下就把卡评走、草稿丢失 |
+| 7 处 form 隐式提交 | 分组名存成 `hexin100`（用户要「核心100」）、标签存成 `ceshi`（要「测试」） |
+| 归一化口径不一 | 同一个 `today。` 在复习页 100 分、在拼写页判错 |
+
+一个很说明问题的细节：复习页同段监听里的 Space **早就写了** `event.target === document.body`
+——「不在输入框里抢键」是本项目已知约束，数字键是漏了那一半。
+
+**修复**：新增 `components/imeGuard.ts`（`isImeComposing` / `isSubmitKey` /
+`blockImeSubmit` / `imeSafeFormProps` / `isTypingTarget`）。
+form 型提交点的关键认识：**原生 `submit` 事件上根本没有 `isComposing`**，
+等它触发时组词信息已经丢了，所以必须在 keydown 层 `preventDefault`；
+`imeSafeFormProps` 挂在 form 上（keydown 会冒泡），一处覆盖表单内所有输入框。
+`normalizeSpelling` 补上 `foldFullWidth`，与句级判分对齐。
+
+### 五、数据出口的失败被谎报为成功（P0）
+
+9 处调用 `downloadTextFile`，全部是导出——**用户数据唯一的出口**。而它：
+① 没有 try/catch、没有返回值，`URL.createObjectURL` 失败时异常抛到 onClick；
+② `link.click()` 后**同步** `revokeObjectURL`，没给下载器留任何接管时间。
+
+调用方**照样**显示「已导出 JSON 备份」——用户以为备份好了，其实文件不存在。
+对一个「唯一出口」来说这是最坏的一种失败：静默且被谎报为成功。
+
+**修复**：`downloadTextFile` 返回 boolean + 延迟释放 blob URL；
+9 个调用点全部按返回值给真实反馈（含设置页 5 个按钮、语法页、库页）。
+
+### 六、一个被证伪的假设（值得记录）
+
+我最初的怀疑是「Tauri 桌面端 `<a download>` 静默失败」——因为项目没装
+`plugin-fs` / `plugin-dialog`，capabilities 也只授权了 `core:default` 和 `http:default`。
+
+**核对 wry 源码后推翻**：`WebViewAttributes::default()` 里
+`download_started_handler: Some(Box::new(|_, _| true))`（`wry-0.55.1/src/lib.rs:830`），
+即**默认放行下载**；`tauri-runtime-wry` 只在应用注册 `on_download` 时才注入自己的处理器
+（`tauri-runtime-wry-2.11.4/src/lib.rs:5010`），本应用 `src-tauri/src/lib.rs` 未注册，因此走默认值。
+→ **桌面上导出是正常工作的**。第三个 agent 独立得出同一结论。
+
+记录这条是因为：**如果不去读依赖的源码，这个「看起来很像」的假设会导致一次错误的修复**
+（去装 fs 插件、改 Rust、重新打包），而真正的问题（无失败反馈）被留在原地。
+
+### 七、附带修掉的相邻问题
+
+- **错词本复制**：`await navigator.clipboard.writeText()` 裸调用，非安全上下文下
+  `navigator.clipboard` **根本不存在**（抛 TypeError），失败时**成功对勾照样显示**。
+  新增 `services/clipboardService.ts`（`writeToClipboard` 返回 boolean + `execCommand` 回退）。
+- **拼写页音效吃掉作答**（P0）：`new AudioContextClass()` 会抛
+  （WebKit `InvalidStateError: hardware contexts`），异常从 `submitAnswer` 逃出、
+  **打断在 `setData` 之前** → 作答不落盘，用户看到「点了提交没反应」。
+  同一根因还让 `speechService` 产生未处理的 promise 拒绝（默认 `autoSpeakInSpelling: true`，
+  一进拼写页就中）。两处都改为静音降级。
+- **`h1` 的「已知问题」已自然解决**：`comparison` 罪名按钮原先没有任何案件使用
+  （点了必然答非所问），内容扩充后已有 10+ 处使用 → 该断言从「记录缺口」改为**守门不回归**。
+- **`lg4` 时间炸弹守卫的误报**：它把 `env2d-timezone.test.ts` 判为危险，
+  但该文件所有时间敏感调用都**显式注入** `now`/`instant`，写死的日期是确定性夹具。
+  加了带理由的 `REVIEWED_SAFE` 例外表（并对「例外文件是否还存在」也加了断言）。
+
+### 八、跨环境验证的方法论收获
+
+1. **jsdom 缺失的 API 会让整段路径零覆盖**，而且失败是**静默**的。
+   实测 jsdom 没有：`URL.createObjectURL`、`navigator.clipboard`、`matchMedia`、
+   `ResizeObserver`、`speechSynthesis`、`AudioContext`、`structuredClone`。
+   本轮发现的「导出路径从未被测过」就是这么来的。
+2. **桩可能是空操作**：`vi.spyOn(window.localStorage, "setItem")` 在 jsdom 下
+   `mock.calls.length === 0`、值照常写入（还往存储里塞了个 `"setItem"` 垃圾键）。
+   前几轮两条「配额满」断言靠巧合通过——这解释了为什么第二节的 P0 此前没被发现。
+   只有改 `Storage.prototype` 才有效。
+3. **真机优先级**：agent 用 Playwright 真实内核跑探针，比在 jsdom 里推演可信得多。
+   本轮最有价值的三条结论（配额双重口径、IME 组词态、AudioContext 抛错）全部来自真机。
+4. **读依赖的源码**：第六节那个证伪，只有读 wry 源码才能做到。
+
+### 九、验证
+
+| 项 | 结果 |
+|---|---|
+| 全量测试 | **226 文件 / 2445 测试全绿**，连跑 **4 次**稳定 |
+| `tsc --noEmit` | 退出码 0 |
+| `npm run build` | 通过（3.07s） |
+| 真机复核 | 应用在真实 WebKit 下正常挂载（无白屏）；配额探针给出上表数据 |
+
+新增/更新测试文件：`env2a`（配额口径）、`env2b`（存储不可用 + 无桩真实复现）、
+`env2c`（多窗口）、`env2d`（时区）、`env2e`（写盘时机）、`env3a/b/c`（IME / 归一化 / 输入环境）、
+`env4a`（导出与剪贴板）、`env4b`（剪贴板）、`env4c`（缺失 API）。
+本轮另**删除** `env1-export-download.test.ts`——它与 `env4a` 重复，且断言的是修复前的行为。
+
+### 十、未修（记录为已知缺口，需要产品决策）
+
+- **多窗口无任何同步**：全仓无 `storage` 事件监听、无 BroadcastChannel，
+  `AppData` 无修订号，`writeRaw` 是整份覆盖写。实测一个窗口导入 50 张卡后，
+  另一窗口只改一个设置就把它们整份抹掉。Tauri 多窗口与浏览器多标签都会遇到。
+  修法涉及数据模型（修订号/合并策略），不是一处补丁。
+- **两处 UTC/本地时区混用**：`GrammarDiaryPage.tsx:80` 抽题种子（东八区每天 00:00–08:00
+  与「今日」错位 8 小时）、`AdventurePlayPage.tsx:512` 会话去重键。
+  主体口径（连胜/日记归属/错词本）都是本地时区，正确。
+- **移动端输入体验**：`inputMode` / `enterKeyHint` / `lang="en"` 全站零处——
+  触屏上英文输入框弹中文键盘、回车键显示「换行」。
+- **`freedBytes` 命名与口径不符**：`reviewArchiveService` 算的是**字符差**却叫 Bytes，
+  中文数据下恒定偏小（`.length` 只数 1，UTF-8 是 3）。
+
+---
+
+## 2026-09-22 · 去掉 AI 提问配额（产品负责人拍板）
+
+**用户实测反馈**：「AI 的回答只出现了一次，我用了一次以后，后面的没有出现过。」
+
+### 根因
+
+M1 时我把「问一句」（讲解段提问）与「答错追问」（练习段提问）合并成**同一个 ≤2 配额**（当时的目的是修「两套计数器叠加最坏 40s」的延迟问题）。但合并过头了——两类追问互相抢配额：
+
+- 讲解段问 1 次（用掉 1）
+- 练习段答错问 1 次（用掉第 2）
+- **之后整节课入口还在但点了没反应**（`!canAsk()` 时静默 return）
+
+### 决策与实现
+
+**产品负责人拍板：这是自学工具，不是考试——不设配额，想问几次问几次。**
+
+- `EXPLAIN_QUOTA_PER_LESSON` 改为 `Number.POSITIVE_INFINITY`
+- `createExplainQuota().canAsk()` 恒为真；保留 `consume()`/`refund()` 作为**语义计数**（遥测记录本课问了几次、哪类问题更多）
+- `usedCount()` 替代 `remaining()`（无配额后没有「剩余」概念）
+- 清掉 UI 里的配额痕迹：「再问一个（还剩 N 次）」→「再问一个」；移除「次数用完」提示与 `quotaLeft` 状态
+- `quotaState` 恒为 `"available"`（保留字段供历史数据对比）
+
+### 为什么这个决定是对的
+
+原先的 ≤2 是**按延迟预算反推**的技术约束（单课 10 分钟贴顶），但：
+1. 它是**手段**（控制单课时长）而不是**目的**——不该让用户为技术指标买单
+2. 实际使用时，用户在自己需要的时候提问，不会滥用；且 AI 有弃权机制（答不出就说「这一课没讲到这个」）
+3. 「还剩 N 次」的计数本身就在暗示「这是资源，省着用」——与「吃透语法规则」的产品目标相悖
+
+### 验证
+
+- 测试更新为无配额契约（20 次连问仍可问 / 计数准确 / 退还回退），**44/44 通过**
+- **全量 895/895 通过**、`tsc` 零错误、`npx vite build` 通过
+- 浏览器实测：**连续两次提问都成功**（修复前第二次点不动），来源上屏正常（「来自：这一课的第 4 组对比」），无配额文案残留
+- 实测中第二次 AI 回答为「这一课没讲到这个，我不瞎猜」——**弃权机制正常工作**（该问题超出本课素材范围）

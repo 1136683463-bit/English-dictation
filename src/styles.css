@@ -2328,6 +2328,14 @@ button:disabled {
   -webkit-line-clamp: 2;
 }
 
+/* R09：复制失败反馈（此前失败也显示成功对勾，用户粘贴出来是空的）。 */
+.mistake-generation-copy-error {
+  margin: 6px 0 0;
+  color: var(--danger, #b4453a);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
 .mistake-generation-content {
   margin: 0;
   white-space: pre-wrap;
@@ -18063,6 +18071,14 @@ html {
   font-size: 13px;
 }
 
+/* R09：导出失败反馈（此前失败也翻成「已导出」）。 */
+.can-do-note {
+  margin: 8px 0 0;
+  color: var(--danger, #b4453a);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
 .can-do-samples {
   display: flex;
   flex-wrap: wrap;
@@ -21791,6 +21807,25 @@ html {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+/* 前测结果页的题目标题：这是每张卡的「主语」，必须一眼可辨。
+   原先复用 .lesson-summary-grammar（12px 蓝字，为小结标签设计）层级过弱，
+   在逐题解析列表里扫视时分不出题与题的边界。 */
+.lesson-pretest-review .lesson-summary-grammar {
+  color: var(--ink);
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* 原句：前测第二类题的核心信息（用户要判断的就是这句），加大加重让层级高于正文 */
+.lesson-pretest-review .lesson-summary-rule {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
 }
 
 .lesson-verdict-chip {
@@ -28034,6 +28069,17 @@ html {
   color: var(--muted);
   font-size: 12.5px;
   line-height: 1.5;
+}
+
+/* 配额用尽说明（2026-09-22）：不再静默落兜底 */
+.lesson-whywrong-exhausted {
+  margin: 0 0 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #fff7e6;
+  color: var(--amber-ink);
+  font-size: 12.5px;
+  line-height: 1.55;
 }
 
 /* A2（M1）：AI 失败时的可见话术（此前静默消失） */

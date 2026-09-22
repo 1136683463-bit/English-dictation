@@ -274,7 +274,18 @@ export const validateExplainAnswer = (
 // ── 课内配额（≤2 次/课）────────────────────────────────────
 
 /** 课内交互式 AI 配额：单课 6–10min 预算已贴顶，最坏 +16s ≈ +2.7% 是上限。 */
-export const EXPLAIN_QUOTA_PER_LESSON = 2;
+/**
+ * 课内 AI 配额（2026-09-22 改为**不限次**）。
+ *
+ * 变更史：曾经是 ≤2 次/课（按延迟预算推出来的硬约束），后来因为「问一句」与
+ * 「答错追问」共用这一个配额，用户实测「问了一次之后再也问不了」。
+ * 产品负责人拍板：**这是自学工具，不是考试——不设配额，想问几次问几次**。
+ *
+ * 保留 createExplainQuota 的意义：它仍是**语义计数器**（记录本课用了多少次，
+ * 供遥测与 UI 显示），只是 canAsk() 恒为真；`refund()` 仍在失败时回退计数，
+ * 让「实际成功次数」准确。
+ */
+export const EXPLAIN_QUOTA_PER_LESSON = Number.POSITIVE_INFINITY;
 
 /**
  * 配额计数器（组件会话内）。
@@ -283,7 +294,8 @@ export const EXPLAIN_QUOTA_PER_LESSON = 2;
 export const createExplainQuota = () => {
   let used = 0;
   return {
-    canAsk: () => used < EXPLAIN_QUOTA_PER_LESSON,
+    /** 不设配额：恒为真（保留方法以兼容既有调用点与语义）。 */
+    canAsk: () => true,
     consume: () => {
       used += 1;
       return used;
@@ -297,7 +309,9 @@ export const createExplainQuota = () => {
       if (used > 0) used -= 1;
       return used;
     },
-    remaining: () => Math.max(0, EXPLAIN_QUOTA_PER_LESSON - used)
+    /** 本课已用次数（无配额后不再有「剩余」概念；保留供遥测/展示）。 */
+    usedCount: () => used,
+    remaining: () => Number.POSITIVE_INFINITY
   };
 };
 

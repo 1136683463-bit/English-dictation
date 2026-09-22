@@ -138,16 +138,15 @@ describe("grammarExplainService · 三道校验", () => {
 });
 
 describe("grammarExplainService · 配额与缓存键", () => {
-  it("配额：默认可问 2 次，用完即止", () => {
+  it("计数语义：记录本课问了几次（2026-09-22 起无配额上限）", () => {
     const quota = createExplainQuota();
     expect(quota.canAsk()).toBe(true);
-    expect(quota.remaining()).toBe(2);
+    expect(quota.usedCount()).toBe(0);
     quota.consume();
+    quota.consume();
+    expect(quota.usedCount()).toBe(2);
+    // 关键契约变化：不再「用完即止」
     expect(quota.canAsk()).toBe(true);
-    expect(quota.remaining()).toBe(1);
-    quota.consume();
-    expect(quota.canAsk()).toBe(false);
-    expect(quota.remaining()).toBe(0);
   });
 
   it("缓存键：同课同锚同问同模型命中；问题归一化后等价命中", () => {
@@ -387,19 +386,42 @@ describe("M1 · 解锁存量：贴题回答应能过检（2026-09-21 先红后�
   });
 });
 
-describe("M1 · 配额退还与结构解释器（2026-09-21）", () => {
-  it("配额失败可退还：两次失败后仍能提问（此前失败即永久消耗）", () => {
+describe("无配额（2026-09-22 产品负责人拍板：自学工具不设限）", () => {
+  it("想连续问多少次都行（曾经 ≤2，导致「问一次就没了」）", () => {
     const quota = createExplainQuota();
-    expect(quota.canAsk()).toBe(true);
+    for (let i = 0; i < 20; i += 1) {
+      expect(quota.canAsk(), `第 ${i + 1} 次应仍可问`).toBe(true);
+      quota.consume();
+    }
+  });
+
+  it("计数仍准确（供遥测统计本课问了几次）", () => {
+    const quota = createExplainQuota();
     quota.consume();
     quota.consume();
-    expect(quota.canAsk()).toBe(false); // 两次用尽
+    expect(quota.usedCount()).toBe(2);
+  });
+
+  it("失败退还后计数回退（实际成功次数才准确）", () => {
+    const quota = createExplainQuota();
+    quota.consume();
     quota.refund();
-    expect(quota.canAsk()).toBe(true); // 失败退还后恢复可问
-    expect(quota.remaining()).toBe(1);
+    expect(quota.usedCount()).toBe(0);
+  });
+});
+
+describe("M1 · 配额退还与结构解释器（2026-09-21）", () => {
+  it("失败退还计数：实际成功次数才准确（不再影响可问性）", () => {
+    const quota = createExplainQuota();
+    quota.consume();
+    quota.consume();
+    expect(quota.usedCount()).toBe(2);
+    quota.refund();
+    expect(quota.usedCount()).toBe(1);
     quota.refund();
     quota.refund(); // 多次退还不得变成负数
-    expect(quota.remaining()).toBe(2);
+    expect(quota.usedCount()).toBe(0);
+    expect(quota.canAsk()).toBe(true);
   });
 
   it("换序形结构解释器给出确定性正解（AI 讲错时的兜底依据）", () => {
