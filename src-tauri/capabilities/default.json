@@ -11,6 +11,8 @@
         { "url": "https://*:*" },
         { "url": "http://*:*" }
       ]
-    }
+    },
+    "sql:default",
+    "sql:allow-execute"
   ]
 }
