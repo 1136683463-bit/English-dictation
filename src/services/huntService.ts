@@ -4,6 +4,7 @@ import type {
   GrammarLesson,
   HuntAttempt,
   HuntCase,
+  HuntEditOp,
   HuntError,
   HuntResult
 } from "../types";
@@ -12,19 +13,28 @@ import { grammarLessons } from "../data/grammarLessons";
 import { addSentence } from "./cardService";
 import { nowIso, uid } from "./storage";
 
-/** 罪名的正式中文名，用于罪名按钮与结算展示。 */
+/**
+ * 罪名的短名（显示在罪名按钮、结算卡、错词本、日记批改的 tag 处）。
+ *
+ * 2026-09-22 零术语清理：此前 11 个短名里有 5 个含术语——
+ *   时态变形（时态）／单复数（复数）／介词（介词）／语序（语序）／比较级（比较级）。
+ * 它们**直接渲染给用户**（罪名按钮的粗体行、复盘课的标签、日记批改的标签），
+ * 且被写进 `grammarNote` 持久化字符串——全库 776 处讲解里有 376 处因此命中术语红线（48.5%）。
+ * 现在改成同义的大白话（与 `GRAMMAR_ERROR_TAG_PLAIN` 同一口径，但更短，适合当标签用）。
+ * 内部代码与埋点仍用 `GrammarErrorTag` 的英文键（tense / plural…），不受影响。
+ */
 export const GRAMMAR_ERROR_TAG_LABELS: Record<GrammarErrorTag, string> = {
-  tense: "时态变形",
-  sv_agreement: "主谓一致",
-  missing_be: "缺 be 动词",
-  article: "冠词",
-  plural: "单复数",
-  preposition: "介词",
-  fragment: "句子残缺",
-  run_on: "连接词误用",
-  word_order: "语序",
-  verb_form: "动词形式",
-  comparison: "比较级"
+  tense: "说过去的事",
+  sv_agreement: "谁做要看谁",
+  missing_be: "少了那个是",
+  article: "东西前面那个小词",
+  plural: "两个以上",
+  preposition: "固定搭配",
+  fragment: "句子没说完",
+  run_on: "两个连词打架",
+  word_order: "词的先后",
+  verb_form: "动词的形式",
+  comparison: "比一比"
 };
 
 /** 罪名的人话版解释，零基础也能看懂，展示在罪名按钮的小字里。 */
@@ -53,16 +63,19 @@ const NON_CONTENT_WORDS = new Set(["a", "an", "the", "is", "are", "to"]);
 
 /**
  * 从改正结果里挑一个值得收进错词本的词（如 "moved"；短语取第一个实词）。
- * 兜底规则：纯冠词（a / an / the）与「去掉 xx」这类删词型修正返回空串，调用方应跳过，避免垃圾数据。
+ *
+ * 判据走 `editOp`（2026-09-23 批五十三）：`delete` / `move` / `explain` 三类没有
+ * 「可以背的一个词」，一律返回空串让调用方跳过。旧写法靠字面猜
+ * （`startsWith("去掉")` + 括注 + 含汉字 + 冠词 + 剥标点），已在
+ * `hunt-umbrella-owner#5`（`去掉（…顺序调整…）`）这类混合修正上分叉出错。
  */
-export const pickCorrectionWord = (correction: string): string => {
+export const pickCorrectionWord = (correction: string, editOp: HuntEditOp): string => {
   const trimmed = correction.trim();
-  if (!trimmed || trimmed.startsWith("去掉")) return "";
-
-  // 括注式修正（「（去掉 to）」「（So 与 do I 对调）」）是给用户看的提示，
-  // 不是一个可入库的词——整条跳过。2026-09-21 批三十九补：此前只挡「去掉」开头，
-  // 把这类括注的第一个片段当成了错词，全库实测 13 处。
-  if (trimmed.startsWith("（") && trimmed.endsWith("）")) return "";
+  if (!trimmed) return "";
+  // 三类修正没有可入库的词：删词（去掉 so）/ 移动（把 white 移到 cat 前面）/ 纯说明
+  if (editOp === "delete" || editOp === "move" || editOp === "explain") return "";
+  // 含中文的修正是说明性文案，不是可背的英文词
+  if (/[\u4e00-\u9fa5]/.test(trimmed)) return "";
 
   const words = trimmed.split(/\s+/).filter(Boolean);
   const meaningful = words.find((word) => !NON_CONTENT_WORDS.has(word));
@@ -298,13 +311,141 @@ export const appendHuntResult = (data: AppData, result: HuntResult): AppData => 
  * 导致错词本里 631/631 张卡的例句都是**含错的原文**——用户为 happy 建卡，
  * 看到的例句正是要改的那句错。
  */
+/**
+ * 找出一处错点覆盖的 token 跨度 `[起, 止]`。
+ *
+ * `original` 有两种形态（见 HuntError 文档）：**单词**（`move`，跨度就是它自己）
+ * 与**跨 token 短语**（`a dress beautiful`，8 处，`tokenIndex` 只指向其中一个词）。
+ *
+ * 为什么必须算跨度：旧实现对短语型只替换 `tokenIndex` 那**一个** token，
+ * 于是 `She bought a dress beautiful.` 被改成
+ * `She bought a dress a beautiful dress.`（原词没删、修正硬贴上去），
+ * `I don't know where is it.` 被改成 `where it is it.`——全库实测 **8 处短语型里 7 处**
+ * 生成这类粘连病句（2026-09-23 批五十三发现并修）。
+ *
+ * 定位纪律：先按标点切成句子，只在**本句内**找连续片段，且跨度必须覆盖 `tokenIndex`
+ * ——否则 `is he` 这类短语会在别的句子里误命中（`hunt-lost-dog` 与 `hunt-class-intro`
+ * 就各有一处 `is he`，跨句找会张冠李戴）。
+ */
+const spanForError = (tokens: string[], error: HuntError): [number, number] => {
+  const words = (error.original ?? "").trim().split(/\s+/).filter(Boolean);
+  const fallback: [number, number] = [error.tokenIndex, error.tokenIndex];
+  if (words.length < 2) return fallback;
+  const index = error.tokenIndex;
+  if (index < 0 || index >= tokens.length) return fallback;
+  const [lo, hi] = sentenceBounds(tokens, index);
+  const normalize = (value: string) => value.replace(/[.,!?;:]+$/, "").toLowerCase();
+  const target = words.map(normalize);
+  for (let start = lo; start + target.length - 1 <= hi; start += 1) {
+    const hit = target.every((word, offset) => normalize(tokens[start + offset]) === word);
+    if (hit && index >= start && index <= start + target.length - 1) {
+      return [start, start + target.length - 1];
+    }
+  }
+  return fallback;
+};
+
+/** 取 index 所在句子的 `[起, 止]`（含句末标点的那个词）。 */
+const sentenceBounds = (tokens: string[], index: number): [number, number] => {
+  let lo = 0;
+  for (let i = index - 1; i >= 0; i -= 1) {
+    if (/[.!?]$/.test(tokens[i])) {
+      lo = i + 1;
+      break;
+    }
+  }
+  let hi = tokens.length - 1;
+  for (let i = index; i < tokens.length; i += 1) {
+    if (/[.!?]$/.test(tokens[i])) {
+      hi = i;
+      break;
+    }
+  }
+  return [lo, hi];
+};
+
+const CORE_OF = (token: string): string => token.replace(/[.,!?;:]+$/, "");
+const PUNCT_OF = (token: string): string => /([.,!?;:]+)$/.exec(token)?.[1] ?? "";
+
+/**
+ * 执行一处显式声明的词序移动（批五十四新增）。
+ *
+ * **为什么不能用中文文案解析**：`move` 的 correction 写的是
+ * `把 white 移到 cat 前面` 这种给人看的话，机械解析它做移动，三种实现实测全部产出病句
+ * （详见 `HuntEditOp` 文档）。所以移动走**显式下标**：数据里写清
+ * `moveFromIndex`（真正搬哪个）/ `moveToIndex`（锚点）/ `movePosition`（前或后）。
+ *
+ * ⚠️ `moveFromIndex` 可以**不等于** `tokenIndex`——前者是「机器搬哪个」，
+ * 后者是「玩家点哪」。样本 `hunt-so-do-i`：用户点 `So`（错处入口），
+ * 但机械上要搬 `I` 才能从 `So I do.` 得到 `So do I.`。
+ *
+ * 搬完之后连带修两件事（**通用规则**，不是逐案的补丁）：
+ *   ① **尾标点归位**——句末的 `.` / `?` 属于句子、不属于词。`My friend has a cat white.`
+ *      搬完若让 `white` 带着句号走到中间，就得到 `a white. cat`（批五十三实测的第一个病句）。
+ *      故：整句先脱标点，再把原句末标点给**新的句末词**。
+ *   ② **句首大小写**——搬到句首的词要大写；被挤离句首的词要回到小写。
+ *      `Are you used to the noise?`（`You` 让位后变小写）、`Both books are good.`
+ *      （`Books` 让位后变小写）都靠这条。
+ *
+ * **调用前提**（rv11 守门）：本句内**没有**别的错点。否则搬动会挪走尚未处理的错点位置。
+ * 全库 18 处均已核对满足；`correctedSentenceOf` 按跨度起点降序处理，故本句在原数组里的
+ * 下标此时仍然有效。
+ */
+const applyMove = (tokens: string[], error: HuntError): boolean => {
+  const from = error.moveFromIndex;
+  const to = error.moveToIndex;
+  const position = error.movePosition;
+  if (from === undefined || to === undefined || !position) return false;
+  if (from < 0 || from >= tokens.length || to < 0 || to >= tokens.length) return false;
+
+  const [lo, hi] = sentenceBounds(tokens, from);
+  const sentenceEnd = PUNCT_OF(tokens[hi]);
+  const headWord = CORE_OF(tokens[lo]);
+
+  const moving = CORE_OF(tokens[from]);
+  tokens.splice(from, 1);
+  const anchor = to > from ? to - 1 : to;
+  tokens.splice(position === "before" ? anchor : anchor + 1, 0, moving);
+
+  // ① 整句脱标点 → 原句末标点归给新的句末词
+  const length = hi - lo + 1;
+  for (let i = lo; i < lo + length && i < tokens.length; i += 1) {
+    tokens[i] = CORE_OF(tokens[i]);
+  }
+  const last = Math.min(lo + length - 1, tokens.length - 1);
+  tokens[last] = `${tokens[last]}${sentenceEnd}`;
+
+  // ② 句首大小写：搬到句首的大写；原先在句首、现被挤走的回到小写
+  const head = tokens[lo];
+  if (head) tokens[lo] = head.charAt(0).toUpperCase() + head.slice(1);
+  if (CORE_OF(tokens[lo]) !== headWord) {
+    // 原来的句首词还在本句里 → 找出来降为小写（只降它一个，不动专有名词）
+    for (let i = lo + 1; i < lo + length && i < tokens.length; i += 1) {
+      if (CORE_OF(tokens[i]) === headWord) {
+        tokens[i] = tokens[i].charAt(0).toLowerCase() + tokens[i].slice(1);
+        break;
+      }
+    }
+  }
+  return true;
+};
+
 export const correctedSentenceOf = (caseItem: HuntCase): string => {
   const tokens = [...caseItem.tokens];
-  // 从后往前处理：删词型的 splice 不会打乱尚未处理的下标
-  const ordered = [...caseItem.errors].sort((a, b) => b.tokenIndex - a.tokenIndex);
-  for (const error of ordered) {
-    const index = error.tokenIndex;
-    if (index < 0 || index >= tokens.length) continue;
+  /**
+   * 先把每处错点的跨度算好（基于原始下标），再按**跨度起点从后往前**改。
+   *
+   * 从后往前是必须的：删除/整段替换会改变后面 token 的下标，
+   * 先处理高下标才不会打乱尚未处理的低下标。按跨度起点（而非 tokenIndex）
+   * 排序，是因为短语型的起点可能小于 tokenIndex。
+   */
+  const edits = caseItem.errors
+    .map((error) => ({ error, span: spanForError(tokens, error) }))
+    .sort((a, b) => b.span[0] - a.span[0]);
+  for (const { error, span } of edits) {
+    const [lo, hi] = span;
+    if (lo < 0 || hi >= tokens.length) continue;
+    const index = lo;
     const correction = error.correction.trim();
     /**
      * 修正文案有时是**中文括注**而非可直接替换的英文（2026-09-21 修，我自己上一版引入的回归）：
@@ -321,25 +462,61 @@ export const correctedSentenceOf = (caseItem: HuntCase): string => {
      *   ③ 其它纯说明（对调 / 位置说明）→ **不改这一处**（保持原词），
      *      因为句子层没有可靠的机械改法，硬改反而制造病句；该错点仍由 grammarNote 讲清楚。
      */
-    if (/^（?去掉|去掉/.test(correction)) {
-      tokens.splice(index, 1);
+    /**
+     * 操作类型**读 editOp 字段**，不再猜 correction 的字面（2026-09-23 批五十三）。
+     *
+     * 旧写法用 `/^（?去掉|去掉/` 判删词——`hunt-umbrella-owner#5` 的 correction 恰是
+     * `去掉（this book 顺序调整：…）`，字面像删除、实际是移动，于是把它 splice 掉、
+     * 卡面变成病句 `Whose book is?`（批五十一修数据、批五十三把判据换成字段）。
+     * 现在：`editOp` 是数据自带的类型，`move` / `explain` 一律不动句子层。
+     */
+    if (error.editOp === "delete") {
+      // 跨度内全部删掉（短语型 original 也是整段删）
+      tokens.splice(index, hi - lo + 1);
       continue;
     }
+    /**
+     * 移动型：走**显式下标**执行（2026-09-23 批五十四）。
+     *
+     * 批五十三时这里是 `continue`（完全不动句子层），因为解析中文文案做移动实测产病句。
+     * 批五十四给 `move` 补了 `moveFromIndex` / `moveToIndex` / `movePosition` 三个显式字段，
+     * 移动不再需要猜——18 处逐案人工裁定后由 `applyMove` 落地。
+     *
+     * `explain` 仍保持原样：它连「搬到哪」都没有明确目标（纯位置说明），
+     * 句子层没有可执行的动作。
+     */
+    if (error.editOp === "move") {
+      applyMove(tokens, error);
+      continue;
+    }
+    if (error.editOp === "explain") continue;
     if (!correction) continue;
 
     // 括注里的「X → Y」取 Y（如「（drink → drinking 或去掉）」→ drinking）
     const arrowMatch = /→\s*([A-Za-z][A-Za-z'’\- ]*)/.exec(correction);
     if (arrowMatch) {
-      const trailing = /([.,!?;:]+)$/.exec(tokens[index])?.[1] ?? "";
-      tokens[index] = `${arrowMatch[1].trim().replace(/[.,!?;:]+$/, "")}${trailing}`;
+      const trailing = /([.,!?;:]+)$/.exec(tokens[hi])?.[1] ?? "";
+      tokens.splice(lo, hi - lo + 1, `${arrowMatch[1].trim().replace(/[.,!?;:]+$/, "")}${trailing}`);
       continue;
     }
     // 纯中文说明（含汉字且不是可替换的英文）→ 这一处保持原样，不做机械改动
     if (/[\u4e00-\u9fa5]/.test(correction)) continue;
 
-    // 保留原词块的尾标点：`rain,` 改成 `rains,` 而不是吞掉逗号
-    const trailing = /([.,!?;:]+)$/.exec(tokens[index])?.[1] ?? "";
-    tokens[index] = `${correction.replace(/[.,!?;:]+$/, "")}${trailing}`;
+    /**
+     * 尾标点：**correction 自己带的优先，没有才沿用原词的**（2026-09-23 批五十三修）。
+     *
+     * 原逻辑是「剥掉 correction 的尾标点、一律贴原词的」——于是
+     * `sunny` → `correction: "sunny,"` 时逗号被剥掉、再贴回原词的无标点版本，
+     * **标点凭空消失**（全库实测 7 处，其中 `reading,` / `test.` 这类是断句修正，
+     * 丢了标点整条修正就失效）。
+     *
+     * 新逻辑：correction 自带尾标点就用它自己的（那是作者的明确意图）；
+     * 没带才沿用原 token 的（`rain,` → `rains,` 不吞逗号）。
+     */
+    const ownTrailing = /([.,!?;:]+)$/.exec(correction)?.[1] ?? "";
+    const trailing = ownTrailing || (/([.,!?;:]+)$/.exec(tokens[hi])?.[1] ?? "");
+    // 整段替换：短语型 original 会用修正文本换掉整个跨度，不留下原词
+    tokens.splice(lo, hi - lo + 1, `${correction.replace(/[.,!?;:]+$/, "")}${trailing}`);
   }
   return tokens.join(" ");
 };

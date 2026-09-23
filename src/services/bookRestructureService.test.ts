@@ -89,7 +89,18 @@ describe("bookRestructureService", () => {
   });
 
   describe("applySpeedRunMarks", () => {
-    it("keeps the badge on started books and clears it from untouched non-eligible books", () => {
+    /**
+     * 2026-09-23 语义收紧：徽标「**只加不摘**」。
+     *
+     * 原断言是「未启动但被挤出前 N 名的书要清除徽标」。实测这条规则会造成
+     * **徽标蔓延**（MG3b 的 FAIL-4）：用户每开始学一本，它就从「未启动」集合退出、
+     * 后面的书立刻补位带徽标，最终 5 本内置词书全部标着「3天速通」——
+     * 「推荐你从这本开始」在每本书上都成立时，等于没有推荐。
+     *
+     * 现在：已发出的徽标一律保留（含被挤出前 N 名的、含已启动的）；
+     * 只有当**已发出的不足 count** 时，才从未发过徽标的未启动书里补足。
+     */
+    it("keeps badges already issued and supplements only when short of count", () => {
       const data = makeTestData({
         units: [
           makeUnit({ id: "unit_started", order: 1, speedRun: true }),
@@ -103,12 +114,21 @@ describe("bookRestructureService", () => {
         ]
       });
 
-      // 只保留 1 个速通名额：order 靠前的 unit_next 入选，原来挂了徽标但排在后面的被清除。
+      /**
+       * 名额调成 1：已发出的两枚徽标（unit_started 已启动、unit_untouched_marked 未启动）
+       * **都保留**——它们已经推荐给用户了，不该因为名额收紧而中途撤回；
+       * 已发出的（2）≥ 名额（1），所以**不需要补位**，unit_next 不获得徽标。
+       */
       const { data: next } = applySpeedRunMarks(data, 1, T);
-      // 已启动的速通本保留徽标；未启动但被挤出名单的清除；新入选的打上标记。
-      expect(next.units.find((unit) => unit.id === "unit_started")?.speedRun).toBe(true);
-      expect(next.units.find((unit) => unit.id === "unit_untouched_marked")?.speedRun).toBeUndefined();
-      expect(next.units.find((unit) => unit.id === "unit_next")?.speedRun).toBe(true);
+      expect(next.units.find((unit) => unit.id === "unit_started")?.speedRun, "已启动的徽标保留").toBe(true);
+      expect(
+        next.units.find((unit) => unit.id === "unit_untouched_marked")?.speedRun,
+        "未启动但已发过徽标 → 保留（不再因被挤出前 N 而撤回）"
+      ).toBe(true);
+      expect(
+        next.units.find((unit) => unit.id === "unit_next")?.speedRun,
+        "已发出的已够名额 → 不补位"
+      ).toBeUndefined();
     });
   });
 

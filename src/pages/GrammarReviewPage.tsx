@@ -90,12 +90,23 @@ export default function GrammarReviewPage() {
     setFreeTypeHint(null);
   };
 
-  const finishCard = (finalAttempts: number, revealed: boolean) => {
+  /**
+   * 结束一张卡并写复习记录。
+   *
+   * `userAnswer` 必须是**用户真正写下的内容**（2026-09-22 修）。
+   *
+   * 此前这里硬传 `task.sentence`（正确句），于是 `review.answer` 存的是正确答案。
+   * 而错词本把它当「你的答案」展示（`MistakeBookPage` 的「正确拼写 / 你的答案」两栏
+   * 并列显示）——两栏内容完全一样，等于把用户写错的那句**伪装成正确答案**，
+   * 用户看不到自己当时究竟写了什么，也就无从对照。
+   * 字母级差异对照（`compareLetters`）同样建立在它之上。
+   */
+  const finishCard = (finalAttempts: number, revealed: boolean, userAnswer: string) => {
     if (!current || !task) return;
     const rating = ratingForOutcome(finalAttempts, revealed);
     const wasMastered = current.card.status === "mastered";
     updateData((latest) => {
-      let next = applyReview(latest, current.card, reviewModeForTask(task), rating, task.sentence);
+      let next = applyReview(latest, current.card, reviewModeForTask(task), rating, userAnswer);
       // R09 Step2 新掌握口径：free_type 复习后，检查是否达「输出连续 2 次一次通过」——
       // 旧的「rating4 且 reviewCount≥4」口径对 cloze/rebuild 仍生效；free_type 卡在连续 2 次输出通过时也置 mastered。
       // W0：写入统一走 applyMasteredStatus（掌握判定与写入的唯一权威，此前这里自己写了一遍 status/masteredAt）。
@@ -138,7 +149,8 @@ export default function GrammarReviewPage() {
     const nextAttempts = attempts + 1;
     setAttempts(nextAttempts);
     if (judgeGrammarCloze(option, task.answer)) {
-      finishCard(nextAttempts, false);
+      // 写用户实际选的词（不是正确答案）——错词本要展示「你的答案」
+      finishCard(nextAttempts, false, option);
     }
     // 选错不判负：换一个再试，最终按尝试次数评分；「看答案」才判「忘了」
   };
@@ -148,7 +160,7 @@ export default function GrammarReviewPage() {
     const nextAttempts = attempts + 1;
     setAttempts(nextAttempts);
     if (judgeGrammarRebuild(order, task.sentence)) {
-      finishCard(nextAttempts, false);
+      finishCard(nextAttempts, false, order.join(" "));
     }
   };
 
@@ -160,7 +172,7 @@ export default function GrammarReviewPage() {
     const { passed, score } = judgeGrammarFreeType(freeTypeValue, task.sentence);
     if (passed) {
       setFreeTypeHint(null);
-      finishCard(nextAttempts, false);
+      finishCard(nextAttempts, false, freeTypeValue.trim());
     } else {
       setFreeTypeHint(
         score === 0
@@ -172,7 +184,13 @@ export default function GrammarReviewPage() {
 
   const handleReveal = () => {
     if (!task || outcome !== "idle") return;
-    finishCard(attempts, true);
+    /**
+     * 「看答案」时把用户已经写下的内容记下来（可能为空）。
+     * 空串是**真实信息**——那代表用户没写出来，比写上正确答案诚实。
+     * free_type 与 rebuild 有输入框/拼装区可回填，cloze 没有输入态（只有点选）。
+     */
+    const typed = freeTypeValue.trim() || built.join(" ") || usedClozeOption || "";
+    finishCard(attempts, true, typed);
   };
 
   const goNext = () => {

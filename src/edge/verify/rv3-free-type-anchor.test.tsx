@@ -129,7 +129,7 @@ describe("RV3-b hunt 卡的答案语义（front 已修为正确句，2026-09-21�
     for (const error of caseItem.errors) {
       const wrongAt = before[error.tokenIndex];
       // 删词型会让后续下标整体前移，这种情形不在逐位比对的适用范围（单独由 RV9 覆盖）
-      if (/^（?去掉/.test(error.correction.trim())) continue;
+      if (error.editOp === "delete") continue;
       expect(after[error.tokenIndex], `下标 ${error.tokenIndex} 处应已被改正`).not.toBe(wrongAt);
     }
     const details = data.sentenceDetails.find((item) => item.cardId === card.id);

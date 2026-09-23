@@ -336,10 +336,10 @@ describe("PR1-6 趁热练弱点提示把罪名「人话版」渲染进页面（�
   });
 });
 
-describe("PR1-7 复习页反馈把 hunt 的 grammarNote 原样渲染（含「时态变形」与机器 token）", () => {
+describe("PR1-7 复习页反馈把 hunt 的 grammarNote 原样渲染（含「说过去的事」与机器 token）", () => {
   beforeEach(() => resetStorage());
 
-  it("hunt 卡答对后 .lesson-saved-hint = 「（[tense:move] 时态变形：…）」", async () => {
+  it("【已修 2026-09-22】hunt 卡答对后：讲解已剥掉内部标记、且零术语", async () => {
     seedAppData({});
     const caseItem = huntCases[0];
     const withHunt = addHuntGapSentences(readAppData(), caseItem, caseItem.errors.map((error) => error.tokenIndex));
@@ -356,8 +356,14 @@ describe("PR1-7 复习页反馈把 hunt 的 grammarNote 原样渲染（含「时
     window.localStorage.setItem("personal-vocab-app-data-v1", JSON.stringify(patched));
     const data = readAppData();
     const task = buildGrammarReviewTask(buildGrammarReviewSession(data)[0], data.sentenceDetails);
-    expect(task.note).toContain("时态变形");
-    expect(GRMAR_ZERO_TERMS_HIT(task.note)).toContain("时态");
+    /**
+     * 修复前：这里渲染的是 `[tense:move] 时态变形：move → moved。…`——
+     * 既含内部机器标记（用户看不懂），又含术语「时态」（violates 零术语红线）。
+     * 现在：标记在展示层剥掉（存储里仍保留供弱点归因），
+     * 罪名短名也改成了大白话「说过去的事」。
+     */
+    expect(task.note, "不应再含机器标记").not.toContain("[tense:move]");
+    expect(GRMAR_ZERO_TERMS_HIT(task.note), "讲解应零术语").toEqual([]);
 
     const page = mountPage(<GrammarReviewPage />, "/grammar/review", "/grammar/review");
     if (task.mode === "free_type") {
@@ -367,12 +373,12 @@ describe("PR1-7 复习页反馈把 hunt 的 grammarNote 原样渲染（含「时
       clickText(page, task.answer);
     }
     const hint = page.container.querySelector(".lesson-saved-hint");
-    expect(hint?.textContent ?? "").toContain("[tense:move]");
-    expect(GRMAR_ZERO_TERMS_HIT(hint?.textContent ?? "")).toContain("时态");
+    expect(hint?.textContent ?? "", "界面上的讲解也不应含机器标记").not.toContain("[tense:move]");
+    expect(GRMAR_ZERO_TERMS_HIT(hint?.textContent ?? ""), "界面文案应零术语").toEqual([]);
     page.unmount();
   });
 
-  it("规模：hunt 讲解越线 441 处 / 案件标题 4 处（全库）", () => {
+  it("【已修 2026-09-22】规模：全库 hunt 讲解与案件标题均已零术语", () => {
     let noteHits = 0;
     let titleHits = 0;
     for (const huntCase of huntCases) {
@@ -382,8 +388,12 @@ describe("PR1-7 复习页反馈把 hunt 的 grammarNote 原样渲染（含「时
         if (GRMAR_ZERO_TERMS_HIT(note).length > 0) noteHits += 1;
       }
     }
-    expect(noteHits, "hunt 讲解（grammarNote）越线数量级").toBeGreaterThan(400);
-    expect(titleHits).toBeGreaterThan(0);
+    /**
+     * 修复前：776 处讲解里 376 处命中术语（48.5%），主要来源是罪名短名
+     * （时态变形/单复数/介词/语序/比较级）。现在全部清零。
+     */
+    expect(noteHits, "全库 hunt 讲解应零术语").toBe(0);
+    expect(titleHits, "案件标题也应零术语（原先 4 处越线，同批清理）").toBe(0);
   });
 });
 
@@ -500,7 +510,7 @@ describe("PR1-10 趁热练档 1 对比题已排除 bothRight 句（2026-09-21 �
    *   紧接着的讲解又说他是对的（全库 9 处组合、3 句）。
    * 现在两条通道都跳过 bothRight，这类句子改由专门的 `bothright` 通道承载。
    */
-  it("全库 195 课 × 6 轮：没有任何 bothRight 句以 contrast 题形态出现", () => {
+  it("全库 204 课 × 6 轮：没有任何 bothRight 句以 contrast 题形态出现", () => {
     const conflicts: string[] = [];
     for (const lesson of grammarLessons) {
       const bothRightWrong = new Set(
@@ -825,7 +835,7 @@ describe("PR1-15 趁热练 AI 降级提示「先看下面的对照」是悬空�
 describe("PR1-16 趁热练档位承诺（题数）兑现", () => {
   beforeEach(() => resetStorage());
 
-  it("全库 195 课 × 三档：实际题量恒等于档位卡承诺的题数", () => {
+  it("全库 204 课 × 三档：实际题量恒等于档位卡承诺的题数", () => {
     const distribution: Record<number, Set<number>> = { 1: new Set(), 2: new Set(), 3: new Set() };
     for (const lesson of grammarLessons) {
       for (const tier of [1, 2, 3] as const) {

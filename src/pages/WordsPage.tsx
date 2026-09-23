@@ -31,6 +31,7 @@ import {
 } from "../services/cardService";
 import { findDictionaryEntry, findDictionaryEntryAsync, searchDictionaryAsync } from "../services/dictionaryService";
 import type { DictionaryEntry } from "../types";
+import { imeSafeFormProps } from "../components/imeGuard";
 
 const emptyInput: WordInput = {
   word: "",
@@ -389,7 +390,7 @@ export default function WordsPage() {
 
       <section className="words-workspace">
         {isComposerOpen && (
-          <form className="panel form-panel word-composer" onSubmit={submit}>
+          <form className="panel form-panel word-composer" onSubmit={submit} {...imeSafeFormProps}>
             <div className="panel-header">
               <div>
                 <span className="eyebrow">New Word</span>

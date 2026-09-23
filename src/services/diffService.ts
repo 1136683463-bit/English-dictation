@@ -1,13 +1,51 @@
 import { DiffToken, LetterDiffToken } from "../types";
 
-/** 中文输入法常打出全角标点——先折成半角，免得「句末全角句号」被当成没写对。 */
+/**
+ * 中文输入法常打出全角标点——先折成半角，免得「句末全角句号」被当成没写对。
+ *
+ * 2026-09-23 补齐三处漏网（ENV3-B 的 FAIL-B7/B8/C8/C9 记录了它们，本次修复后翻转断言）：
+ *
+ * ① **弯双引号** U+201C/U+201D：原先只折了单引号 U+2018/U+2019。
+ *    中文输入法打双引号得到的是弯引号，而它既不在全角 ASCII 区（U+FF01–FF5E）、
+ *    也不在非严格模式的标点删除类（那是纯 ASCII），于是**粘在词上**变成 `“hello”`
+ *    一个 token，与 `hello` 对不上——5 词句直接掉到 80 分。
+ * ② **中文常用标点**：…（U+2026）、—（U+2014）、·（U+00B7）、「」『』（U+300C–U+300F）、
+ *    《》〈〉（U+300A–U+300F）、・（U+30FB）、｡（U+FF61）。这些同样会粘在词上扣分：
+ *    实测「I like tea」+「 → 83 分，不过产出段 90 线；「I am」+「 → 50 分，连忆段 70 线都不过。
+ *    折成对应 ASCII 标点后，非严格模式会把它们一并删掉（标点不计分）。
+ * ③ **不可见字符**：**要分两类处理**，混为一谈会把词粘起来。
+ *
+ *    - **零宽分隔符**（U+200B ZWSP、U+2060 WORD JOINER、U+180E 蒙古文元音分隔符）
+ *      语义是「可换行点」，从网页/PDF 粘贴时通常落在词与词之间 —— 必须折成**空格**：
+ *      `I am\u200Bhappy` 删成空会粘成 `amhappy`（仍判错，得 33 分），折成空格才等价于 `I am happy`。
+ *    - **不可见标记**（U+00AD 软连字符、U+FEFF BOM、U+200C ZWNJ、U+200D ZWJ）
+ *      是排版标记，落在**词内部** —— 必须**删除**：
+ *      `hap\u00ADpy` 折成空格会变成两个词，删掉才是 `happy`。
+ */
 const foldFullWidth = (value: string) =>
   value
+    // 零宽分隔符 → 空格（先做，避免它们参与后面的标点折叠）
+    .replace(/[\u200B\u2060\u180E]/g, " ")
+    // 不可见标记 → 删除
+    .replace(/[\u00AD\uFEFF\u200C\u200D]/g, "")
     // 全角 ASCII 区（！～，含全角逗号/问号/分号/冒号）整体左移到半角。
     .replace(/[\uFF01-\uFF5E]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xfee0))
-    .replace(/[\u2018\u2019]/g, "'")
+    // 半角句号 ｡（U+FF61）在半角片假名区，不在上面那段里，单独折
+    .replace(/\uFF61/g, ".")
+    .replace(/[\u2018\u2019\u02BC\u2032]/g, "'")
+    // 弯双引号 → ASCII 双引号（非严格模式随后会删掉，严格模式下也按标点处理）
+    .replace(/[\u201C\u201D\u201E\u201F\u2033]/g, '"')
     .replace(/\u3002/g, ".")
-    .replace(/\u3001/g, ",");
+    .replace(/\u3001/g, ",")
+    // 中文省略号与破折号：统一成 ASCII 标点，随后的删标点类会清掉
+    .replace(/[\u2026\u22EF]/g, ".")
+    .replace(/[\u2014\u2015\u2500]/g, "-")
+    // 间隔号 / 中点（外国人名、书名分隔用）
+    .replace(/[\u00B7\u30FB\u2022\u2027]/g, "-")
+    // 中文书名号与引号：符号折成 ASCII，内容保留（否则会粘在词上）
+    .replace(/[\u300C\u300D\u300E\u300F\u300A\u300B\u3008\u3009]/g, '"')
+    // 日文波浪号 〜（U+301C）与波折号 〰（U+3030）
+    .replace(/[\u301C\u3030]/g, "~");
 
 const normalize = (value: string, strictPunctuation = false) => {
   const base = foldFullWidth(value)
@@ -15,7 +53,15 @@ const normalize = (value: string, strictPunctuation = false) => {
     .replace(/\s+/g, " ")
     .trim();
   if (strictPunctuation) return base;
-  return base.replace(/[.,!?;:"()[\]{}]/g, "");
+  /**
+   * 非严格模式：删掉标点，只比词。
+   *
+   * 2026-09-23 扩充 `-` 与 `~`（含全角 `～`）。
+   * 起因：`foldFullWidth` 把中文破折号 —、间隔号 ·、波浪号 ～ 折成了这两个 ASCII 字符，
+   * 但删除类里没有它们，于是折完仍**粘在词上**（实测「I like tea」+「—」得 83 分）。
+   * 教材里没有任何带连字符的答案句（全库 grep 确认），所以纳入删除不会误伤。
+   */
+  return base.replace(/[.,!?;:"()[\]{}~-]/g, "");
 };
 
 const tokenize = (value: string, strictPunctuation = false) =>
@@ -276,12 +322,49 @@ export const diffScore = (tokens: DiffToken[]) => {
   return Math.round(((matched + spelling * 0.5) / tokens.length) * 100);
 };
 
+/**
+ * 拼写题的归一化（逐字母比对前的口径）。
+ *
+ * R09：补上 `foldFullWidth` —— 与句级的 `normalize`（同文件 :12）对齐。
+ *
+ * 此前这里只处理弯撇号与空白，**没有全角折叠**，于是同一个输入在两个页面
+ * 得到不同结果：中文输入法打出的 `today。`（全角句号）在复习页按句级口径
+ * 折成半角、判对；在拼写页却因为多了个 `。` 被判错。
+ * 拼写页正是最需要宽容的地方（用户手打单词时输入法状态最不可控）。
+ *
+ * ⚠️ **本函数保留标点，这是有意的设计**（见 ENV3-B 的 R09 用例）：
+ * 它同时喂给两个消费方——
+ *   ① `SpellingPage` 的 `isCorrect`（判对错，**应当**宽容标点）；
+ *   ② `compareLetters`（字母级差异对照，**需要**保留标点才能在界面上高亮出
+ *      「你多打了个句号」）。
+ * 一旦在这里删标点，②就再也显示不出标点差异了。
+ *
+ * 所以 2026-09-23 修 FAIL-B15（`today。` 在拼写页仍判错）时，
+ * **没有动本函数**，而是给 ① 单独加了宽容口径 —— 见 `spellingMatches`。
+ */
 export const normalizeSpelling = (value: string) =>
-  value
+  foldFullWidth(value)
     .trim()
     .toLowerCase()
-    .replace(/[’]/g, "'")
+    .replace(/[’‘]/g, "'")
     .replace(/\s+/g, "");
+
+/**
+ * 拼写页「答对没答对」的判定口径（2026-09-23 新增，修 ENV3-B 的 FAIL-B15）。
+ *
+ * 与 `normalizeSpelling` 的区别：**额外容忍标点**。
+ * 用户拼一个单词时顺带打出 `。`、`.`、`!` 等，不该判错。
+ * 但**撇号必须保留** —— `it's` 与 `its` 的差别正是教材 L87/L88 的考点，
+ * 删掉撇号会把该抓的错放过去。
+ *
+ * 单独成一个函数（而不是改 `normalizeSpelling`）的原因见上：后者还要喂给
+ * 差异对照，必须保留标点。
+ */
+export const spellingMatches = (expected: string, answer: string): boolean => {
+  const strip = (value: string) =>
+    normalizeSpelling(value).replace(/[.,!?;:"()[\]{}~\-—…、。！？；：“”‘’「」《》〈〉]/g, "");
+  return strip(expected) === strip(answer);
+};
 
 export const compareLetters = (expected: string, answer: string): LetterDiffToken[] => {
   const expectedChars = normalizeSpelling(expected).split("");

@@ -410,15 +410,17 @@ describe("DG4e 已修 D4：橡皮擦不再撤销已通过的题（2026-09-21）"
     for (const word of words) clickBankWord(page, word);
     expect(feedbackState(page)).toBe("pass");
     const lastWord = words[words.length - 1];
-    // 路径 A：橡皮擦（不重置 ref）
+    /**
+     * 路径 A：橡皮擦。
+     *
+     * 修复前：橡皮擦既不重置判题去抖 ref，也无条件把反馈置 idle ——
+     * 擦一块再摆回同长度就永远停在 idle（静默死点），且**已通过的题也会被撤销**。
+     * 现在：已通过的题擦除不撤销通关，反馈保持在 pass。
+     */
     eraser(page)!.click();
     await flushAsync();
     clickBankWord(page, lastWord);
-    expect(feedbackState(page), "路径 A：静默无反馈").toBe("idle");
-    /**
-     * 修复后：两条路径（橡皮擦 / 点块移除）口径一致，都能继续。
-     * 修复前橡皮擦不重置去抖 ref，重复循环会永远停在 idle（静默死点）。
-     */
+    expect(feedbackState(page), "已通过的题擦一块再摆回，仍应是 pass").toBe("pass");
     eraser(page)!.click();
     await flushAsync();
     clickBankWord(page, lastWord);

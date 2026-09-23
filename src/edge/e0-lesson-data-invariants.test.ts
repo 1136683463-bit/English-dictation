@@ -48,7 +48,7 @@ const practiceArranges = (): Array<{ lessonId: string; index: number; step: Less
   );
 
 describe("E0 · 课程数据不变量", () => {
-  it("E0-1 全库 195 课：arrange 题的可点词块数 ≥ 答案词数（不会判不出题）", () => {
+  it("E0-1 全库 204 课：arrange 题的可点词块数 ≥ 答案词数（不会判不出题）", () => {
     const bad: string[] = [];
     for (const lesson of grammarLessons) {
       for (const [index, step] of lesson.guided.entries()) {

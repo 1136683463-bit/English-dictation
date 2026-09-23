@@ -18,6 +18,14 @@
  * - 拼装区词块 onClick 只有 arrangeRemove（:2033）；词块库词块 onClick 只有 arrangeAdd（:2067），
  *   且 add 不支持指定位置（at 省略 → push，:1243-1245）。
  * - 键盘可用的全部手段 = 加块（append）、移除块、橡皮擦（移除最后一个）。
+ *
+ * ## 2026-09-23 更新：拼装区已补上键盘重排
+ *
+ * 上面那段「事实」记录的是修复前的状态。本轮给拼装区词块加了
+ * **← / → 换位**（调用与拖拽同一条 arrangeMove），并在操作提示里讲了出来。
+ * 因此本文件里那条「方向键都不改变顺序」的断言已翻正为
+ * 「← / → 改变顺序，其余键不改变」（见下面 DG5-reorder 两条）。
+ * 修复动机：换位此前只有拖拽一条路，键盘用户排错顺序只能全清重摆（N 次操作）。
  */
 import { beforeEach, describe, expect, it } from "vitest";
 import { mountPage, resetStorage } from "../harness";
@@ -59,7 +67,15 @@ const bankWord = (page: ReturnType<typeof mount>, word: string): HTMLButtonEleme
 describe("DG5 键盘替代路径", () => {
   beforeEach(() => resetStorage());
 
-  it("拼装区没有重排键盘 handler：方向键/Backspace/Delete/Home/End 都不改变顺序", async () => {
+  /**
+   * DG5-reorder【已修 2026-09-23】拼装区现在有键盘重排 handler。
+   *
+   * 修复前：本条断言「这些键都不应改变顺序（页面没有任何键盘重排 handler）」，
+   * 记录的是「换位只有拖拽一条路」这个缺口。
+   * 修复后：← / → 换位，其余键不动。断言相应翻正 ——
+   * 既要验证方向键**真的能用**，也要验证其它键**仍然不会误改顺序**。
+   */
+  it("拼装区键盘重排：← / → 换位，其余键不改变顺序", async () => {
     seedDragStorage();
     const page = mount();
     await flushAsync();
@@ -73,28 +89,37 @@ describe("DG5 键盘替代路径", () => {
     builtChips(page)[0].focus();
     expect(document.activeElement, "键盘用户应能 Tab 到词块").toBe(builtChips(page)[0]);
 
-    const results: Array<{ key: string; changed: boolean }> = [];
-    for (const key of [
-      "ArrowLeft",
-      "ArrowRight",
-      "ArrowUp",
-      "ArrowDown",
-      "Backspace",
-      "Delete",
-      "Home",
-      "End",
-      "PageUp",
-      "PageDown"
-    ]) {
-      fireKey(builtChips(page)[0], key);
-      results.push({ key, changed: builtWords(page).join(" ") !== before.join(" ") });
+    // ① ← / → 应改变顺序。
+    // ⚠️ 按键要派发到**当前获得焦点的那个词块**上（不是固定的 [0]）：
+    // 换位后焦点跟着词块走，第二次按键若派给 [0] 就换了另一块，测不出「可连按」。
+    const reorderResults: Array<{ key: string; changed: boolean }> = [];
+    for (const key of ["ArrowRight", "ArrowLeft"]) {
+      const prior = builtWords(page).join(" ");
+      fireKey(document.activeElement ?? builtChips(page)[0], key);
+      await flushAsync();
+      reorderResults.push({ key, changed: builtWords(page).join(" ") !== prior });
     }
-    log(`[DG5] 拼装区按键效果：${JSON.stringify(results)}`);
+    log(`[DG5] 拼装区重排键效果：${JSON.stringify(reorderResults)}`);
     expect(
-      results.filter((row) => row.changed).map((row) => row.key),
-      "这些键都不应改变顺序（页面没有任何键盘重排 handler）"
+      reorderResults.filter((row) => row.changed).map((row) => row.key),
+      "← / → 都应改变顺序（2026-09-23 起支持键盘重排）"
+    ).toEqual(["ArrowRight", "ArrowLeft"]);
+
+    // ② 其余键不应改变顺序（避免误触发）
+    const settled = builtWords(page);
+    builtChips(page)[0].focus();
+    const nonReorder: Array<{ key: string; changed: boolean }> = [];
+    for (const key of ["ArrowUp", "ArrowDown", "Backspace", "Delete", "Home", "End", "PageUp", "PageDown"]) {
+      fireKey(builtChips(page)[0], key);
+      await flushAsync();
+      nonReorder.push({ key, changed: builtWords(page).join(" ") !== settled.join(" ") });
+    }
+    log(`[DG5] 拼装区非重排键效果：${JSON.stringify(nonReorder)}`);
+    expect(
+      nonReorder.filter((row) => row.changed).map((row) => row.key),
+      "这些键不应改变顺序（只有 ← / → 是重排键）"
     ).toEqual([]);
-    expect(builtWords(page)).toEqual(before);
+    expect(builtWords(page), "词集应完整（不丢块）").toHaveLength(4);
     page.unmount();
   });
 

@@ -12,7 +12,7 @@
  * - normalizeSchedules 只保留 cardId 存在于 cards 里的计划；
  * - nextReviewAt 必须是合法 ISO（validIsoOrNow 会把非法值改成 now）。
  */
-import type { AppData, Card, Schedule, SentenceDetails } from "../../types";
+import type { AppData, Card, Schedule, SentenceDetails, Settings } from "../../types";
 import { APP_SCHEMA_VERSION, defaultSettings, parseBackupJson } from "../../services/storage";
 
 export const STORAGE_KEY = "personal-vocab-app-data-v1";
@@ -22,7 +22,39 @@ export const TELEMETRY_KEY = "grammar-telemetry-events-v1";
 export const PAST_ISO = "2024-01-01T00:00:00.000Z";
 export const CREATED_ISO = "2024-01-01T00:00:00.000Z";
 
-export const makeAppData = (patch: Partial<AppData> = {}): AppData => ({
+/**
+ * 深可选补丁：允许只给 `settings` 的一部分（如只给 aiProvider）。
+ *
+ * 测试常常只关心某些嵌套字段（例如「导出时会不会带出 apiKey」只需要 aiProvider），
+ * 强制补全整个 Settings 是噪音。类型上放宽一层，运行期仍然交给迁移管线补默认值。
+ */
+type DeepPartial<T> = T extends (infer U)[]
+  ? U[]
+  : // Record<...> 这类索引签名不做深可选——否则每个值都被放宽成 `| undefined`，
+    // 与 AppData 的声明不兼容（如 grammarLessonStagesDone）
+    T extends Record<string, unknown>
+    ? T
+    : T extends object
+      ? { [K in keyof T]?: DeepPartial<T[K]> }
+      : T;
+
+/**
+ * 把「部分设置」合并到默认设置上，并保持完整类型。
+ *
+ * 三个嵌套层级各自合并（顶层标量 + aiProvider + dataSync）：
+ * 只传 `{ aiProvider: { apiKey } }` 时，其余设置项保留默认值。
+ * 末尾统一断言成 `Settings`——运行期一定是完整的（默认值兜底），
+ * 但 TS 无法从「可选属性展开」推断出来，所以这里显式收口。
+ */
+const buildSettings = (patch: DeepPartial<Settings> | undefined): Settings =>
+  ({
+    ...defaultSettings,
+    ...(patch as Record<string, unknown> | undefined),
+    aiProvider: { ...defaultSettings.aiProvider, ...((patch?.aiProvider ?? {}) as Record<string, unknown>) },
+    dataSync: { ...defaultSettings.dataSync, ...((patch?.dataSync ?? {}) as Record<string, unknown>) }
+  }) as unknown as Settings;
+
+export const makeAppData = (patch: DeepPartial<AppData> = {}): AppData => ({
   schemaVersion: APP_SCHEMA_VERSION,
   unitGroups: [],
   units: [],
@@ -44,8 +76,10 @@ export const makeAppData = (patch: Partial<AppData> = {}): AppData => ({
   languageGates: [],
   gateAttempts: [],
   runeStates: [],
-  settings: defaultSettings,
-  ...patch
+  // ⚠️ `...patch` 必须在 settings 之前：否则 patch 里的部分 settings 会覆盖掉
+  // buildSettings 的深合并结果（只给 aiProvider 时其余设置项会变成 undefined）。
+  ...patch,
+  settings: buildSettings(patch.settings)
 });
 
 /**

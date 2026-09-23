@@ -25,6 +25,7 @@ import { appendAdventureEvent } from "../services/adventureTelemetry";
 const ADVENTURE_THEME_COUNT = ADVENTURE_THEME_LIBRARY.length;
 import AdventureThemeArt, { AdventureArtwork } from "../components/AdventureThemeArt";
 import type { Adventure, AdventureLevel, AdventureTemplate } from "../types";
+import { imeSafeFormProps } from "../components/imeGuard";
 
 const levels: AdventureLevel[] = ["A1", "A2", "B1", "B2", "C1"];
 const RECOMMENDATIONS_KEY = "adventure-ai-recommendations";
@@ -367,7 +368,7 @@ export default function AdventurePage() {
         </Link>
       </section>
 
-      <form className="adv-card adv-create" onSubmit={startAdventure}>
+      <form className="adv-card adv-create" onSubmit={startAdventure} {...imeSafeFormProps}>
         <header className="adv-create-head">
           <div>
             <span className="adv-eyebrow">New route</span>

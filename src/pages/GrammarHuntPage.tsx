@@ -331,7 +331,7 @@ export default function GrammarHuntPage() {
   const addableCorrectionWords = useMemo(
     () =>
       (activeCase?.errors ?? [])
-        .map((error) => pickCorrectionWord(error.correction))
+        .map((error) => pickCorrectionWord(error.correction, error.editOp))
         .filter((word) => Boolean(word)),
     [activeCase]
   );
@@ -341,7 +341,7 @@ export default function GrammarHuntPage() {
     // 例句用「修正后的正确句」——错词本里不该放一句含错的话（批四十修）
     const sentence = correctedSentenceOf(activeCase);
     const corrections = activeCase.errors
-      .map((error) => ({ word: pickCorrectionWord(error.correction), original: error.original }))
+      .map((error) => ({ word: pickCorrectionWord(error.correction, error.editOp), original: error.original }))
       .filter((item) => item.word);
 
     // 释义走异步词典查询（含内置大词典），查不到就留空，不阻塞加入动作。

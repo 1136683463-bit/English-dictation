@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
+import { stripNoteMarkers } from "../services/lessonService";
 import AppSelect from "../components/AppSelect";
 import ConfirmDialog from "../components/ConfirmDialog";
 import LibraryTour from "../components/LibraryTour";
@@ -591,7 +592,11 @@ export default function LibraryPage() {
     const rows = selectedCards.map((card) =>
       [card.type, card.front, card.back, card.note, card.tags.join(" ")].map(escapeCsv).join(",")
     );
-    downloadTextFile("library-selection.csv", ["type,front,back,note,tags", ...rows].join("\n"), "text/csv");
+    // R09：依返回值给反馈——此前忽略返回值，文件没生成也说「已导出 N 张」。
+    if (!downloadTextFile("library-selection.csv", ["type,front,back,note,tags", ...rows].join("\n"), "text/csv")) {
+      setBulkMessage("这次导出没能生成文件（可能是存储被限制或浏览器策略拦截）。可以改用打开网页版导出。");
+      return;
+    }
     setBulkMessage(
       undoSnapshot
         ? `已导出 ${selectedCards.length} 张卡片。上一个变更仍可撤销。`
@@ -1124,7 +1129,7 @@ export default function LibraryPage() {
                 <details className="library-detail-more">
                   <summary>语法/备注</summary>
                   <div className="library-detail-fields">
-                    <div><span>语法/备注</span><strong>{sentenceDetails.grammarNote}</strong></div>
+                    <div><span>语法/备注</span><strong>{stripNoteMarkers(sentenceDetails.grammarNote)}</strong></div>
                   </div>
                 </details>
               )}

@@ -304,12 +304,38 @@ export const getWeakCardInsights = (
 ): WeakCardInsight[] => {
   const since = Date.now() - 14 * DAY_MS;
 
+  /**
+   * 先建索引再遍历（2026-09-22 修，P0 性能）。
+   *
+   * 此前每张卡都 `data.reviews.filter(cardId)` + `data.schedules.find(cardId)`——
+   * 即 O(卡片数 × 复习记录数)。实测（词卡）：
+   *   500 卡 × 10 条 = 26ms / 2000 × 10 = 475ms / 2000 × 50 = 1836ms
+   *   5000 × 50 = **12075ms（12 秒）**
+   * 而它挂在 `ReviewPage` 与 `UnitsPage` 的 `useMemo(..., [data])` 上——
+   * **每次数据变化都重算**（答一题、改一个设置都会触发），
+   * 数据量大的用户会直接撞上十几秒的卡死。
+   *
+   * 改为：遍历 reviews 一次建「cardId → 该卡复习记录」索引，
+   * 遍历 schedules 一次建「cardId → 计划」索引，主循环只查表 → 降为 O(n + m)。
+   * 复习记录在建索引时**顺带按时间升序排好**（原来每张卡各自 sort 一次）。
+   */
+  const reviewsByCard = new Map<string, Review[]>();
+  for (const review of data.reviews) {
+    const bucket = reviewsByCard.get(review.cardId);
+    if (bucket) bucket.push(review);
+    else reviewsByCard.set(review.cardId, [review]);
+  }
+  for (const bucket of reviewsByCard.values()) {
+    bucket.sort((a, b) => a.reviewedAt.localeCompare(b.reviewedAt));
+  }
+  const scheduleByCard = new Map(data.schedules.map((schedule) => [schedule.cardId, schedule]));
+
   return data.cards
     .filter((card) => card.status !== "suspended")
     .filter((card) => (options.type ? card.type === options.type : true))
     .filter((card) => (options.unitId ? card.unitId === options.unitId : true))
     .map((card) => {
-      const reviews = getCardReviews(data, card.id);
+      const reviews = reviewsByCard.get(card.id) ?? [];
       const wrongReviews = reviews.filter(isWrongReview);
       const recentWrongCount = wrongReviews.filter((review) => {
         const reviewedAt = new Date(review.reviewedAt).getTime();
@@ -317,7 +343,7 @@ export const getWeakCardInsights = (
       }).length;
       const latestReviews = reviews.slice().reverse();
       const consecutiveWrongCount = latestReviews.findIndex((review) => !isWrongReview(review));
-      const schedule = data.schedules.find((item) => item.cardId === card.id);
+      const schedule = scheduleByCard.get(card.id);
       const normalizedConsecutiveWrong =
         consecutiveWrongCount === -1 ? latestReviews.length : Math.max(0, consecutiveWrongCount);
       const latestWrongReview = wrongReviews[wrongReviews.length - 1];
@@ -502,9 +528,18 @@ export const applyReviewWithUndo = (
     mode,
     rating,
     answer,
-    diffJson,
     reviewedAt: timestamp
   };
+  /**
+   * `diffJson` 参数保留但**不再持久化**（2026-09-22 存储治理）。
+   *
+   * 调用方仍传它（当场算出的 diff 另有用途，如渲染反馈），
+   * 但这个字段**全库零读取方**——只有写入点与 storage 的归一化透传。
+   * 它占单条复习记录约 37% 的体积（实测 254B 里 94B），
+   * 一年量级（约 11,000 条）就是近 1MB 的死重量；
+   * 在「约 14~18 个月撞 5MB 上限」的前提下，这是最该先摘掉的一块。
+   */
+  void diffJson;
 
   // R2 priority 康复摘星：仅系统置位卡（priority && prioritySource !== "manual"，含 legacy 无 source）
   // 参与康复计数；手动标星永不自动摘除、不维护该字段（保持 undefined）。

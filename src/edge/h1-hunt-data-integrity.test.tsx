@@ -156,17 +156,40 @@ describe("H1 案件数据完整性", () => {
 
   // 空修正里只有一部分是真正的「删掉这个词」；其余是「换位 / 换形 + 删」的混合修正。
   // 混合修正的 UI 呈现是原词 → 空白（见 H2 的渲染断言），登记在此以便数据变更时被看见。
-  it("删词型修正的讲解必须说清「去掉什么」（2026-09-20 新增：防止空修正复活）", () => {
+  it("删词型修正的讲解必须说清「去掉什么」（2026-09-20 新增；批五十三改为读 editOp）", () => {
+    /**
+     * ⚠️ 2026-09-23 批五十三修正：这条断言此前**从未检查过任何数据**。
+     *
+     * 旧判据是 `error.correction.trim() !== "（去掉）"`（整串精确等于「（去掉）」）——
+     * 全库匹配 **0 条**，而 correction 以「去掉」开头的有 **62 条**（走 editOp 口径）。
+     * 一个恒真的 continue 让整个 it 变成空转：vague 永远是空数组，
+     * 于是「删词型讲解必须说清去掉什么」这道门禁从来没拦住过任何一条数据。
+     *
+     * 改用 editOp === "delete" 后，本断言真正覆盖全部删词型条目（当前 62 条）。
+     */
     const vague: string[] = [];
+    let checked = 0;
+    /**
+     * 「说清了怎么改」的判据：讲解里要么有**删除动作词**（去掉/省/不加/多余/只留一个…），
+     * 要么给出**改完的样子**（【…】引文，如「中间不夹 of：among 【the】 boxes」）。
+     *
+     * 判据经过自检：合成反例「这里错了。」「注意这个位置。」必须被判坏，
+     * 正例「去掉多余的 it。」「because 和 so 只能来一个。」必须被判好——
+     * 下面 `expect(checked)` 保证判据真的命中数据，避免重演「恒真 continue 空转」。
+     */
+    const ACTION_WORD = /去掉|删|省|不加|不多|多余|多出来|只留|留一个|只能来一个|只能用一个|不留|别|不许|不要|不用|不带|不跟|不认|进不了|不垫|不能|没有|不请|不站|不夹|不补|自己就够|对调|搬/;
+    const QUOTED_FORM = /【[^】]+】/;
     for (const item of huntCases) {
       for (const error of item.errors) {
-        if (error.correction.trim() !== "（去掉）") continue;
-        // 纯删词型（没有任何补充说明）才不合格；「（去掉 to）」这类带对象的不算
-        if (!/去掉|不垫|多余的|不跟|不用|对调/.test(error.explanation)) {
+        if (error.editOp !== "delete") continue;
+        checked += 1;
+        if (!ACTION_WORD.test(error.explanation) && !QUOTED_FORM.test(error.explanation)) {
           vague.push(`${item.id}#${error.tokenIndex} "${error.original}"`);
         }
       }
     }
+    // 防回归：判据必须真的命中数据（否则这个 it 又会退化成空转）
+    expect(checked, "全库应有删词型修正；为 0 说明判据又空了").toBeGreaterThan(0);
     expect(vague, `删词型错误但讲解没说清怎么改：${vague.join(" | ")}`).toEqual([]);
   });
 
@@ -209,12 +232,20 @@ describe("H1 案件数据完整性", () => {
     expect(GRAMMAR_ERROR_TAGS.slice().sort()).toEqual(labelKeys.slice().sort());
   });
 
-  it("[已知问题] comparison 罪名按钮存在但无任何案件使用（点了只会得到「这里确实有问题，但不是比较级」）", () => {
+  it("【R09 已解决】每个罪名标签都至少被一个案件使用——不再有「点了必然说不是这个」的死按钮", () => {
+    /**
+     * 2026-09-20 记录过一次缺口：`comparison` 出现在罪名词表里，
+     * 但**没有任何案件使用它**，于是页面上渲染出的这个按钮点了只会得到
+     * 「这里确实有问题，但不是比较级」。
+     *
+     * 2026-09-22 的内容扩充已让 comparison 被多个案件使用（本轮核对：
+     * huntCases.ts 里 10+ 处），所以这里从「记录缺口」改为**守住不回归**：
+     * 任何一个出现在按钮上的标签都必须有案件在用。
+     */
     const used = new Set(huntCases.flatMap((item) => item.errors.map((error) => error.tag)));
-    expect(used.has("comparison" as GrammarErrorTag)).toBe(false);
-    // 但页面上确实会渲染这个按钮（见 H2 的罪名按钮快照断言）
-    expect(Object.keys(GRAMMAR_ERROR_TAG_LABELS)).toContain("comparison");
-    console.log("[H1] 全库未被使用的 tag：", Object.keys(GRAMMAR_ERROR_TAG_LABELS).filter((tag) => !used.has(tag as GrammarErrorTag)));
+    const deadButtons = Object.keys(GRAMMAR_ERROR_TAG_LABELS).filter((tag) => !used.has(tag as GrammarErrorTag));
+    expect(deadButtons, "这些罪名按钮没有任何案件使用，点了必然答非所问").toEqual([]);
+    expect(used.has("comparison" as GrammarErrorTag), "comparison 现在有案件在用").toBe(true);
   });
 
   it("零进度下每个锁定案都指得出「学完第几课解锁」", () => {

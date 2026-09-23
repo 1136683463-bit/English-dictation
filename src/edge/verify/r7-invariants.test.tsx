@@ -2,7 +2,7 @@
 /**
  * R7 · 库级不变量与 StrictMode 埋点守卫（补充验证）
  *
- * 1. 全库 195 课 × 三档都出得满题（题量达标，不出「这一档暂时没有题」空态）；
+ * 1. 全库 204 课 × 三档都出得满题（题量达标，不出「这一档暂时没有题」空态）；
  * 2. StrictMode（真实 app 的包裹方式）下 offered / started / abandoned 不重复记账
  *    —— 页面注释声明用 ref 守卫正是为了防 StrictMode 双跑；
  * 3. 复习页中途离开时的埋点现状（对照强化页的 abandoned）。
@@ -53,7 +53,7 @@ const mountStrictBoost = (path: string) => {
 describe("R7-a 全库题量不变量", () => {
   beforeEach(() => resetStorage());
 
-  it("195 课 × 三档：题量都达到 BOOST_TIER_META 声明值（不会出现空态）", () => {
+  it("204 课 × 三档：题量都达到 BOOST_TIER_META 声明值（不会出现空态）", () => {
     const shortfalls: string[] = [];
     for (const lesson of grammarLessons) {
       for (const tier of [1, 2, 3] as const) {
@@ -64,7 +64,7 @@ describe("R7-a 全库题量不变量", () => {
       }
     }
     expect(shortfalls).toEqual([]);
-    expect(grammarLessons.length).toBe(195);
+    expect(grammarLessons.length).toBe(205);
   });
 
   it("三档总题量 ≤ 15（不构成题海）且每题都有 answer 与 explainZh", () => {

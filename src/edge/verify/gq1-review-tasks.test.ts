@@ -299,7 +299,7 @@ const BASELINE = {
   /** hunt 卡面混入中文修正括注（扫描时 4 张卡 / 每卡 3 型） */
   huntCardCjkInFront: 4,
   /** 同一案件产生多张 front 相同的卡（扫描时 745 卡 → 543 张是重复；见 2.6b） */
-  huntDuplicateCards: 549, // 2026-09-21 批四十一：+L195/案204 后 546→549（数据增长，非退化）
+  huntDuplicateCards: 581, // 批四十七：+L204 后 577→581（数据增长）
   /** 词块数 < 2 的 rebuild 占比（扫描时 371/3609 = 10.3%） */
   rebuildTooFewChunksRatio: 0.103,
   /** 多词句打乱后仍等于原句（首尾同形兜底失效）占比（扫描时 1/3609） */

@@ -14,7 +14,8 @@ import {
   ShieldCheck,
   Sparkles,
   Upload,
-  Volume2
+  Volume2,
+  Archive
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAppData } from "../AppContext";
@@ -47,6 +48,7 @@ import {
   trackSettingsView,
   buildSettingsTelemetryExport
 } from "../services/settingsTelemetry";
+import { compactReviewHistory } from "../services/reviewArchiveService";
 import { buildVocabTelemetryExport, getVocabTelemetryStats } from "../services/vocabTelemetry";
 import { buildGrammarTelemetryExport, getGrammarTelemetryStats } from "../services/grammarTelemetry";
 import type { AiProviderSettings, AppData, DataSyncSettings, Settings } from "../types";
@@ -91,7 +93,7 @@ const SETTINGS_TABS: Array<{ id: SettingsTab; label: string; icon: typeof Settin
 ];
 
 export default function SettingsPage() {
-  const { data, setData, updateData, reset, dataSyncStatus, setDataSyncStatus, markDataSynced } = useAppData();
+  const { data, setData, updateData, reset, dataSyncStatus, setDataSyncStatus, markDataSynced, saveError } = useAppData();
   const [settings, setSettings] = useState(data.settings);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [activeTab, setActiveTab] = useState<SettingsTab>("preferences");
@@ -107,6 +109,8 @@ export default function SettingsPage() {
     | { kind: "restore_json"; source: AppData }
     | { kind: "pull_cloud"; source: AppData; savedAt: string }
     | { kind: "reset_local" }
+    /** 归档久远复习明细（保留进度与连胜）。 */
+    | { kind: "archive_history" }
     | null
   >(null);
   const dictionaryStats = getDictionaryStats(data);
@@ -156,6 +160,26 @@ export default function SettingsPage() {
   const confirmDangerOp = () => {
     if (!dangerPreview) return;
     trackSettingsDangerOp(dangerPreview.kind, true);
+    if (dangerPreview.kind === "archive_history") {
+      /**
+       * 归档久远复习明细（2026-09-22）。
+       *
+       * 与「重置」的区别是它**保留全部学习进度**——只把超过保留窗口的
+       * 逐条明细压成「一天一条」的汇总，于是连胜、「有活动的日子」、
+       * 已掌握数、卡片与排期全部不变，释放的是纯体积。
+       */
+      const result = compactReviewHistory(data);
+      setData(result.data);
+      setRestoreMessage({
+        tone: "success",
+        text:
+          result.compactedCount > 0
+            ? `已归档 ${result.compactedCount} 条久远复习明细（压成 ${result.summaryCount} 条每日汇总），释放约 ${Math.round(result.freedBytes / 1024)}KB。进度与连胜不变。`
+            : "没有需要归档的久远明细——最近的复习记录都会被完整保留。"
+      });
+      setDangerPreview(null);
+      return;
+    }
     if (dangerPreview.kind === "restore_json") {
       setData(dangerPreview.source);
       setRestoreMessage({
@@ -371,11 +395,36 @@ export default function SettingsPage() {
     }
   };
 
+  /**
+   * R09：所有导出按钮共用的一层——把 `downloadTextFile` 的返回值翻成用户可见反馈。
+   *
+   * 此前除 JSON 备份外的 5 个按钮都**忽略返回值**：文件没生成也照样什么都不说，
+   * 用户以为导出了、去文件夹里找不到。
+   */
+  const exportFile = (filename: string, content: string, type: string) => {
+    if (downloadTextFile(filename, content, type)) {
+      setRestoreMessage({ tone: "success", text: `已导出 ${filename}。` });
+      return;
+    }
+    setRestoreMessage({
+      tone: "error",
+      text: `${filename} 没能生成（可能是存储被限制或浏览器策略拦截）。可以改用打开网页版导出。`
+    });
+  };
+
   const exportBackupJson = () => {
     flushSaveRef.current();
     const exportedData = markDataExported(dataWithPendingSettings());
+    // R09：先确认文件真的交出去了，再记「已备份」——否则会谎报成功，
+    // 而这是用户唯一的数据出口（storage.ts 的 downloadTextFile 已改为返回结果）。
+    if (!downloadTextFile("vocab-backup.json", exportJson(exportedData), "application/json")) {
+      setRestoreMessage({
+        tone: "error",
+        text: "这次导出没能生成文件（可能是存储被限制或浏览器策略拦截）。请换用打开网页版导出，或先在下方复制数据。"
+      });
+      return;
+    }
     setData(exportedData);
-    downloadTextFile("vocab-backup.json", exportJson(exportedData), "application/json");
     setRestoreMessage({ tone: "success", text: "已导出 JSON 备份，数据范围见下方摘要。" });
   };
 
@@ -870,9 +919,9 @@ export default function SettingsPage() {
               <ShieldCheck size={16} />
               <span>
                 存储健康 · 数据结构 v{storageDiagnosis.schemaVersion} · 本地占用约{" "}
-                {storageDiagnosis.sizeKb >= 1024
-                  ? `${(storageDiagnosis.sizeKb / 1024).toFixed(1)}MB`
-                  : `${storageDiagnosis.sizeKb}KB`}
+                {storageDiagnosis.storageCostKb >= 1024
+                  ? `${(storageDiagnosis.storageCostKb / 1024).toFixed(1)}MB`
+                  : `${storageDiagnosis.storageCostKb}KB`}
               </span>
             </div>
           ) : (
@@ -926,6 +975,20 @@ export default function SettingsPage() {
                       <Download size={16} />
                       先导出备份
                     </button>
+                    {/*
+                      R11：存储告警下**先**给「归档」这个安全选项。
+                      它保留全部进度与连胜，只把久远明细压成每日汇总——
+                      而此前这个面板只有「导出备份」与「导出后重置」（清空一切）。
+                      用户在「空间不够」时最需要的正是前者：不丢东西地把空间腾出来。
+                    */}
+                    <button
+                      className="secondary-button"
+                      type="button"
+                      onClick={() => setDangerPreview({ kind: "archive_history" })}
+                    >
+                      <Archive size={16} />
+                      归档久远明细腾空间
+                    </button>
                     <button className="danger-button" type="button" onClick={() => setDangerPreview({ kind: "reset_local" })}>
                       <RotateCcw size={16} />
                       导出后重置
@@ -947,11 +1010,11 @@ export default function SettingsPage() {
               <Download size={17} />
               JSON 备份
             </button>
-            <button className="secondary-button" type="button" onClick={() => downloadTextFile("anki-cards.csv", exportAnkiCsv(data), "text/csv")}>
+            <button className="secondary-button" type="button" onClick={() => exportFile("anki-cards.csv", exportAnkiCsv(data), "text/csv")}>
               <Download size={17} />
               Anki CSV
             </button>
-            <button className="secondary-button" type="button" onClick={() => downloadTextFile("vocab-notes.md", exportMarkdown(data), "text/markdown")}>
+            <button className="secondary-button" type="button" onClick={() => exportFile("vocab-notes.md", exportMarkdown(data), "text/markdown")}>
               <Download size={17} />
               Markdown 笔记
             </button>
@@ -970,7 +1033,7 @@ export default function SettingsPage() {
                 <button
                   className="secondary-button"
                   type="button"
-                  onClick={() => downloadTextFile(`vocab-telemetry-${nowIso().slice(0, 10)}.json`, buildVocabTelemetryExport(), "application/json")}
+                  onClick={() => exportFile(`vocab-telemetry-${nowIso().slice(0, 10)}.json`, buildVocabTelemetryExport(), "application/json")}
                 >
                   <Download size={16} />
                   词书遥测（{vocabTelemetryStats.activeEvents + vocabTelemetryStats.archivedEvents} 条）
@@ -978,7 +1041,7 @@ export default function SettingsPage() {
                 <button
                   className="secondary-button"
                   type="button"
-                  onClick={() => downloadTextFile(`grammar-telemetry-${nowIso().slice(0, 10)}.json`, buildGrammarTelemetryExport(), "application/json")}
+                  onClick={() => exportFile(`grammar-telemetry-${nowIso().slice(0, 10)}.json`, buildGrammarTelemetryExport(), "application/json")}
                 >
                   <Download size={16} />
                   语法遥测（{grammarTelemetryStats.activeEvents + grammarTelemetryStats.archivedEvents} 条）
@@ -986,7 +1049,7 @@ export default function SettingsPage() {
                 <button
                   className="secondary-button"
                   type="button"
-                  onClick={() => downloadTextFile(`settings-telemetry-${nowIso().slice(0, 10)}.json`, buildSettingsTelemetryExport(), "application/json")}
+                  onClick={() => exportFile(`settings-telemetry-${nowIso().slice(0, 10)}.json`, buildSettingsTelemetryExport(), "application/json")}
                 >
                   <Download size={16} />
                   设置遥测
@@ -1075,16 +1138,43 @@ export default function SettingsPage() {
                   }}
                 />
               </label>
+              {/*
+                归档入口刻意排在「重置」**之前**：它是安全的那个选项。
+                长期使用（约 1.5 年后）会撞到浏览器存储上限，此前用户唯一的选择
+                是把所有学习数据清零——有了这个入口就能只压缩久远明细、保住进度。
+              */}
+              <button
+                className="secondary-button"
+                type="button"
+                onClick={() => setDangerPreview({ kind: "archive_history" })}
+              >
+                <Archive size={17} />
+                归档久远复习明细
+              </button>
               <button className="danger-button" type="button" onClick={() => setDangerPreview({ kind: "reset_local" })}>
                 <RotateCcw size={17} />
                 重置本地数据
               </button>
             </div>
+            <p className="field-hint">
+              归档只压缩较早的逐条复习记录（保留最近半年的明细），学习进度、连胜天数、已掌握数量都不变。数据接近浏览器上限时用它腾出空间。
+            </p>
           </div>
-          {restoreMessage && (
-            <div className={`restore-message ${restoreMessage.tone}`} role="status">
-              {restoreMessage.text}
+          {/*
+            落盘失败优先于普通提示（2026-09-22）：saveError 由 AppContext.commitData 的
+            try/catch 设置。此前失败只进 console，页面照样显示「已恢复 N 张卡片」——
+            用户以为成功了，实际磁盘没变。这里把失败摊到最显眼的位置。
+          */}
+          {saveError ? (
+            <div className="restore-message error" role="status">
+              {saveError}
             </div>
+          ) : (
+            restoreMessage && (
+              <div className={`restore-message ${restoreMessage.tone}`} role="status">
+                {restoreMessage.text}
+              </div>
+            )
           )}
         </div>
           </div>
@@ -1159,7 +1249,7 @@ export default function SettingsPage() {
               : "将清空本机全部学习数据并恢复初始词库，此操作不可撤销。建议先导出 JSON 备份。"
         }
         details={
-          dangerPreview && dangerPreview.kind !== "reset_local" ? (
+          dangerPreview && (dangerPreview.kind === "restore_json" || dangerPreview.kind === "pull_cloud") ? (
             <div className="danger-preview-scope">
               <div>
                 <span>本机当前</span>
@@ -1169,7 +1259,9 @@ export default function SettingsPage() {
                 <span>
                   {dangerPreview.kind === "restore_json"
                     ? "备份文件"
-                    : `云端快照${dangerPreview.savedAt ? `（${formatSyncTime(dangerPreview.savedAt)}）` : ""}`}
+                    : dangerPreview.kind === "pull_cloud"
+                      ? `云端快照${dangerPreview.savedAt ? `（${formatSyncTime(dangerPreview.savedAt)}）` : ""}`
+                      : "归档后"}
                 </span>
                 <strong>{scopeSummary(dangerPreview.source)}</strong>
               </div>

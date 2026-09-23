@@ -174,7 +174,7 @@ describe("R14 buildLastWeekReport（上周一句话结论）", () => {
     expect(report!.outputCount).toBe(2);
     expect(report!.sentence).toContain("上周有效输出 2 句");
     expect(report!.sentence).toContain("比前周少 2 次");
-    expect(report!.sentence).toContain("时态变形");
+    expect(report!.sentence).toContain("说过去的事");
   });
 
   it("上周有输出但零错误：正向收尾（保持住）", () => {
@@ -191,6 +191,6 @@ describe("R14 buildLastWeekReport（上周一句话结论）", () => {
     const report = buildLastWeekReport(data, REF);
     expect(report).not.toBeNull();
     expect(report!.sentence).toContain("上周没有输出记录");
-    expect(report!.sentence).toContain("冠词");
+    expect(report!.sentence).toContain("东西前面那个小词");
   });
 });

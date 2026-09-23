@@ -6,6 +6,7 @@ import {
   buildHintMessage,
   buildHuntResult,
   computeStars,
+  correctedSentenceOf,
   findErrorAt,
   GRAMMAR_ERROR_TAG_LABELS,
   hasUnlockedHuntCase,
@@ -19,6 +20,7 @@ import {
 import { huntCases } from "../data/huntCases";
 import { grammarLessons } from "../data/grammarLessons";
 import { makeTestData } from "./testUtils";
+import { GRAMMAR_ZERO_TERMS } from "../data/grammarZeroTerms";
 
 const firstCase = listHuntCases()[0];
 const firstError = firstCase.errors[0];
@@ -129,13 +131,16 @@ describe("hunt service", () => {
   });
 
   it("picks a correction word, skipping articles and deletion-style fixes", () => {
-    expect(pickCorrectionWord("an")).toBe("");
-    expect(pickCorrectionWord("a")).toBe("");
-    expect(pickCorrectionWord("去掉 so")).toBe("");
-    expect(pickCorrectionWord("moved")).toBe("moved");
-    expect(pickCorrectionWord("is happy")).toBe("happy");
-    expect(pickCorrectionWord("a beautiful dress")).toBe("beautiful");
-    expect(pickCorrectionWord("information")).toBe("information");
+    // 判据走 editOp（批五十三）：不可机械执行的三类一律取不到词
+    expect(pickCorrectionWord("an", "replace")).toBe("");
+    expect(pickCorrectionWord("a", "replace")).toBe("");
+    expect(pickCorrectionWord("去掉 so", "delete")).toBe("");
+    expect(pickCorrectionWord("把 white 移到 cat 前面", "move")).toBe("");
+    expect(pickCorrectionWord("（rather 跟在 would 后）", "explain")).toBe("");
+    expect(pickCorrectionWord("moved", "replace")).toBe("moved");
+    expect(pickCorrectionWord("is happy", "insert")).toBe("happy");
+    expect(pickCorrectionWord("a beautiful dress", "replace")).toBe("beautiful");
+    expect(pickCorrectionWord("information", "replace")).toBe("information");
   });
 
   it("handles a null guessedTag without crashing", () => {
@@ -247,14 +252,12 @@ describe("R02 找错知识缺口 → SM-2 复习队列", () => {
      * 此前断言的 `caseItem.tokens.join(" ")` 是含错原文——那句子里留着案件的植错，
      * 而这张卡是进 SM-2 复习队列当答案用的（用户照抄它应该判对）。
      * 修好后正确句 = 把该案全部植错改正（见 correctedSentenceOf）。
+     *
+     * 2026-09-23 批五十三：这里原有一份**手抄的修正算法副本**（自带的 splice 与贴标点逻辑），
+     * 正是「同一套判据散落多份」的隐患来源。改为直接调用生产函数——独立核算的职责
+     * 已由 RV11（换算法重建 + 词数守恒）承担，此处不再重复实现。
      */
-    const corrected = [...caseItem.tokens];
-    for (const error of [...caseItem.errors].sort((a, b) => b.tokenIndex - a.tokenIndex)) {
-      const trailing = /([.,!?;:]+)$/.exec(corrected[error.tokenIndex])?.[1] ?? "";
-      if (/^（?去掉/.test(error.correction.trim())) corrected.splice(error.tokenIndex, 1);
-      else corrected[error.tokenIndex] = `${error.correction.trim().replace(/[.,!?;:]+$/, "")}${trailing}`;
-    }
-    expect(card.front).toBe(corrected.join(" "));
+    expect(card.front).toBe(correctedSentenceOf(caseItem));
     expect(card.front, "正面不应再含任何植错原形").not.toBe(caseItem.tokens.join(" "));
     // grammarNote 嵌入稳定罪名 token（[tag:原错词]，弱点回溯用）
     const details = data.sentenceDetails.find((item) => item.cardId === card.id);
@@ -361,3 +364,39 @@ describe("hunt cases data integrity", () => {
   });
 });
 
+
+/**
+ * huntCases 零术语守门（2026-09-22 批四十三新增）。
+ *
+ * 背景：零术语红线在**课程侧**（grammarLessons）有 30+ 项断言守着，
+ * 但**找错案件侧**（huntCases）一处都没有——而案件里的 `errors[].explanation`
+ * 是**用户可见的**（点对错词后直接显示，见 GrammarHuntPage）。
+ *
+ * 实测：本守门落地前有 **313 处**术语命中、散布在 131/206 个案里，
+ * 且都是高频词（复数 107、可数 98、三单 33、主语 32）——
+ * 数量比课程侧历史上任何一次泄漏都多，存活时间也最长（无人发现）。
+ * 已全部改写为项目自建词汇；本断言防止回潮。
+ *
+ * 口径：与课程侧一致——`title` / `scene` / `errors[].explanation` 三处
+ * 都是用户可见文案，全部纳入。`tokens`（英文原句）与 `correction`（英文修正）
+ * 不含中文，无需检查。
+ */
+describe("零术语红线 · 找错案件侧（huntCases 用户可见文案）", () => {
+  it("案件的 title / scene / errors[].explanation 都不得含语法术语", () => {
+    const offenders: string[] = [];
+    for (const huntCase of huntCases) {
+      const check = (text: string | undefined, where: string) => {
+        if (!text) return;
+        const hits = GRAMMAR_ZERO_TERMS.filter((term) => text.includes(term));
+        if (hits.length > 0) offenders.push(`${huntCase.id} ${where}→${hits.join("/")}：${text.slice(0, 60)}`);
+      };
+      check(huntCase.title, "title");
+      check(huntCase.scene, "scene");
+      huntCase.errors.forEach((error, index) => check(error.explanation, `errors[${index}].explanation`));
+    }
+    expect(
+      offenders.slice(0, 10),
+      `找错案件侧的用户可见文案含语法术语（这些会在破案反馈里直接显示给用户）：\n${offenders.join("\n")}`
+    ).toEqual([]);
+  });
+});

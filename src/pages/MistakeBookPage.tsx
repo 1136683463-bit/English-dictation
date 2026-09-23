@@ -29,6 +29,7 @@ import {
   StoryTone
 } from "../services/aiService";
 import { compareLetters } from "../services/diffService";
+import { writeToClipboard } from "../services/clipboardService";
 import { getMistakeBookUnit, syncMistakeBookUnit } from "../services/dynamicBookService";
 import { findDictionaryEntry, findDictionaryEntryAsync } from "../services/dictionaryService";
 import {
@@ -327,6 +328,8 @@ export default function MistakeBookPage() {
   const [generationStatus, setGenerationStatus] = useState<GenerationStatus>("idle");
   const [generationError, setGenerationError] = useState("");
   const [copiedId, setCopiedId] = useState("");
+  /** R09：复制失败的反馈，按卡片 id 归属（此前失败会静默显示成功对勾）。 */
+  const [copyErrorId, setCopyErrorId] = useState("");
   const [expandedGenerationIds, setExpandedGenerationIds] = useState<string[]>([]);
   const [expandedTranslationIds, setExpandedTranslationIds] = useState<string[]>([]);
   const [expandedDiffIds, setExpandedDiffIds] = useState<string[]>([]);
@@ -609,8 +612,25 @@ export default function MistakeBookPage() {
     }
   };
 
+  /**
+   * R09：复制到剪贴板。
+   *
+   * 原来是裸的 `await navigator.clipboard.writeText(...)`：一没兜底、二没 try/catch。
+   * 两种真实环境都会走到失败分支——① `navigator.clipboard` 在**非安全上下文**
+   * （http 非 localhost）下根本不存在；② Tauri 桌面的剪贴板写入可能被策略拒绝。
+   * 原写法下前者抛 TypeError 中断、后者 reject，而**成功对勾照样显示**，
+   * 用户以为复制好了、粘贴出来是空的。
+   *
+   * 现在：失败时不再显示对勾，给出可执行的替代路径（手动选中文本）。
+   */
   const copyContent = async (id: string, content: string) => {
-    await navigator.clipboard.writeText(content);
+    const copied = await writeToClipboard(content);
+    if (!copied) {
+      setCopyErrorId(id);
+      window.setTimeout(() => setCopyErrorId((current) => (current === id ? "" : current)), 3200);
+      return;
+    }
+    setCopyErrorId("");
     setCopiedId(id);
     window.setTimeout(() => setCopiedId(""), 1600);
   };
@@ -926,6 +946,12 @@ export default function MistakeBookPage() {
         </div>
         {!isExpanded && <p className="mistake-generation-preview">{getContentPreview(generation.content)}</p>}
         {isExpanded && renderStructuredStory(generation)}
+        {/* R09：复制失败的可见反馈，替换原来「失败也打勾」的静默。 */}
+        {copyErrorId === generation.id && (
+          <p className="mistake-generation-copy-error" role="alert">
+            没能复制到剪贴板，可以手动选中上面的文字复制。
+          </p>
+        )}
       </article>
     );
   };

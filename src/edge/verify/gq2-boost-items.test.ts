@@ -3,7 +3,7 @@
  * GQ2 · 生成题全库扫描（B）——趁热练（grammarBoostService.buildBoostItems / judgeBoostItem）
  *
  * 背景同 GQ1：趁热练三档的题全部由引擎按课程数据现场生成，从未被全库扫过。
- * 扫描面：**全部 195 课 × 三档 × 16 轮**（轮次影响档 1 的题型轮转与档 2/3 的取题顺序），
+ * 扫描面：**全部 205 课 × 三档 × 16 轮**（轮次影响档 1 的题型轮转与档 2/3 的取题顺序），
  *         另有弱点驱动（weakSpotTag）与 seen（近 7 天已练）两种真实调用形态。
  *
  * 检查项（与任务书对齐）：
@@ -215,7 +215,7 @@ const BASELINE = {
 };
 
 describe("GQ2 · 趁热练生成题全库扫描（A 可作答性 / B 语义一致 / C 干扰项 / D 判分）", () => {
-  it("扫描覆盖：195 课 × 三档 × 16 轮 + 11 弱点标签（证明覆盖面）", () => {
+  it("扫描覆盖：205 课 × 三档 × 16 轮 + 11 弱点标签（证明覆盖面）", () => {
     const byTier = new Map<number, number>();
     const byKind = new Map<string, number>();
     for (const entry of scanned) {
@@ -228,7 +228,7 @@ describe("GQ2 · 趁热练生成题全库扫描（A 可作答性 / B 语义一�
     console.log("[GQ2] 分档:", [...byTier.entries()].sort((a, b) => a[0] - b[0]));
     console.log("[GQ2] 题型分布:", [...byKind.entries()].sort((a, b) => b[1] - a[1]));
     console.log("[GQ2] 双正解（bothRight）素材条数:", bothRightStatements.size);
-    expect(grammarLessons.length).toBe(195);
+    expect(grammarLessons.length).toBe(205);
     expect(scanned.length).toBeGreaterThan(20000);
     // 三档都必须出得满（与 BOOST_TIER_META 声明一致）
     const shortfalls: string[] = [];

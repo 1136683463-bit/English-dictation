@@ -300,7 +300,17 @@ describe("KB4 拼装区键盘等价性", () => {
     page.unmount();
   });
 
-  it("KB4-7 拼装区工具区：撤销按钮有 aria-label，但操作提示只讲鼠标动作", async () => {
+  /**
+   * KB4-7【已修 2026-09-23】操作提示现在讲键盘了，且键盘换位真的可用。
+   *
+   * 修复前的状态（本条曾以 willing-to-fail 记录）：换位只有 HTML5 拖拽一条路，
+   * 键盘用户在拼装区排错顺序只能全清重摆（N 次操作）；
+   * 操作提示也只说「拖动词块可以调整位置」，键盘用户不知道有别的方式。
+   *
+   * 修复方式：词块加 ← / → 换位（调用与拖拽同一条 arrangeMove），
+   * 并在提示里讲出来。因此本条的断言从「记录缺陷」翻成「验证能力存在」。
+   */
+  it("KB4-7【已修 2026-09-23】撤销按钮有 aria-label，且操作提示已告知键盘换位方式", async () => {
     warmStorage();
     const page = mount();
     expect(reachArrange(page)).toBe(true);
@@ -310,9 +320,59 @@ describe("KB4 拼装区键盘等价性", () => {
     const hint = page.container.querySelector(".lesson-token-tools-hint")?.textContent ?? "";
     expect(hint, "操作提示应存在").toContain("拖动");
     expect(
-      /键盘|方向键|按.*键/.test(hint),
-      "事实：操作提示没有告诉键盘用户怎么换位置（只说「拖动词块可以调整位置」）"
-    ).toBe(false);
+      /键盘|方向键|←|→/.test(hint),
+      "操作提示必须告诉键盘用户怎么换位置（修复前只说「拖动」，键盘用户无从得知 ← → 可用）"
+    ).toBe(true);
+    page.unmount();
+  });
+
+  /**
+   * KB4-8：键盘换位的行为验证（新增 2026-09-23）。
+   *
+   * 上一条只验证了「提示里提到了方向键」；本条验证**这个能力真的能用**，
+   * 否则提示就成了空头支票。三点都要成立：
+   *  ① 焦点在词块上按 → 能与右邻块对调；
+   *  ② 换位后焦点仍在该词块上（否则连按第二次就失效——换位会改 key 触发节点重建）；
+   *  ③ 一路按 → 到底后不越界、词集不乱。
+   */
+  it("KB4-8 词块按 ← → 能换位，且换位后焦点跟着走（可连按）", async () => {
+    warmStorage();
+    const page = mount();
+    expect(reachArrange(page)).toBe(true);
+    const words = arrangeAnswer();
+    for (const word of words) addWord(page, word);
+    await flushAsync();
+
+    const before = builtWords(page);
+    expect(before.length, "前置：已摆满").toBe(words.length);
+
+    const first = builtChips(page)[0];
+    first.focus();
+    expect(document.activeElement, "前置：第一个词块已获焦").toBe(first);
+
+    const key = (el: Element, k: string) =>
+      el.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true }));
+
+    key(first, "ArrowRight");
+    await flushAsync();
+
+    const after = builtWords(page);
+    expect(after, "按 → 应与右邻块对调").not.toEqual(before);
+    expect([...after].sort(), "换位只是换顺序，词集不变").toEqual([...before].sort());
+    expect(after[1], "原第 1 块移到第 2 位").toBe(before[0]);
+    expect(after[0], "原第 2 块移到第 1 位").toBe(before[1]);
+
+    const moved = builtChips(page)[1];
+    expect(document.activeElement, "换位后焦点应仍在同一词块上（否则无法连按）").toBe(moved);
+
+    // 连续按到底：不越界、不抛错
+    for (let i = 0; i < 12; i += 1) {
+      key(document.activeElement ?? moved, "ArrowRight");
+      await flushAsync();
+    }
+    const end = builtWords(page);
+    expect([...end].sort(), "连按到底后词集仍完整").toEqual([...before].sort());
+    expect(end[end.length - 1], "按到底后该词块停在最后一位").toBe(before[0]);
     page.unmount();
   });
 });

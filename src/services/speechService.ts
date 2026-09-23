@@ -209,7 +209,25 @@ const getWebAudioContext = () => {
   const AudioContextConstructor =
     window.AudioContext ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
   if (!AudioContextConstructor) return null;
-  if (!currentWebAudioContext) currentWebAudioContext = new AudioContextConstructor();
+  if (!currentWebAudioContext) {
+    /**
+     * R09：构造函数会抛，必须兜住。
+     *
+     * WebKit 上 `new AudioContext()` 可以抛 `InvalidStateError`
+     *（"hardware contexts" 相关），与硬件/权限有关。这条路径由
+     * `speakText` 同步调用，而所有调用方都写 `void speakText(...)`，
+     * 于是异常变成 **unhandled rejection**：在 jsdom/vitest 里它出现在
+     * `process.on("unhandledRejection")`，在浏览器里是控制台报错 +
+     * 静默无语音——用户只看到「点了没声音」，没有任何可行动的信息。
+     *
+     * 门铃是可选能力：拿不到就返回 null，走系统语音兜底。
+     */
+    try {
+      currentWebAudioContext = new AudioContextConstructor();
+    } catch {
+      return null;
+    }
+  }
   return currentWebAudioContext;
 };
 

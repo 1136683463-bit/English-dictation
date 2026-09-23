@@ -14,7 +14,7 @@ import {
   Settings
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { NavLink, Route, Routes, useLocation, useParams } from "react-router-dom";
+import { Link, NavLink, Route, Routes, useLocation, useParams } from "react-router-dom";
 import BrandMark from "./components/BrandMark";
 import { AppProvider, useAppData } from "./AppContext";
 import { computeStreak } from "./services/statsService";
@@ -92,7 +92,7 @@ const GrammarBoostPageRoute = () => {
 
 const AppLayout = () => {
   const location = useLocation();
-  const { data, saveError } = useAppData();
+  const { data, saveError, crossWindowNotice, dismissCrossWindowNotice, storagePressure } = useAppData();
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
 
   useEffect(() => {
@@ -196,6 +196,39 @@ const AppLayout = () => {
           <div className="save-error-banner" role="alert">
             <AlertTriangle size={16} aria-hidden="true" />
             <span>{saveError}</span>
+          </div>
+        )}
+        {/*
+          多窗口提示（R10）：只在这种情况出现——另一个窗口改过数据，
+          而本次是「整份替换」类操作（导入/重置/恢复），无法自动合并。
+          函数式更新（答题、勾选、收藏等日常操作）会自动与对方合并，
+          用户完全无感，所以不提示。
+        */}
+        {crossWindowNotice && (
+          <div className="save-error-banner" role="status">
+            <AlertTriangle size={16} aria-hidden="true" />
+            <span>{crossWindowNotice}</span>
+            <button className="ghost-link" type="button" onClick={dismissCrossWindowNotice}>
+              知道了
+            </button>
+          </div>
+        )}
+        {/*
+          接近存储上限的提示（R11）：此前这条判断只在设置页算，而设置页用户很少去。
+          实测从软上限（4MB）到真正写不下，在 macOS 桌面端只有约 43 天缓冲——
+          指望用户在这段时间里主动进设置页，是会踩空的。改由每次保存后顺带更新，
+          常驻内容区顶部。文案指向「归档」，因为它是唯一保留进度的选择。
+        */}
+        {storagePressure && (
+          <div className="save-error-banner" role="status">
+            <AlertTriangle size={16} aria-hidden="true" />
+            <span>
+              {storagePressure}
+              {" "}
+              <Link className="ghost-link" to="/settings">
+                去设置
+              </Link>
+            </span>
           </div>
         )}
         <Routes>

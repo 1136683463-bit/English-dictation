@@ -127,31 +127,36 @@ describe("ST1 · 段间状态残留", () => {
     clickElement(rereadButton(page));
     await flushAsync();
     expect(inSection(page, "情景讲解"), "② 应回到讲解段").toBe(true);
-    expect(
-      window.localStorage.getItem(`grammar:resume:${LESSON}`),
-      "② practiceIndex=0 时不写快照（reread 的既有守卫）"
-    ).toBeNull();
+    /**
+     * 2026-09-22 修断言：「reread 时不写快照」的旧守卫已被新语义取代。
+     *
+     * 现在有两类快照并存：
+     *  - reread 写的**练习进度**快照（practiceIndex > 0 时才有，本用例是 0 所以没有）；
+     *  - `snapshotStage` 写的**段位**快照（任何段位推进都记一笔，用于「做完前测/看完讲解
+     *    就关掉浏览器，刷新回来不该被扔回前测」）。
+     * 所以这里会看到一条 `stage: "recall"` 或 `"watch"` 的段位快照——
+     * 只要它**不是** `practice`（不冒充练习进度），就符合设计。
+     */
+    const raw = window.localStorage.getItem(`grammar:resume:${LESSON}`);
+    if (raw) {
+      const snapshot = JSON.parse(raw) as { stage: string; practiceIndex: number };
+      expect(snapshot.stage, "reread 时写的应是段位快照，不冒充练习进度").not.toBe("practice");
+    }
 
     // ③ 原路走回练习段
     page.click("下一步：搭装与对错");
     page.click("下一步：变奏");
     page.click("看懂了，试一试");
     await flushAsync();
-    // 引导段首题是 arrange，会被另一根 ref 卡住（见 FAIL-2）——用移除+放回脱身
+    /**
+     * 引导段首题是 arrange。修复后判题去抖 ref 不再跨段残留，
+     * 因此直接拼满就会判题（原先被 FAIL-2 卡住，需要移除+放回的绕行）。
+     */
     const guidedFirst = guidedEntries(LESSON)[0];
     expect(guidedFirst.step.kind, "L13 引导段首题是 arrange").toBe("arrange");
     answerArrangeCorrectly(page, guidedFirst.step.answer);
     await flushAsync();
-    if (forwardExits(page).length === 0) {
-      clickElement(builtChips(page)[builtChips(page).length - 1]);
-      await flushAsync();
-      clickElement(
-        bankChips(page).find(
-          (chip) => !chip.disabled && (chip.textContent ?? "").trim() === guidedFirst.step.answer.split(/\s+/).pop()
-        )
-      );
-      await flushAsync();
-    }
+    expect(forwardExits(page).length, "拼满即应判题并给出出口").toBeGreaterThan(0);
     finishGuidedToRecall(page);
     recallToPractice(page);
     await flushAsync();
@@ -166,23 +171,17 @@ describe("ST1 · 段间状态残留", () => {
     const bankDisabled = bankChips(page).filter((chip) => chip.disabled).length;
     expect(
       bankDisabled,
-      "★ 缺陷：词块库中被占用的 5 块已禁用（practiceOrder 判定为「已选」），只剩 2 个干扰项可点"
-    ).toBe(5);
+      "词块库里不应有被占用（禁用）的块——进段时 practiceOrder 已清空"
+    ).toBe(0);
+    /**
+     * 修复后：回到 practice 时是干净的初始态——没有残留的句子、没有禁用的词块。
+     * 修复前这里能看到「拼装区已摆好上一题、词块全禁用、无反馈无出口」的死结，
+     * 唯一出路是手动移除一块再放回（靠 arrangeRemove 清判题去抖 ref）。
+     */
     expect(
       page.container.querySelector(".lesson-feedback"),
-      "★ 缺陷：practiceFeedback 已被重置为 idle，拼装区却是「已完成」的样子"
+      "回到第 1 题时不应有残留的判题反馈"
     ).toBeNull();
-    expect(forwardExits(page), "★ 缺陷：无任何前进出口").toEqual([]);
-
-    // ⑤ 唯一出路：先移除一块再放回（arrangeRemove 会清判题去抖 ref）
-    clickElement(builtChips(page)[builtChips(page).length - 1]);
-    await flushAsync();
-    clickElement(bankChips(page).find((chip) => !chip.disabled && (chip.textContent ?? "").trim() === "book."));
-    await flushAsync();
-    expect(
-      page.container.querySelector(".lesson-feedback.pass"),
-      "⑤ 移除后再放回才判通过（证明卡点是拼装序残留 + 去抖 ref，不是内容不对）"
-    ).not.toBeNull();
     page.unmount();
   });
 
@@ -230,9 +229,9 @@ describe("ST1 · 段间状态残留", () => {
     expect(builtChips(page).map((chip) => chip.textContent), "③ 已摆满 5 块").toHaveLength(5);
     expect(
       page.container.querySelector(".lesson-feedback"),
-      "★ 缺陷：拼满正确答案后没有判题反馈（判题去抖 ref 仍是练习段的 5）"
-    ).toBeNull();
-    expect(forwardExits(page), "★ 缺陷：没有任何前进出口，页面死在这里").toEqual([]);
+      "拼满正确答案后应立刻判题（去抖 ref 不再跨段残留）"
+    ).not.toBeNull();
+    expect(forwardExits(page), "判题后应有前进出口（页面不再死在这里）").not.toEqual([]);
 
     // ④ 唯一出路：移除一块再放回
     clickElement(builtChips(page)[builtChips(page).length - 1]);
@@ -288,15 +287,14 @@ describe("ST1 · 段间状态残留", () => {
     ).toBeNull();
     expect(
       builtChips(page).map((chip) => chip.textContent),
-      "★ 缺陷：guidedOrder 未随 resetGuided 清空——上一轮的正确句子仍留在拼装区"
-    ).toEqual(["I", "am", "drawing", "a", "picture."]);
+      "resetGuided 应清空拼装区——上一轮的句子不应残留"
+    ).toEqual([]);
     const bank = bankChips(page);
     expect(bank.length, "词块库仍有 5 块").toBe(5);
     expect(
       bank.every((chip) => chip.disabled),
-      "★ 缺陷：词块库全部禁用（guidedOrder 判定为「已选」）——用户无法改动任何一块"
-    ).toBe(true);
-    expect(forwardExits(page), "★ 缺陷：没有任何前进出口，页面彻底卡死").toEqual([]);
+      "词块库不应全部禁用（guidedOrder 已清空，所有块可选）"
+    ).toBe(false);
     page.unmount();
   });
 
@@ -335,15 +333,19 @@ describe("ST1 · 段间状态残留", () => {
   });
 
   /**
-   * FAIL-4（P1 功能错误 · 出口消失 + 记账污染）
-   * 练习段答对那一刻起「下一题」出口就在，但拼装区仍可点。多摆一块会立刻重判为
-   * retry（GrammarLessonPage.tsx:1260「≥答案词数且长度与上次判题不同就重判」），
-   * `practiceMisses` +1；再移除多余块后 **没有反馈、没有出口**，
-   * 用户必须重摆一次才出来 —— 这一次被记成 attempts=2（同一题判了两次）。
-   * 副作用：`saveMistakeIfNeeded(practiceMisses>0)` 在真正通过时把**已经答对的句子**
-   * 当作错句处理，并把一次通过标记拉黑（practiceFirstTry=false）。
+   * FAIL-4【已修 2026-09-24】（P1 功能错误 · 出口消失 + 记账污染）
+   *
+   * 修复前：练习段答对后拼装区仍可点，误点多摆一块会立刻重判为 retry
+   * 并把反馈重置为 idle；再移除多余块时 `arrangeRemove` 见 feedback 已是 idle
+   *（非 pass）→ **既无反馈也无出口**，用户必须重摆一次，那一次被记成 attempts=2
+   *（同一题判两次）。副作用：`saveMistakeIfNeeded` 在真正通过时把**已经答对的句子**
+   * 当错句收进错题本，并把一次通过标记拉黑。
+   *
+   * 修复：`arrangeAdd` 与 `arrangeRemove` / `arrangeUndoLast` 同口径——
+   * **已通过的题保留通关态**（允许回头改，但出口与状态不因误触而丢）。
+   * 现在「移除多余块后出口仍在」，也不再需要重摆。
    */
-  it("FAIL-4 练习段答对后误点词块：出口消失，同一题被判两次", async () => {
+  it("FAIL-4【已修 2026-09-24】练习段答对后误点词块：出口仍在，不再重复判题", async () => {
     seed();
     const page = mount();
     enterPracticeFromPretest(page);
@@ -353,32 +355,39 @@ describe("ST1 · 段间状态残留", () => {
     await flushAsync();
     expect(forwardExits(page), "① 答对应有出口").toContain("下一题");
 
+    /**
+     * ② 误点多摆一块：仍然会给出「不对」的即时反馈（这是对的，用户需要知道自己多摆了），
+     * 但**通关态与出口不能被摧毁**——这正是修复的核心。
+     */
     const extra = bankChips(page).find((chip) => !chip.disabled);
     expect(extra, "① 应还有干扰项可点").toBeTruthy();
     clickElement(extra);
     await flushAsync();
     expect(
       page.container.querySelector(".lesson-feedback.retry"),
-      "② 多点一块立即翻成 retry"
+      "② 多点一块应有 retry 反馈（如实告诉用户多摆了）"
     ).not.toBeNull();
-    expect(forwardExits(page), "② 出口消失").toEqual([]);
+    /**
+     * ② 这一瞬「出口消失」是**正确的**：多摆一块 = 当前回答不成立，
+     * 不该给「下一题」。真正要修的缺陷在下一步（③）。
+     */
+    expect(forwardExits(page), "② 超载态不给前进出口（符合预期）").toEqual([]);
 
+    // ③ 移除多余块 → 回到已通过态，出口仍在（修复前：既无 pass 也无 retry、无出口）
     clickElement(builtChips(page).find((chip) => chip.textContent === (extra?.textContent ?? "").trim()));
     await flushAsync();
-    expect(page.container.querySelector(".lesson-feedback"), "★ 缺陷：移除多余块后既无 pass 也无 retry").toBeNull();
-    expect(forwardExits(page), "★ 缺陷：无出口，需用户再摆一次才能出来").toEqual([]);
-
-    // 再摆一次才恢复
-    answerArrangeCorrectly(page, PRACTICE_Q1);
-    await flushAsync();
-    expect(forwardExits(page), "③ 重摆后恢复出口").toContain("下一题");
+    expect(
+      page.container.querySelector(".lesson-feedback.pass"),
+      "③ 移除多余块后回到 pass 态"
+    ).not.toBeNull();
+    expect(forwardExits(page), "③ 出口仍在，用户无需重摆").toContain("下一题");
     await flushAsync();
 
     const steps = telemetryOfKind("lesson_step_result").filter((event) => event.section === "practice");
     expect(
       steps.map((event) => `#${event.stepIndex} a${event.attempts} ${event.passed}`),
-      "★ 缺陷：同一题被判两次（a1 通过 + a2 通过），一次误触凭空多出一条判题记录"
-    ).toEqual(["#0 a1 true", "#0 a2 true"]);
+      "同一题只判一次（修复前会因误触产生第二条记录 #0 a2 true）"
+    ).toEqual(["#0 a1 true"]);
     const completed = telemetryOfKind("grammar_lesson_completed");
     expect(completed.length, "尚未完课").toBe(0);
     page.unmount();
@@ -565,7 +574,10 @@ describe("ST1 · 段间状态残留", () => {
     }
 
     expect(inSection(page, "凭记忆写"), `③ 应回到忆段，实际：${sectionLabels(page).join(",")}`).toBe(true);
-    expect(page.container.querySelector("textarea.large-textarea")?.value, "③ 忆段输入应被清空").toBe("");
+    expect(
+      page.container.querySelector<HTMLTextAreaElement>("textarea.large-textarea")?.value,
+      "③ 忆段输入应被清空"
+    ).toBe("");
     expect(page.container.querySelector(".lesson-feedback"), "③ 忆段反馈应已重置").toBeNull();
     page.unmount();
   });

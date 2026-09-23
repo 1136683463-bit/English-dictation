@@ -388,6 +388,17 @@ export default function GrammarDiaryPage() {
                 placeholder="用你会的词写一句英文，三个词也算数。"
                 onChange={(event) => updateDraft(question.id, { value: event.target.value, message: undefined })}
                 aria-label={question.zh}
+                /**
+                 * 2026-09-23 补（ENV3-C 的 FAIL-C3/C4）：本框要写**英文**，
+                 * 但此处此前没有任何输入环境属性——iOS 自动大写首字母、
+                 * 自动纠正会把 `I have a apple` 悄悄改成别的，中文输入法也不切英文。
+                 */
+                lang="en"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="none"
+                spellCheck={false}
+                inputMode="text"
               />
               {draft.status === "correcting" && <p className="diary-note">正在批改这一句…</p>}
               {settled && draft.message && <p className="diary-note">{draft.message}</p>}

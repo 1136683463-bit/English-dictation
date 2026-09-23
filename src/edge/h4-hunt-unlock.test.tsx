@@ -102,7 +102,7 @@ describe("H4 案件解锁与课程绑定", () => {
     expect(unlocked.length).toBeLessThan(huntCases.length);
   });
 
-  it("全部 195 课完成后 201 案全部解锁，深链任意案都能开", () => {
+  it("全部 204 课完成后 201 案全部解锁，深链任意案都能开", () => {
     seedAppData({ grammarLessonsDone: allLessonIds });
     const data = parseBackupJson(window.localStorage.getItem(STORAGE_KEY) ?? "{}");
     const infos = listHuntCasesWithLock(data);
@@ -174,7 +174,7 @@ describe("H4 案件解锁与课程绑定", () => {
       ]
     });
     const page = mountPage(<GrammarHuntPage />, "/grammar/hunt", "/grammar/hunt");
-    expect(page.text()).toContain("0 / 204");
+    expect(page.text()).toContain("0 / 214");
     page.unmount();
   });
 
@@ -195,7 +195,7 @@ describe("H4 案件解锁与课程绑定", () => {
     });
     const page = mountPage(<GrammarHuntPage />, "/grammar/hunt", "/grammar/hunt");
     // summarizeHuntProgress 用案件真实错误数比对，篡改的 total 不能骗过统计
-    expect(page.text()).toContain("0 / 204");
+    expect(page.text()).toContain("0 / 214");
     page.unmount();
   });
 
@@ -204,7 +204,7 @@ describe("H4 案件解锁与课程绑定", () => {
     seedAppData({ grammarLessonsDone: lessonsFor("hunt-call-mother") });
     const page = mountPage(<GrammarHuntPage />, "/grammar/hunt?case=hunt-call-mother", "/grammar/hunt");
     const tokens = () => Array.from(page.container.querySelectorAll(".hunt-token")) as HTMLElement[];
-    const tagLabel: Record<string, string> = { missing_be: "缺 be 动词" };
+    const tagLabel: Record<string, string> = { missing_be: "少了那个是" };
     const item = huntCases.find((c) => c.id === "hunt-call-mother")!;
     for (const error of item.errors) {
       clickElement(tokens()[error.tokenIndex]);
@@ -217,7 +217,7 @@ describe("H4 案件解锁与课程绑定", () => {
     await flushAsync();
     page.clickMatch(/再来一案/);
     await flushAsync();
-    expect(page.text()).toContain("1 / 204");
+    expect(page.text()).toContain("1 / 214");
     const solved = Array.from(page.container.querySelectorAll(".hunt-case-card.solved"));
     expect(solved.length).toBe(1);
     expect(page.text()).toContain("已破 1 /");

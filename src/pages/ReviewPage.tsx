@@ -3,9 +3,11 @@ import { CheckCircle2, Edit3, Eye, Flame, Keyboard, Target, Undo2 } from "lucide
 import { Link, useSearchParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import DiffView from "../components/DiffView";
+import { isImeComposing, isTypingTarget } from "../components/imeGuard";
 import PageHeader from "../components/PageHeader";
 import SpeakButton from "../components/SpeakButton";
 import { getSentenceDetails, getWordDetails, togglePriority } from "../services/cardService";
+import { stripNoteMarkers } from "../services/lessonService";
 import { compareText, diffScore } from "../services/diffService";
 import {
   applyReviewWithUndo,
@@ -136,11 +138,28 @@ export default function ReviewPage() {
   useEffect(() => {
     const handleKey = (event: KeyboardEvent) => {
       if (!card) return;
+      /**
+       * R09：输入法组词期间不抢键。
+       *
+       * 中文输入法的**候选窗正是 1-4 选词**。此前数字键没有任何 `target`/
+       * 组词态守卫，真机实测（`key=3 isComposing=true`）下按一下就把卡片评走了，
+       * 而用户只是在选字。
+       *
+       * 同段监听里的 Space 早就写了 `event.target === document.body`
+       *（「不在输入框里抢键」是本项目已知约束），数字键漏了那一半。
+       */
+      if (isImeComposing(event)) return;
       if (event.key === " " && event.target === document.body) {
         event.preventDefault();
         setRevealed((current) => !current);
       }
-      if (["1", "2", "3", "4"].includes(event.key)) {
+      /**
+       * R09：评分快捷键只在「焦点不在输入处」时生效。
+       *
+       * 此前数字键不看焦点，用户写 `I have 2 cats` 打到 `2` 就把卡评了——
+       * 与输入法无关的同一个根因（同段 Space 早有 `target === document.body`）。
+       */
+      if (["1", "2", "3", "4"].includes(event.key) && !isTypingTarget(event.target)) {
         handleRatingClick(Number(event.key) as Rating);
       }
     };
@@ -464,6 +483,19 @@ export default function ReviewPage() {
                       value={answer}
                       onChange={(event) => setAnswer(event.target.value)}
                       placeholder={card.type === "sentence" ? "输入你回译或听写出的英文句子" : "输入英文拼写"}
+                      /**
+                       * 2026-09-23 补（ENV3-C 的 FAIL-C3/C4）：
+                       * 本框要写**英文**，但此前用的是系统默认输入环境——
+                       * iOS 会把首字母自动大写（用户看到的输入与自己敲的不一致）、
+                       * 中文输入法也不会自动切到英文状态。
+                       */
+                      lang="en"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="none"
+                      spellCheck={false}
+                      inputMode="text"
+                      enterKeyHint="done"
                     />
                     <div className="answer-actions">
                       <button type="button" className="primary-button" onClick={checkAnswer} disabled={!answer.trim()}>
@@ -497,7 +529,7 @@ export default function ReviewPage() {
                     {details && "keywords" in details && details.keywords.length > 0 && (
                       <p className="answer-meta">关键词：{details.keywords.join(", ")}</p>
                     )}
-                    {details && "grammarNote" in details && details.grammarNote && <p className="answer-meta">语法：{details.grammarNote}</p>}
+                    {details && "grammarNote" in details && details.grammarNote && <p className="answer-meta">语法：{stripNoteMarkers(details.grammarNote)}</p>}
                   </div>
                 )}
 

@@ -43,7 +43,7 @@ export type SettingsTelemetryEvent =
 /** R02：危险操作（恢复 JSON / 云端恢复 / 重置）的确认与取消——取消率即防呆有效性。 */
 export interface SettingsDangerOpEvent {
   kind: "settings_danger_op";
-  op: "restore_json" | "pull_cloud" | "reset_local";
+  op: "restore_json" | "pull_cloud" | "reset_local" | "archive_history";
   confirmed: boolean;
   ts: string;
 }
@@ -102,7 +102,8 @@ export const trackSettingsAutosave = (fields: string[], success: boolean): void 
 };
 
 export const trackSettingsDangerOp = (
-  op: "restore_json" | "pull_cloud" | "reset_local",
+  /** `archive_history` = 归档久远复习明细（2026-09-22 新增，保留进度、只释放体积）。 */
+  op: "restore_json" | "pull_cloud" | "reset_local" | "archive_history",
   confirmed: boolean
 ): void => {
   appendSettingsEvent({ kind: "settings_danger_op", op, confirmed, ts: nowIso() });

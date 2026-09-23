@@ -14,6 +14,7 @@ import {
   togglePriority,
   updateSentenceAudio
 } from "../services/cardService";
+import { imeSafeFormProps } from "../components/imeGuard";
 
 const emptyInput: SentenceInput = {
   sentence: "",
@@ -85,7 +86,7 @@ export default function SentencesPage() {
       />
 
       <section className="two-column wide-left">
-        <form className="panel form-panel" onSubmit={submit}>
+        <form className="panel form-panel" onSubmit={submit} {...imeSafeFormProps}>
           <div className="panel-header">
             <h2>添加句子</h2>
             <button className="primary-button" type="submit">

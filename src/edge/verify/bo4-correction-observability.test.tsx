@@ -171,15 +171,39 @@ describe("BO4-b 批改结果的渲染完整性", () => {
       const card = page.container.querySelector(".boost-ai-card")!;
       expect(card).not.toBeNull();
       const text = card.textContent ?? "";
-      expect(text).toContain("你这句：");
-      expect(text).toContain("改顺一点：");
-      expect(text).toContain("也可以这样说：");
+      /**
+       * ⚠️ 2026-09-23 更新：标签不带冒号了。
+       *
+       * 2026-09-23 的视觉重构（提交 27e8fe1 / b730d63）把三行改成
+       * 「标签 span + 内容」两个元素，标签与内容之间的分隔交给
+       * CSS 的 flex `gap: 9px`（见 styles.css 的 .boost-ai-line），
+       * 冒号随之去掉。本断言此前仍按「你这句：」匹配，属于**测试未跟上设计**——
+       * 不是渲染缺陷（HEAD 版本的源码里就没有冒号）。
+       * 因此改为断言标签文本本身存在，并把重点放到「按行渲染 + 缺字段不渲染空行」上。
+       */
+      expect(text).toContain("你这句");
+      expect(text).toContain("改顺一点");
+      expect(text).toContain("也可以这样说");
       expect(text).toContain("I'm a student.");
       expect(text).toContain("这句很顺。");
       expect(text).toContain("加个 am 就顺了。");
       expect(text).toContain("这里不用改。");
       // 三条都有回显
-      expect((text.match(/你这句：/g) ?? []).length).toBe(3);
+      expect((text.match(/你这句/g) ?? []).length).toBe(3);
+
+      /**
+       * 测试名声称「缺字段不渲染空行」，但原断言只查了「有值就渲染」这一侧。
+       * 这里补上另一侧：第 2、3 条只有 corrected、没有 recast / comment / issues，
+       * 它们的卡片里不应出现对应的标签与空行。
+       */
+      const entries = [...page.container.querySelectorAll(".boost-ai-entry")];
+      expect(entries.length, "三条输入各一张卡").toBe(3);
+      for (const entry of entries.slice(1)) {
+        const entryText = entry.textContent ?? "";
+        expect(entryText, "缺 recast 不渲染该行").not.toContain("也可以这样说");
+        expect(entry.querySelectorAll(".boost-ai-line.recast").length, "缺 recast 时无 recast 行").toBe(0);
+        expect(entry.querySelectorAll(".boost-ai-line.comment").length, "缺 comment/issues 时无 comment 行").toBe(0);
+      }
       page.unmount();
     } finally {
       restore();

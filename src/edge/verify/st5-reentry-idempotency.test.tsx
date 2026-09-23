@@ -300,34 +300,44 @@ describe("ST5 · 重复进入与幂等", () => {
    * 一次进入产生 2 条 exit，且第一条的 section 恒为 pretest、dwellMs≈0 ——
    * 「在哪一段退出」的漏斗统计被人为灌入一批虚假的 pretest 退出。
    */
-  it("FAIL-1 StrictMode 下 lesson_exit 重复上报：挂载即记一条假退出", async () => {
+  it("FAIL-1【已修 2026-09-23】StrictMode 下 lesson_exit 不再重复上报", async () => {
     seed();
     const page = await mountStrict();
-    const exitsAtMount = telemetryOfKind("lesson_exit");
+    /**
+     * 修复前：StrictMode 的「挂载 → 立即卸载 → 再挂载」让清理函数在用户
+     * 什么都没做时就记出一条 `section: "pretest"`、`dwellMs≈0` 的假退出；
+     * 加上真正卸载那次共 2 条，漏斗分母翻倍。
+     * 修法与同文件 section_dwell 一致：**≥1s 才记**（严格模式双调用属噪音）。
+     */
+    // 挂载阶段（StrictMode 的两次挂载都已发生）不应留下任何退出事件
     expect(
-      exitsAtMount.length,
-      "★ 缺陷：StrictMode 下仅挂载（用户什么都没做）就已记录退出事件"
-    ).toBe(1);
-    expect(
-      String((exitsAtMount[0] as { section?: string }).section),
-      "★ 缺陷：这条假退出的 section 恒为 pretest（用户还没离开过任何段）"
-    ).toBe("pretest");
-    expect(Number((exitsAtMount[0] as { dwellMs?: number }).dwellMs), "★ 缺陷：停留时长≈0").toBeLessThan(1000);
+      telemetryOfKind("lesson_exit").length,
+      "仅挂载时不应有任何退出事件"
+    ).toBe(0);
 
     act(() => undefined);
     page.unmount();
+    /**
+     * 修复后的口径：**卸载后延迟一拍才写**（见 GrammarLessonPage 的 exitTimerRef）。
+     * 「延迟 + 重挂载时取消」用来区分两种卸载：
+     *  · StrictMode 的中间卸载 → 紧接着会重新挂载，定时器被取消，不记；
+     *  · 用户真的离开 → 不会再有重挂载，定时器触发，记一条。
+     * 因此这里 unmount 之后要等一拍，才能看到那条真实退出。
+     */
+    await new Promise((resolve) => setTimeout(resolve, 10));
     expect(
       telemetryOfKind("lesson_exit").length,
-      "★ 缺陷：真正卸载后又记一条 —— 一次进入共 2 条 exit，退出率分母翻倍"
-    ).toBe(2);
+      "真正卸载后记一条（StrictMode 的中间卸载没有多记）"
+    ).toBe(1);
 
-    // 对照：非 StrictMode 只记一条，且是真正卸载时记的
+    // 对照：非 StrictMode 也只记一条
     resetStorage();
     seed();
     const normal = mount();
     await flushAsync();
     expect(telemetryOfKind("lesson_exit").length, "对照：挂载时不记 exit").toBe(0);
     normal.unmount();
+    await new Promise((resolve) => setTimeout(resolve, 10));
     expect(telemetryOfKind("lesson_exit").length, "对照：卸载时记一条").toBe(1);
   });
 
@@ -491,7 +501,7 @@ describe("ST5 · 重复进入与幂等", () => {
    * 实测（本用例断言的就是这个组合）：points 项数 = 0，
    * 而 queue 提示存在、localStorage 里确实有 1 张 lesson:<id> 的卡。
    */
-  it("FAIL-2 全程没错过题时：收据说「没有留下漏洞」同屏又说「已排进复习队列」", async () => {
+  it("FAIL-2【已修 2026-09-24】全程没错过题时，收据两句话自洽（不再互相矛盾）", async () => {
     seed();
     const page = mount();
     await completeLesson(page);
@@ -504,17 +514,29 @@ describe("ST5 · 重复进入与幂等", () => {
     const queued = (appData().cards ?? []).filter((card) => card.sourceId === `lesson:${LESSON}`);
 
     expect(points, "会话内 reviewNotes 为空（全程没错过题）").toBe(0);
+    /**
+     * 【已修 2026-09-24】修复前同一块里并存两句矛盾结论：
+     * 「本课**没有留下漏洞**」+「上面这些句子**已排进复习队列**」——
+     * 而队列里确实有卡（完课即入队核心句），所以前一句在事实上是错的。
+     *
+     * 修复：改成准确的「这一课你一次没错——核心句照例进队列，明天再见一次。」
+     * 两句话各说一件事（本段讲本次表现、下一段讲后续安排），不再互相否定。
+     */
     expect(
       gapBlock?.textContent ?? "",
-      "★ 缺陷：同一块里先给「本课没有留下漏洞」，紧接着又说「已排进复习队列」"
-    ).toContain("本课没有留下漏洞");
+      "「没有留下漏洞」这类否定队列存在的说法已移除"
+    ).not.toContain("没有留下漏洞");
     expect(
       gapBlock?.textContent ?? "",
-      "★ 缺陷：两句结论同屏并存"
+      "本次表现的说法保留（一次没错）"
+    ).toContain("一次没错");
+    expect(
+      gapBlock?.textContent ?? "",
+      "后续安排照旧"
     ).toContain("已排进复习队列");
     expect(
       queued.length,
-      "★ 对照事实：复习队列里确实有卡（完课即入队核心句），所以「没有留下漏洞」是错的结论"
+      "对照事实：复习队列里确实有卡（完课即入队核心句）——两句说法现已与此一致"
     ).toBeGreaterThan(0);
     page.unmount();
   });

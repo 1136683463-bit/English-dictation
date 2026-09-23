@@ -66,7 +66,7 @@ describe("RV9 找错案件复习卡的正面句", () => {
 
   it("删词型修正也能成卡（原来直接放弃）", () => {
     const caseWithDeletion = huntCases.find((item) =>
-      item.errors.some((error) => error.correction.trim().startsWith("去掉") || error.correction.includes("（去掉"))
+      item.errors.some((error) => error.editOp === "delete")
     );
     expect(caseWithDeletion, "库里应有删词型修正的案例").toBeTruthy();
     const data = cardsFor(caseWithDeletion!);
@@ -108,7 +108,7 @@ describe("RV9 找错案件复习卡的正面句", () => {
   it("卡正面带尾标点时，替换不会吞掉标点", () => {
     // 找一个 original 带尾标点的错点
     const target = huntCases.find((item) =>
-      item.errors.some((error) => /[.,!?;:]$/.test(error.original) && !/^（?去掉/.test(error.correction.trim()))
+      item.errors.some((error) => /[.,!?;:]$/.test(error.original) && error.editOp !== "delete")
     );
     if (!target) return; // 库中确实没有这类数据时跳过（不虚报通过）
     const data = cardsFor(target);

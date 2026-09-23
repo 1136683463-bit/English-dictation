@@ -97,7 +97,7 @@ describe("R6-a 复习卡判题（服务层）", () => {
     expect(extra.passed).toBe(false);
   });
 
-  it("整库扫描：195 课 × 三档，按正确答案作答都必须判对", () => {
+  it("整库扫描：204 课 × 三档，按正确答案作答都必须判对", () => {
     const failures: string[] = [];
     for (const lesson of grammarLessons) {
       for (const tier of [1, 2, 3] as const) {
@@ -119,7 +119,7 @@ describe("R6-b 强化页判题（服务层 · 逐题型正误）", () => {
   /**
    * 「这句有问题吗」（contrast）题型的可达性：档 1 有 5 类候选
    * （bothright/listen/cloze/choice/contrast）却只有 4 个槽位，每轮必有一类轮空。
-   * 实测 round=0（用户首次趁热练）全库 195 课一道 contrast 都不出，
+   * 实测 round=0（用户首次趁热练）全库 204 课一道 contrast 都不出，
    * 只有 round=2/3/4 才出现。这里在会产出 contrast 的轮次上取真实题目验证判题。
    */
   it("对比判断（contrast）在 round 2-4 可达；判题：选「有点问题」通过、选「没问题」判错", () => {

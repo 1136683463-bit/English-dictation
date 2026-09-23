@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { APP_SCHEMA_VERSION, buildDiagnosis, markDataExported, markDataSyncedBackup, migrateData, needsBackupReminder, summarizeStartupRepairs } from "./storage";
+import { APP_SCHEMA_VERSION, buildDiagnosis, markDataExported, markDataSyncedBackup, migrateData, needsBackupReminder, storageCostBytes, summarizeStartupRepairs } from "./storage";
 import { makeMistakeGeneration, makeTestData, makeWordCard } from "./testUtils";
 
 describe("storage migration helpers", () => {
@@ -279,10 +279,13 @@ describe("summarizeStartupRepairs + buildDiagnosis (R12)", () => {
     const repaired = summarizeStartupRepairs(raw, data);
     expect(repaired).toEqual([]);
 
-    const diagnosis = buildDiagnosis(repaired, Math.round(raw.length / 1024), data.schemaVersion);
+    const cost = Math.round(storageCostBytes(raw) / 1024);
+    const diagnosis = buildDiagnosis(repaired, cost, data.schemaVersion);
     expect(diagnosis.ok).toBe(true);
     expect(diagnosis.issues).toEqual([]);
-    expect(diagnosis.sizeKb).toBe(Math.round(raw.length / 1024));
+    expect(diagnosis.storageCostKb).toBe(cost);
+    // 这份 raw 是纯 ASCII（无 >U+00FF 字符），所以两个计费口径一致。
+    expect(diagnosis.storageCostKb).toBe(Math.round(raw.length / 1024));
   });
 
   it("reports old schema and orphan references as startup repairs", () => {

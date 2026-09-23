@@ -30,6 +30,27 @@ import { LESSON_GROUPS } from "../../data/grammarSeasons";
 
 const nowIso = () => new Date().toISOString();
 const daysAgo = (n: number) => new Date(Date.now() - n * 86400000).toISOString();
+
+/**
+ * 「上一自然周」里的一个确定时刻（本地周三 12:00）。
+ *
+ * ⚠️ 2026-09-24 修：不能用固定偏移（`daysAgo(3)`）来造「上周」的数据。
+ * 周界按**本地日期**算，而 `daysAgo` 是「当前时刻减 N×24h」——
+ * 于是同一个 `daysAgo(3)` 在不同时段会落到不同的周：
+ * 本地周三 00:25 时，3 天前是**周一**（本周一），而不是上周；
+ * 本地周三 12:00 时，3 天前才是上周日。
+ * 结果这条用例**只在凌晨 0–8 点失败**（实测连续 3 次复现，属时间依赖缺陷而非产品缺陷）。
+ *
+ * 现在显式算出「上一个自然周的周三中午」，与运行时刻无关。
+ */
+const lastWeekMidday = (): string => {
+  const now = new Date();
+  const local = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const offsetToMonday = (local.getDay() + 6) % 7; // 周一→0，周日→6
+  const thisMonday = new Date(local.getTime() - offsetToMonday * 86400000);
+  // 上周三 12:00（本地）——稳稳落在「上一个自然周」内
+  return new Date(thisMonday.getTime() - 5 * 86400000 + 12 * 3600000).toISOString();
+};
 const doneIds = (count: number) => grammarLessons.slice(0, count).map((lesson) => lesson.id);
 const seasonMeta = (page: ReturnType<typeof mountPage>, index: number) =>
   (Array.from(page.container.querySelectorAll(".season-card"))[index]?.querySelector(".season-card-meta")?.textContent ?? "").trim();
@@ -62,7 +83,7 @@ const BLOCKS = {
 describe("P6 · 异常与边界", () => {
   beforeEach(() => resetStorage());
 
-  it("三个页面在全部 195 个真实课 id 下都不崩、不出现 NaN/undefined", () => {
+  it("三个页面在全部 204 个真实课 id 下都不崩、不出现 NaN/undefined", () => {
     const sample = [0, 1, 50, 100, 150, 189].map((i) => grammarLessons[i]);
     for (const lesson of sample) {
       // 路径页
@@ -99,7 +120,10 @@ describe("P6 · 异常与边界", () => {
     const partial = [...doneIds(24), ...grammarLessons.filter((l) => l.number >= 25 && l.number <= 27).map((l) => l.id)];
     seedAppData({ grammarLessonsDone: partial });
     const page = mountPage(<GrammarPathPage />, "/grammar", "/grammar");
-    expect(page.container.querySelector(".lesson-progress-pill")?.textContent?.replace(/\s+/g, " ").trim()).toBe("27 / 195 课");
+    expect(
+      page.container.querySelector(".lesson-progress-pill")?.textContent?.replace(/\s+/g, " ").trim(),
+      "进度分母应等于课程总数（从数据派生，课程增删时不必改测试）"
+    ).toBe(`27 / ${grammarLessons.length} 课`);
 
     const season3Index = LESSON_GROUPS.findIndex((g) => g.id === "season-3");
     // 第 3 季是「下一课」（L28）所在季 → meta 显示「进行中」，环值给出真实百分比
@@ -196,12 +220,16 @@ describe("P6 · 异常与边界", () => {
     expect(card).not.toBeNull();
     expect(card?.querySelector("button"), "无关联卡时不该有排课按钮").toBeNull();
     /**
-     * 2026-09-21 修断言：卡片后来多了一个「去第 N 课」出口（指向讲这个语法点的课），
-     * 它排在「去复习」前面——`querySelector("a")` 只取第一个，于是这条断言失效。
-     * 这里改为「所有 <a> 里应包含去复习的出口」，不再依赖 DOM 顺序。
+     * 2026-09-22 修断言（走查修复的连带更新）：
+     * 「无关联卡」这一支的出口从「去复习」改成了「练这个弱点」→ `/grammar/replay`。
+     * 原因是它的前提就是**该弱点没有关联卡片**，而复习队列此时是空的（0/0 张），
+     * 点「去复习」进去无事可做；改指向错题重练课才有内容可练。
+     *
+     * 断言相应改为「应有一个可练的出口」，仍不依赖 DOM 顺序。
      */
     const hrefs = Array.from(card?.querySelectorAll("a") ?? []).map((link) => link.getAttribute("href"));
-    expect(hrefs, "应保留「去复习」出口").toContain("/grammar/review");
+    expect(hrefs, "应保留一个可继续练的出口").toContain("/grammar/replay");
+    expect(hrefs, "不应再指向空的复习队列").not.toContain("/grammar/review");
     expect(page.text()).not.toMatch(/NaN|undefined/);
     page.unmount();
   });
@@ -216,7 +244,7 @@ describe("P6 · 异常与边界", () => {
     const healed = page.container.querySelector(BLOCKS.healed);
     expect(healed, "治愈后应显示「已战胜」行").not.toBeNull();
     expect(healed?.textContent).toContain("已战胜：");
-    expect(healed?.textContent).toContain("冠词");
+    expect(healed?.textContent).toContain("东西前面那个小词");
     // 治愈的罪名不该出现在活跃榜
     expect(page.container.querySelector(BLOCKS.weak), "已治愈罪名不该仍在活跃榜").toBeNull();
     expect(page.text()).not.toMatch(/NaN|undefined/);
@@ -225,7 +253,7 @@ describe("P6 · 异常与边界", () => {
 
   it("条件区块 · 上周小结只在「上一自然周」有产出时才出现", async () => {
     seedAppData({});
-    writeTelemetry([outputEvent(daysAgo(3), "hash-a")]);
+    writeTelemetry([outputEvent(lastWeekMidday(), "hash-a")]);
     const page = mountPage(<GrammarPathPage />, "/grammar", "/grammar");
     const card = page.container.querySelector(BLOCKS.weekly);
     expect(card, "上一自然周有产出时应显示上周小结").not.toBeNull();
@@ -303,7 +331,7 @@ describe("P6 · 异常与边界", () => {
     seedAppData({ grammarLessonsDone: ["不存在的课", "lesson-01-am", "lesson-01-am"] });
     const page = mountPage(<GrammarPathPage />, "/grammar", "/grammar");
     const pill = page.container.querySelector(".lesson-progress-pill")?.textContent?.replace(/\s+/g, " ").trim();
-    expect(pill, "未知 id 不该被计数，重复 id 不该重复计数").toBe("1 / 195 课");
+    expect(pill, "未知 id 不该被计数，重复 id 不该重复计数").toBe(`1 / ${grammarLessons.length} 课`);
     expect(page.text()).not.toMatch(/NaN|undefined/);
     page.unmount();
     resetStorage();

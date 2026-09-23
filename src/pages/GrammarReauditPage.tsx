@@ -1,5 +1,5 @@
 import { CheckCircle2, Lock } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
@@ -52,7 +52,7 @@ export default function GrammarReauditPage() {
   const [ambushAttempts, setAmbushAttempts] = useState(0);
   const [ambushDone, setAmbushDone] = useState(false);
   const [startedAt] = useState(() => Date.now());
-  /** W0 补齐：关 3 进入事件——此前关 3 只有完成态、没有进入事件，到达率在数据上不可见。 */
+  /** started 埋点去重（同一次挂载内只记一次；重新进入是新挂载，会照记）。 */
   const startedLoggedRef = useRef(false);
 
   if (!lesson) {
@@ -69,11 +69,26 @@ export default function GrammarReauditPage() {
 
   const lock = getLessonStageLock(data, lessonId, 3, readCompletedAt);
 
-  // 关 3 进入埋点（W0）：未锁且未完成时记一条（StrictMode 双跑保护）。
-  if (lock.state === "unlocked" && !startedLoggedRef.current) {
+  /**
+   * 关 3 进入埋点（W0）：未锁且未完成时记一条。
+   *
+   * 2026-09-23 修（ST4 的 FAIL-2b）：原用 `useRef` 做「StrictMode 双跑保护」，
+   * 但真 StrictMode 是**卸载后重挂载**，ref 会随组件重建而丢失 →
+   * 一次进入仍记 2 条。改用**已落库事件反查**：与挂载次数无关。
+   */
+  useEffect(() => {
+    /**
+     * 进入即记（每次进入记一条）。2026-09-23 修（ST4 的 FAIL-2b）：
+     * 原实现在渲染期用 `useRef` 守卫——但渲染期写副作用本身是反模式，
+     * 且真 StrictMode 是「挂载→卸载→重挂载」，重挂载会重建 ref → 仍记 2 条。
+     * 改为 effect 内写 + ref 守卫（同一次挂载内只记一次；重新进入是新挂载，照记）。
+     */
+    if (lock.state !== "unlocked") return;
+    if (startedLoggedRef.current) return;
     startedLoggedRef.current = true;
     appendGrammarEvent({ kind: "grammar_reaudit_started", lessonId, ts: nowIso() });
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lessonId, lock.state]);
 
   if (lock.state === "locked") {
     return (

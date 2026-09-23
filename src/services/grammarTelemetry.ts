@@ -735,7 +735,37 @@ export const appendGrammarEvent = (event: GrammarTelemetryEvent): void => {
   writeEvents(events);
 };
 
-export const listGrammarEvents = (): GrammarTelemetryEvent[] => [...readEvents()];
+/**
+ * 读取全部遥测事件：**主键 + 归档键合并**（按时间排序）。
+ *
+ * 2026-09-24 修（数析实测的 P0 静默故障）：
+ * 此前只读主键，而 `appendGrammarEvent` 在主键超过 MAX_EVENTS(3000) 时
+ * 会把最旧的事件挤进归档键——归档里的事件对**所有分析**（弱点档案 / 能力画像 /
+ * 周报 / 汇总）永久不可见。
+ *
+ * 实测：写 3500 条 → 分析只见 500 条，**3000 条静默消失**。
+ * 按每课约 30 条事件算，3000 条 ≈ 100 课——第 101 课之后的弱点数据会全部丢失。
+ *
+ * 合并后按 `ts` 升序（同刻保持主键在后的顺序），与「事件流」语义一致。
+ * 归档上限 12000 + 主键 3000 = 分析可见上限 15000 条，覆盖 ~500 课。
+ */
+export const listGrammarEvents = (): GrammarTelemetryEvent[] => {
+  const live = readEvents();
+  const archived = readArchivedEvents();
+  if (archived.length === 0) return [...live];
+  const merged = [...archived, ...live];
+  // 归档事件的时间戳必然早于主键（溢出的就是最旧的），但保险起见仍按 ts 排序
+  const tsOf = (event: GrammarTelemetryEvent): number => {
+    const value = (event as { ts?: unknown }).ts;
+    return typeof value === "string" ? Date.parse(value) : NaN;
+  };
+  return merged.sort((a, b) => {
+    const at = tsOf(a);
+    const bt = tsOf(b);
+    if (!Number.isFinite(at) || !Number.isFinite(bt)) return 0;
+    return at - bt;
+  });
+};
 
 /** R14 周聚合：错误 tag 按自然周（周一为起点）统计——周环比的原料。
  *  referenceDate 决定「当前周」的锚点（默认真实当前时间；周报场景传与 buildLastWeekReport 相同的参考日，避免周日边界错位）。 */

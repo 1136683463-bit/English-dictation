@@ -15,6 +15,12 @@ import { appendGrammarEvent, type LessonSection } from "../services/grammarTelem
 import { nowIso } from "../services/storage";
 import { findLessonWeakSpots } from "../services/grammarReplayService";
 import { parseContrastParagraph } from "../services/grammarContrastParser";
+import {
+  getStageTabs,
+  postCompletionStage,
+  preChallengeContrastLabel,
+  type LessonStage
+} from "../services/grammarStageTabs";
 
 // 兼容再导出（2026-09-23）：`parseContrastParagraph` 的实现已移至
 // services/grammarContrastParser（页面文件只导出组件，Fast Refresh 才能正常工作）。
@@ -86,8 +92,6 @@ import {
 } from "../services/lessonService";
 import { imeSafeFormProps } from "../components/imeGuard";
 
-type LessonStage = "pretest" | "watch" | "guided" | "recall" | "practice" | "challenge";
-
 /** R02：课前测试题。复用引导题（choose）与正误对比（contrast 判断）做「先试后学」。 */
 type PretestQuestion =
   | { kind: "choose"; prompt: string; options: string[]; answer: string; reviewSentence: string; reviewNote: string }
@@ -125,15 +129,6 @@ interface PretestRecord {
   /** 本题是否答对——决定结果卡走「纠正」还是「确证」两种版式。 */
   correct: boolean;
 }
-
-/** R10 六段式段标：有 recall 数据的课显示「③ 忆」，否则回退四段（向后兼容）。 */
-const getStageTabs = (hasRecall: boolean): Array<{ id: LessonStage; label: string; hint: string }> => [
-  { id: "watch", label: "① 看", hint: "情景讲解" },
-  { id: "guided", label: "② 跟", hint: "试一试" },
-  ...(hasRecall ? [{ id: "recall" as LessonStage, label: "③ 忆", hint: "凭记忆写" }] : []),
-  { id: "practice", label: hasRecall ? "④ 练" : "③ 练", hint: "自己来" },
-  { id: "challenge", label: hasRecall ? "⑤ 破" : "④ 破", hint: "侦探挑战" }
-];
 
 /** 第①段内部的 3 步子步进：剧场 → 搭装与对错 → 变奏。 */
 const watchStepNames = ["剧场", "搭装与对错", "变奏"];
@@ -591,28 +586,6 @@ export default function GrammarLessonPage() {
     [data]
   );
 
-  /**
-   * G1 角标数据：本季进度（季名 + 本季第几课 / 本季总课数）。
-   * 用「季」而不是总课数做刻度——158 课的总进度只有 3%，看不出进展；
-   * 季内 5/12 才是真实可感的刻度（数据基线由 grammarSeasons.test.ts 守门）。
-   */
-  const seasonProgress = useMemo(() => {
-    if (!lesson) return null;
-    const season = findSeasonByLessonNumber(lesson.number);
-    if (!season) return null;
-    const total = season.max - season.min + 1;
-    // 本季已完成课数（按 grammarLessonsDone 的 id → 课号落区间），+1 是「本课」。
-    // 完课页出现时本课尚未写入完成态（写盘在 practiceDone effect 之后），所以手动补 1。
-    const doneInSeason = new Set(
-      (data.grammarLessonsDone ?? [])
-        .map((id) => getGrammarLesson(id)?.number)
-        .filter((num): num is number => typeof num === "number" && num >= season.min && num <= season.max)
-    );
-    const index = Math.min(total, doneInSeason.size + 1);
-    return { season, index, total };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lesson?.number, data.grammarLessonsDone]);
-
   // R05 完课确证：本课进了复习队列的知识点（完课小结卡「还差什么」的数据）
   const [reviewNotes, setReviewNotes] = useState<string[]>([]);
   /**
@@ -729,6 +702,21 @@ export default function GrammarLessonPage() {
   /** 完课收据页也要落焦（点「完成这一课」后被点按钮卸载）。 */
 
   const [practiceMisses, setPracticeMisses] = useState(0);
+  /**
+   * 本题**是否曾经答对过**（2026-09-24 加，修 ST1 的 FAIL-4）。
+   *
+   * 答对后拼装区仍可点（允许回头改）。用户误点干扰项 → 判题把 feedback 置为 retry →
+   * 再点掉那块时 `arrangeRemove` 看到的 feedback 已是 retry（不是 pass），
+   * 于是重置成 idle → **既无反馈也无出口**，用户被迫重摆一次（会被记成 attempts=2，
+   * 还把已答对的句子收进错题本）。
+   *
+   * 有了这个 ref 就能区分「本题从没答对过」与「答对过、只是中途被误触打回 retry」：
+   * 后者在移除多余块后应**直接恢复 pass 与出口**，而不是掉进 idle 死结。
+   * 换题时重置（见 resetPractice / 切题处）。
+   */
+  const practiceSolvedRef = useRef(false);
+  /** 引导段同义（见 practiceSolvedRef）：本题曾答对过。 */
+  const guidedSolvedRef = useRef(false);
   const [practiceHint, setPracticeHint] = useState<string | null>(null);
   const [practiceDone, setPracticeDone] = useState(false);
 
@@ -744,6 +732,14 @@ export default function GrammarLessonPage() {
    * （移除一块→换一块→摆回同长度 → 不判题）。改用序列指纹：只有完全相同的排列才跳过。
    */
   const lastJudgedSignatureRef = useRef<string | null>(null);
+  /**
+   * 键盘换位用：词块下标 → DOM 节点，以及「换位后要把焦点还给哪一块」。
+   *
+   * 换位会改变渲染 key（key 含位置），React 重建节点后焦点会掉回 body——
+   * 连按方向键时第二次就失效。用这两个 ref 在重排后把焦点交回同一个词块。
+   */
+  const chipNodesRef = useRef(new Map<number, HTMLButtonElement | null>());
+  const focusChipRef = useRef<number | null>(null);
   /** 上次判错是否用了干扰项（「为什么错了」首错即出的条件）。 */
   const [lastAttemptUsedDistractor, setLastAttemptUsedDistractor] = useState(false);
   /** R3 对比题分布：练段常规题做完后、产出题前，插入「再看两组对错」位点（讲解段已放 2 组，此处再放 2 组）。 */
@@ -859,6 +855,12 @@ export default function GrammarLessonPage() {
    * （ux-optimization 文档把它记为正课漏斗最大盲区）。
    * 依赖只放 lessonId：段/步序号用 ref 读，否则每次换段都会重挂清理函数、记出假退出。
    */
+  /**
+   * 待写入的 `lesson_exit` 定时器（见下方 effect）。
+   * 用于滤掉 StrictMode 的「挂载 → 立即卸载 → 再挂载」——
+   * 重挂载时取消上一次的待写，因为用户根本没离开。
+   */
+  const exitTimerRef = useRef<number | null>(null);
   const exitStateRef = useRef({
     section: "pretest" as LessonSection,
     stepIndex: 0,
@@ -870,19 +872,96 @@ export default function GrammarLessonPage() {
   // 完课判定：lessonsDone 含本课 = 已完课（跨会话可靠，不依赖会话内 ref）
   exitStateRef.current.completed =
     (data.grammarLessonsDone ?? []).includes(lessonKey) || exitStateRef.current.sessionCompleted;
+
+  /**
+   * G1 角标数据：本季进度（季名 + 本季第几课 / 本季总课数）。
+   * 用「季」而不是总课数做刻度——158 课的总进度只有 3%，看不出进展；
+   * 季内 5/12 才是真实可感的刻度（数据基线由 grammarSeasons.test.ts 守门）。
+   */
+  const seasonProgress = useMemo(() => {
+    if (!lesson) return null;
+    const season = findSeasonByLessonNumber(lesson.number);
+    if (!season) return null;
+    const total = season.max - season.min + 1;
+    /**
+     * 本季已完成课数（按 grammarLessonsDone 的 id → 课号落区间）。
+     *
+     * 2026-09-24 修（ST3 的 FAIL-1：季角标比事实大 1）：
+     * 原来无条件 `doneInSeason.size + 1`，理由是「完课页出现时本课还没写进完成态」。
+     * 但**重进一节已完课的课**时本课**已经在**集合里，再 +1 就把分子报大 1
+     * （「本季第 6 / 12 课」而事实是 5 / 12），点亮的圆点数同样多 1 个。
+     *
+     * 正确口径：本课已在集合里就照实算，否则补 1（首刷时它确实还没落盘）。
+     */
+    const doneNumbers = new Set(
+      (data.grammarLessonsDone ?? [])
+        .map((id) => getGrammarLesson(id)?.number)
+        .filter((num): num is number => typeof num === "number" && num >= season.min && num <= season.max)
+    );
+    /**
+     * 分子口径：**本课在 `doneNumbers` 里就不再补 1**。
+     *
+     * 原实现无条件 `size + 1`，理由是「完课页出现时本课还没写进 grammarLessonsDone」。
+     * 那个理由对**首刷**成立（完课瞬间数据尚未更新，补 1 才等于真实进度），
+     * 但对**重进一节已完课的课**不成立——本课早已在集合里，再 +1 就把分子报大 1
+     *（显示「本季第 6 / 12 课」而事实是 5 / 12），点亮的圆点数同样多 1 个。
+     *
+     * ⚠️ 不能用 `practiceDone` / `sessionCompleted` 做判据：收据页本身就是
+     * 由 `practiceDone` 触发的，完课瞬间它已经为 true，而 `data` 还没更新——
+     * 用它会让首刷也少算 1（实测显示 1 而非 2）。
+     * 唯一可靠的信号是数据本身：**本课是否已在 grammarLessonsDone 里**。
+     */
+    const currentInSeason =
+      typeof lesson.number === "number" && lesson.number >= season.min && lesson.number <= season.max;
+    const lessonCountedAlready = currentInSeason && doneNumbers.has(lesson.number);
+    const index = Math.min(total, doneNumbers.size + (lessonCountedAlready ? 0 : 1));
+    return { season, index, total };
+    /**
+     * ⚠️ `practiceDone` 必须在依赖里：完课瞬间它由 false → true，
+     * 是「本课算已完成」的触发信号；漏了它，角标要等 `data` 变化才更新。
+     */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lesson?.number, data.grammarLessonsDone, practiceDone]);
+
   useEffect(() => {
+    /**
+     * 2026-09-23 修（ST5 的 FAIL-1：`lesson_exit` 重复上报）。
+     *
+     * 缺陷：`<StrictMode>` 下 React 会「挂载 → **立即卸载** → 再挂载」以暴露副作用问题，
+     * 于是清理函数在**用户什么都没做**时就跑了一次，记出一条
+     * `section: "pretest"`、`dwellMs≈0` 的假退出；加上真正卸载那次，
+     * 一次进入产生 **2 条 exit**——漏斗分母翻倍，还被灌进一批虚假的 pretest 退出。
+     *
+     * 修法：**延迟写入 + 重挂载时取消**（React 推荐的副作用清理模式）。
+     * 清理函数不直接写遥测，而是排一个 0ms 定时器；effect 再次执行
+     * （即 StrictMode 的第二次挂载）会先把它取消——「卸载后立刻又挂上」
+     * 说明用户没离开。真正离开时不会再有重挂载，定时器如期触发、照常记一条。
+     *
+     * ⚠️ 不按「停留时长 ≥1s」过滤：那会把「点进来看一眼就走」的真实退出也丢掉
+     * （那是有效的漏斗信号），且会让「非 StrictMode 卸载记一条」的对照用例失败。
+     * 判据要针对**重挂载**，不是针对短时长。
+     */
+    if (exitTimerRef.current !== null) {
+      window.clearTimeout(exitTimerRef.current);
+      exitTimerRef.current = null;
+    }
     return () => {
       if (!lessonKey) return;
       if (exitStateRef.current.completed) return;   // 完课不算退出
-      const dwell = lessonTimeAccumulator.get(lessonKey) ?? 0;
-      appendGrammarEvent({
-        kind: "lesson_exit",
-        lessonId: lessonKey,
-        section: exitStateRef.current.section,
-        stepIndex: exitStateRef.current.stepIndex,
-        dwellMs: Math.max(0, dwell),
-        ts: nowIso()
-      });
+      if (exitTimerRef.current !== null) window.clearTimeout(exitTimerRef.current);
+      exitTimerRef.current = window.setTimeout(() => {
+        exitTimerRef.current = null;
+        if (exitStateRef.current.completed) return;
+        const dwell = lessonTimeAccumulator.get(lessonKey) ?? 0;
+        appendGrammarEvent({
+          kind: "lesson_exit",
+          lessonId: lessonKey,
+          section: exitStateRef.current.section,
+          stepIndex: exitStateRef.current.stepIndex,
+          dwellMs: Math.max(0, dwell),
+          ts: nowIso()
+        });
+      }, 0);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lessonKey]);
@@ -1007,12 +1086,6 @@ export default function GrammarLessonPage() {
     return resolveGuidedExplain(guidedStep, lesson);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guidedStep?.answer, guidedStep?.explain, lesson.id]);
-
-  /** R-AI1：output 答对后的「为什么」——recall 有 noteZh 最贴题，否则一句话规则。 */
-  const outputWhy = useMemo(
-    () => lesson.recall?.noteZh?.trim() || lesson.oneLineRule,
-    [lesson.recall?.noteZh, lesson.oneLineRule]
-  );
 
   // ① 段小剧场：多句对话优先，旧数据回退到 dialogueEn 单句
   const dialogueLines = lesson.dialogue ?? [
@@ -1318,6 +1391,20 @@ export default function GrammarLessonPage() {
   }, [lessonKey]);
 
   /**
+   * 键盘换位后的焦点归位（2026-09-23）。
+   *
+   * ← / → 换位会改变渲染 key（key 含位置），React 重建节点、焦点掉回 body；
+   * 不给回焦点的话，连按方向键只有第一次有效。这里在依赖数组里带上
+   * guidedOrder / practiceOrder，重排渲染完就把焦点交回同一个词块。
+   */
+  useEffect(() => {
+    const tokenIndex = focusChipRef.current;
+    if (tokenIndex === null) return;
+    focusChipRef.current = null;
+    chipNodesRef.current.get(tokenIndex)?.focus();
+  }, [guidedOrder, practiceOrder]);
+
+  /**
    * 「继续刚才」：按快照恢复。
    * ⑤ 扩展：不止恢复 practice——若快照停在 watch/pretest 等段，也要还原段位与
    * 「前测已过」这个派生状态（此前只在练习段恢复，前测进度刷新即丢）。
@@ -1379,6 +1466,7 @@ export default function GrammarLessonPage() {
           undefined,
           settleStepTiming(`guided:${lesson.id}:${guided.index}`)
         );
+        guidedSolvedRef.current = true;   // 见 practiceSolvedRef 说明
         setGuidedFeedback("pass");
       }
       return;
@@ -1397,6 +1485,7 @@ export default function GrammarLessonPage() {
       const distractorSet = new Set((practiceStep.distractors ?? []).map((token) => token.toLowerCase()));
       setLastAttemptUsedDistractor(pickedTokens.some((token) => distractorSet.has(token.toLowerCase().replace(/[.,!?;:]/g, ""))));
     } else {
+      practiceSolvedRef.current = true;   // 见 practiceSolvedRef 说明
       saveMistakeIfNeeded(practiceMisses, practiceStep.answer, lesson.oneLineRule);
       recordStepResult(
         "practice",
@@ -1423,12 +1512,35 @@ export default function GrammarLessonPage() {
     else next.splice(Math.max(0, at), 0, tokenIndex);
     setOrder(next);
     setGuidedFeedback((f) => f); // no-op 保持钩子顺序稳定
-    if (stage === "guided") {
-      setGuidedFeedback("idle");
-      setGuidedHint(null);
-    } else {
-      setPracticeFeedback("idle");
-      setPracticeHint(null);
+    /**
+     * 2026-09-24 修（ST1 的 FAIL-4：答对后误点词块 → 出口消失、同题判两次）。
+     *
+     * 原实现在这里**无条件**把反馈重置为 `idle`。而「点一下词块库里的干扰项」
+     * 是很容易发生的误触（答对那一刻拼装区仍可点）：
+     *   ① 误点 → idle，出口「下一题」消失；
+     *   ② 再点掉那个多余块 → `arrangeRemove` 见 feedback 已是 idle（非 pass），
+     *      不会恢复通关态 → **既无反馈也无出口**；
+     *   ③ 用户只能重摆一次，这一摆又被记成 attempts=2（同一题判两次），
+     *      且 `saveMistakeIfNeeded` 会把**已经答对的句子**当错句收进错题本。
+     *
+     * 修法与 `arrangeRemove` / `arrangeUndoLast` 同口径：**已通过的题保留通关态**
+     *（允许回头改，但状态与出口不因误触而丢）。
+     */
+    const alreadyPassed = stage === "guided" ? guidedFeedback === "pass" : practiceFeedback === "pass";
+    /**
+     * ⚠️ 只保护**反馈重置**这一段，不能提前 return ——
+     * 下面还有「摆满即判题」，那一步必须照跑：用户多摆一块时要拿到「不对」的即时反馈，
+     * 否则不知道多摆了（实测提前 return 会让 retry 反馈不出现）。
+     * 判题本身会把 feedback 置成 retry/pass，不用在这里抢先置 idle。
+     */
+    if (!alreadyPassed) {
+      if (stage === "guided") {
+        setGuidedFeedback("idle");
+        setGuidedHint(null);
+      } else {
+        setPracticeFeedback("idle");
+        setPracticeHint(null);
+      }
     }
     // R4：摆满「答案词数」即判题（有干扰项时 ≠ 词块库总数）。
     // Bug 修复（用户实测）：判过一次后再多摆块，next.length > 答案词数，
@@ -1470,6 +1582,26 @@ export default function GrammarLessonPage() {
     const alreadyPassed = stage === "guided" ? guidedFeedback === "pass" : practiceFeedback === "pass";
     setOrder(next);
     if (alreadyPassed) return;
+    /**
+     * 2026-09-24 修（ST1 的 FAIL-4 收口）：若**本题曾答对过**，移除块后要恢复 pass 与出口，
+     * 而不是掉进 idle 死结。
+     *
+     * 场景：答对 → 误点一个干扰项（判题把 feedback 置成 retry）→ 点掉那块。
+     * 此刻 `alreadyPassed` 为 false（feedback 是 retry 不是 pass），原逻辑就置 idle
+     * → 没有反馈、没有出口，用户被迫重摆一次（被记成 attempts=2，
+     * 还把已答对的句子收进错题本）。有了 `practiceSolvedRef` 就能识别这种「答对过又被误触」的情况。
+     */
+    const wasSolved = stage === "guided" ? guidedSolvedRef.current : practiceSolvedRef.current;
+    if (wasSolved) {
+      if (stage === "guided") {
+        setGuidedFeedback("pass");
+        setGuidedHint(null);
+      } else {
+        setPracticeFeedback("pass");
+        setPracticeHint(null);
+      }
+      return;
+    }
     if (stage === "guided") {
       setGuidedFeedback("idle");
       setGuidedHint(null);
@@ -1741,6 +1873,32 @@ export default function GrammarLessonPage() {
   );
   const currentOutput = outputPlan[Math.min(outputStep, outputPlan.length - 1)];
 
+  /**
+   * R-AI1：output 答对后的「为什么」。
+   *
+   * 2026-09-24 修（浏览器走查发现）：原实现无条件用 `recall.noteZh`。
+   * 但 output 段有**两档**——档 1 是变体句（如 `Are you new here?`，由 halfPromptVariant 决定），
+   * 档 2 才是本课核心句。而 `recall.noteZh` 讲的是**核心句**（如「I 和 am 是固定搭档」），
+   * 于是档 1 答对后出现的是**与当前句子无关**的讲解：
+   * 实测「Are you new here?」下方写着「I 和 am 是固定搭档，说「我是……」」——
+   * 用户会以为自己在学 I am。
+   *
+   * 正确口径：优先取**当前这一档句子自己的**说明（变体卡自带 noteZh），
+   * 没有才退回核心句的 recall.noteZh，最后退 oneLineRule。
+   */
+  const outputWhyFor = useMemo(
+    () => (stepIndex: number): string => {
+      const plan = [
+        ...(halfPromptVariant ? [{ sentence: halfPromptVariant.en, noteZh: halfPromptVariant.noteZh }] : []),
+        { sentence: lesson?.targetSentence ?? "", noteZh: lesson?.recall?.noteZh }
+      ];
+      const entry = plan[Math.min(stepIndex, plan.length - 1)];
+      return entry?.noteZh?.trim() || lesson?.oneLineRule || "";
+    },
+    [halfPromptVariant, lesson?.targetSentence, lesson?.recall?.noteZh, lesson?.oneLineRule]
+  );
+
+
   const advanceOutputStep = () => {
     setOutputStep((current) => Math.min(current + 1, outputPlan.length - 1));
     setOutputValue("");
@@ -1788,10 +1946,18 @@ export default function GrammarLessonPage() {
       });
     }
     if (passed) {
-      if (outputStep < outputPlan.length - 1) {
-        advanceOutputStep();
-        return;
-      }
+      /**
+       * 2026-09-24 修（ST2 的 FAIL-1：凭自己写对却静默换句）。
+       *
+       * 原来在「还有后续档位」时直接 `advanceOutputStep()` 并 return ——
+       * 界面**完全没有反馈**就跳到下一句：用户不知道自己刚才是对了还是被跳过了，
+       * 也看不到「完全是自己写出来的！」这句正反馈（那段 UI 本身就存在，
+       * 只是永远走不到）。同一次提交里遥测已记 `passed=true`，界面却沉默，口径不一致。
+       *
+       * 现在统一进 `pass` 态：由那段现成的反馈块给确认，
+       * 用户点它下面的按钮（非末档是「下一句（这次没有提示）」，末档是「完成这一课」）
+       * 再前进——成功路径与放弃路径的反馈因此对称。
+       */
       setOutputOutcome("pass");
       setOutputHint(null);
     } else {
@@ -2199,8 +2365,23 @@ export default function GrammarLessonPage() {
       exitStateRef.current.sessionCompleted = true;
       // R-UX3：完课即清续学快照——这课不再需要「继续刚才」
       clearLessonResume(lesson.id);
-      // R10 六段式：完课即进 ⑥ 破段（侦探挑战），小结同屏、破案后再离开
-      gotoStage("challenge");
+      /**
+       * R10 六段式：完课即进 ⑥ 破段（侦探挑战），小结同屏、破案后再离开。
+       *
+       * 2026-09-23 修（空侦探页）：本课**没有**关联案件时（全库 5 课）不能往
+       * challenge 送——那一段除了空列表什么都没有。此时段位**不动**（留在 practice），
+       * 收据（`practiceDone`）在 practice 段同样渲染，收束仪式不变。
+       *
+       * 特别注意：这种情况下不能调 `gotoStage`——它会写一份续学快照
+       * （`snapshotStage("practice")`），而完课恰恰刚刚清掉它（上一行），
+       * 结果就是给一门已完课的课留下「继续刚才」的入口。
+       */
+      const nextStage = postCompletionStage(hasHuntCase);
+      if (nextStage === stage) {
+        window.scrollTo({ top: 0 });
+      } else {
+        gotoStage(nextStage);
+      }
       return;
     }
     setPracticeIndex((current) => current + 1);
@@ -2210,6 +2391,9 @@ export default function GrammarLessonPage() {
     setPracticeMisses(0);
     setPracticeHint(null);
     setMistakeSaved(false);
+    // 「本题曾答对过」是**按题**的标记，换题必须清掉（否则下一题的误触会直接判 pass）
+    practiceSolvedRef.current = false;
+    guidedSolvedRef.current = false;
     /**
      * 2026-09-23 修（用户实测「为什么拼不对只能用一次」）：
      * 换题时必须关掉追问面板并复位步位——此前没重置这两个状态，
@@ -2312,7 +2496,26 @@ export default function GrammarLessonPage() {
                   finishDrag();
                 }}
                 onClick={() => remove(pos)}
-                title="拖动调整位置；点一下移除"
+                /**
+                 * 键盘等价路径（2026-09-23）：拖拽此前是**唯一**的换位方式，
+                 * 键盘用户排错顺序只能全清重摆（N 次操作）。
+                 * 现在 ← / → 把这一块与相邻块对调，走的还是拖拽那条 arrangeMove，
+                 * 因此判题去抖复位、反馈态清理等行为完全一致。
+                 */
+                onKeyDown={(event) => {
+                  const step = event.key === "ArrowLeft" ? -1 : event.key === "ArrowRight" ? 1 : 0;
+                  if (step === 0) return;
+                  const to = pos + step;
+                  if (to < 0 || to >= order.length) return;
+                  event.preventDefault();
+                  move(pos, to + (step > 0 ? 1 : 0));
+                  // 焦点跟着词块走，否则连按方向键会越按越偏
+                  focusChipRef.current = tokenIndex;
+                }}
+                ref={(el) => {
+                  chipNodesRef.current.set(tokenIndex, el);
+                }}
+                title="拖动调整位置；← → 也可以换位；点一下移除"
               >
                 {token}
               </button>
@@ -2363,7 +2566,7 @@ export default function GrammarLessonPage() {
               * 用户实测「摆了 4 块以为完事，实际答案 5 词 → 判题门槛不成立 → 什么都不说」——
               * 明示进度让用户随时知道还差几块（不改变「摆满才判」的设计，只消除信息盲区）。
               */}
-            {order.length} / {answerWordCount(step.answer)} 块 · 点词块选上、再点取消
+            {order.length} / {answerWordCount(step.answer)} 块 · 点词块选上、再点取消；拖动或按 ← → 调整位置
           </span>
         </div>
       </div>
@@ -2372,7 +2575,13 @@ export default function GrammarLessonPage() {
 
   // R10：段标按本课是否有「忆」段动态生成（必须在 early return 之前调用 hook）
   const hasRecallStage = Boolean(lesson?.recall);
-  const stageTabs = useMemo(() => getStageTabs(hasRecallStage), [hasRecallStage]);
+  /**
+   * 本课有没有关联的侦探案件——全库 205 课里有 5 课（第 2/3/5/6/8 课）为空，
+   * 它们不该出现「破」段标，也不该在完课时被送进一个没有案件的挑战页。
+   * 数据侧的「不配案」是 2026-09-13 的决策⑤（番外案越级撞墙），此处只做展示侧收口。
+   */
+  const hasHuntCase = (lesson?.huntCaseIds?.length ?? 0) > 0;
+  const stageTabs = useMemo(() => getStageTabs(hasRecallStage, hasHuntCase), [hasRecallStage, hasHuntCase]);
 
   const stageIndex = stageTabs.findIndex((tab) => tab.id === stage);
 
@@ -3083,6 +3292,19 @@ export default function GrammarLessonPage() {
                     placeholder="Type in English…（回车提交）"
                     rows={2}
                     aria-label="英文输入区"
+                    /**
+                     * 2026-09-23 补（ENV3-C 的 FAIL-C3/C4）：本框写**英文**，
+                     * 此前无任何输入环境属性——iOS 自动大写首字母、自动纠正
+                     * 会悄悄改词，中文输入法也不切英文状态。
+                     * enterKeyHint="done" 与「回车提交」的实际行为对齐。
+                     */
+                    lang="en"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="none"
+                    spellCheck={false}
+                    inputMode="text"
+                    enterKeyHint="done"
                   />
                 </div>
                 <div className="lesson-stage-actions center">
@@ -3471,6 +3693,19 @@ export default function GrammarLessonPage() {
                     placeholder="Type in English…（回车提交）"
                     rows={2}
                     aria-label="英文输入区"
+                    /**
+                     * 2026-09-23 补（ENV3-C 的 FAIL-C3/C4）：本框写**英文**，
+                     * 此前无任何输入环境属性——iOS 自动大写首字母、自动纠正
+                     * 会悄悄改词，中文输入法也不切英文状态。
+                     * enterKeyHint="done" 与「回车提交」的实际行为对齐。
+                     */
+                    lang="en"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="none"
+                    spellCheck={false}
+                    inputMode="text"
+                    enterKeyHint="done"
                   />
                 </div>
                 <div className="lesson-stage-actions center">
@@ -3635,7 +3870,7 @@ export default function GrammarLessonPage() {
                   )}
                 </p>
                 <p className="lesson-why-line">
-                  <Lightbulb size={13} aria-hidden="true" /> {outputWhy}
+                  <Lightbulb size={13} aria-hidden="true" /> {outputWhyFor(outputStep)}
                 </p>
                 {/* R-UX5：出答案句后的可选跟读——零判分、可跳过、不阻塞（不进必经路径） */}
                 <SpeakAloudCard lessonId={lesson.id} step={outputStep} sentence={currentOutput.sentence} />
@@ -3707,7 +3942,21 @@ export default function GrammarLessonPage() {
                       <ul className="rule-rows">
                         {lesson.summary.points.map((point) => {
                           const splitAt = point.indexOf("——");
-                          const example = splitAt >= 0 ? point.slice(0, splitAt).trim() : "";
+                          const rawExample = splitAt >= 0 ? point.slice(0, splitAt).trim() : "";
+                          /**
+                           * 2026-09-24 修（ST3 的 FAIL-2/2b）：带正误标记的条目不进大字范例位。
+                           *
+                           * 本区块标题是「这一课**掌握了什么**」——范例位（`.rule-eg` 大字）
+                           * 应当只展示**正确说法**。但全库 94 课往 `summary.points` 里
+                           * 混进了易错提醒（如 L95「I was read ❌ ／ I read ❌ —— 少外套…」），
+                           * 渲染后就变成「你掌握了：I was read ❌」——把错句当成学习成果展示，
+                           * 且与正确形式同格、没有「不要这样说」的视觉隔离。
+                           *
+                           * 修法：范例位只在**不含 ❌/✅ 标记**时才渲染；
+                           * 说明文字（`——` 之后）原样保留，提醒不会丢。
+                           */
+                          const hasVerdictMark = /[❌✅]/.test(rawExample);
+                          const example = hasVerdictMark ? "" : rawExample;
                           const note = splitAt >= 0 ? point.slice(splitAt + 2).trim() : point.trim();
                           // 「条件 → 动作」：仅当冒号后还有实义内容时才拆胶囊（如「问对方：Do 搬到句首」）。
                           // 全库实测：382/474 条说明没有冒号——那些整句进动作位，硬拆会碎成读不通的两段。
@@ -3793,7 +4042,19 @@ export default function GrammarLessonPage() {
                       ))}
                     </ul>
                   ) : (
-                    <p className="receipt-rule">本课没有留下漏洞——真棒。</p>
+                    /**
+                     * 2026-09-24 修（ST5 的 FAIL-2：同一块里两句结论自相矛盾）。
+                     *
+                     * 原文案是「本课**没有留下漏洞**——真棒。」但紧跟其后的 `receipt-queue-note`
+                     * 写着「上面这些句子**已排进复习队列**」——而队列里确实有卡
+                     * （完课即入队核心句，实测 `lesson:<id>` 至少 1 张）。
+                     * 「没有留下漏洞」在事实上是错的。
+                     *
+                     * 准确的说法是：**这次没答错**（reviewNotes 只记错过题的注解），
+                     * 而核心句照例进队列——正好与下一行「明天会自动来见你」自洽。
+                     * 两句话各说一件事：本段讲「本次表现」，下一段讲「后续安排」。
+                     */
+                    <p className="receipt-rule">这一课你一次没错——核心句照例进队列，明天再见一次。</p>
                   )}
                   {pretestWrongCount > 0 && (
                     <p className="receipt-rule">
@@ -3827,7 +4088,7 @@ export default function GrammarLessonPage() {
             {/* R3 分布位点③ · 挑战前最后一轮对错（剩余对比组，去破案前再稳一次） */}
             {(lesson.contrast?.length ?? 0) > 4 && (
               <div className="lesson-contrast-block">
-                <p className="lesson-section-label">去破案之前，最后再帮他看两句</p>
+                <p className="lesson-section-label">{preChallengeContrastLabel(hasHuntCase)}</p>
                 {(lesson.contrast ?? []).slice(4).map((item, offset) => {
                   const index = offset + 4;
                   return (
@@ -3909,8 +4170,12 @@ export default function GrammarLessonPage() {
         </section>
       )}
 
-      {/* ───────────────── ④ 破 · 侦探挑战 ───────────────── */}
-      {stage === "challenge" && (
+      {/* ───────────────── ④ 破 · 侦探挑战 ─────────────────
+          2026-09-23：`hasHuntCase` 是本段的必要条件——全库 5 课无案可破，
+          没有它就会渲染出「承诺了挑战、列表却是空的」页面（本段的空态从来不存在）。
+          正常路径已由 `postCompletionStage` 挡住，这里再兜一层：
+          段标摘掉后段位不该还能停在这一段（段标会算成「第 0 / N 段」）。 */}
+      {stage === "challenge" && hasHuntCase && (
         <section ref={stageRef} tabIndex={-1} className="lesson-stage" aria-label="侦探挑战">
           <p className="lesson-progress-line">这一课学会了，正好用它去帮侦探找到对应的语法漏洞。</p>
           <p className="lesson-intent">挑战不计时、不扣分，随时可以回来。</p>

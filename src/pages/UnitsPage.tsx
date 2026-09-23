@@ -45,6 +45,7 @@ import {
 } from "../services/unitService";
 import { nowIso, uid } from "../services/storage";
 import { appendVocabEvent } from "../services/vocabTelemetry";
+import { imeSafeFormProps } from "../components/imeGuard";
 
 const unitColors = ["#f06423", "#177e78", "#465366", "#d96a2f", "#0f766e", "#7a8493", "#3157d5", "#14845f", "#7c3aed", "#dc2626"];
 const unitCoverEndMap: Record<string, string> = {
@@ -1109,7 +1110,7 @@ export default function UnitsPage() {
         </div>
 
         {isGroupFormOpen && (
-          <form className="unit-group-create" onSubmit={createGroup}>
+          <form className="unit-group-create" onSubmit={createGroup} {...imeSafeFormProps}>
             <div>
               <span className="eyebrow">Groups</span>
               <h2>书架分组</h2>
@@ -1164,7 +1165,7 @@ export default function UnitsPage() {
               onDrop={(event) => handleGroupDrop(event, section.id)}
             >
               {isEditingGroup ? (
-                <form className="unit-group-edit" onSubmit={saveGroupEdit}>
+                <form className="unit-group-edit" onSubmit={saveGroupEdit} {...imeSafeFormProps}>
                   <input
                     value={editingGroupTitle}
                     onChange={(event) => setEditingGroupTitle(event.target.value)}
@@ -1396,7 +1397,7 @@ export default function UnitsPage() {
 
       {isCustomBookOpen && (
         <div className="custom-book-layer" role="presentation">
-          <form className="custom-book-modal" role="dialog" aria-modal="true" aria-label="创建自定义词书" onSubmit={createCustomBook}>
+          <form className="custom-book-modal" role="dialog" aria-modal="true" aria-label="创建自定义词书" onSubmit={createCustomBook} {...imeSafeFormProps}>
             <button className="custom-book-close" type="button" aria-label="关闭弹窗" title="关闭弹窗" onClick={closeCustomBookModal}>
               <X size={20} />
             </button>
@@ -1510,6 +1511,7 @@ export default function UnitsPage() {
             aria-modal="true"
             aria-label="导入词书"
             onSubmit={importBookFromFile}
+            {...imeSafeFormProps}
           >
             <button className="custom-book-close" type="button" aria-label="关闭弹窗" title="关闭弹窗" onClick={closeImportBookModal}>
               <X size={20} />
@@ -1906,7 +1908,7 @@ export default function UnitsPage() {
             </div>
 
             {isEditing && (
-              <form className="unit-manage-panel unit-edit-form" onSubmit={saveSelectedUnit}>
+              <form className="unit-manage-panel unit-edit-form" onSubmit={saveSelectedUnit} {...imeSafeFormProps}>
                 <div className="unit-manage-header">
                   <div>
                     <span className="eyebrow">Manage</span>

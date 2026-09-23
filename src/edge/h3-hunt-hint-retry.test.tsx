@@ -16,17 +16,17 @@ import { HUNT_CLUE_BUDGET, addHuntGapSentences, pickCorrectionWord } from "../se
 import GrammarHuntPage from "../pages/GrammarHuntPage";
 
 const TAG_LABEL: Record<string, string> = {
-  tense: "时态变形",
-  sv_agreement: "主谓一致",
-  missing_be: "缺 be 动词",
-  article: "冠词",
-  plural: "单复数",
-  preposition: "介词",
-  fragment: "句子残缺",
-  run_on: "连接词误用",
-  word_order: "语序",
-  verb_form: "动词形式",
-  comparison: "比较级"
+  tense: "说过去的事",
+  sv_agreement: "谁做要看谁",
+  missing_be: "少了那个是",
+  article: "东西前面那个小词",
+  plural: "两个以上",
+  preposition: "固定搭配",
+  fragment: "句子没说完",
+  run_on: "两个连词打架",
+  word_order: "词的先后",
+  verb_form: "动词的形式",
+  comparison: "比一比"
 };
 
 const CASE_ID = "hunt-call-mother";
@@ -139,7 +139,7 @@ describe("H3 提示与重试", () => {
     // 7 次误判 > 5 条额度
     for (let step = 0; step < 7; step += 1) {
       clickElement(tokensOf(page)[cleanIndexes[step]]);
-      pickTag(page, "时态变形");
+      pickTag(page, "说过去的事");
     }
     expect(clueMeter(page)).toBe(0);
     // 仍然可以继续并破案
@@ -221,7 +221,7 @@ describe("H3 提示与重试", () => {
     // 数据侧：可加词 = pickCorrectionWord 非空的植错点
     let mismatch = 0;
     for (const item of huntCases) {
-      const addable = item.errors.filter((e) => pickCorrectionWord(e.correction) !== "").length;
+      const addable = item.errors.filter((e) => pickCorrectionWord(e.correction, e.editOp) !== "").length;
       if (addable !== item.errors.length) mismatch += 1;
     }
     // 有差异是数据事实（删词型加不进去）；UI 已按真实可加数显示，本断言只防规模恶化

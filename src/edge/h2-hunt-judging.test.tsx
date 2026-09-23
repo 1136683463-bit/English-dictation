@@ -13,7 +13,7 @@ import { clickElement, flushAsync } from "./verify/drive";
 import { currentData, installResizeObserverStub, seedAppData } from "./huntDiaryEnv";
 import { grammarLessons } from "../data/grammarLessons";
 import { huntCases } from "../data/huntCases";
-import { judgeGuess } from "../services/huntService";
+import { GRAMMAR_ERROR_TAG_LABELS, judgeGuess } from "../services/huntService";
 import type { GrammarErrorTag } from "../types";
 import GrammarHuntPage from "../pages/GrammarHuntPage";
 
@@ -24,19 +24,9 @@ const judgeFor = (item: (typeof huntCases)[number], tokenIndex: number, tag: Gra
 /** 红线：正文里不得出现的挫败性字样。 */
 const RED_LINE = /正确|错误|做错|答错|不对|失败了/;
 
-const TAG_LABEL: Record<string, string> = {
-  tense: "时态变形",
-  sv_agreement: "主谓一致",
-  missing_be: "缺 be 动词",
-  article: "冠词",
-  plural: "单复数",
-  preposition: "介词",
-  fragment: "句子残缺",
-  run_on: "连接词误用",
-  word_order: "语序",
-  verb_form: "动词形式",
-  comparison: "比较级"
-};
+// 2026-09-22 批四十三：标签文案是**服务层的用户可见文案**，此前这里硬编码了一份副本，
+// 服务层做零术语清理后副本没跟上，导致 5 项断言红。改为直接引用服务层——以后标签变了自动同步。
+const TAG_LABEL = GRAMMAR_ERROR_TAG_LABELS;
 
 /** 案件 05 hunt-call-mother：tokens 18 个，错在 idx2 "happy" 与 idx13 "glad"（都是 missing_be）。 */
 const CASE_ID = "hunt-call-mother";
@@ -75,7 +65,7 @@ describe("H2 点错与归因的判定", () => {
     clickElement(tokensOf(page)[CLEAN_INDEX]);
     // 选罪名面板出现，文案问「的罪名是？」
     expect(page.has("的罪名是")).toBe(true);
-    pickTag(page, "时态变形");
+    pickTag(page, TAG_LABEL.tense);
     const text = page.text();
     expect(text).toContain("这个词没有问题，放心");
     expect(text).toContain("继续侦查别的线索"); // 温和、给出下一步
@@ -90,9 +80,9 @@ describe("H2 点错与归因的判定", () => {
   it("点对错词但选错罪名 → 告知「确实有问题，但不是X」并给该罪名的针对性线索", () => {
     const page = openUnlocked(CASE_ID);
     clickElement(tokensOf(page)[ERROR_INDEXES[0]]);
-    pickTag(page, TAG_LABEL.article ?? "冠词");
+    pickTag(page, TAG_LABEL.article);
     const text = page.text();
-    expect(text).toContain("这里确实有问题，但不是冠词");
+    expect(text).toContain(`这里确实有问题，但不是${TAG_LABEL.article}`);
     expect(text).toContain("罪名可以先放一放"); // 允许再试，无惩罚性措辞
     // 不泄露答案词本身
     expect(text).not.toContain("is happy");
@@ -102,24 +92,24 @@ describe("H2 点错与归因的判定", () => {
     page.unmount();
   });
 
-  it("罪名面板提供全部 11 个罪名按钮（含全库未使用的「比较级」）", () => {
+  it("罪名面板提供全部 11 个罪名按钮（含全库未使用的「比一比」）", () => {
     const page = openUnlocked(CASE_ID);
     clickElement(tokensOf(page)[ERROR_INDEXES[0]]);
     const labels = (Array.from(page.container.querySelectorAll(".hunt-tag-btn")) as HTMLElement[]).map((button) =>
       (button.querySelector("strong")?.textContent ?? "").trim()
     );
     expect(labels.length).toBe(11);
-    expect(labels).toContain("比较级"); // 没有任何案件使用该罪名（见 H1），点了必然归因不当
+    expect(labels).toContain(TAG_LABEL.comparison); // 没有任何案件使用该罪名（见 H1），点了必然归因不当
     console.log("[H2] 罪名按钮：", labels.join(" | "));
     page.unmount();
   });
 
-  it("[已知问题] 选「比较级」这个无案使用的罪名：只能得到归因不当反馈，不可能命中", () => {
+  it("[已知问题] 选「比一比」这个无案使用的罪名：只能得到归因不当反馈，不可能命中", () => {
     const page = openUnlocked(CASE_ID);
     clickElement(tokensOf(page)[ERROR_INDEXES[0]]);
-    pickTag(page, "比较级");
+    pickTag(page, TAG_LABEL.comparison);
     const text = page.text();
-    expect(text).toContain("这里确实有问题，但不是比较级");
+    expect(text).toContain(`这里确实有问题，但不是${TAG_LABEL.comparison}`);
     expect(text).not.toContain("找到了");
     page.unmount();
   });
@@ -154,7 +144,7 @@ describe("H2 点错与归因的判定", () => {
     const page = openUnlocked(CASE_ID);
     // 先制造一次误判（干净词）
     clickElement(tokensOf(page)[CLEAN_INDEX]);
-    pickTag(page, "时态变形");
+    pickTag(page, TAG_LABEL.tense);
     for (const error of CASE.errors) {
       clickElement(tokensOf(page)[error.tokenIndex]);
       pickTag(page, TAG_LABEL[error.tag]);
@@ -177,7 +167,7 @@ describe("H2 点错与归因的判定", () => {
   it("结算页的复盘如实标注「看过提示」与「罪名绕了弯」", async () => {
     const page = openUnlocked(CASE_ID);
     clickElement(tokensOf(page)[ERROR_INDEXES[0]]);
-    pickTag(page, TAG_LABEL.article ?? "冠词"); // 罪名绕弯
+    pickTag(page, TAG_LABEL.article); // 罪名绕弯
     pickTag(page, TAG_LABEL[CASE.errors[0].tag]); // 再选对
     clickElement(tokensOf(page)[ERROR_INDEXES[1]]);
     pickTag(page, TAG_LABEL[CASE.errors[1].tag]);
@@ -195,7 +185,7 @@ describe("H2 点错与归因的判定", () => {
     snapshots["列表与开局"] = redLineHits(page.text());
     clickElement(tokensOf(page)[CLEAN_INDEX]);
     snapshots["选中待归因"] = redLineHits(page.text());
-    pickTag(page, "时态变形");
+    pickTag(page, TAG_LABEL.tense);
     snapshots["误判反馈"] = redLineHits(page.text());
     clickElement(tokensOf(page)[ERROR_INDEXES[0]]);
     pickTag(page, "冠词");
@@ -262,7 +252,7 @@ describe("H2 点错与归因的判定", () => {
     const page = mountPage(<GrammarHuntPage />, "/grammar/hunt?case=hunt-unless-rain", "/grammar/hunt");
     const tokens = () => Array.from(page.container.querySelectorAll(".hunt-token")) as HTMLElement[];
     clickElement(tokens()[5]); // "will"
-    pickTag(page, "时态变形");
+    pickTag(page, TAG_LABEL.tense);
     const node = page.container.querySelector(".hunt-verdict-correction");
     expect(node).not.toBeNull();
     // 修正文案非空——用户能看到该改成什么

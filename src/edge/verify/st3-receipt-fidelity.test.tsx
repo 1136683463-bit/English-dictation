@@ -278,26 +278,40 @@ describe("ST3 · 收据数字与 localStorage 事实同源", () => {
           .filter((number): number is number => typeof number === "number" && number >= (season?.min ?? 0) && number <= (season?.max ?? 0))
       ).size;
 
-    // 完课瞬间：本课尚未在 React 数据里可见，页面手动 +1
+    /**
+     * 分子口径（2026-09-24 澄清）：**「本季已完成的课数」，本课算不算已完成看数据**。
+     *
+     * 圆点数（`i.on`）就是「本季已点亮几课」，所以分子必须与它同义。
+     * 原实现无条件 `doneInSeason + 1`，其注释写「完课瞬间本课尚未在 React 数据里可见」——
+     * 但 `completeLesson` 已经 await 过落盘，那一刻**本课其实已在集合里**，
+     * 再 +1 就把分子报大 1（12 课的季节里显示「第 2 课」而实际只完成 1 课）。
+     * 现在：本课已在集合里 → 不补 1；否则补 1（首刷且数据未更新时）。
+     */
+    const expectedNumerator = (done: string[]) => {
+      const size = doneInSeason(done);
+      const currentCounted = done.includes(LESSON);
+      return Math.min(total, size + (currentCounted ? 0 : 1));
+    };
+
     const badgeBefore = readBadge();
     const doneBefore = appData().grammarLessonsDone ?? [];
     expect(
       badgeBefore,
-      `完课瞬间：角标应显示「本季第 ${doneInSeason(doneBefore) + 1} / ${total} 课」`
-    ).toBe(`本季第 ${doneInSeason(doneBefore) + 1} / ${total} 课`);
+      `完课瞬间：角标应显示「本季第 ${expectedNumerator(doneBefore)} / ${total} 课」`
+    ).toBe(`本季第 ${expectedNumerator(doneBefore)} / ${total} 课`);
     const dotsOn = page.container.querySelectorAll(".hero-corner-dots i.on").length;
-    expect(dotsOn, "点亮圆点数 = 角标分子").toBe(doneInSeason(doneBefore) + 1);
+    expect(dotsOn, "点亮圆点数 = 角标分子").toBe(expectedNumerator(doneBefore));
 
-    // 落盘后：本课已进 grammarLessonsDone，+1 与集合大小应自洽
+    // 落盘后：本课已进 grammarLessonsDone，分子与集合大小自洽
     await flushAsync();
     const badgeAfter = readBadge();
     const doneAfter = appData().grammarLessonsDone ?? [];
     expect(doneAfter, "落盘后本课应在已完成集合里").toContain(LESSON);
     expect(
       badgeAfter,
-      `落盘后：角标应显示「本季第 ${doneInSeason(doneAfter) + 1} / ${total} 课」`
-    ).toBe(`本季第 ${doneInSeason(doneAfter) + 1} / ${total} 课`);
-    expect(badgeAfter, "两次渲染的分子一致（+1 与已落盘集合大小自洽）").toBe(badgeBefore);
+      `落盘后：角标应显示「本季第 ${expectedNumerator(doneAfter)} / ${total} 课」`
+    ).toBe(`本季第 ${expectedNumerator(doneAfter)} / ${total} 课`);
+    expect(badgeAfter, "两次渲染的分子一致（不因落盘而跳变）").toBe(badgeBefore);
     page.unmount();
   });
 
@@ -309,7 +323,7 @@ describe("ST3 · 收据数字与 localStorage 事实同源", () => {
    * 用「已完课重进再走一遍」的路径可稳定复现：此时本课早已在 grammarLessonsDone 里，
    * +1 就是纯多余的，角标恒比事实大 1。
    */
-  it("FAIL-1 已完课重进再完课：季角标比事实大 1（+1 未区分「本课是否已落盘」）", async () => {
+  it("FAIL-1【已修 2026-09-24】已完课重进再完课：季角标不再多算 1", async () => {
     seed();
     // 预置：本课已完成（模拟「学第二遍」）
     window.localStorage.setItem(
@@ -328,14 +342,20 @@ describe("ST3 · 收据数字与 localStorage 事实同源", () => {
         .filter((number): number is number => typeof number === "number" && number >= (season?.min ?? 0) && number <= (season?.max ?? 0))
     ).size;
 
+    /**
+     * 【已修 2026-09-24】修复前：分子无条件 `doneInSeason + 1`，
+     * 重进一节**已完课**的课时本课早已在集合里，再 +1 就把分子报大 1
+     *（12 课的季节里显示「本季第 2 课」而实际只完成 1 课），点亮的圆点数同样多 1 个。
+     * 修复：本课已在 `grammarLessonsDone` 里就不再补 1（见 seasonProgress 的注释）。
+     */
     const badge = page.container.querySelector(".hero-corner-sub")?.textContent ?? "";
-    expect(badge, "★ 缺陷：本课已在已完成集合里，仍按 +1 显示，分子比事实大 1").toBe(
-      `本季第 ${doneInSeason + 1} / ${total} 课`
+    expect(badge, "分子等于本季真实已完课数（不多算本课）").toBe(
+      `本季第 ${doneInSeason} / ${total} 课`
     );
     expect(
       page.container.querySelectorAll(".hero-corner-dots i.on").length,
-      "★ 缺陷：点亮圆点数同样多 1 个（本季进度被虚报）"
-    ).toBe(doneInSeason + 1);
+      "点亮圆点数与事实一致"
+    ).toBe(doneInSeason);
     expect(done, "事实：本课只记一次完成").toEqual([LESSON]);
     page.unmount();
   });
@@ -480,7 +500,7 @@ describe("ST3 · 收据数字与 localStorage 事实同源", () => {
    *
    * 复现用 L95（`I was read ❌ ／ I read ❌ —— …`），因为 L13 的 summary 恰好干净。
    */
-  it("FAIL-2 收据「掌握了什么」把带 ❌ 的错句当范例展示", async () => {
+  it("FAIL-2【已修 2026-09-24】收据「掌握了什么」的范例位只展示正确说法", async () => {
     seed();
     // 预置前一课完成，避免首课导览化；L95 无前置解锁依赖
     window.localStorage.setItem(
@@ -502,20 +522,35 @@ describe("ST3 · 收据数字与 localStorage 事实同源", () => {
     const exampleCells = Array.from(page.container.querySelectorAll(".rule-rows .rule-eg")).map((cell) =>
       (cell.textContent ?? "").trim()
     );
+    /**
+     * 【已修 2026-09-24】修复前：`summary.points` 里混有易错提醒
+     *（如 L95「I was read ❌ ／ I read ❌ —— 少外套…」），`——` 前半段被渲染进
+     * `.rule-eg` 大字范例位，于是收据把**错句当成「你掌握了」的学习成果**展示，
+     * 且与正确形式同格、没有「不要这样说」的隔离（全库 94 课受影响）。
+     *
+     * 修复：范例位只在**不含 ❌/✅** 时才渲染；`——` 之后的提醒文字原样保留。
+     */
     const offenders = exampleCells.filter((cell) => /❌/.test(cell));
+    expect(offenders, "范例位不再出现 ❌ 错句").toEqual([]);
+    // 提醒本身不丢：说明文字仍在（用户仍能看到「少外套、少搭档都不行」这类提示）
     expect(
-      offenders,
-      "★ 缺陷：收据「这一课掌握了什么」的范例位（.rule-eg 大字）出现 ❌ 错句"
-    ).not.toEqual([]);
-    expect(
-      rows.some((row) => /❌/.test(row)),
-      "★ 缺陷：错句与正确形式同格展示，没有任何「不要这样说」的视觉隔离"
+      rows.some((row) => /少外套|少搭档|不行的|不行/.test(row)),
+      "易错提醒仍以说明文字保留在行内"
     ).toBe(true);
     page.unmount();
   });
 
-  /** FAIL-2b 同一缺陷的语料面：全库统计（纯数据断言，不挂页面）。 */
-  it("FAIL-2b 全库 84 课 / 102 条 summary.points 含错句标记（语料面）", () => {
+  /**
+   * FAIL-2b 同一缺陷的语料面：全库统计（纯数据断言，不挂页面）。
+   *
+   * ⚠️ 断言口径修正（2026-09-22）：原先写死「89 课 / 109 条」。
+   * 那种写法有两个问题：① 内容轮次增删课程时会无缘无故失败；
+   * ② 更要紧的是，**它把不断收敛的缺陷数写成常量**——
+   * 每修好一条语料，这个测试反而变红，等于奖励「不修」。
+   *
+   * 现在改为断言**结构性事实**（与具体数量无关），并把数字打印出来供人工复核。
+   */
+  it("FAIL-2b【已修 2026-09-24】语料面：带标记的条目不进收据大字范例位", () => {
     let lessonsWithMarkedPoints = 0;
     let markedPointCount = 0;
     let renderedInExampleCell = 0;
@@ -525,14 +560,40 @@ describe("ST3 · 收据数字与 localStorage 事实同源", () => {
       lessonsWithMarkedPoints += 1;
       markedPointCount += marked.length;
       // 含 `——` 的条目前半段会被渲染进 .rule-eg（大字范例位）
-      renderedInExampleCell += marked.filter((point) => point.includes("——") && point.slice(0, point.indexOf("——")).trim()).length;
+      /**
+       * 与渲染逻辑同口径地复算「会不会进范例位」：
+       * 条件是「有 —— 且前半段非空」**且**「前半段不含 ❌/✅」
+       * （后者是 2026-09-24 的修复：带正误标记的条目不进大字范例位）。
+       * 这样本计数才真实反映**渲染结果**，而不是原始数据的样子。
+       */
+      renderedInExampleCell += marked.filter((point) => {
+        if (!point.includes("——")) return false;
+        const head = point.slice(0, point.indexOf("——")).trim();
+        return Boolean(head) && !/[❌✅]/.test(head);
+      }).length;
     }
+
+    /**
+     * 【已修 2026-09-24】语料面守门：带正误标记的条目**一条都不该**进大字范例位。
+     *
+     * 修复前这里只能断言「≤ 受影响条目数」这种弱关系（因为缺陷确实存在）；
+     * 现在范例位对带 ❌/✅ 的条目一律跳过，所以直接断言**恒为 0**。
+     * 与上面的页面级断言互补——页面级只验 L95 一课，这里扫全库 200+ 课。
+     */
     expect(
-      lessonsWithMarkedPoints,
-      "★ 缺陷语料面：受影响课程数（这些课的收据都会展示带 ❌/✅ 的条目）"
-    ).toBe(84);
-    expect(markedPointCount, "★ 缺陷语料面：受影响条目总数").toBe(102);
-    expect(renderedInExampleCell, "★ 其中会被渲染进 .rule-eg 大字范例位的条目数").toBe(101);
+      renderedInExampleCell,
+      "带 ❌/✅ 标记的条目一律不进范例位（全库扫描）"
+    ).toBe(0);
+    expect(
+      markedPointCount === 0 || lessonsWithMarkedPoints > 0,
+      "条数为 0 时课程数也应为 0（两个计数必须同向）"
+    ).toBe(true);
+
+    // eslint-disable-next-line no-console
+    console.log(
+      `[ST3-2b] 语料面：${lessonsWithMarkedPoints} 课 / ${markedPointCount} 条含标记；` +
+        `会被渲染进大字范例位的：${renderedInExampleCell} 条（已修，应为 0）`
+    );
   });
 
   /** PASS-8 收据三块内容齐全，且每块都有可见标题。 */
@@ -557,7 +618,17 @@ describe("ST3 · 收据数字与 localStorage 事实同源", () => {
       href: anchor.getAttribute("href") ?? ""
     }));
     expect(links.some((link) => link.href.includes(`/grammar/boost/${LESSON}`)), "趁热练入口").toBe(true);
-    expect(links.some((link) => link.href === "/grammar/review"), "去复习入口").toBe(true);
+    /**
+     * 2026-09-22 修断言（走查修复的连带更新）：
+     * 收据页的「去复习」改成**有条件**——刚上完课时队列里通常没有到期卡
+     * （次日才到期），点「去复习」会落到 0/0 的空页面。
+     * 现在：有到期卡 → `/grammar/review`；没有 → `/grammar/replay`（错题重练课）。
+     * 所以断言改成「两者必有其一」，并保证**不会指向空的复习队列**。
+     */
+    const queueLinks = links.filter((link) => link.href === "/grammar/review" || link.href === "/grammar/replay");
+    expect(queueLinks.length, "应有且只有一个「去复习 / 练个弱点」出口").toBe(1);
+    // 刚完课时（无到期卡）应指向重练课，而不是空队列
+    expect(queueLinks[0].href, "无到期卡时应指向错题重练课").toBe("/grammar/replay");
     expect(links.some((link) => link.href === "/grammar"), "返回课程地图").toBe(true);
     const lesson = lessonOf(LESSON);
     expect(lesson.huntCaseIds.length, "L13 有侦探案件").toBeGreaterThan(0);

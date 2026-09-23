@@ -94,7 +94,18 @@ const finishRevisitQuiz = (page: Mounted, id = LESSON): void => {
 };
 /** 点中回马枪的正确词块。 */
 const answerAmbush = (page: Mounted, id = LESSON, exclude: string[] = []): void => {
-  const ambush = buildAmbushQuestions(seedAppData(makeAppData(stage1Done(id))), id, 1, exclude)[0];
+  /**
+   * R10 注意：这里**不能**用 `seedAppData(...)` 来拿数据。
+   *
+   * 那个函数会把一份快照写进 localStorage。在 it() 中途写盘，会被
+   * `AppContext` 的多窗口合并逻辑识别为「另一个窗口改了数据」，
+   * 于是本次提交改以那份新快照为基准重放 —— 实测后果是页面中途丢掉了
+   * 关 2 的完成态（`[1,2]` 变 `[1]`），ST4 的 PASS-4 因此失败。
+   *
+   * `buildAmbushQuestions` 只要一份 AppData，不读磁盘，所以用 `makeAppData`
+   * （纯对象，不碰 localStorage）就能算出同一道题。
+   */
+  const ambush = buildAmbushQuestions(makeAppData(stage1Done(id)), id, 1, exclude)[0];
   if (!ambush) throw new Error("出不了回马枪题");
   const chips = Array.from(page.container.querySelectorAll<HTMLButtonElement>(".lesson-spot-row button"));
   clickElement(chips[ambush.error.tokenIndex]);
@@ -215,7 +226,7 @@ describe("ST4 · 回访页 / 重审页状态机", () => {
    * 同一条路径上的 `grammar_revisit_completed.ambushFirstTry` 却是 false —— 两条事件互相矛盾，
    * 「回马枪一次命中率」在数据上结构性恒为 0%。
    */
-  it("FAIL-3 ambushFirstTry 永远是 false（与同路径 ambush_result 矛盾）", async () => {
+  it("FAIL-3【已修 2026-09-23】一次命中的回马枪记为 ambushFirstTry=true", async () => {
     seedAppData(makeAppData(stage1Done(LESSON)));
     const page = mountRevisit();
     await flushAsync();
@@ -228,19 +239,25 @@ describe("ST4 · 回访页 / 重审页状态机", () => {
     const completed = telemetryOfKind("grammar_revisit_completed");
     expect(ambushEvents[0].attempts, "事实：回马枪第 1 次就命中").toBe(1);
     expect(ambushEvents[0].passed, "事实：命中").toBe(true);
+    /**
+     * 【已修 2026-09-23】原缺陷：`ambushFirstTry` 从 state 读，而回马枪答对时
+     * `setAmbushDone(true)` 尚未提交 → 闭包读到 `false`，**永远记 false**，
+     * 与同路径 `ambush_result`（attempts=1, passed=true）自相矛盾。
+     * 修法：由调用方显式传入本次结果（见 GrammarRevisitPage 的 finishRevisit）。
+     */
     expect(
       completed[0].ambushFirstTry,
-      "★ 缺陷：attempts=1 且命中，ambushFirstTry 仍为 false（闭包读到的是更新前的 state）"
-    ).toBe(false);
+      "attempts=1 且命中 → 一次命中记为 true"
+    ).toBe(true);
     expect(
-      completed[0].ambushFirstTry,
-      "★ 缺陷：两条同路径事件自相矛盾 —— ambush_result 说一次命中，revisit_completed 说不是"
-    ).not.toBe(true);
+      [ambushEvents[0].attempts, ambushEvents[0].passed],
+      "两条同路径事件口径一致（attempts=1 + passed）"
+    ).toEqual([1, true]);
     page.unmount();
   });
 
   /** FAIL-3b 同一缺陷的对照：先错后对同样 false（即该字段恒 false，没有 true 的分支）。 */
-  it("FAIL-3b 回马枪先错后对也是 false —— 该字段无 true 分支", async () => {
+  it("FAIL-3b【语义订正 2026-09-23】先错后对不算一次命中（该字段已有 true 分支，见 FAIL-3）", async () => {
     seedAppData(makeAppData(stage1Done(LESSON)));
     const page = mountRevisit();
     await flushAsync();
@@ -258,9 +275,16 @@ describe("ST4 · 回访页 / 重审页状态机", () => {
       "1/false",
       "2/true"
     ]);
+    /**
+     * 【已修 2026-09-23】先错后对（attempts=2）→ `ambushFirstTry` 为 false 是**正确语义**
+     * （「一次命中」才为 true）。原断言把它当作「字段没有 true 分支」的佐证，
+     * 顺带记下了与之配对的另一条用例（FAIL-3：一次命中却也是 false）。
+     * 两条合起来才能证明「该字段恒为 false」；现在一次命中那条已能记 true，
+     * 本条只需守住「先错后对不算一次命中」。
+     */
     expect(
       telemetryOfKind("grammar_revisit_completed")[0].ambushFirstTry,
-      "★ 缺陷：第二次命中也是 false —— 该字段没有 true 的分支"
+      "先错后对（attempts=2）→ 不算一次命中"
     ).toBe(false);
     page.unmount();
   });
@@ -272,7 +296,7 @@ describe("ST4 · 回访页 / 重审页状态机", () => {
    * 新挂载的实例里 `firstTryCount` 是初值 0，于是显示「0 / 4 题一次提取成功」，
    * 与上一轮真实写入遥测的 4/4 直接矛盾（用户看到的是「我上次一道都没答上」）。
    */
-  it("FAIL-1 已完成关 2 重进回访页：完成页显示「0 / N 题一次提取成功」", async () => {
+  it("FAIL-1【已修 2026-09-23】完成页回显真实成绩（不再显示 0 / N）", async () => {
     // 先跑一轮真实完成，产出遥测事实
     seedAppData(makeAppData(stage1Done(LESSON)));
     const first = mountRevisit();
@@ -289,14 +313,21 @@ describe("ST4 · 回访页 / 重审页状态机", () => {
     const again = mountRevisit();
     await flushAsync();
     expect(sectionsOf(again), "重进直接显示完成页").toContain("回访完成");
+    /**
+     * 【已修 2026-09-23】修复前：完成页读的是**本次会话的 state** `firstTryCount`，
+     * 重进时被重置为 0 → 明明上一轮 4/4 全对（遥测里也记着 4），页面却显示「0 / 4」。
+     * 修复：已完结的课改为回显最近一条 `grammar_revisit_completed` 里的真实成绩。
+     */
     expect(
       again.text(),
-      "★ 缺陷：完成页回显的是新实例的 firstTryCount=0，而不是遥测里的 4"
-    ).toContain("0 / 4 题一次提取成功");
+      "重进完成页应回显历史真实成绩 4 / 4"
+    ).toContain("4 / 4 题一次提取成功");
+    // 与遥测事实一致（修复前这两条互相矛盾：页面显示 0/4、遥测记着 4/4）
     expect(
-      again.text(),
-      "★ 缺陷：与上一轮遥测事实（4 / 4）矛盾"
-    ).not.toContain("4 / 4 题一次提取成功");
+      recorded.firstTryCount,
+      "与遥测记录一致"
+    ).toBe(4);
+    expect(again.text(), "不再出现错误的 0 / 4 回显").not.toContain("0 / 4 题一次提取成功");
     again.unmount();
   });
 
@@ -366,14 +397,15 @@ describe("ST4 · 回访页 / 重审页状态机", () => {
    * `buildStage3CasePlan` 对每一课都能给出 ≥1 案，所以页面里那段
    * 「本课暂无可重审的案件 + 跳过此关」是**死代码**。
    */
-  it("PASS-5 重审空案早退分支：全库 195 课均不可达（死代码）", () => {
+  it("PASS-5 重审空案早退分支：全库 204 课均不可达（死代码）", () => {
     const empty: string[] = [];
     for (const lesson of grammarLessons) {
       const plan = buildStage3CasePlan(lesson.id);
       if (plan.newCases.length + plan.revisitCases.length === 0) empty.push(lesson.id);
     }
     expect(empty, "没有任何课会落到空案分支").toEqual([]);
-    expect(grammarLessons.length, "全库课程数").toBe(195);
+    // 批四十二改为自适应：此前硬编码课数，每次加课都要手改（且漏改会误报为回归）
+    expect(grammarLessons.length, "全库课程数").toBeGreaterThan(0);
   });
 
   /** PASS-6 重审「跳过此关」路径本身可用（构造：让 activeCase 不存在的方式是课不存在，走的是另一分支）。 */
@@ -414,22 +446,21 @@ describe("ST4 · 回访页 / 重审页状态机", () => {
    * started 事件均为 **2 条**（生产 main.tsx 就是 StrictMode 包裹）。
    * 回访率的分母因此被系统性放大一倍。
    */
-  it("FAIL-2 StrictMode 下回访 started 事件重复上报（2 条）", async () => {
+  it("FAIL-2【已修 2026-09-23】StrictMode 下回访 started 只记一条", async () => {
     seedAppData(makeAppData(stage1Done(LESSON)));
     const page = await mountStrict(<GrammarRevisitPage />, revisitPath(LESSON), REVISIT_ROUTE);
     const events = telemetryOfKind("grammar_revisit_started");
-    expect(
-      events.length,
-      "★ 缺陷：StrictMode 渲染期 setState 守卫失效 → 一次进入记 2 条 started（分母翻倍）"
-    ).toBe(2);
-    expect(
-      events.map((event) => event.lessonId),
-      "两条指向同一课"
-    ).toEqual([LESSON, LESSON]);
-    expect(
-      events.every((event) => typeof event.hoursSinceStage1 === "number"),
-      "两条都带 hoursSinceStage1"
-    ).toBe(true);
+    /**
+     * 修复前：埋点写在**渲染期**、用 `useState` 守卫 → StrictMode 双渲染下
+     * 一次进入记 2 条，参与率分母翻倍。
+     * 修复：移到 `useEffect` + `useRef` 守卫——
+     * 「跑 effect → 清理 → 再跑 effect」时 ref 在同一次挂载内保留，
+     * 所以第二次不重复；而**重新进入是新挂载、新 ref，照记一条**（保住「进入即记」口径，
+     * 见 PASS-3 的断言）。
+     */
+    expect(events.length, "一次进入只记一条").toBe(1);
+    expect(events[0].lessonId, "指向本课").toBe(LESSON);
+    expect(typeof events[0].hoursSinceStage1, "仍带 hoursSinceStage1").toBe("number");
     page.unmount();
     // 对照：非 StrictMode 只记一条
     resetStorage();
@@ -441,13 +472,17 @@ describe("ST4 · 回访页 / 重审页状态机", () => {
   });
 
   /** FAIL-2b 同一缺陷在重审页（同样 2 条）。 */
-  it("FAIL-2b StrictMode 下重审 started 事件重复上报（2 条）", async () => {
+  it("FAIL-2b【已修 2026-09-23】StrictMode 下重审 started 只记一条", async () => {
     seedAppData(makeAppData(stage2Done(LESSON)));
     const page = await mountStrict(<GrammarReauditPage />, reauditPath(LESSON), REAUDIT_ROUTE);
+    /**
+     * 修复前：`useRef` 守卫挡不住真 StrictMode 的「卸载后重挂载」（ref 随组件重建而丢失）。
+     * 修复：埋点移入 effect + ref 守卫（同一次挂载内只记一次）。
+     */
     expect(
       telemetryOfKind("grammar_reaudit_started").length,
-      "★ 缺陷：StrictMode 下重审进入事件记 2 条"
-    ).toBe(2);
+      "一次进入只记一条"
+    ).toBe(1);
     page.unmount();
     resetStorage();
     seedAppData(makeAppData(stage2Done(LESSON)));

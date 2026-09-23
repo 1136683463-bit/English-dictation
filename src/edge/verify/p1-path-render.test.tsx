@@ -37,7 +37,7 @@ const openSeasonAndReadNumbers = (page: ReturnType<typeof mountPage>, index: num
   });
 };
 
-describe("P1 · 路径页渲染完整性（28 季 / 195 课一课不漏）", () => {
+describe("P1 · 路径页渲染完整性（28 季 / 205 课一课不漏）", () => {
   beforeEach(() => resetStorage());
 
   it("首页渲染出 28 个季卡，且展开下一课所在季（第 1 季）", () => {
@@ -54,7 +54,7 @@ describe("P1 · 路径页渲染完整性（28 季 / 195 课一课不漏）", () 
     page.unmount();
   });
 
-  it("逐个展开全部 28 季：渲染出的课号集合 === 195 课全量（无静默过滤）", () => {
+  it("逐个展开全部 28 季：渲染出的课号集合 === 205 课全量（无静默过滤）", () => {
     const page = mountPage(<GrammarPathPage />, "/grammar", "/grammar");
     const seen: number[] = [];
     const perSeason: Array<{ id: string; numbers: number[] }> = [];
@@ -74,8 +74,8 @@ describe("P1 · 路径页渲染完整性（28 季 / 195 课一课不漏）", () 
       `被静默过滤的课号（数据里有、路径页不显示）：${missing.join(", ")}`
     ).toEqual([]);
     expect(extra, `路径页显示了数据里不存在的课号：${extra.join(", ")}`).toEqual([]);
-    expect(unique.length, "路径页渲染出的课总数应为 195").toBe(195);
-    expect(grammarLessons.length).toBe(195);
+    expect(unique.length, "路径页渲染出的课总数应为 205").toBe(205);
+    expect(grammarLessons.length).toBe(205);
 
     // 每季显示的课数 === 该季区间内实际存在的课数（区间长度）
     for (let i = 0; i < LESSON_GROUPS.length; i += 1) {
@@ -112,7 +112,7 @@ describe("P1 · 路径页渲染完整性（28 季 / 195 课一课不漏）", () 
         if (!ids.has(id)) dead.push(href);
       }
     }
-    expect(cardLinks, "应收集到 195 张课卡的链接").toBe(195);
+    expect(cardLinks, "应收集到 205 张课卡的链接").toBe(205);
     expect(dead, `指向不存在课程的链接：${dead.slice(0, 5).join(", ")}`).toEqual([]);
     page.unmount();
   });
@@ -140,12 +140,12 @@ describe("P1 · 路径页渲染完整性（28 季 / 195 课一课不漏）", () 
       const unique = [...new Set(renderedNumbers)].sort((a, b) => a - b);
       return ALL_LESSON_NUMBERS.filter((number) => !unique.includes(number));
     };
-    // 1874 是真实课号之外的注入号：模拟「第 195 课被季区间过滤」
+    // 1874 是真实课号之外的注入号：模拟「第 204 课被季区间过滤」
     expect(detect(ALL_LESSON_NUMBERS.filter((n) => n !== 192)), "漏第 192 课应被抓到").toEqual([192]);
     expect(detect(ALL_LESSON_NUMBERS), "一课不漏时不该报错").toEqual([]);
     // 并确认课号是连续的 1..192（任何空洞都会被上面那条抓到）
     expect(ALL_LESSON_NUMBERS[0]).toBe(1);
-    expect(ALL_LESSON_NUMBERS[ALL_LESSON_NUMBERS.length - 1]).toBe(195);
-    expect(ALL_LESSON_NUMBERS.length).toBe(195);
+    expect(ALL_LESSON_NUMBERS[ALL_LESSON_NUMBERS.length - 1]).toBe(205);
+    expect(ALL_LESSON_NUMBERS.length).toBe(205);
   });
 });

@@ -147,7 +147,7 @@ describe("H5 日记的离线与降级", () => {
     expect(text).toContain("Yesterday I headed to the park.");
     expect(text).toContain("go → went");
     expect(text).toContain("昨天的事用过去式。");
-    expect(text).toContain("时态变形"); // tag chip
+    expect(text).toContain("说过去的事"); // tag chip
     expect(text).toContain("再多说一句");
     expect(text).toContain("公园里你最喜欢做什么？");
     expect(text).toContain("共 1 处小调整。");

@@ -58,7 +58,23 @@ describe("E3 · 中途退出与续学恢复", () => {
     enterPractice(page);
     const practice = lessonOf(LESSON).practice;
 
-    expect(resumeRaw(), "刚进练习段（未推进）不应有快照").toBeNull();
+    /**
+     * 2026-09-22 修断言：「进段即写快照」成了新行为。
+     *
+     * 新增的 `snapshotStage` 会在**任何段位推进**时记一笔（含从前测直接跳到练习），
+     * 目的是「用户做完前测就关掉浏览器，刷新回来不该又被扔回前测第 1 题」。
+     * 所以刚进练习段时会有一条 `practiceIndex: -1` 的兜底快照——
+     * 它表示「停在练习段、尚未推进」，不是「练到第 1 题」（界面文案已按此区分）。
+     * 真正要守住的不变量是「推进后快照的题号正确」，见下面几条断言。
+     */
+    const entrySnapshot = resumeRaw();
+    if (entrySnapshot) {
+      expect(entrySnapshot.stage, "兜底快照应标记为 practice 段").toBe("practice");
+      expect(
+        Number(entrySnapshot.practiceIndex),
+        "兜底快照必须用 -1 表示「未推进」，不能编造题号"
+      ).toBe(-1);
+    }
 
     answerArrangeCorrectly(page, practice[0].answer);
     page.click("下一题");

@@ -182,10 +182,16 @@ describe("E6 · 异常输入", () => {
     if (step.kind === "arrange") {
       answerArrangeCorrectly(page, step.answer);
       const before = builtWords(page).length;
-      // 通关后点拼装区词块：仍可移除（会重置反馈）
+      /**
+       * 通关后点拼装区词块：词块仍可移除（回头改是允许的），
+       * 但**通关状态保留**（2026-09-21 修）。
+       * 修复前这里会把反馈清成 idle，「下一题」随之消失——用户点一下就把自己的出口弄没了；
+       * 而擦完的句子不满判题长度、也不会重新判，页面成了没有任何出口的死结。
+       */
       clickEl(builtChips(page)[0]);
       expect(builtWords(page).length).toBe(before - 1);
-      expect(feedbackKind(page), "移除后反馈清空（未作答）").toBe("none");
+      expect(feedbackKind(page), "已通过的题移除一块后仍保持 pass").toBe("pass");
+      expect(page.buttons().includes("下一题"), "出口不应因一次移除而消失").toBe(true);
     } else {
       answerGuidedCorrectly(page, { step, sourceIndex: first, displayIndex: 0 });
       expect(feedbackKind(page)).toBe("pass");

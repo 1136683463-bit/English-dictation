@@ -79,8 +79,12 @@ export default function OnboardingGuide() {
 
   const exportBackup = () => {
     const exportedData = markDataExported(data);
+    // R09：导出失败不可谎报成功——这是首启引导里唯一的数据出口。
+    if (!downloadTextFile("vocab-backup.json", exportJson(exportedData), "application/json")) {
+      setExportStatus("这次导出没能生成文件（可能是存储被限制或浏览器策略拦截）。可以稍后在设置页重试，或改用网页版打开。");
+      return;
+    }
     setData(exportedData);
-    downloadTextFile("vocab-backup.json", exportJson(exportedData), "application/json");
     setExportStatus("已导出 JSON 备份，妥善保存这份文件即可随时恢复。");
   };
 

@@ -46,7 +46,7 @@ describe("P3 · 进度与状态显示", () => {
 
   it("零进度：总进度 0 / 192，主 CTA 指向第 1 课，其他季全零", () => {
     const page = mountPage(<GrammarPathPage />, "/grammar", "/grammar");
-    expect(progressPill(page)).toBe("0 / 195 课");
+    expect(progressPill(page)).toBe("0 / 205 课");
     expect(primaryCta(page)).toBe("从第 1 课开始 · 小美的一天");
     expect(page.has("一切从这 6 分钟开始")).toBe(true);
     // 第 1 季是「进行中」（下一课所在季），不是「已完成」
@@ -62,7 +62,7 @@ describe("P3 · 进度与状态显示", () => {
   it("学到 L5：总进度 5 / 192，第 5 课不再是「下一课」，主 CTA 指向第 6 课", () => {
     seedAppData({ grammarLessonsDone: doneIds(5) });
     const page = mountPage(<GrammarPathPage />, "/grammar", "/grammar");
-    expect(progressPill(page)).toBe("5 / 195 课");
+    expect(progressPill(page)).toBe("5 / 205 课");
     expect(primaryCta(page)).toBe("继续第 6 课 · 现在几点了");
     // 设计口径（GrammarPathPage.tsx:864）：当前季固定显示「进行中」，
     // 季内具体进度只体现在进度环上（环内数字 = 完成数）。
@@ -83,7 +83,7 @@ describe("P3 · 进度与状态显示", () => {
   it("学到 L13：第 1 季显示「已完成」，第 2 季「进行中」，进度环显示 ✓", () => {
     seedAppData({ grammarLessonsDone: doneIds(13) });
     const page = mountPage(<GrammarPathPage />, "/grammar", "/grammar");
-    expect(progressPill(page)).toBe("13 / 195 课");
+    expect(progressPill(page)).toBe("13 / 205 课");
     expect(seasonMeta(page, 0)).toBe("已完成");
     expect(ringNum(page, 0), "整季完成后进度环应显示 ✓ 而不是数字").toBe("✓");
     expect(ringPercent(page, 0)).toBe("100");
@@ -105,8 +105,8 @@ describe("P3 · 进度与状态显示", () => {
     page.unmount();
   });
 
-  it("全部 195 课完成：进度 195 / 195，无「下一课」，主 CTA 转为去复习", () => {
-    seedAppData({ grammarLessonsDone: doneIds(195) });
+  it("全部 205 课完成：进度 205 / 205，无「下一课」，主 CTA 转为去复习", () => {
+    seedAppData({ grammarLessonsDone: doneIds(205) });
     const page = mountPage(<GrammarPathPage />, "/grammar", "/grammar");
     // 从全库推导，避免每次加课后手工更新（批四十一）
     const total = grammarLessons.length;
@@ -130,7 +130,7 @@ describe("P3 · 进度与状态显示", () => {
     const partial = grammarLessons.slice(12, 15).map((l) => l.id); // 第 13/14/15 课
     seedAppData({ grammarLessonsDone: [...first, ...partial] });
     const page = mountPage(<GrammarPathPage />, "/grammar", "/grammar");
-    expect(progressPill(page)).toBe("15 / 195 课");
+    expect(progressPill(page)).toBe("15 / 205 课");
     expect(seasonMeta(page, 0)).toBe("已完成");
     // 第 2 季 12 课完成 3 课；但它是「下一课」（第 16 课）所在季 → 显示「进行中」
     expect(seasonMeta(page, 1)).toBe("进行中");

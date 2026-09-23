@@ -6,7 +6,8 @@ import { useAppData } from "../AppContext";
 import EmptyState from "../components/EmptyState";
 import SpeakButton from "../components/SpeakButton";
 import { getWordDetails } from "../services/cardService";
-import { compareLetters, normalizeSpelling } from "../services/diffService";
+import { compareLetters, normalizeSpelling, spellingMatches } from "../services/diffService";
+import { isImeComposing, isSubmitKey, imeSafeFormProps } from "../components/imeGuard";
 import {
   applyReviewWithUndo,
   markCardsPriority,
@@ -309,11 +310,23 @@ export default function SpellingPage() {
        * 并且**放行 Shift+Tab**（反向导航必须始终可用）。
        */
       const target = event.target as HTMLElement | null;
+      /**
+       * 2026-09-23 补：守卫同时看**组词态**（ENV3-C 的 FAIL-C12 指出此前只看 tagName）。
+       *
+       * 原来只判 `tagName`/`isContentEditable`。组词态下 target 仍是 INPUT，
+       * 所以这条守卫本就成立、Tab 会放行——**行为是对的**。
+       * 加上组词态判断是**防御性收紧**：万一组词候选窗把焦点挂到了别处
+       * （非 INPUT 节点）而输入法仍开在组词态，原守卫会误判为「不在输入中」，
+       * 于是把 Tab 劫持去播放发音——用户想用 Tab 选候选词，结果打断了输入。
+       * `isImeComposing` 用 isComposing / keyCode 229 两个信号，覆盖部分输入法
+       * 只给 229 不上报 isComposing 的情况。
+       */
       const isEditable =
         target?.tagName === "INPUT" ||
         target?.tagName === "TEXTAREA" ||
         target?.isContentEditable === true ||
-        target?.tagName === "SELECT";
+        target?.tagName === "SELECT" ||
+        isImeComposing(event);
       if (event.key === "Tab" && !event.shiftKey && !isEditable) {
         event.preventDefault();
         if (!event.repeat) {
@@ -336,27 +349,42 @@ export default function SpellingPage() {
   };
 
   const playTone = (isCorrect: boolean) => {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextClass) return;
+    /**
+     * R09：整段包 try/catch。
+     *
+     * 此前只判了「构造函数在不在」这一个 null 守卫，但 `new AudioContextClass()`
+     * **本身会抛**（WebKit 上是 `InvalidStateError: hardware contexts`，
+     * 与硬件/权限有关）。异常逃出去会打断调用它的判题流程——
+     * 真机复现的后果是：答案已判、但 `setData` 还没执行，
+     * 用户看到的症状是「点了提交，什么都没发生」，且这次作答不作数。
+     *
+     * 提示音是**可选增强**，任何失败都不该影响判题与落库。
+     */
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
 
-    const context = new AudioContextClass();
-    const gain = context.createGain();
-    gain.connect(context.destination);
-    gain.gain.setValueAtTime(0.0001, context.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.08, context.currentTime + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.35);
+      const context = new AudioContextClass();
+      const gain = context.createGain();
+      gain.connect(context.destination);
+      gain.gain.setValueAtTime(0.0001, context.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.08, context.currentTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.35);
 
-    const tones = isCorrect ? [660, 880] : [220, 160];
-    tones.forEach((frequency, index) => {
-      const oscillator = context.createOscillator();
-      oscillator.type = isCorrect ? "sine" : "triangle";
-      oscillator.frequency.value = frequency;
-      oscillator.connect(gain);
-      oscillator.start(context.currentTime + index * 0.11);
-      oscillator.stop(context.currentTime + index * 0.11 + 0.16);
-    });
+      const tones = isCorrect ? [660, 880] : [220, 160];
+      tones.forEach((frequency, index) => {
+        const oscillator = context.createOscillator();
+        oscillator.type = isCorrect ? "sine" : "triangle";
+        oscillator.frequency.value = frequency;
+        oscillator.connect(gain);
+        oscillator.start(context.currentTime + index * 0.11);
+        oscillator.stop(context.currentTime + index * 0.11 + 0.16);
+      });
 
-    window.setTimeout(() => context.close(), 500);
+      window.setTimeout(() => context.close(), 500);
+    } catch {
+      // 没有提示音也要能判题——静音降级，不打断流程。
+    }
   };
 
   const scheduleAutoAdvance = (nextQueueLength: number, isCorrect: boolean) => {
@@ -400,7 +428,12 @@ export default function SpellingPage() {
 
     const currentAnswer = inputRef.current?.value ?? answer;
     const diff = compareLetters(card.front, currentAnswer);
-    const isCorrect = normalizeSpelling(card.front) === normalizeSpelling(currentAnswer);
+    /**
+     * 判对错用 `spellingMatches`（容忍标点）而不是 normalizeSpelling——
+     * 用户拼单词时顺带打出 `。`/`.` 不该判错（ENV3-B 的 FAIL-B15）。
+     * 差异对照仍用 compareLetters（基于 normalizeSpelling，保留标点以便高亮）。
+     */
+    const isCorrect = spellingMatches(card.front, currentAnswer);
     const result: SpellingResult = { card, answer: currentAnswer, isCorrect, diff };
     const repeatCount = isCorrect ? 0 : 2;
     const nextQueue = isCorrect ? queue : reinsertWrongCardSoon(queue, index, card);
@@ -468,10 +501,20 @@ export default function SpellingPage() {
   };
 
   const handleInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      submitAnswer();
-    }
+    /**
+     * R09：回车要区分「组词上屏」与「提交」。
+     *
+     * 中文输入法下回车先用于**选词上屏**。此前这里只判 `key === "Enter"`，
+     * 真机实测（Playwright + CDP `Input.imeSetComposition` 造真实组词态）：
+     * 输入 `pict` 未上屏时按回车 → 半截输入被提交、记为一次低分复习、
+     * 卡片进错词书。同时排除 Shift+Enter（表单里那是换行的直觉）。
+     *
+     * 注意 `onSubmit`（下方 `submit`）**无法**补救：原生 submit 事件上
+     * 没有 `isComposing`，所以组词态必须在 keydown 这一层拦住。
+     */
+    if (!isSubmitKey(event)) return;
+    event.preventDefault();
+    submitAnswer();
   };
 
   const undoLastAttempt = () => {
@@ -770,7 +813,7 @@ export default function SpellingPage() {
           )}
         </div>
 
-        <form className="spelling-form" onSubmit={submit} autoComplete="off">
+        <form className="spelling-form" onSubmit={submit} autoComplete="off" {...imeSafeFormProps}>
           <input
             ref={attachInput}
             name={SPELLING_INPUT_NAME}
@@ -786,6 +829,16 @@ export default function SpellingPage() {
             autoCapitalize="none"
             spellCheck={false}
             data-form-type="other"
+            /**
+             * 2026-09-23 补（ENV3-C 的 FAIL-C2/C4）：
+             * - inputMode="text"：移动端/平板弹英文键盘（默认中文键盘要用户手动切）
+             * - enterKeyHint="done"：回车键位显示「完成」而不是「换行」——与本页
+             *   「回车提交」的实际行为一致
+             * - lang="en"：中文输入法可据此切到英文状态
+             */
+            inputMode="text"
+            enterKeyHint="done"
+            lang="en"
           />
         </form>
 

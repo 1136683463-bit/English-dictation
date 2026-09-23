@@ -83,7 +83,7 @@ describe("RV7-a 页面自身文案（静态断言，违者即缺陷）", () => {
     const page = mountReview();
     const text = page.text();
     for (const term of GRAMMAR_ZERO_TERMS) {
-      if (term === "时态" || term === "语序") continue; // note 数据里的词不会出现在空态
+      if (term === "时态" || term === "词的先后") continue; // note 数据里的词不会出现在空态
       expect(text, `空态含术语「${term}」`).not.toContain(term);
     }
     for (const word of DISCOURAGING) expect(text, `空态含「${word}」`).not.toContain(word);
@@ -196,12 +196,12 @@ describe("RV7-b 数据带进来的讲解文案（记录现状）", () => {
       }
     }
     expect(total).toBeGreaterThan(300);
-    // 记录现状：占比很高——复习页把它渲染在答题反馈里（`（{task.note}）`），用户看得到
-    expect(hitCount).toBeGreaterThan(300);
-    expect(samples.length).toBe(3);
+    // 2026-09-22 批四十三：huntCases 的用户可见文案做了零术语清理（313 处 → 0），
+    // 断言随之由「记录缺陷（>300）」反转为「不得再命中」。
+    expect(hitCount, `仍有 grammarNote 命中术语：${samples.join(" | ")}`).toBe(0);
   });
 
-  it("真实 UI：hunt 来源卡的反馈区会把含术语的讲解显示给用户（可复现）", async () => {
+  it("真实 UI：hunt 来源卡的反馈区会把讲解显示给用户（现为零术语）", async () => {
     const caseItem = huntCases[0];
     const raw = caseItem.tokens.join(" ");
     const details = {
@@ -209,7 +209,7 @@ describe("RV7-b 数据带进来的讲解文案（记录现状）", () => {
       sentence: raw,
       translation: "",
       keywords: [] as string[],
-      grammarNote: "[tense:move] 时态变形：move → moved。Last week 说的是过去发生的事，动词要用过去式：move → moved。",
+      grammarNote: "[tense:move] 说过去的事：move → moved。Last week 说的是过去发生的事，动词要用过去式：move → moved。",
       audioUrl: ""
     };
     seedAppData(
@@ -217,7 +217,7 @@ describe("RV7-b 数据带进来的讲解文案（记录现状）", () => {
         makeSentenceCard({
           id: "hunt-ui",
           sentence: raw,
-          note: `找错案件：${caseItem.title}（时态变形）`,
+          note: `找错案件：${caseItem.title}（说过去的事）`,
           sourceId: `hunt:${caseItem.id}`,
           // rebuild 题：拼对后反馈区展示 task.note（= grammarNote）
           schedule: { reviewCount: 1, nextReviewAt: PAST_ISO, intervalDays: 1 }
@@ -242,12 +242,13 @@ describe("RV7-b 数据带进来的讲解文案（记录现状）", () => {
       await flushAsync();
     }
     const text = page.text();
-    expect(text).toContain("时态变形"); // 讲解里的罪名标签
-    expect(findZeroTermHits(text).length, `反馈区命中术语：${findZeroTermHits(text).join("/")}`).toBeGreaterThan(0);
+    expect(text).toContain("说过去的事"); // 讲解里的罪名标签（服务层现用文案）
+    // 2026-09-22 批四十三：术语清理后反馈区不得再命中红线
+    expect(findZeroTermHits(text), `反馈区命中术语：${findZeroTermHits(text).join("/")}`).toEqual([]);
     page.unmount();
   });
 
-  it("hunt 卡 note 里的罪名标签（如「单复数」「主谓一致」）本身也是术语", () => {
+  it("hunt 卡 note 里的罪名标签已零术语，且 free_type 题面会原样显示它", () => {
     // note = `找错案件：${title}（${GRAMMAR_ERROR_TAG_LABELS[tag]}）`，free_type 题面直接用它
     const labels = new Set<string>();
     for (const caseItem of huntCases) {
@@ -257,15 +258,16 @@ describe("RV7-b 数据带进来的讲解文案（记录现状）", () => {
       }
     }
     const termLabels = [...labels].filter((note) => findZeroTermHits(note).length > 0);
-    expect(termLabels.length, "罪名标签含术语的 note 数量").toBeGreaterThan(0);
+    // 2026-09-22 批四十三：罪名标签改零术语后（时态变形→说过去的事 等），这里应为 0
+    expect(termLabels, `仍含术语的 note：${termLabels.slice(0, 3).join(" | ")}`).toEqual([]);
 
-    // 构造 free_type：题面会把 note 原样显示
-    const sample = termLabels[0]!;
+    // 结构验证不变：free_type 题面会把 note 原样显示（换用一个干净 note）
+    const sample = [...labels][0]!;
     const task = buildGrammarReviewTask(FREE_TYPE_CARD("t", "Last week I move to a new home.", sample));
     expect(task.promptText).toContain(sample.replace(/^找错案件：/, "").slice(0, 6));
   });
 
-  it("hunt 卡的 grammarNote 里的原始内部 tag（[tense:move]）会被原样显示给用户", async () => {
+  it("【已修 2026-09-22】hunt 卡的内部 tag（[tense:move]）不再显示给用户", async () => {
     // grammarNote = `[${tag}:${original}] ${标签}：...`，复习页在做对/看答案时展示 task.note
     const { data } = addHuntGapSentences(
       makeAppData(),
@@ -283,7 +285,7 @@ describe("RV7-b 数据带进来的讲解文案（记录现状）", () => {
         makeSentenceCard({
           id: "tag-leak",
           sentence: raw,
-          note: `找错案件：${caseItem.title}（时态变形）`,
+          note: `找错案件：${caseItem.title}（说过去的事）`,
           sourceId: `hunt:${caseItem.id}`,
           schedule: { reviewCount: 1, nextReviewAt: PAST_ISO, intervalDays: 1 }
         })
@@ -300,9 +302,14 @@ describe("RV7-b 数据带进来的讲解文案（记录现状）", () => {
       await flushAsync();
     }
     const text = page.text();
-    // 缺陷证据：用户可见文案里出现 `[tense:move]` 这种内部标记
-    expect(text, "反馈区把内部 tag 原样显示给用户").toContain("[tense:move]");
-    expect(text).toMatch(/\[[a-z_]+:[^\]]+\]/);
+    /**
+     * 修复后：展示层剥掉内部标记（存储里仍保留，弱点归因继续用它）。
+     * 修复前这里能看到 `[tense:move]`——用户完全看不懂这是什么。
+     */
+    expect(text, "反馈区不应再显示内部标记").not.toContain("[tense:move]");
+    expect(text, "用户可见文案里不应出现 tag 形态的方括号").not.toMatch(/\[[a-z_]+:[^\]]+\]/);
+    // 但讲解内容本身还在（只是去掉了前缀标记）
+    expect(text, "讲解正文应保留").toContain("说过去的事");
     page.unmount();
   });
 });
@@ -310,7 +317,7 @@ describe("RV7-b 数据带进来的讲解文案（记录现状）", () => {
 describe("RV7-c 答案与题面语义一致", () => {
   beforeEach(() => resetStorage());
 
-  it("cloze 的答案填入空位后能还原原句（忽略被剥离的尾标点；全库 195 课扫描）", () => {
+  it("cloze 的答案填入空位后能还原原句（忽略被剥离的尾标点；全库 204 课扫描）", () => {
     const mismatches: string[] = [];
     grammarLessons.forEach((lesson, index) => {
       const task = buildGrammarReviewTask({

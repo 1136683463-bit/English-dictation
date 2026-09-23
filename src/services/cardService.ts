@@ -262,9 +262,9 @@ export const addOrUpdateWordWithResult = (data: AppData, input: WordInput): Word
     chineseDefinition: input.translation,
     englishDefinition: input.englishDefinition,
     collocations: input.collocations,
-    synonyms: "",
-    antonyms: "",
-    confusedWords: "",
+    // 不再写三个永远为空的字段（synonyms/antonyms/confusedWords）——
+    // 审计确认零读取方（无 UI、无导入、无展示），单条白付 47 字节键名开销。
+    // 类型上它们仍可选保留，将来做近义词功能时再启用。
     audioUrl: "",
     sourceSentence: input.sourceSentence
   };

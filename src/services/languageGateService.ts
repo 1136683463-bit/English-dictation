@@ -25,6 +25,7 @@ export interface GateJudgement {
 
 /** 常见不规则动词：原形 → 过去式。误判防护见 detectTenseTag。 */
 const IRREGULAR_PAST: Record<string, string> = {
+  // ── 起步那批（原有）──
   come: "came",
   go: "went",
   arrive: "arrived",
@@ -41,7 +42,54 @@ const IRREGULAR_PAST: Record<string, string> = {
   meet: "met",
   run: "ran",
   eat: "ate",
-  sleep: "slept"
+  sleep: "slept",
+  // ── 2026-09-22 批四十四补：以下 32 个「换零件」动词**课程里已经教过**
+  //（L10/L11/L13/L14/L108/L197/L198/L199 等），但此表一直没有它们——
+  // 用户写 keeped / swimmed / thinked 时，引擎据此表判断「该用过去式却用了原形」，
+  // 表里缺词就等于那条判定对这批动词完全失效。本批补齐。
+  //
+  // ⚠️ 2026-09-22 批四十八起注：上列 32 项是按**变化模式**整批补的，而课程是**按缺口**
+  // 一个一个教的——两者进度不同步，因此表中大部分项的过去式**目前还没在课程里出现过**，
+  // 也就无从触发（触发前提见 detectTenseTag：参考答案含过去时间词、且玩家的句子用了该过去式
+  // 而参考答案用的是原形）。这些表项**保留**：无害，且一旦将来补上对应课文即可生效。
+  //
+  // ⚠️ 2026-09-23 批四十九修正：本注释原写「18 项当前永不触发」——这个数字**不准确**。
+  // 一方面它的归属混了两批（told/brought 属原有 17 项那批）；另一方面「可触发」的判据
+  // 比「课程里出没出现过」更严（还需参考答案含过去时间词），实测可触发项**远少于 18**。
+  // **结论不变（表项保留），但不要引用具体数字**——要判断覆盖度请看课程侧的缺口审计，
+  // 不要看这张表。
+  swim: "swam",
+  sing: "sang",
+  sit: "sat",
+  catch: "caught",
+  think: "thought",
+  know: "knew",
+  keep: "kept",
+  feel: "felt",
+  draw: "drew",
+  break: "broke",
+  fall: "fell",
+  lose: "lost",
+  win: "won",
+  hear: "heard",
+  write: "wrote",
+  speak: "spoke",
+  stand: "stood",
+  hold: "held",
+  spend: "spent",
+  build: "built",
+  wear: "wore",
+  teach: "taught",
+  pay: "paid",
+  sell: "sold",
+  send: "sent",
+  ride: "rode",
+  drive: "drove",
+  fly: "flew",
+  grow: "grew",
+  begin: "began",
+  choose: "chose",
+  wake: "woke"
 };
 
 const PAST_TIME_HINTS = ["yesterday", "last night", "last week", "last year", "ago", "this morning", "just now"];

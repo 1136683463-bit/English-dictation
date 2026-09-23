@@ -416,11 +416,14 @@ describe("KB5 焦点管理", () => {
 
 
   it("KB5-7b 三页都已接入 useReturnFocus（焦点归还的覆盖范围探针）", async () => {
+    // process.cwd()（vitest 从仓库根启动），不写死本机绝对路径——
+    // 与 rv18-doc-references.test.ts:35 同一约定（2026-09-24 修）。
+    const repo = process.cwd();
     const src = await import("node:fs").then((fs) => ({
-      review: fs.readFileSync("/Users/liujun/Documents/英语听写/src/pages/GrammarReviewPage.tsx", "utf8"),
-      lesson: fs.readFileSync("/Users/liujun/Documents/英语听写/src/pages/GrammarLessonPage.tsx", "utf8"),
-      boost: fs.readFileSync("/Users/liujun/Documents/英语听写/src/pages/GrammarBoostPage.tsx", "utf8"),
-      hunt: fs.readFileSync("/Users/liujun/Documents/英语听写/src/pages/GrammarHuntPage.tsx", "utf8")
+      review: fs.readFileSync(`${repo}/src/pages/GrammarReviewPage.tsx`, "utf8"),
+      lesson: fs.readFileSync(`${repo}/src/pages/GrammarLessonPage.tsx`, "utf8"),
+      boost: fs.readFileSync(`${repo}/src/pages/GrammarBoostPage.tsx`, "utf8"),
+      hunt: fs.readFileSync(`${repo}/src/pages/GrammarHuntPage.tsx`, "utf8")
     }));
     // eslint-disable-next-line no-console
     console.log(
@@ -442,7 +445,7 @@ describe("KB5 焦点管理", () => {
     }
     // 回访页（本轮 KB8 覆盖的页面）尚未接入 —— 记录为覆盖缺口
     const revisit = await import("node:fs").then((fs) =>
-      fs.readFileSync("/Users/liujun/Documents/英语听写/src/pages/GrammarRevisitPage.tsx", "utf8")
+      fs.readFileSync(`${repo}/src/pages/GrammarRevisitPage.tsx`, "utf8")
     );
     expect(
       revisit.includes("useReturnFocus"),

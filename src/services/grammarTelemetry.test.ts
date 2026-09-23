@@ -4,6 +4,7 @@ import {
   clearGrammarTelemetry,
   listGrammarEvents,
   listGrammarEventsByKind,
+  MAX_TELEMETRY_EVENTS_FOR_TEST,
   summarizeGrammarTelemetry
 } from "./grammarTelemetry";
 
@@ -343,5 +344,50 @@ describe("grammarTelemetry（R01 数据基建）", () => {
       appendGrammarEvent({ kind: "practice_why_wrong_result", lessonId: "L", stepIndex: 9, sentenceHash: "h", ok: true, source: "local_fuzzy", latencyMs: 0, cached: false, ts: "2026-09-21T12:00:00.000Z" });
       expect(summarizeGrammarTelemetry().explain.whyWrongByLayer).toEqual({ local_fuzzy: 1 });
     });
+  });
+});
+
+describe("遥测归档可读（2026-09-24 修数析实测的 P0 静默故障）", () => {
+  it("主键溢出后，归档事件仍能被分析读到（此前永久消失）", () => {
+    // 模拟数析的实测：写 3500 条（前 500 条 tense、后 3000 条 article）
+    const total = MAX_TELEMETRY_EVENTS_FOR_TEST + 500;
+    for (let i = 0; i < total; i += 1) {
+      appendGrammarEvent({
+        kind: "diary_issue_tag",
+        entryId: `e${i}`,
+        issueIndex: 0,
+        tag: i < 500 ? "tense" : "article",
+        ts: new Date(Date.now() - (total - i) * 1000).toISOString()
+      } as never);
+    }
+    const visible = listGrammarEventsByKind("diary_issue_tag");
+    // 修复前：只读主键 3000 条 → 前 500 条（tense）里的绝大部分不可见
+    // 修复后：主键 + 归档合并，全部可见
+    expect(visible.length).toBe(total);
+    const tenseCount = visible.filter((event) => event.tag === "tense").length;
+    expect(tenseCount, "前 500 条（被挤进归档的）必须可读").toBe(500);
+  });
+
+  it("合并后按时间升序（事件流语义）", () => {
+    for (let i = 0; i < 10; i += 1) {
+      appendGrammarEvent({
+        kind: "diary_issue_tag",
+        entryId: `t${i}`,
+        issueIndex: 0,
+        tag: "tense",
+        ts: new Date(Date.now() - (10 - i) * 60000).toISOString()
+      } as never);
+    }
+    const events = listGrammarEventsByKind("diary_issue_tag");
+    const times = events.map((event) => Date.parse(event.ts));
+    for (let i = 1; i < times.length; i += 1) {
+      expect(times[i], `第 ${i} 条应不早于前一条`).toBeGreaterThanOrEqual(times[i - 1]);
+    }
+  });
+
+  it("无归档时行为不变（向后兼容）", () => {
+    clearGrammarTelemetry(); // 本块无 beforeEach，手动清（前两个用例会写大量事件）
+    appendGrammarEvent({ kind: "diary_issue_tag", entryId: "x", issueIndex: 0, tag: "tense", ts: new Date().toISOString() } as never);
+    expect(listGrammarEventsByKind("diary_issue_tag")).toHaveLength(1);
   });
 });

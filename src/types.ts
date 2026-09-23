@@ -69,9 +69,21 @@ export interface WordDetails {
   chineseDefinition: string;
   englishDefinition: string;
   collocations: string;
-  synonyms: string;
-  antonyms: string;
-  confusedWords: string;
+  /**
+   * 以下三个字段（2026-09-22 标记为废弃）。
+   *
+   * 审计结论：**零读取方**——UI 里没有输入框、导入不支持、没有任何页面展示；
+   * 唯一的引用是写入侧无条件写空串（`cardService` 的 addWord）。
+   * 也就是说它们**永远为空**，占的纯粹是键名开销：
+   * 单条 47 字节，一年模型（3,650 条）约 **168KB**。
+   *
+   * 保留为可选：将来若要做「近义词 / 反义词 / 易混词」功能可以直接启用；
+   * 手工导入的备份里若有真实值也不会被丢掉（归一化只在有非空值时才保留）。
+   * 新写入不再产生空串。
+   */
+  synonyms?: string;
+  antonyms?: string;
+  confusedWords?: string;
   audioUrl: string;
   sourceSentence: string;
 }
@@ -108,8 +120,25 @@ export interface Review {
   cardId: string;
   mode: ReviewMode;
   rating: Rating;
+  /**
+   * 用户这一次写下的答案。
+   * **不是**可选字段：错词本把它当作「你当时写的答案」展示
+   * （`mistakeBookService.ts` 的 attempts/answers），删了就丢掉真实功能。
+   */
   answer: string;
-  diffJson: string;
+  /**
+   * 逐词判分结果（diff token 的 JSON）。
+   *
+   * 2026-09-22 标记为废弃：**全库零读取方**——只有写入点（复习页 / 拼写页把
+   * 当场算出的 diff 序列化进来）与 storage 的归一化透传，没有任何消费者读它。
+   * 而它占单条复习记录约 37% 的体积（实测 254B 里 94B），
+   * 一年量级（约 11,000 条）就是 **近 1MB 的死重量**——
+   * 在「约 14~18 个月撞 5MB 上限」的背景下，这是最该先摘掉的一块。
+   *
+   * 保留为可选：旧数据里可能还有值；新写入不再产生它。
+   * 旧值会在下一次「清理历史」时被一并清除（见 `compactReviewHistory`）。
+   */
+  diffJson?: string;
   reviewedAt: string;
 }
 
@@ -395,6 +424,20 @@ export interface AppData {
    * 语义 = 至少完成过一次该档；复练不改写此字段（完成后无限重练）。可选层，不参与解锁判定。
    */
   grammarBoostsDone?: Record<string, number[]>;
+  /**
+   * 已删除的**内置词书** id（删除标记 / tombstone，2026-09-23 加）。
+   *
+   * 为什么需要它：内置词书由 `ensureDefaultUnits` 在**每次** loadData / saveData
+   * 时按「id 不存在就补」的规则维护。用户删掉一本内置书后，下次启动它就被无条件补回，
+   * 书里的卡片也被重新归位——用户删了等于没删（MG3b 的 FAIL-7）。
+   *
+   * 语义：用户**主动删除**内置书时把 id 记在这里；seeding / ensureDefaultUnits
+   * 见到已标记的 id 就不再补。只用于内置书（`core-100-unit-*` /
+   * `unit-adventure-accumulation`）——用户自建书不在回填范围内，无需标记。
+   *
+   * 撤销删除（`restoreUnit`）时要把 id 从本表移除，否则「撤销」后重启又会消失。
+   */
+  deletedBuiltinUnitIds?: string[];
   /** 「我的英文日记」条目。 */
   diaryEntries: DiaryEntry[];
   schedules: Schedule[];
@@ -435,12 +478,107 @@ export type GrammarErrorTag =
   | "verb_form"
   | "comparison";
 
+/**
+ * 一处修正的**操作类型**（批五十三新增，全库 794 条已逐条标注）。
+ *
+ * 这个字段存在的唯一理由：在它出现之前，「这条修正到底是替换、删除还是移动」全靠
+ * 消费方**猜 correction 的字面长相**——`startsWith("去掉")` 判删词、含汉字判说明、
+ * 正则捞「把 X 移到 Y」判移动。实测 10 份实现各自猜（huntService / grammarReplayService /
+ * grammarBoostService / 若干 rv 守门 / 临时脚本），并且已经分叉出错：移动型曾写成
+ * `去掉（X 放到 Y 前面）`，被「去掉」前缀误判成删除、生成粘句病句（批五十一修数据）。
+ * 现在类型由数据自带，消费方读字段，不再猜字面。
+ *
+ * 值的含义与**句子层可执行性**（这是最要紧的一列）：
+ *
+ * | 值 | 数量 | 含义 | 句子层怎么处理 |
+ * |---|---|---|---|
+ * | `replace` | 613 | 把该位置的词换成新词（含多词段整体替换） | 替换 |
+ * | `insert` | 86 | 在该位置**补**词（`very` → `is very`） | 替换（新词已含原词） |
+ * | `delete` | 61 | 删掉该位置的词 | `splice` |
+ * | `move` | 18 | 词序调整（`把 white 移到 cat 前面`） | 按 `moveFromIndex` 等显式下标执行（批五十四）|
+ * | `punct` | 13 | 只改标点（`day?` → `day!`） | 替换 |
+ * | `orth` | 3 | 只改大小写/撇号（`Id` → `I'd`） | 替换 |
+ * | `explain` | 0 | 纯位置说明，无可执行目标（历史上 1 条，批五十四改判为 move）| **保持原样** |
+ *
+ * ⚠️ **`move` 为什么不能靠解析中文执行**（批五十三实测，批五十四给出正解）：
+ * 三种「解析 correction 文案」的实现全部失败——① 全句首个匹配：`a cat white` → `a white. cat`
+ * （标点跟着词跑）；② 句内定位 + 短语锚点：`My friend has a white cat She. was excite`；
+ * ③ 标点留位版：token 守恒 14/14 全过，却产出 `Eat the chicken hot noodles.`（答案本应是
+ * `hot chicken noodles`）、`Both Books are good.`（大小写错）。
+ *
+ * **结论：移动不能解析文案，只能显式声明。** 批五十四给每条 `move` 补了
+ * `moveFromIndex` / `moveToIndex` / `movePosition` 三个下标字段，18 处逐案人工裁定，
+ * 由 `applyMove` 落地（连带修尾标点与句首大小写）。`correction` 从此**只给人看**，
+ * 机器一行都不解析。
+ *
+ * ⚠️ 消费方纪律：`delete` / `move` / `explain` **必须**读这个字段判断，禁止再用
+ * `startsWith("去掉")` 之类的字面判断——`hunt-umbrella-owner#5` 的 correction 就写成
+ * `去掉（this book 顺序调整：…）`，字面像删除、实际是移动，正是被这个坑坑过的样本。
+ */
+export type HuntEditOp = "replace" | "insert" | "delete" | "move" | "punct" | "orth" | "explain";
+
 /** 案件里植入的一处错误。tokenIndex 指向 HuntCase.tokens 的下标。 */
 export interface HuntError {
   tokenIndex: number;
   tag: GrammarErrorTag;
+  /**
+   * 该错词在题面里的样子（供对位校验与展示）。
+   *
+   * ⚠️ 注意两种形态：**单词**（`move`）与**跨 token 短语**（`a dress beautiful`）。
+   * 后者共 8 处——消费方不能用「单 token 相等」判断，必须按短语处理。
+   */
   original: string;
+  /**
+   * 改法。**一个字段混着七种语义**（详见 `HuntEditOp`；2026-09-23 批五十三已把操作类型
+   * 抽成下面的 `editOp` 字段，本字段保留原文供展示）：
+   *
+   * | 形态 | 例 | 句子层怎么处理 |
+   * |---|---|---|
+   * | **替换** | `moved` / `is happy` / `a lot of` | 替换该位置的词 |
+   * | **补词** | `is happy`（原词 `happy`） | 整段替换该位置 |
+   * | **删除** | `去掉 so` | `splice` 掉该词 |
+   * | **移动** | `把 white 移到 cat 前面` | **保持原样**（机械执行实测产病句）|
+   * | **标点/正字** | `day!` / `May` / `I'd` | 替换 |
+   * | **纯说明** | `（rather 跟在 would 后）` | **保持原样** |
+   *
+   * **消费方纪律**：
+   *   - 判断操作类型一律读 `editOp`，**不要猜字面**（见 `HuntEditOp` 的说明）。
+   *   - 句子层修正一律走 `correctedSentenceOf`，**不要自己写正则判断**。
+   *   - 错词本挑词一律走 `pickCorrectionWord`。
+   */
   correction: string;
+  /**
+   * 这处修正的操作类型。**句子层的唯一判据**（批五十三新增）。
+   * 生成期由脚本按 correction 的字面批量标注，`move` / `explain` 为人工逐条确认。
+   */
+  editOp: HuntEditOp;
+  /**
+   * 移动型的**显式目标**（只有 `editOp === "move"` 时有值；批五十四新增）。
+   *
+   * **为什么要有这三个字段**：`move` 的 correction 是中文说明
+   * （`把 white 移到 cat 前面`），机械解析中文做移动，三种实现实测全部产出病句
+   * （见 `HuntEditOp` 文档：标点跟词跑 / `a white cat She. was excite` /
+   * `Eat the chicken hot noodles.`）。所以移动不能靠解析文案——把
+   * 「哪个词、移到哪」直接写成机器可读的**原始下标**，彻底不碰文案。
+   *
+   * - `moveFromIndex`：**真正被搬动**的那个 token 的原始下标。
+   *   ⚠️ 它可以**不等于** `tokenIndex`——`tokenIndex` 是「玩家该点哪」（错处的入口），
+   *   `moveFromIndex` 是「机器搬哪个」。样本：`hunt-so-do-i` 用户点 `So`（下标 0），
+   *   但机械上要搬 `I`（下标 1）才能从 `So I do.` 得到 `So do I.`。
+   * - `moveToIndex`：锚点 token 的原始下标（**不是**移动目标位置本身）。
+   * - `movePosition`：移到锚点**前面**还是**后面**。
+   *
+   * **落地点会连带修两件事**（通用规则，不是逐案补丁）：
+   *   ① 尾标点归位——原句末的 `.`/`?` 属于**句子**不属于词，移动后归给新的句末词；
+   *   ② 句首大小写——被搬到句首的词首字母大写，被挤离句首的词首字母小写。
+   *
+   * **结构约束**（rv11 守门）：`moveFromIndex` 与 `moveToIndex` 之间不得夹着同案
+   * 其它错点的下标——否则移动会挪动尚未处理的错点位置。
+   */
+  moveFromIndex?: number;
+  moveToIndex?: number;
+  movePosition?: "before" | "after";
+  /** 给用户看的一句人话解释（零术语红线适用）。 */
   explanation: string;
 }
 
@@ -547,7 +685,33 @@ export interface LessonDialogueLine {
 /** 正误对比：先见「有人是这样说的」，揭晓后给正确句 + 为什么。 */
 export interface LessonContrast {
   wrong: string;
-  /** 需要标出的问题词；null 表示整句缺了一块。 */
+  /**
+   * **要看的地方**（题面删除线的落点）——注意它的语义是「这里有问题」，**不是「这个词错了」**。
+   *
+   * 2026-09-23 批五十补文档（两研究独立指出此字段口径被反复误读）：
+   *
+   * **语义**：三种合法形态，都是「位置指示」——
+   *   ① **该换掉的词**（划的词只出现在错句里）——如 `I want a apple.` 划 `a`
+   *   ② **位置锚点**（划的词两边都有，指「这个位置缺东西」）——如 `I have pen.` 划 `pen`，
+   *      意思是「这里要补个 a」（`I have a pen.`），**不是说 pen 这个词错了**
+   *   ③ **成对冲突里保留的那一半**——如 `between Tom to Amy` 划 `to`（讲解里给出 `and`）
+   *
+   * **与讲解里的 `【】` 的区别**（这对标记最容易被混用）：
+   *   - `wrongMark` = **要点击/划掉的位置**（有机器消费方：判题、渲染）
+   *   - `【】`（写在 `whyZh` 里）= **改正后的形式**（纯教学展示，**零机器消费方**）
+   *   两者**本就该不同**（划 `to`、展示 `【and】`），**禁止做一致性校验**。
+   *
+   * **判据看 `bothRight`，不要看 `wrongMark` 是否为 null**：
+   *   - `wrongMark` 有值：674 张（错卡，标出问题位置）
+   *   - `bothRight: true` + 无值：502 张（**双正解卡**——注意它的 `wrong` 字段装的是**正确句**）
+   *   - `bothRight` 省略 + 无值：52 张（整句层面有问题的错卡）
+   *
+   * ⚠️ 统计脚本注意：`wrongMark` 有多词形态（`"you are"` / `"Am I"` 等 65 张），
+   * 按单 token 口径统计会永远匹配不上，**必须单列**。
+   *
+   * ⚠️ 历史上曾因「用裸 `indexOf` 定位」导致 14 张卡的删除线划进别的单词内部——
+   * 定位一律走 `locateMarkedTokens`（词边界 + 正确句消歧），不要自己写 `indexOf`。
+   */
   wrongMark?: string | null;
   correct: string;
   whyZh: string;
@@ -557,7 +721,12 @@ export interface LessonContrast {
 
 /** 句式变体：肯定 / 否定 / 疑问三种口气。 */
 export interface LessonVariant {
-  label: string;
+  /**
+   * 2026-09-22 批四十七收紧：原为 `string`，实测出现过枚举外的取值
+   *（L75 曾是「提议（第二种）」），导致依赖 `label !== "肯定"` 或正则回读 label 的守门
+   * 静默失效。收紧为联合类型后这类取值在编译期就会被拦下。
+   */
+  label: "肯定" | "否定" | "疑问";
   en: string;
   zh: string;
   noteZh?: string;

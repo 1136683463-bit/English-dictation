@@ -148,7 +148,7 @@ describe("SM3-c 【确认的缺陷】priorityManual 与 prioritySystem 双计同
   });
 });
 
-describe("SM3-d 【确认的缺陷】prioritySource 与其它 Card 可选字段在持久化时被丢弃", () => {
+describe("SM3-d 【已修 2026-09-22】prioritySource 与其它 Card 可选字段现在会被保留", () => {
   /**
    * storage.normalizeCard（storage.ts:275-303）只重建白名单字段，未透传
    * prioritySource / suspendedFrom / mistakeGraduatedAt。
@@ -157,7 +157,7 @@ describe("SM3-d 【确认的缺陷】prioritySource 与其它 Card 可选字段�
    * - mistakeGraduatedAt 丢失 → 动态错词书的「已毕业」标记失效，毕业过的词重新出现在错词本；
    * - suspendedFrom 丢失 → setCardsStatus 恢复暂停卡时回退到 "review" 而非原状态。
    */
-  it("parseBackupJson（= loadData 的迁移管线）后 prioritySource/suspendedFrom/mistakeGraduatedAt 全部消失", async () => {
+  it("parseBackupJson（= loadData 的迁移管线）后三个字段都还在", async () => {
     const { parseBackupJson } = await import("../../services/storage");
     const raw = makeTestData({
       cards: [
@@ -169,31 +169,37 @@ describe("SM3-d 【确认的缺陷】prioritySource 与其它 Card 可选字段�
 
     const migrated = parseBackupJson(JSON.stringify(raw));
     const asRecord = (card: Card) => card as unknown as Record<string, unknown>;
+    // 用输入值做基准（daysAgo(1) 每次调用差几毫秒，不能两次分别算）
+    const expectedGraduatedAt = raw.cards[0].mistakeGraduatedAt;
     console.log("SM3-d 输入:", JSON.stringify(raw.cards.map((c) => asRecord(c))));
     console.log("SM3-d 迁移后:", JSON.stringify(migrated.cards.map((c) => asRecord(c))));
 
-    expect(asRecord(migrated.cards[0]).prioritySource).toBeUndefined();
-    expect(asRecord(migrated.cards[0]).mistakeGraduatedAt).toBeUndefined();
-    expect(asRecord(migrated.cards[1]).suspendedFrom).toBeUndefined();
-    // priority 本身保留 → 退化为「legacy 无 source」
+    /**
+     * 修复前：这三个字段被白名单丢掉（`normalizeCard` 的返回对象没列它们），
+     * 于是「手动标星」退化成「legacy 系统卡」、参与康复被自动摘星，
+     * 错词书的毕业标记失效、暂停卡的还原状态丢失。
+     */
+    expect(asRecord(migrated.cards[0]).prioritySource, "手动标星的来源要保住").toBe("manual");
+    expect(asRecord(migrated.cards[0]).mistakeGraduatedAt, "错题毕业时间要保住").toBe(expectedGraduatedAt);
+    expect(asRecord(migrated.cards[1]).suspendedFrom, "暂停前的状态要保住").toBe("mastered");
     expect(migrated.cards[0].priority).toBe(true);
   });
 
-  it("端到端后果：重启后再两次答对，用户手动加的重点被摘", async () => {
+  it("端到端：重启后再两次答对，用户手动加的重点**不再**被摘", async () => {
     const { parseBackupJson } = await import("../../services/storage");
     const raw = makeTestData({
       cards: [reviewCard("c1", { priority: true, prioritySource: "manual" })],
       schedules: [makeSchedule({ cardId: "c1" })]
     });
-    // 重启一次
+    // 重启一次：manual 来源应存活，因此后续评分不参与自动摘星
     let data = parseBackupJson(JSON.stringify(raw));
-    expect(data.cards[0].prioritySource).toBeUndefined();
+    expect(data.cards[0].prioritySource, "重启后仍是手动标星").toBe("manual");
 
     for (const rating of [3, 3] as const) {
       data = applyReview(data, data.cards[0], "spelling", rating);
     }
     console.log("SM3-d 重启 + 两次答对后 priority:", data.cards[0].priority);
-    expect(data.cards[0].priority).toBe(false);
+    expect(data.cards[0].priority, "手动标星不参与康复逻辑，应保持 true").toBe(true);
   });
 });
 

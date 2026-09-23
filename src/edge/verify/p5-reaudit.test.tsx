@@ -131,7 +131,7 @@ describe("P5 · 重审页", () => {
       (_b, i) => !errIndexes.has(i)
     );
     clickElement((Array.from(page.container.querySelectorAll(".hunt-tokens button")) as HTMLButtonElement[])[innocent]);
-    clickElement(Array.from(page.container.querySelectorAll(".hunt-tag")).find((b) => (b.textContent ?? "").trim() === "时态变形") as HTMLButtonElement);
+    clickElement(Array.from(page.container.querySelectorAll(".hunt-tag")).find((b) => (b.textContent ?? "").trim() === "说过去的事") as HTMLButtonElement);
     expect(page.has("已找到 0 /"), "误判不该计入已找到").toBe(true);
     expect(page.container.querySelectorAll(".hunt-token.found").length).toBe(0);
     expect(page.container.innerHTML.length, "误判不该崩").toBeGreaterThan(0);
@@ -213,7 +213,7 @@ describe("P5 · 重审页", () => {
     page.unmount();
   });
 
-  it("全部 195 课都有关 3 可审案件（无「暂无可重审的案件」空态）", () => {
+  it("全部 204 课都有关 3 可审案件（无「暂无可重审的案件」空态）", () => {
     const noCases = grammarLessons.filter((lesson) => {
       const plan = buildStage3CasePlan(lesson.id);
       return plan.newCases.length + plan.revisitCases.length === 0;

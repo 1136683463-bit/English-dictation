@@ -1,5 +1,5 @@
 import { CheckCircle2, Clock, Lightbulb } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import PageHeader from "../components/PageHeader";
@@ -48,7 +48,8 @@ export default function GrammarRevisitPage() {
   const [ambushAttempts, setAmbushAttempts] = useState(0);
   const [ambushDone, setAmbushDone] = useState(false);
   const [startedAt] = useState(() => Date.now());
-  const [startedLogged, setStartedLogged] = useState(false);
+  /** started 埋点去重（同一次挂载内只记一次；重新进入是新挂载，会照记）。 */
+  const startedLoggedRef = useRef(false);
 
   if (!lesson) {
     return (
@@ -66,12 +67,35 @@ export default function GrammarRevisitPage() {
   const lock = getLessonStageLock(data, lessonId, 2, readCompletedAt);
   const stage1DoneAt = readCompletedAt(lessonId);
 
-  // 首次进入记 grammar_revisit_started（只记一次）
-  if (lock.state !== "locked" && !startedLogged) {
+  /**
+   * 首次进入记 grammar_revisit_started（只记一次）。
+   *
+   * 2026-09-23 修（ST4 的 FAIL-2）：原判据是 `useState` 的 `startedLogged`，
+   * 而 StrictMode 下组件会「挂载 → 卸载 → 重挂载」，state 随之重置 →
+   * **一次进入记 2 条 started**，参与率分母翻倍。
+   * 改用 **已落库事件反查**作为去重键：只要本课已有一条 started 就不再记，
+   * 这与挂载次数无关（ref 也不行——重挂载会重建 ref）。
+   * 口径与重审页的 `listGrammarEventsByKind("grammar_lesson_completed")` 反查一致。
+   */
+  useEffect(() => {
+    /**
+     * 进入即记（**每次进入都记一条**，用于统计到达率——PASS-3 明确了这个口径）。
+     *
+     * 2026-09-23 修（ST4 的 FAIL-2）：
+     *  ① 原实现在**渲染期**写遥测（渲染期的副作用），这正是 StrictMode 要暴露的反模式；
+     *  ② 原守卫用 `useState`，双重渲染下失效 → 一次进入记 2 条，分母翻倍。
+     * 改为 `useEffect` + `useRef` 守卫：React 18 的 StrictMode 是
+     * 「跑 effect → 清理 → 再跑 effect」，**ref 在同一次挂载内保留**，
+     * 所以第二次不会重复记；而真正重新进入是新挂载、新 ref，照记一条——
+     * 恰好同时满足「进入即记」与「不重复」。
+     */
+    if (lock.state === "locked") return;
+    if (startedLoggedRef.current) return;
+    startedLoggedRef.current = true;
     const hours = stage1DoneAt ? Math.max(0, (Date.now() - Date.parse(stage1DoneAt)) / 3600000) : 0;
     appendGrammarEvent({ kind: "grammar_revisit_started", lessonId, hoursSinceStage1: Math.round(hours * 10) / 10, ts: nowIso() });
-    setStartedLogged(true);
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lessonId, lock.state]);
 
   if (lock.state === "locked") {
     const unlockText = lock.unlockAt ? new Date(lock.unlockAt).toLocaleString("zh-CN", { month: "numeric", day: "numeric", hour: "numeric", minute: "2-digit" }) : "明天";
@@ -104,6 +128,23 @@ export default function GrammarRevisitPage() {
     [quiz[index]?.answer, lessonId]
   );
 
+  /**
+   * 完成页显示的「N / M 题一次提取成功」。
+   *
+   * 2026-09-23 修（ST4 的 FAIL-1）：本页的 `firstTryCount` 是**本次会话的 state**，
+   * 重进（已完成关 2）时它被重置为 0，于是完成页把「0 / 4 题一次提取成功」
+   * 回显给用户——而上一轮的真实成绩是 4/4，遥测里也明明记着 4。
+   * 已完结的课要回显**历史事实**，故这里优先读最近一条 `grammar_revisit_completed`；
+   * 只有本次会话刚做完（还没落库）时才用 state。
+   */
+  const completedEvents = listGrammarEventsByKind("grammar_revisit_completed").filter(
+    (event) => event.lessonId === lessonId
+  );
+  // 不用 Array.at(-1)：本项目的 TS lib 目标低于 es2022（见 tsconfig 的 target）
+  const lastCompleted = completedEvents[completedEvents.length - 1];
+  const displayedFirstTry =
+    phase === "done" || firstTryCount > 0 ? firstTryCount : (lastCompleted?.firstTryCount ?? 0);
+
   if (isLessonStageDone(data, lessonId, 2) || phase === "done") {
     return (
       <div className="page lesson-page">
@@ -113,7 +154,7 @@ export default function GrammarRevisitPage() {
             <CheckCircle2 size={28} />
             <h2>回访完成</h2>
             <p className="lesson-summary-rule">
-              在快忘记的时候回来提取了一次——这一课的记忆刚被加固了一遍。{firstTryCount} / {quiz.length} 题一次提取成功。
+              在快忘记的时候回来提取了一次——这一课的记忆刚被加固了一遍。{displayedFirstTry} / {quiz.length} 题一次提取成功。
             </p>
             <div className="lesson-stage-actions">
               <Link to={`/grammar/lesson/${lesson.id}/reaudit`} className="primary-button">
@@ -129,14 +170,29 @@ export default function GrammarRevisitPage() {
 
   const currentQuiz: RevisitQuestion | undefined = quiz[index];
 
-  const finishRevisit = () => {
-    // 完成制：题做完即完成关 2。埋点记一次提取成功数与回马枪结果。
+  /**
+   * 完成制：题做完即完成关 2。埋点记一次提取成功数与回马枪结果。
+   *
+   * ⚠️ 2026-09-23 修（MG3b/st4 的 FAIL-3/3b）：`ambushFirstTry` 必须由调用方**显式传入**，
+   * 不能读 state。
+   *
+   * 原实现是 `ambush ? ambushAttempts <= 1 && ambushDone : null`。
+   * 回马枪答对时调用顺序是 `setAmbushDone(true)` → `finishRevisit()`——
+   * 而 state 更新是异步的，`finishRevisit` 的闭包里 `ambushDone` 仍是 `false`，
+   * 于是**一次命中的回马枪永远记成 `ambushFirstTry: false`**，
+   * 与同路径的 `grammar_ambush_result`（`attempts=1, passed=true`）自相矛盾。
+   *
+   * 现在由 `pickAmbushToken` 把实际结果传进来（它手里就有判定结果），
+   * 不依赖任何尚未提交的 state。
+   */
+  const finishRevisit = (ambushFirstTry?: boolean) => {
     appendGrammarEvent({
       kind: "grammar_revisit_completed",
       lessonId,
       firstTryCount,
       totalCount: quiz.length,
-      ambushFirstTry: ambush ? ambushAttempts <= 1 && ambushDone : null,
+      // 无回马枪时为 null；有则由调用方给出本次是否一次命中
+      ambushFirstTry: ambush ? Boolean(ambushFirstTry) : null,
       durationMs: Date.now() - startedAt,
       ts: nowIso()
     });
@@ -198,8 +254,12 @@ export default function GrammarRevisitPage() {
     });
     if (passed) {
       setAmbushDone(true);
-      // 回马枪答对即完关
-      finishRevisit();
+      /**
+       * 回马枪答对即完关。`firstTry` 以**本次**的 attempts 判定：
+       * 一次就命中 = 首次尝试即通过（attempts === 1）。
+       * 显式传值，避免读到尚未提交的 `ambushDone`（见 finishRevisit 的注释）。
+       */
+      finishRevisit(attempts <= 1);
     }
   };
 

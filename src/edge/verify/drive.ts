@@ -10,7 +10,17 @@ import { boostArrangeAnswerLength, type BoostItem } from "../../services/grammar
 import type { AppData } from "../../types";
 import type { Mounted } from "../harness";
 
-export const clickElement = (element: Element): void => {
+/**
+ * 点一个元素。
+ *
+ * 参数放宽为 `Element | null | undefined`（2026-09-21）：调用方普遍写成
+ * `clickElement(find(...))`，而 `find` / `querySelector` 的类型本身就含 undefined。
+ * 此前每个调用点都得写一次非空断言（实测 20+ 处 tsc 报错，噪声掩盖真实问题）。
+ * 找不到元素时**静默跳过**在测试里是可接受的行为——真正的断言会在随后的
+ * `expect(...)` 上失败，那条信息比这里抛 TypeError 更清楚。
+ */
+export const clickElement = (element: Element | null | undefined): void => {
+  if (!element) return;
   act(() => {
     (element as HTMLElement).click();
   });

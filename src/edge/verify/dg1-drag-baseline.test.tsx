@@ -65,11 +65,11 @@ describe("DG0 拖拽基建", () => {
       for (const step of lesson.guided ?? []) {
         if (step.kind !== "arrange") continue;
         guided += 1;
-        if ((step.distractors ?? []).length) guidedWithDistractors += 1;
+        if (((step as { distractors?: unknown[] }).distractors ?? []).length) guidedWithDistractors += 1;
       }
       for (const step of lesson.practice ?? []) {
         practice += 1;
-        if ((step.distractors ?? []).length) practiceWithDistractors += 1;
+        if (((step as { distractors?: unknown[] }).distractors ?? []).length) practiceWithDistractors += 1;
         if ((step.tokens ?? []).length + (step.distractors ?? []).length > answerWordCount(step.answer)) {
           practiceOverloaded += 1;
         }
@@ -91,7 +91,7 @@ describe("DG0 拖拽基建", () => {
   it("数据事实：存在重复词块的 arrange 题（按下标记录的影响面）", async () => {
     const duplicates: string[] = [];
     for (const lesson of grammarLessons) {
-      for (const step of [...(lesson.guided ?? []), ...(lesson.practice ?? [])] as Array<Record<string, unknown>>) {
+      for (const step of [...(lesson.guided ?? []), ...(lesson.practice ?? [])] as unknown as Array<Record<string, unknown>>) {
         if (step.kind !== "arrange") continue;
         const tokens = ((step.tokens ?? []) as string[]).map((token) => token.toLowerCase());
         const counts = new Map<string, number>();

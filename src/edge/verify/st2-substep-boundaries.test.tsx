@@ -354,6 +354,9 @@ describe("ST2 · 段内子步骤边界", () => {
     typeInto(page, revealed ?? "");
     clickExact(page, "提交");
     await flushAsync();
+    // 2026-09-24：通过后不再自动换句，需点过渡按钮（见 ST2 FAIL-1 的修复）
+    clickExact(page, "下一句（这次没有提示）");
+    await flushAsync();
     expect(page.text(), "⑤ 应进第 2 档").toMatch(/最后一步 · 说出来（2 \/ 2）/);
     expect(page.has("正确答案："), "⑤ 跨档后提示层级应重置（不再显示答案）").toBe(false);
     expect(page.buttons(), "⑤ 第 2 档回到 level 0").toContain("想不起来？给我一点提示");
@@ -454,15 +457,17 @@ describe("ST2 · 段内子步骤边界", () => {
   });
 
   /**
-   * FAIL-1（P1 体验/情感过滤 · 与「看答案」路径反馈不对称）
-   * output 第 1 档**凭自己写对**时，`submitOutput` 走 `advanceOutputStep()` 后直接
-   * return（页面 1523-1527），于是画面**立刻静默换成第 2 句**：输入框清空、
-   * 没有任何「写对了」的反馈、没有过渡按钮，用户只看到句子变了。
-   * 反过来，点「照着打一遍」走 `revealOutput` 却会拿到一张带
-   * 「没关系，先看正确说法：…」+「下一句（这次没有提示）」的完整反馈卡。
-   * 结果是：**放弃者拿到确认，成功者什么也没有** —— 与项目「确证仪式」的取向相反。
+   * FAIL-1【已修 2026-09-24】（P1 体验/情感过滤 · 与「看答案」路径反馈不对称）
+   *
+   * 修复前：output 第 1 档**凭自己写对**时 `submitOutput` 走 `advanceOutputStep()`
+   * 后直接 return → 画面**立刻静默换成第 2 句**：输入框清空、没有任何「写对了」反馈、
+   * 没有过渡按钮。而点「看答案」走 `revealOutput` 却能拿到完整反馈卡——
+   * **放弃者拿到确认，成功者什么也没有**，与项目「确证仪式」的取向相反。
+   *
+   * 修复：通过时统一进 `pass` 态，由那段现成的反馈块（「完全是自己写出来的！」
+   * +「下一句（这次没有提示）」/「完成这一课」）给确认，用户点按钮再前进。
    */
-  it("FAIL-1 output 第 1 档凭自己写对：静默换句，无任何反馈", async () => {
+  it("FAIL-1【已修 2026-09-24】output 第 1 档凭自己写对：有明确反馈与过渡按钮", async () => {
     seed();
     const page = mount();
     await toOutput(page);
@@ -486,16 +491,24 @@ describe("ST2 · 段内子步骤边界", () => {
     clickExact(page, "提交");
     await flushAsync();
 
-    // 已静默切到第 2 档
-    expect(page.text(), "② 画面已跳到第 2 档").toMatch(/最后一步 · 说出来（2 \/ 2）/);
+    /**
+     * ② 修复后：**留在第 1 档并给出通过反馈**（不再静默换句）。
+     */
+    expect(page.text(), "② 仍停在第 1 档（等用户确认后再走）").toMatch(/最后一步 · 说出来（1 \/ 2）/);
     expect(
-      page.container.querySelector(".lesson-feedback"),
-      "★ 缺陷：凭自己写对时没有任何反馈（不区分「刚才是对的」和「换句子了」）"
-    ).toBeNull();
+      page.container.querySelector(".lesson-feedback.pass"),
+      "② 凭自己写对 → 有 pass 反馈"
+    ).not.toBeNull();
+    expect(page.text(), "② 反馈文案点明是自己写出来的").toContain("完全是自己写出来的");
     expect(
       page.buttons(),
-      "★ 缺陷：也没有过渡按钮 —— 成功路径与放弃路径的反馈完全不对称"
-    ).not.toContain("下一句（这次没有提示）");
+      "② 有过渡按钮（与「看答案」路径对称）"
+    ).toContain("下一句（这次没有提示）");
+
+    // ③ 点过渡按钮才进第 2 档
+    clickExact(page, "下一句（这次没有提示）");
+    await flushAsync();
+    expect(page.text(), "③ 点按钮后进入第 2 档").toMatch(/最后一步 · 说出来（2 \/ 2）/);
 
     const outputSteps = telemetryOfKind("lesson_step_result").filter((event) => event.section === "output");
     expect(
@@ -549,6 +562,9 @@ describe("ST2 · 段内子步骤边界", () => {
     await flushAsync();
     typeInto(page, revealedAnswer());
     clickExact(page, "提交");
+    await flushAsync();
+    // 2026-09-24：通过后不再自动换句，需点过渡按钮（见 ST2 FAIL-1 的修复）
+    clickExact(page, "下一句（这次没有提示）");
     await flushAsync();
     expect(page.text(), "① 已到第 2 档").toMatch(/最后一步 · 说出来（2 \/ 2）/);
     expect(page.has("句型框："), "① 第 2 档不应再有句型框").toBe(false);
