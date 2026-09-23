@@ -2794,7 +2794,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "上一课学过：她正在看书。还记得吗？",
         tokens: ["She", "is", "reading", "a", "book."],
         answer: "She is reading a book.",
-        explain: "复现第 13 课：be + V-ing，两个都不能少。"
+        explain: "复现第 13 课：be + 动词的 -ing 形式，两个都不能少。"
       }
     ],
     practice: [
@@ -6493,14 +6493,14 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "过去进行时 = 过去版的「正在」",
       paragraphs: [
-        "今天正在做：am/is/are + V-ing（I am drawing——现在正在画）。",
+        "今天正在做：am/is/are + 动词的 -ing 形式（I am drawing——现在正在画）。",
         "那时正在做：把 be 换成昨天版 was/were，-ing 外套不动（I was drawing——那时正在画）。",
         "be 的过去版搭档：I/he/she/it 用 was，you/we/they 用 were——和 am/is/are 的分工一一对应。",
         "最常用的场景：过去某时正在做什么（at three yesterday）+ 讲故事背景（It was raining——当时正下着雨）。"
       ]
     },
     summary: {
-      rule: "过去某时正在做 = was/were + V-ing，be 用过去版。",
+      rule: "过去某时正在做 = was/were + 动词的 -ing 形式，be 用昨天版。",
       points: [
         "I was drawing. —— was + -ing",
         "They were playing. —— 一伙人用 were",
@@ -8468,7 +8468,7 @@ export const grammarLessons: GrammarLesson[] = [
     huntCaseIds: ["hunt-shop-note"]
   },
   {
-    // ── 第五批 · L45 动名词③（enjoy 的门）：有的动词只开一扇门——enjoy 只后面用 -ing 形式；全批唯一新词 enjoy ──
+    // ── 第五批 · L45 动名词③（enjoy 的门）：有的动词只开一扇门——enjoy 只接 -ing 形式；全批唯一新词 enjoy ──
     id: "lesson-45-enjoy-drawing",
     number: 45,
     title: "我享受读书",
@@ -8485,7 +8485,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "I enjoy", role: "我享受（enjoy = 很享受）" },
       { text: "reading", role: "读书（名词形式）" }
     ],
-    oneLineRule: "enjoy 的门只开一扇：只后面用 -ing 形式 enjoy reading，不认 enjoy to read——enjoy 后面不垫 to。",
+    oneLineRule: "enjoy 的门只开一扇：只接 -ing 形式 enjoy reading，不认 enjoy to read——enjoy 后面不垫 to。",
     examples: [
       { en: "I enjoy reading.", zh: "我享受读书。" },
       { en: "I enjoy drawing.", zh: "我享受画画。" },
@@ -8502,7 +8502,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I enjoy to read.",
         wrongMark: "to",
         correct: "I enjoy reading.",
-        whyZh: "enjoy 的门只开一扇——它不认 to，只后面用 -ing 形式：enjoy reading。垫板在 enjoy 门口用不上。"
+        whyZh: "enjoy 的门只开一扇——它不认 to，只接 -ing 形式：enjoy reading。垫板在 enjoy 门口用不上。"
       },
       {
         wrong: "She enjoy reading.",
@@ -8550,13 +8550,13 @@ export const grammarLessons: GrammarLesson[] = [
       title: "enjoy 为什么不要 to？",
       paragraphs: [
         "第 44 课你学过：两个动作用垫板缝——go to the shop to buy milk。但不是所有动词门口都垫板。",
-        "enjoy 的门只开一扇：它后面只后面用 -ing 形式（enjoy reading），不认 to（enjoy to read 进不去）。每个动词的门口规矩不一样，遇到就记这一句。",
+        "enjoy 的门只开一扇：它后面只接 -ing 形式（enjoy reading），不认 to（enjoy to read 进不去）。每个动词的门口规矩不一样，遇到就记这一句。",
         "enjoy 本身是什么意思？「享受、很喜欢」——比 like 多一点投入。I enjoy reading 就是「我读书读得很享受」。",
-        "这课只用记一个动词的门口：enjoy 只后面用 -ing 形式。别的动词以后一个一个遇。"
+        "这课只用记一个动词的门口：enjoy 只接 -ing 形式。别的动词以后一个一个遇。"
       ]
     },
     summary: {
-      rule: "enjoy 的门只开一扇：只后面用 -ing 形式 enjoy reading，不认 to。",
+      rule: "enjoy 的门只开一扇：只接 -ing 形式 enjoy reading，不认 to。",
       points: [
         "I enjoy reading. —— enjoy + 名词形式",
         "She enjoys reading. —— 「他」做事要带 -s",
@@ -8595,7 +8595,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "to",
         answer: "to",
         correctionZh: "enjoy 的门不认 to：I enjoy reading。",
-        explain: "enjoy 后面不垫板，只后面用 -ing 形式。"
+        explain: "enjoy 后面不垫板，只接 -ing 形式。"
       },
       {
         // R8 跨课复现：第 25 课（三单）的句式混入
@@ -8613,7 +8613,7 @@ export const grammarLessons: GrammarLesson[] = [
         replaceTarget: "把阅读换成「画画」",
         options: ["drawing", "to draw", "draw"],
         answer: "drawing",
-        explain: "enjoy 只后面用 -ing 形式：enjoy drawing。"
+        explain: "enjoy 只接 -ing 形式：enjoy drawing。"
       }
     ],
     practice: [
@@ -8655,7 +8655,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "兴趣班报名表要写爱好。凭记忆，写出你说的那句英文。",
       intentZh: "我享受读书。",
       answer: "I enjoy reading.",
-      noteZh: "enjoy 的门只开一扇：只后面用 -ing 形式 reading。"
+      noteZh: "enjoy 的门只开一扇：只接 -ing 形式 reading。"
     },
     huntCaseIds: ["hunt-club-poster"]
   },
@@ -8742,7 +8742,7 @@ export const grammarLessons: GrammarLesson[] = [
       title: "搭档地图 —— 还有一句悄悄话",
       paragraphs: [
         "这一批你认识了两样搭档：名词形式（reading）——跟着 like / enjoy 出场；小垫板（to + 原样）——跟着 want 出场，也帮「去干什么」缝句（go to the shop to buy milk）。",
-        "「搭档地图」不用背：遇到动词就往门口看一眼——enjoy 的门只开一扇（只后面用 -ing 形式），want 的门口有垫板（认 to）。",
+        "「搭档地图」不用背：遇到动词就往门口看一眼——enjoy 的门只开一扇（只接 -ing 形式），want 的门口有垫板（认 to）。",
         "悄悄话一句：其实「喜欢」两类搭法都能说——like reading 和 like to read 都对，意思几乎一样。你不用纠结，默认用名词形式就行。",
         "至此，你会说「喜欢做、享受做、去做、想做」——动词后面跟什么，你已经有一套自己的手感了。"
       ]
@@ -8763,7 +8763,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: ".",
         options: ["reading", "to read", "read"],
         answer: "reading",
-        explain: "enjoy 的门只开一扇：只后面用 -ing 形式 reading。"
+        explain: "enjoy 的门只开一扇：只接 -ing 形式 reading。"
       },
       {
         kind: "arrange",
@@ -8794,7 +8794,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "to",
         answer: "to",
         correctionZh: "enjoy 的门不认 to：I enjoy reading。",
-        explain: "enjoy 只后面用 -ing 形式，to 进不去。"
+        explain: "enjoy 只接 -ing 形式，to 进不去。"
       },
       {
         // R9 变形/替换：换搭档（构造迁移，复用 choose 判题）
@@ -12211,7 +12211,7 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "又一个只接 -ing 的动词",
       paragraphs: [
-        "第 45 课认识过 enjoy 的门：只后面用 -ing 形式（enjoy reading），to 进不去。今天的 finish 是同一个脾气：finish reading、finish drawing——只开一扇门。",
+        "第 45 课认识过 enjoy 的门：只接 -ing 形式（enjoy reading），to 进不去。今天的 finish 是同一个脾气：finish reading、finish drawing——只开一扇门。",
         "「名词形式」是什么？就是把动作换成 -ing 形式、当「做的事情」来用：read → reading、draw → drawing。like / enjoy / finish 这些动词后面都这么用。",
         "也有动词门口是垫板的：want to travel（第 15 课）、would like to sleep（第 62 课）——同一个动作，门口规矩不同。遇到新动词，看一眼它认哪一种。",
         "这类动词后面还会遇到更多：有的是「只接 -ing 形式」，有的是「接 to + 原样」——一个一个遇，不着急。"
@@ -26333,7 +26333,7 @@ export const grammarLessons: GrammarLesson[] = [
         "第 134／135 课盼的是「东西」：the weekend（周末）、the summer（夏天）。今天盼的是「做一件事」：见到你（seeing you）。",
         "跟第 120 课一模一样的规矩：那个 to 后面要是跟「做的事」，这件事就要换上名词形式——I am used to getting up early.（第 120 课）／I am looking forward to seeing you.（今天）。动作想当「名字」用，就穿上 -ing。",
         "最容易踩的坑：一看 to 就顺手接原样（see）。第 120 课你已经踩过一次，今天再把它记住——这个 to 后面要用 -ing 形式，不用原样。",
-        "还有一个小地方：名词形式是 seeing，不是昨天版的 saw。这个位置只后面用 -ing 形式——因为它要的是「做的这件事」，不是「做过的那件事」。"
+        "还有一个小地方：名词形式是 seeing，不是昨天版的 saw。这个位置只接 -ing 形式——因为它要的是「做的这件事」，不是「做过的那件事」。"
       ]
     },
     summary: {
