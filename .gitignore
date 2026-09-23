@@ -28,3 +28,9 @@ deliverables/sync/
 .ixfind/
 .rvfind/
 /design-verify.html
+
+# 审计过程中的「一次性改仓探针」（改完即删，勿提交）
+# 2026-09-24：`__probe.test.ts` 这类文件靠本机绝对路径 import，提交后会成为
+# 「换台机器就红」的测试；本会话已删除 1 个（src/services/__probe.test.ts）。
+src/**/__probe*.test.*
+src/**/__audit*_probe.test.*
