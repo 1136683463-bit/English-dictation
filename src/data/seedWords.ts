@@ -10,6 +10,22 @@ export interface SeedWord {
 
 export const CORE_100_WORDS_VERSION = "core-100-v1";
 
+/**
+ * 每个内置词书包的词数（20）。
+ *
+ * ## 为什么抽成常量（2026-09-24）
+ *
+ * 此前这个 20 在 `storage.ts` 里出现两次（分本下标 `Math.floor(index / 20)`
+ * 与 `description` 的 `index * 20`），而**建几本**是另一处写死的 `length: 5`。
+ * 三者各写各的，于是词表长到 115 时没人发现「5 本 × 20 = 100 < 115」——
+ * 索引 100-114 的那 15 个词越界，被兜底逻辑塞进 **Unit 1**
+ * （实测：空存储首启后 Unit 1 有 **35** 张，应为 20）。
+ *
+ * 抽成常量后，`storage.ts` 的建本数与分本下标都从这里推导，
+ * **词表规模与「本数 × 每本词数」不会再各走各的**。
+ */
+export const CORE_WORDS_PER_UNIT = 20;
+
 export const core100Words: SeedWord[] = [
   {
     word: "achieve",

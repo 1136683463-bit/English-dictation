@@ -11,7 +11,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { APP_SCHEMA_VERSION, migrateData, parseBackupJson } from "../../services/storage";
-import { CORE_100_WORDS_VERSION, core100Words } from "../../data/seedWords";
+import { CORE_100_WORDS_VERSION, CORE_WORDS_PER_UNIT, core100Words } from "../../data/seedWords";
 import { deleteUnit } from "../../services/unitService";
 
 const ISO = "2024-01-01T00:00:00.000Z";
@@ -172,6 +172,68 @@ describe("MG3b-2 seedCoreWords：种子词补种", () => {
     expect(out.seededWordVersions).toEqual([CORE_100_WORDS_VERSION]);
   });
 
+  /**
+   * MG3b-2b【2026-09-24 新增】种子词**分本分布**必须正确。
+   *
+   * ## 为什么要加这条闸
+   *
+   * 上面那条只断言**总数**（`cards` 长度 == 词表长度），
+   * 于是「115 词 vs 5 本（容量 100）」这个错配**逃过了所有测试**：
+   * 索引 100-114 的 15 个词分本时越界，被兜底塞进 **Unit 1**——
+   * 实测空存储首启后 `core-100-unit-1` 有 **35** 张（应为 20）。
+   *
+   * 用户可见后果：第 1 本异常长、「第 1-20 个」的描述与实际 35 张不符、
+   * 按本推进的节奏在第 1 本就被打乱。**从初始提交起就存在**。
+   *
+   * ## 这条闸锁什么
+   *
+   * ① 分布是「每本 ≤ CORE_WORDS_PER_UNIT」——不允许任何一本超容；
+   * ② 分本与**下标顺序**一致（第 N 本 = 词表第 (N-1)×20+1 ~ N×20 个）；
+   * ③ 描述里的区间与实际卡数一致（防止再出现「描述说 1-20、实际 35」）。
+   */
+  it("MG3b-2b 种子词分布：每本 ≤ CORE_WORDS_PER_UNIT，且与下标区间一致", () => {
+    const out = migrateData({ schemaVersion: 0, cards: [], wordDetails: [], seededWordVersions: [] });
+
+    // ① 每本不得超容
+    const byUnit = new Map<string, string[]>();
+    for (const card of out.cards) {
+      const unitId = card.unitId ?? "<无归属>";
+      const list = byUnit.get(unitId) ?? [];
+      list.push(card.front);
+      byUnit.set(unitId, list);
+    }
+    for (const [unitId, words] of byUnit) {
+      expect(
+        words.length,
+        `${unitId} 有 ${words.length} 张，超过每本上限 ${CORE_WORDS_PER_UNIT}（分本下标算错？）`
+      ).toBeLessThanOrEqual(CORE_WORDS_PER_UNIT);
+    }
+
+    // ② 第 N 本装的正是词表第 (N-1)×20+1 ~ N×20 个（逐词核对，不只看数量）
+    const offenders: string[] = [];
+    for (const [index, seed] of core100Words.entries()) {
+      const expectedUnit = `core-100-unit-${Math.floor(index / CORE_WORDS_PER_UNIT) + 1}`;
+      const card = out.cards.find((item) => item.front === seed.word.toLowerCase());
+      if (!card) {
+        offenders.push(`「${seed.word}」（索引 ${index}）没有对应卡片`);
+        continue;
+      }
+      if (card.unitId !== expectedUnit) {
+        offenders.push(`「${seed.word}」（索引 ${index}）应在 ${expectedUnit}，实际在 ${card.unitId}`);
+      }
+    }
+    expect(offenders.slice(0, 8), `分本错位：\n${offenders.join("\n")}`).toEqual([]);
+
+    // ③ 描述区间与实际卡数一致
+    for (const [unitId, words] of byUnit) {
+      const unit = out.units.find((item) => item.id === unitId);
+      const match = unit?.description.match(/第 (\d+)-(\d+) 个/);
+      expect(match, `${unitId} 的描述应写明词序号区间，实际：${unit?.description}`).toBeTruthy();
+      const declared = Number(match![2]) - Number(match![1]) + 1;
+      expect(words.length, `${unitId} 描述写「${match![0]}」（${declared} 个）但实际 ${words.length} 张`).toBe(declared);
+    }
+  });
+
   it("已有同名单词（含大小写差异 / 前后空格）不会被重复插入", () => {
     // 用真实内置词条做样本（achieve），否则用例是空转的。
     const seedWord = core100Words[0].word;
@@ -327,24 +389,46 @@ describe("MG3b-2 seedCoreWords：种子词补种", () => {
     expect(orphan, "补种词卡必须都属于某一本内置词书").toEqual([]);
   });
 
-  it("补种词卡的 unitId 分布：末 15 个词全部挤进第 1 本（内置词条数不是 20 的整数倍）", () => {
+  /**
+   * 【2026-09-24 修】这两条原先是「记录已知缺陷」，缺陷已修，改为断言正确行为。
+   *
+   * 修前实测（当时是**正确的记录**）：
+   *  - `core-100-unit-1` 装 **35** 条（20 本容量 + 15 越界兜底）；
+   *  - `unit1.description` 写「第 1-20 个」，与实际 35 条**对不上**。
+   *
+   * 根因见 `storage.ts` 的 `seedCoreWords`：`createCoreUnits` 写死建 5 本
+   * （20×5=100），而 `core100Words` 有 **115** 条 ⇒ 索引 100-114 越界
+   * （`seededUnits[5]` 为 undefined），被 `?? seededUnits[0]` 兜回第 1 本。
+   *
+   * 修法：本数由 `core100Words.length / CORE_WORDS_PER_UNIT` 推导（⇒ 6 本），
+   * 分本下标按 `core-100-unit-N` **按名取本**（不再依赖数组下标，避免
+   * 「用户删掉某本后被删本之后的词全体前移一位」）。
+   */
+  it("【已修】补种词卡的 unitId 分布：每本 ≤ CORE_WORDS_PER_UNIT，末本装余数", () => {
     const out = migrateData({ schemaVersion: 0, seededWordVersions: [], cards: [] });
     const counts = new Map<string, number>();
     for (const card of out.cards) {
       counts.set(card.unitId ?? "<无>", (counts.get(card.unitId ?? "<无>") ?? 0) + 1);
     }
-    // 记录实测分布，供报告核对（内置词条共 115 条，20 条一本应得 6 本，实现只有 5 本）。
     expect([...counts.values()].reduce((sum, value) => sum + value, 0)).toBe(core100Words.length);
-    expect(counts.get("core-100-unit-1"), "第 1 本实际装了多少条").toBe(35);
-    expect(core100Words.length % 20).not.toBe(0);
+
+    // 115 条 / 每本 20 ⇒ 6 本，前 5 本各 20、末本 15
+    const expectedUnits = Math.ceil(core100Words.length / CORE_WORDS_PER_UNIT);
+    for (let index = 1; index <= expectedUnits; index += 1) {
+      const count = counts.get(`core-100-unit-${index}`) ?? 0;
+      expect(count, `core-100-unit-${index} 应有卡且不超过每本上限`).toBeGreaterThan(0);
+      expect(count, `core-100-unit-${index} 超过每本上限`).toBeLessThanOrEqual(CORE_WORDS_PER_UNIT);
+    }
+    expect(counts.get("core-100-unit-1"), "第 1 本应恰好装满（不再吃越界的 15 条）").toBe(CORE_WORDS_PER_UNIT);
+    expect(counts.get(`core-100-unit-${expectedUnits}`), "末本应装余数").toBe(core100Words.length % CORE_WORDS_PER_UNIT);
   });
 
-  it("内置词书的说明文案与实际条数对不上（第 1 本写着第 1-20 个，实际 35 条）", () => {
+  it("【已修】内置词书的说明文案与实际条数一致（第 1 本写 1-20，实际也是 20）", () => {
     const out = migrateData({ schemaVersion: 0, seededWordVersions: [], cards: [] });
     const unit1 = out.units.find((unit) => unit.id === "core-100-unit-1");
     const count = out.cards.filter((card) => card.unitId === "core-100-unit-1").length;
     expect(unit1?.description).toContain("1-20");
-    expect(count).toBe(35);
+    expect(count, "描述写 1-20，实际卡数必须也是 20").toBe(CORE_WORDS_PER_UNIT);
   });
 
   it("补种不会动用户已有的复习计划与复习记录", () => {

@@ -11,7 +11,7 @@
  * 这比「读代码找漏」更可靠：白名单只要漏一个字段，这里就会红。
  */
 import { describe, expect, it } from "vitest";
-import { parseBackupJson } from "../../services/storage";
+import { migrateData, parseBackupJson } from "../../services/storage";
 import { core100Words, CORE_100_WORDS_VERSION } from "../../data/seedWords";
 
 const ISO = "2024-01-01T00:00:00.000Z";
@@ -357,15 +357,22 @@ describe("MG9 字段存活矩阵：全字段数据往返 parseBackupJson", () =>
     expect(out.cards.some((card) => card.note === "内置核心词")).toBe(false);
   });
 
-  it("★ 对照：ensureDefaultUnits 在每次迁移都注入 6 个内置词书（老用户的书架被塞东西）", () => {
-    // ensureDefaultUnits（storage.ts:1153-1173）在两条路径都会跑：
+  it("★ 对照：ensureDefaultUnits 在每次迁移都注入内置词书（老用户的书架被塞东西）", () => {
+    // ensureDefaultUnits（storage.ts）在两条路径都会跑：
     // seedCoreWords 的分支返回 ensureDefaultUnits(data)，而已补种的分支直接返回它，
     // 所以**每次 saveData / loadData 都会执行**。输入的 1 个自建词书之外，
     // 会多出「核心100 - Unit 1..5」+「冒险积累」。
+    //
+    // 2026-09-24 修：此前本数写死 5，而内置词表有 115 条 ⇒ 越界的 15 条被兜底
+    // 塞进第 1 本（第 1 本实测 35 条）。现在本数由词表长度推导 ⇒ 6 本，
+    // 于是「已补种的老用户」本该多出一本**空的** Unit 6。
+    // 已加保护：末本**只在有词可装时才补**（见 ensureDefaultUnits 的注释）——
+    // 本用例的数据 `seededWordVersions` 已标记（属老用户），故**看不到 Unit 6**，
+    // 这与「不给老用户塞空词书」的取向一致。详见 storage.ts 的 seedCoreWords 长注释。
     const injectedTitles = out.units.map((unit) => unit.title);
     expect(
       injectedTitles,
-      "输入只有 1 个词书，输出多出 6 个注入词书"
+      "输入只有 1 个词书，输出多出 6 个注入词书（5 本核心100 + 冒险积累）"
     ).toEqual([
       "词书",
       "核心100 - Unit 1",
@@ -376,6 +383,23 @@ describe("MG9 字段存活矩阵：全字段数据往返 parseBackupJson", () =>
       "冒险积累"
     ]);
     expect(out.unitGroups.map((group) => group.title)).toEqual(["分组", "核心100", "冒险积累"]);
+  });
+
+  it("【2026-09-24】老用户不会凭空多出空的末本（新用户则会拿到它，因为里面有词）", () => {
+    // 本用例走的是老用户路径（seededWordVersions 已标记、无内置词卡）
+    expect(
+      out.units.some((unit) => unit.id === "core-100-unit-6"),
+      "老用户不该多出一本空词书"
+    ).toBe(false);
+
+    // 对照：新用户（未标记）补种时，末本有词 ⇒ 照常建立
+    const fresh = migrateData({ schemaVersion: 0, cards: [], wordDetails: [], seededWordVersions: [] });
+    expect(
+      fresh.units.some((unit) => unit.id === "core-100-unit-6"),
+      "新用户的末本有词，应照常建立"
+    ).toBe(true);
+    const lastUnitCards = fresh.cards.filter((card) => card.unitId === "core-100-unit-6");
+    expect(lastUnitCards.length, "末本应真的装着词（不是空书）").toBeGreaterThan(0);
   });
 
   it("【语义收紧 2026-09-23】无 unitId 的旧词卡保持未分配（不再编造归属）", () => {

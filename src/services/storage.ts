@@ -42,7 +42,7 @@ import {
   WordDetails
 } from "../types";
 import { seedDictionary } from "../data/seedDictionary";
-import { CORE_100_WORDS_VERSION, core100Words } from "../data/seedWords";
+import { CORE_100_WORDS_VERSION, CORE_WORDS_PER_UNIT, core100Words } from "../data/seedWords";
 import { syncUnitCompletion } from "./learningTelemetry";
 import { lastRestructureProducedUnitIds, restructureOversizedUnits } from "./bookRestructureService";
 
@@ -1210,10 +1210,61 @@ const seedCoreWords = (data: AppData): AppData => {
   const nextWordDetails = [...data.wordDetails];
   const nextSchedules = [...data.schedules];
 
+  /**
+   * 本数按**词表实际长度**算，不再用写死的「索引 / 20」。
+   *
+   * ## 修的是什么（2026-09-24）
+   *
+   * `createCoreUnits` 建 5 本（20 词/本 ⇒ 容量 100），但 `core100Words`
+   * 已经长到 **115** 词。于是索引 100-114 那 15 个词走
+   * `seededUnits[Math.floor(100/20)]` = `seededUnits[5]`——**越界**，
+   * 被 `?? seededUnits[0]` 兜回 **Unit 1**。
+   *
+   * 实测（空存储跑一次 `loadData`，非推断）：
+   *
+   * ```
+   * core-100-unit-1: 35 张   ← 应为 20
+   * core-100-unit-2: 20 张
+   * ...（3/4/5 各 20）
+   * ```
+   *
+   * 即**每个新用户的第 1 本词书都多 15 张、第 6 本该有的词全挤进第 1 本**。
+   * 用户可见后果：第 1 本显得异常长；`description` 写的「第 1-20 个」
+   * 与实际 35 张不符；按本推进的节奏在第 1 本就被打乱。
+   *
+   * ## 为什么现在才发现
+   *
+   * 既有测试只断言**总数**（`cards` 长度 == `core100Words.length`），
+   * 从没断言**分布**——所以 115 词 × 5 本这个组合长期无人发现。
+   *
+   * ## 修法
+   *
+   * 用 `Math.floor(index / CORE_WORDS_PER_UNIT)` 取本下标（与 `createCoreUnits`
+   * 的 20 词/本口径一致），并**按本数取模**兜底：
+   * 即使将来词表再长、而 `createCoreUnits` 未同步扩容，也只会**回绕到已有本**，
+   * 不再依赖「越界 undefined → 兜底第 0 本」这条隐式行为。
+   *
+   * `createCoreUnits` 同步改为按词表长度建够本数——两处口径从此都由
+   * `CORE_WORDS_PER_UNIT` 与 `core100Words.length` 推导，不会再各走各的。
+   */
+  const wordsPerUnit = CORE_WORDS_PER_UNIT;
+  const unitCount = seededUnits.length;
+
   for (const [index, seed] of core100Words.entries()) {
     const normalized = seed.word.toLowerCase();
     if (existingWords.has(dedupeKey(normalized))) continue;
-    const unitId = seededUnits[Math.floor(index / 20)]?.id ?? seededUnits[0].id;
+    /**
+     * 目标本下标 → 映射到**实际存在**的本（跳过被用户删掉的本）。
+     *
+     * ⚠️ 这里必须按「未删除本」的序号取，而不是直接下标：
+     * 用户删掉 Unit 3 后 `seededUnits` 变成 [u1,u2,u4,u5]，
+     * 直接 `seededUnits[2]` 会把本该进 u3 的词塞进 **u4**——
+     * 与「本 N = 第 N×20 个」的口径错位。
+     */
+    const desiredUnitNumber = Math.floor(index / wordsPerUnit) + 1;
+    const direct = seededUnits.find((unit) => unit.id === `core-100-unit-${desiredUnitNumber}`);
+    const unitId = direct?.id ?? seededUnits[0]?.id ?? "";
+    if (!unitId) continue;
 
     const cardId = uid("card");
     nextCards.push({
@@ -1273,17 +1324,33 @@ const seedCoreWords = (data: AppData): AppData => {
   };
 };
 
+/**
+ * 建够覆盖整张词表的内置本数。
+ *
+ * 此前写死 `length: 5`（= 100 词容量），而 `core100Words` 有 **115** 词——
+ * 多出的 15 个词在分本时越界落到 Unit 1（见 `seedCoreWords` 内的长注释）。
+ * 现在由 `CORE_WORDS_PER_UNIT` 与词表长度推导，**词表增长时本数自动跟上**。
+ *
+ * ⚠️ 本 id 是 `core-100-unit-N`（N 从 1 起），且**与既有数据保持兼容**：
+ * 词表 115 词 / 每本 20 ⇒ 6 本（末本 15 词），前 5 本 id 与旧版一致，
+ * 只是新增 `core-100-unit-6`——已升级的用户不会看到本 id 变化。
+ */
 const createCoreUnits = (timestamp: string) =>
-  Array.from({ length: 5 }, (_, index) => ({
-    id: `core-100-unit-${index + 1}`,
-    title: `核心100 - Unit ${index + 1}`,
-    description: `内置核心词第 ${index * 20 + 1}-${(index + 1) * 20} 个`,
-    order: index + 1,
-    color: "#f06423",
-    groupId: "group-core-100",
-    createdAt: timestamp,
-    updatedAt: timestamp
-  }));
+  Array.from({ length: Math.ceil(core100Words.length / CORE_WORDS_PER_UNIT) }, (_, index) => {
+    const first = index * CORE_WORDS_PER_UNIT + 1;
+    // 末本可能不满（115 词 ⇒ 第 6 本只有 101-115），描述按实际词数收口
+    const last = Math.min((index + 1) * CORE_WORDS_PER_UNIT, core100Words.length);
+    return {
+      id: `core-100-unit-${index + 1}`,
+      title: `核心100 - Unit ${index + 1}`,
+      description: `内置核心词第 ${first}-${last} 个`,
+      order: index + 1,
+      color: "#f06423",
+      groupId: "group-core-100",
+      createdAt: timestamp,
+      updatedAt: timestamp
+    };
+  });
 
 const createAdventureAccumulationUnit = (timestamp: string, groupId = "group-adventure-accumulation"): Unit => ({
   id: "unit-adventure-accumulation",
@@ -1353,7 +1420,30 @@ const ensureDefaultUnits = (data: AppData): AppData => {
   const adventureUnits = tombstoned.has("unit-adventure-accumulation")
     ? []
     : [createAdventureAccumulationUnit(timestamp, adventureGroupId)];
-  const units = mergeUnits(data.units ?? [], [...coreUnits, ...adventureUnits]).map((unit) =>
+  /**
+   * 新补入的内置本，**只在它有词可装时才补**——避免给老用户塞空词书（2026-09-24）。
+   *
+   * 这条是「本数由词表推导」的配套：词表 115 词 ⇒ 现在会建到 Unit 6，
+   * 但**已补种过的老用户**（`seededWordVersions` 已含版本号）不会走补种分支，
+   * 他们书架里没有一本叫 Unit 6 的书、也不会有词落进去。
+   * 若无条件补回，老用户会凭空多出一本**空词书**「核心100 - Unit 6」，
+   * 而它的描述写着「第 101-115 个」——名实不符。
+   *
+   * ⚠️ 判据**只针对本次扩容新增的最后一本**（`core-100-unit-${N}`，N = 本数），
+   * 不能推广到全部内置本：前 5 本是既有的、必须照常建立
+   * （MG3b 的 FAIL-8 明确要求「内置词书本身照常建立，只是不吸纳用户散卡」）。
+   * 若对全部本都用「有卡才建」，会让「用户删光卡后内置书消失」，与既有语义冲突。
+   *
+   * 新用户为什么不受影响：补种在同一趟迁移里已把卡分进各本（含末本），
+   * 末本有卡 ⇒ 照常建立。
+   */
+  const coreUnitCount = coreUnits.length;
+  const lastCoreUnitId = `core-100-unit-${coreUnitCount}`;
+  const unitIdsInUse = new Set(data.cards.map((card) => card.unitId).filter(Boolean));
+  const keepCoreUnits = coreUnits.filter(
+    (unit) => unit.id !== lastCoreUnitId || unitIdsInUse.has(unit.id)
+  );
+  const units = mergeUnits(data.units ?? [], [...keepCoreUnits, ...adventureUnits]).map((unit) =>
     unit.id.startsWith("core-100-unit-") && !unit.groupId ? { ...unit, groupId: "group-core-100", color: "#f06423" } : unit
   );
   /**
