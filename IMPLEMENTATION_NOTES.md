@@ -4333,3 +4333,42 @@ tauri-plugin-single-instance = "2"
 
 同一页面内新增组件样式时，若容器有 `元素+类` 形式的规则（如 `.lesson-complete p`），
 组件自己的单类选择器会被压住。**排查信号**：CSSOM 里规则在、getComputedStyle 值不对。
+
+---
+
+## 2026-09-23 · 趁热练结果页 hero 改左右布局（并修对齐）
+
+**用户要求**：「这个换成左右布局，图标在左边，文字在右边」（截图：徽章在标题上方竖直堆叠）。
+
+### 改动
+
+**JSX**：boost 结果页 hero 改为与完课页一致的结构——
+```
+<header class="complete-hero">
+  <div class="complete-hero-main">     ← flex 左右布局
+    <span class="complete-hero-badge"> ← 左：徽章
+    <div class="complete-hero-text">   ← 右：标题 + 说明
+```
+
+**样式**：新增一条**限定作用域**的宽度约束——
+```
+.lesson-complete .complete-hero { max-width: 560px }
+```
+原因：`.complete-hero` 原本是 600px（完课页配套，**不能改**），
+而结果页的卡片（自评、AI 卡）都是 560px。两者都居中时**左边缘相差 20px**——
+看起来像没对齐。用 `.lesson-complete` 前缀限定只作用于结果页，完课页不受影响。
+
+### 验证（浏览器实测几何）
+
+| 元素 | left | 宽度 |
+|---|---|---|
+| hero | 370 | **560** |
+| 徽章 | 370（最左） | 54 |
+| 文字 | **440**（徽章右侧） | 393 |
+| 自评卡 | 370 | 560 |
+| AI 卡 | 370 | 560 |
+
+- 徽章在左、文字在右：`badge.right <= text.left` 成立
+- hero 与下方卡片**左边缘完全对齐**（都是 370）
+- 全量 **921/921 通过**、`tsc` 零错误、`npx vite build` 通过
+- 完课页 hero（600px 版本）不受影响——两处都已是 `complete-hero-main` 结构

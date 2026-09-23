@@ -818,14 +818,20 @@ export default function GrammarBoostPage() {
         <PageHeader eyebrow="语法 · 趁热练" title={`第 ${lesson.number} 课 · ${meta.name}`} />
         <section className="lesson-stage" aria-label="本档完成">
           <div className="lesson-complete">
+            {/* 2026-09-23：改左右布局（图标左、标题与说明右）——与完课页 hero 一致；
+                此前是竖直堆叠 + 居中，标题与说明挤在一起，视觉重心偏轻。 */}
             <header className="complete-hero">
-              <span className="complete-hero-badge">
-                <CheckCircle2 size={26} strokeWidth={2.4} />
-              </span>
-              <h2>{tier === 1 ? "这一课的记忆稳住了" : "又稳了一层"}</h2>
-              <p className="complete-hero-sub">
-                「{meta.name}」走完了一遍——{firstTryCount} / {items.length} 题一次就对。今天练到这也算数。
-              </p>
+              <div className="complete-hero-main">
+                <span className="complete-hero-badge">
+                  <CheckCircle2 size={26} strokeWidth={2.4} />
+                </span>
+                <div className="complete-hero-text">
+                  <h2>{tier === 1 ? "这一课的记忆稳住了" : "又稳了一层"}</h2>
+                  <p className="complete-hero-sub">
+                    「{meta.name}」走完了一遍——{firstTryCount} / {items.length} 题一次就对。今天练到这也算数。
+                  </p>
+                </div>
+              </div>
             </header>
 
             {/* 每档完成后 1 题自评（R-B16）：只记录，不再追加任何动作 */}
