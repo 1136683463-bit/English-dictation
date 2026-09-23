@@ -1,0 +1,3880 @@
+[
+ {
+  "slug": "adjectives_2",
+  "label": "Adjectives",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "adjectives-forms",
+  "label": "Adjectives: forms",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "adjectives-order",
+  "label": "Adjectives: order",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "adjective-phrases-functions",
+  "label": "Adjective phrases: functions",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "adjective-phrases-position",
+  "label": "Adjective phrases: position",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "adjectives-and-adjective-phrases-typical-errors",
+  "label": "Adjectives and adjective phrases: typical errors",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1.5
+ },
+ {
+  "slug": "adverbs_2",
+  "label": "Adverbs",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "adverb-phrases",
+  "label": "Adverb phrases",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "adverbs-and-adverb-phrases-position",
+  "label": "Adverbs and adverb phrases: position",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "adverbs-and-adverb-phrases-typical-errors",
+  "label": "Adverbs and adverb phrases: typical errors",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "adverbs-forms",
+  "label": "Adverbs: forms",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "adverbs-functions",
+  "label": "Adverbs: functions",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "adverbs-types",
+  "label": "Adverbs: types",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "always",
+  "label": "Always",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-and-types-of-noun",
+  "label": "Determiners and types of noun",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "determiners-position-and-order",
+  "label": "Determiners: position and order",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "determiners-typical-errors",
+  "label": "Determiners: typical errors",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-used-as-pronouns",
+  "label": "Determiners used as pronouns",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "nouns_2",
+  "label": "Nouns",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "nouns-form",
+  "label": "Nouns: form",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "nouns-and-prepositions",
+  "label": "Nouns and prepositions",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "nouns-compound-nouns",
+  "label": "Nouns: compound nouns",
+  "inheritedLevel": "A1-A2",
+  "matchedWith": "Nouns: countable and uncountable",
+  "score": 2
+ },
+ {
+  "slug": "nouns-countable-and-uncountable",
+  "label": "Nouns: countable and uncountable",
+  "inheritedLevel": "A1-A2",
+  "matchedWith": "Nouns: countable and uncountable",
+  "score": 3
+ },
+ {
+  "slug": "nouns-forming-nouns-from-other-words",
+  "label": "Nouns: forming nouns from other words",
+  "inheritedLevel": "A1-A2",
+  "matchedWith": "Nouns: countable and uncountable",
+  "score": 2
+ },
+ {
+  "slug": "nouns-singular-and-plural",
+  "label": "Nouns: singular and plural",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "noun-phrases-dependent-words",
+  "label": "Noun phrases: dependent words",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "noun-phrases-order",
+  "label": "Noun phrases: order",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1.5
+ },
+ {
+  "slug": "noun-phrases-uses",
+  "label": "Noun phrases: uses",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "noun-phrases-noun-phrases-and-verbs",
+  "label": "Noun phrases: noun phrases and verbs",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "noun-phrases-two-noun-phrases-together",
+  "label": "Noun phrases: two noun phrases together",
+  "inheritedLevel": "C1",
+  "matchedWith": "Possession and noun modifiers",
+  "score": 2
+ },
+ {
+  "slug": "pronouns_2",
+  "label": "Pronouns",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "gender",
+  "label": "Gender",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "relative-pronouns",
+  "label": "Relative pronouns",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "more",
+  "label": "More",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "piece-words-and-group-words",
+  "label": "Piece words and group words",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "nouns-and-gender",
+  "label": "Nouns and gender",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "reported-speech-reporting-nouns",
+  "label": "Reported speech: reporting nouns",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Reported speech: reporting verbs",
+  "score": 3
+ },
+ {
+  "slug": "prepositions_2",
+  "label": "Prepositions",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositional-phrases",
+  "label": "Prepositional phrases",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "collocation_2",
+  "label": "Collocation",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "commands-and-instructions",
+  "label": "Commands and instructions",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "commentaries",
+  "label": "Commentaries",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "invitations",
+  "label": "Invitations",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "offers",
+  "label": "Offers",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "requests",
+  "label": "Requests",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "suggestions",
+  "label": "Suggestions",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "telephoning",
+  "label": "Telephoning",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "warnings",
+  "label": "Warnings",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "dates",
+  "label": "Dates",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "measurements",
+  "label": "Measurements",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "number",
+  "label": "Number",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "geographical-places",
+  "label": "Geographical places",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "names-and-titles-addressing-people",
+  "label": "Names and titles: addressing people",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "nationalities-languages-countries-and-regions",
+  "label": "Nationalities, languages, countries and regions",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "place-names",
+  "label": "Place names",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "politeness",
+  "label": "Politeness",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "reported-speech_2",
+  "label": "Reported speech",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Reported speech: questions",
+  "score": 2
+ },
+ {
+  "slug": "reported-speech-direct-speech",
+  "label": "Reported speech: direct speech",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Reported speech: questions",
+  "score": 3
+ },
+ {
+  "slug": "reported-speech-indirect-speech",
+  "label": "Reported speech: indirect speech",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Reported speech: questions",
+  "score": 3
+ },
+ {
+  "slug": "sexist-language",
+  "label": "Sexist language",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "pronunciation",
+  "label": "Pronunciation",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "intonation",
+  "label": "Intonation",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "tags",
+  "label": "Tags",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "chunks",
+  "label": "Chunks",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "ellipsis",
+  "label": "Ellipsis",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "headers-and-tails",
+  "label": "Headers and tails",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "hyperbole",
+  "label": "Hyperbole",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "vague-expressions",
+  "label": "Vague expressions",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "downtoners",
+  "label": "Downtoners",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "substitution",
+  "label": "Substitution",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "british-and-american-english",
+  "label": "British and American English",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "British English and American English",
+  "score": 3
+ },
+ {
+  "slug": "dialect",
+  "label": "Dialect",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "double-negatives-and-usage",
+  "label": "Double negatives and usage",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "formal-and-informal-language",
+  "label": "Formal and informal language",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "newspaper-headlines",
+  "label": "Newspaper headlines",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "register",
+  "label": "Register",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "slang",
+  "label": "Slang",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "standard-and-non-standard-language",
+  "label": "Standard and non-standard language",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "swearing-and-taboo-expressions",
+  "label": "Swearing and taboo expressions",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "apostrophe",
+  "label": "Apostrophe (’)",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "apposition",
+  "label": "Apposition",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "contractions",
+  "label": "Contractions",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "contrasts",
+  "label": "Contrasts",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "detached-impersonal-style",
+  "label": "Detached impersonal style",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "internet-discourse-and-text-messages",
+  "label": "Internet discourse and text messages",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "paragraphs",
+  "label": "Paragraphs",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "punctuation",
+  "label": "Punctuation",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "speech-into-writing",
+  "label": "Speech into writing",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "spelling_2",
+  "label": "Spelling",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "past-continuous-or-past-simple",
+  "label": "Past continuous or past simple?",
+  "inheritedLevel": "A1-A2",
+  "matchedWith": "Past continuous and past simple",
+  "score": 4
+ },
+ {
+  "slug": "past-simple-or-present-perfect",
+  "label": "Past simple or present perfect?",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Present perfect simple and continuous",
+  "score": 3
+ },
+ {
+  "slug": "past-perfect-simple-or-past-perfect-continuous",
+  "label": "Past perfect simple or past perfect continuous?",
+  "inheritedLevel": "A1-A2",
+  "matchedWith": "Past continuous and past simple",
+  "score": 4
+ },
+ {
+  "slug": "past-perfect-simple-or-past-simple",
+  "label": "Past perfect simple or past simple?",
+  "inheritedLevel": "A1-A2",
+  "matchedWith": "Past continuous and past simple",
+  "score": 4
+ },
+ {
+  "slug": "past-verb-forms-referring-to-the-present",
+  "label": "Past verb forms referring to the present",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Future forms: 'will', 'be going to' and present continuous",
+  "score": 2
+ },
+ {
+  "slug": "past-typical-errors",
+  "label": "Past: typical errors",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "present-perfect-simple-or-present-perfect-continuous",
+  "label": "Present perfect simple or present perfect continuous?",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Present perfect simple and continuous",
+  "score": 6
+ },
+ {
+  "slug": "present-perfect-typical-errors",
+  "label": "Present perfect: typical errors",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Present perfect",
+  "score": 2
+ },
+ {
+  "slug": "present-simple-or-present-continuous",
+  "label": "Present simple or present continuous?",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Present perfect simple and continuous",
+  "score": 4
+ },
+ {
+  "slug": "present-typical-errors",
+  "label": "Present: typical errors",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "present-verb-forms-referring-to-the-past",
+  "label": "Present verb forms referring to the past",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Future forms: 'will', 'be going to' and present continuous",
+  "score": 2
+ },
+ {
+  "slug": "future-other-expressions-to-talk-about-the-future",
+  "label": "Future: other expressions to talk about the future",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Future continuous and future perfect",
+  "score": 2
+ },
+ {
+  "slug": "future-in-the-past",
+  "label": "Future in the past",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "future-typical-errors",
+  "label": "Future: typical errors",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "finite-and-non-finite-verbs",
+  "label": "Finite and non-finite verbs",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "infinitive-active-or-passive",
+  "label": "Infinitive: active or passive?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "verbs-basic-forms",
+  "label": "Verbs: basic forms",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "verbs-formation",
+  "label": "Verbs: formation",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "verb-patterns-with-and-without-objects",
+  "label": "Verb patterns: with and without objects",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "phrasal-verbs-and-multi-word-verbs",
+  "label": "Phrasal verbs and multi-word verbs",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Phrasal verbs",
+  "score": 3
+ },
+ {
+  "slug": "passive-forms",
+  "label": "Passive: forms",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "passives-with-and-without-an-agent",
+  "label": "Passives with and without an agent",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "passive-uses",
+  "label": "Passive: uses",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "passive-other-forms",
+  "label": "Passive: other forms",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "passive-typical-errors",
+  "label": "Passive: typical errors",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "modality-forms",
+  "label": "Modality: forms",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "modality-meanings-and-uses",
+  "label": "Modality: meanings and uses",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "modality-tense",
+  "label": "Modality: tense",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "modality-other-verbs",
+  "label": "Modality: other verbs",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "modality-other-modal-words-and-expressions",
+  "label": "Modality: other modal words and expressions",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "conditionals",
+  "label": "Conditionals",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "conditionals-typical-errors",
+  "label": "Conditionals: typical errors",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "verbs-types",
+  "label": "Verbs: types",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "verb-phrases",
+  "label": "Verb phrases",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "verbs-and-verb-phrases-typical-errors",
+  "label": "Verbs and verb phrases: typical errors",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1.5
+ },
+ {
+  "slug": "explain",
+  "label": "Explain",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "seem",
+  "label": "Seem",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "table-of-irregular-verbs",
+  "label": "Table of irregular verbs",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-classes-and-phrase-classes",
+  "label": "Word classes and phrase classes",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1.5
+ },
+ {
+  "slug": "word-formation_2",
+  "label": "Word formation",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prefixes",
+  "label": "Prefixes",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "suffixes",
+  "label": "Suffixes",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "compounds",
+  "label": "Compounds",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "abbreviations-initials-and-acronyms",
+  "label": "Abbreviations, initials and acronyms",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "hyphens",
+  "label": "Hyphens",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "word-order-and-focus_2",
+  "label": "Word order and focus",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-structures",
+  "label": "Word order: structures",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "fronting",
+  "label": "Fronting",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "inversion",
+  "label": "Inversion",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "but",
+  "label": "But",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "conjunctions",
+  "label": "Conjunctions",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "conjunctions-adding",
+  "label": "Conjunctions: adding",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "conjunctions-causes-reasons-results-and-purpose",
+  "label": "Conjunctions: causes, reasons, results and purpose",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "conjunctions-contrasting",
+  "label": "Conjunctions: contrasting",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "conjunctions-time",
+  "label": "Conjunctions: time",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "adjuncts",
+  "label": "Adjuncts",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "clauses",
+  "label": "Clauses",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "clauses-finite-and-non-finite",
+  "label": "Clauses: finite and non-finite",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "clause-types",
+  "label": "Clause types",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "complements",
+  "label": "Complements",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "dummy-subjects",
+  "label": "Dummy subjects",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "exclamations",
+  "label": "Exclamations",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "heads",
+  "label": "Heads",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "objects",
+  "label": "Objects",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "sentences",
+  "label": "Sentences",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "subjects",
+  "label": "Subjects",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "subject-complements",
+  "label": "Subject complements",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "subject-verb-agreement",
+  "label": "Subject–verb agreement",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "relative-clauses_2",
+  "label": "Relative clauses",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Relative clauses: defining relative clauses",
+  "score": 2
+ },
+ {
+  "slug": "relative-clauses-referring-to-a-whole-sentence",
+  "label": "Relative clauses referring to a whole sentence",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Relative clauses: defining relative clauses",
+  "score": 2
+ },
+ {
+  "slug": "relative-clauses-defining-and-non-defining",
+  "label": "Relative clauses: defining and non-defining",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Relative clauses: defining relative clauses",
+  "score": 3
+ },
+ {
+  "slug": "relative-clauses-typical-errors",
+  "label": "Relative clauses: typical errors",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Relative clauses: defining relative clauses",
+  "score": 2
+ },
+ {
+  "slug": "forming-negative-statements-questions-and-imperatives",
+  "label": "Forming negative statements, questions and imperatives",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "negation-two-negatives",
+  "label": "Negation: two negatives",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "negation-emphasising",
+  "label": "Negation: emphasising",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "questions-two-step-questions",
+  "label": "Questions: two-step questions",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Reported speech: questions",
+  "score": 2
+ },
+ {
+  "slug": "questions-typical-errors",
+  "label": "Questions: typical errors",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "questions-follow-up-questions",
+  "label": "Questions: follow-up questions",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Reported speech: questions",
+  "score": 2
+ },
+ {
+  "slug": "questions-echo-and-checking-questions",
+  "label": "Questions: echo and checking questions",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Reported speech: questions",
+  "score": 2
+ },
+ {
+  "slug": "questions-short-forms",
+  "label": "Questions: short forms",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1.5
+ },
+ {
+  "slug": "collocation-ask-a-question",
+  "label": "Collocation: ask a question",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "collocation-big-or-great",
+  "label": "Collocation: big or great?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-business",
+  "label": "Collocation: business",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-change",
+  "label": "Collocation: change",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "collocation-contribution",
+  "label": "Collocation: contribution",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "collocation-difficulty",
+  "label": "Collocation: difficulty",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-do-or-make",
+  "label": "Collocation: do or make?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-effort",
+  "label": "Collocation: effort",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-experience",
+  "label": "Collocation: experience",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-friend",
+  "label": "Collocation: friend",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-improvement",
+  "label": "Collocation: improvement",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-make-give-a-speech",
+  "label": "Collocation: make/give a speech",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "collocation-mistake",
+  "label": "Collocation: mistake",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-number",
+  "label": "Collocation: number",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-party",
+  "label": "Collocation: party",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-profit",
+  "label": "Collocation: profit",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-research",
+  "label": "Collocation: research",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-say-or-tell",
+  "label": "Collocation: say or tell?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-speak-or-talk",
+  "label": "Collocation: speak or talk?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-step",
+  "label": "Collocation: step",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-success",
+  "label": "Collocation: success",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-suggestion",
+  "label": "Collocation: suggestion",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-survey",
+  "label": "Collocation: survey",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-take-sit-an-exam",
+  "label": "Collocation: take/sit an exam",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-watch-television",
+  "label": "Collocation: watch television",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "collocation-work",
+  "label": "Collocation: work",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "countability-advice",
+  "label": "Countability: advice",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-behaviour",
+  "label": "Countability: behaviour",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-damage",
+  "label": "Countability: damage",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-equipment",
+  "label": "Countability: equipment",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-furniture",
+  "label": "Countability: furniture",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-information",
+  "label": "Countability: information",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-kind-or-kinds",
+  "label": "Countability: kind or kinds?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-knowledge",
+  "label": "Countability: knowledge",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-less-or-fewer",
+  "label": "Countability: less or fewer?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-more",
+  "label": "Countability: more",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-one-of",
+  "label": "Countability: one of",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-progress",
+  "label": "Countability: progress",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-research",
+  "label": "Countability: research",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-sale-or-sales",
+  "label": "Countability: sale or sales?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-software",
+  "label": "Countability: software",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-staff",
+  "label": "Countability: staff",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-surroundings",
+  "label": "Countability: surroundings",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-training",
+  "label": "Countability: training",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-transport",
+  "label": "Countability: transport",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "countability-year",
+  "label": "Countability: year",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "determiners-all-period-of-time",
+  "label": "Determiners: all + period of time",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "determiners-a-long-time",
+  "label": "Determiners: a long time",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "determiners-a-lot-of-and-lots-of",
+  "label": "Determiners: a lot of and lots of",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-billions-of-sth-or-billion",
+  "label": "Determiners: billions (of sth) or billion?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-countryside",
+  "label": "Determiners: countryside",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "determiners-government",
+  "label": "Determiners: government",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-hundreds-or-hundred",
+  "label": "Determiners: hundreds or hundred?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-in-future-or-in-the-future",
+  "label": "Determiners: in future or in the future?",
+  "inheritedLevel": "B1-B2",
+  "matchedWith": "Future continuous and future perfect",
+  "score": 2
+ },
+ {
+  "slug": "determiners-internet",
+  "label": "Determiners: internet",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-life",
+  "label": "Determiners: life",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-many-much-or-a-lot-of",
+  "label": "Determiners: many, much, or a lot of?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-millions-or-million",
+  "label": "Determiners: millions or million?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-most-of-or-most",
+  "label": "Determiners: most of or most?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-nature",
+  "label": "Determiners: nature",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-next-or-the-next",
+  "label": "Determiners: next or the next?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-other",
+  "label": "Determiners: other",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0.5
+ },
+ {
+  "slug": "determiners-same",
+  "label": "Determiners: same",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-society",
+  "label": "Determiners: society",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-such",
+  "label": "Determiners: such",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "determiners-technology",
+  "label": "Determiners: technology",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-this-that-or-these-those",
+  "label": "Determiners: this/that or these/those?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-this-these-or-that-those",
+  "label": "Determiners: this/these or that/those?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "determiners-thousands-or-thousand",
+  "label": "Determiners: thousands or thousand?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "part-of-speech-advice-or-advise",
+  "label": "Part of speech: advice or advise?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-affect-or-effect",
+  "label": "Part of speech: affect or effect?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-apologize-or-apology",
+  "label": "Part of speech: apologize or apology?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-breath-or-breathe",
+  "label": "Part of speech: breath or breathe?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-choice-or-choose",
+  "label": "Part of speech: choice or choose?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-complaint-or-complain",
+  "label": "Part of speech: complaint or complain?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-completely",
+  "label": "Part of speech: completely",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-concern-or-concerned",
+  "label": "Part of speech: concern or concerned?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-died-or-dead",
+  "label": "Part of speech: died or dead?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-different-or-difference",
+  "label": "Part of speech: different or difference?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1.5
+ },
+ {
+  "slug": "part-of-speech-easy-or-easily",
+  "label": "Part of speech: easy or easily?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-good-or-well",
+  "label": "Part of speech: good or well?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-healthy-or-health",
+  "label": "Part of speech: healthy or health?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-important",
+  "label": "Part of speech: important",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-inconvenient-or-inconvenience",
+  "label": "Part of speech: inconvenient or inconvenience?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-life-or-live",
+  "label": "Part of speech: life or live?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-lost-or-loss",
+  "label": "Part of speech: lost or loss?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-open-and-close",
+  "label": "Part of speech: open and close",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-others-other-or-another",
+  "label": "Part of speech: others, other, or another?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1.5
+ },
+ {
+  "slug": "part-of-speech-please-or-pleased",
+  "label": "Part of speech: please or pleased?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-relax-or-relaxed",
+  "label": "Part of speech: relax or relaxed?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-remember-or-memory",
+  "label": "Part of speech: remember or memory?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-safe-or-save",
+  "label": "Part of speech: safe or save?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-sale-or-sell",
+  "label": "Part of speech: sale or sell?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-slightly-or-slight",
+  "label": "Part of speech: slightly or slight?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-truth-or-true",
+  "label": "Part of speech: truth or true?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-you-or-your",
+  "label": "Part of speech: you or your?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "part-of-speech-your-or-yours",
+  "label": "Part of speech: your or yours?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-afternoon",
+  "label": "Prepositions: afternoon",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-a-lot",
+  "label": "Prepositions: a lot",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-attention",
+  "label": "Prepositions: attention",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-back-to",
+  "label": "Prepositions: back to",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-beach",
+  "label": "Prepositions: beach",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-course",
+  "label": "Prepositions: course",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-day",
+  "label": "Prepositions: day",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-decrease",
+  "label": "Prepositions: decrease",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-difference",
+  "label": "Prepositions: difference",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-experience",
+  "label": "Prepositions: experience",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-floor",
+  "label": "Prepositions: floor",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-home",
+  "label": "Prepositions: home",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-increase-in-or-increase-of",
+  "label": "Prepositions: increase in or increase of?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-interest",
+  "label": "Prepositions: interest",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-island",
+  "label": "Prepositions: island",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-knowledge",
+  "label": "Prepositions: knowledge",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-last-but-not-least",
+  "label": "Prepositions: last but not least",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-leave",
+  "label": "Prepositions: leave",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-need",
+  "label": "Prepositions: need",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-newspaper",
+  "label": "Prepositions: newspaper",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-occasion",
+  "label": "Prepositions: occasion",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-on-the-one-hand-on-the-other-hand",
+  "label": "Prepositions: on the one hand ... on the other hand",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-opinion",
+  "label": "Prepositions: opinion",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-pleased",
+  "label": "Prepositions: pleased",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-point-of-view",
+  "label": "Prepositions: point of view",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-reason",
+  "label": "Prepositions: reason",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-responsible",
+  "label": "Prepositions: responsible",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-rise",
+  "label": "Prepositions: rise",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-row",
+  "label": "Prepositions: row",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-solution",
+  "label": "Prepositions: solution",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-take-into-consideration",
+  "label": "Prepositions: take into consideration",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-television",
+  "label": "Prepositions: television",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-train",
+  "label": "Prepositions: train",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-world",
+  "label": "Prepositions: world",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "prepositions-worry",
+  "label": "Prepositions: worry",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "spelling-common-verb-ending-mistakes",
+  "label": "Spelling: Common verb ending mistakes",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "spelling-common-word-building-mistakes",
+  "label": "Spelling: Common word-building mistakes",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 0
+ },
+ {
+  "slug": "spelling-top-50-spelling-mistakes-in-english",
+  "label": "Spelling: Top 50 spelling mistakes in English",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-accept-or-agree",
+  "label": "Word choice: accept or agree?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-according-to",
+  "label": "Word choice: according to",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-actual-or-current",
+  "label": "Word choice: actual or current?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-advertisement-or-advertising",
+  "label": "Word choice: advertisement or advertising?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-all-or-everything",
+  "label": "Word choice: all or everything?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-alone-or-lonely",
+  "label": "Word choice: alone or lonely?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-amount-of-or-number-of",
+  "label": "Word choice: amount of or number of?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-ancient-former-or-old",
+  "label": "Word choice: ancient, former, or old?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-announce-or-advertise",
+  "label": "Word choice: announce or advertise?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-another-or-other",
+  "label": "Word choice: another or other?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-as-or-like",
+  "label": "Word choice: as or like?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-at-last-or-finally",
+  "label": "Word choice: at last or finally?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-avoid-or-prevent",
+  "label": "Word choice: avoid or prevent?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-besides-or-also",
+  "label": "Word choice: besides or also?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-bored-or-boring",
+  "label": "Word choice: bored or boring?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-bring-or-take",
+  "label": "Word choice: bring or take?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-camping-or-campsite",
+  "label": "Word choice: camping or campsite?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-class-or-classroom",
+  "label": "Word choice: class or classroom?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-closed-or-close",
+  "label": "Word choice: closed or close?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-cloth-clothes-or-clothing",
+  "label": "Word choice: cloth, clothes, or clothing?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-come",
+  "label": "Word choice: come",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-common-or-ordinary",
+  "label": "Word choice: common or ordinary?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-contain-or-include",
+  "label": "Word choice: contain or include?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-correct-or-right",
+  "label": "Word choice: correct or right?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-country-land-nation-or-state",
+  "label": "Word choice: country, land, nation, or state?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-drive-or-ride",
+  "label": "Word choice: drive or ride?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-during-or-for",
+  "label": "Word choice: during or for?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-economical-or-economic",
+  "label": "Word choice: economical or economic?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-education-or-upbringing",
+  "label": "Word choice: education or upbringing?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-elder-or-elderly",
+  "label": "Word choice: elder or elderly?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-employer-or-employee",
+  "label": "Word choice: employer or employee?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-excited-or-exciting",
+  "label": "Word choice: excited or exciting?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-far-or-away",
+  "label": "Word choice: far or away?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-fault-or-mistake",
+  "label": "Word choice: fault or mistake?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-few-or-a-few",
+  "label": "Word choice: few or a few?",
+  "inheritedLevel": "A1-A2",
+  "matchedWith": "Quantifiers: 'few', 'a few', 'little' and 'a bit of'",
+  "score": 2
+ },
+ {
+  "slug": "word-choice-find-out-or-find",
+  "label": "Word choice: find out or find?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-fit-or-suit",
+  "label": "Word choice: fit or suit?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-forget-or-leave",
+  "label": "Word choice: forget or leave?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-funny-or-fun",
+  "label": "Word choice: funny or fun?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-further-or-farther",
+  "label": "Word choice: further or farther?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-go-gone-and-been",
+  "label": "Word choice: go, gone, and been",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-go-or-come",
+  "label": "Word choice: go or come?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-go-or-get",
+  "label": "Word choice: go or get?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-hardly-or-hard",
+  "label": "Word choice: hardly or hard?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-history-or-story",
+  "label": "Word choice: history or story?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-hour-or-time",
+  "label": "Word choice: hour or time?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-how-or-what",
+  "label": "Word choice: how or what?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-improve-or-increase",
+  "label": "Word choice: improve or increase?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-interesting",
+  "label": "Word choice: interesting",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-interesting-or-interested",
+  "label": "Word choice: interesting or interested?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-its-or-it-s",
+  "label": "Word choice: its or it's?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-join-or-attend",
+  "label": "Word choice: join or attend?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-know-or-find-out",
+  "label": "Word choice: know or find out?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-know-or-get-to-know",
+  "label": "Word choice: know or get to know?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-last-or-latest",
+  "label": "Word choice: last or latest?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-lay-and-lie",
+  "label": "Word choice: lay and lie",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-learn-teach-or-study",
+  "label": "Word choice: learn, teach, or study?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-leave-or-live",
+  "label": "Word choice: leave or live?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-lend-and-borrow",
+  "label": "Word choice: lend and borrow",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-let-or-leave",
+  "label": "Word choice: let or leave?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-listen-listen-to-or-hear",
+  "label": "Word choice: listen, listen to, or hear?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-look-look-at-see-or-watch",
+  "label": "Word choice: look, look at, see, or watch?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-lose-or-miss",
+  "label": "Word choice: lose or miss?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-may-or-can",
+  "label": "Word choice: may or can?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-meet-get-to-know-and-know",
+  "label": "Word choice: meet, get to know, and know",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-meet-or-visit",
+  "label": "Word choice: meet or visit?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-miss-or-lack",
+  "label": "Word choice: miss or lack?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-move-or-travel",
+  "label": "Word choice: move or travel?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-needed-or-necessary",
+  "label": "Word choice: needed or necessary?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-nervous-agitated-or-irritable",
+  "label": "Word choice: nervous, agitated, or irritable?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-not-either",
+  "label": "Word choice: not ... either",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-notice-or-news",
+  "label": "Word choice: notice or news?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-number-or-figure",
+  "label": "Word choice: number or figure?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-offer-or-give",
+  "label": "Word choice: offer or give?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-on-the-contrary-or-by-in-contrast",
+  "label": "Word choice: on the contrary or by/in contrast?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-parents-or-relations-relatives",
+  "label": "Word choice: parents or relations/relatives?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-parking-or-car-park",
+  "label": "Word choice: parking or car park?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-place-or-room-space",
+  "label": "Word choice: place or room/space?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-point-of-view-or-opinion",
+  "label": "Word choice: point of view or opinion?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-point-or-point-out",
+  "label": "Word choice: point or point out?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-possibility-occasion-or-opportunity",
+  "label": "Word choice: possibility, occasion, or opportunity?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-propose-or-offer",
+  "label": "Word choice: propose or offer?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-protect-or-prevent",
+  "label": "Word choice: protect or prevent?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-reach-or-achieve",
+  "label": "Word choice: reach or achieve?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-relation-or-relationship",
+  "label": "Word choice: relation or relationship?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-relevant",
+  "label": "Word choice: relevant",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-remind-or-remember",
+  "label": "Word choice: remind or remember?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-require-or-request",
+  "label": "Word choice: require or request?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-rest-stay-or-remain",
+  "label": "Word choice: rest, stay, or remain?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-right-or-true",
+  "label": "Word choice: right or true?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-rise-or-raise",
+  "label": "Word choice: rise or raise?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-say-or-tell",
+  "label": "Word choice: say or tell?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-security-or-safety",
+  "label": "Word choice: security or safety?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-sensitive-or-sensible",
+  "label": "Word choice: sensitive or sensible?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-since-from-or-for",
+  "label": "Word choice: since, from, or for?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-some-or-any",
+  "label": "Word choice: some or any?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-something-or-anything",
+  "label": "Word choice: something or anything?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-sometime-or-sometimes",
+  "label": "Word choice: sometime or sometimes?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-station-or-stop",
+  "label": "Word choice: station or stop?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-staying-or-stay",
+  "label": "Word choice: staying or stay?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-strange-or-foreign",
+  "label": "Word choice: strange or foreign?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-stuff-or-staff",
+  "label": "Word choice: stuff or staff?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-sympathetic",
+  "label": "Word choice: sympathetic",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-take-part-or-take-place",
+  "label": "Word choice: take part or take place?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-tell-or-say",
+  "label": "Word choice: tell or say?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-that-or-than",
+  "label": "Word choice: that or than?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-think-about-think-of-or-think",
+  "label": "Word choice: think about, think of, or think?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-tired-of-or-tired-from",
+  "label": "Word choice: tired of or tired from?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-travel-trip-or-journey",
+  "label": "Word choice: travel, trip, or journey?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-trouble-or-problem",
+  "label": "Word choice: trouble or problem?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-unique-or-only",
+  "label": "Word choice: unique or only?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-until-now-or-so-far",
+  "label": "Word choice: until now or so far?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-used-to-and-be-used-to",
+  "label": "Word choice: used to and be used to",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-various-or-varied",
+  "label": "Word choice: various or varied?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-view-or-sight",
+  "label": "Word choice: view or sight?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-wait-or-expect",
+  "label": "Word choice: wait or expect?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-what-or-which",
+  "label": "Word choice: what or which?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-when-or-if",
+  "label": "Word choice: when or if?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-where-or-when",
+  "label": "Word choice: where or when?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-which-or-what",
+  "label": "Word choice: which or what?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-which-or-who",
+  "label": "Word choice: which or who?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-win-or-beat",
+  "label": "Word choice: win or beat?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-wish-or-hope",
+  "label": "Word choice: wish or hope?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-work-job-or-occupation",
+  "label": "Word choice: work, job, or occupation?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-choice-would-or-should",
+  "label": "Word choice: would or should?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-order-again",
+  "label": "Word order: again",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-all",
+  "label": "Word order: all",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-almost",
+  "label": "Word order: almost",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-a-lot",
+  "label": "Word order: a lot",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-already",
+  "label": "Word order: already",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-also",
+  "label": "Word order: also",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-always",
+  "label": "Word order: always",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-as-well",
+  "label": "Word order: as well",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-better",
+  "label": "Word order: better",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-both",
+  "label": "Word order: both",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-enough",
+  "label": "Word order: enough",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-even",
+  "label": "Word order: even",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-hardly",
+  "label": "Word order: hardly",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-how",
+  "label": "Word order: how",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-just",
+  "label": "Word order: just",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-never",
+  "label": "Word order: never",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-often",
+  "label": "Word order: often",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-only",
+  "label": "Word order: only",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-still",
+  "label": "Word order: still",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-very-much",
+  "label": "Word order: very much",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-what",
+  "label": "Word order: what",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-where",
+  "label": "Word order: where",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-order-why",
+  "label": "Word order: why",
+  "inheritedLevel": "C1",
+  "matchedWith": "Word order in phrasal verbs",
+  "score": 2
+ },
+ {
+  "slug": "word-patterns-ability",
+  "label": "Word patterns: ability",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-able",
+  "label": "Word patterns: able",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-affect-someone-or-something",
+  "label": "Word patterns: affect someone or something",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-afford",
+  "label": "Word patterns: afford",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-apologize-to-someone",
+  "label": "Word patterns: apologize to someone",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-approach",
+  "label": "Word patterns: approach",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-arrive-somewhere",
+  "label": "Word patterns: arrive somewhere",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-ask-for",
+  "label": "Word patterns: ask for",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-attend",
+  "label": "Word patterns: attend",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-avoid-doing-something",
+  "label": "Word patterns: avoid doing something",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-be-get-dressed",
+  "label": "Word patterns: be/get dressed",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-because-or-because-of",
+  "label": "Word patterns: because or because of?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-be-worth-doing-something",
+  "label": "Word patterns: be worth doing something",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-build-up-or-build",
+  "label": "Word patterns: build up or build?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-call",
+  "label": "Word patterns: call",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-can",
+  "label": "Word patterns: can",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-capable",
+  "label": "Word patterns: capable",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-come",
+  "label": "Word patterns: come",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-compensate",
+  "label": "Word patterns: compensate",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-complain",
+  "label": "Word patterns: complain",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-concerning",
+  "label": "Word patterns: concerning",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-consider",
+  "label": "Word patterns: consider",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-consider-doing-something",
+  "label": "Word patterns: consider doing something",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-contact",
+  "label": "Word patterns: contact",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-could",
+  "label": "Word patterns: could",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-depend-on-something",
+  "label": "Word patterns: depend on something",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-despite",
+  "label": "Word patterns: despite",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-didn-t",
+  "label": "Word patterns: didn't",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-die",
+  "label": "Word patterns: die",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-discuss",
+  "label": "Word patterns: discuss",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-dream",
+  "label": "Word patterns: dream",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-drop",
+  "label": "Word patterns: drop",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-enjoy-doing-something",
+  "label": "Word patterns: enjoy doing something",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-enjoy-yourself",
+  "label": "Word patterns: enjoy yourself",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-enter-a-place",
+  "label": "Word patterns: enter a place",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-explain-something",
+  "label": "Word patterns: explain something",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-fall-down-or-fall",
+  "label": "Word patterns: fall down or fall?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-find",
+  "label": "Word patterns: find",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-give",
+  "label": "Word patterns: give",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-go",
+  "label": "Word patterns: go",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-have-a-relationship-with-someone",
+  "label": "Word patterns: have a relationship with someone",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-have-difficulty-doing-something",
+  "label": "Word patterns: have difficulty doing something",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-hear-from-sb",
+  "label": "Word patterns: hear from sb",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-help",
+  "label": "Word patterns: help",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-hope",
+  "label": "Word patterns: hope",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-increase",
+  "label": "Word patterns: increase",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-inform",
+  "label": "Word patterns: inform",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-interested",
+  "label": "Word patterns: interested",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-invite-someone-to-something",
+  "label": "Word patterns: invite someone to something",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-join",
+  "label": "Word patterns: join",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-knock",
+  "label": "Word patterns: knock",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-lack",
+  "label": "Word patterns: lack",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-let",
+  "label": "Word patterns: let",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-listen",
+  "label": "Word patterns: listen",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-look",
+  "label": "Word patterns: look",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-look-forward-to",
+  "label": "Word patterns: look forward to",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-make-sb-do-sth",
+  "label": "Word patterns: make sb do sth",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-may",
+  "label": "Word patterns: may",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-mean",
+  "label": "Word patterns: mean",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-mention",
+  "label": "Word patterns: mention",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-might",
+  "label": "Word patterns: might",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-mind",
+  "label": "Word patterns: mind",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-must",
+  "label": "Word patterns: must",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-need",
+  "label": "Word patterns: need",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-participate",
+  "label": "Word patterns: participate",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-pay",
+  "label": "Word patterns: pay",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-phone",
+  "label": "Word patterns: phone",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-possibility",
+  "label": "Word patterns: possibility",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-prefer",
+  "label": "Word patterns: prefer",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-prevent",
+  "label": "Word patterns: prevent",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-problem",
+  "label": "Word patterns: problem",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-promise",
+  "label": "Word patterns: promise",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-provide",
+  "label": "Word patterns: provide",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-reach",
+  "label": "Word patterns: reach",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-recommend",
+  "label": "Word patterns: recommend",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-regarding",
+  "label": "Word patterns: regarding",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-relationship",
+  "label": "Word patterns: relationship",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-rise-up-or-rise",
+  "label": "Word patterns: rise up or rise?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-search-or-search-for",
+  "label": "Word patterns: search or search for?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-seek",
+  "label": "Word patterns: seek",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-should",
+  "label": "Word patterns: should",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-smile-at-someone-something",
+  "label": "Word patterns: smile at someone/something",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-spend",
+  "label": "Word patterns: spend",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-stay",
+  "label": "Word patterns: stay",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-stop-doing-something-or-stop-to-do-something",
+  "label": "Word patterns: stop doing something or stop to do something?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-succeed",
+  "label": "Word patterns: succeed",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-suggest",
+  "label": "Word patterns: suggest",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-suit",
+  "label": "Word patterns: suit",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-take-care",
+  "label": "Word patterns: take care",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-take-part",
+  "label": "Word patterns: take part",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-talk-about-or-talk-of",
+  "label": "Word patterns: talk about or talk of?",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-think",
+  "label": "Word patterns: think",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-think-of-doing-something",
+  "label": "Word patterns: think of doing something",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-visit",
+  "label": "Word patterns: visit",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-wait",
+  "label": "Word patterns: wait",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-want",
+  "label": "Word patterns: want",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-want-something-someone-to-do-something",
+  "label": "Word patterns: want something/someone to do something",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-way-to-do-something",
+  "label": "Word patterns: way to do something",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-will",
+  "label": "Word patterns: will",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-would",
+  "label": "Word patterns: would",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-would-appreciate",
+  "label": "Word patterns: would appreciate",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ },
+ {
+  "slug": "word-patterns-would-like",
+  "label": "Word patterns: would like",
+  "inheritedLevel": null,
+  "matchedWith": null,
+  "score": 1
+ }
+]

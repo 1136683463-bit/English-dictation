@@ -1,0 +1,635 @@
+[
+ {
+  "lesson": "Adjectives and prepositions",
+  "probeCount": 4,
+  "hitCount": 1,
+  "hits": [
+   "good at"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Adjectives ending in '-ed' and '-ing'",
+  "probeCount": 4,
+  "hitCount": 4,
+  "hits": [
+   "bored",
+   "boring",
+   "excited",
+   "exciting"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Articles: 'a', 'an', 'the'",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "a book",
+   "an apple",
+   "the door"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Articles: 'the' or no article",
+  "probeCount": 3,
+  "hitCount": 2,
+  "hits": [
+   "go to school",
+   "at home"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Comparative adjectives",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "taller",
+   "older than",
+   "bigger"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Infinitive of purpose",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "in order to",
+   "to help",
+   "to buy"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Nouns: countable and uncountable",
+  "probeCount": 4,
+  "hitCount": 4,
+  "hits": [
+   "some milk",
+   "a lot of",
+   "much",
+   "information"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Past continuous and past simple",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "was reading",
+   "were playing",
+   "when you called"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Possessive 's",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "grandma's",
+   "my brother's",
+   "dad's"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Prepositions of place: 'in', 'on', 'at'",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "in the box",
+   "on the desk",
+   "at the door"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Prepositions of time: 'at', 'in', 'on'",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "in May",
+   "at eight",
+   "on Monday"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Present simple",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "every day",
+   "usually",
+   "always"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Present simple: 'have got'",
+  "probeCount": 2,
+  "hitCount": 2,
+  "hits": [
+   "have got",
+   "has got"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Present simple: 'to be'",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "i am",
+   "she is",
+   "they are"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Quantifiers: 'few', 'a few', 'little' and 'a bit of'",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "a few",
+   "a little",
+   "few apples"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Question forms",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "do you",
+   "does she",
+   "did you"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Using 'there is' and 'there are'",
+  "probeCount": 2,
+  "hitCount": 2,
+  "hits": [
+   "there is",
+   "there are"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Verbs followed by '-ing' or infinitive",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "enjoy reading",
+   "want to go",
+   "finish reading"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Adjectives: gradable and non-gradable",
+  "probeCount": 3,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Contrasting ideas: 'although', 'despite' and others",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "although",
+   "but",
+   "though"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Different uses of 'used to'",
+  "probeCount": 2,
+  "hitCount": 2,
+  "hits": [
+   "used to",
+   "didn't use to"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Future continuous and future perfect",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Future forms: 'will', 'be going to' and present continuous",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "will go",
+   "going to",
+   "will be"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Intensifiers: 'so' and 'such'",
+  "probeCount": 2,
+  "hitCount": 1,
+  "hits": [
+   "such a"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Conditionals: third and mixed",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Conditionals: zero, first and second",
+  "probeCount": 2,
+  "hitCount": 1,
+  "hits": [
+   "if it rains"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Modals: deductions about the past",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Modals: deductions about the present",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Modals: permission and obligation",
+  "probeCount": 4,
+  "hitCount": 4,
+  "hits": [
+   "must",
+   "have to",
+   "should",
+   "can i"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Modifying comparatives",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Passives",
+  "probeCount": 3,
+  "hitCount": 2,
+  "hits": [
+   "was broken",
+   "by her"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Past ability",
+  "probeCount": 2,
+  "hitCount": 1,
+  "hits": [
+   "was able to"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Past habits: 'used to', 'would' and the past simple",
+  "probeCount": 2,
+  "hitCount": 1,
+  "hits": [
+   "used to"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Past perfect",
+  "probeCount": 2,
+  "hitCount": 2,
+  "hits": [
+   "had left",
+   "had finished"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Phrasal verbs",
+  "probeCount": 3,
+  "hitCount": 1,
+  "hits": [
+   "get up"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Present perfect",
+  "probeCount": 2,
+  "hitCount": 2,
+  "hits": [
+   "have done",
+   "has finished"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Present perfect simple and continuous",
+  "probeCount": 2,
+  "hitCount": 1,
+  "hits": [
+   "has been"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Present perfect: 'just', 'yet', 'still' and 'already'",
+  "probeCount": 4,
+  "hitCount": 4,
+  "hits": [
+   "just",
+   "yet",
+   "already",
+   "still"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Question tags",
+  "probeCount": 2,
+  "hitCount": 1,
+  "hits": [
+   "right"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Reflexive pronouns",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "myself",
+   "herself",
+   "himself"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Relative clauses: defining relative clauses",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "who wears",
+   "that i",
+   "which i"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Relative clauses: non-defining relative clauses",
+  "probeCount": 2,
+  "hitCount": 2,
+  "hits": [
+   "which",
+   "who"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Reported speech: questions",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Reported speech: reporting verbs",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Reported speech: statements",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Stative verbs",
+  "probeCount": 3,
+  "hitCount": 3,
+  "hits": [
+   "know",
+   "like",
+   "want"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "The future: degrees of certainty",
+  "probeCount": 3,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Using 'as' and 'like'",
+  "probeCount": 2,
+  "hitCount": 2,
+  "hits": [
+   "look like",
+   "as tall as"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Using 'enough'",
+  "probeCount": 2,
+  "hitCount": 2,
+  "hits": [
+   "enough",
+   "too heavy"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Verbs and prepositions",
+  "probeCount": 3,
+  "hitCount": 2,
+  "hits": [
+   "good at",
+   "wait for"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Verbs followed by '-ing' or infinitive to change meaning",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Wishes: 'wish' and 'if only'",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "British English and American English",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Capital letters and apostrophes",
+  "probeCount": 2,
+  "hitCount": 2,
+  "hits": [
+   "monday",
+   "i'm"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Advanced passives review",
+  "probeCount": 2,
+  "hitCount": 1,
+  "hits": [
+   "was broken"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Advanced present simple and continuous",
+  "probeCount": 2,
+  "hitCount": 1,
+  "hits": [
+   "am doing"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Avoiding repetition in a text",
+  "probeCount": 2,
+  "hitCount": 2,
+  "hits": [
+   "one",
+   "so do i"
+  ],
+  "status": "COVERED"
+ },
+ {
+  "lesson": "Contrasting ideas",
+  "probeCount": 2,
+  "hitCount": 1,
+  "hits": [
+   "although"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Ellipsis",
+  "probeCount": 1,
+  "hitCount": 1,
+  "hits": [
+   "so do i"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Emphasis: cleft sentences, inversion and auxiliaries",
+  "probeCount": 2,
+  "hitCount": 1,
+  "hits": [
+   "it is"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Inversion after negative adverbials",
+  "probeCount": 1,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Inversion and conditionals",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Modals: probability",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Participle clauses",
+  "probeCount": 2,
+  "hitCount": 1,
+  "hits": [
+   "walking"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Patterns with reporting verbs",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Possession and noun modifiers",
+  "probeCount": 2,
+  "hitCount": 1,
+  "hits": [
+   "my brother's"
+  ],
+  "status": "UNCLEAR"
+ },
+ {
+  "lesson": "Unreal time",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ },
+ {
+  "lesson": "Word order in phrasal verbs",
+  "probeCount": 2,
+  "hitCount": 0,
+  "hits": [],
+  "status": "GAP"
+ }
+]

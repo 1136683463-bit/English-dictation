@@ -1,0 +1,10 @@
+import { createServer } from "vite";
+const server = await createServer({ root: "/Users/liujun/Documents/英语听写", configFile: "/Users/liujun/Documents/英语听写/vite.config.ts", server: { middlewareMode: true }, appType: "custom", logLevel: "error" });
+const m = await server.ssrLoadModule("/src/data/grammarLessons.ts");
+console.log("lessons:", m.grammarLessons.length);
+console.log("L1 target:", m.grammarLessons[0].targetSentence);
+const h = await server.ssrLoadModule("/src/data/huntCases.ts");
+console.log("cases:", h.huntCases.length);
+const s = await server.ssrLoadModule("/src/data/grammarSeasons.ts");
+console.log("seasons:", Object.keys(s).join(","));
+await server.close();

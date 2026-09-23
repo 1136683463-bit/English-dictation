@@ -1,0 +1,511 @@
+{
+ "generatedAt": "2026-09-23",
+ "method": "人工分桶 → 具体实例探测 → 词典 epp-xref 判档（三条已在 README 记录被证伪的口径不采用）",
+ "counts": {
+  "raw": 257,
+  "A_HUB": 31,
+  "B_PERWORD": 112,
+  "C_REGISTER": 32,
+  "D_real": 82,
+  "probed": 47,
+  "covered": 36,
+  "unclear": 8,
+  "gap": 3
+ },
+ "finalGap": [
+  "Names and titles: addressing people"
+ ],
+ "verdict": "257 条逐层收口到 1 条真候选，且该条有独立理由不做（非语法点 + BC 三档全无 + 撑不起一课）",
+ "probes": [
+  {
+   "topic": "Adjectives: order",
+   "hit": 3,
+   "total": 4,
+   "status": "COVERED",
+   "hits": [
+    "a white cat",
+    "an old house",
+    "a beautiful dress"
+   ]
+  },
+  {
+   "topic": "Adverbs and adverb phrases: position",
+   "hit": 2,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "runs quickly",
+    "always runs"
+   ]
+  },
+  {
+   "topic": "Adverbs: types",
+   "hit": 4,
+   "total": 4,
+   "status": "COVERED",
+   "hits": [
+    "quickly",
+    "yesterday",
+    "here",
+    "very"
+   ]
+  },
+  {
+   "topic": "Determiners used as pronouns",
+   "hit": 3,
+   "total": 4,
+   "status": "COVERED",
+   "hits": [
+    "this is mine",
+    "mine",
+    "yours"
+   ]
+  },
+  {
+   "topic": "Nouns: singular and plural",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "two books",
+    "two apples",
+    "three boxes"
+   ]
+  },
+  {
+   "topic": "Nouns: countable and uncountable",
+   "hit": 5,
+   "total": 5,
+   "status": "COVERED",
+   "hits": [
+    "some milk",
+    "a lot of",
+    "much",
+    "information",
+    "advice"
+   ]
+  },
+  {
+   "topic": "Noun phrases: order",
+   "hit": 1,
+   "total": 2,
+   "status": "UNCLEAR",
+   "hits": [
+    "a white cat"
+   ]
+  },
+  {
+   "topic": "Commands and instructions",
+   "hit": 4,
+   "total": 4,
+   "status": "COVERED",
+   "hits": [
+    "close the door",
+    "don't eat",
+    "please",
+    "keep quiet"
+   ]
+  },
+  {
+   "topic": "Invitations",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "would you like",
+    "how about",
+    "let's"
+   ]
+  },
+  {
+   "topic": "Offers",
+   "hit": 2,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "can i help",
+    "would you like some"
+   ]
+  },
+  {
+   "topic": "Requests",
+   "hit": 4,
+   "total": 4,
+   "status": "COVERED",
+   "hits": [
+    "could you",
+    "can you",
+    "would you mind",
+    "please"
+   ]
+  },
+  {
+   "topic": "Suggestions",
+   "hit": 4,
+   "total": 4,
+   "status": "COVERED",
+   "hits": [
+    "why don't you",
+    "shall we",
+    "let's",
+    "how about"
+   ]
+  },
+  {
+   "topic": "Warnings",
+   "hit": 2,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "be careful",
+    "don't"
+   ]
+  },
+  {
+   "topic": "Dates",
+   "hit": 4,
+   "total": 4,
+   "status": "COVERED",
+   "hits": [
+    "in may",
+    "on monday",
+    "october",
+    "birthday"
+   ]
+  },
+  {
+   "topic": "Geographical places",
+   "hit": 1,
+   "total": 2,
+   "status": "UNCLEAR",
+   "hits": [
+    "in china"
+   ]
+  },
+  {
+   "topic": "Names and titles: addressing people",
+   "hit": 0,
+   "total": 3,
+   "status": "GAP",
+   "hits": []
+  },
+  {
+   "topic": "Nationalities, languages, countries and regions",
+   "hit": 3,
+   "total": 4,
+   "status": "COVERED",
+   "hits": [
+    "china",
+    "english",
+    "from"
+   ]
+  },
+  {
+   "topic": "Place names",
+   "hit": 2,
+   "total": 2,
+   "status": "COVERED",
+   "hits": [
+    "in the park",
+    "at school"
+   ]
+  },
+  {
+   "topic": "Politeness",
+   "hit": 2,
+   "total": 4,
+   "status": "COVERED",
+   "hits": [
+    "please",
+    "could you"
+   ]
+  },
+  {
+   "topic": "Past continuous or past simple?",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "was reading",
+    "when you called",
+    "while"
+   ]
+  },
+  {
+   "topic": "Past simple or present perfect?",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "yesterday i went",
+    "have been",
+    "have done"
+   ]
+  },
+  {
+   "topic": "Past perfect simple or past simple?",
+   "hit": 2,
+   "total": 2,
+   "status": "COVERED",
+   "hits": [
+    "had left",
+    "had finished"
+   ]
+  },
+  {
+   "topic": "Present simple or present continuous?",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "every day",
+    "am doing",
+    "is reading"
+   ]
+  },
+  {
+   "topic": "Present perfect simple or continuous?",
+   "hit": 1,
+   "total": 2,
+   "status": "UNCLEAR",
+   "hits": [
+    "have done"
+   ]
+  },
+  {
+   "topic": "Future: other expressions",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "going to",
+    "will",
+    "tomorrow"
+   ]
+  },
+  {
+   "topic": "Future in the past",
+   "hit": 0,
+   "total": 2,
+   "status": "GAP",
+   "hits": []
+  },
+  {
+   "topic": "Verbs: basic forms",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "go",
+    "went",
+    "going"
+   ]
+  },
+  {
+   "topic": "Phrasal verbs and multi-word verbs",
+   "hit": 1,
+   "total": 3,
+   "status": "UNCLEAR",
+   "hits": [
+    "get up"
+   ]
+  },
+  {
+   "topic": "Passive: forms",
+   "hit": 2,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "was broken",
+    "by her"
+   ]
+  },
+  {
+   "topic": "Passive: uses",
+   "hit": 2,
+   "total": 2,
+   "status": "COVERED",
+   "hits": [
+    "was broken",
+    "was sung"
+   ]
+  },
+  {
+   "topic": "Modality: forms",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "can",
+    "must",
+    "should"
+   ]
+  },
+  {
+   "topic": "Modality: meanings and uses",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "must",
+    "have to",
+    "should"
+   ]
+  },
+  {
+   "topic": "Conjunctions",
+   "hit": 4,
+   "total": 4,
+   "status": "COVERED",
+   "hits": [
+    "because",
+    "so",
+    "and",
+    "but"
+   ]
+  },
+  {
+   "topic": "Conjunctions: adding",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "and",
+    "also",
+    "too"
+   ]
+  },
+  {
+   "topic": "Conjunctions: causes, reasons, results and purpose",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "because",
+    "so",
+    "in order to"
+   ]
+  },
+  {
+   "topic": "Conjunctions: contrasting",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "although",
+    "but",
+    "though"
+   ]
+  },
+  {
+   "topic": "Conjunctions: time",
+   "hit": 5,
+   "total": 5,
+   "status": "COVERED",
+   "hits": [
+    "when",
+    "while",
+    "before",
+    "after",
+    "until"
+   ]
+  },
+  {
+   "topic": "Infinitive: active or passive?",
+   "hit": 1,
+   "total": 2,
+   "status": "UNCLEAR",
+   "hits": [
+    "to do"
+   ]
+  },
+  {
+   "topic": "Verb patterns: with and without objects",
+   "hit": 2,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "wait for",
+    "tell me"
+   ]
+  },
+  {
+   "topic": "Table of irregular verbs",
+   "hit": 4,
+   "total": 4,
+   "status": "COVERED",
+   "hits": [
+    "went",
+    "ate",
+    "gave",
+    "bought"
+   ]
+  },
+  {
+   "topic": "Always",
+   "hit": 2,
+   "total": 2,
+   "status": "COVERED",
+   "hits": [
+    "always",
+    "always runs"
+   ]
+  },
+  {
+   "topic": "Relative pronouns",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "who",
+    "which",
+    "that"
+   ]
+  },
+  {
+   "topic": "Nouns and prepositions",
+   "hit": 1,
+   "total": 3,
+   "status": "UNCLEAR",
+   "hits": [
+    "good at"
+   ]
+  },
+  {
+   "topic": "Reported speech: reporting nouns",
+   "hit": 0,
+   "total": 2,
+   "status": "GAP",
+   "hits": []
+  },
+  {
+   "topic": "Present: typical errors",
+   "hit": 3,
+   "total": 3,
+   "status": "COVERED",
+   "hits": [
+    "he go",
+    "she have",
+    "i am"
+   ]
+  },
+  {
+   "topic": "Past: typical errors",
+   "hit": 1,
+   "total": 2,
+   "status": "UNCLEAR",
+   "hits": [
+    "yesterday i go"
+   ]
+  },
+  {
+   "topic": "Future: typical errors",
+   "hit": 1,
+   "total": 2,
+   "status": "UNCLEAR",
+   "hits": [
+    "going to"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,21 @@
+/** 修正：14 条「去标点归一后与原词同」的正确细分（大小写 vs 标点） */
+import { huntCases } from "../../src/data/huntCases";
+const N = (s: string) => s.replace(/[^A-Za-z0-9']/g, "").toLowerCase();
+const CJK = /[\u4e00-\u9fff]/;
+const all: { id: string; idx: number; o: string; c: string; tag: string }[] = [];
+for (const hc of huntCases) for (const e of hc.errors) all.push({ id: hc.id, idx: e.tokenIndex, o: (e.original ?? "").trim(), c: (e.correction ?? "").trim(), tag: e.tag });
+const punct = all.filter((x) => !CJK.test(x.c) && N(x.c) === N(x.o) && x.c !== x.o);
+console.log(`去标点归一后与原词同（且不含中文）：${punct.length} 条\n`);
+const caseOnly: typeof punct = [], punctOnly: typeof punct = [];
+for (const x of punct) (x.c.toLowerCase() === x.o.toLowerCase() ? caseOnly : punctOnly).push(x);
+console.log(`① 纯大小写（字母全同，仅首字母大写）  ${caseOnly.length} 条`);
+caseOnly.forEach((x) => console.log(`     ${x.id}#${x.idx} tag=${x.tag} "${x.o}" → "${x.c}"`));
+console.log(`\n② 纯标点（字母全同，增/改标点）        ${punctOnly.length} 条`);
+punctOnly.forEach((x) => console.log(`     ${x.id}#${x.idx} tag=${x.tag} "${x.o}" → "${x.c}"`));
+const comma = punctOnly.filter((x) => /,$/.test(x.c));
+const end = punctOnly.filter((x) => !/,$/.test(x.c));
+console.log(`\n     ②a 句内补逗号（run_on 断句）  ${comma.length} 条`);
+console.log(`     ②b 句末标点（补/改 ./!）      ${end.length} 条`);
+end.forEach((x) => console.log(`          ${x.id}#${x.idx} tag=${x.tag} "${x.o}" → "${x.c}"`));
+console.log(`\n【小结】「零文字改动」（只动大小写或标点）共 ${punct.length} 条 = 全库 ${(punct.length / all.length * 100).toFixed(1)}%`);
+console.log(`        ——这构成主题一的**第六类**：「只改大小写/标点」，既不是替换也不是删除也不是移动。`);
