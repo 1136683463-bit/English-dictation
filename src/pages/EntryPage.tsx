@@ -2,11 +2,30 @@ import { ArrowRight, BookOpen, Clock3, Keyboard, Languages, Layers } from "lucid
 import { Link } from "react-router-dom";
 import BrandMark from "../components/BrandMark";
 import { useAppData } from "../AppContext";
+import { getDueCards } from "../services/reviewService";
 
 export default function EntryPage() {
   const { data } = useAppData();
   const totalCards = data.cards.length;
-  const dueCards = data.schedules.filter((schedule) => new Date(schedule.nextReviewAt) <= new Date()).length;
+  /**
+   * 「今日到期」必须走**权威口径** `getDueCards`（2026-09-24 批七十修）。
+   *
+   * 原实现是就地数排期：`data.schedules.filter(nextReviewAt <= now).length`。
+   * 它与 `getDueCards` **在三种卡状态上不一致**（实测）：
+   *
+   * | status | 排期已过时 | 原实现 | getDueCards |
+   * |---|---|---|---|
+   * | `new` | 是 | **算 1** | 0（新卡走每日新卡队列，见 reviewService:107-109）|
+   * | `mastered` | 是 | **算 1** | 0 |
+   * | `suspended` | 是 | **算 1** | 0 |
+   *
+   * 后果是**用户可见的自相矛盾**：用户真实数据（115 张卡全是 `new`）下，
+   * 首页显示「今日到期 **115**」，点进今日页却显示「到期复习 **0**」。
+   * 对一个刚导入词卡的用户，这是「数字明显不对」的第一印象。
+   *
+   * ⇒ 与今日页/统计页统一读同一套服务，三处不许各算一份。
+   */
+  const dueCards = getDueCards(data).length;
 
   return (
     <div className="entry-page">
