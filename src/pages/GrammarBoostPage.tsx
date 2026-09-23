@@ -868,14 +868,31 @@ export default function GrammarBoostPage() {
             {aiCorrections.length > 0 && (
               <div className="boost-ai-card">
                 <p className="boost-ai-title"><Sparkles size={14} /> AI 看了看你写的这几句</p>
+                {/**
+                  * 2026-09-23 视觉重构：给每行加上语义 class——
+                  * 此前四行同字号同颜色，用户看不出重点（最该看的是「改顺一点」）。
+                  * 现在：mine（原句，降一档）/ fixed（改后，加底色加粗，主角）/
+                  * recast（加分项，蓝色）/ comment（点评，最弱）。
+                  */}
                 {aiCorrections.map((entry, position) => (
                   <div className="boost-ai-entry" key={position}>
-                    <p className="boost-ai-line">你这句：<em>{entry.originalEn}</em></p>
-                    <p className="boost-ai-line">改顺一点：<strong>{entry.corrected}</strong></p>
-                    {entry.recast && <p className="boost-ai-line">也可以这样说：{entry.recast}</p>}
-                    {entry.comment && <p className="boost-ai-line">{entry.comment}</p>}
+                    <p className="boost-ai-line mine">
+                      <span>你这句</span>
+                      <em>{entry.originalEn}</em>
+                    </p>
+                    <p className="boost-ai-line fixed">
+                      <span>改顺一点</span>
+                      <strong>{entry.corrected}</strong>
+                    </p>
+                    {entry.recast && (
+                      <p className="boost-ai-line recast">
+                        <span>也可以这样说</span>
+                        <span>{entry.recast}</span>
+                      </p>
+                    )}
+                    {entry.comment && <p className="boost-ai-line comment">{entry.comment}</p>}
                     {entry.issues.map((issue, issueIndex) => (
-                      <p className="boost-ai-line" key={issueIndex}>· {issue.explanation}</p>
+                      <p className="boost-ai-line comment" key={issueIndex}>· {issue.explanation}</p>
                     ))}
                   </div>
                 ))}

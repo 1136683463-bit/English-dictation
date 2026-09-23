@@ -18495,93 +18495,167 @@ html {
 }
 
 /* 自评（每档完成后 1 题，只记录不追加动作） */
-.boost-self-eval {
-  margin: 0 0 14px;
-  padding: 14px 16px;
+/* ── 趁热练结果页（2026-09-23 视觉重构）─────────────────────────────
+   ⚠️ 优先级陷阱：本页所有样式都在 .lesson-complete 容器内，
+   而 `.lesson-complete p`（0,1,1）比单个类选择器（0,1,0）更具体——
+   卡片内的 p 会被它按 14px/灰色统一压平（这就是「主次不分」的机械成因）。
+   因此下列规则一律带 `.boost-ai-card` / `.lesson-complete` 前缀提权。
+   ────────────────────────────────────────────────────────────────
+
+   改动前的问题（用户实测「视觉观感很差，主次区分不够明显」）：
+   ① 字号几乎同权（自评/正文/说明都是 12.5–13px）→ 没有任何层级；
+   ② AI 卡内「你这句 / 改顺一点 / 也可以这样说」用同一字号同一颜色，
+      用户看不出哪一行才是重点（最该看的是「改顺一点」）；
+   ③ 外层 .lesson-complete 是 text-align:center，把 AI 卡的多行文本
+      也居中了——中文长句居中极难读（截图里错位怪象的来源）。
+   ──────────────────────────────────────────────────────────────── */
+
+/* 自评：弱化存在感（它是可选的小动作，不该抢 AI 讲解的注意力） */
+.lesson-complete .boost-self-eval {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto 20px;
+  padding: 12px 16px;
   border: 1px dashed var(--line);
   border-radius: var(--radius-md);
+  text-align: left;
 }
 
-.boost-self-eval-title {
-  margin: 0 0 8px;
-  color: var(--text-dim);
-  font-size: 12.5px;
+.lesson-complete .boost-self-eval-title {
+  margin: 0 0 9px;
+  color: var(--muted);
+  font-size: 13px;
 }
 
-.boost-self-eval-options {
+.lesson-complete .boost-self-eval-options {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.boost-self-eval-btn {
-  padding: 7px 16px;
+.lesson-complete .boost-self-eval-btn {
+  padding: 6px 15px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
-  font-size: 12.5px;
+  color: var(--ink-soft);
+  font-size: 13px;
   cursor: pointer;
+  transition: var(--ease-ui);
 }
 
-.boost-self-eval-btn.picked {
+.lesson-complete .boost-self-eval-btn:hover {
+  border-color: var(--line-strong);
+}
+
+.lesson-complete .boost-self-eval-btn.picked {
   border-color: var(--accent);
   background: var(--accent-soft);
+  color: var(--accent-ink);
   font-weight: 600;
 }
 
-/* AI 批改卡（档 3，整档结束后一次性提交） */
+/* AI 批改卡：这是结果页的**主角**——最大的卡、最重的边、左对齐长文本 */
 .boost-ai-card {
   display: grid;
-  gap: 6px;
-  margin: 0 0 14px;
-  padding: 14px 16px;
-  border: 1px solid var(--line);
+  gap: 0;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto 22px;
+  padding: 20px 22px 8px;
+  border: 1px solid #d9e6f5;
   border-radius: var(--radius-md);
-  background: var(--surface);
+  background: linear-gradient(180deg, #f8fbff 0%, var(--surface) 42%);
+  text-align: left;
 }
 
-.boost-ai-title {
+.boost-ai-card .boost-ai-title {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
+  margin: 0 0 4px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--blue-ink);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* 一句一块：句与句之间用细分隔线 + 大留白，扫读时边界清晰 */
+.boost-ai-card .boost-ai-entry {
+  display: grid;
+  gap: 7px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.boost-ai-card .boost-ai-entry:first-of-type {
+  border-top: none;
+}
+
+/* 标签 + 值：标签弱化成小胶囊，值用正文色阶区分主次 */
+.boost-ai-card .boost-ai-line {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
   margin: 0;
-  color: var(--accent-strong);
-  font-size: 13px;
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+/* 「改顺一点」是用户最该看的一行——加底色 + 加粗，视觉上一眼定位 */
+.boost-ai-card .boost-ai-line.fixed {
+  padding: 8px 12px;
+  border-radius: 9px;
+  background: #f0f7f3;
+  color: var(--ink);
+  font-size: 15px;
   font-weight: 700;
 }
 
-.boost-ai-line {
-  margin: 0;
-  color: var(--text-dim);
-  font-size: 12.5px;
-  line-height: 1.6;
+.boost-ai-card .boost-ai-line.fixed strong {
+  color: var(--green-ink);
 }
 
-/* 一句一块：整档多句批改时，句与句之间留出可扫读的分隔 */
-.boost-ai-entry {
-  display: grid;
-  gap: 4px;
-  padding: 10px 0;
-  border-top: 1px dashed var(--line);
+/* 「你这句」是原始输入——降一档，与「改顺一点」形成对比 */
+.boost-ai-card .boost-ai-line.mine {
+  color: var(--muted);
+  font-size: 13px;
 }
 
-.boost-ai-entry:first-of-type {
-  border-top: none;
-  padding-top: 0;
-}
-
-.boost-ai-entry em {
+.boost-ai-card .boost-ai-line.mine em {
   font-style: normal;
-  color: var(--text);
+  color: var(--ink-soft);
+}
+
+/* 「也可以这样说」是加分项——用蓝色小标记区分 */
+.boost-ai-card .boost-ai-line.recast {
+  color: var(--blue-ink);
+  font-size: 13.5px;
+}
+
+/* AI 的点评（comment / issues）——最弱一级 */
+.boost-ai-card .boost-ai-line.comment {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.boost-ai-card .boost-ai-entry em {
+  font-style: normal;
 }
 
 .boost-ai-notice {
-  margin: 0 0 14px;
-  padding: 10px 12px;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto 18px;
+  padding: 12px 14px;
   border-radius: var(--radius-sm);
-  background: var(--surface-subtle, rgba(148, 163, 184, 0.12));
-  color: var(--text-dim);
-  font-size: 12.5px;
+  background: var(--surface-muted);
+  color: var(--muted);
+  font-size: 13px;
+  text-align: left;
 }
 
 .lesson-path-card:hover {
@@ -21585,6 +21659,75 @@ html {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: var(--surface);
+}
+
+/* 对比判断题的层级（2026-09-23 重排）：
+   此前指令句是 12.5px 灰字（被当成死标签忽略），而 A/B 徽章是橙色实心圆
+   （抢走全部注意力），句子 17px 加粗——三级权重正好颠倒。
+   现在：指令句=卡片标题（深色加粗，回答「要我做什么」）
+        A/B 徽章=中性描边（只是序号，不抢戏）
+        句子=最大最黑（真正的题目内容，一眼可比对）。 */
+.lesson-contrast-card > .lesson-contrast-hint {
+  margin-bottom: 2px;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+/* 同区块第 2 组起的分隔标记：比指令标题轻，只为标出「这是另一组」 */
+.lesson-contrast-card > .lesson-contrast-hint.is-group-marker {
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.lesson-contrast-choices {
+  display: grid;
+  gap: 10px;
+}
+
+/* 整行可点的选项：左徽章 + 右句子 */
+.lesson-contrast-choice {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 13px 16px;
+  text-align: left;
+}
+
+.lesson-contrast-badge {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--line-strong);
+  background: var(--surface-muted);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+/* 悬停时才点亮——静态态让句子做主角，交互态给明确反馈 */
+.lesson-contrast-choice:hover:not(:disabled) .lesson-contrast-badge {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+/* 句子：整卡最大的字，两句话上下对齐便于逐词比对 */
+.lesson-contrast-sentence {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ink);
 }
 
 .lesson-contrast-wrong {
