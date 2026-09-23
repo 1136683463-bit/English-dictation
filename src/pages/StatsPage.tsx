@@ -6,6 +6,7 @@ import {
   CalendarDays,
   ChevronRight,
   Flame,
+  GraduationCap,
   Layers,
   Lightbulb,
   Minus,
@@ -27,6 +28,19 @@ import { buildDueForecastAdvice, buildMasteredMilestone, computeHealthScoreBreak
 import { buildStatsActions } from "../services/statsActions";
 import { computeMilestoneStates } from "../services/milestoneService";
 import { trackStatsActionClicked, trackStatsPageViewed } from "../services/statsTelemetry";
+/**
+ * 语法线统计（2026-09-23 批六十六新增）。
+ *
+ * 为什么加：本页此前**只有词汇**——`statsService` 里 `grammar` 出现 0 次，
+ * 页面上六个区块（复习趋势 / 记忆成熟度 / 累计掌握单词 / 里程碑 …）全是词汇。
+ * 而语法线是内容投入最大的一条（205 课 / 52 里程碑 / 214 案件）。
+ *
+ * 数据一律**复用已有服务**，不另造指标：
+ *   - `summarizeLessonProgress`（与路径页、今日页同一套，三处不许各算一份）
+ *   - `buildGrammarProfile`（含 `isEmpty` 阈值，数据太少时由它决定隐藏，不给空报表）
+ */
+import { summarizeLessonProgress } from "../services/lessonService";
+import { buildGrammarProfile } from "../services/grammarProfileService";
 
 const formatPercent = (value: number | null) => (value === null ? "暂无" : `${value}%`);
 
@@ -105,6 +119,9 @@ export default function StatsPage() {
   const { data } = useAppData();
   const stats = getLearningStats(data);
   const weekly = getWeeklyStatsReport(data);
+  /** 语法线进度与画像（复用服务，见文件头注释）。 */
+  const lessonProgress = summarizeLessonProgress(data);
+  const grammarProfile = buildGrammarProfile(data);
 
   // 健康度唯一来源：statsService.computeHealthScoreBreakdown（无数据维度剔除重归一化，视图层不写公式）。
   // 提到早退之前计算：hooks 顺序约束 + 埋点快照需要。
@@ -611,6 +628,52 @@ export default function StatsPage() {
       </CollapsibleSection>
 
       {/* ⑤ D 成就与概览（R6 折叠区）：记忆成熟度 + 复习概览 + 北极星 */}
+        {lessonProgress.done > 0 && (
+          <div className="stats-card stats-grammar-card">
+            <header className="stats-card-head">
+              <div>
+                <span className="eyebrow">Grammar</span>
+                <h3><GraduationCap size={16} /> 语法阶梯</h3>
+              </div>
+              <Link to="/grammar" className="ghost-link">
+                去语法路径 <ChevronRight size={14} />
+              </Link>
+            </header>
+            <div className="stats-review-list">
+              <div>
+                <span>已完成课程</span>
+                <strong>{lessonProgress.done} / {lessonProgress.total}</strong>
+              </div>
+              <div>
+                <span>走完的季</span>
+                <strong>{grammarProfile.seasonsDone} / {grammarProfile.seasonsTotal}</strong>
+              </div>
+              <div>
+                <span>语法句掌握</span>
+                <strong>{grammarProfile.mastery.mastered} / {grammarProfile.mastery.total}</strong>
+              </div>
+              {grammarProfile.summary.weekOverWeek !== null && (
+                <div>
+                  <span>近 7 天犯错</span>
+                  <strong>
+                    {grammarProfile.summary.recentMistakes} 次
+                    {grammarProfile.summary.weekOverWeek < 0
+                      ? `（比前周少 ${Math.abs(grammarProfile.summary.weekOverWeek)} 次）`
+                      : grammarProfile.summary.weekOverWeek > 0
+                        ? `（比前周多 ${grammarProfile.summary.weekOverWeek} 次）`
+                        : "（与前周持平）"}
+                  </strong>
+                </div>
+              )}
+            </div>
+            {lessonProgress.nextLesson && (
+              <p className="stats-grammar-next">
+                下一课：第 {lessonProgress.nextLesson.number} 课「{lessonProgress.nextLesson.title}」
+              </p>
+            )}
+          </div>
+        )}
+
       <CollapsibleSection
         eyebrow="Overview"
         title={
@@ -668,6 +731,18 @@ export default function StatsPage() {
             </>
           )}
         </div>
+
+        {/**
+         * 语法线区块（2026-09-23 批六十六新增）。
+         *
+         * 放在词汇区块之后：本页的主体仍是词汇（那是用户每天在做的事），
+         * 语法是「另一条线走到哪了」的补充视角，不喧宾夺主。
+         *
+         * 隐藏规则用**两个已有信号的并集**，而非新造阈值：
+         *   - 一课都没学 ⇒ 完全不显示（不打扰新用户）
+         *   - 学过但画像 `isEmpty`（数据点 <3）⇒ 也不显示（沿用画像服务自己的阈值，
+         *     避免统计页另立一套「多少算够」的标准）
+         */}
 
         <div className="stats-card stats-north-star-card">
           <header className="stats-card-head">
