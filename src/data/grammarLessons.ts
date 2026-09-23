@@ -452,7 +452,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "You are a teacher?",
         wrongMark: null,
         correct: "Are you a teacher?",
-        whyZh: "问「你是不是老师」要把 Are 搬到句首：Are you……？词的站位不换，就成了陈述句不是问句。"
+        whyZh: "问「你是不是老师」要把 Are 搬到句首：Are you……？词的位置不换，就成了陈述句不是问句。"
       },
       {
         wrong: "She is nurse.",
@@ -2527,7 +2527,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "What you are doing?",
         wrongMark: "you are",
         correct: "What are you doing?",
-        whyZh: "问句里 are 要搬到句首那个「谁」 you 前面：What are you doing？词的站位要换位置。"
+        whyZh: "问句里 are 要搬到句首那个「谁」 you 前面：What are you doing？词的位置要换。"
       }
     ],
     variants: [
@@ -6599,7 +6599,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-35-know-where",
     number: 35,
     title: "我知道它在哪",
-    grammarLabel: "话中话 · 问句回家换鞋",
+    grammarLabel: "话中话 · 问句回家要调词序",
     episode: "小美的一天 ㉟",
     scene: "city",
     cover: cover35,
@@ -6613,7 +6613,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "where", role: "在哪（问地方）" },
       { text: "it is", role: "它在（换好鞋的顺序）" }
     ],
-    oneLineRule: "问句住进句子里，要换鞋：Where is it? 变成 I know where it is——is 要退回 it 后面，不站在「谁」前面。",
+    oneLineRule: "问句住进句子里，词序要调整：Where is it? 变成 I know where it is——is 要退回 it 后面，不站在「谁」前面。",
     examples: [
       { en: "I know where it is.", zh: "我知道它在哪。" },
       { en: "I know where he is.", zh: "我知道他在哪。" },
@@ -6630,25 +6630,25 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I know where is it.",
         wrongMark: "is",
         correct: "I know where it is.",
-        whyZh: "话中话要换鞋：is 退回 it 后面——I know where it is。问句的站法搬进句子里就塌了。"
+        whyZh: "话中话的词序要调整：is 退回 it 后面——I know where it is。问句的站法搬进句子里就塌了。"
       },
       {
         wrong: "I know where is he.",
         wrongMark: "is",
         correct: "I know where he is.",
-        whyZh: "句首那个「谁」换成 he 也一样：where he is。问句住进句子里，谁都得换鞋。"
+        whyZh: "句首那个「谁」换成 he 也一样：where he is。问句住进句子里，谁都得调整词序。"
       },
       {
         wrong: "I know where it.",
         wrongMark: null,
         correct: "I know where it is.",
-        whyZh: "少了 is，句子就塌了——「它在哪」里的 is 不能省，换鞋不是脱鞋。"
+        whyZh: "少了 is，句子就塌了——「它在哪」里的 is 不能省，只是调词序，is 一个字都不能少。"
       },
       {
         wrong: "I don't know where is my key.",
         wrongMark: "is",
         correct: "I don't know where my key is.",
-        whyZh: "句首那个「谁」长一点也一样换鞋：where my key is——is 站到整条句首那个「谁」的后面。"
+        whyZh: "句首那个「谁」长一点也一样调词序：where my key is——is 站到整条句首那个「谁」的后面。"
       },
       {
         wrong: "Do you know where is it?",
@@ -6665,7 +6665,7 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "I know where it is.", zh: "我知道它在哪。" },
-      { label: "否定", en: "I don't know where it is.", zh: "我不知道它在哪。", noteZh: "「不知道」用 don't know；里面的话照样换鞋：where it is。" },
+      { label: "否定", en: "I don't know where it is.", zh: "我不知道它在哪。", noteZh: "「不知道」用 don't know；里面的话照样要调词序：where it is。" },
       { label: "疑问", en: "Do you know where it is?", zh: "你知道它在哪吗？", noteZh: "问别人：Do 站句首，里面的 where it is 不变。" }
     ],
     sceneSwings: [
@@ -6674,16 +6674,16 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问同学知不知道图书馆在哪", en: "Do you know where the library is?", zh: "你知道图书馆在哪吗？" }
     ],
     deepDive: {
-      title: "疑问句住进句子，为什么要换鞋？",
+      title: "疑问句住进句子，为什么要调词序？",
       paragraphs: [
         "英语问问题要把 be 搬到前面：Where is it?（它在哪？）。但只要这句话被「我知道」「你不知道」包住，它就不是在问了，是话里的内容——be 要退回原位：I know where it is。",
         "判断方法：句首是 I know / I don't know / Do you know 的时候，后面就按「换好鞋」的顺序说：where + 谁 + is。",
         "中文不用换：『它在哪』和『我知道它在哪』里，『它在哪』长得一模一样。英语的问句和话中话是两套站法——这是按中文直译最容易踩的一个坑。",
-        "这课只管 where 一家的换鞋。以后你会见到 when / what / how 也来这一套：I know what it is、I know when it starts。"
+        "这课只管 where 这一家的词序。以后你会见到 when / what / how 也来这一套：I know what it is、I know when it starts。"
       ]
     },
     summary: {
-      rule: "问句住进句子里要换鞋：Where is it? → I know where it is。",
+      rule: "问句住进句子里要调词序：Where is it? → I know where it is。",
       points: [
         "I know where it is. —— 我知道它在哪：where + 那个谁 + is",
         "I don't know where it is. —— 不知道：don't know + 换好鞋的话",
@@ -6712,7 +6712,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "妈妈问你钥匙在哪，你想说：我不知道它在哪。",
         tokens: ["I", "don't", "know", "where", "it", "is."],
         answer: "I don't know where it is.",
-        explain: "don't know 后面照样换鞋：where it is。"
+        explain: "don't know 后面照样调词序：where it is。"
       },
       {
         kind: "spot",
@@ -6774,7 +6774,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "出门前，妈妈问你知道钥匙在哪吗。凭记忆，写出你那句回答。",
       intentZh: "我知道它在哪。",
       answer: "I know where it is.",
-      noteZh: "话中话要换鞋：where it is——is 退回句首那个「谁」后面。"
+      noteZh: "话中话要调词序：where it is——is 退回句首那个「谁」后面。"
     },
     huntCaseIds: ["hunt-key-clue"]
   },
@@ -6828,7 +6828,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I think is she tired.",
         wrongMark: "is",
         correct: "I think she is tired.",
-        whyZh: "话里不换鞋的老规矩：I think 后面是 she is，不是 is she——上一课学的换鞋，到这课照样管用。"
+        whyZh: "话里不换词序的老规矩：I think 后面是 she is，不是 is she——上一课学的词序调整，到这课照样管用。"
       },
       {
         wrong: "I thinks she is tired.",
@@ -6983,7 +6983,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "where", role: "在哪" },
       { text: "he is", role: "他在（换好鞋的顺序）" }
     ],
-    oneLineRule: "引子可以换人：I know / I think / I forget 后面都能装同一句话；里面永远是 where + 谁 + is——换鞋的老规矩不变。",
+    oneLineRule: "引子可以换人：I know / I think / I forget 后面都能装同一句话；里面永远是 where + 谁 + is——词序调整的老规矩不变。",
     examples: [
       { en: "I don't know where he is.", zh: "我不知道他在哪。" },
       { en: "I think he is at school.", zh: "我觉得他在学校。" },
@@ -7000,7 +7000,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I don't know where is he.",
         wrongMark: "is",
         correct: "I don't know where he is.",
-        whyZh: "换鞋的规矩到哪都一样：where he is——is 退回 he 后面。上一课学的手感，这课接着用。"
+        whyZh: "词序调整的规矩到哪都一样：where he is——is 退回 he 后面。上一课学的手感，这课接着用。"
       },
       {
         wrong: "I think is he at school.",
@@ -7024,7 +7024,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "We don't know where is Coco.",
         wrongMark: "is",
         correct: "We don't know where Coco is.",
-        whyZh: "句首那个「谁」换成名字也一样：where Coco is。换鞋说的是顺序，不是词的长短。"
+        whyZh: "句首那个「谁」换成名字也一样：where Coco is。调的是词序，不是词的长短。"
       },
       {
         wrong: "I think he at school.",
@@ -7035,7 +7035,7 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "I know where he is.", zh: "我知道他在哪。" },
-      { label: "否定", en: "I don't know where he is.", zh: "我不知道他在哪。", noteZh: "「不知道」用 don't know；里面的话照样换鞋：where he is。" },
+      { label: "否定", en: "I don't know where he is.", zh: "我不知道他在哪。", noteZh: "「不知道」用 don't know；里面的话照样要调词序：where he is。" },
       { label: "疑问", en: "Do you know where he is?", zh: "你知道他在哪吗？", noteZh: "问别人：Do 站句首，里面的 where he is 不动。" }
     ],
     sceneSwings: [
@@ -7048,7 +7048,7 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "说「话中话」的引子不止一个：I know（我知道）、I don't know（我不知道）、I think（我觉得）、I forget（我忘了）——后面都能装同一句话。",
         "forget 你见过它：第 16 课组长的「Don't forget your homework!」（别忘了作业）。它站到引子位，一样能装话：I forget where he is（我忘了他在哪）。",
-        "规矩只有一条，从头到尾没变过：不管引子是谁，里面永远是 where + 谁 + is（where he is）。引子换人，话不换鞋。",
+        "规矩只有一条，从头到尾没变过：不管引子是谁，里面永远是 where + 谁 + is（where he is）。引子换人，词序不变。",
         "以后遇到别的引子（比如别人跟你说话里带的），先找这条：话里的话，按换好鞋的顺序站。"
       ]
     },
@@ -7758,7 +7758,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I know where is he.",
         wrongMark: "is",
         correct: "I know where he is.",
-        whyZh: "话中话换鞋的老规矩：where he is——第 35 课学的，到今天照样管用。"
+        whyZh: "话中话的词序规矩：where he is——第 35 课学的，到今天照样管用。"
       },
       {
         wrong: "I know the boy who he wears glasses.",
@@ -7814,7 +7814,7 @@ export const grammarLessons: GrammarLesson[] = [
       rule: "话中话（I know where he is）+ 挂尾巴（the boy who wears glasses）——两样合起来，一句话说两件事。",
       points: [
         "I know the boy who wears glasses. —— 引子 + 带尾巴的那个谁",
-        "I know where he is. —— 话中话照旧换鞋",
+        "I know where he is. —— 话中话照旧调词序",
         "She says she likes the book which I read. —— 转述 + 尾巴同台"
       ]
     },
@@ -7833,7 +7833,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 35 课学过：我知道他在哪。",
         tokens: ["I", "know", "where", "he", "is."],
         answer: "I know where he is.",
-        explain: "复现第 35 课：话中话要换鞋，where he is。"
+        explain: "复现第 35 课：话中话要调词序，where he is。"
       },
       {
         kind: "arrange",
@@ -7991,7 +7991,7 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "你在第 13 课见过 -ing：I am reading（我正在读）——前面站着 be（am/is/are），它就在说「正在做」。",
         "现在它换了第二份工作：没有 be 的时候，-ing 当「名词」用——把做一件事变成「那件事」本身（英语里这叫名词形式）：I like reading（我喜欢「读书」这件事）。",
-        "怎么分？看有没有 be 搭着：有 be＝正在做（I am reading）；光 -ing、跟在 like 后面＝当名词用。同一件工装，两班岗。",
+        "怎么分？看有没有 be 搭着：有 be＝正在做（I am reading）；光 -ing、跟在 like 后面＝当名词用。同一个形式，两种用法。",
         "中文不用变：「我喜欢读书」里的「读书」原样不动；英语要把 read 换成名词形式 reading。这是中文直译最容易漏的一步。"
       ]
     },
@@ -8137,7 +8137,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "Swimming is fun.",
         bothRight: true,
-        whyZh: "两句都对——有 be 搭着＝正在游（I am swimming）；当名词用＝「游泳这件事」（Swimming is fun）。同一件 -ing，两班岗。"
+        whyZh: "两句都对——有 be 搭着＝正在游（I am swimming）；当名词用＝「游泳这件事」（Swimming is fun）。同一个 -ing，两种用法。"
       },
       {
         wrong: "Swim is not easy.",
@@ -8366,7 +8366,7 @@ export const grammarLessons: GrammarLesson[] = [
         "第 9 课你见过第一块小垫板：go to the library（去图书馆）——to 带路，把你送到地方。",
         "今天垫板能垫第二块：到了商店要干嘛？把「买牛奶」也垫上——to buy milk。合起来：I go to the shop to buy milk。",
         "为什么中文不用垫？「去商店买牛奶」一口气说完了，中间不用任何标记；英语不行，两个动作要一块垫板缝着，不然听着像两个句子硬拼。",
-        "记住手感：到地方 = to + 地方（to the shop）；去做什么 = to + 动词原样（to buy）。同一个 to，两块工牌。"
+        "记住手感：到地方 = to + 地方（to the shop）；去做什么 = to + 动词原样（to buy）。同一个 to，两种身份。"
       ]
     },
     summary: {
@@ -8701,7 +8701,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I know where is he.",
         wrongMark: "is",
         correct: "I know where he is.",
-        whyZh: "旧线温习——话中话要换鞋：where he is。第 35 课学的，收口课再站一次。"
+        whyZh: "旧线温习——话中话要调词序：where he is。第 35 课学的，收口课再站一次。"
       },
       {
         wrong: "I like read.",
@@ -8785,7 +8785,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 35 课学过：我知道他在哪。",
         tokens: ["I", "know", "where", "he", "is."],
         answer: "I know where he is.",
-        explain: "复现第 35 课：话中话要换鞋。"
+        explain: "复现第 35 课：话中话要调词序。"
       },
       {
         kind: "spot",
@@ -9513,7 +9513,7 @@ export const grammarLessons: GrammarLesson[] = [
         "第 21 课你认识过「做过版」：它是动词的第三件外套（watch→watched、do→done、break→broken）。那件外套一直跟 have 出场：I have done my homework（我写完了）。",
         "今天它换了新搭档：be。My cup was broken（杯子被摔了）——谁摔的不重要，杯子这件事站台上。have 身边说「我干的」，be 身边说「事发生了」。",
         "怎么分？看你想让谁当主角：做事的人重要，用主动（Someone broke my cup.）；事重要、人不重要，用幕后句（My cup was broken.）。",
-        "be 的两个班岗也复习一下：be + 动词ing 是「正在做」（I am drawing）；be + 做过版是「被做过」（My cup was broken）。同一件工装，看它后面跟的是什么。"
+        "be 的两种用法也复习一下：be + 动词ing 是「正在做」（I am drawing）；be + 做过版是「被做过」（My cup was broken）。同一个 be，看它后面跟的是什么。"
       ]
     },
     summary: {
@@ -9564,7 +9564,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 13 课学过：我正在画一幅画。",
         tokens: ["I", "am", "drawing", "a", "picture."],
         answer: "I am drawing a picture.",
-        explain: "复现第 13 课：be + 动词ing 是「正在做」；be + 做过版是「被做过」——两班岗。"
+        explain: "复现第 13 课：be + 动词ing 是「正在做」；be + 做过版是「被做过」——两种用法。"
       },
       {
         // R9 变形/替换：have 搭档换 be 搭档（构造迁移，复用 choose 判题）
@@ -10075,7 +10075,7 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 22 课你认识过 been：它是 be 的做过版——I have been to Beijing（我去过北京）。been 后面跟地方，说的是「去过」。",
         "今天 been 又换个活：后面跟动词的做过版——The window has been cleaned（窗户已经打扫过了）。been 后面跟分词，说的是「被做过」。",
-        "怎么分？看 been 后面站的是谁：跟地方（Beijing、the zoo）＝去过；跟做过版（cleaned、written）＝被做过。一个词，两班岗。",
+        "怎么分？看 been 后面站的是谁：跟地方（Beijing、the zoo）＝去过；跟做过版（cleaned、written）＝被做过。一个词，两种用法。",
         "和昨天的说法合起来看：The window was cleaned.（昨天打扫了）/ The window has been cleaned.（已经打扫过了，现在还是干净的）——想强调「现在做完了」，用 has been。"
       ]
     },
@@ -11046,7 +11046,7 @@ export const grammarLessons: GrammarLesson[] = [
         "第 28 课你认识过一族词：always、often、never——它们说「多久一次」，站动词前面（I always arrive early）。今天的新一族站动词后面（She runs quickly）。",
         "两族词别坐错位置：说「多久一次」坐前座；说「怎么做的」坐后座。always runs（前座）/ runs quickly（后座）——一回生两回熟，座位记牢。",
         "后座词怎么来的？大多是从「形容样子的词」加 -ly 变来的：quick→quickly、careful→carefully、loud→loudly。变化不难：尾巴上挂个 -ly 就行。",
-        "「什么样」和「做得怎么样」是两班岗：She is quick（她是快的——形容她这个人）；She runs quickly（她跑得快——形容跑这件事）。差一个 -ly，差一个岗位。"
+        "「什么样」和「做得怎么样」是两种用法：She is quick（她是快的——形容她这个人）；She runs quickly（她跑得快——形容跑这件事）。差一个 -ly，差一个岗位。"
       ]
     },
     summary: {
@@ -11484,7 +11484,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 34 课学过：三点时我正在画画。",
         tokens: ["I", "was", "drawing", "at", "three."],
         answer: "I was drawing at three.",
-        explain: "复现第 34 课：was + 动词ing 是「正在做」；今天 was + There 句是「那天有」——was 的两班岗。"
+        explain: "复现第 34 课：was + 动词ing 是「正在做」；今天 was + There 句是「那天有」——was 的两种用法。"
       },
       {
         // R9 变形/替换：单数换复数（构造迁移，复用 choose 判题）
@@ -11624,12 +11624,12 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "说可以帮对方", en: "I could help you.", zh: "我可以帮你。" }
     ],
     deepDive: {
-      title: "could 的两班岗",
+      title: "could 的两种用法",
       paragraphs: [
         "第 32 课你见过「礼貌三档」：Close the door（直白）→ Close the door, please（加个 please）→ Could you close the door?（最客气）。第三档今天正式上岗——请人帮忙、问路、求助，这一档最稳妥。",
         "could 和 can 一样是不变词：后面动词穿原样（Could you help me），不垫 to、不换 -ing——跟 must/should 家族同一个规矩。",
-        "could 还有另一个班岗：说「能」（有本事）。I could help you 就是「我可以帮你」——说出来的事，不是问句。这个班岗你现在认得、听得出就行，用得到的时候它自己会顺出来。",
-        "三个门卫排排站：Can you help me?（直接）→ Could you help me?（客气）→ Could you help me, please?（最软）——需要哪个请哪个。"
+        "could 还有另一种用法：说「能」（有本事）。I could help you 就是「我可以帮你」——说出来的事，不是问句。这种用法你现在认得、听得出就行，用得到的时候它自己会顺出来。",
+        "三句客气程度不同的话，排在一起看：Can you help me?（直接）→ Could you help me?（客气）→ Could you help me, please?（最软）——需要哪个请哪个。"
       ]
     },
     summary: {
@@ -11637,7 +11637,7 @@ export const grammarLessons: GrammarLesson[] = [
       points: [
         "Could you help me? —— 最客气的一档",
         "Can you / Could you —— 两句都对，口气不同",
-        "I could help you. —— could 的另一个班岗（我能帮上）"
+        "I could help you. —— could 的另一种用法（我能帮上）"
       ]
     },
     guided: [
@@ -11986,7 +11986,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "Please give me the pen.",
         bothRight: true,
-        whyZh: "两句都对——递东西两兄弟 pass 和 give 走同一套词的站位：先给谁、后给什么。"
+        whyZh: "两句都对——递东西两兄弟 pass 和 give 走同一套词的位置：先给谁、后给什么。"
       },
       {
         wrong: "There is a book on the desk.",
@@ -12181,14 +12181,14 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I finished reading.",
         bothRight: true,
-        whyZh: "两句都对——同一个名词形式 reading，门口换了守卫：like 也认、finish 也认——名词形式是通行证。"
+        whyZh: "两句都对——同一个名词形式 reading，门口换了守卫：like 也认、finish 也认——名词形式到处都能用。"
       },
       {
         wrong: "I enjoy reading.",
         wrongMark: null,
         correct: "I finished reading the book.",
         bothRight: true,
-        whyZh: "两句都对——第 45 课 enjoy 的门卫又见面了：enjoy reading、finish reading——名词形式两边都进得去。"
+        whyZh: "两句都对——第 45 课 enjoy 的规矩又见面了：enjoy reading、finish reading——名词形式两边都进得去。"
       },
       {
         wrong: "I have done my homework.",
@@ -12209,12 +12209,12 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问对方看完书了吗", en: "Did you finish reading the book?", zh: "你看完这本书了吗？" }
     ],
     deepDive: {
-      title: "又一个单门门卫",
+      title: "又一个只接 -ing 的动词",
       paragraphs: [
         "第 45 课认识过 enjoy 的门：只后面用 -ing 形式（enjoy reading），to 进不去。今天的 finish 是同一个脾气：finish reading、finish drawing——只开一扇门。",
-        "「名词形式」是什么？就是把动作穿上 -ing 外套、当「做的事情」来用：read → reading、draw → drawing。它在 like / enjoy / finish 这些门卫门前都通行。",
+        "「名词形式」是什么？就是把动作换成 -ing 形式、当「做的事情」来用：read → reading、draw → drawing。like / enjoy / finish 这些动词后面都这么用。",
         "也有动词门口是垫板的：want to travel（第 15 课）、would like to sleep（第 62 课）——同一个动作，门口规矩不同。遇到新动词，看一眼它认哪一种。",
-        "门卫名单还会加长：后面你还会遇到更多「只后面用 -ing 形式」或「只认垫板」的动词——一个一个遇，不着急。"
+        "这类动词后面还会遇到更多：有的是「只接 -ing 形式」，有的是「接 to + 原样」——一个一个遇，不着急。"
       ]
     },
     summary: {
@@ -12248,7 +12248,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 45 课学过：我享受读书。",
         tokens: ["I", "enjoy", "reading."],
         answer: "I enjoy reading.",
-        explain: "复现第 45 课：enjoy 的门——今天再认识一个新门卫 finish。"
+        explain: "复现第 45 课：enjoy 后面只接 -ing——今天再认识一个新动词 finish。"
       },
       {
         kind: "spot",
@@ -12257,15 +12257,15 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "to",
         answer: "to",
         correctionZh: "垫板进不了 finish 的门：finished reading。",
-        explain: "只后面用 -ing 形式——第 45 课同款门卫。"
+        explain: "只接 -ing 形式——第 45 课同款规矩。"
       },
       {
-        // R8 跨课复现：第 42 课（-ing 形式这张通行证）
+        // R8 跨课复现：第 42 课（-ing 形式这张-ing 形式）
         kind: "arrange",
         promptZh: "再对照一句——第 42 课学过：我喜欢读书。",
         tokens: ["I", "like", "reading."],
         answer: "I like reading.",
-        explain: "复现第 42 课：like 也后面用 -ing 形式——reading 这张通行证拿着到处用。"
+        explain: "复现第 42 课：like 也后面用 -ing 形式——reading 这个名词形式拿着到处用。"
       },
       {
         // R9 变形/替换：换动词（构造迁移，复用 choose 判题）
@@ -12601,7 +12601,7 @@ export const grammarLessons: GrammarLesson[] = [
       title: "too 的两个身份",
       paragraphs: [
         "too 今天站的位子是「太」：站在词前面——too heavy、too hot、too dark。想带上「所以不能」，后面接 to + 动作：too heavy to carry。",
-        "too 还有一个老身份「也」：站在句子尾巴上——I like tea too（我也喜欢茶）。两个身份看站位：句尾是「也」，词前是「太」。",
+        "too 还有一个老身份「也」：站在句子尾巴上——I like tea too（我也喜欢茶）。两个身份看位置：句尾是「也」，词前是「太」。",
         "为什么不用 very？very heavy 只说「很重」，话说到这儿就停了；too heavy to carry 带上「拿不动」——想说出「没法做」，就请 too 上场。",
         "回头看看第 32 课：外婆喊 Close the door，补了一句 The wind is too strong——当时你听懂了「风太大」。今天你把整条 too…to 拿下了：It is too heavy to carry。"
       ]
@@ -12797,7 +12797,7 @@ export const grammarLessons: GrammarLesson[] = [
       title: "门牌 at 挂上门",
       paragraphs: [
         "第 18 课认识过 in / on / at 三块门牌：in the box（盒子里）、on Monday（周一）、at six（六点）。今天 at 接了新活：挂在「擅长」后面——good at。",
-        "门牌后面穿什么？多数要用 -ing 形式：good at drawing、good at swimming——跟第 42 课喜欢、第 45 课享受、第 64 课收尾一个规矩：通行证走到哪儿都认。",
+        "门牌后面穿什么？多数要用 -ing 形式：good at drawing、good at swimming——跟第 42 课喜欢、第 45 课享受、第 64 课收尾一个规矩：-ing 形式走到哪儿都认。",
         "例外也有：接一门学科直接跟就行——good at math、good at English（学科名本来就当「事」用）。遇到新词，看一眼它穿不穿外套。",
         "「擅长」这件事挂在 at 上，别用 in 去推——中文说「在数学方面很好」，那个「在」是中文的思维；英语的门牌房里，擅长只认 at。"
       ]
@@ -12807,7 +12807,7 @@ export const grammarLessons: GrammarLesson[] = [
       points: [
         "I am good at drawing. —— at 后面 + -ing 形式",
         "She is good at math. —— 接学科直接跟",
-        "I like reading. / I am good at drawing. —— 通行证换门卫不换"
+        "I like reading. / I am good at drawing. —— 换的是前面的词，-ing 不变"
       ]
     },
     guided: [
@@ -12828,7 +12828,7 @@ export const grammarLessons: GrammarLesson[] = [
         explain: "good at 后面用 -ing 形式：good at drawing。"
       },
       {
-        // R8 跨课复现：第 42 课（-ing 形式这张通行证起点）
+        // R8 跨课复现：第 42 课（-ing 形式这张-ing 形式起点）
         kind: "arrange",
         promptZh: "先复习一小步——第 42 课学过：我喜欢读书。",
         tokens: ["I", "like", "reading."],
@@ -12850,7 +12850,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 45 课学过：我享受读书。",
         tokens: ["I", "enjoy", "reading."],
         answer: "I enjoy reading.",
-        explain: "复现第 45 课：enjoy 的门——门卫名单今天又添一位。"
+        explain: "复现第 45 课：enjoy 后面只接 -ing——今天又添一个同款动词。"
       },
       {
         // R9 变形/替换：换擅长的事（构造迁移，复用 choose 判题）
@@ -13171,7 +13171,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "Would you mind opening the window?",
         bothRight: true,
-        whyZh: "两句都对——第 64 课收尾的门＋今天 mind 的门：门卫名单又添一位，-ing 形式这张通行证走到哪儿都认。"
+        whyZh: "两句都对——第 64 课 finish 的规矩＋今天 mind 的规矩：只接 -ing 的动词又多一个，-ing 形式走到哪儿都认。"
       }
     ],
     variants: [
@@ -13232,7 +13232,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["Would", "you", "mind", "to", "open", "the", "window?"],
         wrongToken: "to",
         answer: "to",
-        correctionZh: "垫板对门卫不管用：要去掉 to、用 -ing 形式——mind opening。",
+        correctionZh: "mind 后面不能加 to：要去掉 to、用 -ing 形式——mind opening。",
         explain: "mind 不认 to。"
       },
       {
@@ -13729,7 +13729,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I run one week two times.",
         wrongMark: "one week two times",
         correct: "I run twice a week.",
-        whyZh: "「一星期两次」时间放后面：twice a week——「两次」有专门说法 twice，中文直译的词的站位是最大的坑。"
+        whyZh: "「一星期两次」时间放后面：twice a week——「两次」有专门说法 twice，中文直译最容易错的就是这些词放哪儿。"
       },
       {
         wrong: "How often do you run?",
@@ -13750,7 +13750,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "How often do you run?",
         bothRight: true,
-        whyZh: "两句都对——第 28 课这类小词站位（always）＋今天学会问：答句老基座，问句今天补。"
+        whyZh: "两句都对——第 28 课这类小词的位置（always）＋今天学会问：答句老基座，问句今天补。"
       },
       {
         wrong: "I have seen that film twice!",
@@ -14543,7 +14543,7 @@ export const grammarLessons: GrammarLesson[] = [
       title: "much 的两个岗",
       paragraphs: [
         "第 30 课你认识过 much 的一个岗：管「数不清的数量」——How much milk（多少牛奶）。今天它换第二个岗：给「更」加力。",
-        "怎么分？看它后面跟着谁：跟「数不清的东西」（milk、money、water）＝问数量；跟「更…的词」（better、taller）＝加力。一个 much，两班岗，看后头。",
+        "怎么分？看它后面跟着谁：跟「数不清的东西」（milk、money、water）＝问数量；跟「更…的词」（better、taller）＝加力。一个 much，两种用法，看后头。",
         "给「更」加力的不止 much：far 也行——far better（好得多）比 much better 力气还大。far 你第 73 课见过（How far 问距离）——今天认读一句，混个脸熟。",
         "为什么不能说 very better？因为 very 是「非常」的岗（very good），它不给「更」加力。中文说「好多了」，英语的力气词是 much——记住这句，very 就不会串门了。"
       ]
@@ -14652,7 +14652,7 @@ export const grammarLessons: GrammarLesson[] = [
     huntCaseIds: ["hunt-feel-better"]
   },
 
-  // ── 第十二批 · L77 一直在做（keep + 名词形式）：-ing 形式这张通行证第五站——keep 是「一直」，不是「收尾」（批十二 PRD §2）──
+  // ── 第十二批 · L77 一直在做（keep + 名词形式）：-ing 形式的第五站——keep 是「一直」，不是「收尾」（批十二 PRD §2）──
   {
     id: "lesson-77-keep-doing",
     number: 77,
@@ -14714,14 +14714,14 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I keep doing my homework.",
         bothRight: true,
-        whyZh: "两句都对——第 45 课-ing 形式这张通行证老站＋今天第五站：enjoy reading ／ keep doing。"
+        whyZh: "两句都对——第 45 课-ing 形式的老用法＋今天第五站：enjoy reading ／ keep doing。"
       },
       {
         wrong: "I am good at drawing.",
         wrongMark: null,
         correct: "I keep doing my homework.",
         bothRight: true,
-        whyZh: "两句都对——第 67 课通道老规矩（入口后面永远跟名词形式）＋今天 keep：通行证第五站打卡。"
+        whyZh: "两句都对——第 67 课的老规矩（那些词后面永远跟名词形式）＋今天 keep：名词形式又通过一关。"
       }
     ],
     variants: [
@@ -14735,9 +14735,9 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问对方是不是一直在晚上读书", en: "Do you keep reading at night?", zh: "你一直在晚上读书吗？" }
     ],
     deepDive: {
-      title: "-ing 形式这张通行证第五站",
+      title: "-ing 形式的第五站",
       paragraphs: [
-        "-ing 形式这张通行证一路打卡：第 42 课 like reading（喜欢）、第 45 课 enjoy reading（享受）、第 64 课 finish reading（做完）、第 67 课 good at drawing（擅长）——今天第五站：keep reading（一直做）。",
+        "-ing 形式这张-ing 形式一路打卡：第 42 课 like reading（喜欢）、第 45 课 enjoy reading（享受）、第 64 课 finish reading（做完）、第 67 课 good at drawing（擅长）——今天第五站：keep reading（一直做）。",
         "先分清 keep 和 finish：finish 是刹车——做完了、停下了；keep 是不停车——一直做、不停下。I finished reading 是「看完了」；I keep reading 是「一直在看」。",
         "keep 还有一个老位子：「保持」——keep quiet（保持安静）、keep the door open（让门开着）。今天这条是「一直做」（后面跟名词形式）——看后头跟的是状态还是名词形式，就知道是哪个岗。",
         "「他 / 她 / 它」的规矩照旧：He keeps doing——keep 自己加 -s（他不一般），后面的 doing 不动。"
@@ -14746,7 +14746,7 @@ export const grammarLessons: GrammarLesson[] = [
     summary: {
       rule: "一直做不停做：keep + 名词形式（keep doing）——keep 是不停车，finish 是刹车。",
       points: [
-        "I keep doing my homework. —— 通行证第五站",
+        "I keep doing my homework. —— -ing 的第五站",
         "I finished reading. ／ I keep reading. —— 刹车 vs 不停车",
         "He keeps doing it. —— 「他」只让 keep 带 -s，后面不动"
       ]
@@ -14782,21 +14782,21 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "keep", "to", "do", "my", "homework."],
         wrongToken: "to",
         answer: "to",
-        correctionZh: "名词形式通道不垫板：keep doing。",
+        correctionZh: "这个位置只接名词形式、不加 to：keep doing。",
         explain: "跟 like/enjoy/finish 一个规矩。"
       },
       {
-        // R8 跨课复现：第 42 课（通行证首站）
+        // R8 跨课复现：第 42 课（-ing 形式首站）
         kind: "arrange",
         promptZh: "再对照一句——第 42 课学过：我喜欢读书。",
         tokens: ["I", "like", "reading."],
         answer: "I like reading.",
-        explain: "复现第 42 课：通行证首站——今天第五站打卡。"
+        explain: "复现第 42 课：-ing 首次亮相——今天第五站打卡。"
       },
       {
         // R9 变形/替换：换做的事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I keep doing my homework.」把「做作业」换成「读书（read）」，通道后面要怎么变？",
+        promptZh: "句子变身：「I keep doing my homework.」把「做作业」换成「读书（read）」，后面那个词要怎么变？",
         replaceBase: "I keep doing my homework.",
         replaceTarget: "把 doing my homework 换成 read（一直在读书）",
         options: ["reading", "read", "to read"],
@@ -14903,7 +14903,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I keep reading at night.",
         bothRight: true,
-        whyZh: "两句都对——第 45 课 enjoy reading ＋ 第 77 课 keep reading：-ing 形式这张通行证两位老站同台。"
+        whyZh: "两句都对——第 45 课 enjoy reading ＋ 第 77 课 keep reading：-ing 形式这张-ing 形式两位老站同台。"
       },
       {
         wrong: "I always arrive early.",
@@ -14978,7 +14978,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "finished", "read", "the", "book."],
         wrongToken: "read",
         answer: "read",
-        correctionZh: "名词形式通道：finish 后面收名词形式——finished reading。",
+        correctionZh: "finish 后面接名词形式——finished reading。",
         explain: "第 64 课老规矩。"
       },
       {
@@ -14987,7 +14987,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 45 课学过：我享受读书。",
         tokens: ["I", "enjoy", "reading."],
         answer: "I enjoy reading.",
-        explain: "复现第 45 课：-ing 形式这张通行证——今天 keep reading 是它第五站。"
+        explain: "复现第 45 课：-ing 形式——今天 keep reading 是它第五站。"
       },
       {
         // R9 变形/替换：换接线词（构造迁移，复用 choose 判题）
@@ -15485,7 +15485,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I sit between Tom and Amy.",
         bothRight: true,
-        whyZh: "两句都对——第 19 课 and（连接两样）＋今天 and（牵两头）：一个词两班岗。"
+        whyZh: "两句都对——第 19 课 and（连接两样）＋今天 and（牵两头）：一个词两种用法。"
       },
       {
         wrong: "My desk is next to the window.",
@@ -15523,7 +15523,7 @@ export const grammarLessons: GrammarLesson[] = [
       title: "两头都要点名",
       paragraphs: [
         "between 是「夹在中间」的位置词，它的规矩是「两头都要点名」：between Tom and Amy——左边一个、右边一个，缺一头句子就没说完。",
-        "两头的名字用 and 牵起来——and 是第 19 课的老熟人（I was busy and happy），今天它多了个班岗：连接位置的两头。",
+        "两头的名字用 and 牵起来——and 是第 19 课的老熟人（I was busy and happy），今天它多了个用法：连接位置的两头。",
         "中文的「从…到…」里有个「到」，翻英语时容易顺手写成 to——between Tom to Amy 就错了。记住：between 家族只认 and。",
         "方位词家族现在已经很能打了：in／on／at（第 18 课）、under／near（第 26 课）、next to（第 79 课）、in front of／behind（第 80 课）、between（今天）——你的「东西在哪」可以说得非常细了。"
       ]
@@ -17640,7 +17640,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "When it is sunny, I run.",
         bothRight: true,
-        whyZh: "两句都对——When 有两班岗：站句首问「什么时候」（第 27 课）、在句子里说「当…的时候」（今天）——看它在问还是在说。"
+        whyZh: "两句都对——When 有两种用法：站句首问「什么时候」（第 27 课）、在句子里说「当…的时候」（今天）——看它在问还是在说。"
       },
       {
         wrong: "After I do my homework, I watch TV.",
@@ -17675,12 +17675,12 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问对方什么时候跑步", en: "When do you run?", zh: "你什么时候跑步？" }
     ],
     deepDive: {
-      title: "when 的两班岗",
+      title: "when 的两种用法",
       paragraphs: [
-        "when 有两班岗：第一班站句首问「什么时候」——When do you run?（第 27 课学的疑问岗）；第二班在句子里领一个「当…的时候」——When it is sunny, I run（今天的连词岗）。",
-        "怎么分？看它有没有在问。句尾带问号、前头站着 do/is 的，是问句；句子里讲「每当这个时候就怎样」的，是连词——两班岗长得一样，心思不同。",
+        "when 有两种用法：第一种站句首问「什么时候」——When do you run?（第 27 课学的疑问岗）；第二种在句子里领一个「当…的时候」——When it is sunny, I run（今天的连词岗）。",
+        "怎么分？看它有没有在问。句尾带问号、前头站着 do/is 的，是问句；句子里讲「每当这个时候就怎样」的，是连词——两种用法长得一样，意思不同。",
         "先后三人组今天到齐：after（做完之后）、before（做之前）、when（当…的时候）——三个都是「后面跟一整句」，规矩一样。",
-        "第 78 课你见过 When it is sunny, I run in the park（当时只是认读）——今天它转正了：会自己说，还会分清两班岗。"
+        "第 78 课你见过 When it is sunny, I run in the park（当时只是认读）——今天它转正了：会自己说，还会分清两种用法。"
       ]
     },
     summary: {
@@ -18631,7 +18631,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "When you called, I was reading.",
         bothRight: true,
-        whyZh: "两句都对——问「什么时候」（第 27 课）和说「当…的时候」（今天）：when 同形两张脸，看它在问还是在说。"
+        whyZh: "两句都对——问「什么时候」（第 27 课）和说「当…的时候」（今天）：when 同一个词两种用法，看它在问还是在说。"
       }
     ],
     variants: [
@@ -18798,7 +18798,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "While I read, he was sleeping.",
         wrongMark: "read",
         correct: "While I was reading, he was sleeping.",
-        whyZh: "前半那件也丢了「正做着」：while 领的两边都得是一阵子——read 是光板，要变成 was reading。"
+        whyZh: "前半那件也丢了「正做着」：while 领的两边都得是一阵子——read 没变形，要变成 was reading。"
       },
       {
         wrong: "During I was reading, he was sleeping.",
@@ -18992,7 +18992,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I was reading when the phone ring.",
         wrongMark: "ring",
         correct: "I was reading when the phone rang.",
-        whyZh: "响那一下没换昨天版：ring 是光板，要说 rang——第 10 课的昨天版规矩。"
+        whyZh: "响那一下没换昨天版：ring 没变形，要说 rang——第 10 课的昨天版规矩。"
       },
       {
         wrong: "I was reading when the phone rang.",
@@ -28110,7 +28110,7 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "这个「也」你其实见过",
       paragraphs: [
-        "第 66 课讲 too 的时候，末尾就已经把今天这句写好了：too 还有一个老身份「也」——站在句子尾巴上，I like tea too（我也喜欢茶）。两个身份看站位：句尾是「也」，词前是「太」。今天就是把这句话正式学一遍。",
+        "第 66 课讲 too 的时候，末尾就已经把今天这句写好了：too 还有一个老身份「也」——站在句子尾巴上，I like tea too（我也喜欢茶）。两个身份看位置：句尾是「也」，词前是「太」。今天就是把这句话正式学一遍。",
         "第一次见它是第 43 课：你拼过一句 Drawing is fun too.（画画也很好玩）。当时只是「换个主角再拼一遍」，没细说那个 too。今天它转正了。",
         "为什么非要学它？因为中文的「也」是一个字，位置很随便——「我也喜欢茶」「我也要去」都行。英语的 too 只有一个位置：句子尾巴。放句首、放中间都不对。",
         "还有个小坑：too 和 to 读音一模一样。看到句子尾巴上的「也」，写的是两个 o 的 too。"
@@ -40749,7 +40749,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "I gave her the book", role: "我把书给了她（give 的昨天版是 gave，先给谁后给什么）" },
       { text: "and she gave me a big cake", role: "她给了我一块大蛋糕（照样先给谁后给什么）" }
     ],
-    oneLineRule: "give 的昨天版是 gave——不加 -ed。I gave her the book（我把书给了她）。第 63 课那个位置规矩照样管用：先给谁（her）、后给什么（the book）——换成昨天说，只是把 give 换成 gave，两个东西的站位一动不动。",
+    oneLineRule: "give 的昨天版是 gave——不加 -ed。I gave her the book（我把书给了她）。第 63 课那个位置规矩照样管用：先给谁（her）、后给什么（the book）——换成昨天说，只是把 give 换成 gave，两个东西的位置一动不动。",
     examples: [
       { en: "I gave her the book, and she gave me a big cake.", zh: "我把书给了她，她给了我一块大蛋糕。" },
       { en: "I gave her the book.", zh: "我把书给了她。" },

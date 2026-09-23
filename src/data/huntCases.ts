@@ -2976,7 +2976,7 @@ export const huntCases: HuntCase[] = [
         correction: "it is",
         editOp: "replace",
         explanation:
-          "话中话要换鞋：I don't know where it is——is 退回 it 后面，不站句首那个「谁」前。",
+          "话中话要调词序：I don't know where it is——is 退回 it 后面，不站句首那个「谁」前。",
       },
       {
         tokenIndex: 19,
@@ -3114,7 +3114,7 @@ export const huntCases: HuntCase[] = [
         correction: "he is",
         editOp: "replace",
         explanation:
-          "话中话要换鞋：We don't know where he is——is 退回 he 后面。",
+          "话中话要调词序：We don't know where he is——is 退回 he 后面。",
       },
       {
         tokenIndex: 15,
@@ -3402,7 +3402,7 @@ export const huntCases: HuntCase[] = [
         original: "is he",
         correction: "he is",
         editOp: "replace",
-        explanation: "话中话要换鞋：I know where he is——is 退回 he 后面。",
+        explanation: "话中话要调词序：I know where he is——is 退回 he 后面。",
       },
       {
         tokenIndex: 11,
@@ -4916,7 +4916,7 @@ export const huntCases: HuntCase[] = [
         correction: "去掉 to",
         editOp: "delete",
         explanation:
-          "垫板进不了 finish 的门：finished reading——它跟 enjoy 是同一类门卫（第 45 课）。",
+          "垫板进不了 finish 的门：finished reading——它跟 enjoy 是同一类动词（第 45 课）。",
       },
       {
         tokenIndex: 8,
@@ -4925,7 +4925,7 @@ export const huntCases: HuntCase[] = [
         correction: "reading",
         editOp: "replace",
         explanation:
-          "光板词不能进门：read 加 -ing 变成名词形式——finished reading。",
+          "光说动词进不了门：read 加 -ing 变成名词形式——finished reading。",
       },
       {
         tokenIndex: 10,
@@ -5116,7 +5116,7 @@ export const huntCases: HuntCase[] = [
         original: "draw.",
         correction: "drawing.",
         editOp: "replace",
-        explanation: "门牌后面用名词形式：good at drawing——光板进不了门。",
+        explanation: "at 后面用名词形式：good at drawing——光说动词不行。",
       },
       {
         tokenIndex: 8,
@@ -5250,7 +5250,7 @@ export const huntCases: HuntCase[] = [
         original: "open",
         correction: "opening",
         editOp: "replace",
-        explanation: "mind 的门只接名词形式：mind opening——光板进不了门。",
+        explanation: "mind 后面只接名词形式：mind opening——光说 open 不行。",
       },
       {
         tokenIndex: 9,
@@ -5258,7 +5258,7 @@ export const huntCases: HuntCase[] = [
         original: "to",
         correction: "去掉 to",
         editOp: "delete",
-        explanation: "垫板对门卫不管用：mind closing——去掉 to、用名词形式。",
+        explanation: "mind 后面不能加 to：mind closing——去掉 to、用名词形式。",
       },
       {
         tokenIndex: 14,
@@ -5850,7 +5850,7 @@ export const huntCases: HuntCase[] = [
         correction: "doing",
         editOp: "replace",
         explanation:
-          "这个位置只接名词形式：keep doing——第 77 课刚学的（通道后面永远跟名词形式）。",
+          "这个位置只接名词形式：keep doing——第 77 课刚学的（keep 后面永远跟名词形式）。",
       },
       {
         tokenIndex: 11,
@@ -6780,7 +6780,7 @@ export const huntCases: HuntCase[] = [
         original: "read.",
         correction: "reading.",
         editOp: "replace",
-        explanation: "「当时正做着」要穿 -ing 外套：was 【reading】——read 是光板，进不了这个位。"
+        explanation: "「当时正做着」要穿 -ing 外套：was 【reading】——read 没变形，进不了这个位。"
       },
       {
         tokenIndex: 13,
