@@ -1,6 +1,6 @@
 import type { AppData, Card, Schedule, SentenceDetails } from "../types";
 import { compareText, diffScore, tokenSequencesEquivalent } from "./diffService";
-import { normalizeLessonSentence } from "./lessonService";
+import { isFreeOutputPassed, normalizeLessonSentence, stripNoteMarkers } from "./lessonService";
 
 /**
  * 语法点复习会话（R03）：把进入 SM-2 队列的语法句子卡变成「产出型小任务」。
@@ -368,7 +368,8 @@ export const buildGrammarReviewTask = (
   const tokens = sentence.split(/\s+/).filter(Boolean);
   // R02：反馈讲解优先取 SentenceDetails.grammarNote（hunt 来源卡的罪名讲解在这里），退回 card.note。
   const details = sentenceDetailsList.find((item) => item.cardId === card.id);
-  const note = details?.grammarNote || card.note || "";
+  // 展示前剥掉内部标记（[tense:move] 这类），存储里保留供弱点归因使用
+  const note = stripNoteMarkers(details?.grammarNote || card.note || "");
   // R09 Step2：flag 开启且复习满 2 次后，第 3 次（含）以后出现转自由输出——复习的终点是「不用提示自己写出来」。
   const mode: GrammarReviewMode =
     isFreeTypeReviewEnabled() && (schedule.reviewCount ?? 0) >= FREE_TYPE_MIN_REVIEW_COUNT
@@ -489,7 +490,8 @@ export const FREE_TYPE_PASS_SCORE = 90;
 
 export const judgeGrammarFreeType = (input: string, sentence: string): { passed: boolean; score: number } => {
   const score = diffScore(compareText(sentence, input, false));
-  return { passed: score >= FREE_TYPE_PASS_SCORE, score };
+  // 状语移位算对（与课内产出段同口径）
+  return { passed: isFreeOutputPassed(input, sentence, score, FREE_TYPE_PASS_SCORE), score };
 };
 
 /**

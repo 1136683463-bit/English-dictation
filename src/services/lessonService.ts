@@ -27,6 +27,98 @@ export const hashGrammarSentence = (sentence: string): string => {
 };
 
 /**
+ * 语序灵活等价（2026-09-23 用户实测）。
+ *
+ * 问题：用户在产出段写 `yesterday I went to the park`，
+ * 而核心句是 `I went to the park yesterday`——逐词位置比对只对上一个 yesterday，
+ * 得分 71% 被判错。**但用户的句子在英语里完全正确**（时间状语可前置可后置）。
+ *
+ * 判定：词完全相同、只是**状语位置不同**时视为等价。
+ * 只放宽状语（时间/地点等可移动成分），不放宽核心语序
+ * （「I like music」与「music like I」依然不等价——后者不是状语移位）。
+ */
+const TIME_ADVERBS = new Set([
+  "yesterday", "today", "tomorrow", "now", "then", "tonight",
+  "always", "often", "usually", "sometimes", "never", "already", "yet", "still",
+  "soon", "later", "early", "late", "again"
+]);
+
+/** 时间状语短语（多词）：如 "last week"、"next year"、"this morning"。 */
+const TIME_PHRASE_HEADS = new Set(["last", "next", "this", "every"]);
+
+/** 找出句中所有可移动的状语下标（时间副词、时间短语、in/at/on + 地点）。 */
+const movableAdverbIndexes = (words: string[]): number[] => {
+  const movable: number[] = [];
+  words.forEach((word, index) => {
+    if (TIME_ADVERBS.has(word)) movable.push(index);
+    if (TIME_PHRASE_HEADS.has(word) && index + 1 < words.length) {
+      movable.push(index);
+      movable.push(index + 1);
+    }
+  });
+  return movable;
+};
+
+/**
+ * 两句话是否「词相同、仅状语位置不同」。
+ * 判定步骤：① 归一化后词集必须完全相同（多重集相等）
+ *          ② 去掉状语后的主干部必须逐词相同
+ * 两条都满足才等价——确保只放过状语移位。
+ */
+export const isAdverbOrderEquivalent = (userSentence: string, answerSentence: string): boolean => {
+  const wordsOf = (value: string): string[] =>
+    normalizeLessonSentence(value).split(" ").filter(Boolean);
+  const userWords = wordsOf(userSentence);
+  const answerWords = wordsOf(answerSentence);
+  if (userWords.length === 0 || userWords.length !== answerWords.length) return false;
+  if (userWords.join(" ") === answerWords.join(" ")) return true; // 完全相同
+
+  // ① 词多重集必须相等（用的词一模一样）
+  const sortJoin = (list: string[]) => [...list].sort().join("|");
+  if (sortJoin(userWords) !== sortJoin(answerWords)) return false;
+
+  // ② 只允许**句首或句尾的状语**整体移动到另一端（英语里时间/地点状语的位置自由
+  //    正体现在这里）。中间位置的状语不动——`she always is happy`（副词该在 is 后）
+  //    这种真实语序错误必须仍然判错，不能被当成"状语自由"放过。
+  const movable = new Set(movableAdverbIndexes(answerWords));
+  // 从答案两端切出连续的可移动段
+  let headEnd = 0;
+  while (headEnd < answerWords.length && movable.has(headEnd)) headEnd += 1;
+  let tailStart = answerWords.length;
+  while (tailStart > headEnd && movable.has(tailStart - 1)) tailStart -= 1;
+  const head = answerWords.slice(0, headEnd).join(" ");
+  const core = answerWords.slice(headEnd, tailStart).join(" ");
+  const tail = answerWords.slice(tailStart).join(" ");
+  if (!core.trim()) return false; // 全是状语：不构成可判定句
+  // 交替尝试：把答案的「头/核心/尾」三段用六种排列去匹配用户输入
+  const segments = [head, core, tail].filter((part) => part.trim());
+  const permutations = (list: string[]): string[][] =>
+    list.length <= 1
+      ? [list]
+      : list.flatMap((item, index) =>
+          permutations([...list.slice(0, index), ...list.slice(index + 1)]).map((rest) => [item, ...rest])
+        );
+  const userJoined = userWords.join(" ");
+  return permutations(segments).some((parts) => parts.join(" ").trim() === userJoined);
+};
+
+/**
+ * 自由输出的统一通过判定（2026-09-23）。
+ *
+ * 凡「用户自由写整句」的场景（课内产出段 / 忆段 / 趁热练整句 / 复习 free_type）
+ * 都应走这里——统一口径，避免状语移位在各处被不同处理。
+ *
+ * @param score 逐词相似度（diffScore）
+ * @param passScore 该场景的通过线
+ */
+export const isFreeOutputPassed = (
+  userSentence: string,
+  answerSentence: string,
+  score: number,
+  passScore: number
+): boolean => isAdverbOrderEquivalent(userSentence, answerSentence) || score >= passScore;
+
+/**
  * 点词成句判分：顺序与内容都对才算通过（标点与大小写宽容）。
  *
  * 缩写与全称互通——选 [It, is, ...] 拼出 "It is cold today." 与选 [It's, ...] 一样算对；
@@ -198,7 +290,27 @@ export const markLessonDone = (data: AppData, lessonId: string): AppData => {
   if (!GRAMMAR_LESSON_BY_ID.has(lessonId)) return data;
   if ((data.grammarLessonsDone ?? []).includes(lessonId)) return data;
   const lesson = GRAMMAR_LESSON_BY_ID.get(lessonId);
-  const withDone: AppData = { ...data, grammarLessonsDone: [...(data.grammarLessonsDone ?? []), lessonId] };
+  /**
+   * 双写两个字段（2026-09-22 修，性能轮暴露的隐式依赖）。
+   *
+   * 此前这里只写 `grammarLessonsDone`，靠 `migrateData` 末尾的「旧数据回填」
+   * （`grammarLessonsDone` 有值但新字段缺 1 → 补 [1]）把 `grammarLessonStagesDone`
+   * 补上——也就是说那条回填**不只是给旧数据用的**，它同时承担了新数据的写入职责。
+   *
+   * 一旦 `saveData` 对已归一化数据跳过迁移（本轮性能修复），这个隐式依赖就断了：
+   * 关 1 完成后再读，`grammarLessonStagesDone` 仍是空的，次日回访入口不出现。
+   * 现在把两个字段在**写入侧**一起写，不再依赖迁移的副作用。
+   */
+  const stages = { ...(data.grammarLessonStagesDone ?? {}) };
+  const existing = new Set(stages[lessonId] ?? []);
+  existing.add(1);
+  stages[lessonId] = [...existing].sort((a, b) => a - b);
+
+  const withDone: AppData = {
+    ...data,
+    grammarLessonsDone: [...(data.grammarLessonsDone ?? []), lessonId],
+    grammarLessonStagesDone: stages
+  };
   return lesson ? addLessonCoreSentence(withDone, lesson) : withDone;
 };
 
@@ -256,6 +368,30 @@ export const repairLessonCoreSentenceTranslations = (data: AppData): { data: App
 };
 
 /**
+ * 存量日记卡补「语法」标签（2026-09-22 修，P1）。
+ *
+ * 背景：`diaryService.addDiarySentenceToReview` 早期写入的 tags 只有 `"日记"`，
+ * 而语法复习队列的筛选条件是 `card.tags.includes("语法")`
+ * （`grammarReviewService.isGrammarSentenceCard`）。
+ * 于是**那段时间从日记入队的句子卡从未进过语法复习队列**，且标签不会自己长出来——
+ * 用户的「已掌握 N / 共 M 句」分母里少了这一批，测出来的掌握度偏乐观。
+ *
+ * 修法：给 `sourceId` 以 `diary:` 开头、且还没有「语法」标签的句子卡补上。
+ * 幂等：已有标签的不动；只补缺失的那一个，不改动其它标签（用户可能自己加过）。
+ */
+export const repairDiaryCardTags = (data: AppData): { data: AppData; repaired: number } => {
+  let repaired = 0;
+  const cards = data.cards.map((card) => {
+    if (card.type !== "sentence" || !card.sourceId?.startsWith("diary:")) return card;
+    if (card.tags.includes("语法")) return card;
+    repaired += 1;
+    // 保留原有标签（如「日记」），只在前面补「语法」
+    return { ...card, tags: ["语法", ...card.tags.filter((tag) => tag !== "语法")] };
+  });
+  return repaired > 0 ? { data: { ...data, cards }, repaired } : { data, repaired: 0 };
+};
+
+/**
  * R04 存量回填：遍历已完成课程，把核心句没入队的课补进 SM-2 复习队列。
  * 背景：核心句入队只挂在 markLessonDone（完课时刻）一条链路上——
  * 在此功能上线前已完成、或经测试/导入写入 grammarLessonsDone 的课程，核心句从未进过队列。
@@ -273,6 +409,19 @@ export const backfillLessonCoreSentences = (data: AppData): { data: AppData; bac
   }
   return { data: next, backfilled };
 };
+
+/**
+ * 剥掉讲解文本里的内部标记，供展示用（2026-09-22 加）。
+ *
+ * `grammarNote` 形如 `[tense:move] 说过去的事：move → moved。……`——
+ * 方括号里是**内部机器标记**（tag:原错词），弱点归因与幂等建卡靠它，必须留在存储里；
+ * 但它此前被原样渲染给用户（复习页反馈、通用复习页的「语法：」行、词库详情），
+ * 用户会看到 `[tense:move]` 这种看不懂的串。
+ *
+ * 这个函数是**展示层工具**：只用在渲染前，不改变落盘内容。
+ */
+export const stripNoteMarkers = (note: string): string =>
+  note.replace(/\[[a-z_]+:[^\]]*\]\s*/g, "").trim();
 
 export interface LessonGuidedState {
   index: number;

@@ -77,6 +77,8 @@ import {
   getGrammarLesson,
   guidedDisplayOrder,
   hashGrammarSentence,
+  isAdverbOrderEquivalent,
+  isFreeOutputPassed,
   judgeGuidedStep,
   markLessonDone,
   normalizeLessonSentence,
@@ -228,11 +230,14 @@ const answerWordCount = (answer: string): number =>
 function LessonContrastCard({
   item,
   index,
-  onJudge
+  onJudge,
+  showHint = true
 }: {
   item: LessonContrast;
   index: number;
   onJudge?: (passed: boolean) => void;
+  /** 同一区块内多张卡时只由首卡显示指令句——重复说同一句话是噪音（2026-09-23）。 */
+  showHint?: boolean;
 }) {
   const [picked, setPicked] = useState<"first" | "second" | null>(null);
   // 上/下句顺序确定性打散：同一课内相邻对比卡方向交替
@@ -285,63 +290,24 @@ function LessonContrastCard({
     <div className="lesson-contrast-card">
       {!revealed ? (
         <>
-          <p className="lesson-contrast-hint">
-            {item.bothRight
-              ? "挑一句你更顺眼的——今天这组有惊喜："
-              : "两句话只有一句是对的——点出你认为对的那句："}
-          </p>
-          <div style={{ display: "grid", gap: 12 }}>
-            <button
-              type="button"
-              className="lesson-option"
-              style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, textAlign: "left", padding: "12px 16px" }}
-              onClick={() => judge("first")}
-            >
-              <span
-                aria-hidden="true"
-                style={{
-                  flexShrink: 0,
-                  width: 26,
-                  height: 26,
-                  borderRadius: 999,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: "var(--accent, #f06423)",
-                  color: "#fff",
-                  fontSize: 14,
-                  fontWeight: 700
-                }}
-              >
-                A
-              </span>
-              <span style={{ fontSize: 17, fontWeight: 600 }}>{first}</span>
+          {showHint && (
+            <p className="lesson-contrast-hint">
+              {item.bothRight
+                ? "挑一句你更顺眼的——今天这组有惊喜："
+                : "两句话只有一句是对的——点出你认为对的那句："}
+            </p>
+          )}
+          {!showHint && (
+            <p className="lesson-contrast-hint is-group-marker">再看一组：</p>
+          )}
+          <div className="lesson-contrast-choices">
+            <button type="button" className="lesson-option lesson-contrast-choice" onClick={() => judge("first")}>
+              <span className="lesson-contrast-badge" aria-hidden="true">A</span>
+              <span className="lesson-contrast-sentence">{first}</span>
             </button>
-            <button
-              type="button"
-              className="lesson-option"
-              style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, textAlign: "left", padding: "12px 16px" }}
-              onClick={() => judge("second")}
-            >
-              <span
-                aria-hidden="true"
-                style={{
-                  flexShrink: 0,
-                  width: 26,
-                  height: 26,
-                  borderRadius: 999,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: "var(--accent, #f06423)",
-                  color: "#fff",
-                  fontSize: 14,
-                  fontWeight: 700
-                }}
-              >
-                B
-              </span>
-              <span style={{ fontSize: 17, fontWeight: 600 }}>{second}</span>
+            <button type="button" className="lesson-option lesson-contrast-choice" onClick={() => judge("second")}>
+              <span className="lesson-contrast-badge" aria-hidden="true">B</span>
+              <span className="lesson-contrast-sentence">{second}</span>
             </button>
           </div>
         </>
@@ -1792,7 +1758,15 @@ export default function GrammarLessonPage() {
     const nextAttempts = outputAttempts + 1;
     setOutputAttempts(nextAttempts);
     setOutputTokens(tokens);
-    const passed = score >= OUTPUT_PASS_SCORE;
+    /**
+     * 2026-09-23 用户实测修复：逐词位置比对会把「状语移位」的正确句子判错——
+     * 用户写 `yesterday I went to the park`（英语完全正确），核心句是
+     * `I went to the park yesterday`，得分 71% 被判错。
+     * 现在先做语序等价判定：词相同、仅**句首/句尾状语**换位 → 直接算通过。
+     * 中间位置的语序错误（如 she always is happy）仍走原判分，不会被放过。
+     */
+    const adverbOrderOk = isAdverbOrderEquivalent(outputValue, currentOutput.sentence);
+    const passed = adverbOrderOk || score >= OUTPUT_PASS_SCORE;
     // 用没用过提示分开记录：无提示通过才是 R04 真正要度量的「掌握」。
     recordStepResult(
       "output",
@@ -1873,7 +1847,7 @@ export default function GrammarLessonPage() {
     const score = diffScore(tokens);
     const nextAttempts = recallAttempts + 1;
     setRecallAttempts(nextAttempts);
-    const passed = score >= RECALL_PASS_SCORE;
+    const passed = isFreeOutputPassed(recallValue, target, score, RECALL_PASS_SCORE);
     recordStepResult("recall", "free_recall", 0, nextAttempts - 1, passed, target);
     if (passed) {
       setRecallOutcome("pass");
@@ -2721,6 +2695,7 @@ export default function GrammarLessonPage() {
                         key={index}
                         item={item}
                         index={index}
+                        showHint={index === 0}
                         onJudge={(passed) => recordStepResult("watch", "contrast", index, passed ? 0 : 1, passed)}
                       />
                     ))}
@@ -3229,6 +3204,7 @@ export default function GrammarLessonPage() {
                     key={index}
                     item={item}
                     index={index}
+                    showHint={offset === 0}
                     onJudge={(passed) =>
                       recordStepResult(
                         "practice",
@@ -3859,6 +3835,7 @@ export default function GrammarLessonPage() {
                       key={index}
                       item={item}
                       index={index}
+                      showHint={offset === 0}
                       onJudge={(passed) => recordStepResult("challenge", "contrast", index, passed ? 0 : 1, passed)}
                     />
                   );

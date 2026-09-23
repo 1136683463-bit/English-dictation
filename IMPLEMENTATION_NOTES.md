@@ -4372,3 +4372,134 @@ tauri-plugin-single-instance = "2"
 - hero 与下方卡片**左边缘完全对齐**（都是 370）
 - 全量 **921/921 通过**、`tsc` 零错误、`npx vite build` 通过
 - 完课页 hero（600px 版本）不受影响——两处都已是 `complete-hero-main` 结构
+
+---
+
+## 2026-09-23 · 续修（三）：补上 recall 与「忆段」这个空档
+
+### 怎么又找到的
+
+前两轮的三条守门都靠 `hasIntentMarker`（「你想说：」「复习第 N 课」）判断一道题有没有中文意图句。
+这一轮我回头看这条判据，发现它把**整整一类题**挡在门外：
+
+**`recall`（忆段）的 `promptZh` 是场景邀请语**——「朋友问你桌上有什么。凭记忆，写出那句英文。」
+**不含任何标记**，于是 `hasIntentMarker` 直接 return，**205 道 recall 从未被核对过**。
+
+而这恰恰是最该核的一类：忆段自带 `intentZh`（中文意图句），
+页面正上方就渲染「这句要说的是：{intentZh}」，判题却拿 `answer` 打分——
+**intentZh 与 answer 不符，用户照提示作答必然判错**。
+
+### 修出的真错（2 处）
+
+**① L110 recall：intentZh 只覆盖了四句里的第一句**
+
+- `intentZh`：「妈妈让我先写作业。」（一句）
+- `answer`：四句连写（makes / lets / had / got 四种说法排一行）
+
+页面显示的「这句要说的是：妈妈让我先写作业。」与判题要求（四句全对，70 分线）
+完全不是一回事，用户写对了提示里那句照样不及格。
+已把 `intentZh` 补齐为四句，并留注释说明原委。
+
+**② L31 practice[1]：题干问「最高」，答案写「最好看」**
+
+- 题干：「说班上最高的人，你想说：**他是我们班最高的**。」
+- tokens/answer：`This is the most beautiful one.`（最好看的）
+
+这是**截图同款错配**，而前两轮的具象名词守门**没抓到它**——
+因为「高 / 好看」是**形容词**，不在我只收具象名词的词表里。
+已对齐为 `He is the tallest in our class.`
+
+### 守门改进
+
+1. **`check()` 加 `trusted` 参数**：允许调用方声明「这条的中文意思不靠标记提取」，
+   recall 走 `promptZh + intentZh` 合并口径（两者都可能提供名词——
+   L31 的「苹果」在 `promptZh`（「摊主问你要哪个苹果」）里，
+   `intentZh` 用的是「那个」代指。只看一行会误报）。
+2. 人称守门的 recall 调用同步接入（该 check 不经过 `hasIntentMarker`，无需 `trusted`）。
+
+三条守门现在覆盖：`guided` / `practice` / `recall` / `examples` / `variants` / `sceneSwings`，
+即**所有中英成对展示给用户的内容**。
+
+### 一并评估后放弃的
+
+- `dialogue[who === "me"]` 的破折号后译文：核对 205 条，命中 9 处**全是「从第一行开始。」这类
+  操作指令**（不是译文），无真错，不纳入守门。
+- 形容词扩展：L31 那处证明形容词也会错配，但形容词的中文说法歧义大
+  （「好」可对应 good/nice/fine/well），做成词表误报率会很高。本轮只记下这个缺口，
+  不做守门——L31 已修，同类若再现需靠人工/其他信号。
+
+### 验证
+
+- `npx vitest run src/data/grammarLessons.test.ts`：**46/46 通过**
+- `npx vitest run src/data/ src/services/`：**895/895 通过**
+- 全量：**2504/2506 通过**，`tsc --noEmit` **零错误**（并发会话的文件此时已修复）
+- 两处修复均用「重新植入 → 断言失败 → 恢复」验证守门确实能拦
+
+### 两个非我scope的失败（如实记录）
+
+全量余下 2 项失败，**均与内容数据无关**：
+
+| 测试 | 现象 | 归属 |
+|---|---|---|
+| `kb4-arrange-keyboard` | 操作提示实际是「点词块选上、再点取消」，断言要求含「拖动」 | 另一会话正在改的 `GrammarLessonPage.tsx`（该文件我已确认从未编辑） |
+| `bo4-correction-observability` | 批改结果渲染完整性 | 同上 |
+
+两者单跑均复现，属并发会话的进行中状态。
+
+---
+
+## 2026-09-23 · 修状语移位被误判（用户写对了却判错）
+
+**用户反馈**：「有些单词明明开头结尾都可以放，但是现在是强制我放在哪里，我句子又没错」（截图：产出段输入 `I went to the park yesterday`，核心句要求 6 个词，被判 71% 不通过）。
+
+### 根因：判分是逐词**位置**比对
+
+`diffScore(compareText(answer, user))` 把两句话按**位置**对齐：
+
+```
+yesterday → extra     ← 用户放在句首
+i → match
+went → match
+to → match
+the → match
+park → match
+yesterday → missing   ← 答案放在句尾
+得分 71（阈值 90）→ 判错
+```
+
+**但用户的句子在英语里完全正确**——时间状语可前置可后置是真实语法。系统把「位置」当成了「正确性」。
+
+### 修复：状语移位等价判定
+
+新增 `isAdverbOrderEquivalent(user, answer)`，判定条件**两条都满足**：
+1. 词的多重集完全相同（用的词一模一样）
+2. 去掉**句首/句尾的连续可移动段**后，主干部逐词相同
+
+**关键边界**（这是设计的核心）：只允许状语**在句子两端移动**，中间的语序错误必须仍然判错：
+
+| 例 | 结果 | 说明 |
+|---|---|---|
+| `yesterday I went to the park` vs `I went to the park yesterday` | ✅ 等价 | 用户实测那句 |
+| `every day he drinks milk` vs `he drinks milk every day` | ✅ 等价 | 时间短语 |
+| `she always is happy` vs `she is always happy` | ❌ 不等价 | **中间位置**的副词错位（该在 is 后） |
+| `music like I` vs `I like music` | ❌ 不等价 | 核心语序错误 |
+
+初版实现把「所有状语」都从两边剔除，导致 `she always is happy` 这种真实错误被放过——已收紧为「只允许两端移动」。
+
+### 四处统一（同一缺陷存在于多个入口）
+
+凡「用户自由写整句」的场景都有这个误判，统一走新增的 `isFreeOutputPassed(user, answer, score, passScore)`：
+
+| 位置 | 场景 |
+|---|---|
+| `GrammarLessonPage` 产出段 | 无提示写整句（用户截图） |
+| `GrammarLessonPage` 忆段 | 自由回忆 |
+| `grammarBoostService` | 趁热练档 2/档 3（中文→整句） |
+| `grammarReviewService` | 复习页 free_type |
+
+### 验证
+
+- 新增 10 项测试（含用户实测那句、三个反例边界、长度/词不同的排除）
+- **全量 932/932 通过**、`tsc` 零错误、`npx vite build` 通过
+- 用用户的确切句子实测：相似度 71 分 → **状语等价 true → 最终通过** ✓
+- 两个反例实测仍判错 ✓

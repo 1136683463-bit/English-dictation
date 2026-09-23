@@ -2,7 +2,7 @@ import type { AppData, GrammarErrorTag, GrammarLesson } from "../types";
 import { GRAMMAR_LESSON_BY_ID, grammarLessons } from "../data/grammarLessons";
 import { compareText, diffScore, tokenSequencesEquivalent } from "./diffService";
 import { computeWeakSpots } from "./grammarWeakSpotsService";
-import { normalizeLessonSentence } from "./lessonService";
+import { isFreeOutputPassed, normalizeLessonSentence } from "./lessonService";
 import { explainForSentence, resolveGuidedExplain } from "./grammarExplainService";
 import { listGrammarEventsByKind, type GrammarBoostStepResultEvent } from "./grammarTelemetry";
 
@@ -1526,13 +1526,14 @@ export const boostArrangeAnswerLength = (item: BoostItem): number =>
 /** 中文→整句（有提示）：通过线 70，返回分数供提示梯度使用。 */
 export const judgeBoostRecall = (item: BoostItem, input: string): { passed: boolean; score: number } => {
   const score = diffScore(compareText(item.answer, input, false));
-  return { passed: score >= BOOST_RECALL_PASS_SCORE, score };
+  // 状语移位（yesterday I went... vs I went... yesterday）算对——统一走 isFreeOutputPassed
+  return { passed: isFreeOutputPassed(input, item.answer, score, BOOST_RECALL_PASS_SCORE), score };
 };
 
 /** 无提示整句产出：通过线 90。 */
 export const judgeBoostProduce = (item: BoostItem, input: string): { passed: boolean; score: number } => {
   const score = diffScore(compareText(item.answer, input, false));
-  return { passed: score >= BOOST_PRODUCE_PASS_SCORE, score };
+  return { passed: isFreeOutputPassed(input, item.answer, score, BOOST_PRODUCE_PASS_SCORE), score };
 };
 
 export const judgeBoostItem = (
