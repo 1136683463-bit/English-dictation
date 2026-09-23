@@ -5,6 +5,7 @@ import {
   CalendarDays,
   ChevronRight,
   Clock,
+  GraduationCap,
   Target,
   Zap
 } from "lucide-react";
@@ -14,6 +15,8 @@ import { useAppData } from "../AppContext";
 import { getLearningStats, getRecentErrorReviews } from "../services/reviewService";
 import { getUnitStats } from "../services/unitService";
 import { computeStreak } from "../services/statsService";
+import { summarizeLessonProgress } from "../services/lessonService";
+import { listDueGrammarReviewCards } from "../services/grammarReviewService";
 import { CardType, ReviewMode } from "../types";
 import BannerHero from "../components/BannerHero";
 import todayBanner from "../assets/today-banner.jpg";
@@ -70,6 +73,34 @@ export default function TodayPage() {
   const units = data.units.slice().sort((a, b) => a.order - b.order).slice(0, 4);
   const minutes = estimateMinutes(stats.dueTotal, stats.weakWords);
   const streak = computeStreak(data.reviews);
+
+  /**
+   * 语法线在首屏的入口（2026-09-23 批六十五新增）。
+   *
+   * 为什么加：205 课 / 52 里程碑 / 214 案件是内容投入最大的一条线，但此前
+   * **今日页对 `grammar` 的引用数为 0**——首页四张卡全是词汇（到期复习 / 错词专项 /
+   * 新词目标 / 句子目标），而导航里 `/grammar` 排第 4 位、移动端还不在主导航
+   * （见 `App.tsx` 的 `mobilePrimaryNavPaths`）。内容做完了却没人看见。
+   *
+   * 数据一律**复用路径页同一套服务**（`summarizeLessonProgress` 的 `nextLesson`
+   * 与 `listDueGrammarReviewCards`），不另算一套——否则两处会对同一状态给出不同结论。
+   */
+  const lessonProgress = summarizeLessonProgress(data);
+  const nextLesson = lessonProgress.nextLesson;
+  const dueGrammarCards = listDueGrammarReviewCards(data).length;
+  /** 首屏主 CTA 的落点：有到期语法句先去复习，否则推进下一课。 */
+  const grammarTarget = dueGrammarCards > 0 ? "/grammar/review" : nextLesson ? `/grammar/lesson/${nextLesson.id}` : "/grammar";
+  const grammarCtaLabel = dueGrammarCards > 0
+    ? `复习 ${dueGrammarCards} 个语法句`
+    : nextLesson
+      ? `继续第 ${nextLesson.number} 课`
+      : "去语法路径";
+  const grammarDesc = dueGrammarCards > 0
+    ? `到期的语法句先清掉 · 接着学第 ${nextLesson?.number ?? "—"} 课`
+    : nextLesson
+      ? `第 ${nextLesson.number} 课「${nextLesson.title}」· ${nextLesson.grammarLabel}`
+      : "205 课全部学完，去复习巩固";
+
   const primaryTask =
     stats.dueTotal > 0
       ? "先清到期复习"
@@ -139,6 +170,23 @@ export default function TodayPage() {
       target: stats.sentenceGoal,
       arc: Math.min(100, Math.round((stats.reviewedSentencesToday / Math.max(1, stats.sentenceGoal)) * 100)),
       highlight: false
+    },
+    /**
+     * 语法线任务行（2026-09-23 批六十五新增）。与 Hero 的主 CTA 指向同一落点，
+     * 但以「任务队列」的形态并列展示——让用户能一眼看到语法线的**进度位置**
+     * （第 N 课 / 共 205 课），而不只是一个按钮。
+     */
+    {
+      key: "grammar",
+      to: grammarTarget,
+      tone: "orange",
+      icon: GraduationCap,
+      title: "语法阶梯",
+      desc: grammarDesc,
+      value: lessonProgress.done,
+      target: lessonProgress.total,
+      arc: lessonProgress.percent,
+      highlight: false
     }
   ];
 
@@ -150,6 +198,23 @@ export default function TodayPage() {
         description={`${dateLabel} · 建议${primaryTask}，先练 ${minutes} 分钟`}
         image={todayBanner}
         position="68% 30%"
+        /**
+         * 首屏主 CTA（2026-09-23 批六十五新增）。
+         *
+         * 放在 Hero 的 action 槽里而不是任务列表里——因为它是**首屏第一眼**：
+         * 205 课阶梯此前藏在导航第 4 项（移动端还不在主导航），用户打开首页
+         * 看不出「这是从零开始的语法课」。Hero 的 action 槽此前一直空着
+         * （`BannerHero` 支持 `action`，今日页未使用）。
+         *
+         * 落点优先「到期的语法句」（复习先于新学），其次「下一课」。
+         */
+        action={
+          <Link to={grammarTarget} className="primary-button" data-testid="today-grammar-cta">
+            <GraduationCap size={18} />
+            {grammarCtaLabel}
+            <ArrowRight size={18} />
+          </Link>
+        }
       />
 
       <div className="today-v2-inner">
