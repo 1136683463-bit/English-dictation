@@ -2236,6 +2236,20 @@ export default function GrammarLessonPage() {
     setPracticeMisses(0);
     setPracticeHint(null);
     setMistakeSaved(false);
+    /**
+     * 2026-09-23 修（用户实测「为什么拼不对只能用一次」）：
+     * 换题时必须关掉追问面板并复位步位——此前没重置这两个状态，
+     * 于是「第 1 题问过 → 面板仍处于展开态 → 第 2 题答错时：
+     *   入口条件 `!whyWrongOpen` 不成立（按钮不显示）
+     *   面板条件 `whyWrongStepRef === practiceIndex` 也不成立（面板不显示）
+     * → 结果什么都没有」。用户视角就是「这功能只能用一次」。
+     */
+    setWhyWrongOpen(false);
+    setWhyWrongMatch(null);
+    setWhyWrongAI(null);
+    setWhyWrongFallback(false);
+    whyWrongStepRef.current = null;
+    setWhyWrongRated(null);
     // R-UX3：练习推进即更新跨会话快照（半路关浏览器回来能续）
     saveLessonResume(lesson.id, {
       stage: "practice",
