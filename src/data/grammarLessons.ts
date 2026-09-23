@@ -11016,6 +11016,18 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: "loud",
         correct: "He reads loudly.",
         whyZh: "描写的词顶岗反向再练一条：读书「声音大」要说 reads loudly——描写的词 loud 加 -ly 才是样子词。"
+      },
+      {
+        /**
+         * 2026-09-23 批六十三补：`quietly` 此前全库零出现（形容词 quiet 已在 L16 教过，
+         * 但它的 -ly 形式没有任何一课用过）。本卡把它作为本课规则的**第四个实例**——
+         * 与卡 [5] 的 loud→loudly 同形（形容词加 -ly 变样子词）。
+         * 用词全部取自 L58 之前已教：quiet(L16) / reads(L28) / the book(L3)。
+         */
+        wrong: "He reads the book quiet.",
+        wrongMark: "quiet",
+        correct: "He reads the book quietly.",
+        whyZh: "描写的词再加一条：quiet 说「人/东西静」，加 -ly 才是「读得静」——reads the book 【quietly】。同一个位子，跟 loudly 一个换法。"
       }
     ],
     variants: [
