@@ -62,7 +62,7 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m7",
     afterLesson: 46,
     title: "我能说清喜欢做的事和想做的事",
-    zh: "名字版（like/enjoy + reading）+ 小垫板（want to travel）——动词后面跟什么，你已经有手感了。",
+    zh: "名词形式（like/enjoy + reading）+ 小垫板（want to travel）——动词后面跟什么，你已经有手感了。",
     samples: ["I like reading.", "I enjoy reading.", "I want to travel."]
   },
   {
@@ -111,7 +111,7 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m14",
     afterLesson: 78,
     title: "我能给「更」加力、说清一直在做的事",
-    zh: "好多了（much + 更）+ 一直在做（keep + 名字版）+ 把一天串成一条线（跨季大团圆）——说得更有劲，也说得更连贯。",
+    zh: "好多了（much + 更）+ 一直在做（keep + 名词形式）+ 把一天串成一条线（跨季大团圆）——说得更有劲，也说得更连贯。",
     samples: ["I feel much better today.", "I keep doing my homework.", "I run every day, and I keep reading."]
   },
   {
@@ -372,5 +372,12 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     title: "我能说「我给了她」",
     zh: "give 的昨天版是 gave（不加 -ed：I gave her the book）+ 第 63 课的位置规矩照样管用——先给谁、后给什么（gave her the book）；东西换成小词 it 才垫 to（give it to me）。昨天说、今天说，站位一动不动，只有动词换样子。",
     samples: ["I gave her the book.", "Please give me the book.", "Please give it to me."]
+  },
+  {
+    id: "can-do-m52",
+    afterLesson: 205,
+    title: "我能说「到…的时候，已经…」",
+    zh: "说「到…的时候」用 By the time 开头（By the time I got home, it was dark）+ 它领的那半句用平常的版本、不请 will 出场（第 48 课的老规矩）+ 要分先后时，更早那件穿第 178 课的 had 版（the train had left）。",
+    samples: ["By the time I got home, it was dark.", "By the time we got to the station, the train had left.", "By the time you wake up, I will finish it."]
   }
 ];

@@ -6081,7 +6081,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Closing the door!",
         wrongMark: "Closing",
         correct: "Close the door!",
-        whyZh: "祈使句的动词穿原样（Close）——-ing 是「正在做」或「当名字」的打扮，祈使句两样都不用。"
+        whyZh: "祈使句的动词穿原样（Close）——-ing 是「正在做」或「当名词」的打扮，祈使句两样都不用。"
       },
       {
         wrong: "Please you open the book.",
@@ -7923,9 +7923,9 @@ export const grammarLessons: GrammarLesson[] = [
     blocks: [
       { text: "I", role: "我" },
       { text: "like", role: "喜欢" },
-      { text: "reading", role: "读书（名字版）" }
+      { text: "reading", role: "读书（名词形式）" }
     ],
-    oneLineRule: "-ing 是动词的第二份工作：有 be 搭着＝正在做（I am reading）；没有 be、跟在 like 后面＝当名字用（I like reading）。",
+    oneLineRule: "-ing 是动词的第二份工作：有 be 搭着＝正在做（I am reading）；没有 be、跟在 like 后面＝当名词用（I like reading）。",
     examples: [
       { en: "I like reading.", zh: "我喜欢读书。" },
       { en: "I like drawing.", zh: "我喜欢画画。" },
@@ -7949,7 +7949,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I like reading.",
         bothRight: true,
-        whyZh: "两句都对——同一件 -ing，两个岗位：有 be 搭着＝正在做（I am reading）；光 -ing＝当名字用（I like reading）。"
+        whyZh: "两句都对——同一件 -ing，两个岗位：有 be 搭着＝正在做（I am reading）；光 -ing＝当名词用（I like reading）。"
       },
       {
         wrong: "I don't like read.",
@@ -7978,7 +7978,7 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "I like reading.", zh: "我喜欢读书。" },
-      { label: "否定", en: "I don't like reading.", zh: "我不喜欢读书。", noteZh: "don't 挡住的是 like；reading 是名字版，原地不动。" },
+      { label: "否定", en: "I don't like reading.", zh: "我不喜欢读书。", noteZh: "don't 挡住的是 like；reading 是名词形式，原地不动。" },
       { label: "疑问", en: "Do you like reading?", zh: "你喜欢读书吗？", noteZh: "问别人：Do 站句首，reading 不动。" }
     ],
     sceneSwings: [
@@ -7990,13 +7990,13 @@ export const grammarLessons: GrammarLesson[] = [
       title: "-ing 的第二份工作",
       paragraphs: [
         "你在第 13 课见过 -ing：I am reading（我正在读）——前面站着 be（am/is/are），它就在说「正在做」。",
-        "现在它换了第二份工作：没有 be 的时候，-ing 当「名字牌」用——把做一件事变成「那件事」本身：I like reading（我喜欢「读书」这件事）。",
-        "怎么分？看有没有 be 搭着：有 be＝正在做（I am reading）；光 -ing、跟在 like 后面＝当名字用。同一件工装，两班岗。",
-        "中文不用变：「我喜欢读书」里的「读书」原样不动；英语要把 read 换成名字版 reading。这是中文直译最容易漏的一步。"
+        "现在它换了第二份工作：没有 be 的时候，-ing 当「名词」用——把做一件事变成「那件事」本身（英语里这叫名词形式）：I like reading（我喜欢「读书」这件事）。",
+        "怎么分？看有没有 be 搭着：有 be＝正在做（I am reading）；光 -ing、跟在 like 后面＝当名词用。同一件工装，两班岗。",
+        "中文不用变：「我喜欢读书」里的「读书」原样不动；英语要把 read 换成名词形式 reading。这是中文直译最容易漏的一步。"
       ]
     },
     summary: {
-      rule: "-ing 是动词的第二份工作：有 be 搭着＝正在做；光 -ing＝当名字用。",
+      rule: "-ing 是动词的第二份工作：有 be 搭着＝正在做；光 -ing＝当名词用。",
       points: [
         "I like reading. —— 喜欢「读书」这件事",
         "I am reading. —— 正在读：be 搭着",
@@ -8042,7 +8042,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "like", "read."],
         wrongToken: "read.",
         answer: "read.",
-        correctionZh: "read 要换名字版：I like reading。",
+        correctionZh: "read 要换名词形式：I like reading。",
         explain: "喜欢的是「做的事」，动词要变 reading。"
       },
       {
@@ -8053,7 +8053,7 @@ export const grammarLessons: GrammarLesson[] = [
         replaceTarget: "把 music 换成「读书」",
         options: ["reading", "read", "to read"],
         answer: "reading",
-        explain: "做的事要用名字版：I like reading。"
+        explain: "做的事要用名词形式：I like reading。"
       }
     ],
     practice: [
@@ -8095,7 +8095,7 @@ export const grammarLessons: GrammarLesson[] = [
     huntCaseIds: ["hunt-interest-day"]
   },
   {
-    // ── 第五批 · L43 动名词②（V-ing 当主角）：句首说「做某事」也要名字版；踩 L32 命令句跨课对撞，零新词 ──
+    // ── 第五批 · L43 动名词②（V-ing 当主角）：句首说「做某事」也要用名词形式；踩 L32 命令句跨课对撞，零新词 ──
     id: "lesson-43-swimming-fun",
     number: 43,
     title: "游泳真好玩",
@@ -8109,7 +8109,7 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "游泳真好玩。",
     targetSentence: "Swimming is fun.",
     blocks: [
-      { text: "Swimming", role: "游泳这件事（当主角，名字版）" },
+      { text: "Swimming", role: "游泳这件事（当主角，名词形式）" },
       { text: "is", role: "是" },
       { text: "fun", role: "好玩" }
     ],
@@ -8137,7 +8137,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "Swimming is fun.",
         bothRight: true,
-        whyZh: "两句都对——有 be 搭着＝正在游（I am swimming）；当名字＝「游泳这件事」（Swimming is fun）。名字牌还是那件名字牌。"
+        whyZh: "两句都对——有 be 搭着＝正在游（I am swimming）；当名词用＝「游泳这件事」（Swimming is fun）。同一件 -ing，两班岗。"
       },
       {
         wrong: "Swim is not easy.",
@@ -8179,7 +8179,7 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 32 课你学过命令句：Close the door（把门关上）——动词光着身子开头，是在请人做事。",
         "所以句首直接说 Swim is fun，听起来像在喊「游泳！很好玩！」，口气不对。要说「游泳这件事」，动词要加 -ing：Swimming is fun。",
-        "名字牌还是那件名字牌（第 42 课学的）：跟在 like 后面当「做的事」，站到句首当「主角」——都是把动作变成「那件事」。",
+        "名词形式还是那个 -ing（第 42 课学的）：跟在 like 后面当「做的事」，站到句首当「主角」——都是把动作变成「那件事」。",
         "顺便认识一个词：fun 是「好玩、有意思」。Swimming is fun 就是「游泳这件事很好玩」。"
       ]
     },
@@ -8229,7 +8229,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["Swim", "is", "fun."],
         wrongToken: "Swim",
         answer: "Swim",
-        correctionZh: "主角要上名字版：Swimming is fun。",
+        correctionZh: "主角要上名词形式：Swimming is fun。",
         explain: "句首光身子的 Swim 像在下命令，要说「游泳这件事」得用 Swimming。"
       },
       {
@@ -8276,7 +8276,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "夏令营水上活动日结束，妈妈问你玩得怎么样。凭记忆，写出那句英文。",
       intentZh: "游泳真好玩。",
       answer: "Swimming is fun.",
-      noteZh: "事情当主角用名字版：Swimming 站句首。"
+      noteZh: "事情当主角用名词形式：Swimming 站句首。"
     },
     huntCaseIds: ["hunt-swim-day"]
   },
@@ -8483,7 +8483,7 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "I enjoy reading.",
     blocks: [
       { text: "I enjoy", role: "我享受（enjoy = 很享受）" },
-      { text: "reading", role: "读书（名字版）" }
+      { text: "reading", role: "读书（名词形式）" }
     ],
     oneLineRule: "enjoy 的门只开一扇：只后面用 -ing 形式 enjoy reading，不认 enjoy to read——enjoy 后面不垫 to。",
     examples: [
@@ -8508,26 +8508,26 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She enjoy reading.",
         wrongMark: "enjoy",
         correct: "She enjoys reading.",
-        whyZh: "句首那个「谁」 She 是他/她/它版，enjoy 要加 -s：enjoys。名字版 reading 不动。"
+        whyZh: "句首那个「谁」 She 是他/她/它版，enjoy 要加 -s：enjoys。名词形式 reading 不动。"
       },
       {
         wrong: "I enjoy read.",
         wrongMark: "read",
         correct: "I enjoy reading.",
-        whyZh: "enjoy 后面跟着的是「做的事」，要用名字版：reading。第 42 课学的手感，这里照样用。"
+        whyZh: "enjoy 后面跟着的是「做的事」，要用名词形式：reading。第 42 课学的手感，这里照样用。"
       },
       {
         wrong: "I enjoy reading books.",
         wrongMark: null,
         correct: "I enjoy reading.",
         bothRight: true,
-        whyZh: "两句都对——reading 后面想加 books 就加，不想加也完整。名字版（reading）是必须的，books 是添头。"
+        whyZh: "两句都对——reading 后面想加 books 就加，不想加也完整。名词形式（reading）是必须的，books 是添头。"
       },
       {
         wrong: "Do you enjoy read?",
         wrongMark: "read",
         correct: "Do you enjoy reading?",
-        whyZh: "问句里名字版也不动：Do you enjoy reading？Do 站句首，reading 原位。"
+        whyZh: "问句里名词形式也不动：Do you enjoy reading？Do 站句首，reading 原位。"
       },
       {
         wrong: "I don't enjoy to draw.",
@@ -8538,7 +8538,7 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "I enjoy reading.", zh: "我享受读书。" },
-      { label: "否定", en: "I don't enjoy reading.", zh: "我不享受读书。", noteZh: "don't 挡住 enjoy；reading 是名字版，原地不动。" },
+      { label: "否定", en: "I don't enjoy reading.", zh: "我不享受读书。", noteZh: "don't 挡住 enjoy；reading 是名词形式，原地不动。" },
       { label: "疑问", en: "Do you enjoy reading?", zh: "你享受读书吗？", noteZh: "问别人：Do 站句首，reading 不动。" }
     ],
     sceneSwings: [
@@ -8558,9 +8558,9 @@ export const grammarLessons: GrammarLesson[] = [
     summary: {
       rule: "enjoy 的门只开一扇：只后面用 -ing 形式 enjoy reading，不认 to。",
       points: [
-        "I enjoy reading. —— enjoy + 名字版",
+        "I enjoy reading. —— enjoy + 名词形式",
         "She enjoys reading. —— 「他」做事要带 -s",
-        "reading 后加 books 也行 —— 名字版必须，添头随意"
+        "reading 后加 books 也行 —— 名词形式必须，添头随意"
       ]
     },
     guided: [
@@ -8660,11 +8660,11 @@ export const grammarLessons: GrammarLesson[] = [
     huntCaseIds: ["hunt-club-poster"]
   },
   {
-    // ── 第五批 · L46 收口课（零新知全复现）：两搭档同台——名字版 + 小垫板；深挖卡认读「都行，默认 doing」──
+    // ── 第五批 · L46 收口课（零新知全复现）：两搭档同台——名词形式 + 小垫板；深挖卡认读「都行，默认 doing」──
     id: "lesson-46-two-partners",
     number: 46,
     title: "一句话，两种搭档",
-    grammarLabel: "收口 · 名字版 + 小垫板",
+    grammarLabel: "收口 · 名词形式 + 小垫板",
     episode: "小美的一天 ㊻",
     scene: "mansion",
     cover: cover46,
@@ -8674,11 +8674,11 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我享受读书，我还想去旅行。",
     targetSentence: "I enjoy reading and I want to travel.",
     blocks: [
-      { text: "I enjoy reading", role: "名字版搭档（enjoy）" },
+      { text: "I enjoy reading", role: "名词形式搭档（enjoy）" },
       { text: "and", role: "和" },
       { text: "I want to travel", role: "小垫板搭档（want to）" }
     ],
-    oneLineRule: "两样搭档同台：enjoy/like 后面跟名字版（reading）；want 门口垫 to（to travel）——两个动词，两种搭法。",
+    oneLineRule: "两样搭档同台：enjoy/like 后面跟名词形式（reading）；want 门口垫 to（to travel）——两个动词，两种搭法。",
     examples: [
       { en: "I enjoy reading and I want to travel.", zh: "我享受读书，我还想去旅行。" },
       { en: "I like reading.", zh: "我喜欢读书。" },
@@ -8707,7 +8707,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I like read.",
         wrongMark: "read",
         correct: "I like reading.",
-        whyZh: "名字版的老规矩：喜欢「做的事」用 reading——第 42 课学的手感。"
+        whyZh: "这里的老规矩：喜欢「做的事」用 reading（名词形式）——第 42 课学的手感。"
       },
       {
         wrong: "I want to traveling.",
@@ -8730,27 +8730,27 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "I enjoy reading and I want to travel.", zh: "我享受读书，我还想去旅行。" },
-      { label: "否定", en: "I don't enjoy reading.", zh: "我不享受读书。", noteZh: "don't 挡住 enjoy；reading 是名字版，原地不动。" },
+      { label: "否定", en: "I don't enjoy reading.", zh: "我不享受读书。", noteZh: "don't 挡住 enjoy；reading 是名词形式，原地不动。" },
       { label: "疑问", en: "Do you enjoy reading?", zh: "你享受读书吗？", noteZh: "问别人：Do 站句首，reading 不动。" }
     ],
     sceneSwings: [
-      { sceneZh: "说喜欢读书（名字版搭档）", en: "I like reading.", zh: "我喜欢读书。" },
+      { sceneZh: "说喜欢读书（名词形式搭档）", en: "I like reading.", zh: "我喜欢读书。" },
       { sceneZh: "说想去旅行（小垫板搭档）", en: "I want to travel.", zh: "我想去旅行。" },
       { sceneZh: "说她喜欢画画还想跳舞", en: "She likes drawing and she wants to dance.", zh: "她喜欢画画，她还想去跳舞。" }
     ],
     deepDive: {
       title: "搭档地图 —— 还有一句悄悄话",
       paragraphs: [
-        "这一批你认识了两样搭档：名字版（reading）——跟着 like / enjoy 出场；小垫板（to + 原样）——跟着 want 出场，也帮「去干什么」缝句（go to the shop to buy milk）。",
+        "这一批你认识了两样搭档：名词形式（reading）——跟着 like / enjoy 出场；小垫板（to + 原样）——跟着 want 出场，也帮「去干什么」缝句（go to the shop to buy milk）。",
         "「搭档地图」不用背：遇到动词就往门口看一眼——enjoy 的门只开一扇（只后面用 -ing 形式），want 的门口有垫板（认 to）。",
-        "悄悄话一句：其实「喜欢」两类搭法都能说——like reading 和 like to read 都对，意思几乎一样。你不用纠结，默认用名字版就行。",
+        "悄悄话一句：其实「喜欢」两类搭法都能说——like reading 和 like to read 都对，意思几乎一样。你不用纠结，默认用名词形式就行。",
         "至此，你会说「喜欢做、享受做、去做、想做」——动词后面跟什么，你已经有一套自己的手感了。"
       ]
     },
     summary: {
-      rule: "两种搭档：like / enjoy + 名字版（reading）；want + 小垫板（to travel）。",
+      rule: "两种搭档：like / enjoy + 名词形式（reading）；want + 小垫板（to travel）。",
       points: [
-        "I enjoy reading. —— 名字版搭档",
+        "I enjoy reading. —— 名词形式搭档",
         "I want to travel. —— 小垫板搭档",
         "I enjoy reading and I want to travel. —— 两样同台"
       ]
@@ -8758,7 +8758,7 @@ export const grammarLessons: GrammarLesson[] = [
     guided: [
       {
         kind: "choose",
-        promptZh: "你想说：我享受读书（名字版搭档）。",
+        promptZh: "你想说：我享受读书（名词形式搭档）。",
         before: "I enjoy",
         after: ".",
         options: ["reading", "to read", "read"],
@@ -10506,7 +10506,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 26 课学过：桌上有一本书。",
         tokens: ["There", "is", "a", "book", "on", "the", "desk."],
         answer: "There is a book on the desk.",
-        explain: "复现第 26 课：There 先占位说「有」——这个名字牌以后还会用到。"
+        explain: "复现第 26 课：There 先占位说「有」——这个占位词以后还会用到。"
       },
       {
         // R9 变形/替换：报数换排位（构造迁移，复用 choose 判题）
@@ -12126,12 +12126,12 @@ export const grammarLessons: GrammarLesson[] = [
     huntCaseIds: ["hunt-handout-note"]
   },
 
-  // ── 第九批 · L64 收尾动词（finish + 名字版）：L45 门卫体系扩员第一站——又一个单门门卫（批九 PRD §2）──
+  // ── 第九批 · L64 收尾动词（finish + 名词形式）：L45 门卫体系扩员第一站——又一个单门门卫（批九 PRD §2）──
   {
     id: "lesson-64-finish-doing",
     number: 64,
     title: "我看完啦",
-    grammarLabel: "收尾动词 · finish + 名字版",
+    grammarLabel: "收尾动词 · finish + 名词形式",
     episode: "小美的一天 六十四",
     scene: "mansion",
     cover: cover64,
@@ -12142,9 +12142,9 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "I finished reading the book.",
     blocks: [
       { text: "I finished", role: "我完成了（收尾）" },
-      { text: "reading the book", role: "读这本书（名字版）" }
+      { text: "reading the book", role: "读这本书（名词形式）" }
     ],
-    oneLineRule: "说「做完了」用 finish + 名字版（finish reading）——它和第 45 课的 enjoy 一样，门只开一扇。",
+    oneLineRule: "说「做完了」用 finish + 名词形式（finish reading）——它和第 45 课的 enjoy 一样，门只开一扇。",
     examples: [
       { en: "I finished reading the book.", zh: "我看完这本书啦。" },
       { en: "I finished my homework.", zh: "我写完作业了。" },
@@ -12167,7 +12167,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I finished read the book.",
         wrongMark: "read",
         correct: "I finished reading the book.",
-        whyZh: "光板词不能进门：read 加 -ing 变名字版（reading），守卫才放行。"
+        whyZh: "光说动词进不了门：read 加 -ing 变名词形式（reading），守卫才放行。"
       },
       {
         wrong: "I finished reading the book.",
@@ -12181,14 +12181,14 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I finished reading.",
         bothRight: true,
-        whyZh: "两句都对——同一个名字版 reading，门口换了守卫：like 也认、finish 也认——名字版是通行证。"
+        whyZh: "两句都对——同一个名词形式 reading，门口换了守卫：like 也认、finish 也认——名词形式是通行证。"
       },
       {
         wrong: "I enjoy reading.",
         wrongMark: null,
         correct: "I finished reading the book.",
         bothRight: true,
-        whyZh: "两句都对——第 45 课 enjoy 的门卫又见面了：enjoy reading、finish reading——名字版两边都进得去。"
+        whyZh: "两句都对——第 45 课 enjoy 的门卫又见面了：enjoy reading、finish reading——名词形式两边都进得去。"
       },
       {
         wrong: "I have done my homework.",
@@ -12212,17 +12212,17 @@ export const grammarLessons: GrammarLesson[] = [
       title: "又一个单门门卫",
       paragraphs: [
         "第 45 课认识过 enjoy 的门：只后面用 -ing 形式（enjoy reading），to 进不去。今天的 finish 是同一个脾气：finish reading、finish drawing——只开一扇门。",
-        "「名字版」是什么？就是把动作穿上 -ing 外套、当「做的事情」来用：read → reading、draw → drawing。它在 like / enjoy / finish 这些门卫门前都通行。",
+        "「名词形式」是什么？就是把动作穿上 -ing 外套、当「做的事情」来用：read → reading、draw → drawing。它在 like / enjoy / finish 这些门卫门前都通行。",
         "也有动词门口是垫板的：want to travel（第 15 课）、would like to sleep（第 62 课）——同一个动作，门口规矩不同。遇到新动词，看一眼它认哪一种。",
         "门卫名单还会加长：后面你还会遇到更多「只后面用 -ing 形式」或「只认垫板」的动词——一个一个遇，不着急。"
       ]
     },
     summary: {
-      rule: "做完了 = finish + 名字版：finish reading——门口规矩跟 enjoy 一样，只开一扇。",
+      rule: "做完了 = finish + 名词形式：finish reading——门口规矩跟 enjoy 一样，只开一扇。",
       points: [
-        "I finished reading the book. —— 收尾的门 + 名字版",
+        "I finished reading the book. —— 收尾的门 + 名词形式",
         "I finished my homework. —— 直接说「做完了什么」也完整",
-        "I enjoy reading. / I finished reading. —— 名字版两边都进得去"
+        "I enjoy reading. / I finished reading. —— 名词形式两边都进得去"
       ]
     },
     guided: [
@@ -12275,7 +12275,7 @@ export const grammarLessons: GrammarLesson[] = [
         replaceTarget: "把 reading the book 换成 draw a picture",
         options: ["drawing a picture", "draw a picture", "to draw a picture"],
         answer: "drawing a picture",
-        explain: "名字版换上：finished drawing a picture——-ing 外套穿好。"
+        explain: "名词形式换上：finished drawing a picture——-ing 外套穿好。"
       }
     ],
     practice: [
@@ -12316,7 +12316,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "周末晚上，小美合上刚读完的故事书，跟姐姐说「我看完啦」。凭记忆，写出她那句英文。",
       intentZh: "我看完这本书啦。",
       answer: "I finished reading the book.",
-      noteZh: "收尾的门 + 名字版：finished reading。"
+      noteZh: "收尾的门 + 名词形式：finished reading。"
     },
     huntCaseIds: ["hunt-reading-corner"]
   },
@@ -12710,12 +12710,12 @@ export const grammarLessons: GrammarLesson[] = [
     huntCaseIds: ["hunt-moving-day-note"]
   },
 
-  // ── 第十批 · L67 擅长（good at + 名字版）：门牌 at 上岗——案件话术句转正（批十 PRD §2）──
+  // ── 第十批 · L67 擅长（good at + 名词形式）：门牌 at 上岗——案件话术句转正（批十 PRD §2）──
   {
     id: "lesson-67-good-at",
     number: 67,
     title: "我擅长画画",
-    grammarLabel: "擅长 · good at + 名字版",
+    grammarLabel: "擅长 · good at + 名词形式",
     episode: "小美的一天 六十七",
     scene: "campus",
     cover: cover67,
@@ -12727,9 +12727,9 @@ export const grammarLessons: GrammarLesson[] = [
     blocks: [
       { text: "I am good", role: "我擅长" },
       { text: "at", role: "门牌 at（挂上擅长）" },
-      { text: "drawing", role: "画画（名字版）" }
+      { text: "drawing", role: "画画（名词形式）" }
     ],
-    oneLineRule: "说「擅长做某事」用 good at + 名字版：good at drawing——at 是它的门牌，门里用 -ing 形式。",
+    oneLineRule: "说「擅长做某事」用 good at + 名词形式：good at drawing——at 是它的门牌，门里用 -ing 形式。",
     examples: [
       { en: "I am good at drawing.", zh: "我擅长画画。" },
       { en: "She is good at math.", zh: "她数学很好。" },
@@ -12746,7 +12746,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am good at draw.",
         wrongMark: "draw",
         correct: "I am good at drawing.",
-        whyZh: "门牌后面用 -ing 形式：at drawing——光板进不了门（跟 enjoy/finish 一个规矩）。"
+        whyZh: "门牌后面用 -ing 形式：at drawing——光说动词进不了门（跟 enjoy/finish 一个规矩）。"
       },
       {
         wrong: "I am good in drawing.",
@@ -12773,7 +12773,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I am good at drawing.",
         bothRight: true,
-        whyZh: "两句都对——第 64 课 finished reading（收尾的门）＋今天 good at drawing（擅长的门牌）：名字版排队点名。"
+        whyZh: "两句都对——第 64 课 finished reading（收尾的门）＋今天 good at drawing（擅长的门牌）：名词形式排队点名。"
       },
       {
         wrong: "My hat is in the box.",
@@ -12803,7 +12803,7 @@ export const grammarLessons: GrammarLesson[] = [
       ]
     },
     summary: {
-      rule: "擅长做某事：good at + 名字版（good at drawing）——at 是门牌，门里用 -ing 形式。",
+      rule: "擅长做某事：good at + 名词形式（good at drawing）——at 是门牌，门里用 -ing 形式。",
       points: [
         "I am good at drawing. —— at 后面 + -ing 形式",
         "She is good at math. —— 接学科直接跟",
@@ -12860,7 +12860,7 @@ export const grammarLessons: GrammarLesson[] = [
         replaceTarget: "把 drawing 换成 swim",
         options: ["swimming", "swim", "to swim"],
         answer: "swimming",
-        explain: "名字版换一件：good at swimming——-ing 外套穿好。"
+        explain: "名词形式换一件：good at swimming——-ing 外套穿好。"
       }
     ],
     practice: [
@@ -12901,7 +12901,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "美术课后的才艺角，同学夸小美画得好。凭记忆，写出她那句英文。",
       intentZh: "我擅长画画。",
       answer: "I am good at drawing.",
-      noteZh: "门牌 at + 名字版：good at drawing。"
+      noteZh: "门牌 at + 名词形式：good at drawing。"
     },
     huntCaseIds: ["hunt-good-at"]
   },
@@ -13107,7 +13107,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-69-mind",
     number: 69,
     title: "你介意吗",
-    grammarLabel: "客气第四档 · Would you mind + 名字版",
+    grammarLabel: "客气第四档 · Would you mind + 名词形式",
     episode: "小美的一天 六十九",
     scene: "campus",
     cover: cover69,
@@ -13118,10 +13118,10 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "Would you mind opening the window?",
     blocks: [
       { text: "Would you mind", role: "你介意吗（最婉转的一档）" },
-      { text: "opening", role: "打开（名字版）" },
+      { text: "opening", role: "打开（名词形式）" },
       { text: "the window?", role: "窗户" }
     ],
-    oneLineRule: "请人做事最婉转的一档：Would you mind + 名字版（mind opening）；答应说 Of course not——「当然不介意」。",
+    oneLineRule: "请人做事最婉转的一档：Would you mind + 名词形式（mind opening）；答应说 Of course not——「当然不介意」。",
     examples: [
       { en: "Would you mind opening the window?", zh: "你介意把窗打开吗？" },
       { en: "Of course not.", zh: "当然不介意。（我去开）" },
@@ -13194,7 +13194,7 @@ export const grammarLessons: GrammarLesson[] = [
       ]
     },
     summary: {
-      rule: "最婉转的一档：Would you mind + 名字版（mind opening）——答应说 Of course not。",
+      rule: "最婉转的一档：Would you mind + 名词形式（mind opening）——答应说 Of course not。",
       points: [
         "Would you mind opening the window? —— 第四档上岗",
         "Of course not. —— 「当然不介意」（别说 Yes）",
@@ -13216,7 +13216,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：你介意把窗打开吗？",
         tokens: ["Would", "you", "mind", "opening", "the", "window?"],
         answer: "Would you mind opening the window?",
-        explain: "第四档 + 名字版：mind opening。"
+        explain: "第四档 + 名词形式：mind opening。"
       },
       {
         // R8 跨课复现：第 61 课（第三档）
@@ -13251,7 +13251,7 @@ export const grammarLessons: GrammarLesson[] = [
         replaceTarget: "把 opening the window 换成 close the window",
         options: ["closing the window", "close the window", "to close the window"],
         answer: "closing the window",
-        explain: "名字版换一件：mind closing——-ing 外套穿好。"
+        explain: "名词形式换一件：mind closing——-ing 外套穿好。"
       }
     ],
     practice: [
@@ -13292,7 +13292,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "午后教室闷得慌，小美请靠窗的同桌开个窗——用了最婉转的一档。凭记忆，写出她那句英文。",
       intentZh: "你介意把窗打开吗？",
       answer: "Would you mind opening the window?",
-      noteZh: "第四档 + 名字版：mind opening。"
+      noteZh: "第四档 + 名词形式：mind opening。"
     },
     huntCaseIds: ["hunt-mind-note"]
   },
@@ -14652,12 +14652,12 @@ export const grammarLessons: GrammarLesson[] = [
     huntCaseIds: ["hunt-feel-better"]
   },
 
-  // ── 第十二批 · L77 一直在做（keep + 名字版）：-ing 形式这张通行证第五站——keep 是「一直」，不是「收尾」（批十二 PRD §2）──
+  // ── 第十二批 · L77 一直在做（keep + 名词形式）：-ing 形式这张通行证第五站——keep 是「一直」，不是「收尾」（批十二 PRD §2）──
   {
     id: "lesson-77-keep-doing",
     number: 77,
     title: "一直在做",
-    grammarLabel: "习惯不停 · keep + 名字版",
+    grammarLabel: "习惯不停 · keep + 名词形式",
     episode: "小美的一天 七十七",
     scene: "campus",
     cover: cover77,
@@ -14668,9 +14668,9 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "I keep doing my homework.",
     blocks: [
       { text: "I keep", role: "我一直（不停）" },
-      { text: "doing my homework", role: "做作业（名字版）" }
+      { text: "doing my homework", role: "做作业（名词形式）" }
     ],
-    oneLineRule: "一件事一直做、不停做，用 keep + 名字版（keep doing）——keep 是「一直」，不是「做完」（那是第 64 课的 finish）。",
+    oneLineRule: "一件事一直做、不停做，用 keep + 名词形式（keep doing）——keep 是「一直」，不是「做完」（那是第 64 课的 finish）。",
     examples: [
       { en: "I keep doing my homework.", zh: "我一直在做作业。" },
       { en: "I keep reading at night.", zh: "我一直在晚上读书。" },
@@ -14693,7 +14693,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "He keeps do it.",
         wrongMark: "do",
         correct: "He keeps doing it.",
-        whyZh: "名字版不装光板：keeps doing——他/她/它版的 -s 只动 keep 自己，后面照样用 -ing 形式。"
+        whyZh: "这个位置只接名词形式：keeps doing——他/她/它版的 -s 只动 keep 自己，后面照样用 -ing 形式。"
       },
       {
         wrong: "I finished reading the book.",
@@ -14707,7 +14707,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I keep reading.",
         bothRight: true,
-        whyZh: "两句都对——老位上的 keep 是「保持」（keep quiet 保持安静）；今天这条是「一直」（keep reading）——看后头跟的是状态还是名字版。"
+        whyZh: "两句都对——老位上的 keep 是「保持」（keep quiet 保持安静）；今天这条是「一直」（keep reading）——看后头跟的是状态还是名词形式。"
       },
       {
         wrong: "I enjoy reading.",
@@ -14721,7 +14721,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I keep doing my homework.",
         bothRight: true,
-        whyZh: "两句都对——第 67 课通道老规矩（入口后面永远跟名字版）＋今天 keep：通行证第五站打卡。"
+        whyZh: "两句都对——第 67 课通道老规矩（入口后面永远跟名词形式）＋今天 keep：通行证第五站打卡。"
       }
     ],
     variants: [
@@ -14739,12 +14739,12 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "-ing 形式这张通行证一路打卡：第 42 课 like reading（喜欢）、第 45 课 enjoy reading（享受）、第 64 课 finish reading（做完）、第 67 课 good at drawing（擅长）——今天第五站：keep reading（一直做）。",
         "先分清 keep 和 finish：finish 是刹车——做完了、停下了；keep 是不停车——一直做、不停下。I finished reading 是「看完了」；I keep reading 是「一直在看」。",
-        "keep 还有一个老位子：「保持」——keep quiet（保持安静）、keep the door open（让门开着）。今天这条是「一直做」（后面跟名字版）——看后头跟的是状态还是名字版，就知道是哪个岗。",
+        "keep 还有一个老位子：「保持」——keep quiet（保持安静）、keep the door open（让门开着）。今天这条是「一直做」（后面跟名词形式）——看后头跟的是状态还是名词形式，就知道是哪个岗。",
         "「他 / 她 / 它」的规矩照旧：He keeps doing——keep 自己加 -s（他不一般），后面的 doing 不动。"
       ]
     },
     summary: {
-      rule: "一直做不停做：keep + 名字版（keep doing）——keep 是不停车，finish 是刹车。",
+      rule: "一直做不停做：keep + 名词形式（keep doing）——keep 是不停车，finish 是刹车。",
       points: [
         "I keep doing my homework. —— 通行证第五站",
         "I finished reading. ／ I keep reading. —— 刹车 vs 不停车",
@@ -14782,7 +14782,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "keep", "to", "do", "my", "homework."],
         wrongToken: "to",
         answer: "to",
-        correctionZh: "名字版通道不垫板：keep doing。",
+        correctionZh: "名词形式通道不垫板：keep doing。",
         explain: "跟 like/enjoy/finish 一个规矩。"
       },
       {
@@ -14801,7 +14801,7 @@ export const grammarLessons: GrammarLesson[] = [
         replaceTarget: "把 doing my homework 换成 read（一直在读书）",
         options: ["reading", "read", "to read"],
         answer: "reading",
-        explain: "名字版换一件：keep reading——-ing 外套穿好。"
+        explain: "名词形式换一件：keep reading——-ing 外套穿好。"
       }
     ],
     practice: [
@@ -14842,7 +14842,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "放学后的自习角，小美看你每天来，说你从来没停下。凭记忆，写出你那句英文。",
       intentZh: "我一直在做作业。",
       answer: "I keep doing my homework.",
-      noteZh: "keep + 名字版：不停车。"
+      noteZh: "keep + 名词形式：不停车。"
     },
     huntCaseIds: ["hunt-hobby-habit"]
   },
@@ -14935,7 +14935,7 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "这一课没有新知识——把你这一路学的几样东西串成一条线：说节奏（第 25/28 课的 every day、always）、说「更」（第 17 课 bigger than、第 76 课 much better）、说「一直做」（第 77 课 keep reading）。",
         "接线的词有三个：and（两条都算上）、but（转个弯）、or（二选一）。前面你都见过：and/but 是第 19 课的老伙计，or 今天正式登场一回。",
-        "句子的顺序也有讲究：先说「每天做什么」（every day 收尾）、再接「一直做什么」（keep + 名字版）——先把日常摊开，再把坚持说出来。",
+        "句子的顺序也有讲究：先说「每天做什么」（every day 收尾）、再接「一直做什么」（keep + 名词形式）——先把日常摊开，再把坚持说出来。",
         "跨季倒带一路点过：L17 比较链、L25 每天、L28 频率位、L45 -ing 形式、L64 收尾、L76 加力、L77 不停车——七季的东西，今天一句话全用上。"
       ]
     },
@@ -14944,7 +14944,7 @@ export const grammarLessons: GrammarLesson[] = [
       points: [
         "I run every day, and I keep reading. —— 频率 + 不停车",
         "and / but / or —— 三条接线",
-        "跨季七站：比较链、频率位、名字版、收尾、加力、不停车"
+        "跨季七站：比较链、频率位、名词形式、收尾、加力、不停车"
       ]
     },
     guided: [
@@ -14978,11 +14978,11 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "finished", "read", "the", "book."],
         wrongToken: "read",
         answer: "read",
-        correctionZh: "名字版通道：finish 后面收名字版——finished reading。",
+        correctionZh: "名词形式通道：finish 后面收名词形式——finished reading。",
         explain: "第 64 课老规矩。"
       },
       {
-        // R8 跨课复现：第 45 课（名字版老站）
+        // R8 跨课复现：第 45 课（名词形式老站）
         kind: "arrange",
         promptZh: "再对照一句——第 45 课学过：我享受读书。",
         tokens: ["I", "enjoy", "reading."],
@@ -23091,7 +23091,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "I am used to", role: "我习惯了（有 be 站着）" },
       { text: "getting up early", role: "早起（做的事用 -ing 形式）" }
     ],
-    oneLineRule: "习惯了「做某事」：后面那件事要换名字版（穿 -ing）——I am used to getting up early。同一个 to，前面有 be 站着，它后面用 -ing 形式。",
+    oneLineRule: "习惯了「做某事」：后面那件事要换名词形式（穿 -ing）——I am used to getting up early。同一个 to，前面有 be 站着，它后面用 -ing 形式。",
     examples: [
       { en: "I am used to getting up early.", zh: "我习惯了早起。" },
       { en: "She is used to walking to school.", zh: "她习惯了走路上学。" },
@@ -23108,13 +23108,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am used to get up early.",
         wrongMark: "get",
         correct: "I am used to getting up early.",
-        whyZh: "这个 to 前面站着 am（习惯的记号）——它后面用 -ing 形式：getting up early。做事要说「做的事」，得换上名字版。"
+        whyZh: "这个 to 前面站着 am（习惯的记号）——它后面用 -ing 形式：getting up early。做事要说「做的事」，得换上名词形式。"
       },
       {
         wrong: "I am used to geting up early.",
         wrongMark: "geting",
         correct: "I am used to getting up early.",
-        whyZh: "名字版多一个 t：get 变 getting（短词先双写尾巴再加 -ing）。"
+        whyZh: "名词形式多一个 t：get 变 getting（短词先双写尾巴再加 -ing）。"
       },
       {
         wrong: "I am used getting up early.",
@@ -23134,19 +23134,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I am used to getting up early.",
         bothRight: true,
-        whyZh: "两句都对——第 42 课 like 后面用 -ing 形式（reading）；今天 used to 后面也穿——都是「做的事当名字用」。"
+        whyZh: "两句都对——第 42 课 like 后面用 -ing 形式（reading）；今天 used to 后面也穿——都是「做的事当名词用」。"
       },
       {
         wrong: "I finished reading the book.",
         wrongMark: null,
         correct: "I am used to getting up early.",
         bothRight: true,
-        whyZh: "两句都对——第 64 课 finish 后面用 -ing 形式；今天这个名字版跟着 used to。"
+        whyZh: "两句都对——第 64 课 finish 后面用 -ing 形式；今天这个名词形式跟着 used to。"
       }
     ],
     variants: [
       { label: "肯定", en: "I am used to getting up early.", zh: "我习惯了早起。", noteZh: "做的事用 -ing 形式。" },
-      { label: "否定", en: "I am not used to getting up early.", zh: "我还不习惯早起。", noteZh: "not 站在 am 后面，名字版不动。" },
+      { label: "否定", en: "I am not used to getting up early.", zh: "我还不习惯早起。", noteZh: "not 站在 am 后面，名词形式不动。" },
       { label: "疑问", en: "Are you used to getting up early?", zh: "你习惯早起了吗？", noteZh: "Are 搬句首，getting up early 整块跟着走。" }
     ],
     sceneSwings: [
@@ -23157,10 +23157,10 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "做的事用 -ing 形式",
       paragraphs: [
-        "第 119 课说「习惯了 + 东西」：I am used to the cold.（这个冷是东西）。今天说「习惯了 + 做某事」：I am used to getting up early.——早起是个动作，动作要换上名字版才能跟在 to 后面。",
-        "名字版这个词你见过好几站了：第 42 课 I like reading.（读书是做的事）、第 45 课 enjoy drawing、第 64 课 finish reading——动作想当「名字」用，就穿上 -ing。今天算第六站。",
-        "为什么这个 to 要名字版？因为它前面站着 am／is／are（习惯的记号）——记号在，它后面用 -ing 形式。（第 93 课的 used to 前面没有 be，它认原样：used to play。同一块 to，前面站谁听谁的。）",
-        "一个小提醒：get 变名字版是 getting——尾巴双写一下再加 -ing。第 42 课起你就见过这个写法（running、sitting 都是这个规矩）。"
+        "第 119 课说「习惯了 + 东西」：I am used to the cold.（这个冷是东西）。今天说「习惯了 + 做某事」：I am used to getting up early.——早起是个动作，动作要换上名词形式才能跟在 to 后面。",
+        "名词形式这个词你见过好几站了：第 42 课 I like reading.（读书是做的事）、第 45 课 enjoy drawing、第 64 课 finish reading——动作想当「名字」用，就穿上 -ing。今天算第六站。",
+        "为什么这个 to 要用名词形式？因为它前面站着 am／is／are（习惯的记号）——记号在，它后面用 -ing 形式。（第 93 课的 used to 前面没有 be，它认原样：used to play。同一块 to，前面站谁听谁的。）",
+        "一个小提醒：get 变名词形式是 getting——尾巴双写一下再加 -ing。第 42 课起你就见过这个写法（running、sitting 都是这个规矩）。"
       ]
     },
     summary: {
@@ -23168,7 +23168,7 @@ export const grammarLessons: GrammarLesson[] = [
       points: [
         "I am used to getting up early. —— 做的事用 -ing 形式",
         "I am used to get up ❌ —— 有 be 站着的 to 不认原样",
-        "getting / walking / reading —— 名字版（第 42／64 课的老朋友）"
+        "getting / walking / reading —— 名词形式（第 42／64 课的老朋友）"
       ]
     },
     guided: [
@@ -23206,12 +23206,12 @@ export const grammarLessons: GrammarLesson[] = [
         explain: "有 be 站着的 to 不认原样。"
       },
       {
-        // R8 跨课复现：第 42 课（名字版第一站）
+        // R8 跨课复现：第 42 课（名词形式第一站）
         kind: "arrange",
         promptZh: "再对照一句——第 42 课学过：我喜欢读书。",
         tokens: ["I", "like", "reading."],
         answer: "I like reading.",
-        explain: "复现第 42 课：like 后面用 -ing 形式——今天名字版跟着 used to。"
+        explain: "复现第 42 课：like 后面用 -ing 形式——今天名词形式跟着 used to。"
       },
       {
         // R9 变形/替换：换事（构造迁移，复用 choose 判题）
@@ -23506,7 +23506,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She used to working late.",
         wrongMark: "working",
         correct: "She is used to working late.",
-        whyZh: "加不加 be，是两张脸：有 be 是「习惯了」——She is used to working late；没 be 是「从前常」——She used to work late（后面穿原样）。错在这句两头都占：既没有 be，又穿了名字版。"
+        whyZh: "加不加 be，是两张脸：有 be 是「习惯了」——She is used to working late；没 be 是「从前常」——She used to work late（后面穿原样）。错在这句两头都占：既没有 be，又穿了名词形式。"
       },
       {
         wrong: "I am used to get up early.",
@@ -23566,7 +23566,7 @@ export const grammarLessons: GrammarLesson[] = [
       points: [
         "I used to walk to school. —— 从前常走路（只有 used，穿原样）",
         "I am used to walking to school. —— 现在走惯了（有 be，用 -ing 形式）",
-        "She used to working late ❌ —— 两头都占：既没 be，又穿了名字版"
+        "She used to working late ❌ —— 两头都占：既没 be，又穿了名词形式"
       ]
     },
     guided: [
@@ -23619,7 +23619,7 @@ export const grammarLessons: GrammarLesson[] = [
         replaceTarget: "把「从前常」改成「现在走惯了」",
         options: ["I am used to walking to school.", "I am used to walk to school.", "I used to walking to school."],
         answer: "I am used to walking to school.",
-        explain: "换成「习惯了」这张脸：加上 be，后面换名字版——am used to walking。"
+        explain: "换成「习惯了」这张脸：加上 be，后面换名词形式——am used to walking。"
       }
     ],
     practice: [
@@ -24016,7 +24016,7 @@ export const grammarLessons: GrammarLesson[] = [
         replaceTarget: "把「从前常」改成「还不习惯」",
         options: ["I am not used to walking to school.", "I don't used to walking to school.", "I am not used to walk to school."],
         answer: "I am not used to walking to school.",
-        explain: "换成「习惯了」这张脸：加 be、加 not、后面换名字版。"
+        explain: "换成「习惯了」这张脸：加 be、加 not、后面换名词形式。"
       }
     ],
     practice: [
@@ -25083,7 +25083,7 @@ export const grammarLessons: GrammarLesson[] = [
       { en: "This cake tastes good.", zh: "这个蛋糕尝着真好吃。" },
       { en: "It tastes nice.", zh: "尝着挺好。" },
       { en: "It smells good.", zh: "闻着真香。（第 129 课）" },
-      { en: "The cake was eaten by my brother.", zh: "蛋糕被我弟弟吃了。（第 52 课）" }
+      { en: "The cake was eaten by my brother.", zh: "蛋糕被我哥哥吃了。（第 52 课）" }
     ],
     dialogue: [
       { who: "npc", en: "I made it this morning!", zh: "妈妈把蛋糕端上桌。" },
@@ -25146,7 +25146,7 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "到现在为止你已经集齐三张脸：It looks nice.（眼睛）／It sounds great.（耳朵）／It smells good.（鼻子）。今天第四张：This cake tastes good.（尝着真好吃）。",
         "架子一个字都没变：尝的那个词自己站中间（不用 is）；「它」或者「这个蛋糕」是单个的，所以要带上 s（tastes）；后面直接跟那个「怎么样」的词（good）——照样不加 -ly。",
-        "今天拿蛋糕举例，是因为第 52 课你见过它：The cake was eaten by my brother.（蛋糕被我弟弟吃了）。那句说的是「谁做的」，今天这句说的是「尝着怎么样」——同一个蛋糕，两件事。",
+        "今天拿蛋糕举例，是因为第 52 课你见过它：The cake was eaten by my brother.（蛋糕被我哥哥吃了）。那句说的是「谁做的」，今天这句说的是「尝着怎么样」——同一个蛋糕，两件事。",
         "中文里说「尝着真好吃」，那个「好吃」就是直接跟上来的；英语也一样，直接把 good 放在 tastes 后面就行。千万别顺手加个 -ly——那是「做事的样子」，不是「尝着的味道」。"
       ]
     },
@@ -25195,7 +25195,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R8 跨课复现：第 52 课（蛋糕的老句子）
         kind: "arrange",
-        promptZh: "再对照一句——第 52 课学过：蛋糕被我弟弟吃了。",
+        promptZh: "再对照一句——第 52 课学过：蛋糕被我哥哥吃了。",
         tokens: ["The", "cake", "was", "eaten", "by", "my", "brother."],
         answer: "The cake was eaten by my brother.",
         explain: "复现第 52 课：那句说「谁做的」——今天这句说「尝着怎么样」。"
@@ -25240,7 +25240,7 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         // R8 跨课复现：第 52 课原句
-        promptZh: "复习第 52 课：蛋糕被我弟弟吃了。",
+        promptZh: "复习第 52 课：蛋糕被我哥哥吃了。",
         tokens: ["The", "cake", "was", "eaten", "by", "my", "brother."],
         distractors: ["ate"],
         answer: "The cake was eaten by my brother."
@@ -25894,7 +25894,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am look forward to the weekend.",
         wrongMark: "look",
         correct: "I am looking forward to the weekend.",
-        whyZh: "「盼着」这个记号是 looking——前面站着 am，它穿 -ing（第 42 课起你见过的名字版）。"
+        whyZh: "「盼着」这个记号是 looking——前面站着 am，它穿 -ing（第 42 课起你见过的名词形式）。"
       },
       {
         wrong: "I looking forward to the weekend.",
@@ -25940,7 +25940,7 @@ export const grammarLessons: GrammarLesson[] = [
         "第 133 课你见过 I am looking forward to the weekend.（当时只是认读、混个脸熟）——今天它转正了：会自己说，还知道三个字要一起记。",
         "looking forward to 是「往前面望着」——something 在前面等着你，你心里盼它来。所以它后面跟的永远是要等的那件事：the weekend（周末）、the party（聚会）、the summer（夏天）。",
         "注意这个 look 不是第 125 课那个「看」。第 125 课的 It looks nice. 说的是「它看着怎么样」（后面跟那个「怎么样」的词）；今天的 I am looking forward to… 说的是「我心里盼着」（后面跟要等的事）。同一个 look，两张脸。",
-        "还有一个最容易踩的坑：中间那个 to 后面跟的东西有讲究——跟事情名词（the weekend）就这么说；要是跟「做某件事」，那件事得换名字版（第 136 课细说）。"
+        "还有一个最容易踩的坑：中间那个 to 后面跟的东西有讲究——跟事情名词（the weekend）就这么说；要是跟「做某件事」，那件事得换名词形式（第 136 课细说）。"
       ]
     },
     summary: {
@@ -26251,7 +26251,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-136-looking-forward-to-seeing-you",
     number: 136,
     title: "盼着见到你",
-    grammarLabel: "盼的是做某事 · forward to + 名字版",
+    grammarLabel: "盼的是做某事 · forward to + 名词形式",
     episode: "小美的一天 一百三十六",
     scene: "city",
     cover: cover136,
@@ -26264,7 +26264,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "I am looking forward to", role: "我盼着（盼着的记号）" },
       { text: "seeing you", role: "见到你（做的事用 -ing 形式）" }
     ],
-    oneLineRule: "盼着「做某事」：后面那件事要换名字版——I am looking forward to seeing you。跟第 120 课同一个规矩：这个 to 后面用 -ing 形式。",
+    oneLineRule: "盼着「做某事」：后面那件事要换名词形式——I am looking forward to seeing you。跟第 120 课同一个规矩：这个 to 后面用 -ing 形式。",
     examples: [
       { en: "I am looking forward to seeing you.", zh: "我盼着见到你。" },
       { en: "She is looking forward to seeing you.", zh: "她盼着见到你。" },
@@ -26319,7 +26319,7 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "I am looking forward to seeing you.", zh: "我盼着见到你。", noteZh: "做的事用 -ing 形式：seeing。" },
-      { label: "否定", en: "I am not looking forward to saying goodbye.", zh: "我不盼着说再见。", noteZh: "not 站在 am 后面，名字版不动。" },
+      { label: "否定", en: "I am not looking forward to saying goodbye.", zh: "我不盼着说再见。", noteZh: "not 站在 am 后面，名词形式不动。" },
       { label: "疑问", en: "Are you looking forward to seeing her?", zh: "你盼着见到她吗？", noteZh: "Are 搬句首。" }
     ],
     sceneSwings: [
@@ -26331,9 +26331,9 @@ export const grammarLessons: GrammarLesson[] = [
       title: "这个 to 后面用 -ing 形式",
       paragraphs: [
         "第 134／135 课盼的是「东西」：the weekend（周末）、the summer（夏天）。今天盼的是「做一件事」：见到你（seeing you）。",
-        "跟第 120 课一模一样的规矩：那个 to 后面要是跟「做的事」，这件事就要换上名字版——I am used to getting up early.（第 120 课）／I am looking forward to seeing you.（今天）。动作想当「名字」用，就穿上 -ing。",
+        "跟第 120 课一模一样的规矩：那个 to 后面要是跟「做的事」，这件事就要换上名词形式——I am used to getting up early.（第 120 课）／I am looking forward to seeing you.（今天）。动作想当「名字」用，就穿上 -ing。",
         "最容易踩的坑：一看 to 就顺手接原样（see）。第 120 课你已经踩过一次，今天再把它记住——这个 to 后面要用 -ing 形式，不用原样。",
-        "还有一个小地方：名字版是 seeing，不是昨天版的 saw。这个位置只后面用 -ing 形式——因为它要的是「做的这件事」，不是「做过的那件事」。"
+        "还有一个小地方：名词形式是 seeing，不是昨天版的 saw。这个位置只后面用 -ing 形式——因为它要的是「做的这件事」，不是「做过的那件事」。"
       ]
     },
     summary: {
@@ -31916,7 +31916,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "myself 站句尾——说这件事是我自己做的。"
     },
     huntCaseIds: ["hunt-myself-cake"],
-    cover: cover45
   },
   {
     id: "lesson-164-himself",
@@ -32154,7 +32153,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "her 加 self 就是「她自己」——句尾站定。"
     },
     huntCaseIds: ["hunt-herself-homework"],
-    cover: cover46
   },
   {
     id: "lesson-165-each-other",
@@ -32392,7 +32390,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "each other 站句尾——一来一往，不加 s。"
     },
     huntCaseIds: ["hunt-each-other-clean"],
-    cover: cover47
   },
   {
     id: "lesson-166-too-many",
@@ -32641,7 +32638,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "「人」数得出来用 many——people 不加 s。"
     },
     huntCaseIds: ["hunt-too-many-people"],
-    cover: cover48
   },
   {
     id: "lesson-167-a-lot-of",
@@ -32890,7 +32886,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "a lot of 三个词一起——后面跟的东西带 s。"
     },
     huntCaseIds: ["hunt-a-lot-of-friends"],
-    cover: cover49
   },
   {
     id: "lesson-168-why-dont-you",
@@ -33139,7 +33134,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "don't 跟着 Why 站前面——后面那个动作穿原样。"
     },
     huntCaseIds: ["hunt-why-dont-you-rest"],
-    cover: cover50
   },
   {
     id: "lesson-169-id-like",
@@ -33389,7 +33383,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "I'd = I would——小撇号是被省掉的缩写记号。"
     },
     huntCaseIds: ["hunt-id-like-tea"],
-    cover: cover51
   },
   {
     id: "lesson-170-both-and",
@@ -33638,7 +33631,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "both 站第一样前、and 站第二样前——一对夹子。"
     },
     huntCaseIds: ["hunt-both-and-sing"],
-    cover: cover46
   },
   {
     id: "lesson-171-neither-nor",
@@ -33887,7 +33879,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "neither…nor 一对——前面 neither，后面就得 nor。"
     },
     huntCaseIds: ["hunt-neither-nor-food"],
-    cover: cover47
   },
   {
     id: "lesson-172-unless",
@@ -34137,7 +34128,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "unless 自己就含「除非不」——后面不再加 not。"
     },
     huntCaseIds: ["hunt-unless-rain"],
-    cover: cover48
   },
   {
     id: "lesson-173-in-order-to",
@@ -34386,7 +34376,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "in order to 后面穿原样——说「为了不」就把 not 插在 to 前面。"
     },
     huntCaseIds: ["hunt-in-order-to-bus"],
-    cover: cover49
   },
   {
     id: "lesson-174-be-able-to",
@@ -34636,7 +34625,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "be able to 后面穿原样——换时间就换前面那个 be。"
     },
     huntCaseIds: ["hunt-able-to-go"],
-    cover: cover50
   },
   {
     id: "lesson-175-so-do-i",
@@ -34881,7 +34869,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "顺序是倒的——So do I／So am I，看对方那句站的帮手是谁。"
     },
     huntCaseIds: ["hunt-so-do-i"],
-    cover: cover51
   },
   {
     id: "lesson-176-would-rather",
@@ -35130,7 +35117,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "rather 站在 would 后面——后面动作穿原样。"
     },
     huntCaseIds: ["hunt-would-rather-walk"],
-    cover: cover59
   },
   {
     id: "lesson-177-prefer",
@@ -35380,7 +35366,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "三段：prefer ＋ 甲 ＋ to ＋ 乙——那半截用 to，不用 than。"
     },
     huntCaseIds: ["hunt-prefer-tea"],
-    cover: cover60
   },
   {
     id: "lesson-178-had-done",
@@ -35629,7 +35614,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "更早那件用 had ＋ 做过版；晚那件用普通过去式。"
     },
     huntCaseIds: ["hunt-had-lost-key"],
-    cover: cover61
   },
   {
     id: "lesson-179-shall",
@@ -35874,7 +35858,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "Shall 后面固定是 we——后面动作穿原样。"
     },
     huntCaseIds: ["hunt-shall-we-quiet"],
-    cover: cover62
   },
   {
     id: "lesson-180-whole",
@@ -36069,7 +36052,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "whole 管一个东西的完整——前面带上 the。"
     },
     huntCaseIds: ["hunt-whole-book"],
-    cover: cover63
   },
   {
     id: "lesson-181-had-better",
@@ -36264,7 +36246,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "永远用 had——后面动作穿原样、不垫 to。"
     },
     huntCaseIds: ["hunt-had-better-go"],
-    cover: cover64
   },
   {
     id: "lesson-182-close-24",
@@ -36517,7 +36498,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "这一季六件事排一行——全部、每个、还没、已经、还在、多久。"
     },
     huntCaseIds: ["hunt-close-24-row"],
-    cover: cover65
   },
   {
     id: "lesson-183-close-25",
@@ -36780,7 +36760,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "这一季五件事排一行——一个都不、像什么、好像、需要、大多数。"
     },
     huntCaseIds: ["hunt-close-25-row"],
-    cover: cover66
   },
   {
     id: "lesson-184-close-26",
@@ -37042,7 +37021,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "这一季六句排一行——自己做、互相帮、太多、很多、怎么不、想要。"
     },
     huntCaseIds: ["hunt-close-26-row"],
-    cover: cover67
   },
   {
     id: "lesson-185-close-27",
@@ -37315,7 +37293,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "这一季五对成对的说法——记住一个，另一个就在旁边。"
     },
     huntCaseIds: ["hunt-close-27-row"],
-    cover: cover68
   },
   {
     id: "lesson-186-so-that",
@@ -37510,7 +37487,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "so that 后面带「谁 + 能做什么」——换人就用它。"
     },
     huntCaseIds: ["hunt-so-that-early"],
-    cover: cover46
   },
   {
     id: "lesson-187-as-long-as",
@@ -37705,7 +37681,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "两个 as 一个都不能少——前提那半句说现在。"
     },
     huntCaseIds: ["hunt-as-long-as-forest"],
-    cover: cover47
   },
   {
     id: "lesson-188-had-to",
@@ -37900,7 +37875,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "过去的事用 had to——后面那个动作穿原样。"
     },
     huntCaseIds: ["hunt-had-to-walk"],
-    cover: cover71
   },
   {
     id: "lesson-189-their",
@@ -38095,7 +38069,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "their 贴在东西前面——不带 s。"
     },
     huntCaseIds: ["hunt-their-books"],
-    cover: cover72
   },
   {
     id: "lesson-190-learning-to-swim",
@@ -38290,7 +38263,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "前面穿 -ing、后面垫 to——两层拼起来。"
     },
     huntCaseIds: ["hunt-learning-to-swim"],
-    cover: cover73
   },
   {
     id: "lesson-191-walked-into",
@@ -38478,7 +38450,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "走进里面用 into——比 in 多一层「从外面动到里面」。"
     },
     huntCaseIds: ["hunt-walked-into"],
-    cover: cover74
   },
   {
     id: "lesson-192-through-across",
@@ -38670,7 +38641,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "中间钻过去是 through，一头到另一头是 across。"
     },
     huntCaseIds: ["hunt-through-across"],
-    cover: cover75
   },
   {
     id: "lesson-193-so-that-result",
@@ -38860,7 +38830,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "so 和 that 一头一尾——so 后面跟「有多…」，that 领出结果。"
     },
     huntCaseIds: ["hunt-so-that-result"],
-    cover: cover76
   },
   {
     id: "lesson-194-such-a",
@@ -39051,7 +39020,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "a 紧跟 such，再跟「东西」——一个看「有多」，一个看「什么样的一个」。"
     },
     huntCaseIds: ["hunt-such-a"],
-    cover: cover77
   },
   {
     id: "lesson-195-its",
@@ -39242,7 +39210,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "「它的」写 its——不戴小撇，贴着后面的东西。"
     },
     huntCaseIds: ["hunt-its-box"],
-    cover: cover78
   },
   {
     id: "lesson-196-among",
@@ -39433,7 +39400,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "混在一群里用 among——两个、两头点名才是 between。"
     },
     huntCaseIds: ["hunt-among-boxes"],
-    cover: cover79
   },
   {
     id: "lesson-197-irregular-past",
@@ -39624,7 +39590,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "think → thought、know → knew——这两个老朋友不加 -ed，要单独记。"
     },
     huntCaseIds: ["hunt-thought-knew"],
-    cover: cover80
   },
   {
     id: "lesson-198-swam-sang",
@@ -39815,7 +39780,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "swim → swam、sing → sang——换里面的零件（i 换成 a），不加 -ed。"
     },
     huntCaseIds: ["hunt-swam-sang"],
-    cover: cover81
   },
   {
     id: "lesson-199-sat-caught",
@@ -40006,7 +39970,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "sit → sat（i 换成 a）、catch → caught（换成 -aught）——换法不一样，都要单独记。"
     },
     huntCaseIds: ["hunt-sat-caught"],
-    cover: cover82
   },
   {
     id: "lesson-200-felt-kept",
@@ -40197,7 +40160,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "feel → felt、keep → kept——两个 e 只剩一个、尾巴加个 t。"
     },
     huntCaseIds: ["hunt-felt-kept"],
-    cover: cover83
   },
   {
     id: "lesson-201-slept",
@@ -40388,7 +40350,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "sleep → slept——两个 e 只剩一个、加个 t，跟第 200 课的 kept／felt 一个换法。"
     },
     huntCaseIds: ["hunt-slept"],
-    cover: cover84
   },
   {
     id: "lesson-202-drew",
@@ -40579,7 +40540,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "draw → drew（aw 换成 ew）；put 三态同形（第 82 课）。"
     },
     huntCaseIds: ["hunt-drew"],
-    cover: cover85
   },
   {
     id: "lesson-203-wore",
@@ -40771,7 +40731,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "wear → wore（不加 -ed）；后半截 want to 后面穿原样 wear。"
     },
     huntCaseIds: ["hunt-wore"],
-    cover: cover86
   },
   {
     id: "lesson-204-gave",
@@ -40962,7 +40921,6 @@ export const grammarLessons: GrammarLesson[] = [
       noteZh: "give → gave（不加 -ed）；位置照样是先给谁、后给什么。"
     },
     huntCaseIds: ["hunt-gave"],
-    cover: cover87
   },
   {
     id: "lesson-205-by-the-time",

@@ -24,7 +24,7 @@ export const LESSON_GROUPS: GrammarSeason[] = [
   { id: "season-3", label: "第三季 · 巩固篇", hint: "把最顽固的小毛病改掉：动词带不带 s、东西在不在、问什么、多久一次、打算做什么、有几个……全部拿下", min: 25, max: 34 },
   // 第四批 · 句子变长（2026-09-14）：宾从「话中话」+ 定从「挂尾巴」
   { id: "season-4", label: "第四季 · 句子变长", hint: "从一句一件事，到一句话说两件事：话中话、给名词挂尾巴", min: 35, max: 41 },
-  // 第五批 · 动词的两件新搭档（2026-09-16）：-ing 名字版 + 目的 to 小垫板
+  // 第五批 · 动词的两件新搭档（2026-09-16）：-ing 名词形式 + 目的 to 小垫板
   { id: "season-5", label: "第五季 · 动词的两件新搭档", hint: "喜欢做、享受做、去做、想做：like/enjoy + reading；go … to buy", min: 42, max: 46 },
   // 第六批 · 语用入门（2026-09-17）：S5 首兑——should 建议 + if 条件句
   { id: "season-6", label: "第六季 · 建议与条件", hint: "给人建议、说条件：should 应该 / if 如果……就……", min: 47, max: 49 },
@@ -56,7 +56,7 @@ export const LESSON_GROUPS: GrammarSeason[] = [
   { id: "season-19", label: "第十九季 · 我看到的和感觉到的", hint: "它看起来不错、你看起来很累、同一个 look 两张脸——看到什么就说什么，一句一句来", min: 125, max: 127 },
   // 第二十批 · 五种感官（2026-09-19）：sound/smell/taste/feel 四词立岗 + 否疑合体 + 五句排一行收口（造词课 6 课大章·单拱）
   { id: "season-20", label: "第二十季 · 五种感官", hint: "听起来不错、闻着好、尝着好、摸着凉——同一个架子，换四双耳朵", min: 128, max: 133 },
-  // 第二十一批 · 盼着那一天（2026-09-20）：look forward to 整块立岗 + 换人换形 + 名字版 + 否疑 + 与批十八两站收口（B 档收官 5 课大章·单拱）
+  // 第二十一批 · 盼着那一天（2026-09-20）：look forward to 整块立岗 + 换人换形 + 名词形式 + 否疑 + 与批十八两站收口（B 档收官 5 课大章·单拱）
   { id: "season-21", label: "第二十一季 · 盼着那一天", hint: "我盼着周末、她盼着夏天、盼着见到你——同一个 to，后面跟的那件事", min: 134, max: 138 },
   // ── 末段季合并（2026-09-20）：用户反馈「我希望一个章节的课程多一些，而不是每次一个章节就两三节课」。
   // 原 season-22..38 共 17 个小季（2-3 课）合并为 6 个大季（6-10 课），主题邻近的放在一起。
@@ -66,7 +66,7 @@ export const LESSON_GROUPS: GrammarSeason[] = [
   { id: "season-25", label: "第二十五季 · 一个都不、看起来像、需要", hint: "家里一个人都没有、它看起来像一条船、我需要买点牛奶——身边的事一件件说", min: 157, max: 162 },
   { id: "season-26", label: "第二十六季 · 自己、日常四句", hint: "我自己能做、我们互相帮忙、人太多了、你怎么不歇会儿——日常里最顺口的几句", min: 163, max: 169 },
   { id: "season-27", label: "第二十七季 · 一对一对的说法", hint: "既…又…／既不…也不…、除非／为了、能够／我也是、宁愿／更喜欢、更早的事／征求同意，再加整个和最好——成对学，记得牢", min: 170, max: 181 },
-  { id: "season-28", label: "第二十八季 · 收口、目的、条件、不得不、他们的与走向哪儿", hint: "把整季的句型排一行，再加七格：做这事是为了让谁做什么（so that）、只要你来我就去（as long as）、昨天不得不走回家（had to）、他们的东西（their／theirs）、我正在学游泳（be 后面穿 -ing，再垫 to）、她走进了厨房（进到里面用 into）、我们穿过了树林、横过了小桥（中间钻过去用 through，一头到另一头用 across）、风太大把窗吹破了（太…了用 so…that 一头一尾）、好大的一条鱼（这么…的一个用 such a，a 紧跟 such）、猫在它的盒子里（「它的」写 its，不带小撇）、猫在一堆箱子中间（一群里用 among，两个才用 between）、想了一晚上想通了（think 的昨天版是 thought、know 的是 knew）、又游泳又唱歌（swim 变 swam、sing 变 sang）、坐旁边赶上了（sit 变 sat、catch 变 caught）、雪里读完了那本书（feel 变 felt、keep 变 kept——两个 e 只剩一个再加 t）、昨晚睡得好（sleep 变 slept）、画了条船贴在墙上（draw 变 drew，aw 换成 ew）", min: 182, max: 202 }
+  { id: "season-28", label: "第二十八季 · 收口、目的、条件、不得不、他们的与走向哪儿", hint: "把整季的句型排一行，再加七格：做这事是为了让谁做什么（so that）、只要你来我就去（as long as）、昨天不得不走回家（had to）、他们的东西（their／theirs）、我正在学游泳（be 后面穿 -ing，再垫 to）、她走进了厨房（进到里面用 into）、我们穿过了树林、横过了小桥（中间钻过去用 through，一头到另一头用 across）、风太大把窗吹破了（太…了用 so…that 一头一尾）、好大的一条鱼（这么…的一个用 such a，a 紧跟 such）、猫在它的盒子里（「它的」写 its，不带小撇）、猫在一堆箱子中间（一群里用 among，两个才用 between）、想了一晚上想通了（think 的昨天版是 thought、know 的是 knew）、又游泳又唱歌（swim 变 swam、sing 变 sang）、坐旁边赶上了（sit 变 sat、catch 变 caught）、雪里读完了那本书（feel 变 felt、keep 变 kept——两个 e 只剩一个再加 t）、昨晚睡得好（sleep 变 slept）、画了条船贴在墙上（draw 变 drew，aw 换成 ew）、昨天戴了顶新帽子（wear 变 wore）、她给了我一块大蛋糕（give 变 gave，位置照样先给谁后给什么）、到家的时候天已经黑了（到…的时候用 by the time，前半句不请 will）", min: 182, max: 205 }
 ];
 
 /** 按课号查所属季（找不到返回 undefined——出现即数据缺口，宁可显式暴露）。 */
