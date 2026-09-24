@@ -173,6 +173,28 @@ describe("E4 · 忆段边界", () => {
     page.unmount();
   });
 
+  /**
+   * E4-9【2026-09-24 新增】忆段答错必须给「问 AI 为什么不对」入口。
+   *
+   * 与 E1-8（跟段）同源：这个面板原先每个段各抄一份，忆段被漏掉了——
+   * 答错只有「想不起来，看答案」，用户想问「我写的为什么不对」时无处可问。
+   * 本闸锁忆段这一份不回退。
+   */
+  it("E4-9 忆段答错：出现「为什么我写的不对？」入口，点击后解答面板打开", () => {
+    warmStorage();
+    const page = mount();
+    enterRecall(page);
+
+    typeInto(page, "totally wrong sentence here");
+    clickEl(submitButton(page));
+    expect(page.container.querySelector(".lesson-feedback.retry"), "应先进入答错态").not.toBeNull();
+    expect(page.buttons().includes("为什么我写的不对？"), "忆段答错应给错因入口").toBe(true);
+
+    page.click("为什么我写的不对？");
+    expect(page.container.querySelector(".lesson-whywrong-panel"), "点击后应打开解答面板").not.toBeNull();
+    page.unmount();
+  });
+
   it("E4-8 超长乱输入（500 字符）不崩溃", () => {
     warmStorage();
     const page = mount();

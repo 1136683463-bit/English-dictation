@@ -615,4 +615,58 @@ describe("ST4 · 回访页 / 重审页状态机", () => {
     ).not.toBeNull();
     page.unmount();
   });
+  /**
+   * ST4-AI【2026-09-24 新增】回访页答错必须给「问 AI 为什么不对」入口。
+   *
+   * 缺口（本轮排查发现的同类问题）：本页答错原先只有「再试一次 / 重来这题」，
+   * **既不看答案也不能问为什么**——卡住时唯一出路是离开页面；
+   * 而答对时反倒给了 `revisitWhy` 解释，形成「成功者有解释、失败者什么都没有」的反向不对称。
+   *
+   * 本闸锁：第 1 题故意答错后入口出现，点击后面板打开。
+   * （只验第 1 题：每题都从 index 0 重新挂载，验多题要靠「先答对再推进」，
+   *   那会把本闸变成流程测试；入口逻辑与题型无关，验一题足够。）
+   */
+  it("ST4-AI 回访第 1 题答错给错因入口，点击后面板打开", () => {
+    resetStorage();
+    seedAppData(makeAppData(stage1Done(LESSON)) as never);
+    const page = mountRevisit();
+    const first = buildRevisitQuiz(LESSON)[0];
+
+    if (first.kind === "cloze") {
+      const input = page.container.querySelector<HTMLInputElement>("input.large-textarea");
+      expect(input, "cloze 题应有输入框").not.toBeNull();
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+      act(() => {
+        setter?.call(input, "definitely wrong");
+        input?.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+      clickElement(
+        Array.from(page.container.querySelectorAll<HTMLButtonElement>("button")).find(
+          (button) => (button.textContent ?? "").trim() === "提交"
+        )
+      );
+    } else {
+      // rebuild：按倒序点词块（必然错序）→ 摆满即判题
+      for (const token of [...(first.rebuildTokens ?? [])].reverse()) {
+        const chip = Array.from(page.container.querySelectorAll<HTMLButtonElement>(".lesson-spot-row button")).find(
+          (button) => !button.disabled && (button.textContent ?? "").trim() === token
+        );
+        if (!chip) break;
+        clickElement(chip);
+      }
+    }
+
+    expect(
+      page.container.querySelector(".lesson-feedback.retry"),
+      `${first.kind} 题故意答错后应进入 retry 态`
+    ).not.toBeNull();
+    expect(page.buttons().includes("为什么我写的不对？"), "回访答错应给错因入口").toBe(true);
+
+    page.click("为什么我写的不对？");
+    expect(page.container.querySelector(".lesson-whywrong-panel"), "点击后应打开解答面板").not.toBeNull();
+    page.unmount();
+  });
+
+
+
 });

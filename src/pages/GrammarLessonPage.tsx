@@ -1044,6 +1044,53 @@ export default function GrammarLessonPage() {
   );
   const guidedStep: LessonGuidedStep | undefined =
     lesson.guided[guidedDisplayOrderMemo[guided.index] ?? guided.index];
+
+  /**
+   * 跟段「用户产出的那句」——供「问 AI 为什么不对」的对照使用（2026-09-24）。
+   *
+   * ⚠️ **按题型取，不能一律用拼装区**：跟段有四种题型，只有 arrange 会把词块摆成句子；
+   * choose/replace 是选选项、spot 是「点出哪个词有问题」（用户**没有产出句子**）。
+   * 一律用拼装区会让 choose/replace 拿到空串、spot 拿到无意义的值。
+   *
+   * 返回空串 = 这一题没有可对照的用户产出 ⇒ **不显示追问入口**
+   * （spot 属于这种：它的 `answer` 就是那个错词，不是「正确说法」，
+   *   拿它当答案会讲反；用户想知道的「哪里错了」由点对后的 correctionZh 回答）。
+   */
+  const guidedWrongSentence = (() => {
+    if (!guidedStep) return "";
+    if (guidedStep.kind === "arrange") {
+      return guidedOrder
+        .map((tokenIndex) => arrangeTokensOf(guidedStep)[tokenIndex] ?? "")
+        .join(" ")
+        .trim();
+    }
+    if (guidedStep.kind === "choose") {
+      // 选错的那个选项填进去，就是用户这一选会得到的句子
+      return [guidedStep.before ?? "", guided.picked[0] ?? "", guidedStep.after ?? ""]
+        .join(" ")
+        .replace(/\s+/g, " ")
+        .replace(/\s+([.,!?;:])/g, "$1")
+        .trim();
+    }
+    if (guidedStep.kind === "replace") {
+      // 替换题只选「变形后的那个词」，没有整句可还——对照就取这个词
+      return (guided.picked[0] ?? "").trim();
+    }
+    return "";
+  })();
+
+  /**
+   * 跟段「本题的正确说法」——同样按题型取。
+   *
+   * `reviewSentenceOfGuidedStep` 是入队侧还原整句的**同一个**助手
+   * （arrange 取 answer、choose 按 before/after 拼回整句）；
+   * 它对 replace/spot 返回空串，那时退回 `answer`（replace 的 answer 是正确变形词，
+   * 作对照是准确的）。spot 不进这条路径——上面的产出为空，入口本就不显示。
+   */
+  const guidedCorrectSentence = (() => {
+    if (!guidedStep) return "";
+    return reviewSentenceOfGuidedStep(guidedStep) || guidedStep.answer;
+  })();
   // 阶段三：进入新题时开始计时（同一题重复渲染不重置）
   beginStepTiming(`guided:${lesson.id}:${guided.index}`);
   const practiceStep: LessonPracticeStep | undefined = lesson.practice[practiceIndex];
@@ -3324,7 +3371,8 @@ export default function GrammarLessonPage() {
             {guidedFeedback === "pass" && arrangeFiddlingAfterPass("guided") && (
               <div className="lesson-feedback fiddling" aria-live="polite">
                 <p>
-                  <CheckCircle2 size={16} /> 这一题已经通过 ✓ —— 拼装区可以自由摆弄，不影响结果。
+                  <CheckCircle2 size={16} /> 这一题已经通过 ✓（<strong>{guidedStep.answer}</strong>）
+                  —— 拼装区可以自由摆弄，不影响结果。
                 </p>
                 <button type="button" className="primary-button" onClick={guidedNext}>
                   {guided.index + 1 >= guidedDisplayOrderMemo.length ? "下面自己来" : "下一题"}
@@ -3360,22 +3408,23 @@ export default function GrammarLessonPage() {
                   */}
                 {guidedFeedback === "retry" && (
                   <>
-                    {!whyWrongOpen && (
+                    {/**
+                      * 入口只在「这一题用户真的产出了东西」时出现（`guidedWrongSentence` 非空）：
+                      * arrange / choose / replace 有产出；spot 没有（用户只是在点词），
+                      * 它的「哪里错了」由点对后的 correctionZh 回答。
+                      */}
+                    {!whyWrongOpen && guidedWrongSentence && (
                       <div className="lesson-stage-actions center">
                         <button
                           type="button"
                           className="lesson-whywrong-entry"
                           onClick={() =>
-                            openWhyWrong(
-                              200 + guided.index,
-                              guidedOrder.map((tokenIndex) => arrangeTokensOf(guidedStep)[tokenIndex] ?? "").join(" "),
-                              {
-                                correctSentence: guidedStep.answer,
-                                promptZh: guidedStep.promptZh,
-                                section: "guided",
-                                anchorPrefix: "guided.step"
-                              }
-                            )
+                            openWhyWrong(200 + guided.index, guidedWrongSentence, {
+                              correctSentence: guidedCorrectSentence,
+                              promptZh: guidedStep?.promptZh,
+                              section: "guided",
+                              anchorPrefix: "guided.step"
+                            })
                           }
                         >
                           <Lightbulb size={13} aria-hidden="true" /> 为什么我拼的不对？
@@ -3385,8 +3434,8 @@ export default function GrammarLessonPage() {
                     {whyWrongOpen && whyWrongStepRef.current === 200 + guided.index && (
                       <WhyWrongPanel
                         wrongSentence={whyWrongSentence}
-                        correctSentence={guidedStep.answer}
-                        mineLabel="你拼的"
+                        correctSentence={guidedCorrectSentence}
+                        mineLabel={guidedStep?.kind === "replace" ? "你选的" : "你拼的"}
                         loading={whyWrongLoading}
                         match={whyWrongMatch}
                         ai={whyWrongAI}
@@ -3700,7 +3749,8 @@ export default function GrammarLessonPage() {
             {practiceFeedback === "pass" && arrangeFiddlingAfterPass("practice") && (
               <div className="lesson-feedback fiddling" aria-live="polite">
                 <p>
-                  <CheckCircle2 size={16} /> 这一题已经通过 ✓ —— 拼装区可以自由摆弄，不影响结果。
+                  <CheckCircle2 size={16} /> 这一题已经通过 ✓（<strong>{practiceStep.answer}</strong>）
+                  —— 拼装区可以自由摆弄，不影响结果。
                 </p>
                 <button type="button" className="primary-button" onClick={practiceNext}>
                   {practiceIndex + 1 >= lesson.practice.length ? "最后一步：说出来" : "下一题"}

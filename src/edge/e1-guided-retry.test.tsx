@@ -212,6 +212,58 @@ describe("E1 · guided 答错多次的引导", () => {
     expect(source, "出口条件应基于 guidedMisses").toMatch(/guidedMisses >= \d && \(/);
   });
 
+  /**
+   * E1-8【2026-09-24 新增】跟段答错必须给「问 AI 为什么不对」入口。
+   *
+   * 用户实测报的原话：「现在问 AI 为什么不对的按钮又没有了」（跟段第 6/6 题）。
+   * 根因不是条件写错，而是**这个面板原先在每个段各抄一份**——练习段、产出段有，
+   * 跟段与忆段漏了。本闸锁「跟段这一份」不回退；另见 E1-9（多题型）与 E4 的忆段闸。
+   */
+  it("E1-8 跟段 arrange 答错：出现「为什么我拼的不对？」入口，点击后解答面板打开", () => {
+    const page = mount();
+    const entries = enterGuided(page);
+    const arrangeAt = entries.findIndex((entry) => entry.step.kind === "arrange");
+    expect(arrangeAt, "本课应含 arrange 题").toBeGreaterThanOrEqual(0);
+    advanceTo(page, entries, arrangeAt);
+
+    answerArrangeWrongly(page, entries[arrangeAt].step.answer);
+    expect(page.container.querySelector(".lesson-feedback.retry"), "应先进入答错态").not.toBeNull();
+    expect(page.buttons().includes("为什么我拼的不对？"), "跟段答错应给错因入口").toBe(true);
+
+    page.click("为什么我拼的不对？");
+    expect(page.container.querySelector(".lesson-whywrong-panel"), "点击后应打开解答面板").not.toBeNull();
+    page.unmount();
+  });
+
+  /**
+   * E1-9【2026-09-24 新增】ask 的入参必须**按题型取**，不能一律用拼装区。
+   *
+   * 跟段四种题型里只有 arrange 会把词块摆成句子；choose/replace 是选选项、
+   * spot 是「点出哪个词有问题」（用户没有产出句子）。
+   * 一律用拼装区会让 choose/replace 拿到空串（入口该出却不出）。
+   * 本闸用 choose 题验证：答错后同样要有入口。
+   */
+  it("E1-9 跟段 choose 答错：同样给入口（ask 按题型取错句，不依赖拼装区）", () => {
+    const page = mount();
+    const entries = enterGuided(page);
+    const chooseAt = entries.findIndex((entry) => entry.step.kind === "choose");
+    expect(chooseAt, "本课应含 choose 题").toBeGreaterThanOrEqual(0);
+    advanceTo(page, entries, chooseAt);
+
+    // 选一个与正确项不同的选项
+    const step = entries[chooseAt].step;
+    const wrongOption = (step.options ?? []).find((option) => option !== step.answer);
+    expect(wrongOption, "choose 应有干扰项").toBeTruthy();
+    page.click(wrongOption!);
+
+    expect(page.container.querySelector(".lesson-feedback.retry"), "应先进入答错态").not.toBeNull();
+    expect(
+      page.buttons().includes("为什么我拼的不对？"),
+      "choose 答错也要给入口（不能用拼装区取错句——那是空串）"
+    ).toBe(true);
+    page.unmount();
+  });
+
   it("E1-7 对照：practice 段答错 1 次即给「为什么我拼的不对？」与「照着拼一遍」出口", () => {
     const page = mount();
     answerPretest(page, LESSON, true);

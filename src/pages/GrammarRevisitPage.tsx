@@ -12,6 +12,8 @@ import { nowIso } from "../services/storage";
 import { checkLessonTokens } from "../services/lessonService";
 import { spellingMatches } from "../services/diffService";
 import { explainForSentence } from "../services/grammarExplainService";
+import WhyWrongPanel from "../components/WhyWrongPanel";
+import { useWhyWrong } from "../components/useWhyWrong";
 
 /**
  * F1 关 2 · 次日回访关（2026-09-13 PRD §6.1）。
@@ -52,6 +54,19 @@ export default function GrammarRevisitPage() {
   const [startedAt] = useState(() => Date.now());
   /** started 埋点去重（同一次挂载内只记一次；重新进入是新挂载，会照记）。 */
   const startedLoggedRef = useRef(false);
+
+  /**
+   * 「为什么我写的不对」追问层（2026-09-24 补）。
+   *
+   * 缺口：本页答错只有「再试一次 / 重来这题」——**既不看答案、也不能问为什么**，
+   * 卡住时唯一出路是离开页面。答对时反倒给解释（`revisitWhy`），
+   * 形成「成功者得到解释、失败者什么都没有」的反向不对称。
+   *
+   * 与课程页共用同一套实现（`useWhyWrong` + `WhyWrongPanel`）——
+   * 这套逻辑此前在每个段各抄一份，已导致用户三次报告「AI 按钮又没有了」，
+   * 故新落点一律走共享实现，不再复制。
+   */
+  const whyWrong = useWhyWrong({ lessonId, provider: data.settings.aiProvider });
 
   if (!lesson) {
     return (
@@ -171,6 +186,13 @@ export default function GrammarRevisitPage() {
   }
 
   const currentQuiz: RevisitQuestion | undefined = quiz[index];
+
+  /** 本页用户产出的那句：cloze 是输入框原文，rebuild 是已拼的词块序列。 */
+  const revisitWrongSentence = (() => {
+    if (!currentQuiz) return "";
+    if (currentQuiz.kind === "cloze") return clozeValue.trim();
+    return rebuildPicked.join(" ").trim();
+  })();
 
   /**
    * 完成制：题做完即完成关 2。埋点记一次提取成功数与回马枪结果。
@@ -395,6 +417,35 @@ export default function GrammarRevisitPage() {
             <div className="lesson-feedback retry" aria-live="polite">
               <p>想不起来了，再试一次——忘了很正常，这正是要回访的原因。</p>
               <button type="button" className="ghost-link" onClick={() => { setRebuildPicked([]); setClozeValue(""); setFeedback("idle"); }}>重来这题</button>
+              {/**
+                * 答错态下恒给追问入口（判据是**当前反馈态**，不是累计错次——
+                * 那是课程页上一轮修过的坑：用累计态会让入口时有时无）。
+                */}
+              {!whyWrong.open && revisitWrongSentence && (
+                <div className="lesson-stage-actions center">
+                  <button
+                    type="button"
+                    className="lesson-whywrong-entry"
+                    onClick={() =>
+                      whyWrong.ask(index, revisitWrongSentence, {
+                        correctSentence: currentQuiz?.answer ?? "",
+                        promptZh: lesson?.title,
+                        section: "recall",
+                        anchorPrefix: "revisit.step",
+                        anchorText: lesson?.oneLineRule
+                      })
+                    }
+                  >
+                    <Lightbulb size={13} aria-hidden="true" /> 为什么我写的不对？
+                  </button>
+                </div>
+              )}
+              {whyWrong.open && whyWrong.stepKey === index && (
+                <WhyWrongPanel
+                  {...whyWrong.panelProps}
+                  mineLabel={currentQuiz?.kind === "cloze" ? "你写的" : "你拼的"}
+                />
+              )}
             </div>
           )}
         </div>
