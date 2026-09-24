@@ -14,7 +14,7 @@ import {
   Settings
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, NavLink, Route, Routes, useLocation, useParams } from "react-router-dom";
+import { Link, NavLink, Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import BrandMark from "./components/BrandMark";
 import { AppProvider, useAppData } from "./AppContext";
 import { computeStreak } from "./services/statsService";
@@ -46,6 +46,7 @@ import GrammarReauditPage from "./pages/GrammarReauditPage";
 import GrammarBoostPage from "./pages/GrammarBoostPage";
 import NotFoundPage from "./components/NotFoundPage";
 import GrammarHuntPage from "./pages/GrammarHuntPage";
+import GrammarExamPage from "./pages/GrammarExamPage";
 import GrammarDiaryPage from "./pages/GrammarDiaryPage";
 import OnboardingGuide from "./components/OnboardingGuide";
 import MilestoneCelebration from "./components/MilestoneCelebration";
@@ -250,6 +251,8 @@ const AppLayout = () => {
           <Route path="/grammar/lesson/:lessonId/revisit" element={<GrammarRevisitPageRoute />} />
           <Route path="/grammar/lesson/:lessonId/reaudit" element={<GrammarReauditPageRoute />} />
           <Route path="/grammar/boost/:lessonId" element={<GrammarBoostPageRoute />} />
+          {/* 季末综合卷（第一季试点）：3 节作答 + 中断续做 + 诊断清单 */}
+          <Route path="/grammar/exam/:seasonId" element={<GrammarExamPage />} />
           <Route path="/grammar/hunt" element={<GrammarHuntPage />} />
           <Route path="/grammar/diary" element={<GrammarDiaryPage />} />
           <Route path="/mistakes" element={<MistakeBookPage />} />
@@ -277,7 +280,21 @@ export default function App() {
   return (
     <AppProvider>
       <Routes>
-        <Route path="/" element={<EntryPage />} />
+        {/*
+          首页收敛（2026-09-24 首页重规划 P2）：`/` 不再渲染 EntryPage，而是重定向到 `/today`。
+
+          为什么改：此前产品有**两个「首页」**——`/` 的品牌门页（`entry-*`，4 个按钮
+          100% 词汇线，对 grammar/adventure 引用均为 0），以及侧边栏标签也叫「首页」的
+          `/today`。语义重复、范式不同，用户（＝唯一用户）打开应用看到的第一屏
+          与「首页」这个词指的并不是同一个东西。
+
+          `EntryPage` 组件本身**保留**并挂在 `/welcome`（关于/欢迎页），而不是删掉：
+          ① 首启引导已由全局 `OnboardingGuide` 承担，门页降级不丢功能；
+          ② `rv19-entry-due-count.test.tsx` 直接挂载该组件，删组件等于顺手废掉那条闸的
+             「今日到期口径必须走 getDueCards」这个仍然有效的判据。
+        */}
+        <Route path="/" element={<Navigate to="/today" replace />} />
+        <Route path="/welcome" element={<EntryPage />} />
         <Route path="/*" element={<AppLayout />} />
       </Routes>
     </AppProvider>

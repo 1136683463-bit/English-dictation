@@ -1,0 +1,2244 @@
+{
+  "capturedAt": "2026-09-24T09:59:30.022Z",
+  "baseUrl": "http://127.0.0.1:1420",
+  "desktop": [
+    {
+      "id": "01-path",
+      "route": "/grammar",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [
+        {
+          "tag": "a",
+          "name": "首页",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "训练",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "冒险",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "语法",
+          "cls": "active mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "错词本",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词书",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "添加",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词库",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "统计",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "设置",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "我的语法画像",
+          "cls": "lesson-progress-pill ghost",
+          "w": 104,
+          "h": 33
+        },
+        {
+          "tag": "a",
+          "name": "从第 1 课开始 · 小美的一天",
+          "cls": "primary-button",
+          "w": 251,
+          "h": 40
+        },
+        {
+          "tag": "a",
+          "name": "写日记",
+          "cls": "lesson-path-mini-card",
+          "w": 58,
+          "h": 22
+        },
+        {
+          "tag": "a",
+          "name": "侦探找错",
+          "cls": "lesson-path-mini-card",
+          "w": 70,
+          "h": 22
+        }
+      ],
+      "smallTargetsCount": 14,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "小美的一天"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 54,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "从第 1 课开始 · 小美的一天",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "02-lesson",
+      "route": "/grammar/lesson/lesson-01-am",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [
+        {
+          "tag": "a",
+          "name": "首页",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "训练",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "冒险",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "语法",
+          "cls": "active mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "错词本",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词书",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "添加",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词库",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "统计",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "设置",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "button",
+          "name": "返回课程地图",
+          "cls": "icon-button",
+          "w": 40,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "去讲解里揭晓",
+          "cls": "primary-button",
+          "w": 128,
+          "h": 40
+        }
+      ],
+      "smallTargetsCount": 12,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "小美的一天 ① · 我是谁"
+        },
+        {
+          "level": 2,
+          "text": "先看看今天要避免的误读"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 12,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "button",
+            "name": "去讲解里揭晓",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "03-revisit",
+      "route": "/grammar/lesson/lesson-01-am/revisit",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [
+        {
+          "tag": "a",
+          "name": "首页",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "训练",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "冒险",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "语法",
+          "cls": "active mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "错词本",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词书",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "添加",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词库",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "统计",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "设置",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "回到正课",
+          "cls": "primary-button",
+          "w": 119,
+          "h": 40
+        },
+        {
+          "tag": "a",
+          "name": "返回课程地图",
+          "cls": "secondary-button",
+          "w": 128,
+          "h": 40
+        }
+      ],
+      "smallTargetsCount": 12,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "第 1 课 · 次日回访"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 12,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "回到正课",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "04-reaudit",
+      "route": "/grammar/lesson/lesson-01-am/reaudit",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [
+        {
+          "tag": "a",
+          "name": "首页",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "训练",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "冒险",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "语法",
+          "cls": "active mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "错词本",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词书",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "添加",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词库",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "统计",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "设置",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "去做回访关",
+          "cls": "primary-button",
+          "w": 135,
+          "h": 40
+        },
+        {
+          "tag": "a",
+          "name": "返回课程地图",
+          "cls": "secondary-button",
+          "w": 128,
+          "h": 40
+        }
+      ],
+      "smallTargetsCount": 12,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "第 1 课 · 旧案重审"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 12,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "去做回访关",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "05-boost",
+      "route": "/grammar/boost/lesson-01-am",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [
+        {
+          "tag": "a",
+          "name": "首页",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "训练",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "冒险",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "语法",
+          "cls": "active mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "错词本",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词书",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "添加",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词库",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "统计",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "设置",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "去上这一课",
+          "cls": "primary-button",
+          "w": 112,
+          "h": 40
+        },
+        {
+          "tag": "a",
+          "name": "返回课程地图",
+          "cls": "secondary-button",
+          "w": 128,
+          "h": 40
+        }
+      ],
+      "smallTargetsCount": 12,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "第 1 课 · 趁热练"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 12,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "去上这一课",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "06-review",
+      "route": "/grammar/review",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [
+        {
+          "tag": "a",
+          "name": "首页",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "训练",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "冒险",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "语法",
+          "cls": "active mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "错词本",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词书",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "添加",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词库",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "统计",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "设置",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "返回语法地图",
+          "cls": "primary-button",
+          "w": 128,
+          "h": 40
+        }
+      ],
+      "smallTargetsCount": 11,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "语法复习"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 11,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "返回语法地图",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "07-replay",
+      "route": "/grammar/replay",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [
+        {
+          "tag": "a",
+          "name": "首页",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "训练",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "冒险",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "语法",
+          "cls": "active mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "错词本",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词书",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "添加",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词库",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "统计",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "设置",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "返回课程地图",
+          "cls": "primary-button",
+          "w": 128,
+          "h": 40
+        }
+      ],
+      "smallTargetsCount": 11,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "还没有攒够素材"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 11,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "返回课程地图",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "08-profile",
+      "route": "/grammar/profile",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [
+        {
+          "tag": "a",
+          "name": "首页",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "训练",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "冒险",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "语法",
+          "cls": "active mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "错词本",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词书",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "添加",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词库",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "统计",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "设置",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "返回课程地图",
+          "cls": "primary-button",
+          "w": 128,
+          "h": 40
+        }
+      ],
+      "smallTargetsCount": 11,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "数据还太少"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 11,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "返回课程地图",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "09-hunt",
+      "route": "/grammar/hunt",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [
+        {
+          "tag": "a",
+          "name": "首页",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "训练",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "冒险",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "语法",
+          "cls": "active mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "错词本",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词书",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "添加",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词库",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "统计",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "设置",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "最近可解锁",
+          "cls": "hunt-next-unlock",
+          "w": 860,
+          "h": 35
+        },
+        {
+          "tag": "button",
+          "name": "全部案件",
+          "cls": "hunt-filter-chip on",
+          "w": 74,
+          "h": 26
+        },
+        {
+          "tag": "button",
+          "name": "完成第 12 课后解锁",
+          "cls": "hunt-filter-chip locked",
+          "w": 125,
+          "h": 26
+        },
+        {
+          "tag": "button",
+          "name": "更多课程 (200)",
+          "cls": "hunt-filter-chip hunt-filter-more",
+          "w": 122,
+          "h": 26
+        },
+        {
+          "tag": "button",
+          "name": "第一季 · 初级篇\n11 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二季 · 进阶篇\n17 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第三季 · 巩固篇\n10 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第四季 · 句子变长\n7 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第五季 · 动词的两件新搭档\n5 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第六季 · 建议与条件\n3 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第七季 · 幕后句\n5 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第八季 · 日常细节\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第九季 · 客气与程度\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十季 · 本领与分寸\n5 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十一季 · 频率与提议\n4 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十二季 · 更上一层\n3 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十三季 · 找东西\n8 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十四季 · 聊两句\n8 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十五季 · 讲故事\n8 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十六季 · 谁让谁做什么\n8 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十七季 · 我一直想说的那些\n8 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十八季 · 同一个 to，两张脸\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十九季 · 我看到的和感觉到的\n3 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十季 · 五种感官\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十一季 · 盼着那一天\n5 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十二季 · 让步与立刻\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十三季 · 也、两个\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十四季 · 全都在、还没已经\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十五季 · 一个都不、看起来像、需要\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十六季 · 自己、日常四句\n7 案",
+          "cls": "hunt-case-group-head",
+          "w": 860,
+          "h": 40
+        }
+      ],
+      "smallTargetsCount": 43,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "侦探找错"
+        },
+        {
+          "level": 2,
+          "text": "第一季 · 初级篇"
+        },
+        {
+          "level": 2,
+          "text": "第二季 · 进阶篇"
+        },
+        {
+          "level": 2,
+          "text": "第三季 · 巩固篇"
+        },
+        {
+          "level": 2,
+          "text": "第四季 · 句子变长"
+        },
+        {
+          "level": 2,
+          "text": "第五季 · 动词的两件新搭档"
+        },
+        {
+          "level": 2,
+          "text": "第六季 · 建议与条件"
+        },
+        {
+          "level": 2,
+          "text": "第七季 · 幕后句"
+        },
+        {
+          "level": 2,
+          "text": "第八季 · 日常细节"
+        },
+        {
+          "level": 2,
+          "text": "第九季 · 客气与程度"
+        },
+        {
+          "level": 2,
+          "text": "第十季 · 本领与分寸"
+        },
+        {
+          "level": 2,
+          "text": "第十一季 · 频率与提议"
+        },
+        {
+          "level": 2,
+          "text": "第十二季 · 更上一层"
+        },
+        {
+          "level": 2,
+          "text": "第十三季 · 找东西"
+        },
+        {
+          "level": 2,
+          "text": "第十四季 · 聊两句"
+        },
+        {
+          "level": 2,
+          "text": "第十五季 · 讲故事"
+        },
+        {
+          "level": 2,
+          "text": "第十六季 · 谁让谁做什么"
+        },
+        {
+          "level": 2,
+          "text": "第十七季 · 我一直想说的那些"
+        },
+        {
+          "level": 2,
+          "text": "第十八季 · 同一个 to，两张脸"
+        },
+        {
+          "level": 2,
+          "text": "第十九季 · 我看到的和感觉到的"
+        },
+        {
+          "level": 2,
+          "text": "第二十季 · 五种感官"
+        },
+        {
+          "level": 2,
+          "text": "第二十一季 · 盼着那一天"
+        },
+        {
+          "level": 2,
+          "text": "第二十二季 · 让步与立刻"
+        },
+        {
+          "level": 2,
+          "text": "第二十三季 · 也、两个"
+        },
+        {
+          "level": 2,
+          "text": "第二十四季 · 全都在、还没已经"
+        },
+        {
+          "level": 2,
+          "text": "第二十五季 · 一个都不、看起来像、需要"
+        },
+        {
+          "level": 2,
+          "text": "第二十六季 · 自己、日常四句"
+        },
+        {
+          "level": 2,
+          "text": "第二十七季 · 一对一对的说法"
+        },
+        {
+          "level": 2,
+          "text": "第二十八季 · 收口、目的、条件、不得不、他们的与走向哪儿"
+        },
+        {
+          "level": 2,
+          "text": "番外 · 综合复习"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 43,
+        "notFocusable": [],
+        "noFocusStyleChange": [],
+        "noFocusStyleChangeCount": 0
+      }
+    },
+    {
+      "id": "10-diary",
+      "route": "/grammar/diary",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 3,
+      "controlsWithoutName": [],
+      "smallTargets": [
+        {
+          "tag": "a",
+          "name": "首页",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "训练",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "冒险",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "语法",
+          "cls": "active mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "错词本",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词书",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "添加",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "词库",
+          "cls": "mobile-primary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "统计",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "a",
+          "name": "设置",
+          "cls": "mobile-secondary-nav",
+          "w": 99,
+          "h": 41
+        },
+        {
+          "tag": "button",
+          "name": "3 句",
+          "cls": "diary-count-btn on",
+          "w": 52,
+          "h": 26
+        },
+        {
+          "tag": "button",
+          "name": "5 句",
+          "cls": "diary-count-btn",
+          "w": 52,
+          "h": 26
+        },
+        {
+          "tag": "button",
+          "name": "10 句",
+          "cls": "diary-count-btn",
+          "w": 59,
+          "h": 26
+        },
+        {
+          "tag": "button",
+          "name": "写完了一起批改",
+          "cls": "primary-button",
+          "w": 168,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "再来一组（3 题）",
+          "cls": "secondary-button",
+          "w": 181,
+          "h": 40
+        },
+        {
+          "tag": "a",
+          "name": "去设置里配置 AI",
+          "cls": "primary-button diary-ai-guide-cta",
+          "w": 149,
+          "h": 40
+        }
+      ],
+      "smallTargetsCount": 16,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "我的英文日记"
+        },
+        {
+          "level": 2,
+          "text": "今天的句子"
+        },
+        {
+          "level": 2,
+          "text": "以前写下的句子"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 18,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "去设置里配置 AI",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    }
+  ],
+  "mobile": [
+    {
+      "id": "01-path",
+      "route": "/grammar",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [
+        {
+          "tag": "a",
+          "name": "我的语法画像",
+          "cls": "lesson-progress-pill ghost",
+          "w": 104,
+          "h": 33
+        },
+        {
+          "tag": "a",
+          "name": "写日记",
+          "cls": "lesson-path-mini-card",
+          "w": 58,
+          "h": 22
+        },
+        {
+          "tag": "a",
+          "name": "侦探找错",
+          "cls": "lesson-path-mini-card",
+          "w": 70,
+          "h": 22
+        }
+      ],
+      "smallTargetsCount": 3,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "小美的一天"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 49,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "从第 1 课开始 · 小美的一天",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "02-lesson",
+      "route": "/grammar/lesson/lesson-01-am",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [],
+      "smallTargetsCount": 0,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "小美的一天 ① · 我是谁"
+        },
+        {
+          "level": 2,
+          "text": "先看看今天要避免的误读"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 7,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "button",
+            "name": "去讲解里揭晓",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "03-revisit",
+      "route": "/grammar/lesson/lesson-01-am/revisit",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [],
+      "smallTargetsCount": 0,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "第 1 课 · 次日回访"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 7,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "回到正课",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "04-reaudit",
+      "route": "/grammar/lesson/lesson-01-am/reaudit",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [],
+      "smallTargetsCount": 0,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "第 1 课 · 旧案重审"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 7,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "去做回访关",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "05-boost",
+      "route": "/grammar/boost/lesson-01-am",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [],
+      "smallTargetsCount": 0,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "第 1 课 · 趁热练"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 7,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "去上这一课",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "06-review",
+      "route": "/grammar/review",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [],
+      "smallTargetsCount": 0,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "语法复习"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 6,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "返回语法地图",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "07-replay",
+      "route": "/grammar/replay",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [],
+      "smallTargetsCount": 0,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "还没有攒够素材"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 6,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "返回课程地图",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "08-profile",
+      "route": "/grammar/profile",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [],
+      "smallTargetsCount": 0,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "数据还太少"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 6,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "返回课程地图",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    },
+    {
+      "id": "09-hunt",
+      "route": "/grammar/hunt",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 0,
+      "controlsWithoutName": [],
+      "smallTargets": [
+        {
+          "tag": "button",
+          "name": "全部案件",
+          "cls": "hunt-filter-chip on",
+          "w": 74,
+          "h": 26
+        },
+        {
+          "tag": "button",
+          "name": "完成第 12 课后解锁",
+          "cls": "hunt-filter-chip locked",
+          "w": 125,
+          "h": 26
+        },
+        {
+          "tag": "button",
+          "name": "更多课程 (200)",
+          "cls": "hunt-filter-chip hunt-filter-more",
+          "w": 122,
+          "h": 26
+        },
+        {
+          "tag": "button",
+          "name": "第一季 · 初级篇\n11 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二季 · 进阶篇\n17 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第三季 · 巩固篇\n10 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第四季 · 句子变长\n7 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第五季 · 动词的两件新搭档\n5 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第六季 · 建议与条件\n3 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第七季 · 幕后句\n5 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第八季 · 日常细节\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第九季 · 客气与程度\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十季 · 本领与分寸\n5 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十一季 · 频率与提议\n4 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十二季 · 更上一层\n3 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十三季 · 找东西\n8 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十四季 · 聊两句\n8 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十五季 · 讲故事\n8 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十六季 · 谁让谁做什么\n8 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十七季 · 我一直想说的那些\n8 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十八季 · 同一个 to，两张脸\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第十九季 · 我看到的和感觉到的\n3 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十季 · 五种感官\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十一季 · 盼着那一天\n5 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十二季 · 让步与立刻\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十三季 · 也、两个\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十四季 · 全都在、还没已经\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十五季 · 一个都不、看起来像、需要\n6 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十六季 · 自己、日常四句\n7 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十七季 · 一对一对的说法\n12 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "第二十八季 · 收口、目的、条件、不得不、他们的与走向哪儿\n24 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        },
+        {
+          "tag": "button",
+          "name": "番外 · 综合复习\n5 案",
+          "cls": "hunt-case-group-head",
+          "w": 344,
+          "h": 40
+        }
+      ],
+      "smallTargetsCount": 32,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "侦探找错"
+        },
+        {
+          "level": 2,
+          "text": "第一季 · 初级篇"
+        },
+        {
+          "level": 2,
+          "text": "第二季 · 进阶篇"
+        },
+        {
+          "level": 2,
+          "text": "第三季 · 巩固篇"
+        },
+        {
+          "level": 2,
+          "text": "第四季 · 句子变长"
+        },
+        {
+          "level": 2,
+          "text": "第五季 · 动词的两件新搭档"
+        },
+        {
+          "level": 2,
+          "text": "第六季 · 建议与条件"
+        },
+        {
+          "level": 2,
+          "text": "第七季 · 幕后句"
+        },
+        {
+          "level": 2,
+          "text": "第八季 · 日常细节"
+        },
+        {
+          "level": 2,
+          "text": "第九季 · 客气与程度"
+        },
+        {
+          "level": 2,
+          "text": "第十季 · 本领与分寸"
+        },
+        {
+          "level": 2,
+          "text": "第十一季 · 频率与提议"
+        },
+        {
+          "level": 2,
+          "text": "第十二季 · 更上一层"
+        },
+        {
+          "level": 2,
+          "text": "第十三季 · 找东西"
+        },
+        {
+          "level": 2,
+          "text": "第十四季 · 聊两句"
+        },
+        {
+          "level": 2,
+          "text": "第十五季 · 讲故事"
+        },
+        {
+          "level": 2,
+          "text": "第十六季 · 谁让谁做什么"
+        },
+        {
+          "level": 2,
+          "text": "第十七季 · 我一直想说的那些"
+        },
+        {
+          "level": 2,
+          "text": "第十八季 · 同一个 to，两张脸"
+        },
+        {
+          "level": 2,
+          "text": "第十九季 · 我看到的和感觉到的"
+        },
+        {
+          "level": 2,
+          "text": "第二十季 · 五种感官"
+        },
+        {
+          "level": 2,
+          "text": "第二十一季 · 盼着那一天"
+        },
+        {
+          "level": 2,
+          "text": "第二十二季 · 让步与立刻"
+        },
+        {
+          "level": 2,
+          "text": "第二十三季 · 也、两个"
+        },
+        {
+          "level": 2,
+          "text": "第二十四季 · 全都在、还没已经"
+        },
+        {
+          "level": 2,
+          "text": "第二十五季 · 一个都不、看起来像、需要"
+        },
+        {
+          "level": 2,
+          "text": "第二十六季 · 自己、日常四句"
+        },
+        {
+          "level": 2,
+          "text": "第二十七季 · 一对一对的说法"
+        },
+        {
+          "level": 2,
+          "text": "第二十八季 · 收口、目的、条件、不得不、他们的与走向哪儿"
+        },
+        {
+          "level": 2,
+          "text": "番外 · 综合复习"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 38,
+        "notFocusable": [],
+        "noFocusStyleChange": [],
+        "noFocusStyleChangeCount": 0
+      }
+    },
+    {
+      "id": "10-diary",
+      "route": "/grammar/diary",
+      "fieldsWithoutLabelElement": [],
+      "fieldsWithLabelElement": [],
+      "fieldsTotal": 3,
+      "controlsWithoutName": [],
+      "smallTargets": [
+        {
+          "tag": "button",
+          "name": "3 句",
+          "cls": "diary-count-btn on",
+          "w": 52,
+          "h": 26
+        },
+        {
+          "tag": "button",
+          "name": "5 句",
+          "cls": "diary-count-btn",
+          "w": 52,
+          "h": 26
+        },
+        {
+          "tag": "button",
+          "name": "10 句",
+          "cls": "diary-count-btn",
+          "w": 59,
+          "h": 26
+        }
+      ],
+      "smallTargetsCount": 3,
+      "imagesWithoutAlt": [],
+      "h1Count": 1,
+      "headings": [
+        {
+          "level": 1,
+          "text": "我的英文日记"
+        },
+        {
+          "level": 2,
+          "text": "今天的句子"
+        },
+        {
+          "level": 2,
+          "text": "以前写下的句子"
+        }
+      ],
+      "headingJumps": [],
+      "focus": {
+        "sampled": 13,
+        "notFocusable": [],
+        "noFocusStyleChange": [
+          {
+            "tag": "a",
+            "name": "去设置里配置 AI",
+            "focusable": true,
+            "focusVisibleChange": false,
+            "outline": "none 3px"
+          }
+        ],
+        "noFocusStyleChangeCount": 1
+      }
+    }
+  ]
+}

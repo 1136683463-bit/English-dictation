@@ -276,3 +276,108 @@ describe("ENV3-B 分值与阈值：全角字符造成的扣分是否足以越过
     expect(scoreOf("I like tea!", "I like tea！", true), "全角感叹号（已折叠）满分").toBe(100);
   });
 });
+
+/**
+ * ENV3-D 判分口径统一守门（2026-09-24 新增）。
+ *
+ * ## 为什么单独守这一条
+ *
+ * 全角折叠**只存在于 `diffService` 的归一化链路里**。任何页面/服务若自己写一句
+ * `a.trim().toLowerCase() === b.trim().toLowerCase()` 来判对错，
+ * 就**绕过了折叠**——中文输入法打出的全角字母（`ｐｉｃｔｕｒｅ`）或弯撇号（`don’t`）
+ * 会被判错，而这在代码审查里完全看不出来（裸比较看起来非常正当）。
+ *
+ * 实测缺口（本守门逼出来的）：回访页 cloze 与趁热练 cloze 两处用裸比较判分，
+ * 而同页的重组题走 `checkLessonTokens`（含折叠）——**同一个页面两套口径**，
+ * 用户在两种题型间来回时同一个词一个判对一个判错。
+ *
+ * ## 判据
+ *
+ * 搜「判对错」的赋值点（`const passed = ...` / `return ... === ...`），
+ * 要求右侧走 diffService 的归一化（或 lessonService 的 checkLessonTokens），
+ * 不得出现裸 `toLowerCase()` 比较。白名单里逐条写明为什么可以例外。
+ */
+describe("ENV3-D 判分口径统一：手打输入的判分必须走归一化（防绕过全角折叠）", () => {
+  /**
+   * 判据设计说明（2026-09-24）。
+   *
+   * 首版判据是「搜所有 `toLowerCase() ===` 比较，除白名单外全报」——
+   * 实测刷出 15+ 处，绝大多数是**按词面查找已有实体**（`wordDetails.find(...)`、
+   * `favoriteWords.has(...)`、快捷键 `event.key`），与判分无关。
+   * 继续加白名单会迅速把守门稀释成「谁都能过」，所以改为**精准判据**：
+   *
+   * 只在**判分函数体内**检查。判分函数的识别靠两条信号：
+   *  ① 函数名含 judge / check / match / verify / passed；
+   *  ② 该函数**接收两个字符串**（用户答案 + 标准答案）并返回 boolean。
+   *
+   * 这两条能覆盖全部真实判分点（judgeGrammarCloze / judgeBoostChoice /
+   * checkLessonChoice / spellingMatches …），而把「查找实体」排除在外
+   * （那些函数的语义是 find/has/lookup，返回值也不是 pass/fail）。
+   */
+  it("判分函数体内的字符串比较必须走归一化（spellingMatches / compareText / checkLessonTokens）", async () => {
+    const { readFileSync, readdirSync, statSync } = await import("node:fs");
+    const { join } = await import("node:path");
+
+    const walk = (dir: string): string[] =>
+      readdirSync(dir).flatMap((name) => {
+        const full = join(dir, name);
+        if (statSync(full).isDirectory()) return walk(full);
+        return /\.tsx?$/.test(full) && !/\.test\./.test(full) ? [full] : [];
+      });
+
+    const offenders: string[] = [];
+    const judgeFns: string[] = [];
+
+    for (const file of walk("src/pages").concat(walk("src/services"))) {
+      const source = readFileSync(file, "utf8");
+      const lines = source.split("\n");
+
+      /**
+       * 逐个定位「判分函数」：名字含判分信号 + 参数里有两个字符串（用户侧 + 标准侧）。
+       * 只取单行或双行的箭头函数体（本项目的判分函数都是这个形态）。
+       */
+      for (let i = 0; i < lines.length; i += 1) {
+        const line = lines[i];
+        const m = /export const (\w*(?:[Jj]udge|check|Check|match|Match|verify|passed)\w*)\s*=/.exec(line);
+        if (!m) continue;
+        // 取函数声明的连续几行（覆盖多行签名）
+        const body = lines.slice(i, i + 6).join("\n");
+        if (!/:\s*boolean/.test(body)) continue;
+        if (!/\(\s*\w+\s*:\s*string/.test(body)) continue;
+        judgeFns.push(`${file.replace(process.cwd() + "/", "")} → ${m[1]}`);
+        // 该函数体内不得出现裸 toLowerCase 比较
+        const bodyLines = [line, ...lines.slice(i + 1, i + 4)];
+        for (const bl of bodyLines) {
+          if (!/toLowerCase\(\)\s*===|===\s*[^=]*toLowerCase\(\)/.test(bl)) continue;
+          /**
+           * 例外通道：该判分函数若在**紧邻的注释里声明**「两侧都不是用户手打」，
+           * 就算已登记（本项目用 `⚠️ ... 有意为之` 这一固定措辞）。
+           * 这样例外必须带理由、且理由写在函数旁边，而不是散落在一张远端白名单里——
+           * 首版用文件级白名单时，白名单很快膨胀到 8 个文件，守门形同虚设。
+           */
+          const preceding = lines.slice(Math.max(0, i - 12), i).join("\n");
+          const declared = /两侧都\*{0,2}不是用户手打|不是用户手打|有意为之/.test(preceding);
+          if (declared) continue;
+          offenders.push(`${file.replace(process.cwd() + "/", "")} ${m[1]}：${bl.trim()}`);
+        }
+      }
+    }
+
+    expect(judgeFns.length, `应识别到 ≥6 个判分函数（实际 ${judgeFns.length}）`).toBeGreaterThanOrEqual(6);
+    expect(
+      offenders.join("\n"),
+      "判分函数里出现裸 toLowerCase 比较——用户手打输入会被全角/弯撇号判错；\n" +
+        "请改走 diffService 的 spellingMatches（词级）或 compareText（句级）；\n" +
+        "若该「判分」两侧都不是用户手打（如选项点选），请在函数上加注释说明并按本测试的方式登记。"
+    ).toBe("");
+  });
+
+  it("cloze / 填空类判分对全角输入宽容（回归：曾用裸比较判错全角字母）", () => {
+    const fullwidth = "ｐｉｃｔｕｒｅ";
+    const plain = "picture";
+    expect(spellingMatches(plain, fullwidth), "全角字母应判对").toBe(true);
+    expect(spellingMatches(plain, "pictur"), "错词仍判错（不放过）").toBe(false);
+    expect(spellingMatches("don't", "don’t"), "弯撇号应判对").toBe(true);
+    expect(spellingMatches("don't", "dont"), "丢撇号仍判错（L87/L88 考点，不能放过）").toBe(false);
+  });
+});

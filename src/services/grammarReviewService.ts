@@ -1,6 +1,6 @@
 import type { AppData, Card, Schedule, SentenceDetails } from "../types";
-import { compareText, diffScore, tokenSequencesEquivalent } from "./diffService";
-import { isFreeOutputPassed, normalizeLessonSentence, stripNoteMarkers } from "./lessonService";
+import { compareText, diffScore, tokenSequencesEquivalent, spellingMatches } from "./diffService";
+import { courseVocabulary, isFreeOutputPassed, normalizeLessonSentence, stripNoteMarkers } from "./lessonService";
 
 /**
  * 语法点复习会话（R03）：把进入 SM-2 队列的语法句子卡变成「产出型小任务」。
@@ -339,17 +339,62 @@ const buildClozeOptions = (answer: string, tokens: string[]): string[] => {
       else push(`${lower}${suffix}`);
     }
   }
-  // ③ 兜底：句内其他真实词
+  /**
+   * ③ 同类别替换：从**课程词汇池**里取长度相近的词（用户学过的词，难度相当）。
+   *    这是最重要的一类干扰项——不是句内词（那种太容易被语法位置排除），
+   *    也不是生词，而是「同学过、但是另一个意思」的词。
+   *
+   *    2026-09-24 补：此前 review 侧**缺这一类**，内容词（Xiaomei / happy / tired /
+   *    dogs / Monday / friends）在 ① ② 都不适用时直接掉到 ④ 句内其他词，
+   *    于是 `am` / `i` / `they` 被拿来填需要形容词的槽位——按词性一眼可排除，
+   *    题目近似白送（gq1 weakDistractors 1282 条的主因）。
+   */
+  const pool = courseVocabulary().filter(
+    (word) => word !== lower && Math.abs(word.length - lower.length) <= 2
+  );
+  /**
+   * ⚠️ 2026-09-25：记下 ① ② 产出的**优先干扰项**（同族词 / 同源变形）。
+   *
+   * 为什么必须分开：③ 的池子会 push 进**整池**词，而下面那句 `candidates` 整体打乱 + 取前 3
+   * 会把优先项随机挤出去。实测后果（真机，reviewCount=0 的单词语卡）：
+   *   `am`  → ["wow", "new", "fast", "am"]      ← is / are 没了
+   *   `the` → ["best", "face", "time", "the"]   ← 冠词同族没了
+   * 而 `am` 的辨析点**就是** is / are（L1「I am happy.」的全部教学内容）——
+   * 换成 wow/new/fast 之后这道题不再考任何东西，用户按语感随手就能排除。
+   * ③ 的引入本意是修**内容词**（此前 am/i/they 被拿去填形容词槽，一眼可排除），
+   * 但它对**功能词**起了反作用：功能词要的正是同族替换，不是「同学过的别的词」。
+   * 所以：优先项保持在最前，只打乱池子部分。
+   */
+  const priorityCandidates = [...candidates];
+  const poolRandom = mulberry32(hashText(`cloze-pool:${answer}`));
+  const shuffledPool = [...pool];
+  for (let index = shuffledPool.length - 1; index > 0; index -= 1) {
+    const swap = Math.floor(poolRandom() * (index + 1));
+    [shuffledPool[index], shuffledPool[swap]] = [shuffledPool[swap], shuffledPool[index]];
+  }
+  for (const word of shuffledPool) push(word);
+  // ④ 最后兜底：句内其他真实词（③ 一般已凑够，这里是池子不够用时的保底）
   for (const token of tokens) {
     const clean = cleanToken(token);
     if (clean) push(clean);
   }
   const random = mulberry32(hashText(answer));
-  for (let index = candidates.length - 1; index > 0; index -= 1) {
+  // 只打乱「池子 + 句内兜底」这一段；优先项（同族 / 变形）保持在前，
+  // 否则它们会被随机挤出前三 —— 见上面 priorityCandidates 的说明。
+  const tail = candidates.slice(priorityCandidates.length);
+  for (let index = tail.length - 1; index > 0; index -= 1) {
     const swap = Math.floor(random() * (index + 1));
-    [candidates[index], candidates[swap]] = [candidates[swap], candidates[index]];
+    [tail[index], tail[swap]] = [tail[swap], tail[index]];
   }
-  const options = [answer, ...candidates.slice(0, 3)];
+  // 优先项内部也打乱一次（保留「同一张卡每次形态不同」的设计目标，但不与池子混排）
+  const priorityRandom = mulberry32(hashText(`${answer}:priority`));
+  const priority = [...priorityCandidates];
+  for (let index = priority.length - 1; index > 0; index -= 1) {
+    const swap = Math.floor(priorityRandom() * (index + 1));
+    [priority[index], priority[swap]] = [priority[swap], priority[index]];
+  }
+  const ordered = [...priority, ...tail];
+  const options = [answer, ...ordered.slice(0, 3)];
   const optionRandom = mulberry32(hashText(`${answer}:options`));
   for (let index = options.length - 1; index > 0; index -= 1) {
     const swap = Math.floor(optionRandom() * (index + 1));
@@ -371,10 +416,32 @@ export const buildGrammarReviewTask = (
   // 展示前剥掉内部标记（[tense:move] 这类），存储里保留供弱点归因使用
   const note = stripNoteMarkers(details?.grammarNote || card.note || "");
   // R09 Step2：flag 开启且复习满 2 次后，第 3 次（含）以后出现转自由输出——复习的终点是「不用提示自己写出来」。
+  const flaggedFreeType =
+    isFreeTypeReviewEnabled() && (schedule.reviewCount ?? 0) >= FREE_TYPE_MIN_REVIEW_COUNT;
+  /**
+   * 单词语卡（词块 < 2）的分流——2026-09-24 收窄。
+   *
+   * 这类卡的根因在**入队侧**：原先把 `choose` 的 `answer` 直接入队，产出 `front="am"` 这种词块数 1 的卡
+   * （全库 145 例）。入队侧已修（`lessonService.reviewSentenceOfGuidedStep` 按 before/after 还原整句，
+   * 还原不出的 replace/spot 则不入队），本分支只兜存量与旁路入队。
+   *
+   * 为什么不再一律转 free_type：
+   * - `rebuild` 只剩 1 个词块确实是「点一下就过」的废题（gq1 的 rebuildTooFewChunks）→ 单词卡一律不走 rebuild。
+   * - 但 `cloze` 对**功能词**并不退化：`buildClozeOptions` 有功能词同族替换，实测 `front="am"` 的选项是
+   *   `["am","is","are"]` 三条，配上来源锚点题面仍是可作答的题（rv5 的原始设计，2026-09-21，
+   *   此前被本守卫遮蔽成死代码）。
+   * - 只有连同族都凑不出时（`dogs` / `went` / `to` 这类），cloze 才塌成单选项（gq1 的 clozeSingleOption），
+   *   那才该退 free_type。
+   *
+   * 判据因此可测：cloze 选项 ≥2 就用 cloze，否则 free_type。
+   */
+  const singleToken = tokens.length < 2;
+  const singleTokenClozeOptions = singleToken ? buildClozeOptions(cleanToken(tokens[0] ?? ""), tokens) : [];
+  const degenerate = singleToken && singleTokenClozeOptions.length < 2;
   const mode: GrammarReviewMode =
-    isFreeTypeReviewEnabled() && (schedule.reviewCount ?? 0) >= FREE_TYPE_MIN_REVIEW_COUNT
+    flaggedFreeType || degenerate
       ? "free_type"
-      : (schedule.reviewCount ?? 0) % 2 === 0
+      : singleToken || (schedule.reviewCount ?? 0) % 2 === 0
         ? "cloze"
         : "rebuild";
 
@@ -477,9 +544,17 @@ export const buildGrammarReviewTask = (
   };
 };
 
-/** 填空判分（大小写宽容）。 */
+/**
+ * 填空判分（大小写宽容 + **全角折叠**）。
+ *
+ * 2026-09-24 修：原为裸 `toLowerCase` 比较，没有全角折叠——用户用中文输入法打出
+ * 全角字母（`ｐｉｃｔｕｒｅ`）或弯撇号（`don’t`）会被判错（实测确认）。
+ * 填空是**用户手打**的题型，必须走 diffService 的权威词级判分。
+ * 同文件的 `judgeGrammarRebuild` 早已走 `tokenSequencesEquivalent`（含折叠），
+ * 两处题型口径原本不一致。
+ */
 export const judgeGrammarCloze = (picked: string, answer: string): boolean =>
-  picked.trim().toLowerCase() === answer.trim().toLowerCase();
+  spellingMatches(answer, picked);
 
 /** 重组判分（顺序与内容都对，标点与大小写宽容；缩写与全称互通，见 checkLessonTokens）。 */
 export const judgeGrammarRebuild = (built: string[], sentence: string): boolean =>

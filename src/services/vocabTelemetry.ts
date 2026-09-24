@@ -235,10 +235,13 @@ export const clearVocabTelemetry = (): void => {
 
 /** 遥测存量统计——与 grammarTelemetry 同口径，供导出与上限预警。 */
 export interface VocabTelemetryStats {
+  /** 主键存量（不含归档）。 */
   activeEvents: number;
   maxEvents: number;
   archivedEvents: number;
   archiveMax: number;
+  /** 主键 + 归档合计（分析可见总量）。 */
+  totalEvents: number;
   nearCapacity: boolean;
 }
 
@@ -250,6 +253,7 @@ export const getVocabTelemetryStats = (): VocabTelemetryStats => {
     maxEvents: MAX_EVENTS,
     archivedEvents,
     archiveMax: ARCHIVE_MAX_EVENTS,
+    totalEvents: activeEvents + archivedEvents,
     nearCapacity: activeEvents >= MAX_EVENTS * 0.8
   };
 };

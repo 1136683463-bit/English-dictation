@@ -132,7 +132,7 @@ describe("grammarExplainService · 三道校验", () => {
 
   it("校验用的是共享零术语表（与课程守门同源）", () => {
     // 抽一个课程守门表里的词验证运行时同表
-    const bad: ExplainAnswer = { ...validAnswer, answer: "这是复数的用法。" };
+    const bad: ExplainAnswer = { ...validAnswer, answer: "这是主语的用法。" };
     expect(validateExplainAnswer(bad, context).failure).toBe("term");
   });
 });
@@ -207,17 +207,17 @@ describe("grammarExplainService · 讲解质量升级层（2026-09-19）", () =>
     });
 
     it("复述答案判薄（剥掉答案句后剩余 ≤26 字符）", () => {
-      expect(isThinExplain("动作穿 -ing 外套：It was raining。", "It was raining.")).toBe(true);
+      expect(isThinExplain("动作加 -ing：It was raining。", "It was raining.")).toBe(true);
       expect(isThinExplain("问句把 Is 搬到句首。Is there a park near here?", "Is there a park near here?")).toBe(true);
     });
 
     it("有真实增量内容的解释不判薄", () => {
-      const rich = "was 是那天版搭档，is 是现在版搭档：It was raining。讲那天的背景就用它开头，故事一下就有了画面，事情来了再接下一句。";
+      const rich = "was 是过去式搭档，is 是现在式搭档：It was raining。讲那天的背景就用它开头，故事一下就有了画面，事情来了再接下一句。";
       expect(isThinExplain(rich, "It was raining.")).toBe(false);
     });
 
     it("不含答案句的普通解释不判薄", () => {
-      expect(isThinExplain("昨天版搭档 + -ing 外套：三个词说完。", "It was raining.")).toBe(false);
+      expect(isThinExplain("过去式搭档 + -ing：was 后面要跟 raining，三个词说完。", "It was raining.")).toBe(false);
     });
   });
 
@@ -236,7 +236,7 @@ describe("grammarExplainService · 讲解质量升级层（2026-09-19）", () =>
       const richStep = {
         kind: "arrange",
         answer: "It was raining.",
-        explain: "was 是那天版搭档，is 是现在版搭档：It was raining。讲那天的背景就用它开头，故事一下就有了画面，事情来了再接下一句。"
+        explain: "was 是过去式搭档，is 是现在式搭档：It was raining。讲那天的背景就用它开头，故事一下就有了画面，事情来了再接下一句。"
       };
       expect(resolveGuidedExplain(richStep, lesson96)).toBe(richStep.explain);
     });

@@ -76,7 +76,7 @@ describe("缩写判分 · 全库守护", () => {
     for (const lesson of lessonRecalls) {
       const answer = lesson.recall!.answer;
       const long = toLongForm(answer);
-      for (const [label, input] of [["原句", answer], ["长版", long]] as Array<[string, string]>) {
+      for (const [label, input] of [["原句", answer], ["完整形式", long]] as Array<[string, string]>) {
         const score = diffScore(compareText(answer, input, false));
         expect(score, `${lesson.id} 忆段（${label}）"${input}" 得分 ${score}`).toBeGreaterThanOrEqual(RECALL_PASS);
       }
@@ -86,20 +86,20 @@ describe("缩写判分 · 全库守护", () => {
   it("产出段：含缩写的核心句/变体句，长短两版都能过 90 线", () => {
     for (const { lessonId, sentence } of outputSentences) {
       const long = toLongForm(sentence);
-      for (const [label, input] of [["原句", sentence], ["长版", long]] as Array<[string, string]>) {
+      for (const [label, input] of [["原句", sentence], ["完整形式", long]] as Array<[string, string]>) {
         const score = diffScore(compareText(sentence, input, false));
         expect(score, `${lessonId} 产出段（${label}）"${input}" 得分 ${score}`).toBeGreaterThanOrEqual(OUTPUT_PASS);
       }
     }
   });
 
-  it("判错时的提示不撒谎：长短版之间不该说「多了/少了词」", () => {
+  it("判错时的提示不撒谎：完整形式与缩写形式之间不该说「多了/少了词」", () => {
     // describeOutputGap 是答错后的差异说明。用户写长版但真的错在别处时，
     // 不能提示「多了 it is 一个词」——那会把正确的两种写法之一说成多余的。
     for (const lesson of lessonRecalls) {
       const answer = lesson.recall!.answer;
       const long = toLongForm(answer);
-      expect(describeOutputGap(long, answer), `${lesson.id} 长版被判成「多了词」`).toBeNull();
+      expect(describeOutputGap(long, answer), `${lesson.id} 完整形式被判成「多了词」`).toBeNull();
     }
   });
 
@@ -117,12 +117,12 @@ describe("缩写判分 · 全库守护", () => {
         const longChunks = toLongForm(step.answer).split(/\s+/).filter(Boolean);
         expect(
           checkLessonTokens(longChunks, toLongForm(step.answer)),
-          `${lesson.id} "${step.answer}" 长版词块拼不对`
+          `${lesson.id} "${step.answer}" 完整形式词块拼不对`
         ).toBe(true);
         // 反向：短版答案配长版词块，以及长版答案配短版词块，两个方向都要通
         expect(
           checkLessonTokens(answerOrder, toLongForm(step.answer)),
-          `${lesson.id} "${step.answer}" 短版词块拼长版答案判错`
+          `${lesson.id} "${step.answer}" 缩写形式词块拼完整形式答案判错`
         ).toBe(true);
       }
     }

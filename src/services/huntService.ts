@@ -535,32 +535,48 @@ export const addHuntGapSentences = (
   const gapSet = new Set(gapTokenIndexes);
   let next = data;
   let added = 0;
-  // 同一案件的每张卡正面都是这句「完整正确句」（见 correctedSentenceOf 说明），
-  // 对同案只算一次，避免在每个错点里重复做同样的替换。
+  // 同一案件的所有错点共用同一个完整正确句（correctedSentenceOf）。
+  // 卡片若按错点逐个建，会产出「卡面完全相同」的多张卡——一案最多 7 张，
+  // 复习时同一句话连着出现、挤占每次 10 张的复习容量（gq1 的 huntDuplicateCards，214 条）。
+  // 因此改为**一案一卡**：grammarNote 把本案命中的每个错点（罪名 + 原错词 → 改法）并列列出，
+  // 已有卡缺哪个标记就并入哪个（弱点归因读的是这些标记，并入不丢归因）。
   const correctedSentence = correctedSentenceOf(caseItem);
   if (!correctedSentence) return { data: next, added };
-  for (const error of caseItem.errors) {
-    if (!gapSet.has(error.tokenIndex)) continue;
-    const sentence = correctedSentence;
-    // 幂等键 = 案件 + 罪名 + 原错词（同案同罪名可能有多处不同错词，如两个不同的过去式，需各自成卡）
-    const gapKey = `[${error.tag}:${error.original}]`;
-    const duplicated = next.cards.some((card) => {
-      if (card.type !== "sentence" || card.sourceId !== `hunt:${caseItem.id}`) return false;
-      const details = next.sentenceDetails.find((item) => item.cardId === card.id);
-      return details?.grammarNote.includes(gapKey) ?? false;
-    });
-    if (duplicated) continue;
-    next = addSentence(next, {
-      sentence,
-      translation: "",
-      keywords: "",
-      grammarNote: `[${error.tag}:${error.original}] ${GRAMMAR_ERROR_TAG_LABELS[error.tag]}：${error.original} → ${error.correction}。${error.explanation}`,
-      sourceId: `hunt:${caseItem.id}`,
-      note: `找错案件：${caseItem.title}（${GRAMMAR_ERROR_TAG_LABELS[error.tag]}）`,
-      tags: "语法"
-    });
-    added += 1;
+  const relevant = caseItem.errors.filter((error) => gapSet.has(error.tokenIndex));
+  if (relevant.length === 0) return { data: next, added };
+  const sourceId = `hunt:${caseItem.id}`;
+  const grammarNoteOf = (error: HuntCase["errors"][number]) =>
+    `[${error.tag}:${error.original}] ${GRAMMAR_ERROR_TAG_LABELS[error.tag]}：${error.original} → ${error.correction}。${error.explanation}`;
+  const existing = next.cards.find(
+    (card) => card.type === "sentence" && card.sourceId === sourceId
+  );
+  if (existing) {
+    const details = next.sentenceDetails.find((item) => item.cardId === existing.id);
+    const note = details?.grammarNote ?? "";
+    const missing = relevant.filter((error) => !note.includes(`[${error.tag}:${error.original}]`));
+    if (missing.length === 0) return { data: next, added };
+    return {
+      data: {
+        ...next,
+        sentenceDetails: next.sentenceDetails.map((item) =>
+          item.cardId === existing.id
+            ? { ...item, grammarNote: `${note}\n${missing.map(grammarNoteOf).join("\n")}` }
+            : item
+        )
+      },
+      added
+    };
   }
+  next = addSentence(next, {
+    sentence: correctedSentence,
+    translation: "",
+    keywords: "",
+    grammarNote: relevant.map(grammarNoteOf).join("\n"),
+    sourceId,
+    note: `找错案件：${caseItem.title}（${[...new Set(relevant.map((error) => GRAMMAR_ERROR_TAG_LABELS[error.tag]))].join("/")}）`,
+    tags: "语法"
+  });
+  added += 1;
   return { data: next, added };
 };
 

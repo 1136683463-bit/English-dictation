@@ -106,7 +106,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "We 是好几个，搭档要用 were，不是 was。",
+        explanation: "We 是复数，搭档要用 were，不是 was。",
       },
     ],
     reviewed: true,
@@ -435,7 +435,7 @@ export const huntCases: HuntCase[] = [
         original: "laugh",
         correction: "laughed",
         editOp: "replace",
-        explanation: "and 连起来的两个动作要保持一致，都用昨天版。",
+        explanation: "and 连起来的两个动作要保持一致，都用过去式。",
       },
     ],
     reviewed: true,
@@ -467,7 +467,7 @@ export const huntCases: HuntCase[] = [
         correction: "a lot of",
         editOp: "replace",
         explanation:
-          "advice 这类词没有「好几个」的说法，不能用 many。改成 a lot of advice 或者 some advice。",
+          "advice 这类词没有「复数」的说法，不能用 many。改成 a lot of advice 或者 some advice。",
       },
       {
         tokenIndex: 8,
@@ -514,7 +514,7 @@ export const huntCases: HuntCase[] = [
         correction: "sung",
         editOp: "replace",
         explanation:
-          "做事的人退到幕后时，be 身边要穿做过版：was sung。sing 的做过版是 sung——和 have 身边同一件外套。",
+          "做事的人退到后面时，be 身边要穿过去分词：was sung。sing 的过去分词是 sung——和 have 身边同一个形式。",
       },
       {
         tokenIndex: 10,
@@ -523,7 +523,7 @@ export const huntCases: HuntCase[] = [
         correction: "were",
         editOp: "replace",
         explanation:
-          "People（人们，好几个），be 动词要用 were。泛指「人们」时不加 the。",
+          "People（人们，复数），be 动词要用 were。泛指「人们」时不加 the。",
       },
     ],
     reviewed: true,
@@ -1157,7 +1157,7 @@ export const huntCases: HuntCase[] = [
         original: "cook",
         correction: "cooking",
         editOp: "replace",
-        explanation: "Mom is 正在做这件事，cook 要穿上 -ing 外套：is cooking。",
+        explanation: "Mom is 正在做这件事，cook 要加上 -ing：is cooking。",
       },
       {
         tokenIndex: 8,
@@ -1229,7 +1229,7 @@ export const huntCases: HuntCase[] = [
         original: "making",
         correction: "make",
         editOp: "replace",
-        explanation: "can 后面的动词穿原样，不变形：can make。",
+        explanation: "can 后面的动词用原形，不变形：can make。",
       },
       {
         tokenIndex: 10,
@@ -1308,7 +1308,7 @@ export const huntCases: HuntCase[] = [
         correction: "go",
         editOp: "replace",
         explanation:
-          "to 后面的动词穿原样：want to go。变形的事已经由 want 做完了。",
+          "to 后面的动词用原形：want to go。变形的事已经由 want 做完了。",
       },
       {
         tokenIndex: 13,
@@ -1317,7 +1317,7 @@ export const huntCases: HuntCase[] = [
         correction: "swim",
         editOp: "replace",
         explanation:
-          "wants to 后面那个动作穿原样：wants to swim，-ing 的外套要脱掉。",
+          "wants to 后面那个动作用原形：wants to swim，-ing 要脱掉。",
       },
       {
         tokenIndex: 20,
@@ -1333,7 +1333,7 @@ export const huntCases: HuntCase[] = [
         original: "stay",
         correction: "stayed",
         editOp: "replace",
-        explanation: "Last summer 是过去的时间，动词要换昨天版：stayed。",
+        explanation: "Last summer 是过去的时间，动词要换过去式：stayed。",
       },
     ],
     notes: [{ word: "beach", zh: "海滩" }],
@@ -1379,7 +1379,7 @@ export const huntCases: HuntCase[] = [
         correction: "go",
         editOp: "replace",
         explanation:
-          "must 后面那个动作穿原样：must go。going 的 -ing 外套 must 不认。",
+          "must 后面那个动作用原形：must go。going 的 -ing 形式 must 不认。",
       },
       {
         tokenIndex: 11,
@@ -1475,7 +1475,7 @@ export const huntCases: HuntCase[] = [
         correction: "better",
         editOp: "replace",
         explanation:
-          "good 说「更…」的时候是 better——像 go 的昨天版是 went 一样，要单独记住。",
+          "good 说「更…」的时候是 better——像 go 的过去式是 went 一样，要单独记住。",
       },
       {
         tokenIndex: 32,
@@ -1622,7 +1622,7 @@ export const huntCases: HuntCase[] = [
         original: "play",
         correction: "played",
         editOp: "replace",
-        explanation: "Yesterday 是过去的时间，动词要换昨天版：played。",
+        explanation: "Yesterday 是过去的时间，动词要换过去式：played。",
       },
       {
         tokenIndex: 20,
@@ -1704,7 +1704,7 @@ export const huntCases: HuntCase[] = [
         original: "wear",
         correction: "wore",
         editOp: "replace",
-        explanation: "yesterday 说的是昨天的事，动词要换昨天版：wore。",
+        explanation: "yesterday 说的是昨天的事，动词要换过去式：wore。",
       },
       {
         tokenIndex: 25,
@@ -1779,7 +1779,7 @@ export const huntCases: HuntCase[] = [
         correction: "done",
         editOp: "replace",
         explanation:
-          "have 后面要站做过版：do 的做过版是 done。I have done it all.",
+          "have 后面要站过去分词：do 的过去分词是 done。I have done it all.",
       },
       {
         tokenIndex: 16,
@@ -1787,7 +1787,7 @@ export const huntCases: HuntCase[] = [
         original: "say",
         correction: "said",
         editOp: "replace",
-        explanation: "Yesterday 说的是昨天的事，动词要换昨天版：say → said。",
+        explanation: "Yesterday 说的是昨天的事，动词要换过去式：say → said。",
       },
       {
         tokenIndex: 27,
@@ -1796,7 +1796,7 @@ export const huntCases: HuntCase[] = [
         correction: "eaten",
         editOp: "replace",
         explanation:
-          "eat 的做过版是 eaten，不走加 -ed 的路——没有 eated 这个形状。",
+          "eat 的过去分词是 eaten，不走加 -ed 的路——没有 eated 这个形状。",
       },
       {
         tokenIndex: 29,
@@ -1807,7 +1807,7 @@ export const huntCases: HuntCase[] = [
         explanation: "two 后面是一群，要加 s：two sandwiches。",
       },
     ],
-    notes: [{ word: "packed", zh: "装好（pack 的昨天版）" }],
+    notes: [{ word: "packed", zh: "装好（pack 的过去式）" }],
     reviewed: true,
   },
   {
@@ -1868,7 +1868,7 @@ export const huntCases: HuntCase[] = [
         correction: "been",
         editOp: "replace",
         explanation:
-          "be 的做过版是 been：I have been to Beijing。was 是昨天版，不能站在 have 后面。",
+          "be 的过去分词是 been：I have been to Beijing。was 是过去式，不能站在 have 后面。",
       },
       {
         tokenIndex: 17,
@@ -1876,7 +1876,7 @@ export const huntCases: HuntCase[] = [
         original: "see",
         correction: "seen",
         editOp: "replace",
-        explanation: "have 后面站做过版：see 的做过版是 seen。",
+        explanation: "have 后面站过去分词：see 的过去分词是 seen。",
       },
       {
         tokenIndex: 25,
@@ -1884,7 +1884,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "We 是好几个（我们），昨天版要用 were。",
+        explanation: "We 是复数（我们），过去式要用 were。",
       },
       {
         tokenIndex: 36,
@@ -1967,7 +1967,7 @@ export const huntCases: HuntCase[] = [
         original: "losed",
         correction: "lost",
         editOp: "replace",
-        explanation: "lose 的做过版是 lost——没有 losed 这个形状。",
+        explanation: "lose 的过去分词是 lost——没有 losed 这个形状。",
       },
       {
         tokenIndex: 17,
@@ -1992,7 +1992,7 @@ export const huntCases: HuntCase[] = [
         original: "broke",
         correction: "broken",
         editOp: "replace",
-        explanation: "have 后面站做过版：break 的做过版是 broken。",
+        explanation: "have 后面站过去分词：break 的过去分词是 broken。",
       },
     ],
     notes: [
@@ -2061,7 +2061,7 @@ export const huntCases: HuntCase[] = [
         correction: "saw",
         editOp: "replace",
         explanation:
-          "Yesterday 已经站在句子里，动词要用昨天版：I saw that film。做过版和具体时间点不能同台。",
+          "Yesterday 已经站在句子里，动词要用过去式：I saw that film。过去分词和具体时间点不能同台。",
       },
       {
         tokenIndex: 18,
@@ -2069,7 +2069,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "下午的美术课是昨天的事，go 要换昨天版 went。",
+        explanation: "下午的美术课是昨天的事，go 要换过去式 went。",
       },
       {
         tokenIndex: 31,
@@ -2077,7 +2077,7 @@ export const huntCases: HuntCase[] = [
         original: "eat",
         correction: "eaten",
         editOp: "replace",
-        explanation: "have 后面站做过版：eat 的做过版是 eaten。",
+        explanation: "have 后面站过去分词：eat 的过去分词是 eaten。",
       },
       {
         tokenIndex: 41,
@@ -2088,7 +2088,7 @@ export const huntCases: HuntCase[] = [
         explanation: "three 后面是一群，要加 s：three books。",
       },
     ],
-    notes: [{ word: "bowls", zh: "碗（bowl 的好几个）" }],
+    notes: [{ word: "bowls", zh: "碗（bowl 的复数）" }],
     reviewed: true,
   },
   {
@@ -2158,7 +2158,7 @@ export const huntCases: HuntCase[] = [
         original: "did",
         correction: "done",
         editOp: "replace",
-        explanation: "have 后面要站做过版：do 的做过版是 done。",
+        explanation: "have 后面要站过去分词：do 的过去分词是 done。",
       },
       {
         tokenIndex: 13,
@@ -2175,7 +2175,7 @@ export const huntCases: HuntCase[] = [
         correction: "were",
         editOp: "replace",
         explanation:
-          "句首那个「谁」是 my little brother and I（两个人），昨天版要用 were。",
+          "句首那个「谁」是 my little brother and I（两个人），过去式要用 were。",
       },
       {
         tokenIndex: 34,
@@ -2183,7 +2183,7 @@ export const huntCases: HuntCase[] = [
         original: "to",
         correction: "去掉 to",
         editOp: "delete",
-        explanation: "must 后面的动词保持原样，中间不垫 to：must go。",
+        explanation: "must 后面的动词保持原形，中间不垫 to：must go。",
       },
     ],
     reviewed: true,
@@ -2243,7 +2243,7 @@ export const huntCases: HuntCase[] = [
         original: "drink",
         correction: "drinks",
         editOp: "replace",
-        explanation: "「他喝」是「他/她」一个，动词加小尾巴 -s：drinks。",
+        explanation: "「他喝」是「他/她」一个，动词加 -s：drinks。",
       },
       {
         tokenIndex: 11,
@@ -2275,7 +2275,7 @@ export const huntCases: HuntCase[] = [
         original: "likes",
         correction: "like",
         editOp: "replace",
-        explanation: "Does 一出场，动词穿回原样 like——小尾巴由帮手扛。",
+        explanation: "Does 一出场，动词变回原形 like——-s 由 do 扛。",
       },
     ],
     reviewed: true,
@@ -2413,7 +2413,7 @@ export const huntCases: HuntCase[] = [
         correction: "lose",
         editOp: "replace",
         explanation:
-          "问过去的动作要请帮手 did：When did you lose it？动词穿回原样。",
+          "问过去的动作要请帮手 did：When did you lose it？动词变回原形。",
       },
       {
         tokenIndex: 21,
@@ -2546,7 +2546,7 @@ export const huntCases: HuntCase[] = [
         original: "am",
         correction: "are",
         editOp: "replace",
-        explanation: "We 是一伙的，be 用 are：We are going to。",
+        explanation: "We 是复数，be 用 are：We are going to。",
       },
       {
         tokenIndex: 26,
@@ -2555,7 +2555,7 @@ export const huntCases: HuntCase[] = [
         correction: "rain",
         editOp: "replace",
         explanation:
-          "will 后面的动词穿原样：will rain——be going to 也一样后面是原来的样子。",
+          "will 后面的动词用原形：will rain——be going to 也一样后面是原来的样子。",
       },
     ],
     reviewed: true,
@@ -2748,7 +2748,7 @@ export const huntCases: HuntCase[] = [
         original: "Closing",
         correction: "Close",
         editOp: "replace",
-        explanation: "祈使句动词穿原样：Close the door——-ing 是进行时的打扮。",
+        explanation: "祈使句动词用原形：Close the door——-ing 是进行时的打扮。",
       },
       {
         tokenIndex: 13,
@@ -2889,7 +2889,7 @@ export const huntCases: HuntCase[] = [
         original: "rain",
         correction: "raining",
         editOp: "replace",
-        explanation: "过去正在下雨：was raining——be 后面的动词要穿 -ing 外套。",
+        explanation: "过去正在下雨：was raining——be 后面的动词要加 -ing。",
       },
       {
         tokenIndex: 8,
@@ -2897,7 +2897,7 @@ export const huntCases: HuntCase[] = [
         original: "draw",
         correction: "drawing",
         editOp: "replace",
-        explanation: "was drawing——-ing 外套不能丢。",
+        explanation: "was drawing——-ing 不能丢。",
       },
       {
         tokenIndex: 14,
@@ -2905,7 +2905,7 @@ export const huntCases: HuntCase[] = [
         original: "were",
         correction: "was",
         editOp: "replace",
-        explanation: "Mom 是「她」一个，昨天版搭档用 was。",
+        explanation: "Mom 是「她」一个，过去式搭档用 was。",
       },
       {
         tokenIndex: 23,
@@ -2921,7 +2921,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "you 的过去版 be 是 were。",
+        explanation: "you 的过去式 be 是 were。",
       },
     ],
     reviewed: true,
@@ -3061,7 +3061,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "are",
         editOp: "replace",
-        explanation: "句首那个「谁」是 Two boys（好几个），be 动词用 are。",
+        explanation: "句首那个「谁」是 Two boys（复数），be 动词用 are。",
       },
     ],
     reviewed: true,
@@ -3180,7 +3180,7 @@ export const huntCases: HuntCase[] = [
         original: "comes",
         correction: "come",
         editOp: "replace",
-        explanation: "will 后面的动词穿原样：will come。",
+        explanation: "will 后面的动词用原形：will come。",
       },
       {
         tokenIndex: 13,
@@ -3606,7 +3606,7 @@ export const huntCases: HuntCase[] = [
         correction: "to buy",
         editOp: "insert",
         explanation:
-          "两个动作不能硬撞：去商店「买」牛奶，中间再垫一块 to——go to the shop to buy milk。",
+          "两个动作不能硬撞：去商店「买」牛奶，中间再加一个 to——go to the shop to buy milk。",
       },
       {
         tokenIndex: 9,
@@ -3622,7 +3622,7 @@ export const huntCases: HuntCase[] = [
         original: "buy",
         correction: "to buy",
         editOp: "insert",
-        explanation: "want 的门口有垫板：want to buy——想做某事，中间垫 to。",
+        explanation: "want 的门口有 to：want to buy——想做某事，中间垫 to。",
       },
     ],
     reviewed: true,
@@ -3754,7 +3754,7 @@ export const huntCases: HuntCase[] = [
         correction: "to watch",
         editOp: "insert",
         explanation:
-          "两个动作要垫板缝：去礼堂「看」演出，中间垫一块 to——go to the hall to watch it。",
+          "两个动作要靠 to 连：去礼堂「看」演出，中间加一个 to——go to the hall to watch it。",
       },
     ],
     reviewed: true,
@@ -3792,7 +3792,7 @@ export const huntCases: HuntCase[] = [
         original: "to",
         correction: "去掉 to",
         editOp: "delete",
-        explanation: "should 是家族成员，不垫板——should sleep early。",
+        explanation: "should 是家族成员，不带 to——should sleep early。",
       },
       {
         tokenIndex: 7,
@@ -3801,7 +3801,7 @@ export const huntCases: HuntCase[] = [
         correction: "rest",
         editOp: "replace",
         explanation:
-          "家族里动词穿原样：should rest——rests 的「他/她」一个尾巴要脱下来。",
+          "家族里动词用原形：should rest——rests 的「他/她」一个尾巴要脱下来。",
       },
       {
         tokenIndex: 11,
@@ -3869,7 +3869,7 @@ export const huntCases: HuntCase[] = [
         original: "stays",
         correction: "stay",
         editOp: "replace",
-        explanation: "will 后面穿原样：will stay——stays 的「他/她」一个尾巴要脱下来。",
+        explanation: "will 后面用原形：will stay——stays 的「他/她」一个尾巴要脱下来。",
       },
       {
         tokenIndex: 18,
@@ -3931,7 +3931,7 @@ export const huntCases: HuntCase[] = [
         original: "to",
         correction: "去掉 to",
         editOp: "delete",
-        explanation: "should 是家族成员，不垫板——should bring an umbrella。",
+        explanation: "should 是家族成员，不带 to——should bring an umbrella。",
       },
       {
         tokenIndex: 10,
@@ -3999,7 +3999,7 @@ export const huntCases: HuntCase[] = [
         correction: "broken",
         editOp: "replace",
         explanation:
-          "be 身边要穿做过版：was broken——谁弄坏的不重要，事站台上。",
+          "be 身边要穿过去分词：was broken——谁弄坏的不重要，事放到前面。",
       },
       {
         tokenIndex: 7,
@@ -4017,7 +4017,7 @@ export const huntCases: HuntCase[] = [
         correction: "broken",
         editOp: "replace",
         explanation:
-          "昨天版不能充数：穿做过版 broken——break → broke → broken，老词的三件外套别穿混。",
+          "过去式不能充数：穿过去分词 broken——break → broke → broken，老词的三种形式别穿混。",
       },
       {
         tokenIndex: 17,
@@ -4070,7 +4070,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "句首那个「谁」 The windows 是好几个，用 were 搭档：were cleaned。",
+        explanation: "句首那个「谁」 The windows 是复数，用 were 搭档：were cleaned。",
       },
       {
         tokenIndex: 8,
@@ -4087,7 +4087,7 @@ export const huntCases: HuntCase[] = [
         correction: "cleaned",
         editOp: "replace",
         explanation:
-          "「被打扫过了」要穿做过版：is cleaned——clean 说「干净的」这个状态，cleaned 说「被打扫过」这个动作。",
+          "「被打扫过了」要穿过去分词：is cleaned——clean 说「干净的」这个状态，cleaned 说「被打扫过」这个动作。",
       },
     ],
     reviewed: true,
@@ -4123,7 +4123,7 @@ export const huntCases: HuntCase[] = [
         correction: "eaten",
         editOp: "replace",
         explanation:
-          "be 身边要穿做过版：was eaten——eat 的做过版是 eaten（eat → ate → eaten）。",
+          "be 身边要穿过去分词：was eaten——eat 的过去分词是 eaten（eat → ate → eaten）。",
       },
       {
         tokenIndex: 5,
@@ -4188,7 +4188,7 @@ export const huntCases: HuntCase[] = [
         correction: "been cleaned",
         editOp: "insert",
         explanation:
-          "has 后面要垫 be 的做过版（been）：has been cleaned——缺了它，句子就塌了。",
+          "has 后面要垫 be 的过去分词（been）：has been cleaned——缺了它，句子就塌了。",
       },
       {
         tokenIndex: 9,
@@ -4197,7 +4197,7 @@ export const huntCases: HuntCase[] = [
         correction: "cleaned",
         editOp: "replace",
         explanation:
-          "been 后面要穿做过版：has been cleaned——clean 是「干净的」这个状态，cleaned 是「被打扫过」这个动作。",
+          "been 后面要穿过去分词：has been cleaned——clean 是「干净的」这个状态，cleaned 是「被打扫过」这个动作。",
       },
       {
         tokenIndex: 11,
@@ -4251,7 +4251,7 @@ export const huntCases: HuntCase[] = [
         correction: "taken",
         editOp: "replace",
         explanation:
-          "be 身边要穿做过版：were taken——took 是昨天版，不能充数（take → took → taken）。",
+          "be 身边要穿过去分词：were taken——took 是过去式，不能充数（take → took → taken）。",
       },
       {
         tokenIndex: 4,
@@ -4269,7 +4269,7 @@ export const huntCases: HuntCase[] = [
         correction: "broken",
         editOp: "replace",
         explanation:
-          "昨天版不能充数：was broken——break → broke → broken，老词三件外套别穿混。",
+          "过去式不能充数：was broken——break → broke → broken，老词三种形式别穿混。",
       },
       {
         tokenIndex: 13,
@@ -4329,7 +4329,7 @@ export const huntCases: HuntCase[] = [
         correction: "second",
         editOp: "replace",
         explanation:
-          "报数词不能顶排位词：two 是「两个」，second 才是「第二」——报数管几个、排位管第几。",
+          "基数词不能顶序数词：two 是「两个」，second 才是「第二」——基数词管几个、序数词管第几。",
       },
       {
         tokenIndex: 14,
@@ -4337,7 +4337,7 @@ export const huntCases: HuntCase[] = [
         original: "three",
         correction: "third",
         editOp: "replace",
-        explanation: "三的排位是 third——不是把 three 直接搬来，拼法要单独认。",
+        explanation: "三的序数词是 third——不是把 three 直接搬来，拼法要单独认。",
       },
       {
         tokenIndex: 18,
@@ -4477,7 +4477,7 @@ export const huntCases: HuntCase[] = [
         correction: "first.",
         editOp: "replace",
         explanation:
-          "日子读排位词，不读报数：1 读 first——October 1 读 October first。",
+          "日子读序数词，不读基数词：1 读 first——October 1 读 October first。",
       },
     ],
     reviewed: true,
@@ -4658,7 +4658,7 @@ export const huntCases: HuntCase[] = [
         correction: "were",
         editOp: "replace",
         explanation:
-          "两只鸟是一群，用 were 搭档：There were two birds——一个用 was、好几个用 were。",
+          "两只鸟是一群，用 were 搭档：There were two birds——一个用 was、复数用 were。",
       },
       {
         tokenIndex: 15,
@@ -4720,7 +4720,7 @@ export const huntCases: HuntCase[] = [
         correction: "去掉 to",
         editOp: "delete",
         explanation:
-          "垫板不进这扇门：Could you help me——家族不垫板（第 47 课的老规矩）。",
+          "to 不进这扇门：Could you help me——家族不带 to（第 47 课的老规矩）。",
       },
       {
         tokenIndex: 11,
@@ -4728,7 +4728,7 @@ export const huntCases: HuntCase[] = [
         original: "cans",
         correction: "can",
         editOp: "replace",
-        explanation: "家族不变形：can 就是 can——前面是好几个还是「他/她」一个，都不给它加尾巴。",
+        explanation: "家族不变形：can 就是 can——前面是复数还是「他/她」一个，都不给它加尾巴。",
       },
       {
         tokenIndex: 18,
@@ -4737,7 +4737,7 @@ export const huntCases: HuntCase[] = [
         correction: "help",
         editOp: "replace",
         explanation:
-          "动词穿原样，不换 -ing 装：cannot help——跟 must/should 家族一个规矩。",
+          "动词用原形，不换 -ing 装：cannot help——跟 must/should 家族一个规矩。",
       },
       {
         tokenIndex: 23,
@@ -4786,7 +4786,7 @@ export const huntCases: HuntCase[] = [
         original: "likes",
         correction: "like",
         editOp: "replace",
-        explanation: "would 家族穿原样：would like——likes 的 -s 不给它穿。",
+        explanation: "would 家族用原形：would like——likes 的 -s 不给它穿。",
       },
       {
         tokenIndex: 9,
@@ -4795,7 +4795,7 @@ export const huntCases: HuntCase[] = [
         correction: "去掉 to",
         editOp: "delete",
         explanation:
-          "想要的东西直接跟上、不垫板：would like juice——垫板是给动作用的。",
+          "想要的东西直接跟上、不带 to：would like juice——to 是给动作用的。",
       },
       {
         tokenIndex: 14,
@@ -4803,7 +4803,7 @@ export const huntCases: HuntCase[] = [
         original: "cups",
         correction: "cup",
         editOp: "replace",
-        explanation: "a 后面跟一个东西：a cup——一个杯子不报数。",
+        explanation: "a 后面跟一个东西：a cup——一个杯子前面加 a 就行。",
       },
       {
         tokenIndex: 19,
@@ -4916,7 +4916,7 @@ export const huntCases: HuntCase[] = [
         correction: "去掉 to",
         editOp: "delete",
         explanation:
-          "垫板进不了 finish 的门：finished reading——它跟 enjoy 是同一类动词（第 45 课）。",
+          "to 进不了 finish 的门：finished reading——它跟 enjoy 是同一类动词（第 45 课）。",
       },
       {
         tokenIndex: 8,
@@ -4942,7 +4942,7 @@ export const huntCases: HuntCase[] = [
         correction: "finished",
         editOp: "replace",
         explanation:
-          "句尾说了 yesterday，动词要换昨天版：finished——第 10 课的老规矩。",
+          "句尾说了 yesterday，动词要换过去式：finished——第 10 课的老规矩。",
       },
     ],
     reviewed: true,
@@ -4992,7 +4992,7 @@ export const huntCases: HuntCase[] = [
         correction: "tall",
         editOp: "replace",
         explanation:
-          "中间的词穿原样：as tall as——加了 -er 是「更」家的人，进不了「一样」家的门。",
+          "中间的词用原形：as tall as——加了 -er 是「更」家的人，进不了「一样」家的门。",
       },
       {
         tokenIndex: 12,
@@ -5200,7 +5200,7 @@ export const huntCases: HuntCase[] = [
         correction: "bought",
         editOp: "replace",
         explanation:
-          "buy 的昨天版是 bought，不走加 -ed 的路——老词要单独记（第 11 课的老朋友）。",
+          "buy 的过去式是 bought，不走加 -ed 的路——老词要单独记（第 11 课的老朋友）。",
       },
       {
         tokenIndex: 17,
@@ -5315,7 +5315,7 @@ export const huntCases: HuntCase[] = [
         original: "likes",
         correction: "like",
         editOp: "replace",
-        explanation: "would 家族穿原样：Would you like——likes 的 -s 不给它穿。",
+        explanation: "would 家族用原形：Would you like——likes 的 -s 不给它穿。",
       },
       {
         tokenIndex: 8,
@@ -5324,7 +5324,7 @@ export const huntCases: HuntCase[] = [
         correction: "去掉 to",
         editOp: "delete",
         explanation:
-          "要提供的东西直接跟、不垫板：some cakes——垫板留给动作（to have）。",
+          "要提供的东西直接跟、不带 to：some cakes——to 留给动作（to have）。",
       },
       {
         tokenIndex: 14,
@@ -5584,7 +5584,7 @@ export const huntCases: HuntCase[] = [
         correction: "去掉 to",
         editOp: "delete",
         explanation:
-          "口令块不垫板：Let me help you——跟 must/should 家族一个规矩。",
+          "口令块不带 to：Let me help you——跟 must/should 家族一个规矩。",
       },
       {
         tokenIndex: 7,
@@ -5593,7 +5593,7 @@ export const huntCases: HuntCase[] = [
         correction: "help",
         editOp: "replace",
         explanation:
-          "动词穿原样：Let me help——helps 的 -s 不给它穿（跟 must/should/can 家族一个规矩）。",
+          "动词用原形：Let me help——helps 的 -s 不给它穿（跟 must/should/can 家族一个规矩）。",
       },
       {
         tokenIndex: 11,
@@ -5610,7 +5610,7 @@ export const huntCases: HuntCase[] = [
         correction: "helped",
         editOp: "replace",
         explanation:
-          "Last week 说的是上周的事，动词要换昨天版：helped——第 10 课的老规矩。",
+          "Last week 说的是上周的事，动词要换过去式：helped——第 10 课的老规矩。",
       },
     ],
     reviewed: true,
@@ -5650,7 +5650,7 @@ export const huntCases: HuntCase[] = [
         original: "to",
         correction: "去掉 to",
         editOp: "delete",
-        explanation: "口令块不垫板：Let's go——跟第 74 课同规矩。",
+        explanation: "口令块不带 to：Let's go——跟第 74 课同规矩。",
       },
       {
         tokenIndex: 8,
@@ -6065,7 +6065,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "yesterday 说了昨天的事，动词要换昨天版：went——第 10 课的老规矩。"
+        explanation: "yesterday 说了昨天的事，动词要换过去式：went——第 10 课的老规矩。"
       },
       {
         tokenIndex: 13,
@@ -6220,7 +6220,7 @@ export const huntCases: HuntCase[] = [
         original: "one",
         correction: "ones",
         editOp: "replace",
-        explanation: "These 是「这些」（好几样），后面的词也要跟着变好几个：These ones are mine——第 33 课的老搭配。"
+        explanation: "These 是「这些」（好几样），后面的词也要跟着变复数：These ones are mine——第 33 课的老搭配。"
       }
     ],
     reviewed: true,
@@ -6308,7 +6308,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "Yesterday 说了昨天的事，动词要换昨天版：went——第 10 课的老规矩。"
+        explanation: "Yesterday 说了昨天的事，动词要换过去式：went——第 10 课的老规矩。"
       },
       {
         tokenIndex: 13,
@@ -6356,7 +6356,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "are",
         editOp: "replace",
-        explanation: "The clouds 是好几个，配 are：The clouds are white——一个 is、一群 are（第 26 课的配对）。"
+        explanation: "The clouds 是复数，配 are：The clouds are white——一个 is、一群 are（第 26 课的配对）。"
       },
       {
         tokenIndex: 12,
@@ -6444,7 +6444,7 @@ export const huntCases: HuntCase[] = [
         original: "watched",
         correction: "watch",
         editOp: "replace",
-        explanation: "说的都是每天常做的事，动词穿现在版：do…watch——两个动作同一档。"
+        explanation: "说的都是每天常做的事，动词穿现在式：do…watch——两个动作同一档。"
       },
       {
         tokenIndex: 15,
@@ -6588,7 +6588,7 @@ export const huntCases: HuntCase[] = [
         original: "playing",
         correction: "play",
         editOp: "replace",
-        explanation: "used to 后面跟原来的样子：play——不穿 -ing 外套（跟 want to travel 一个规矩）。"
+        explanation: "used to 后面跟原来的样子：play——不加 -ing（跟 want to travel 一个规矩）。"
       },
       {
         tokenIndex: 12,
@@ -6596,7 +6596,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "Yesterday 说了昨天的事，动词要换昨天版：went——第 10 课的老规矩。"
+        explanation: "Yesterday 说了昨天的事，动词要换过去式：went——第 10 课的老规矩。"
       },
       {
         tokenIndex: 17,
@@ -6676,7 +6676,7 @@ export const huntCases: HuntCase[] = [
         original: "read",
         correction: "reading",
         editOp: "replace",
-        explanation: "动作要穿 -ing 外套：was 【reading】 at eight——「那时正做着」，外套不能脱。"
+        explanation: "动作要加 -ing：was 【reading】 at eight——「那时正做着」，形式不能脱。"
       },
       {
         tokenIndex: 6,
@@ -6684,7 +6684,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "They 是一伙人，用 were 搭档：They were playing——一个 was、一群 were。"
+        explanation: "They 是复数，用 were 搭档：They were playing——一个 was、一群 were。"
       },
       {
         tokenIndex: 11,
@@ -6692,7 +6692,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "Yesterday 说了昨天的事，动词要换昨天版：went——第 10 课的老规矩。"
+        explanation: "Yesterday 说了昨天的事，动词要换过去式：went——第 10 课的老规矩。"
       },
       {
         tokenIndex: 15,
@@ -6724,7 +6724,7 @@ export const huntCases: HuntCase[] = [
         original: "rain",
         correction: "raining",
         editOp: "replace",
-        explanation: "动作要穿 -ing 外套：It was 【raining】——雨是「正在下」的样子。"
+        explanation: "动作要加 -ing：It was 【raining】——雨是「正在下」的样子。"
       },
       {
         tokenIndex: 6,
@@ -6732,7 +6732,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "was",
         editOp: "replace",
-        explanation: "yesterday 在场，搭档要换昨天版：It 【was】 raining——今天版说今天、昨天版说那天。"
+        explanation: "yesterday 在场，搭档要换过去式：It 【was】 raining——现在式说今天、过去式说那天。"
       },
       {
         tokenIndex: 10,
@@ -6748,7 +6748,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "Yesterday 说了昨天的事，动词要换昨天版：went——第 10 课的老规矩。"
+        explanation: "Yesterday 说了昨天的事，动词要换过去式：went——第 10 课的老规矩。"
       }
     ],
     reviewed: true,
@@ -6772,7 +6772,7 @@ export const huntCases: HuntCase[] = [
         original: "call,",
         correction: "called,",
         editOp: "replace",
-        explanation: "打电话那件是昨天的事，要换昨天版：When you 【called】。"
+        explanation: "打电话那件是昨天的事，要换过去式：When you 【called】。"
       },
       {
         tokenIndex: 11,
@@ -6780,7 +6780,7 @@ export const huntCases: HuntCase[] = [
         original: "read.",
         correction: "reading.",
         editOp: "replace",
-        explanation: "「当时正做着」要穿 -ing 外套：was 【reading】——read 没变形，进不了这个位。"
+        explanation: "「当时正做着」要加 -ing：was 【reading】——read 没变形，进不了这个位。"
       },
       {
         tokenIndex: 13,
@@ -6788,7 +6788,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "We 是一伙人，用 were 搭档：We were happy——一个 was、一群 were。"
+        explanation: "We 是复数，用 were 搭档：We were happy——一个 was、一群 were。"
       },
       {
         tokenIndex: 17,
@@ -6820,7 +6820,7 @@ export const huntCases: HuntCase[] = [
         original: "read,",
         correction: "reading,",
         editOp: "replace",
-        explanation: "一边也要穿 -ing 外套：While I was 【reading】——两件同时在，两边都穿。"
+        explanation: "一边也要加 -ing：While I was 【reading】——两件同时在，两边都穿。"
       },
       {
         tokenIndex: 10,
@@ -6876,7 +6876,7 @@ export const huntCases: HuntCase[] = [
         original: "ringing",
         correction: "rang",
         editOp: "replace",
-        explanation: "响是一下子：穿 -ing 就成了「一直在响」——一下子的那件用昨天版：【rang】。"
+        explanation: "响是一下子：穿 -ing 就成了「一直在响」——一下子的那件用过去式：【rang】。"
       },
       {
         tokenIndex: 16,
@@ -6884,7 +6884,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "We 是一伙人，用 were 搭档：We were happy——一个 was、一群 were。"
+        explanation: "We 是复数，用 were 搭档：We were happy——一个 was、一群 were。"
       },
       {
         tokenIndex: 21,
@@ -6924,7 +6924,7 @@ export const huntCases: HuntCase[] = [
         original: "playing",
         correction: "play",
         editOp: "replace",
-        explanation: "used to 后面跟原来的样子：play——它不认 -ing 外套。"
+        explanation: "used to 后面跟原来的样子：play——它不认 -ing。"
       },
       {
         tokenIndex: 12,
@@ -6932,7 +6932,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "Yesterday 说了昨天的事，动词要换昨天版：went——第 10 课的老规矩。"
+        explanation: "Yesterday 说了昨天的事，动词要换过去式：went——第 10 课的老规矩。"
       },
       {
         tokenIndex: 17,
@@ -6964,7 +6964,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "was",
         editOp: "replace",
-        explanation: "第 96 课回流：yesterday 在场，搭档要换昨天版——It 【was】 raining。"
+        explanation: "第 96 课回流：yesterday 在场，搭档要换过去式——It 【was】 raining。"
       },
       {
         tokenIndex: 6,
@@ -6972,7 +6972,7 @@ export const huntCases: HuntCase[] = [
         original: "call,",
         correction: "called,",
         editOp: "replace",
-        explanation: "第 97 课回流：打电话那件是昨天的事，要换昨天版——When you 【called】。"
+        explanation: "第 97 课回流：打电话那件是昨天的事，要换过去式——When you 【called】。"
       },
       {
         tokenIndex: 13,
@@ -7029,7 +7029,7 @@ export const huntCases: HuntCase[] = [
         original: "ring.",
         correction: "rang.",
         editOp: "replace",
-        explanation: "第 99 课回流：响是一下子——用昨天版：【rang】。"
+        explanation: "第 99 课回流：响是一下子——用过去式：【rang】。"
       },
       {
         tokenIndex: 25,
@@ -7069,7 +7069,7 @@ export const huntCases: HuntCase[] = [
         original: "does",
         correction: "do",
         editOp: "replace",
-        explanation: "口令块后面穿原样：makes me 【do】——-s 前面已经用过一次了。"
+        explanation: "口令块后面用原形：makes me 【do】——-s 前面已经用过一次了。"
       },
       {
         tokenIndex: 15,
@@ -7091,7 +7091,7 @@ export const huntCases: HuntCase[] = [
     reviewed: true,
   },
   {
-    // ── 第十六批 · L104 案件（规格：prd-grammar-causative-2026-09-19.md §6；新错 make→made／waited→wait，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第十六批 · L104 案件（规格：prd-grammar-causative-2026-09-19.md §6；新错 make→made／waited→wait，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-made-me-wait",
     number: 113,
     title: "等了半小时",
@@ -7109,7 +7109,7 @@ export const huntCases: HuntCase[] = [
         original: "make",
         correction: "made",
         editOp: "replace",
-        explanation: "说昨天的事要换昨天版：make → 【made】——昨天版不带 -s。"
+        explanation: "说昨天的事要换过去式：make → 【made】——过去式不带 -s。"
       },
       {
         tokenIndex: 7,
@@ -7117,7 +7117,7 @@ export const huntCases: HuntCase[] = [
         original: "waited.",
         correction: "wait.",
         editOp: "replace",
-        explanation: "第 103 课规矩：口令块后面穿原样——made me 【wait】。"
+        explanation: "第 103 课规矩：口令块后面用原形——made me 【wait】。"
       },
       {
         tokenIndex: 10,
@@ -7125,7 +7125,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 16,
@@ -7165,7 +7165,7 @@ export const huntCases: HuntCase[] = [
         original: "to",
         correction: "去掉 to",
         editOp: "delete",
-        explanation: "第 103 课规矩：家族不认 to——let me 【go】，不垫板。"
+        explanation: "第 103 课规矩：家族不认 to——let me 【go】，不带 to。"
       },
       {
         tokenIndex: 12,
@@ -7173,7 +7173,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 19 课回流：We 是一伙人，用 were 搭档——We 【were】 happy。"
+        explanation: "第 19 课回流：We 是复数，用 were 搭档——We 【were】 happy。"
       },
       {
         tokenIndex: 17,
@@ -7213,7 +7213,7 @@ export const huntCases: HuntCase[] = [
         original: "plays.",
         correction: "play.",
         editOp: "replace",
-        explanation: "第 103 课规矩：后面穿原样——lets him 【play】。"
+        explanation: "第 103 课规矩：后面用原形——lets him 【play】。"
       },
       {
         tokenIndex: 10,
@@ -7253,7 +7253,7 @@ export const huntCases: HuntCase[] = [
         original: "has",
         correction: "had",
         editOp: "replace",
-        explanation: "说已经发生过的事要用昨天版：has → 【had】——The teacher had me come early。"
+        explanation: "说已经发生过的事要用过去式：has → 【had】——The teacher had me come early。"
       },
       {
         tokenIndex: 10,
@@ -7261,7 +7261,7 @@ export const huntCases: HuntCase[] = [
         original: "came",
         correction: "come",
         editOp: "replace",
-        explanation: "第 103 课规矩：后面穿原样——had me 【come】，换版本只换前面那一个词。"
+        explanation: "第 103 课规矩：后面用原形——had me 【come】，换版本只换前面那一个词。"
       },
       {
         tokenIndex: 13,
@@ -7283,7 +7283,7 @@ export const huntCases: HuntCase[] = [
     reviewed: true,
   },
   {
-    // ── 第十六批 · L108 案件（规格：prd-grammar-causative-2026-09-19.md §6；新错漏 to／get→got，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第十六批 · L108 案件（规格：prd-grammar-causative-2026-09-19.md §6；新错漏 to／get→got，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-got-him-to",
     number: 117,
     title: "说服他去",
@@ -7301,7 +7301,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "to go",
         editOp: "insert",
-        explanation: "这一家就 get 垫板：got him 【to go】——前面几课练的是不垫，到它这要垫。"
+        explanation: "这一家就 get 加 to：got him 【to go】——前面几课练的是不垫，到它这要垫。"
       },
       {
         tokenIndex: 7,
@@ -7309,7 +7309,7 @@ export const huntCases: HuntCase[] = [
         original: "get",
         correction: "got",
         editOp: "replace",
-        explanation: "说已经说动过的那次，要用昨天版：get → 【got】。"
+        explanation: "说已经说动过的那次，要用过去式：get → 【got】。"
       },
       {
         tokenIndex: 15,
@@ -7317,7 +7317,7 @@ export const huntCases: HuntCase[] = [
         original: "see",
         correction: "saw",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——see → 【saw】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——see → 【saw】。"
       },
       {
         tokenIndex: 20,
@@ -7349,7 +7349,7 @@ export const huntCases: HuntCase[] = [
         original: "wait",
         correction: "waited",
         editOp: "replace",
-        explanation: "两边都得用昨天版：前面也要过去版——I 【waited】 until the rain stopped。"
+        explanation: "两边都得用过去式：后面改了，前面也要跟着改——I 【waited】 until the rain stopped。"
       },
       {
         tokenIndex: 11,
@@ -7357,7 +7357,7 @@ export const huntCases: HuntCase[] = [
         original: "stops.",
         correction: "stopped.",
         editOp: "replace",
-        explanation: "前面用了昨天版 waited，后面也得跟昨天版——until the rain 【stopped】。"
+        explanation: "前面用了过去式 waited，后面也得跟过去式——until the rain 【stopped】。"
       },
       {
         tokenIndex: 15,
@@ -7413,7 +7413,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "to go",
         editOp: "insert",
-        explanation: "第 108 课回流：这一家就 get 垫板——got him 【to go】。"
+        explanation: "第 108 课回流：这一家就 get 加 to——got him 【to go】。"
       },
       {
         tokenIndex: 23,
@@ -7421,13 +7421,13 @@ export const huntCases: HuntCase[] = [
         original: "stop.",
         correction: "stopped.",
         editOp: "replace",
-        explanation: "第 109 课回流：两边都用昨天版——until the rain 【stopped】。"
+        explanation: "第 109 课回流：两边都用过去式——until the rain 【stopped】。"
       }
     ],
     reviewed: true,
   },
   {
-    // ── 第十七批 · L111 开篇案件（规格：prd-grammar-a2-closeout-2026-09-19.md §6；新错漏撇号／月份 on→in，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第十七批 · L111 开篇案件（规格：prd-grammar-a2-closeout-2026-09-19.md §6；新错漏撇号／月份 on→in，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-grandmas-birthday",
     number: 120,
     title: "挂历上的生日",
@@ -7461,7 +7461,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 19,
@@ -7493,7 +7493,7 @@ export const huntCases: HuntCase[] = [
         original: "my.",
         correction: "mine.",
         editOp: "replace",
-        explanation: "短版不能站句尾：my 后面得跟着东西——句尾收住要用长版 【mine】。"
+        explanation: "形容词性物主代词不能站句尾：my 后面得跟着东西——句尾收住要用名词性物主代词 【mine】。"
       },
       {
         tokenIndex: 7,
@@ -7541,7 +7541,7 @@ export const huntCases: HuntCase[] = [
         original: "bored.",
         correction: "boring.",
         editOp: "replace",
-        explanation: "书不会「感到」——只有人会。说东西让人没劲，用让人版：The book is 【boring】。"
+        explanation: "书不会「感到」——只有人会。说东西让人没劲，用 -ing 形容词：The book is 【boring】。"
       },
       {
         tokenIndex: 5,
@@ -7557,7 +7557,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 19 课回流：We 是一伙人，用 were 搭档——We 【were】 happy。"
+        explanation: "第 19 课回流：We 是复数，用 were 搭档——We 【were】 happy。"
       },
       {
         tokenIndex: 12,
@@ -7597,7 +7597,7 @@ export const huntCases: HuntCase[] = [
         original: "apple.",
         correction: "apples.",
         editOp: "replace",
-        explanation: "第 11 课回流：a few 后面跟着的是好几个东西，要加尾巴——a few 【apples】。"
+        explanation: "第 11 课回流：a few 后面跟着的是复数名词，要加尾巴——a few 【apples】。"
       },
       {
         tokenIndex: 12,
@@ -7619,7 +7619,7 @@ export const huntCases: HuntCase[] = [
     reviewed: true,
   },
   {
-    // ── 第十七批 · L115 案件（规格：prd-grammar-a2-closeout-2026-09-19.md §6；新错多补动词／the→a，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第十七批 · L115 案件（规格：prd-grammar-a2-closeout-2026-09-19.md §6；新错多补动词／the→a，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-have-got-bike",
     number: 124,
     title: "新车棚",
@@ -7653,7 +7653,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 20,
@@ -7701,7 +7701,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+        explanation: "第 19 课回流：They 是复数，用 were 搭档——They 【were】 happy。"
       },
       {
         tokenIndex: 19,
@@ -7733,7 +7733,7 @@ export const huntCases: HuntCase[] = [
         original: "boring.",
         correction: "bored.",
         editOp: "replace",
-        explanation: "第 113 课回流：说自己没劲用感到版——I am 【bored】。"
+        explanation: "第 113 课回流：说自己没劲用 -ed 形容词——I am 【bored】。"
       },
       {
         tokenIndex: 6,
@@ -7749,7 +7749,7 @@ export const huntCases: HuntCase[] = [
         original: "stop.",
         correction: "stopped.",
         editOp: "replace",
-        explanation: "第 109 课回流：until 两边都用昨天版——until the rain 【stopped】。"
+        explanation: "第 109 课回流：until 两边都用过去式——until the rain 【stopped】。"
       },
       {
         tokenIndex: 17,
@@ -7789,7 +7789,7 @@ export const huntCases: HuntCase[] = [
         original: "boring.",
         correction: "bored.",
         editOp: "replace",
-        explanation: "第 113 课回流：说自己没劲用感到版——I am 【bored】。"
+        explanation: "第 113 课回流：说自己没劲用 -ed 形容词——I am 【bored】。"
       },
       {
         tokenIndex: 10,
@@ -7811,7 +7811,7 @@ export const huntCases: HuntCase[] = [
     reviewed: true,
   },
   {
-    // ── 第十八批 · L119 开篇案件（规格：prd-grammar-used-to-2026-09-19.md §7；新错 use→used／漏 be，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第十八批 · L119 开篇案件（规格：prd-grammar-used-to-2026-09-19.md §7；新错 use→used／漏 be，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-used-to-it",
     number: 128,
     title: "新住处第一周",
@@ -7845,7 +7845,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 18,
@@ -7907,7 +7907,7 @@ export const huntCases: HuntCase[] = [
     reviewed: true,
   },
   {
-    // ── 第十八批 · L121 案件（规格：prd-grammar-used-to-2026-09-19.md §7；新错 get→getting／use→used，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第十八批 · L121 案件（规格：prd-grammar-used-to-2026-09-19.md §7；新错 get→getting／use→used，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-getting-used-to",
     number: 130,
     title: "第二周",
@@ -7941,7 +7941,7 @@ export const huntCases: HuntCase[] = [
         original: "see",
         correction: "saw",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——see → 【saw】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——see → 【saw】。"
       },
       {
         tokenIndex: 20,
@@ -7955,10 +7955,10 @@ export const huntCases: HuntCase[] = [
     reviewed: true,
   },
   {
-    // ── 第十八批 · L122 案件（脊柱课；规格：prd-grammar-used-to-2026-09-19.md §7；新错两张脸混形／漏 to，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第十八批 · L122 案件（脊柱课；规格：prd-grammar-used-to-2026-09-19.md §7；新错两张脸混形／漏 to，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-two-faces",
     number: 131,
-    title: "两张脸排一行",
+    title: "两种用法排一行",
     scene: "本子上并排写着两行——一行「从前」，一行「现在」",
     tokens: [
       "She", "used", "to", "working", "late.",
@@ -7973,7 +7973,7 @@ export const huntCases: HuntCase[] = [
         original: "working",
         correction: "work",
         editOp: "replace",
-        explanation: "第 93 课规矩：只有 used、没有 be 的时候，后面穿原样——used to 【work】 late。"
+        explanation: "第 93 课规矩：只有 used、没有 be 的时候，后面用原形——used to 【work】 late。"
       },
       {
         tokenIndex: 8,
@@ -7989,7 +7989,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 18,
@@ -8040,7 +8040,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+        explanation: "第 19 课回流：They 是复数，用 were 搭档——They 【were】 happy。"
       },
       {
         tokenIndex: 17,
@@ -8096,13 +8096,13 @@ export const huntCases: HuntCase[] = [
         original: "walking",
         correction: "work",
         editOp: "replace",
-        explanation: "第 122 课回流：只有 used、没有 be 的时候，后面穿原样——used to 【work】 late。"
+        explanation: "第 122 课回流：只有 used、没有 be 的时候，后面用原形——used to 【work】 late。"
       }
     ],
     reviewed: true,
   },
   {
-    // ── 第十九批 · L125 开篇案件（规格：prd-grammar-look-2026-09-19.md §7；新错中间站 is／漏 -s，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第十九批 · L125 开篇案件（规格：prd-grammar-look-2026-09-19.md §7；新错中间站 is／漏 -s，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-it-looks-nice",
     number: 134,
     title: "画纸上的那句话",
@@ -8136,7 +8136,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 14,
@@ -8168,7 +8168,7 @@ export const huntCases: HuntCase[] = [
         original: "looks",
         correction: "look",
         editOp: "replace",
-        explanation: "「你」配原样的 look——不带 s：You 【look】 tired。"
+        explanation: "「你」配原形的 look——不带 s：You 【look】 tired。"
       },
       {
         tokenIndex: 4,
@@ -8184,7 +8184,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+        explanation: "第 19 课回流：They 是复数，用 were 搭档——They 【were】 happy。"
       },
       {
         tokenIndex: 12,
@@ -8224,7 +8224,7 @@ export const huntCases: HuntCase[] = [
         original: "looks",
         correction: "look",
         editOp: "replace",
-        explanation: "第 126 课回流：「你」配原样的 look——不带 s。"
+        explanation: "第 126 课回流：「你」配原形的 look——不带 s。"
       },
       {
         tokenIndex: 9,
@@ -8240,13 +8240,13 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       }
     ],
     reviewed: true,
   },
   {
-    // ── 第二十批 · L128 开篇案件（规格：prd-grammar-five-senses-2026-09-19.md §7；新错中间站 is／漏 -s，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第二十批 · L128 开篇案件（规格：prd-grammar-five-senses-2026-09-19.md §7；新错中间站 is／漏 -s，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-it-sounds-great",
     number: 137,
     title: "厨房里的声音",
@@ -8280,7 +8280,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 14,
@@ -8328,7 +8328,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+        explanation: "第 19 课回流：They 是复数，用 were 搭档——They 【were】 happy。"
       },
       {
         tokenIndex: 10,
@@ -8342,7 +8342,7 @@ export const huntCases: HuntCase[] = [
     reviewed: true,
   },
   {
-    // ── 第二十批 · L130 案件（规格：prd-grammar-five-senses-2026-09-19.md §7；新错 well→good／漏 -s，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第二十批 · L130 案件（规格：prd-grammar-five-senses-2026-09-19.md §7；新错 well→good／漏 -s，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-it-tastes-good",
     number: 139,
     title: "桌上的蛋糕",
@@ -8376,7 +8376,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 15,
@@ -8424,7 +8424,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+        explanation: "第 19 课回流：They 是复数，用 were 搭档——They 【were】 happy。"
       },
       {
         tokenIndex: 12,
@@ -8438,7 +8438,7 @@ export const huntCases: HuntCase[] = [
     reviewed: true,
   },
   {
-    // ── 第二十批 · L132 案件（规格：prd-grammar-five-senses-2026-09-19.md §7；新错 not sounds／Does it sounds，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第二十批 · L132 案件（规格：prd-grammar-five-senses-2026-09-19.md §7；新错 not sounds／Does it sounds，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-does-it-sound-good",
     number: 141,
     title: "课间的一句话",
@@ -8456,7 +8456,7 @@ export const huntCases: HuntCase[] = [
         original: "not",
         correction: "does not",
         editOp: "insert",
-        explanation: "说「不」要请帮手：does not 站前面，sound 退回原样——It 【does not】 sound good。"
+        explanation: "说「不」要请帮手：does not 站前面，sound 变回原形——It 【does not】 sound good。"
       },
       {
         tokenIndex: 6,
@@ -8464,7 +8464,7 @@ export const huntCases: HuntCase[] = [
         original: "sounds",
         correction: "sound",
         editOp: "replace",
-        explanation: "帮手 Does 已经站到句首了，sound 退回原样——Does it 【sound】 good?"
+        explanation: "帮手 Does 已经站到句首了，sound 变回原形——Does it 【sound】 good?"
       },
       {
         tokenIndex: 10,
@@ -8472,7 +8472,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 15,
@@ -8534,7 +8534,7 @@ export const huntCases: HuntCase[] = [
     reviewed: true,
   },
   {
-    // ── 第二十一批 · L134 开篇案件（规格：prd-grammar-look-forward-to-2026-09-20.md §9；新错 look→looking／漏 to，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第二十一批 · L134 开篇案件（规格：prd-grammar-look-forward-to-2026-09-20.md §9；新错 look→looking／漏 to，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-looking-forward-weekend",
     number: 143,
     title: "台历上的圈",
@@ -8560,7 +8560,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 20,
@@ -8608,7 +8608,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+        explanation: "第 19 课回流：They 是复数，用 were 搭档——They 【were】 happy。"
       },
       {
         tokenIndex: 15,
@@ -8622,7 +8622,7 @@ export const huntCases: HuntCase[] = [
     reviewed: true,
   },
   {
-    // ── 第二十一批 · L136 案件（规格：prd-grammar-look-forward-to-2026-09-20.md §9；新错 see→seeing（本批新错型）＋漏 to，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第二十一批 · L136 案件（规格：prd-grammar-look-forward-to-2026-09-20.md §9；新错 see→seeing（本批新错型）＋漏 to，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-looking-forward-seeing",
     number: 145,
     title: "电话里的那句话",
@@ -8656,7 +8656,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 20,
@@ -8670,7 +8670,7 @@ export const huntCases: HuntCase[] = [
     reviewed: true,
   },
   {
-    // ── 第二十一批 · L137 案件（规格：prd-grammar-look-forward-to-2026-09-20.md §9；新错 Do→Are（不请帮手）／look→looking，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第二十一批 · L137 案件（规格：prd-grammar-look-forward-to-2026-09-20.md §9；新错 Do→Are（不请帮手）／look→looking，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-are-you-looking-forward",
     number: 146,
     title: "暑假通知单",
@@ -8704,7 +8704,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 22,
@@ -8766,7 +8766,7 @@ export const huntCases: HuntCase[] = [
     reviewed: true,
   },
   {
-    // ── 第二十二批 · L139 开篇案件（规格：prd-grammar-contrast-2026-09-20.md §9；新错「虽然…但是」并存（本批新错型）／will 漏用，旧错回流 L10 昨天版＋L11 好几个）──
+    // ── 第二十二批 · L139 开篇案件（规格：prd-grammar-contrast-2026-09-20.md §9；新错「虽然…但是」并存（本批新错型）／will 漏用，旧错回流 L10 过去式＋L11 好几个）──
     id: "hunt-although-rain",
     number: 148,
     title: "雨里的那句话",
@@ -8800,7 +8800,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 23,
@@ -8817,7 +8817,7 @@ export const huntCases: HuntCase[] = [
     // ── 第二十二批 · L140 案件（规格：prd-grammar-contrast-2026-09-20.md §9；新错两张脸同时上／逗号错位，旧错回流 L19 was/were＋L25 「他/她」一个）──
     id: "hunt-but-vs-although",
     number: 149,
-    title: "便签上的两张脸",
+    title: "便签上的两种用法",
     scene: "桌上并排摆着的两张便签，写着同一个意思",
     tokens: [
       "It", "is", "raining,", "but", "I", "will", "go", "out.",
@@ -8840,7 +8840,7 @@ export const huntCases: HuntCase[] = [
         original: "but",
         correction: "去掉 but",
         editOp: "delete",
-        explanation: "两张脸不能同时上：前面有了 Although，后面就不用 but（只留一个）。"
+        explanation: "两种用法不能同时上：前面有了 Although，后面就不用 but（只留一个）。"
       },
       {
         tokenIndex: 18,
@@ -8848,7 +8848,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+        explanation: "第 19 课回流：They 是复数，用 were 搭档——They 【were】 happy。"
       },
       {
         tokenIndex: 21,
@@ -8880,7 +8880,7 @@ export const huntCases: HuntCase[] = [
         original: "but",
         correction: "去掉 but",
         editOp: "delete",
-        explanation: "第 139 课回流：两张脸不能同时上——前面有了 Although，后面就不用 but。"
+        explanation: "第 139 课回流：两种用法不能同时上——前面有了 Although，后面就不用 but。"
       },
       {
         tokenIndex: 11,
@@ -8904,7 +8904,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 19 课回流：They 是一伙人，用 were 搭档——They 【were】 happy。"
+        explanation: "第 19 课回流：They 是复数，用 were 搭档——They 【were】 happy。"
       }
     ],
     reviewed: true,
@@ -8936,7 +8936,7 @@ export const huntCases: HuntCase[] = [
         original: "Soon",
         correction: "As soon",
         editOp: "insert",
-        explanation: "两头都要卡住：少一头 as，「一到就」就散架——As 【soon as】 I finish。第 65 课那句 as tall as 是「一样」，这句是「一到就」——同一个字，两张脸。"
+        explanation: "两头都要卡住：少一头 as，「一到就」就散架——As 【soon as】 I finish。第 65 课那句 as tall as 是「一样」，这句是「一到就」——同一个字，两种用法。"
       },
       {
         tokenIndex: 18,
@@ -8944,7 +8944,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       },
       {
         tokenIndex: 24,
@@ -8992,7 +8992,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 19 课回流：My sister and I 是两个人，算一伙的，用 【were】 不用 was。"
+        explanation: "第 19 课回流：My sister and I 是两个人，算复数，用 【were】 不用 was。"
       },
       {
         tokenIndex: 19,
@@ -9000,7 +9000,7 @@ export const huntCases: HuntCase[] = [
         original: "like",
         correction: "likes",
         editOp: "replace",
-        explanation: "第 25 课回流：「她喜欢」要加 -s——She 【likes】 music。这是英语里最顽固的小尾巴，别丢了。"
+        explanation: "第 25 课回流：「她喜欢」要加 -s——She 【likes】 music。这是英语里最顽固的 -s，别丢了。"
       }
     ],
     reviewed: true,
@@ -9048,7 +9048,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说昨天的事要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说昨天的事要换过去式——go → 【went】。"
       }
     ],
     reviewed: true,
@@ -9099,7 +9099,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：Last week 是过去的事，要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：Last week 是过去的事，要换过去式——go → 【went】。"
       }
     ],
     reviewed: true,
@@ -9147,7 +9147,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 19 课回流：My sister and I 是两个人，算一伙的，用 【were】 不用 was。"
+        explanation: "第 19 课回流：My sister and I 是两个人，算复数，用 【were】 不用 was。"
       }
     ],
     reviewed: true,
@@ -9198,7 +9198,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：Yesterday 是过去的事，要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：Yesterday 是过去的事，要换过去式——go → 【went】。"
       }
     ],
     reviewed: true,
@@ -9249,7 +9249,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：Yesterday 是过去的事，要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：Yesterday 是过去的事，要换过去式——go → 【went】。"
       }
     ],
     reviewed: true,
@@ -9289,7 +9289,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 19 课回流：The books 是好几本，算一伙的，用 【were】 不用 was。"
+        explanation: "第 19 课回流：The books 是好几本，算复数，用 【were】 不用 was。"
       },
       {
         tokenIndex: 16,
@@ -9348,7 +9348,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：Last week 是过去的事，要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：Last week 是过去的事，要换过去式——go → 【went】。"
       }
     ],
     reviewed: true,
@@ -9444,7 +9444,7 @@ export const huntCases: HuntCase[] = [
         original: "watch",
         correction: "watched",
         editOp: "replace",
-        explanation: "第 10 课回流：Last night 是过去的事，要换昨天版——watch → 【watched】。"
+        explanation: "第 10 课回流：Last night 是过去的事，要换过去式——watch → 【watched】。"
       }
     ],
     reviewed: true,
@@ -9487,7 +9487,7 @@ export const huntCases: HuntCase[] = [
         original: "do",
         correction: "done",
         editOp: "replace",
-        explanation: "第 21 课回流：have 后面要用「做过版」——have 【done】 my homework。"
+        explanation: "第 21 课回流：have 后面要用「过去分词」——have 【done】 my homework。"
       },
       {
         tokenIndex: 15,
@@ -9495,7 +9495,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：Yesterday 是过去的事，要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：Yesterday 是过去的事，要换过去式——go → 【went】。"
       }
     ],
     reviewed: true,
@@ -9530,7 +9530,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "are",
         editOp: "replace",
-        explanation: "第 7 课回流：They 是一伙人，算好几个，搭档要用 are——They 【are】 at home。"
+        explanation: "第 7 课回流：They 是复数，算复数，搭档要用 are——They 【are】 at home。"
       },
       {
         tokenIndex: 9,
@@ -9546,7 +9546,7 @@ export const huntCases: HuntCase[] = [
         original: "see",
         correction: "saw",
         editOp: "replace",
-        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——see → 【saw】。"
+        explanation: "第 10 课回流：yesterday 是过去的事，要换过去式——see → 【saw】。"
       }
     ],
     reviewed: true,
@@ -9570,7 +9570,7 @@ export const huntCases: HuntCase[] = [
         original: "has",
         correction: "去掉 has",
         editOp: "delete",
-        explanation: "「…以前」说的是过去某一个点，那句话穿昨天版就够——She 【left】 three days ago，前面不加 have。"
+        explanation: "「…以前」说的是过去某一个点，那句话穿过去式就够——She 【left】 three days ago，前面不加 have。"
       },
       {
         tokenIndex: 8,
@@ -9589,7 +9589,7 @@ export const huntCases: HuntCase[] = [
         original: "watch",
         correction: "watched",
         editOp: "replace",
-        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——watch → 【watched】。"
+        explanation: "第 10 课回流：yesterday 是过去的事，要换过去式——watch → 【watched】。"
       },
       {
         tokenIndex: 16,
@@ -9597,7 +9597,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "are",
         editOp: "replace",
-        explanation: "第 7 课回流：We 是一伙人，算好几个，搭档要用 are——We 【are】 happy。"
+        explanation: "第 7 课回流：We 是复数，算复数，搭档要用 are——We 【are】 happy。"
       }
     ],
     reviewed: true,
@@ -9632,7 +9632,7 @@ export const huntCases: HuntCase[] = [
         original: "wait",
         correction: "waited",
         editOp: "replace",
-        explanation: "第 10 课回流：说的是已经等过了，动词要换昨天版——wait → 【waited】。"
+        explanation: "第 10 课回流：说的是已经等过了，动词要换过去式——wait → 【waited】。"
       },
       {
         tokenIndex: 11,
@@ -9688,7 +9688,7 @@ export const huntCases: HuntCase[] = [
         original: "watch",
         correction: "watched",
         editOp: "replace",
-        explanation: "第 10 课回流：last night 是过去的事，要换昨天版——watch → 【watched】。"
+        explanation: "第 10 课回流：last night 是过去的事，要换过去式——watch → 【watched】。"
       },
       {
         tokenIndex: 18,
@@ -9696,7 +9696,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "are",
         editOp: "replace",
-        explanation: "第 7 课回流：The students 是好几号人，算一伙的，搭档要用 are——The students 【are】 here。"
+        explanation: "第 7 课回流：The students 是好几号人，算复数，搭档要用 are——The students 【are】 here。"
       }
     ],
     reviewed: true,
@@ -9768,7 +9768,7 @@ export const huntCases: HuntCase[] = [
         original: "boat.",
         correction: "a boat.",
         editOp: "insert",
-        explanation: "一条船要说 a boat——那个 a 不能丢。like 后面跟的是一个「什么东西」，前面要报数。"
+        explanation: "一条船要说 a boat——那个 a 不能丢。like 后面跟的是一个「什么东西」，前面要加 a。"
       },
       {
         tokenIndex: 5,
@@ -9792,7 +9792,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：yesterday 是过去的事，要换过去式——go → 【went】。"
       }
     ],
     reviewed: true,
@@ -9824,7 +9824,7 @@ export const huntCases: HuntCase[] = [
         original: "knows",
         correction: "know",
         editOp: "replace",
-        explanation: "to 后面那个动作穿原样——to 【know】 you，不换形状。一场戏只让一个词换形状，seems 已经换过了。"
+        explanation: "to 后面那个动作用原形——to 【know】 you，不换形状。一场戏只让一个词换形状，seems 已经换过了。"
       },
       {
         tokenIndex: 12,
@@ -9840,7 +9840,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "are",
         editOp: "replace",
-        explanation: "第 7 课回流：They 是一伙人，算好几个，搭档要用 are——They 【are】 happy。"
+        explanation: "第 7 课回流：They 是复数，算复数，搭档要用 are——They 【are】 happy。"
       }
     ],
     reviewed: true,
@@ -9872,7 +9872,7 @@ export const huntCases: HuntCase[] = [
         original: "buys",
         correction: "buy",
         editOp: "replace",
-        explanation: "to 后面那个动作穿原样——to 【buy】，不换形状。一场戏只让一个词换形状。"
+        explanation: "to 后面那个动作用原形——to 【buy】，不换形状。一场戏只让一个词换形状。"
       },
       {
         tokenIndex: 10,
@@ -9888,7 +9888,7 @@ export const huntCases: HuntCase[] = [
         original: "watch",
         correction: "watched",
         editOp: "replace",
-        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——watch → 【watched】。"
+        explanation: "第 10 课回流：yesterday 是过去的事，要换过去式——watch → 【watched】。"
       }
     ],
     reviewed: true,
@@ -9920,7 +9920,7 @@ export const huntCases: HuntCase[] = [
         original: "likes",
         correction: "like",
         editOp: "replace",
-        explanation: "「大多数学生」是一群人，动词穿原样——Most of the students 【like】 it。带 s 的那件是给「他／她一个」穿的。"
+        explanation: "「大多数学生」是一群人，动词用原形——Most of the students 【like】 it。带 s 的那件是给「他／她一个」穿的。"
       },
       {
         tokenIndex: 13,
@@ -9936,7 +9936,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "are",
         editOp: "replace",
-        explanation: "第 7 课回流：We 是一伙人，算好几个，搭档要用 are——We 【are】 at school。"
+        explanation: "第 7 课回流：We 是复数，算复数，搭档要用 are——We 【are】 at school。"
       }
     ],
     reviewed: true,
@@ -9977,7 +9977,7 @@ export const huntCases: HuntCase[] = [
         original: "helps",
         correction: "help",
         editOp: "replace",
-        explanation: "第 14 课回流：can 后面跟原样，不能带 s——She can 【help】 you。带 s 的那件是给「他／她做事」穿的，can 后面用不上。"
+        explanation: "第 14 课回流：can 后面跟原形，不能带 s——She can 【help】 you。带 s 的那件是给「他／她做事」穿的，can 后面用不上。"
       }
     ],
     reviewed: true
@@ -10156,7 +10156,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "are",
         editOp: "replace",
-        explanation: "第 7 课回流：They 是一伙人，搭档用 are——They 【are】 here。"
+        explanation: "第 7 课回流：They 是复数，搭档用 are——They 【are】 here。"
       }
     ],
     reviewed: true
@@ -10189,7 +10189,7 @@ export const huntCases: HuntCase[] = [
         original: "to",
         correction: "（去掉 to）",
         editOp: "delete",
-        explanation: "后面那个动作穿原样，去掉 to——Why don't you 【take】 a rest。"
+        explanation: "后面那个动作用原形，去掉 to——Why don't you 【take】 a rest。"
       },
       {
         tokenIndex: 8,
@@ -10352,7 +10352,7 @@ export const huntCases: HuntCase[] = [
         original: "goes.",
         correction: "go.",
         editOp: "replace",
-        explanation: "第 25 课回流：you 的搭档穿原样——unless you 【go】。带 s 的那件是给「他／她」穿的，you 用不上。"
+        explanation: "第 25 课回流：you 的搭档用原形——unless you 【go】。带 s 的那件是给「他／她」穿的，you 用不上。"
       }
     ],
     reviewed: true
@@ -10389,7 +10389,7 @@ export const huntCases: HuntCase[] = [
         original: "catching",
         correction: "catch",
         editOp: "replace",
-        explanation: "in order to 后面那个动作穿原样——in order to 【catch】。和第 44 课那块小垫板一个规矩。"
+        explanation: "in order to 后面那个动作用原形——in order to 【catch】。和第 44 课那个 to 一个规矩。"
       },
       {
         tokenIndex: 17,
@@ -10430,7 +10430,7 @@ export const huntCases: HuntCase[] = [
         original: "going",
         correction: "go",
         editOp: "replace",
-        explanation: "be able to 后面穿原样——able to 【go】。和第 44 课那块小垫板同一个规矩。"
+        explanation: "be able to 后面用原形——able to 【go】。和第 44 课那个 to 同一个规矩。"
       },
       {
         tokenIndex: 9,
@@ -10501,7 +10501,7 @@ export const huntCases: HuntCase[] = [
         original: "to",
         correction: "（去掉 to）",
         editOp: "delete",
-        explanation: "would rather 后面那个动作穿原样，去掉 to——I would rather 【walk】。垫 to 的是 would like。"
+        explanation: "would rather 后面那个动作用原形，去掉 to——I would rather 【walk】。垫 to 的是 would like。"
       },
       {
         tokenIndex: 6,
@@ -10561,7 +10561,7 @@ export const huntCases: HuntCase[] = [
         original: "drink",
         correction: "（drink → drinking 或去掉）",
         editOp: "replace",
-        explanation: "prefer 后面可以直接跟东西（prefer tea）；要跟动作就穿 -ing，去掉这个原样写法（prefer drinking）。光用原样两样都不像。"
+        explanation: "prefer 后面可以直接跟东西（prefer tea）；要跟动作就穿 -ing，去掉这个原形写法（prefer drinking）。光用原形两样都不像。"
       }
     ],
     reviewed: true
@@ -10598,7 +10598,7 @@ export const huntCases: HuntCase[] = [
         original: "lose",
         correction: "lost",
         editOp: "replace",
-        explanation: "had 后面要跟做过版——had 【lost】。第 21 课那个 have + 做过版是同一条规矩。"
+        explanation: "had 后面要跟过去分词——had 【lost】。第 21 课那个 have + 过去分词是同一条规矩。"
       },
       {
         tokenIndex: 10,
@@ -10638,7 +10638,7 @@ export const huntCases: HuntCase[] = [
         original: "to",
         correction: "（去掉 to）",
         editOp: "delete",
-        explanation: "Shall we 后面那个动作穿原样，不垫 to——Shall we 【take】。"
+        explanation: "Shall we 后面那个动作用原形，不垫 to——Shall we 【take】。"
       },
       {
         tokenIndex: 8,
@@ -10694,7 +10694,7 @@ export const huntCases: HuntCase[] = [
         original: "see",
         correction: "saw",
         editOp: "replace",
-        explanation: "第 10 课回流：last week 是过去的事，要换昨天版——see → 【saw】。"
+        explanation: "第 10 课回流：last week 是过去的事，要换过去式——see → 【saw】。"
       }
     ],
     reviewed: true
@@ -10718,7 +10718,7 @@ export const huntCases: HuntCase[] = [
         original: "to",
         correction: "去掉 to",
         editOp: "delete",
-        explanation: "后面那个动作穿原样、不垫 to——had better 【go】，中间不加东西。"
+        explanation: "后面那个动作用原形、不垫 to——had better 【go】，中间不加东西。"
       },
       {
         tokenIndex: 6,
@@ -10742,7 +10742,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "are",
         editOp: "replace",
-        explanation: "第 7 课回流：My friends 是好几个，算一伙的，搭档要用 are——My friends 【are】 here。"
+        explanation: "第 7 课回流：My friends 是复数，算复数，搭档要用 are——My friends 【are】 here。"
       }
     ],
     reviewed: true
@@ -10783,7 +10783,7 @@ export const huntCases: HuntCase[] = [
         original: "doesn't",
         correction: "hasn't",
         editOp: "replace",
-        explanation: "第 153 课回流：说「还没」要用 hasn't + 做过版——She 【hasn't】 come yet。"
+        explanation: "第 153 课回流：说「还没」要用 hasn't + 过去分词——She 【hasn't】 come yet。"
       },
       {
         tokenIndex: 13,
@@ -10925,7 +10925,7 @@ export const huntCases: HuntCase[] = [
         original: "to",
         correction: "（去掉 to）",
         editOp: "delete",
-        explanation: "第 176 课回流：would rather 后面穿原样，不垫 to——would rather 【walk】。"
+        explanation: "第 176 课回流：would rather 后面用原形，不垫 to——would rather 【walk】。"
       }
     ],
     reviewed: true
@@ -10973,7 +10973,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：说的是过去的事（那天回家晚了），要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：说的是过去的事（那天回家晚了），要换过去式——go → 【went】。"
       }
     ],
     reviewed: true
@@ -11021,7 +11021,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "are",
         editOp: "replace",
-        explanation: "第 7 课回流：My friends 是好几个，算一伙的，搭档要用 are——My friends 【are】 happy。"
+        explanation: "第 7 课回流：My friends 是复数，算复数，搭档要用 are——My friends 【are】 happy。"
       }
     ],
     reviewed: true
@@ -11053,7 +11053,7 @@ export const huntCases: HuntCase[] = [
         original: "walked",
         correction: "walk",
         editOp: "replace",
-        explanation: "had to 后面那个动作穿原样——had to 【walk】。一场戏只让一个词换形状，had 已经换过了。"
+        explanation: "had to 后面那个动作用原形——had to 【walk】。一场戏只让一个词换形状，had 已经换过了。"
       },
       {
         tokenIndex: 11,
@@ -11061,7 +11061,7 @@ export const huntCases: HuntCase[] = [
         original: "cook",
         correction: "cooked",
         editOp: "replace",
-        explanation: "第 10 课回流：last night 是过去的事，要换昨天版——cook → 【cooked】。"
+        explanation: "第 10 课回流：last night 是过去的事，要换过去式——cook → 【cooked】。"
       },
       {
         tokenIndex: 17,
@@ -11069,7 +11069,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "are",
         editOp: "replace",
-        explanation: "第 7 课回流：My books 是好几个，算一伙的，搭档要用 are——My books 【are】 new。"
+        explanation: "第 7 课回流：My books 是复数，算复数，搭档要用 are——My books 【are】 new。"
       }
     ],
     reviewed: true
@@ -11117,7 +11117,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：last week 是过去的事，要换昨天版——go → 【went】。"
+        explanation: "第 10 课回流：last week 是过去的事，要换过去式——go → 【went】。"
       }
     ],
     reviewed: true
@@ -11141,7 +11141,7 @@ export const huntCases: HuntCase[] = [
         original: "learning",
         correction: "learning to",
         editOp: "insert",
-        explanation: "后面那半截要垫个小垫板——learning 【to】 swim。少了 to，两个动作就粘在一起了。"
+        explanation: "后面那半截要垫个 to——learning 【to】 swim。少了 to，两个动作就粘在一起了。"
       },
       {
         tokenIndex: 5,
@@ -11157,7 +11157,7 @@ export const huntCases: HuntCase[] = [
         original: "play",
         correction: "played",
         editOp: "replace",
-        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——play → 【played】。"
+        explanation: "第 10 课回流：yesterday 是过去的事，要换过去式——play → 【played】。"
       },
       {
         tokenIndex: 13,
@@ -11205,7 +11205,7 @@ export const huntCases: HuntCase[] = [
         original: "student.",
         correction: "students.",
         editOp: "replace",
-        explanation: "第 7 课回流：They 是好几个，后面那个也跟着变好几个——They are 【students】。"
+        explanation: "第 7 课回流：They 是复数，后面那个也跟着变复数——They are 【students】。"
       },
       {
         tokenIndex: 13,
@@ -11213,7 +11213,7 @@ export const huntCases: HuntCase[] = [
         original: "eated",
         correction: "ate",
         editOp: "replace",
-        explanation: "第 10 课回流：吃这个动作有自己的昨天版，不是加 -ed——eat 的昨天版是 【ate】。"
+        explanation: "第 10 课回流：吃这个动作有自己的过去式，不是加 -ed——eat 的过去式是 【ate】。"
       }
     ],
     reviewed: true
@@ -11252,7 +11252,7 @@ export const huntCases: HuntCase[] = [
         original: "to",
         correction: "（去掉 to）",
         editOp: "delete",
-        explanation: "第 12 课回流：will 后面那个动作穿原样，不垫 to——I will 【draw】。"
+        explanation: "第 12 课回流：will 后面那个动作用原形，不垫 to——I will 【draw】。"
       },
       {
         tokenIndex: 15,
@@ -11260,7 +11260,7 @@ export const huntCases: HuntCase[] = [
         original: "is",
         correction: "are",
         editOp: "replace",
-        explanation: "第 13 课回流：They 是好几个，搭档要用 are——They 【are】 playing football。"
+        explanation: "第 13 课回流：They 是复数，搭档要用 are——They 【are】 playing football。"
       }
     ],
     reviewed: true
@@ -11308,7 +11308,7 @@ export const huntCases: HuntCase[] = [
         original: "buyed",
         correction: "bought",
         editOp: "replace",
-        explanation: "第 11 课回流：buy 的昨天版不是加 -ed，它有自己的样子——buy 的昨天版是 【bought】。"
+        explanation: "第 11 课回流：buy 的过去式不是加 -ed，它有自己的样子——buy 的过去式是 【bought】。"
       }
     ],
     reviewed: true
@@ -11356,7 +11356,7 @@ export const huntCases: HuntCase[] = [
         original: "see",
         correction: "saw",
         editOp: "replace",
-        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——see 的昨天版是 【saw】。"
+        explanation: "第 10 课回流：yesterday 是过去的事，要换过去式——see 的过去式是 【saw】。"
       }
     ],
     reviewed: true
@@ -11453,7 +11453,7 @@ export const huntCases: HuntCase[] = [
         original: "buyed",
         correction: "bought",
         editOp: "replace",
-        explanation: "第 10 课回流：buy 的昨天版不加 -ed，它有自己的样子——buy 的昨天版是 【bought】。"
+        explanation: "第 10 课回流：buy 的过去式不加 -ed，它有自己的样子——buy 的过去式是 【bought】。"
       }
     ],
     reviewed: true
@@ -11476,7 +11476,7 @@ export const huntCases: HuntCase[] = [
         original: "thinked",
         correction: "thought",
         editOp: "replace",
-        explanation: "think 的昨天版是 thought——它不加 -ed，要单独记。第 197 课：I 【thought】 about it。"
+        explanation: "think 的过去式是 thought——它不加 -ed，要单独记。第 197 课：I 【thought】 about it。"
       },
       {
         tokenIndex: 13,
@@ -11484,7 +11484,7 @@ export const huntCases: HuntCase[] = [
         original: "know",
         correction: "knew",
         editOp: "replace",
-        explanation: "两件事都是昨天做的——前半截用了 thought，后半截也要穿昨天版：know 的昨天版是 【knew】。"
+        explanation: "两件事都是昨天做的——前半截用了 thought，后半截也要穿过去式：know 的过去式是 【knew】。"
       },
       {
         tokenIndex: 17,
@@ -11500,7 +11500,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 7 课回流：They 是好几个，搭档要用 were——They 【were】 happy。"
+        explanation: "第 7 课回流：They 是复数，搭档要用 were——They 【were】 happy。"
       }
     ],
     reviewed: true
@@ -11524,7 +11524,7 @@ export const huntCases: HuntCase[] = [
         original: "swimmed",
         correction: "swam",
         editOp: "replace",
-        explanation: "swim 的昨天版是 swam——里面的 i 换成 a，不加 -ed。第 198 课：We 【swam】 in the water。"
+        explanation: "swim 的过去式是 swam——里面的 i 换成 a，不加 -ed。第 198 课：We 【swam】 in the water。"
       },
       {
         tokenIndex: 14,
@@ -11532,7 +11532,7 @@ export const huntCases: HuntCase[] = [
         original: "swim",
         correction: "swam",
         editOp: "replace",
-        explanation: "两件事都是做过的——前半截用了 sang，后半截也要换零件：swim 的昨天版是 【swam】。"
+        explanation: "两件事都是做过的——前半截用了 sang，后半截也要不规则变化：swim 的过去式是 【swam】。"
       },
       {
         tokenIndex: 19,
@@ -11548,7 +11548,7 @@ export const huntCases: HuntCase[] = [
         original: "eated",
         correction: "ate",
         editOp: "replace",
-        explanation: "第 10 课回流：eat 的昨天版是 ate，不加 -ed——它跟今天的 swam／sang 是同一批换零件的老朋友。"
+        explanation: "第 10 课回流：eat 的过去式是 ate，不加 -ed——它跟今天的 swam／sang 是同一批不规则变化的老朋友。"
       }
     ],
     reviewed: true
@@ -11571,7 +11571,7 @@ export const huntCases: HuntCase[] = [
         original: "sitted",
         correction: "sat",
         editOp: "replace",
-        explanation: "sit 的昨天版是 sat——里面的 i 换成 a，不加 -ed。第 199 课：I 【sat】 next to her。"
+        explanation: "sit 的过去式是 sat——里面的 i 换成 a，不加 -ed。第 199 课：I 【sat】 next to her。"
       },
       {
         tokenIndex: 15,
@@ -11579,7 +11579,7 @@ export const huntCases: HuntCase[] = [
         original: "catched",
         correction: "caught",
         editOp: "replace",
-        explanation: "catch 的昨天版是 caught——整个换成 -aught，那个 gh 不发音。这个词英语里没有 catched 这种写法。"
+        explanation: "catch 的过去式是 caught——整个换成 -aught，那个 gh 不发音。这个词英语里没有 catched 这种写法。"
       },
       {
         tokenIndex: 19,
@@ -11587,7 +11587,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 7 课回流：They 是好几个，搭档要用 were——They 【were】 happy。"
+        explanation: "第 7 课回流：They 是复数，搭档要用 were——They 【were】 happy。"
       },
       {
         tokenIndex: 22,
@@ -11595,7 +11595,7 @@ export const huntCases: HuntCase[] = [
         original: "buyed",
         correction: "bought",
         editOp: "replace",
-        explanation: "第 11 课回流：buy 的昨天版是 bought（也收在 -ought 上），不加 -ed——跟 catch → caught 一个换法。"
+        explanation: "第 11 课回流：buy 的过去式是 bought（也收在 -ought 上），不加 -ed——跟 catch → caught 一个换法。"
       }
     ],
     reviewed: true
@@ -11619,7 +11619,7 @@ export const huntCases: HuntCase[] = [
         original: "feeled",
         correction: "felt",
         editOp: "replace",
-        explanation: "feel 的昨天版是 felt——两个 e 只剩一个、尾巴加个 t，不加 -ed。第 200 课：I 【felt】 cold。"
+        explanation: "feel 的过去式是 felt——两个 e 只剩一个、尾巴加个 t，不加 -ed。第 200 课：I 【felt】 cold。"
       },
       {
         tokenIndex: 15,
@@ -11627,7 +11627,7 @@ export const huntCases: HuntCase[] = [
         original: "keeped",
         correction: "kept",
         editOp: "replace",
-        explanation: "前半截换了 felt，后半截也要跟着换：keep 的昨天版是 【kept】——跟 felt 换法一模一样。"
+        explanation: "前半截换了 felt，后半截也要跟着换：keep 的过去式是 【kept】——跟 felt 换法一模一样。"
       },
       {
         tokenIndex: 18,
@@ -11643,7 +11643,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 7 课回流：They 是好几个，搭档要用 were——They 【were】 cold。"
+        explanation: "第 7 课回流：They 是复数，搭档要用 were——They 【were】 cold。"
       }
     ],
     reviewed: true
@@ -11667,7 +11667,7 @@ export const huntCases: HuntCase[] = [
         original: "sleeped",
         correction: "slept",
         editOp: "replace",
-        explanation: "sleep 的昨天版是 slept——两个 e 只剩一个、尾巴加个 t，不加 -ed。第 201 课：I 【slept】 well last night。"
+        explanation: "sleep 的过去式是 slept——两个 e 只剩一个、尾巴加个 t，不加 -ed。第 201 课：I 【slept】 well last night。"
       },
       {
         tokenIndex: 14,
@@ -11683,7 +11683,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——go 的昨天版是 【went】。"
+        explanation: "第 10 课回流：yesterday 是过去的事，要换过去式——go 的过去式是 【went】。"
       }
     ],
     reviewed: true
@@ -11706,7 +11706,7 @@ export const huntCases: HuntCase[] = [
         original: "drawed",
         correction: "drew",
         editOp: "replace",
-        explanation: "draw 的昨天版是 drew——里面的 aw 换成 ew，不加 -ed。第 202 课：I 【drew】 a picture。"
+        explanation: "draw 的过去式是 drew——里面的 aw 换成 ew，不加 -ed。第 202 课：I 【drew】 a picture。"
       },
       {
         tokenIndex: 9,
@@ -11714,7 +11714,7 @@ export const huntCases: HuntCase[] = [
         original: "drew",
         correction: "draw",
         editOp: "replace",
-        explanation: "will 后面那个动作穿原样——第 12 课的老规矩：will 【draw】。而且 tomorrow 说的是明天，本来也不用昨天版。"
+        explanation: "will 后面那个动作用原形——第 12 课的老规矩：will 【draw】。而且 tomorrow 说的是明天，本来也不用过去式。"
       },
       {
         tokenIndex: 12,
@@ -11730,7 +11730,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 7 课回流：We 是好几个，搭档要用 were——We 【were】 happy。"
+        explanation: "第 7 课回流：We 是复数，搭档要用 were——We 【were】 happy。"
       }
     ],
     reviewed: true
@@ -11754,7 +11754,7 @@ export const huntCases: HuntCase[] = [
         original: "weared",
         correction: "wore",
         editOp: "replace",
-        explanation: "wear 的昨天版是 wore——它不加 -ed。第 203 课：I 【wore】 my new hat。"
+        explanation: "wear 的过去式是 wore——它不加 -ed。第 203 课：I 【wore】 my new hat。"
       },
       {
         tokenIndex: 7,
@@ -11762,7 +11762,7 @@ export const huntCases: HuntCase[] = [
         original: "worn",
         correction: "wore",
         editOp: "replace",
-        explanation: "worn 得跟着 have／had 一起出场（第 24 课那种「做过版」）——光说昨天戴上它，用 wore。"
+        explanation: "worn 得跟着 have／had 一起出场（第 24 课那种「过去分词」）——光说昨天戴上它，用 wore。"
       },
       {
         tokenIndex: 20,
@@ -11778,7 +11778,7 @@ export const huntCases: HuntCase[] = [
         original: "was",
         correction: "were",
         editOp: "replace",
-        explanation: "第 7 课回流：They 是好几个，搭档要用 were——They 【were】 happy。"
+        explanation: "第 7 课回流：They 是复数，搭档要用 were——They 【were】 happy。"
       }
     ],
     reviewed: true
@@ -11802,7 +11802,7 @@ export const huntCases: HuntCase[] = [
         original: "gived",
         correction: "gave",
         editOp: "replace",
-        explanation: "give 的昨天版是 gave——它不加 -ed。第 204 课：I 【gave】 her the book。"
+        explanation: "give 的过去式是 gave——它不加 -ed。第 204 课：I 【gave】 her the book。"
       },
       {
         tokenIndex: 7,
@@ -11826,7 +11826,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——go 的昨天版是 【went】。"
+        explanation: "第 10 课回流：yesterday 是过去的事，要换过去式——go 的过去式是 【went】。"
       }
     ],
     reviewed: true
@@ -11849,7 +11849,7 @@ export const huntCases: HuntCase[] = [
         original: "will",
         correction: "去掉 will",
         editOp: "delete",
-        explanation: "By the time 领的那半句说的是「什么时候」，用平常的版本——别请 will 出场（第 48 课的老规矩）：By the time I 【get】 home。"
+        explanation: "By the time 领的那半句说的是「什么时候」，用一般现在时——别请 will 出场（第 48 课的老规矩）：By the time I 【get】 home。"
       },
       {
         tokenIndex: 21,
@@ -11873,7 +11873,7 @@ export const huntCases: HuntCase[] = [
         original: "go",
         correction: "went",
         editOp: "replace",
-        explanation: "第 10 课回流：yesterday 是过去的事，要换昨天版——go 的昨天版是 【went】。"
+        explanation: "第 10 课回流：yesterday 是过去的事，要换过去式——go 的过去式是 【went】。"
       }
     ],
     reviewed: true

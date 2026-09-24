@@ -1,0 +1,669 @@
+{
+  "capturedAt": "2026-09-24T10:16:53.921Z",
+  "baseUrl": "http://127.0.0.1:1420",
+  "profile": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/.browser-profile",
+  "desktop": [
+    {
+      "id": "01-path",
+      "label": "课程路径",
+      "route": "/grammar",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/01-path-desktop-progress-full.png",
+      "slices": 4,
+      "metrics": {
+        "url": "/grammar",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 1269,
+          "height": 2395
+        },
+        "bodyScroll": {
+          "width": 1269,
+          "height": 2395
+        },
+        "mainScroll": {
+          "height": 2395
+        },
+        "sidebarWidth": 132,
+        "mainWidth": 1137,
+        "horizontalOverflow": [],
+        "nodes": 563
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "02-lesson",
+      "label": "课堂主体",
+      "route": "/grammar/lesson/lesson-01-am",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/02-lesson-desktop-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/lesson/lesson-01-am",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "bodyScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "mainScroll": {
+          "height": 720
+        },
+        "sidebarWidth": 132,
+        "mainWidth": 1137,
+        "horizontalOverflow": [],
+        "nodes": 146
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "03-revisit",
+      "label": "重访",
+      "route": "/grammar/lesson/lesson-01-am/revisit",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/03-revisit-desktop-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/lesson/lesson-01-am/revisit",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "bodyScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "mainScroll": {
+          "height": 720
+        },
+        "sidebarWidth": 132,
+        "mainWidth": 1137,
+        "horizontalOverflow": [],
+        "nodes": 128
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "04-reaudit",
+      "label": "重审",
+      "route": "/grammar/lesson/lesson-01-am/reaudit",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/04-reaudit-desktop-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/lesson/lesson-01-am/reaudit",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "bodyScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "mainScroll": {
+          "height": 720
+        },
+        "sidebarWidth": 132,
+        "mainWidth": 1137,
+        "horizontalOverflow": [],
+        "nodes": 128
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "05-boost",
+      "label": "趁热练",
+      "route": "/grammar/boost/lesson-01-am",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/05-boost-desktop-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/boost/lesson-01-am",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "bodyScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "mainScroll": {
+          "height": 720
+        },
+        "sidebarWidth": 132,
+        "mainWidth": 1137,
+        "horizontalOverflow": [],
+        "nodes": 138
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "06-review",
+      "label": "复习",
+      "route": "/grammar/review",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/06-review-desktop-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/review",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "bodyScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "mainScroll": {
+          "height": 720
+        },
+        "sidebarWidth": 132,
+        "mainWidth": 1137,
+        "horizontalOverflow": [],
+        "nodes": 138
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "07-replay",
+      "label": "复盘课",
+      "route": "/grammar/replay",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/07-replay-desktop-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/replay",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "bodyScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "mainScroll": {
+          "height": 720
+        },
+        "sidebarWidth": 132,
+        "mainWidth": 1137,
+        "horizontalOverflow": [],
+        "nodes": 124
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "08-profile",
+      "label": "能力画像",
+      "route": "/grammar/profile",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/08-profile-desktop-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/profile",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "bodyScroll": {
+          "width": 1269,
+          "height": 720
+        },
+        "mainScroll": {
+          "height": 720
+        },
+        "sidebarWidth": 132,
+        "mainWidth": 1137,
+        "horizontalOverflow": [],
+        "nodes": 124
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "09-hunt",
+      "label": "侦探找错",
+      "route": "/grammar/hunt",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/09-hunt-desktop-progress-full.png",
+      "slices": 4,
+      "metrics": {
+        "url": "/grammar/hunt",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 1269,
+          "height": 3330
+        },
+        "bodyScroll": {
+          "width": 1269,
+          "height": 3330
+        },
+        "mainScroll": {
+          "height": 3330
+        },
+        "sidebarWidth": 132,
+        "mainWidth": 1137,
+        "horizontalOverflow": [],
+        "nodes": 396
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "10-diary",
+      "label": "语法日记",
+      "route": "/grammar/diary",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/10-diary-desktop-progress-full.png",
+      "slices": 2,
+      "metrics": {
+        "url": "/grammar/diary",
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 1269,
+          "height": 1320
+        },
+        "bodyScroll": {
+          "width": 1269,
+          "height": 1320
+        },
+        "mainScroll": {
+          "height": 1320
+        },
+        "sidebarWidth": 132,
+        "mainWidth": 1137,
+        "horizontalOverflow": [],
+        "nodes": 182
+      },
+      "consoleErrors": []
+    }
+  ],
+  "mobile": [
+    {
+      "id": "01-path",
+      "label": "课程路径",
+      "route": "/grammar",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/01-path-mobile-progress-full.png",
+      "slices": 4,
+      "metrics": {
+        "url": "/grammar",
+        "viewport": {
+          "width": 375,
+          "height": 667,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 364,
+          "height": 6918
+        },
+        "bodyScroll": {
+          "width": 364,
+          "height": 6918
+        },
+        "mainScroll": {
+          "height": 6844
+        },
+        "sidebarWidth": 364,
+        "mainWidth": 364,
+        "horizontalOverflow": [],
+        "nodes": 563
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "02-lesson",
+      "label": "课堂主体",
+      "route": "/grammar/lesson/lesson-01-am",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/02-lesson-mobile-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/lesson/lesson-01-am",
+        "viewport": {
+          "width": 375,
+          "height": 667,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 366,
+          "height": 667
+        },
+        "bodyScroll": {
+          "width": 366,
+          "height": 667
+        },
+        "mainScroll": {
+          "height": 593
+        },
+        "sidebarWidth": 364,
+        "mainWidth": 364,
+        "horizontalOverflow": [],
+        "nodes": 146
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "03-revisit",
+      "label": "重访",
+      "route": "/grammar/lesson/lesson-01-am/revisit",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/03-revisit-mobile-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/lesson/lesson-01-am/revisit",
+        "viewport": {
+          "width": 375,
+          "height": 667,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 364,
+          "height": 667
+        },
+        "bodyScroll": {
+          "width": 364,
+          "height": 667
+        },
+        "mainScroll": {
+          "height": 593
+        },
+        "sidebarWidth": 364,
+        "mainWidth": 364,
+        "horizontalOverflow": [],
+        "nodes": 128
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "04-reaudit",
+      "label": "重审",
+      "route": "/grammar/lesson/lesson-01-am/reaudit",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/04-reaudit-mobile-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/lesson/lesson-01-am/reaudit",
+        "viewport": {
+          "width": 375,
+          "height": 667,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 364,
+          "height": 667
+        },
+        "bodyScroll": {
+          "width": 364,
+          "height": 667
+        },
+        "mainScroll": {
+          "height": 593
+        },
+        "sidebarWidth": 364,
+        "mainWidth": 364,
+        "horizontalOverflow": [],
+        "nodes": 128
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "05-boost",
+      "label": "趁热练",
+      "route": "/grammar/boost/lesson-01-am",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/05-boost-mobile-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/boost/lesson-01-am",
+        "viewport": {
+          "width": 375,
+          "height": 667,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 364,
+          "height": 667
+        },
+        "bodyScroll": {
+          "width": 364,
+          "height": 667
+        },
+        "mainScroll": {
+          "height": 593
+        },
+        "sidebarWidth": 364,
+        "mainWidth": 364,
+        "horizontalOverflow": [],
+        "nodes": 138
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "06-review",
+      "label": "复习",
+      "route": "/grammar/review",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/06-review-mobile-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/review",
+        "viewport": {
+          "width": 375,
+          "height": 667,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 364,
+          "height": 667
+        },
+        "bodyScroll": {
+          "width": 364,
+          "height": 667
+        },
+        "mainScroll": {
+          "height": 593
+        },
+        "sidebarWidth": 364,
+        "mainWidth": 364,
+        "horizontalOverflow": [],
+        "nodes": 138
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "07-replay",
+      "label": "复盘课",
+      "route": "/grammar/replay",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/07-replay-mobile-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/replay",
+        "viewport": {
+          "width": 375,
+          "height": 667,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 364,
+          "height": 667
+        },
+        "bodyScroll": {
+          "width": 364,
+          "height": 667
+        },
+        "mainScroll": {
+          "height": 593
+        },
+        "sidebarWidth": 364,
+        "mainWidth": 364,
+        "horizontalOverflow": [],
+        "nodes": 124
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "08-profile",
+      "label": "能力画像",
+      "route": "/grammar/profile",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/08-profile-mobile-progress-full.png",
+      "slices": 1,
+      "metrics": {
+        "url": "/grammar/profile",
+        "viewport": {
+          "width": 375,
+          "height": 667,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 364,
+          "height": 667
+        },
+        "bodyScroll": {
+          "width": 364,
+          "height": 667
+        },
+        "mainScroll": {
+          "height": 593
+        },
+        "sidebarWidth": 364,
+        "mainWidth": 364,
+        "horizontalOverflow": [],
+        "nodes": 124
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "09-hunt",
+      "label": "侦探找错",
+      "route": "/grammar/hunt",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/09-hunt-mobile-progress-full.png",
+      "slices": 4,
+      "metrics": {
+        "url": "/grammar/hunt",
+        "viewport": {
+          "width": 375,
+          "height": 667,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 364,
+          "height": 3992
+        },
+        "bodyScroll": {
+          "width": 364,
+          "height": 3992
+        },
+        "mainScroll": {
+          "height": 3918
+        },
+        "sidebarWidth": 364,
+        "mainWidth": 364,
+        "horizontalOverflow": [],
+        "nodes": 396
+      },
+      "consoleErrors": []
+    },
+    {
+      "id": "10-diary",
+      "label": "语法日记",
+      "route": "/grammar/diary",
+      "status": 200,
+      "title": "听写工坊",
+      "file": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-playwright/10-diary-mobile-progress-full.png",
+      "slices": 3,
+      "metrics": {
+        "url": "/grammar/diary",
+        "viewport": {
+          "width": 375,
+          "height": 667,
+          "dpr": 1
+        },
+        "docScroll": {
+          "width": 364,
+          "height": 1700
+        },
+        "bodyScroll": {
+          "width": 364,
+          "height": 1700
+        },
+        "mainScroll": {
+          "height": 1626
+        },
+        "sidebarWidth": 364,
+        "mainWidth": 364,
+        "horizontalOverflow": [],
+        "nodes": 182
+      },
+      "consoleErrors": []
+    }
+  ]
+}

@@ -209,7 +209,7 @@ export const buildReplayLesson = (
           kind: "spot",
           tag,
           plain,
-          promptZh: `再来一句——找出「${plain}」这处毛病。`,
+          promptZh: `找出「${plain}」这处毛病。`,
           tokens: window2.tokens,
           wrongToken,
           correctionZh: `${error.original} → ${error.correction}`,

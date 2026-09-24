@@ -1,0 +1,1607 @@
+{
+  "lessonId": "lesson-01-am",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "steps": [
+    {
+      "step": 1,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        },
+        {
+          "level": "H2",
+          "text": "先看看今天要避免的误读"
+        }
+      ],
+      "buttons": [
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "返回课程地图",
+          "accName": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"返回课程地图\" title=\"返回课程地图\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-li"
+        },
+        {
+          "tag": "button",
+          "text": "去讲解里揭晓",
+          "cls": "primary-button",
+          "disabled": false,
+          "aria": "",
+          "accName": "去讲解里揭晓",
+          "w": 128,
+          "h": 40,
+          "html": ""
+        }
+      ],
+      "inputs": [],
+      "dots": [
+        {
+          "cls": "lesson-stage-dots",
+          "html": "<div class=\"lesson-stage-dots\" aria-label=\"课前试一试\"><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span></div>"
+        }
+      ],
+      "smallTargets": [
+        {
+          "name": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "去讲解里揭晓",
+          "w": 128,
+          "h": 40,
+          "cls": "primary-button"
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 课前试一试 先看看今天要避免的误读 下面两句是初学者最容易踩的坑。看一眼、心里有个印象就行——不考你，讲解里会揭晓。 第 1 处 · 选对搭档 你想说：我很开心。 第 2 处 · 看出问题 I is Xiaomei. 去讲解里揭晓",
+      "scrollH": 720,
+      "isAssembly": false,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-desktop-01.png"
+    },
+    {
+      "step": 2,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "返回课程地图",
+          "accName": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"返回课程地图\" title=\"返回课程地图\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-li"
+        },
+        {
+          "tag": "button",
+          "text": "1 剧场",
+          "cls": "lesson-watch-step on",
+          "disabled": false,
+          "aria": "",
+          "accName": "1 剧场",
+          "w": 80,
+          "h": 34,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "2 搭装与对错",
+          "cls": "lesson-watch-step",
+          "disabled": false,
+          "aria": "",
+          "accName": "2 搭装与对错",
+          "w": 118,
+          "h": 34,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "3 变奏",
+          "cls": "lesson-watch-step",
+          "disabled": false,
+          "aria": "",
+          "accName": "3 变奏",
+          "w": 80,
+          "h": 34,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "下一步：搭装与对错",
+          "cls": "primary-button",
+          "disabled": false,
+          "aria": "",
+          "accName": "下一步：搭装与对错",
+          "w": 240,
+          "h": 40,
+          "html": ""
+        }
+      ],
+      "inputs": [],
+      "dots": [
+        {
+          "cls": "lesson-stage-dots",
+          "html": "<div class=\"lesson-stage-dots\" aria-label=\"第 1 / 5 段\"><span class=\"on\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span></div>"
+        }
+      ],
+      "smallTargets": [
+        {
+          "name": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "1 剧场",
+          "w": 80,
+          "h": 34,
+          "cls": "lesson-watch-step on"
+        },
+        {
+          "name": "2 搭装与对错",
+          "w": 118,
+          "h": 34,
+          "cls": "lesson-watch-step"
+        },
+        {
+          "name": "3 变奏",
+          "w": 80,
+          "h": 34,
+          "cls": "lesson-watch-step"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "下一步：搭装与对错",
+          "w": 240,
+          "h": 40,
+          "cls": "primary-button"
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 情景讲解 1 剧场 2 搭装与对错 3 变奏 新学期第一天，教室里坐满了不认识的同学。 Hi! Who are you? 旁边的同学转过头来问你。 Are you new here? 她又补了一句。 I am Xiaomei. 轮到你说了——你是小美。 轮到你说了： 我是小美。 下一步：搭装与对错",
+      "scrollH": 780,
+      "isAssembly": false,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-desktop-02.png"
+    },
+    {
+      "step": 3,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "返回课程地图",
+          "accName": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"返回课程地图\" title=\"返回课程地图\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-li"
+        },
+        {
+          "tag": "button",
+          "text": "1 剧场",
+          "cls": "lesson-watch-step",
+          "disabled": false,
+          "aria": "",
+          "accName": "1 剧场",
+          "w": 80,
+          "h": 34,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "2 搭装与对错",
+          "cls": "lesson-watch-step on",
+          "disabled": false,
+          "aria": "",
+          "accName": "2 搭装与对错",
+          "w": 118,
+          "h": 34,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "3 变奏",
+          "cls": "lesson-watch-step",
+          "disabled": false,
+          "aria": "",
+          "accName": "3 变奏",
+          "w": 80,
+          "h": 34,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "AI is Xiaomei.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "aria": "",
+          "accName": "AI is Xiaomei.",
+          "w": 1019,
+          "h": 56,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "BI am Xiaomei.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "aria": "",
+          "accName": "BI am Xiaomei.",
+          "w": 1019,
+          "h": 56,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "AI Xiaomei.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "aria": "",
+          "accName": "AI Xiaomei.",
+          "w": 1019,
+          "h": 56,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "BI am Xiaomei.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "aria": "",
+          "accName": "BI am Xiaomei.",
+          "w": 1019,
+          "h": 56,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "上一步",
+          "cls": "secondary-button",
+          "disabled": false,
+          "aria": "",
+          "accName": "上一步",
+          "w": 80,
+          "h": 40,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "下一步：变奏",
+          "cls": "primary-button",
+          "disabled": false,
+          "aria": "",
+          "accName": "下一步：变奏",
+          "w": 240,
+          "h": 40,
+          "html": ""
+        }
+      ],
+      "inputs": [],
+      "dots": [
+        {
+          "cls": "lesson-stage-dots",
+          "html": "<div class=\"lesson-stage-dots\" aria-label=\"第 1 / 5 段\"><span class=\"on\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span></div>"
+        }
+      ],
+      "smallTargets": [
+        {
+          "name": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "1 剧场",
+          "w": 80,
+          "h": 34,
+          "cls": "lesson-watch-step"
+        },
+        {
+          "name": "2 搭装与对错",
+          "w": 118,
+          "h": 34,
+          "cls": "lesson-watch-step on"
+        },
+        {
+          "name": "3 变奏",
+          "w": 80,
+          "h": 34,
+          "cls": "lesson-watch-step"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "上一步",
+          "w": 80,
+          "h": 40,
+          "cls": "secondary-button"
+        },
+        {
+          "name": "下一步：变奏",
+          "w": 240,
+          "h": 40,
+          "cls": "primary-button"
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 情景讲解 1 剧场 2 搭装与对错 3 变奏 看这个句子是怎么搭出来的 I 我 am 是（我专用） Xiaomei 名字 听一遍完整的句子 一句话 英语说「我是谁」，am 不能丢。I am 是一对固定搭档，说「我是……」它们就一起出场。 有人是这样说的，你帮他看看 两句话只有一句是对的——点出你认为对的那句： A I is Xiaomei. B I am Xiaomei. 再看一组： A I Xiaomei. B I am Xiaomei. 上一步 下一步：变奏",
+      "scrollH": 972,
+      "isAssembly": false,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-desktop-03.png"
+    },
+    {
+      "step": 4,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "返回课程地图",
+          "accName": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"返回课程地图\" title=\"返回课程地图\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-li"
+        },
+        {
+          "tag": "button",
+          "text": "1 剧场",
+          "cls": "lesson-watch-step",
+          "disabled": false,
+          "aria": "",
+          "accName": "1 剧场",
+          "w": 80,
+          "h": 34,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "2 搭装与对错",
+          "cls": "lesson-watch-step",
+          "disabled": false,
+          "aria": "",
+          "accName": "2 搭装与对错",
+          "w": 118,
+          "h": 34,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "3 变奏",
+          "cls": "lesson-watch-step on",
+          "disabled": false,
+          "aria": "",
+          "accName": "3 变奏",
+          "w": 80,
+          "h": 34,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "连播例句",
+          "cls": "lesson-autoplay-toggle",
+          "disabled": false,
+          "aria": "",
+          "accName": "连播：自动依次读下面的例句",
+          "w": 68,
+          "h": 20,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "肯定",
+          "cls": "lesson-variant-tab on",
+          "disabled": false,
+          "aria": "",
+          "accName": "肯定",
+          "w": 57,
+          "h": 27,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "否定",
+          "cls": "lesson-variant-tab",
+          "disabled": false,
+          "aria": "",
+          "accName": "否定",
+          "w": 57,
+          "h": 27,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "疑问",
+          "cls": "lesson-variant-tab",
+          "disabled": false,
+          "aria": "",
+          "accName": "疑问",
+          "w": 57,
+          "h": 27,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "播放发音",
+          "accName": "播放发音",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" title=\"播放发音\" aria-label=\"播放发音\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-lineca"
+        },
+        {
+          "tag": "button",
+          "text": "想知道为什么？为什么 am 只跟 I？is 和 are 呢？收起",
+          "cls": "lesson-deepdive-head",
+          "disabled": false,
+          "aria": "",
+          "accName": "想知道为什么？为什么 am 只跟 I？is 和 are 呢？收起",
+          "w": 1055,
+          "h": 37,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "上一步",
+          "cls": "secondary-button",
+          "disabled": false,
+          "aria": "",
+          "accName": "上一步",
+          "w": 80,
+          "h": 40,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "看懂了，试一试",
+          "cls": "primary-button",
+          "disabled": false,
+          "aria": "",
+          "accName": "看懂了，试一试",
+          "w": 240,
+          "h": 40,
+          "html": ""
+        }
+      ],
+      "inputs": [],
+      "dots": [
+        {
+          "cls": "lesson-stage-dots",
+          "html": "<div class=\"lesson-stage-dots\" aria-label=\"第 1 / 5 段\"><span class=\"on\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span></div>"
+        }
+      ],
+      "smallTargets": [
+        {
+          "name": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "1 剧场",
+          "w": 80,
+          "h": 34,
+          "cls": "lesson-watch-step"
+        },
+        {
+          "name": "2 搭装与对错",
+          "w": 118,
+          "h": 34,
+          "cls": "lesson-watch-step"
+        },
+        {
+          "name": "3 变奏",
+          "w": 80,
+          "h": 34,
+          "cls": "lesson-watch-step on"
+        },
+        {
+          "name": "连播：自动依次读下面的例句",
+          "w": 68,
+          "h": 20,
+          "cls": "lesson-autoplay-toggle"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "肯定",
+          "w": 57,
+          "h": 27,
+          "cls": "lesson-variant-tab on"
+        },
+        {
+          "name": "否定",
+          "w": 57,
+          "h": 27,
+          "cls": "lesson-variant-tab"
+        },
+        {
+          "name": "疑问",
+          "w": 57,
+          "h": 27,
+          "cls": "lesson-variant-tab"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "播放发音",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "想知道为什么？为什么 am 只跟 I？is 和 are 呢？",
+          "w": 1055,
+          "h": 37,
+          "cls": "lesson-deepdive-head"
+        },
+        {
+          "name": "上一步",
+          "w": 80,
+          "h": 40,
+          "cls": "secondary-button"
+        },
+        {
+          "name": "看懂了，试一试",
+          "w": 240,
+          "h": 40,
+          "cls": "primary-button"
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 情景讲解 1 剧场 2 搭装与对错 3 变奏 同一个说法，还能讲这些连播例句 I am a student. 我是一名学生。 Are you a teacher? 你是一名老师吗？ I am not hungry. 我不饿。 I am happy. 我很开心。 I am ready. 我准备好了。 I am free on Sunday. 我周日有空。 换三种口气说 肯定 否定 疑问 I am happy. 我很开心。 换一个生活场景 宿舍里，室友问你周末干嘛 I am free on Sunday. 我周日有空。 回家后，妈妈问你今天开心吗 I am happy today. 我今天很开心。 球场上，朋友喊你来玩 I am ready! 我准备好了！ 想知道为什么？ 为什么 am 只跟 I？is 和 are 呢？ 收起 1 英语的 be 动词有三个搭档，各管一摊：I 专用 am；他、她、它和一个东西用 is；你、我们、他们和两个以上的东西用 are",
+      "scrollH": 1290,
+      "isAssembly": false,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-desktop-04.png"
+    },
+    {
+      "step": 5,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "返回课程地图",
+          "accName": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"返回课程地图\" title=\"返回课程地图\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-li"
+        },
+        {
+          "tag": "button",
+          "text": "am",
+          "cls": "lesson-option",
+          "disabled": false,
+          "aria": "",
+          "accName": "am",
+          "w": 76,
+          "h": 52,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "is",
+          "cls": "lesson-option",
+          "disabled": false,
+          "aria": "",
+          "accName": "is",
+          "w": 65,
+          "h": 52,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "are",
+          "cls": "lesson-option",
+          "disabled": false,
+          "aria": "",
+          "accName": "are",
+          "w": 77,
+          "h": 52,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "aria": "",
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14,
+          "html": ""
+        }
+      ],
+      "inputs": [],
+      "dots": [
+        {
+          "cls": "lesson-stage-dots",
+          "html": "<div class=\"lesson-stage-dots\" aria-label=\"第 2 / 5 段\"><span class=\"\"></span><span class=\"on\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span></div>"
+        }
+      ],
+      "smallTargets": [
+        {
+          "name": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14,
+          "cls": "ghost-link"
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 试一试 第 1 / 5 题 几乎不会错，放心点 你想说：我很开心。 I＿＿happy. am is are 回去再看一遍讲解",
+      "scrollH": 720,
+      "isAssembly": false,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-desktop-05.png"
+    },
+    {
+      "step": 6,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "返回课程地图",
+          "accName": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"返回课程地图\" title=\"返回课程地图\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-li"
+        },
+        {
+          "tag": "button",
+          "text": "am",
+          "cls": "lesson-option",
+          "disabled": true,
+          "aria": "",
+          "accName": "am",
+          "w": 76,
+          "h": 52,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "is",
+          "cls": "lesson-option",
+          "disabled": true,
+          "aria": "",
+          "accName": "is",
+          "w": 65,
+          "h": 52,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "are",
+          "cls": "lesson-option",
+          "disabled": true,
+          "aria": "",
+          "accName": "are",
+          "w": 77,
+          "h": 52,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "下一题",
+          "cls": "primary-button",
+          "disabled": false,
+          "aria": "",
+          "accName": "下一题",
+          "w": 682,
+          "h": 40,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "aria": "",
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14,
+          "html": ""
+        }
+      ],
+      "inputs": [],
+      "dots": [
+        {
+          "cls": "lesson-stage-dots",
+          "html": "<div class=\"lesson-stage-dots\" aria-label=\"第 2 / 5 段\"><span class=\"\"></span><span class=\"on\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span></div>"
+        }
+      ],
+      "smallTargets": [
+        {
+          "name": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "下一题",
+          "w": 682,
+          "h": 40,
+          "cls": "primary-button"
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14,
+          "cls": "ghost-link"
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 试一试 第 1 / 5 题 几乎不会错，放心点 你想说：我很开心。 Iamhappy. am is are 句首那个「谁」是 I 的时候，搭档永远是 am。 下一题 回去再看一遍讲解",
+      "scrollH": 720,
+      "isAssembly": false,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-desktop-06.png"
+    },
+    {
+      "step": 7,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "返回课程地图",
+          "accName": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"返回课程地图\" title=\"返回课程地图\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-li"
+        },
+        {
+          "tag": "button",
+          "text": "student.",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "aria": "",
+          "accName": "student.",
+          "w": 90,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "I",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "aria": "",
+          "accName": "I",
+          "w": 38,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "a",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "aria": "",
+          "accName": "a",
+          "w": 42,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "am",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "aria": "",
+          "accName": "am",
+          "w": 55,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "移除最后一个词",
+          "accName": "移除最后一个词",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"移除最后一个词\" title=\"移除最后一个词\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-"
+        },
+        {
+          "tag": "button",
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "aria": "",
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14,
+          "html": ""
+        }
+      ],
+      "inputs": [],
+      "dots": [
+        {
+          "cls": "lesson-stage-dots",
+          "html": "<div class=\"lesson-stage-dots\" aria-label=\"第 2 / 5 段\"><span class=\"\"></span><span class=\"on\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span></div>"
+        }
+      ],
+      "smallTargets": [
+        {
+          "name": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "student.",
+          "w": 90,
+          "h": 38,
+          "cls": "lesson-chip"
+        },
+        {
+          "name": "I",
+          "w": 38,
+          "h": 38,
+          "cls": "lesson-chip"
+        },
+        {
+          "name": "a",
+          "w": 42,
+          "h": 38,
+          "cls": "lesson-chip"
+        },
+        {
+          "name": "am",
+          "w": 55,
+          "h": 38,
+          "cls": "lesson-chip"
+        },
+        {
+          "name": "移除最后一个词",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14,
+          "cls": "ghost-link"
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 试一试 第 2 / 5 题 几乎不会错，放心点 你想说：我是一名学生。 点下面的词块，或直接把词块拖进来 student. I a am 0 / 4 块 · 点词块选上、再点取消；拖动或按 ← → 调整位置 回去再看一遍讲解",
+      "scrollH": 720,
+      "isAssembly": true,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-desktop-07.png"
+    },
+    {
+      "step": 8,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "返回课程地图",
+          "accName": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"返回课程地图\" title=\"返回课程地图\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-li"
+        },
+        {
+          "tag": "button",
+          "text": "am",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "aria": "",
+          "accName": "am",
+          "w": 55,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "I",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "aria": "",
+          "accName": "I",
+          "w": 38,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "Xiaoming.",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "aria": "",
+          "accName": "Xiaoming.",
+          "w": 102,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "移除最后一个词",
+          "accName": "移除最后一个词",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"移除最后一个词\" title=\"移除最后一个词\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-"
+        },
+        {
+          "tag": "button",
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "aria": "",
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14,
+          "html": ""
+        }
+      ],
+      "inputs": [],
+      "dots": [
+        {
+          "cls": "lesson-stage-dots",
+          "html": "<div class=\"lesson-stage-dots\" aria-label=\"第 2 / 5 段\"><span class=\"\"></span><span class=\"on\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span></div>"
+        }
+      ],
+      "smallTargets": [
+        {
+          "name": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "am",
+          "w": 55,
+          "h": 38,
+          "cls": "lesson-chip"
+        },
+        {
+          "name": "I",
+          "w": 38,
+          "h": 38,
+          "cls": "lesson-chip"
+        },
+        {
+          "name": "Xiaoming.",
+          "w": 102,
+          "h": 38,
+          "cls": "lesson-chip"
+        },
+        {
+          "name": "移除最后一个词",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14,
+          "cls": "ghost-link"
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 试一试 第 3 / 5 题 几乎不会错，放心点 你想说：我是小明。 点下面的词块，或直接把词块拖进来 am I Xiaoming. 0 / 3 块 · 点词块选上、再点取消；拖动或按 ← → 调整位置 回去再看一遍讲解",
+      "scrollH": 720,
+      "isAssembly": true,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-desktop-08.png"
+    },
+    {
+      "step": 9,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "返回课程地图",
+          "accName": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"返回课程地图\" title=\"返回课程地图\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-li"
+        },
+        {
+          "tag": "button",
+          "text": "I",
+          "cls": "lesson-chip built",
+          "disabled": false,
+          "aria": "",
+          "accName": "拖动调整位置；← → 也可以换位；点一下移除",
+          "w": 38,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "am",
+          "cls": "lesson-chip built",
+          "disabled": false,
+          "aria": "",
+          "accName": "拖动调整位置；← → 也可以换位；点一下移除",
+          "w": 55,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "am",
+          "cls": "lesson-chip ghost",
+          "disabled": true,
+          "aria": "",
+          "accName": "am",
+          "w": 55,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "I",
+          "cls": "lesson-chip ghost",
+          "disabled": true,
+          "aria": "",
+          "accName": "I",
+          "w": 38,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "Xiaoming.",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "aria": "",
+          "accName": "Xiaoming.",
+          "w": 102,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "移除最后一个词",
+          "accName": "移除最后一个词",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"移除最后一个词\" title=\"移除最后一个词\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-"
+        },
+        {
+          "tag": "button",
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "aria": "",
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14,
+          "html": ""
+        }
+      ],
+      "inputs": [],
+      "dots": [
+        {
+          "cls": "lesson-stage-dots",
+          "html": "<div class=\"lesson-stage-dots\" aria-label=\"第 2 / 5 段\"><span class=\"\"></span><span class=\"on\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span></div>"
+        }
+      ],
+      "smallTargets": [
+        {
+          "name": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "拖动调整位置；← → 也可以换位；点一下移除",
+          "w": 38,
+          "h": 38,
+          "cls": "lesson-chip built"
+        },
+        {
+          "name": "拖动调整位置；← → 也可以换位；点一下移除",
+          "w": 55,
+          "h": 38,
+          "cls": "lesson-chip built"
+        },
+        {
+          "name": "am",
+          "w": 55,
+          "h": 38,
+          "cls": "lesson-chip ghost"
+        },
+        {
+          "name": "I",
+          "w": 38,
+          "h": 38,
+          "cls": "lesson-chip ghost"
+        },
+        {
+          "name": "Xiaoming.",
+          "w": 102,
+          "h": 38,
+          "cls": "lesson-chip"
+        },
+        {
+          "name": "移除最后一个词",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14,
+          "cls": "ghost-link"
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 试一试 第 3 / 5 题 几乎不会错，放心点 你想说：我是小明。 I am am I Xiaoming. 2 / 3 块 · 点词块选上、再点取消；拖动或按 ← → 调整位置 回去再看一遍讲解",
+      "scrollH": 720,
+      "isAssembly": true,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-desktop-09.png"
+    },
+    {
+      "step": 10,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "返回课程地图",
+          "accName": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"返回课程地图\" title=\"返回课程地图\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-li"
+        },
+        {
+          "tag": "button",
+          "text": "I",
+          "cls": "lesson-chip built",
+          "disabled": false,
+          "aria": "",
+          "accName": "拖动调整位置；← → 也可以换位；点一下移除",
+          "w": 38,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "am",
+          "cls": "lesson-chip built",
+          "disabled": false,
+          "aria": "",
+          "accName": "拖动调整位置；← → 也可以换位；点一下移除",
+          "w": 55,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "am",
+          "cls": "lesson-chip ghost",
+          "disabled": true,
+          "aria": "",
+          "accName": "am",
+          "w": 55,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "I",
+          "cls": "lesson-chip ghost",
+          "disabled": true,
+          "aria": "",
+          "accName": "I",
+          "w": 38,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "Xiaoming.",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "aria": "",
+          "accName": "Xiaoming.",
+          "w": 102,
+          "h": 38,
+          "html": ""
+        },
+        {
+          "tag": "button",
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "aria": "移除最后一个词",
+          "accName": "移除最后一个词",
+          "w": 40,
+          "h": 40,
+          "html": "<button type=\"button\" class=\"icon-button\" aria-label=\"移除最后一个词\" title=\"移除最后一个词\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-"
+        },
+        {
+          "tag": "button",
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "aria": "",
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14,
+          "html": ""
+        }
+      ],
+      "inputs": [],
+      "dots": [
+        {
+          "cls": "lesson-stage-dots",
+          "html": "<div class=\"lesson-stage-dots\" aria-label=\"第 2 / 5 段\"><span class=\"\"></span><span class=\"on\"></span><span class=\"\"></span><span class=\"\"></span><span class=\"\"></span></div>"
+        }
+      ],
+      "smallTargets": [
+        {
+          "name": "返回课程地图",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "拖动调整位置；← → 也可以换位；点一下移除",
+          "w": 38,
+          "h": 38,
+          "cls": "lesson-chip built"
+        },
+        {
+          "name": "拖动调整位置；← → 也可以换位；点一下移除",
+          "w": 55,
+          "h": 38,
+          "cls": "lesson-chip built"
+        },
+        {
+          "name": "am",
+          "w": 55,
+          "h": 38,
+          "cls": "lesson-chip ghost"
+        },
+        {
+          "name": "I",
+          "w": 38,
+          "h": 38,
+          "cls": "lesson-chip ghost"
+        },
+        {
+          "name": "Xiaoming.",
+          "w": 102,
+          "h": 38,
+          "cls": "lesson-chip"
+        },
+        {
+          "name": "移除最后一个词",
+          "w": 40,
+          "h": 40,
+          "cls": "icon-button"
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14,
+          "cls": "ghost-link"
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 试一试 第 3 / 5 题 几乎不会错，放心点 你想说：我是小明。 I am am I Xiaoming. 2 / 3 块 · 点词块选上、再点取消；拖动或按 ← → 调整位置 回去再看一遍讲解",
+      "scrollH": 720,
+      "isAssembly": true,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-desktop-10.png"
+    }
+  ]
+}

@@ -28,13 +28,18 @@ const makeDue = (data: AppData): AppData => ({
 });
 
 describe("RV10 会话去重", () => {
-  it("同一案件的 4 张卡（同一句）在会话里只占 1 个槽位", () => {
+  it("同一案件只有一张卡（2026-09-24 一案一卡），会话里出现一次", () => {
     // 挑一个 4 错点的案子
     const caseItem = huntCases.find((item) => item.errors.length >= 4);
     expect(caseItem, "库里应有 4 错点案件").toBeTruthy();
     let data = makeAppData({ cards: [], schedules: [], sentenceDetails: [] }) as AppData;
     data = addHuntGapSentences(data, caseItem!, caseItem!.errors.map((error) => error.tokenIndex)).data;
-    expect(data.cards.length, "该案应生成多张卡").toBeGreaterThan(1);
+    /**
+     * 2026-09-24 改：入队侧已改「一案一卡」（addHuntGapSentences 不再按错点建多张
+     * 卡面相同的卡），所以这里只有一张卡——会话里只出现一次的原因从
+     * 「会话去重兜底」变成「本来就只有一张」。原断言「该案应生成多张卡」随之作废。
+     */
+    expect(data.cards.length, "一案一卡").toBe(1);
     // 让这些卡都到期（新建卡 status="new" 不进队列，这里模拟「已复习过两次」）
     data = makeDue(data);
     const session = buildGrammarReviewSession(data, 10);

@@ -2,6 +2,7 @@ import { ArrowLeft, CheckCircle2, Lightbulb, RotateCcw } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
+import { isSubmitKey } from "../components/imeGuard";
 import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
 import { useReturnFocus } from "../components/useReturnFocus";
@@ -293,8 +294,12 @@ export default function GrammarReviewPage() {
                       value={freeTypeValue}
                       onChange={(event) => setFreeTypeValue(event.target.value)}
                       onKeyDown={(event) => {
-                        // 回车提交（Shift+Enter 换行；输入法组词态不触发）
-                        if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+                        /**
+                         * 回车提交。2026-09-24 统一走 `isSubmitKey`——
+                         * 内联版只判 `isComposing`，漏了组词态的 `keyCode === 229`
+                         * 信号（部分输入法只给这个），那类输入法下会误提交半截输入。
+                         */
+                        if (isSubmitKey(event)) {
                           event.preventDefault();
                           if (freeTypeValue.trim()) handleFreeTypeSubmit();
                         }

@@ -48,9 +48,11 @@ import {
   trackSettingsView,
   buildSettingsTelemetryExport
 } from "../services/settingsTelemetry";
+import { Link } from "react-router-dom";
 import { compactReviewHistory } from "../services/reviewArchiveService";
 import { buildVocabTelemetryExport, getVocabTelemetryStats } from "../services/vocabTelemetry";
 import { buildGrammarTelemetryExport, getGrammarTelemetryStats } from "../services/grammarTelemetry";
+import { buildAdventureTelemetryExport, getAdventureTelemetryStats } from "../services/adventureTelemetry";
 import type { AiProviderSettings, AppData, DataSyncSettings, Settings } from "../types";
 
 const AUTOSAVE_DELAY_MS = 500;
@@ -145,6 +147,18 @@ export default function SettingsPage() {
   // P1-7：遥测存量统计（useState 初始化只读一次，避免每次渲染重复解析 localStorage）。
   const [vocabTelemetryStats] = useState(() => getVocabTelemetryStats());
   const [grammarTelemetryStats] = useState(() => getGrammarTelemetryStats());
+  /**
+   * 冒险遥测（2026-09-24 首页重规划 P0a 新增）。
+   *
+   * 为什么加：`adventureTelemetry` 的读侧导出此前**只有测试引用**——生产 UI 里
+   * 既不计入总数也不可导出，于是那 15 条真实事件（最后一条 2026-09-16）
+   * 在「冒险线是唯一有真实消费的线」这个判断上**无法被产品自身证实**。
+   * 补上它，是「给冒险加首页入口」这类改动能被验证的前置条件。
+   */
+  const [adventureTelemetryStats] = useState(() => getAdventureTelemetryStats());
+  /** 三线遥测总量（主键 + 归档）。口径见各 telemetry 模块的 stats 注释：三线一律同形。 */
+  const telemetryTotal =
+    vocabTelemetryStats.totalEvents + grammarTelemetryStats.totalEvents + adventureTelemetryStats.totalEvents;
 
   // R04：当前 AI 配置命中哪个预设（Base URL 或模型名被手动改过即"自定义"）。
   const activeAiPreset =
@@ -1020,14 +1034,14 @@ export default function SettingsPage() {
             </button>
           </div>
 
-          {/* P1-7 遥测导出通道：词书/语法/设置三类本地事件完整快照（含时间戳与全字段；词书/语法含归档，突破上限丢旧数据问题）。 */}
+          {/* P1-7 遥测导出通道：词书/语法/冒险三类本地事件完整快照（含时间戳与全字段；三类均含归档，突破上限丢旧数据问题）。 */}
           <details className="settings-advanced telemetry-export-section">
             <summary>
-              <span>遥测数据（产品复盘用） · {vocabTelemetryStats.activeEvents + vocabTelemetryStats.archivedEvents + grammarTelemetryStats.activeEvents + grammarTelemetryStats.archivedEvents} 条</span>
+              <span>遥测数据（产品复盘用） · {telemetryTotal} 条</span>
             </summary>
             <div className="settings-advanced-body">
               <span className="telemetry-export-hint">
-                本地学习行为事件，含时间戳与事件全字段；词书/语法快照含归档，导出即为完整数据。
+                本地学习行为事件，含时间戳与事件全字段；词书/语法/冒险快照含归档，导出即为完整数据。
               </span>
               <div className="export-actions">
                 <button
@@ -1036,7 +1050,7 @@ export default function SettingsPage() {
                   onClick={() => exportFile(`vocab-telemetry-${nowIso().slice(0, 10)}.json`, buildVocabTelemetryExport(), "application/json")}
                 >
                   <Download size={16} />
-                  词书遥测（{vocabTelemetryStats.activeEvents + vocabTelemetryStats.archivedEvents} 条）
+                  词书遥测（{vocabTelemetryStats.totalEvents} 条）
                 </button>
                 <button
                   className="secondary-button"
@@ -1044,7 +1058,15 @@ export default function SettingsPage() {
                   onClick={() => exportFile(`grammar-telemetry-${nowIso().slice(0, 10)}.json`, buildGrammarTelemetryExport(), "application/json")}
                 >
                   <Download size={16} />
-                  语法遥测（{grammarTelemetryStats.activeEvents + grammarTelemetryStats.archivedEvents} 条）
+                  语法遥测（{grammarTelemetryStats.totalEvents} 条）
+                </button>
+                <button
+                  className="secondary-button"
+                  type="button"
+                  onClick={() => exportFile(`adventure-telemetry-${nowIso().slice(0, 10)}.json`, buildAdventureTelemetryExport(), "application/json")}
+                >
+                  <Download size={16} />
+                  冒险遥测（{adventureTelemetryStats.totalEvents} 条）
                 </button>
                 <button
                   className="secondary-button"
@@ -1223,6 +1245,17 @@ export default function SettingsPage() {
               </div>
               <p className="dictionary-note">
                 添加单词时会先匹配个人词库，再匹配内置离线词典；没有命中也可以手填，保存后会成为你的个人词典数据。
+              </p>
+              {/*
+                「关于 / 欢迎页」入口（2026-09-24 首页重规划）。
+                首页收敛后 `/` 重定向到 `/today`，原来的品牌门页挂到了 `/welcome`——
+                没有入口的页面等于死代码（顺手也会让 rv19 那条仍然有效的判据失去被测对象），
+                所以在这里给一个可达入口。门页内容本身本期不改（改不改是开放问题 Q7）。
+              */}
+              <p className="dictionary-note">
+                <Link className="ghost-link" to="/welcome">
+                  关于这个工具 / 欢迎页
+                </Link>
               </p>
             </div>
           </div>

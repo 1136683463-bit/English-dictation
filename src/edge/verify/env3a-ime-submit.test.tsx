@@ -287,17 +287,56 @@ describe("ENV3-A 课程页 / 复习页（已加守卫，作为对照基线）", 
       const source = readFileSync(`${root}/${file}`, "utf8");
       const hasEnterHandler = /onKeyDown=|addEventListener\("keydown"/.test(source);
       if (!hasEnterHandler) continue;
-      // 守卫统一收在 components/imeGuard 里，所以「引了 imeGuard」或「直接用 isComposing」都算。
-      const hasGuard = /isComposing|imeGuard/.test(source);
-      (hasGuard ? guarded : unguarded).push(file);
+      /**
+       * 守卫**必须来自 components/imeGuard**（isSubmitKey / isImeComposing / imeSafeFormProps）。
+       *
+       * 2026-09-24 收紧判据：原判据是 `/isComposing|imeGuard/`——只要源码里出现
+       * `isComposing` 就算过，于是**内联的 `!event.nativeEvent.isComposing` 也算「有守卫」**，
+       * 掩盖了一个真实缺口：内联版只判一个信号，漏了组词态的
+       * `keyCode === 229`（旧引擎/部分输入法只给这个、不上报 isComposing）。
+       * 实测有 7 处内联版散布在 5 个页面里，全都带着这个缺口。
+       * 现在改为「必须引用 imeGuard」，逼迫所有提交点走同一份双信号实现。
+       */
+      const usesAuthoritativeGuard = /isSubmitKey|isImeComposing|imeSafeFormProps|blockImeSubmit/.test(source);
+      (usesAuthoritativeGuard ? guarded : unguarded).push(file);
     }
     /**
      * 修复前：拼写页（Enter 提交）与复习页（1-4 评分）都没有守卫——
      * 中文输入法组词回车会提交半截输入、候选词数字键会把卡评走。
-     * 修复后两个页面都接上了 imeGuard，这份清单应当**为空**。
+     * 修复后所有键盘提交点统一走 components/imeGuard 的双信号实现。
      */
-    expect(unguarded.sort(), "仍有键盘处理但缺 IME 守卫的页面（应为空）").toEqual([]);
-    expect(guarded.length, "全部键盘处理页面都已带守卫").toBeGreaterThanOrEqual(6);
+    expect(
+      unguarded.sort(),
+      "存在键盘提交点但未引用 imeGuard 的页面（内联 isComposing 判据不完整，必须改用它）"
+    ).toEqual([]);
+    expect(guarded.length, "全部键盘处理页面都已走 imeGuard").toBeGreaterThanOrEqual(6);
+  });
+
+  it("【2026-09-24 新增】产品代码里不再有内联的 isComposing 判断（一律走 imeGuard）", async () => {
+    const { execSync } = await import("node:child_process");
+    /**
+     * 为什么单独钉一条：`isComposing` 是**两个信号之一**，另一个是 `keyCode === 229`
+     * （见 imeGuard.ts 的模块注释）。散落的内联判断极易只写前者，
+     * 而 JSX 属性里写 `!event.nativeEvent.isComposing` 看起来完全正当——
+     * 代码审查很难发现「少判了一个信号」。
+     *
+     * 实测修复前 5 个页面共 7 处内联版；本条保证它们不再回来。
+     */
+    const hits = execSync(
+      "grep -rn 'isComposing' src/pages src/components src/App.tsx src/AppContext.tsx || true",
+      { cwd: process.cwd(), encoding: "utf8" }
+    )
+      .split("\n")
+      .filter((line) => line.trim())
+      // imeGuard.ts 是**权威实现**，`isComposing` 本就该出现在那里
+      .filter((line) => !line.includes("components/imeGuard.ts"))
+      // 注释里解释这个信号是允许的（文档需要提到它）
+      .filter((line) => !/^\S+:\d+:\s*(\*|\/\/|\/\*)/.test(line));
+
+    expect(
+      hits.join("\n"),
+      "仍有内联的 isComposing 判断（漏 keyCode 229 信号，请改用 components/imeGuard）"
+    ).toBe("");
   });
 
   it("PASS-A11 全库从无 compositionstart / compositionend / onCompositionEnd：应用对 IME 是「无感知」的", async () => {
@@ -336,38 +375,67 @@ describe("ENV3-A 全库键盘提交路径盘点（源码级锚定）", () => {
      * 盘点口径：搜「会改变持久状态或推进流程」的 keydown 处理点（不含 role=button 的
      * 「Enter/Space 等同点击」无障碍垫片——那些在非输入元素上，输入法不会把候选窗开在那里）。
      */
+    /**
+     * ⚠️ 2026-09-24 全表更新：**判据从「源码含 isComposing」改为「走 imeGuard」**。
+     *
+     * 原清单的 marker 都是内联写法（`!event.nativeEvent.isComposing`），
+     * 而本轮把 7 处内联判断统一收进了 `components/imeGuard`——它们只判了一个信号，
+     * 漏了组词态的 `keyCode === 229`。清单随之更新为函数调用形态，
+     * 判据也换成「是否引用 imeGuard 的权威实现」。
+     */
     const points: Array<{ file: string; marker: string; guarded: boolean; why: string }> = [
-      { file: "src/pages/GrammarLessonPage.tsx", marker: 'if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing)', guarded: true, why: "忆段 / 产出段输入框" },
-      { file: "src/pages/GrammarReviewPage.tsx", marker: 'if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing)', guarded: true, why: "复习页自由输出框" },
-      { file: "src/pages/GrammarRevisitPage.tsx", marker: 'if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing && clozeValue.trim())', guarded: true, why: "回访页填空框" },
-      { file: "src/pages/GrammarBoostPage.tsx", marker: 'if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing && textValue.trim())', guarded: true, why: "趁热练输入框" },
-      { file: "src/pages/GrammarBoostPage.tsx", marker: 'if (event.key !== "Enter" || event.isComposing || event.shiftKey) return;', guarded: true, why: "趁热练全局「回车进下一题」" },
-      // R09 已修：拼写页输入框改走 isSubmitKey（组词态/Shift 都不提交）
-      { file: "src/pages/SpellingPage.tsx", marker: 'if (!isSubmitKey(event)) return;', guarded: true, why: "拼写页输入框（已加守卫）" },
-      // R09 已修：复习页评分键加了两道——组词态直接 return + 焦点在输入处不抢键
-      { file: "src/pages/ReviewPage.tsx", marker: 'if (isImeComposing(event)) return;', guarded: true, why: "复习页评分键（已加守卫）" },
-      { file: "src/pages/ReviewPage.tsx", marker: '!isTypingTarget(event.target)', guarded: true, why: "复习页评分键不抢输入焦点" }
+      { file: "src/pages/GrammarLessonPage.tsx", marker: "if (isSubmitKey(event)) {", guarded: true, why: "忆段 / 产出段输入框" },
+      { file: "src/pages/GrammarReviewPage.tsx", marker: "if (isSubmitKey(event)) {", guarded: true, why: "复习页自由输出框" },
+      { file: "src/pages/GrammarRevisitPage.tsx", marker: "if (isSubmitKey(e) && clozeValue.trim()) {", guarded: true, why: "回访页填空框" },
+      { file: "src/pages/GrammarBoostPage.tsx", marker: "if (isSubmitKey(event) && textValue.trim()) {", guarded: true, why: "趁热练输入框" },
+      { file: "src/pages/GrammarBoostPage.tsx", marker: "if (!isSubmitKey(event)) return;", guarded: true, why: "趁热练全局「回车进下一题」" },
+      { file: "src/pages/SpellingPage.tsx", marker: "if (!isSubmitKey(event)) return;", guarded: true, why: "拼写页输入框" },
+      { file: "src/pages/ReviewPage.tsx", marker: "if (isImeComposing(event)) return;", guarded: true, why: "复习页评分键" },
+      { file: "src/pages/ReviewPage.tsx", marker: "!isTypingTarget(event.target)", guarded: true, why: "复习页评分键不抢输入焦点" }
     ];
     const wrong: string[] = [];
     for (const point of points) {
       const source = read(point.file);
       const hasMarker = source.includes(point.marker);
-      const hasGuard = /isComposing/.test(source);
+      // 判据：该文件必须引用 imeGuard 的权威实现（双信号），而不是自己写内联判断
+      const hasGuard = /isSubmitKey|isImeComposing|imeSafeFormProps|blockImeSubmit/.test(source);
       if (!hasMarker) wrong.push(`${point.file} 的标记行不存在（代码已改动，请更新本盘点）：${point.marker}`);
-      else if (hasGuard !== point.guarded) wrong.push(`${point.file}（${point.why}）守卫状态与盘點不符：期望 guarded=${point.guarded}`);
+      else if (hasGuard !== point.guarded) wrong.push(`${point.file}（${point.why}）守卫状态与盘点不符：期望 guarded=${point.guarded}`);
     }
     expect(wrong, "盘点与实际源码不一致").toEqual([]);
   });
 
-  it("PASS-A13 只有 5 处带 IME 守卫的处理点，且都不是「提交」以外的语义混淆", async () => {
+  it("PASS-A13【2026-09-24 改判据】提交点一律走 imeGuard，不再散落内联判断", async () => {
     const { execSync } = await import("node:child_process");
-    const lines = execSync(
+    /**
+     * ⚠️ 原断言统计的是「有几处内联 `nativeEvent.isComposing`」并钉死为 6。
+     * 那条断言在**修复方向上是反的**：内联判断少判一个信号（`keyCode === 229`），
+     * 数量越多越糟。本轮把它们全部收进 imeGuard 后，该计数理应变成 0。
+     * 现在改为统计「走 imeGuard 的提交点」——这才是应当被钉住的形态。
+     */
+    const inline = execSync(
       "grep -rn 'nativeEvent.isComposing\\|event.isComposing' src/pages src/components 2>/dev/null || true",
       { cwd: process.cwd(), encoding: "utf8" }
-    ).trim().split("\n").filter(Boolean);
-    // 5 处：课内 2 + 复习页 1 + 回访页 1 + 趁热练 2（其中一处是 window 上的原生事件）
-    expect(lines.length, `守卫点数量（实际 ${lines.length}）`).toBe(6);
-    expect(lines.filter((l) => l.includes("GrammarLessonPage")).length, "课内 2 处").toBe(2);
+    )
+      .split("\n")
+      .filter((line) => line.trim())
+      .filter((line) => !line.includes("components/imeGuard.ts"))
+      .filter((line) => !/^\S+:\d+:\s*(\*|\/\/|\/\*)/.test(line));
+    expect(inline.length, `内联 isComposing 判断（应为 0，实际 ${inline.length}）`).toBe(0);
+
+    const guarded = execSync(
+      "grep -rn 'isSubmitKey(\\|isImeComposing(\\|imeSafeFormProps' src/pages 2>/dev/null || true",
+      { cwd: process.cwd(), encoding: "utf8" }
+    )
+      .split("\n")
+      .filter((line) => line.trim())
+      .filter((line) => !/^\S+:\d+:import /.test(line));
+    // 提交点：课内 2（忆段/产出段）+ 复习页 1 + 回访页 1 + 趁热练 2 + 拼写页 1 + 复习页评分键 1
+    expect(guarded.length, `走 imeGuard 的处理点（实际 ${guarded.length}）`).toBeGreaterThanOrEqual(7);
+    expect(
+      guarded.filter((line) => line.includes("GrammarLessonPage")).length,
+      "课内至少 2 处（忆段 / 产出段）"
+    ).toBeGreaterThanOrEqual(2);
   });
 
   it("【已修 R09】全站 form 都带上了 imeSafeFormProps，组词态回车压掉隐式提交", async () => {

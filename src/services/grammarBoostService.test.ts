@@ -464,6 +464,78 @@ describe("grammarBoostService · 档 2 出题（自己想）", () => {
   });
 });
 
+describe("acceptAlso · 课内标注的等价说法同样算对（L68 两种语序）", () => {
+  /**
+   * 「我给妈妈买了份礼物。」本课 examples 标了「同序换位」，replace 题的正确答案
+   * 就是 `I bought my mom a gift.`——但产出类题原先只认 for 版，写出另一版实测判 29 分。
+   * 修法：等价说法写进 GrammarLesson.acceptAlso，判分取各候选中的最高分。
+   */
+  it("L68 的两种语序都判对，且不放行无关说法", () => {
+    for (const tier of [2, 3] as const) {
+      const item = buildBoostItems("lesson-68-buy-for", tier).find(
+        (entry) => entry.answer === "I bought a gift for my mom."
+      );
+      expect(item, `tier${tier} 应有以该句为答案的题`).toBeDefined();
+      expect(judgeBoostItem(item!, { text: "I bought a gift for my mom." }).passed, "基准句").toBe(true);
+      expect(judgeBoostItem(item!, { text: "I bought my mom a gift." }).passed, "同序换位也算对").toBe(true);
+      expect(
+        judgeBoostItem(item!, { text: "I gave my teacher some flowers." }).passed,
+        "acceptAlso 不是放行一切：换了动词与宾语必须判错"
+      ).toBe(false);
+    }
+  });
+
+  it("缺省时不改变行为：未标注 acceptAlso 的课不带该字段", () => {
+    const withoutField = grammarLessons.filter((lesson) => !lesson.acceptAlso);
+    expect(withoutField.length, "绝大多数课未标注").toBeGreaterThan(100);
+    for (const lesson of withoutField.slice(0, 20)) {
+      for (const item of buildBoostItems(lesson.id, 3)) {
+        expect(item.acceptAlso, `${item.id} 不该带 acceptAlso`).toBeUndefined();
+      }
+    }
+  });
+
+  it("只作用于 target 句，不串到该课其它句子上", () => {
+    const items = buildBoostItems("lesson-68-buy-for", 3);
+    const targetItems = items.filter((item) => item.answer === "I bought a gift for my mom.");
+    expect(targetItems.length, "该课应有 target 来源的题").toBeGreaterThan(0);
+    for (const item of items.filter((entry) => entry.answer !== "I bought a gift for my mom.")) {
+      expect(item.acceptAlso, `${item.id} 答案不是 target 句，不该带 acceptAlso`).toBeUndefined();
+    }
+  });
+
+  it("L54：中文不标单复数的翻译题，window / windows 都判对（走 examples 通道）", () => {
+    const item = buildBoostItems("lesson-54-focus", 2).find(
+      (entry) => entry.answer === "The window was cleaned yesterday."
+    );
+    expect(item, "该课应有以这句为答案的题").toBeDefined();
+    expect(item!.kind, "由 examples 出的翻译题").toBe("translate");
+    expect(item!.acceptAlso, "examples 上的 acceptAlso 要带到题上").toEqual(["The windows were cleaned yesterday."]);
+    expect(judgeBoostItem(item!, { text: "The window was cleaned yesterday." }).passed, "基准句").toBe(true);
+    expect(judgeBoostItem(item!, { text: "The windows were cleaned yesterday." }).passed, "复数版也对").toBe(true);
+  });
+
+  it("L175：题干没给语境，So do I. / So am I. 都判对", () => {
+    for (const tier of [2, 3] as const) {
+      const item = buildBoostItems("lesson-175-so-do-i", tier).find(
+        (entry) => entry.answer === "So do I."
+      );
+      expect(item, `tier${tier} 应有以该句为答案的题`).toBeDefined();
+      expect(item!.acceptAlso).toEqual(["So am I."]);
+      expect(judgeBoostItem(item!, { text: "So do I." }).passed, "基准句").toBe(true);
+      expect(judgeBoostItem(item!, { text: "So am I." }).passed, "am 版也对（本课 examples 明说跟着换）").toBe(true);
+    }
+  });
+
+  it("该接受才接受：L112 的两种物主代词之分不放进 acceptAlso", () => {
+    const item = buildBoostItems("lesson-112-this-is-mine", 3).find(
+      (entry) => entry.answer === "This book is mine."
+    );
+    expect(item).toBeDefined();
+    expect(item!.acceptAlso, "本课的点就是两种物主代词之分，不该接受另一解").toBeUndefined();
+  });
+});
+
 describe("grammarBoostService · 档 3 出题（换你来说）", () => {
   it("题量 3、三种产出任务形态、答案非空", () => {
     const items = buildBoostItems(sampleLessonId(), 3);
@@ -806,9 +878,13 @@ describe("cloze 干扰项质量（这是「题目能不能做」的底线）", (
   //   已变形的词不再叠第二个变形后缀（cleaneding／takesed／takess ❌）。
   it("全库 cloze 干扰项不得是伪造词（词形结构判定）", () => {
     // 允许多段后缀的例外（真词里存在的组合）
+    // 2026-09-24 补 `needing`：`need` 是基础形、但词尾恰好是 `-ed`，
+    // 于是 need+ing 的形状（`…eding`）与伪造词 `cleaned+ing`（cleaneding）撞型，被规则①误伤。
+    // 它是真词，按本例外表处理。
     const LEGIT = new Set([
       "closed", "cleaned", "played", "studied", "watched", "finished", "started",
-      "wanted", "needed", "liked", "helped", "opened", "listened", "walked", "worked"
+      "wanted", "needed", "liked", "helped", "opened", "listened", "walked", "worked",
+      "needing"
     ]);
     const isFabricatedWord = (word: string): boolean => {
       const w = word.toLowerCase().replace(/[^a-z']/g, "");

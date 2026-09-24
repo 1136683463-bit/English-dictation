@@ -2,7 +2,9 @@ import { CheckCircle2, Flame, Info, Lightbulb, RotateCcw, Sparkles } from "lucid
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
+import { isSubmitKey } from "../components/imeGuard";
 import EmptyState from "../components/EmptyState";
+import EmphasisText from "../components/EmphasisText";
 import PageHeader from "../components/PageHeader";
 import { useReturnFocus } from "../components/useReturnFocus";
 import SpeakButton from "../components/SpeakButton";
@@ -743,7 +745,13 @@ export default function GrammarBoostPage() {
   useEffect(() => {
     if (outcome !== "pass" && outcome !== "revealed") return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Enter" || event.isComposing || event.shiftKey) return;
+      /**
+       * 2026-09-24：统一走 `isSubmitKey`（Enter + 无修饰键 + 非组词态）。
+       * 它比原内联判断多覆盖**组词态的 `keyCode === 229` 信号**——
+       * 窗口级监听虽已靠「焦点在输入框就跳过」避开了多数情况，
+       * 但组词候选窗偶尔会把焦点挂到别处，那时 229 是唯一可靠的判据。
+       */
+      if (!isSubmitKey(event)) return;
       const active = document.activeElement;
       if (active instanceof HTMLElement && ["BUTTON", "A", "INPUT", "TEXTAREA", "SELECT"].includes(active.tagName)) return;
       event.preventDefault();
@@ -994,7 +1002,9 @@ export default function GrammarBoostPage() {
             <span className="lesson-quiz-step">第 {index + 1} / {items.length} 题</span>
             <span className="lesson-quiz-note">{itemLabel}</span>
           </div>
-          <p className="lesson-quiz-prompt">{currentItem?.promptZh}</p>
+          <p className="lesson-quiz-prompt">
+            <EmphasisText text={currentItem?.promptZh ?? ""} />
+          </p>
           {currentItem?.targetsWeakSpot && weakSpotPlain && (
             <p className="boost-weak-hint">
               <Lightbulb size={13} aria-hidden="true" />
@@ -1241,7 +1251,8 @@ export default function GrammarBoostPage() {
                   value={textValue}
                   onChange={(event) => setTextValue(event.target.value)}
                   onKeyDown={(event) => {
-                    if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing && textValue.trim()) {
+                    // 2026-09-24：统一走 isSubmitKey（补上组词态的 keyCode 229 信号）
+                    if (isSubmitKey(event) && textValue.trim()) {
                       event.preventDefault();
                       submitText();
                       return;

@@ -1,0 +1,38 @@
+判分修复：bothRight 泄漏、单词语卡、形状判身份类缺陷
+
+语法模块的生成题质量修复，来自一轮完整走查（报告见
+uiux-audit-2026-09-24-grammar/）。逐项都有前后实测数字：
+
+趁热练（gq2）
+- tier-3「自己改错」通道补 bothRight 守卫：bothRightAsWrong 12 → 0
+  该通道候选池 1235 → 729，三档题量不受影响
+- B-6 改为真判分（此前是「看到多解就假定判分会拒」）+ 排除指令型题干：
+  zhMultiAnswerSingleKey 40 → 6
+- 新增 acceptAlso（可接受的其它说法），修 L68/L54/L175：
+  zhMultiAnswerSingleKey 6 → 1（余 1 条判定为有意保留）
+- 「加后缀造词」的词干还原不再剥坏基础形：fabricatedDistractor 10 → 0
+- 变体题面只在答案确实是该形态时才承诺形态：variantLabelMismatch 2 → 0
+- slotCompatible 承认同词根形态变体：weakDistractors 65 → 49
+
+复习卡（gq1）
+- 入队侧只入整句（choose 用 before/after 还原，replace/spot 不入队）：
+  rebuildTooFewChunks 393 → 0、clozeSingleOption 311 → 0
+- 生成侧词块 < 2 走自由输出兜住存量卡
+- review 侧 cloze 补「同长度课程词汇池」候选：clozeFewerThanFourOptions 222 → 0
+- slotOf 改用词典真实词性（此前 tired(a.) 被判 verb-ed、always(adv.) 判 verb-s）：
+  weakDistractors 1532 → 67，「有效干扰项 ≥2」56.0% → 96.8%
+
+找错案件
+- addHuntGapSentences 改一案一卡（原先按错点建卡、卡面完全相同）：
+  huntDuplicateCards 214 → 0
+
+课堂
+- 「说出来」档 2 的题面按说话人给文案（205 课里 11 课核心句不是小美的台词）
+
+验收：npx vitest run 2695 / 2699 通过。
+剩 4 条（E6-5 + KB4×3）属另一会话 arrangeFiddlingAfterPass 的在途改动，非本轮范围。
+
+注：本轮与另一会话共用一个工作树，grammarLessons.ts / GrammarLessonPage.tsx /
+grammarBoostService.ts / grammarReviewService.ts / types.ts 五个文件里两边改动交织，
+无法按文件或 hunk 干净分离。可恢复副本见
+uiux-audit-2026-09-24-grammar/{my-work-pure,mixed-files-full}.patch。

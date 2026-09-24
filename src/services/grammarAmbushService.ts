@@ -68,7 +68,7 @@ const pickFallbackError = (currentLessonId: string, excludeCaseIds: Set<string>)
         error,
         weakSpotTag: null,
         sourceLessonId: lesson.id,
-        promptZh: "回马一枪——前几课的旧知识换了件外套。指出有问题的那个词。"
+        promptZh: "回马一枪——前几课的旧知识换了个样子。指出有问题的那个词。"
       };
     }
   }

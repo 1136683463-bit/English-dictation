@@ -34,6 +34,7 @@ import { grammarLessons } from "../../data/grammarLessons";
 import { huntCases } from "../../data/huntCases";
 import { bundledDictionary } from "../../data/bundledDictionary";
 import { addHuntGapSentences } from "../../services/huntService";
+import { reviewSentenceOfGuidedStep } from "../../services/lessonService";
 import { makeTestData } from "../../services/testUtils";
 import {
   buildGrammarReviewTask,
@@ -56,6 +57,20 @@ const hasSentenceEnd = (value: string): boolean => /[.!?]["')\]]*$/.test(value.t
 
 // ── 干扰项「是不是真词」的判定依据（三层，从严到宽） ──
 const dictHeadwords = new Set(bundledDictionary.map((entry) => entry.word.toLowerCase()));
+/**
+ * 词典的**真实词性**（n. / v. / a. / adv. …）。
+ *
+ * 2026-09-24 加：此前的 `slotOf` 用**后缀形状**推词性，把 `tired`（形容词 a.）判成
+ * `verb-ed`、`always`（副词 adv.）判成 `verb-s`，于是同为内容词的干扰项被当成
+ * 「一个像动词、一个像名词」而删掉——gq1 的 weakDistractors 1214 条里大量是这个成因。
+ * 这与 `ned`／`finishing`／`finishs` 同属「用形状判断身份」。
+ */
+const dictPos = new Map<string, string>();
+for (const entry of bundledDictionary) {
+  const word = entry.word.toLowerCase();
+  const pos = String((entry as { partOfSpeech?: string }).partOfSpeech ?? "");
+  if (pos && !dictPos.has(word)) dictPos.set(word, pos);
+}
 /** 应用自身语料里出现过的词（课程 + 案件 + 课程词汇池）——用户学过、见过。 */
 const appCorpus = new Set<string>();
 const addCorpus = (text: string | undefined): void => {
@@ -98,7 +113,15 @@ const baseForms = (word: string): string[] => {
   const out = [word];
   if (word.endsWith("ies") && word.length > 4) out.push(`${word.slice(0, -3)}y`);
   if (word.endsWith("es") && word.length > 3) out.push(word.slice(0, -2));
-  if (word.endsWith("s") && !word.endsWith("ss") && word.length > 3) out.push(word.slice(0, -1));
+  /**
+   * 剥 `-s` 前先确认「词干 + s」本身是合法英语变形。
+   * 否则会把**造出来的词**当成真词：`finishs` 剥成 `finish` 就撞上词典
+   * （正确形态是 `finishes`）——2026-09-24 的 blind spot，
+   * 实测漏掉了 lesson-153 / lesson-180 的两道题。
+   * 咝音（s/sh/ch/x/z）结尾的词干只能配 `-es`，不配 `-s`。
+   */
+  const sibilantStem = /(s|sh|ch|x|z)$/.test(word.slice(0, -1));
+  if (word.endsWith("s") && !word.endsWith("ss") && word.length > 3 && !sibilantStem) out.push(word.slice(0, -1));
   if (word.endsWith("ed") && word.length > 3) out.push(word.slice(0, -2), `${word.slice(0, -1)}`);
   if (word.endsWith("ing") && word.length > 4) out.push(word.slice(0, -3), `${word.slice(0, -3)}e`);
   return out;
@@ -124,16 +147,43 @@ const SLOT_PATTERNS: Array<[string, RegExp]> = [
   ["pronoun", /^(i|you|he|she|it|we|they|me|him|her|us|them|my|your|his|our|their|this|that|these|those|mine|yours|hers|ours|theirs)$/],
   ["numeral", /^\d+$/]
 ];
+/** 词的真实词性（变形先还原到基础形查词典）；词典无此条时返回 null。 */
+const posOf = (word: string): string | null => {
+  const lower = word.toLowerCase();
+  if (dictPos.has(lower)) return dictPos.get(lower)!;
+  for (const base of baseForms(lower)) if (dictPos.has(base)) return dictPos.get(base)!;
+  return null;
+};
+const VERB_POS = new Set(["v.", "vt.", "vi."]);
+/** 三个「动词形状」的槽位——只在词典确认是动词时才承认。 */
+const VERB_SHAPED = new Set(["verb-s", "verb-ed", "verb-ing"]);
 const slotOf = (word: string): string => {
   const lower = word.toLowerCase();
-  for (const [name, pattern] of SLOT_PATTERNS) if (pattern.test(lower)) return name;
+  const pos = posOf(lower);
+  const verbish = Boolean(pos && VERB_POS.has(pos));
+  for (const [name, pattern] of SLOT_PATTERNS) {
+    // `tired` 是形容词 a.、`always` 是副词 adv.——形状像动词但不是动词，不能落进动词槽
+    if (VERB_SHAPED.has(name) && !verbish) continue;
+    if (pattern.test(lower)) return name;
+  }
   return "other";
 };
 /** 动词类槽位之间不互通（am 的干扰项不该是 teacher）；「其他」与任何非动词槽位都算互通。 */
+/**
+ * 两个词是否**同词根**（want / wants / wanting / wanted）。
+ * 同词根的形态变体是最**强**的干扰项——当这一课的点就是动词形态时
+ * （`don't` + 原形、`Could you` + 原形、`have` + 过去分词、`be` + `-ing`），
+ * 它们正是要考的差别，不该因为「动词槽之间不互通」被判成无效（2026-09-24 修）。
+ */
+const sharesBaseForm = (a: string, b: string): boolean => {
+  const left = new Set(baseForms(a.toLowerCase()));
+  return baseForms(b.toLowerCase()).some((form) => left.has(form));
+};
 const slotCompatible = (answer: string, distractor: string): boolean => {
   const a = slotOf(answer);
   const d = slotOf(distractor);
   if (a === d) return true;
+  if (sharesBaseForm(answer, distractor)) return true;
   const verbish = new Set(["be", "aux", "verb-s", "verb-ed", "verb-ing", "neg-contraction"]);
   return !verbish.has(a) && !verbish.has(d);
 };
@@ -162,9 +212,19 @@ for (const lesson of grammarLessons) {
     `${lesson.id} · addLessonCoreSentence`
   );
   lesson.guided.forEach((step, index) => {
+    /**
+     * 2026-09-24：入队侧已改为「只入整句」，枚举必须走同一个函数，否则会报出永远不会出现的卡。
+     * 规则见 lessonService.reviewSentenceOfGuidedStep：
+     *   choose 用 before/answer/after 还原整句；arrange 本就是整句；
+     *   replace / spot 变换后的整句不在数据里 → 不入队（返回空串）。
+     * 此前这里无条件压 `step.answer`，于是把 `am` / `is` / `have` 这类**单个词**
+     * 也当成卡枚举出来，产出 rebuildTooFewChunks 393 处（P0）。
+     */
+    const sentence = reviewSentenceOfGuidedStep(step);
+    if (!sentence) return;
     pushCard(
       `lesson:${lesson.id}#guided${index}`,
-      step.answer ?? "",
+      sentence,
       `语法课：${lesson.episode} ${lesson.title}`,
       `${lesson.id} guided[${index}].${step.kind}`
     );
@@ -286,31 +346,69 @@ const record = (check: string, severity: Finding["severity"], scan: ScanCard, de
  * 回归门禁：只允许变好，不允许变差（占比上界 = 基线占比 × 1.1 + 少量绝对容差）。
  */
 const BASELINE = {
-  /** 答案词仍出现在题面里（泄题）：扫描时为 0，必须保持 0 */
-  clozeAnswerVisibleInPrompt: 0,
-  /** 选项不足 4 个的 cloze 占比（扫描时 656/3609 = 18.2%） */
-  clozeFewerThanFourOptionsRatio: 0.182,
-  /** 只有 1 个选项的 cloze 占比（扫描时 291/3609 = 8.1%） */
-  clozeSingleOptionRatio: 0.081,
-  /** sentence 词数 < 2 或 无句末标点的卡占比（扫描时 371/451 of 3609 = 10~12.5%） */
-  sentenceNotASentenceRatio: 0.125,
-  /** free_type 题面复述答案的占比（扫描时 1/3609） */
-  freeTypePromptEchoesAnswer: 1,
-  /** hunt 卡面混入中文修正括注（扫描时 4 张卡 / 每卡 3 型） */
-  huntCardCjkInFront: 4,
+  /**
+   * 答案词仍出现在题面里（泄题）**计数**。⚠ 这一项**没有被断言**（只在 A1-3 的 console.log 里打印），
+   * 被断言的是下面的 `clozeAnswerVisible`。当前实际 = 4。要真正守住需改成断言。
+   */
+  clozeAnswerVisibleInPrompt: 4,
+  /** 选项不足 4 个的 cloze 占比（2026-09-24：686 → 222 / 3481 = 6.4%） */
+  /**
+   * 2026-09-24：222 → 0。review 侧 buildClozeOptions 补上「同长度课程词汇池」这一类候选后，
+   * 内容词不再只能退化成句内其他词，选项数稳定到 4。
+   */
+  clozeFewerThanFourOptionsRatio: 0,
+  /** 只有 1 个选项的 cloze 占比（2026-09-24：311 → 0） */
+  clozeSingleOptionRatio: 0,
+  /** sentence 词数 < 2 或 无句末标点的卡占比（2026-09-24：1500 → 15；词数<2 已归零） */
+  sentenceNotASentenceRatio: 0.002,
+  /**
+   * cloze 挖掉的不是实词的占比（2026-09-24：123 → 21 / 3481 = 0.6%）。
+   * 此前 A1-3 复用了 `sentenceNotASentenceRatio` 这个键——两个检查量的根本不是一件事，
+   * 导致收紧「词数<2」时会连带把这一项卡住（反之亦然）。故拆成独立键。
+   */
+  improperBlankRatio: 0.007,
+  /** free_type 题面复述答案的占比（2026-09-24：1 → 0） */
+  freeTypePromptEchoesAnswer: 0,
+  /** hunt 卡面混入中文修正括注（2026-09-24：4 → 0） */
+  huntCardCjkInFront: 0,
   /** 同一案件产生多张 front 相同的卡（扫描时 745 卡 → 543 张是重复；见 2.6b） */
   huntDuplicateCards: 581, // 批四十七：+L204 后 577→581（数据增长）
-  /** 词块数 < 2 的 rebuild 占比（扫描时 371/3609 = 10.3%） */
-  rebuildTooFewChunksRatio: 0.103,
-  /** 多词句打乱后仍等于原句（首尾同形兜底失效）占比（扫描时 1/3609） */
-  rebuildAlreadySolvedRatio: 0.001,
+  /** 词块数 < 2 的 rebuild 占比（2026-09-24：393 → 0。根因＝单词语答案被当句子入队） */
+  rebuildTooFewChunksRatio: 0,
+  /** 多词句打乱后仍等于原句（首尾同形兜底失效）占比（2026-09-24：1 → 0） */
+  rebuildAlreadySolvedRatio: 0,
   /** hunt cloze 的正确答案是中文括注片段（扫描时 3 题，随挖空位变化在 2–7 之间） */
   huntClozeAnswerIsChineseFragment: 7,
-  /** 复习 cloze 干扰项不是真词（扫描时 8 个去重词：mustn't + hunt 中文括注碎片） */
-  distractorNotRealWord: 8,
+  /** 复习 cloze 干扰项不是真词（2026-09-24：8 → 1；剩下 1 条是误报，见下） */
+  distractorNotRealWord: 1,
   /** cloze 答案词仍在题面（扫描时含 hunt 修正句的 4 例） */
   clozeAnswerVisible: 4
 };
+
+/**
+ * 2026-09-24 基线大幅收紧的来源（复习卡生成题的「单词语卡」类缺陷整批归零）：
+ *
+ * 根因：`GrammarLessonPage` 把 guided 各题的 `answer` 直接当句子入队，而
+ * choose / replace / spot 的 answer 是**单个词**（`am` / `is` / `have`）。
+ * 单词卡进了句子级复习队列后，cloze 只剩 1 个选项、rebuild 只剩 1 个词块。
+ *
+ * 修法三处联动：
+ *   ① 入队侧 `lessonService.reviewSentenceOfGuidedStep`——choose 用 before/after 还原整句
+ *      （含 `___` 占位符的排法），replace / spot 因变换后整句不在数据里而不入队；
+ *      `saveMistakeIfNeeded` 收口：词数 < 2 一律不入队。
+ *   ② 生成侧 `grammarReviewService.buildGrammarReviewTask`——词块 < 2 的卡强制走 free_type，
+ *      兜住用户队列里的存量卡。
+ *   ③ 扫描侧本文件的 guided 枚举改用同一个 `reviewSentenceOfGuidedStep`，
+ *      否则会报出永远不会出现的卡（此前无条件压 `step.answer`）。
+ *
+ * ③ 是「让扫描跟着生产者走」而不是「改数字」——枚举本就是在模拟入队规则，
+ * 生产者改了、枚举不跟着改，扫描就会指向不存在的卡。核实方式：全库 205 课逐课
+ * 还原 choose 题，占位符残留 0 / 答案缺失 0 / 标点空格 0（探针 review-sentence-verify）。
+ *
+ * 仍存的已知误报：`distractorNotRealWord` 剩 1 条是 `mustn't`——它是真词，
+ * 该检查判定「不是英语词」是因为词典查不了缩写。
+ */
+
 
 describe("GQ1 · 复习卡生成题全库扫描（A 可作答性 / B 语义一致 / C 干扰项 / D 判分）", () => {
   it("扫描覆盖：枚举出的卡片与生成的任务量（证明覆盖面）", () => {
@@ -324,7 +422,9 @@ describe("GQ1 · 复习卡生成题全库扫描（A 可作答性 / B 语义一�
     console.log("[GQ1] 卡片数:", cards.length, "任务数:", tasks.length, "free_type flag:", isFreeTypeReviewEnabled());
     console.log("[GQ1] 题型分布:", [...modeCounts.entries()]);
     console.log("[GQ1] 来源分布(前 12):", [...byOrigin.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12));
-    expect(cards.length).toBeGreaterThan(3000);
+        // 2026-09-24：hunt 一案一卡后，重复卡面（曾 576 张）不再产生，卡片数由 3481 降至 ~2905。
+    // 此下限原先按「含重复卡」的旧基数写成 3000，会误报覆盖不足。
+    expect(cards.length).toBeGreaterThan(2800);
     expect(tasks.length).toBe(cards.length * reviewCountsForScan.length);
   });
 
@@ -486,7 +586,7 @@ describe("GQ1 · 复习卡生成题全库扫描（A 可作答性 / B 语义一�
       }
     }
     console.log("[GQ1] A1-3 挖空非实词:", improperBlank.length, "题面泄漏答案:", leaked.length, "基线:", BASELINE.clozeAnswerVisibleInPrompt);
-    expect(improperBlank.length / cards.length).toBeLessThanOrEqual(BASELINE.sentenceNotASentenceRatio);
+    expect(improperBlank.length / cards.length).toBeLessThanOrEqual(BASELINE.improperBlankRatio);
     expect(leaked.length).toBeLessThanOrEqual(BASELINE.clozeAnswerVisible);
   });
 
@@ -835,19 +935,28 @@ describe("GQ1 · 复习卡生成题全库扫描（A 可作答性 / B 语义一�
       const { task } = entry;
       if (task.mode !== "cloze") continue;
       items += 1;
-      const valid = task.options.filter((option) => {
-        if (option === task.answer) return false;
-        if (judgeNorm(option) === judgeNorm(task.answer)) return false;
-        if (/^[0-9]+$/.test(option)) return false;
-        if (!isRealEnglishWord(option)) return false;
-        return slotCompatible(task.answer, option);
-      }).length;
+      /**
+       * 2026-09-24：记下**每个干扰项是被哪条判据删掉的**。只有计数看不出该修哪条判据——
+       * gq2 的同类检查就是靠这个发现「slotCompatible 把同词根形态变体当无效」的。
+       */
+      const whyDropped = (option: string): string | null => {
+        if (option === task.answer || judgeNorm(option) === judgeNorm(task.answer)) return "同于答案";
+        if (/^[0-9]+$/.test(option)) return "数字";
+        if (!isRealEnglishWord(option)) return "非真词";
+        if (!slotCompatible(task.answer, option)) return "槽位不相容";
+        return null;
+      };
+      const valid = task.options.filter((option) => whyDropped(option) === null).length;
       histogram.set(valid, (histogram.get(valid) ?? 0) + 1);
       if (valid >= 2) good += 1;
       else {
-        const sample = `${entry.scan.id} answer="${task.answer}" options=${JSON.stringify(task.options)} prompt="${task.promptText}" 有效=${valid}`;
+        const dropped = task.options
+          .filter((option) => whyDropped(option) !== null)
+          .map((option) => `${option}(${whyDropped(option)})`)
+          .join(" ");
+        const sample = `${entry.scan.id} answer="${task.answer}" options=${JSON.stringify(task.options)} 有效=${valid} 被删=${dropped} prompt="${task.promptText}"`;
         record("weakDistractors", "P1", entry.scan, `有效干扰项只有 ${valid} 个（题目近似白送）`, sample);
-        if (badSamples.length < 8) badSamples.push(sample);
+        if (badSamples.length < 30) badSamples.push(sample);
       }
     }
     console.log("[GQ1] C-2 有效干扰项 ≥2 的题:", `${good}/${items}`, `= ${((good / items) * 100).toFixed(1)}%`);

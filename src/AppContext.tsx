@@ -9,7 +9,8 @@ import {
   saveData,
   serializeForSave,
   storageCostBytes,
-  STORAGE_SOFT_LIMIT_BYTES
+  STORAGE_SOFT_LIMIT_BYTES,
+  otherLocalStorageCostBytes
 } from "./services/storage";
 import {
   describeSyncError,
@@ -147,14 +148,40 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
    * 而用户完全可能先看到「答完这题没保存成功」才发现问题。
    *
    * 传字符串而不是自己在函数里读 localStorage，是为了让调用方决定何时读：
-   * 保存路径复用 `saveData` 的返回值（零额外序列化、零额外读盘），
+   * 保存路径复用 `saveData` 的返回值（零额外序列化），
    * 挂载路径才真的读一次。
    *
    * 阈值用 `STORAGE_SOFT_LIMIT_BYTES`（4MB，最坏情况账单），
    * 即在 WebKit 上约等于真实容量（4.96MB）的 81%，留出约 43 天缓冲。
+   *
+   * ## 2026-09-24 补修（首页重规划 P0b）：把**全部键**计入，而不只是主数据键
+   *
+   * 上一轮的 P0-② 只在 `diagnoseStoredData`（`storage.ts`）里改了，而那个函数
+   * **只在设置页算**——本函数的注释自己就写着「指望用户主动进设置页看告警，是会踩空的」。
+   * 于是「能救命的告警路径」（这里，每次保存都跑）反而没修：
+   * 遥测三对键实测满档 7.84MB > WebKit 容量 4.96MB，**能单独把用户顶到写不下**，
+   * 而告警永远不触发 ⇒ 用户遇到的第一次「存不下」是数据损坏而非提醒。
+   *
+   * 代价控制：其余键的成本会扫全部键（`otherLocalStorageCostBytes`，逐条做字节估算），
+   * 每次保存都跑会破坏这条路径「零额外读盘」的初衷。所以：
+   * ① 主数据键的成本仍用调用方传入的 `writtenJson` 精确算（零额外读盘）；
+   * ② 其余键的成本**最多每 `FULL_COST_RECHECK_MS` 复核一次**，其余时间复用上次读数。
+   * 遥测是缓慢增长的量，30 秒的滞后不影响「还来不来得及备份」这个判断。
    */
+  const FULL_COST_RECHECK_MS = 30_000;
+  const otherKeysCostRef = useRef<{ cost: number; checkedAt: number }>({ cost: 0, checkedAt: 0 });
+
   const refreshStoragePressure = (writtenJson: string | null) => {
-    const overLimit = writtenJson !== null && storageCostBytes(writtenJson) > STORAGE_SOFT_LIMIT_BYTES;
+    if (writtenJson === null) {
+      setStoragePressure((current) => (current !== null ? null : current));
+      return;
+    }
+    const mainCost = storageCostBytes(writtenJson);
+    const now = Date.now();
+    if (now - otherKeysCostRef.current.checkedAt > FULL_COST_RECHECK_MS) {
+      otherKeysCostRef.current = { cost: otherLocalStorageCostBytes(), checkedAt: now };
+    }
+    const overLimit = mainCost + otherKeysCostRef.current.cost > STORAGE_SOFT_LIMIT_BYTES;
     setStoragePressure((current) => {
       // 只在状态真的翻转时更新，避免每次保存都触发一次重渲染。
       if (overLimit && current === null) {

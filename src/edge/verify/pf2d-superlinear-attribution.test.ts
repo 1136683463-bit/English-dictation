@@ -16,7 +16,18 @@ import { getWeakCardInsights, getLearningStats } from "../../services/reviewServ
 import { getUnitStats } from "../../services/unitService";
 import { getMistakeGroupsByDate } from "../../services/mistakeBookService";
 
-const ROUNDS = 3;
+/**
+ * 每档规模的采样轮数。
+ *
+ * 2026-09-25 由 3 提到 7：`timeMedian`（名字不准，实现其实是 best-of-N，取最小）
+ * 依赖「至少有一轮落在安静窗口」——负载噪声是单侧的，轮数越多越接近真实成本。
+ * 3 轮在**全量并发跑**时不够：三档可能同时被其他 vitest worker 抢到 CPU，
+ * 于是最大档（4000 卡，绝对耗时最大、被 GC 波及概率最高）估值偏高，
+ * 比值断言 `ratio < scale * 2.5` 假红——实测表现为单跑绿、全量跑红，
+ * 且失败者会在 pf1-telemetry-perf 与 pf2d 之间换人（证明是负载而非回归）。
+ * 7 轮把假红压到可忽略；**阈值本身未放宽**，判别力不变。
+ */
+const ROUNDS = 7;
 
 const measure = (label: string, run: () => unknown) => {
   const ms = timeMedian(run, ROUNDS);

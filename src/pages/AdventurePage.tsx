@@ -21,6 +21,7 @@ import {
 } from "../services/adventureModelService";
 import { ADVENTURE_THEME_LIBRARY, sampleAdventureThemes, type AdventureTheme } from "../services/adventureThemeLibrary";
 import { appendAdventureEvent } from "../services/adventureTelemetry";
+import { formatRelativeTime } from "../services/relativeTime";
 
 const ADVENTURE_THEME_COUNT = ADVENTURE_THEME_LIBRARY.length;
 import AdventureThemeArt, { AdventureArtwork } from "../components/AdventureThemeArt";
@@ -50,20 +51,6 @@ const templateScenes: Record<"campus" | "city" | "travel" | "fantasy", Adventure
 const sceneForTemplate = (template: AdventureTemplate): AdventureSceneId => {
   if (template !== "custom" && templateScenes[template]) return templateScenes[template];
   return "sparkle";
-};
-
-const formatRelative = (value: string) => {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "刚刚";
-  const diffDays = Math.floor((Date.now() - date.getTime()) / 86400000);
-  if (diffDays <= 0) {
-    const time = new Intl.DateTimeFormat("zh-CN", { hour: "2-digit", minute: "2-digit" }).format(date);
-    return `今天 ${time}`;
-  }
-  if (diffDays === 1) return "昨天";
-  if (diffDays < 7) return `${diffDays} 天前`;
-  if (diffDays < 14) return "上周";
-  return new Intl.DateTimeFormat("zh-CN", { month: "numeric", day: "numeric" }).format(date);
 };
 
 const readStoredRecommendations = (): AdventureTheme[] => {
@@ -120,12 +107,15 @@ export default function AdventurePage() {
   const isAiConfigured = isAiProviderConfigured(data.settings.aiProvider);
 
   const favoriteWords = useMemo(() => new Set(getAdventureFavoriteWords(data)), [data]);
-  const latestAdventure = useMemo(
-    () => data.adventures.slice().sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())[0],
-    [data.adventures]
-  );
-  const currentAdventureId = latestAdventure?.id;
+  /**
+   * 「最近一段」与 `sortedAdventures[0]` 必须是同一个排序。
+   * 此前这里是就地写的第二份 `slice().sort(updatedAt desc)`（与服务导出等价但重复），
+   * 而首页三线状态行也要「最近一段」——各写一份就会出现「冒险页说是 A 段、首页说是 B 段」。
+   * 统一走服务导出，首页因此不可能与这里分歧。
+   */
   const sortedAdventures = useMemo(() => sortAdventuresForList(data.adventures), [data.adventures]);
+  const latestAdventure = sortedAdventures[0];
+  const currentAdventureId = latestAdventure?.id;
 
   const isCustomMode = selection.kind === "custom";
   // R9：选中 AI 推荐卡时，推荐主题将覆盖线索——输入框必须提前明示，杜绝静默丢弃。
@@ -343,7 +333,7 @@ export default function AdventurePage() {
                 <div className="adv-continue-sub">
                   <span className="adv-bar"><span style={{ width: `${latestProgress.percent}%` }} /></span>
                   <span className="adv-continue-meta">
-                    第 {latestProgress.chapter} 章 · 收了 {latestProgress.favoriteCount} 个词 · {formatRelative(latestAdventure.updatedAt)} 保存
+                    第 {latestProgress.chapter} 章 · 收了 {latestProgress.favoriteCount} 个词 · {formatRelativeTime(latestAdventure.updatedAt)} 保存
                   </span>
                 </div>
               </div>
@@ -540,7 +530,7 @@ export default function AdventurePage() {
                       <span className="adv-route-bottom">
                         <span>第 {progress.chapter} 章 · {progress.favoriteCount} 个生词</span>
                         <span className="adv-route-time">
-                          {formatRelative(adventure.updatedAt)}
+                          {formatRelativeTime(adventure.updatedAt)}
                           <ChevronRight size={15} />
                         </span>
                       </span>
@@ -605,7 +595,7 @@ export default function AdventurePage() {
                         {adventure.id === currentAdventureId && <em className="adv-current-chip">当前冒险</em>}
                       </span>
                       <span className="adv-routes-item-meta">
-                        第 {progress.chapter} 章 · {progress.favoriteCount} 个生词 · {formatRelative(adventure.updatedAt)} 保存
+                        第 {progress.chapter} 章 · {progress.favoriteCount} 个生词 · {formatRelativeTime(adventure.updatedAt)} 保存
                       </span>
                     </span>
                     <ChevronRight size={16} className="adv-routes-item-arrow" />

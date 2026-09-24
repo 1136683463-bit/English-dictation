@@ -150,6 +150,63 @@ describe("grammarReviewService（R03 语法点复习）", () => {
   });
 });
 
+describe("存量兜底：单词卡不得做成退化的 cloze / rebuild", () => {
+  /**
+   * 入队侧已不再产生这类卡（见 lessonService.reviewSentenceOfGuidedStep：choose 用
+   * before/after 还原整句，replace / spot 因变换后整句不在数据里而不入队），
+   * 本分支只兜**用户队列里的历史卡**与旁路入队。
+   *
+   * 判据（2026-09-24 收窄，比「单词卡一律 free_type」更准）：
+   *   - `rebuild` 只剩 1 个词块确实是废题 → 单词卡一律不走 rebuild；
+   *   - 但 `cloze` 对**功能词**不退化：`buildClozeOptions` 有功能词同族替换，
+   *     `front="am"` 能凑出 `["am","is","are"]`，配上来源锚点仍是可作答的题；
+   *   - 只有同族也凑不出时（`dogs` / `went`）cloze 才塌成单选项 → 那才退 free_type。
+   *
+   * 所以这里断言的是**不变量**，不写死具体阈值：
+   *   ① 单词卡永不 rebuild；② 单词卡若出 cloze，选项必须 ≥ 2。
+   */
+  const taskFor = (front: string, reviewCount = 0) => {
+    const card = makeCard("x1", front, "lesson:lesson-01-am");
+    return buildGrammarReviewTask({ card, schedule: makeSchedule("x1", iso(-1), 0, reviewCount) }, []);
+  };
+
+  it("单词卡：任何 reviewCount 下都不做 rebuild，且 cloze 选项必 ≥ 2", () => {
+    for (const front of ["am", "have", "dogs", "went"]) {
+      for (const reviewCount of [0, 1, 2, 3, 4, 5]) {
+        const task = taskFor(front, reviewCount);
+        expect(task.mode, `front="${front}" reviewCount=${reviewCount} 做成了 rebuild`).not.toBe("rebuild");
+        if (task.mode === "cloze") {
+          expect(
+            (task.options ?? []).length,
+            `front="${front}" reviewCount=${reviewCount} 的 cloze 只剩单选项`
+          ).toBeGreaterThanOrEqual(2);
+        }
+        expect(task.promptText.trim(), "每种模式都要给出写哪句的抓手").not.toBe("");
+      }
+    }
+  });
+
+  it("单词卡不再只能退 free_type：课程词汇池能给出选项时照常出 cloze（2026-09-24）", () => {
+    /**
+     * 此前 review 侧 buildClozeOptions 缺「同长度课程词汇池」这一类候选，
+     * 内容词（dogs / went）只能退化成句内其他词或塌成单选项，于是不得不一律退 free_type。
+     * 补上该类候选后，这类卡能正常出 cloze——free_type 只在**真的凑不出**时才用。
+     */
+    const task = taskFor("dogs", 0);
+    expect(task.mode).toBe("cloze");
+    expect((task.options ?? []).length, "选项必须 ≥2，否则又会塌成单选项").toBeGreaterThanOrEqual(2);
+    expect(task.scrambled ?? []).toHaveLength(0);
+  });
+
+  it("正常整句不受影响：仍能给出词块 ≥ 2 的 rebuild 或选项 ≥ 2 的 cloze", () => {
+    for (const reviewCount of [0, 1, 2, 3]) {
+      const task = taskFor("I am happy.", reviewCount);
+      if (task.mode === "rebuild") expect((task.scrambled ?? []).length).toBeGreaterThanOrEqual(2);
+      if (task.mode === "cloze") expect((task.options ?? []).length).toBeGreaterThanOrEqual(2);
+    }
+  });
+});
+
 describe("R-UX9 diversifyReviewModes（同型不连出）", () => {
   const itemWithCount = (id: string, reviewCount: number) => ({
     card: makeCard(id, `Sentence ${id} is here.`, "lesson:lesson-01-am"),

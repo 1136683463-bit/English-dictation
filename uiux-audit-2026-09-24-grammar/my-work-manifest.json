@@ -1,0 +1,23 @@
+{
+ "generatedAt": "2026-09-24",
+ "note": "本轮我改过的文件的 sha256（当前内容）。若日后不符，说明被覆盖或又被改动。",
+ "files": {
+  "src/services/huntService.ts": "2d4862b8d7302c55582c5c5798a9f0be",
+  "src/services/huntService.test.ts": "91c3c9760fee670ba317e1a217bc9b24",
+  "src/services/lessonService.ts": "1e8b3f687548ec30ec85a3f3d91d6ca7",
+  "src/services/lessonService.test.ts": "341b02b2906dff86bc7d4f7ce4044eea",
+  "src/services/grammarBoostService.ts": "48b265442c59a848aba06d4306443280",
+  "src/services/grammarBoostService.test.ts": "28c48eb2f1848c2481075e272aba839c",
+  "src/services/grammarReviewService.ts": "88be22f1039db07713c277167149f929",
+  "src/services/grammarReviewService.test.ts": "42fb9fd77948e4fcc3457cf756e9cfd2",
+  "src/pages/GrammarLessonPage.tsx": "6a253b4045b040f57169ea6ababf7c6c",
+  "src/types.ts": "967633a5a9cb601e05040212fb230b0a",
+  "src/data/grammarLessons.ts": "9b8e7adc31fe6a4a9eeb820d2f1f555b",
+  "src/edge/verify/gq1-review-tasks.test.ts": "670d266e4afc0ffaa2729722fec5eae0",
+  "src/edge/verify/gq2-boost-items.test.ts": "b1e6828c8e4ed59048b936b36c638e3c",
+  "src/edge/verify/pr1-promises.test.tsx": "f6e37754cfb173aea7b7ed0c68261291",
+  "src/edge/verify/rv5-cloze-quality.test.ts": "6455e082a3b3a14d27d5cacde55695a7",
+  "src/edge/verify/rv7-copy-and-consistency.test.tsx": "52376778f1e33fca3cbd7c4f6dbced62",
+  "src/edge/verify/rv10-session-dedupe.test.ts": "bdd28757caea66feda6f6ef185f18cdc"
+ }
+}

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import PageHeader from "../components/PageHeader";
 import EmptyState from "../components/EmptyState";
+import EmphasisText from "../components/EmphasisText";
 import { getGrammarLesson, normalizeLessonSentence } from "../services/lessonService";
 import { computeWeakSpotsReport } from "../services/grammarWeakSpotsService";
 import { buildReplayLesson, resolveReplayRound, REPLAY_MIN_ITEMS } from "../services/grammarReplayService";
@@ -162,7 +163,10 @@ export default function GrammarReplayPage() {
             </span>
           </div>
 
-          <p className="lesson-quiz-prompt">{current?.promptZh}</p>
+          {/* 「…」里是这题要找的语法现象（要点），加粗与指令文字分层 */}
+          <p className="lesson-quiz-prompt">
+            <EmphasisText text={current?.promptZh ?? ""} />
+          </p>
 
           <div className="lesson-spot-row">
             {(current?.tokens ?? []).map((token, tokenIndex) => {

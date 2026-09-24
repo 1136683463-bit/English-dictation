@@ -86,7 +86,15 @@ const baseForms = (word: string): string[] => {
   const out = [word];
   if (word.endsWith("ies") && word.length > 4) out.push(`${word.slice(0, -3)}y`);
   if (word.endsWith("es") && word.length > 3) out.push(word.slice(0, -2));
-  if (word.endsWith("s") && !word.endsWith("ss") && word.length > 3) out.push(word.slice(0, -1));
+  /**
+   * 剥 `-s` 前先确认「词干 + s」本身是合法英语变形。
+   * 否则会把**造出来的词**当成真词：`finishs` 剥成 `finish` 就撞上词典
+   * （正确形态是 `finishes`）——2026-09-24 的 blind spot，
+   * 实测漏掉了 lesson-153 / lesson-180 的两道题。
+   * 咝音（s/sh/ch/x/z）结尾的词干只能配 `-es`，不配 `-s`。
+   */
+  const sibilantStem = /(s|sh|ch|x|z)$/.test(word.slice(0, -1));
+  if (word.endsWith("s") && !word.endsWith("ss") && word.length > 3 && !sibilantStem) out.push(word.slice(0, -1));
   if (word.endsWith("ed") && word.length > 3) out.push(word.slice(0, -2), word.slice(0, -1));
   if (word.endsWith("ing") && word.length > 4) out.push(word.slice(0, -3), `${word.slice(0, -3)}e`);
   return out;
@@ -119,10 +127,21 @@ const slotOf = (word: string): string => {
   for (const [name, pattern] of SLOT_PATTERNS) if (pattern.test(lower)) return name;
   return "other";
 };
+/**
+ * 两个词是否**同词根**（want / wants / wanting / wanted）。
+ * 同词根的形态变体是最**强**的干扰项——当这一课的点就是动词形态时
+ * （`don't` + 原形、`Could you` + 原形、`have` + 过去分词、`be` + `-ing`），
+ * 它们正是要考的差别，不该因为「动词槽之间不互通」被判成无效（2026-09-24 修）。
+ */
+const sharesBaseForm = (a: string, b: string): boolean => {
+  const left = new Set(baseForms(a.toLowerCase()));
+  return baseForms(b.toLowerCase()).some((form) => left.has(form));
+};
 const slotCompatible = (answer: string, distractor: string): boolean => {
   const a = slotOf(answer);
   const d = slotOf(distractor);
   if (a === d) return true;
+  if (sharesBaseForm(answer, distractor)) return true;
   const verbish = new Set(["neg-contraction", "be", "aux", "verb-s", "verb-ed", "verb-ing"]);
   return !verbish.has(a) && !verbish.has(d);
 };
@@ -202,16 +221,40 @@ for (const lesson of grammarLessons) {
   }
 }
 
-/** 已知基线上界（2026-09-21 扫描；源码 grammarBoostService.ts sha256 d8f95f40…）。 */
+/**
+ * 已知基线上界（2026-09-21 扫描；源码 grammarBoostService.ts sha256 d8f95f40…）。
+ *
+ * 2026-09-24：`bothRightAsWrong` 由 12 压到 0。tier-3「改错」通道此前漏了 bothRight 守卫，
+ * 双正解素材被当成「这句写错了」，用户照题面写反而被判错。补上守卫后该通道候选池
+ * 729 条保留、506 条 bothRight 排除，三档题量不受影响（仍每课出满）。
+ *
+ * 2026-09-24：`zhMultiAnswerSingleKey` 由 40 压到 6，再随 `acceptAlso` 降到 1。
+ * B-6 此前有两处方法问题导致虚报（把「把这章学过的说法一次说一遍。」这类**指令**
+ * 当成可翻译的句子；以及看到多解就假定判分会拒、从未真正判分）。修好后，再把课内
+ * 确实同样算对的说法纳入 `GrammarLesson.acceptAlso`：
+ *   - L68 两种语序（本课 examples 本就标了「同序换位」、replace 题答案就是那一句）
+ *   - L54 `window` / `windows`（中文不标单复数；本课的点是主动/被动，复数版仍演示同一结构）
+ *   - L175 `So do I.` / `So am I.`（本课 examples 明说「对方说的是 am/is 时这里也跟着换」，
+ *     而题干只有「我也是。」、没给该语境）
+ *
+ * 剩下 1 条是**有意保留、不是待修缺陷**：L112「这本是我的。」的 `This one is mine.`——
+ * 本课的点就是长版 `mine` / 短版 `my` 之分，且该说法在本课 examples 里被标为
+ * 「第 33 课」的回顾，接受它会抹掉本课要教的区别。
+ *
+ * 2026-09-24：`fabricatedDistractor` 由 10 压到 0。加后缀造词前的「还原基础形」一链
+ * 分不清「基础形 need」与「过去式 needed」，把 `need` 剥成 `ne`、再 +d 造出非词 `ned`
+ * （lesson-161 的干扰项）。改为「剥 -ed 之后必须落在已知动词上才算数」后，
+ * `ned` 消失且全库干扰项未出现新的非词。
+ */
 const BASELINE = {
   /** contrast 题面取自 bothRight 条（用户选「没问题」反被判错） */
-  bothRightAsWrong: 12,
-  fabricatedDistractor: 10,
+  bothRightAsWrong: 0,
+  fabricatedDistractor: 0,
   visibleAnswer: 1,
   emptyOrBadAnswer: 0,
   arrangeNotConstructible: 0,
-  zhMultiAnswerSingleKey: 40,
-  weakDistractors: 160
+  zhMultiAnswerSingleKey: 1,
+  weakDistractors: 49
 };
 
 describe("GQ2 · 趁热练生成题全库扫描（A 可作答性 / B 语义一致 / C 干扰项 / D 判分）", () => {
@@ -614,18 +657,21 @@ describe("GQ2 · 趁热练生成题全库扫描（A 可作答性 / B 语义一�
     console.log(mismatches.join("\n"));
     console.log("[GQ2] B-5 说明：variants 的 label 是数据侧人工标注（如 L66「It is too heavy for me.」标成「否定」），");
     console.log("            出题侧直接引用 label 拼题面，未校验答案形式——属于数据语义标注问题，用户看到「说成否定」却写成陈述");
-    expect(mismatches.length).toBeLessThanOrEqual(40);
+    expect(mismatches.length).toBeLessThanOrEqual(0);
   });
 
   it("B-6 中英对照题：中文提示是否多解而只认一解（真实判错场景统计）", () => {
     // 收集全库「中文 → 英文」映射（课程内所有可作题源的句对）
     const zhToEn = new Map<string, Map<string, string[]>>();
+    /** 归一化英文 → 原始英文：判分要用原文，不能用归一化结果。 */
+    const enOriginal = new Map<string, string>();
     const push = (zh: string, en: string, who: string): void => {
       const z = (zh ?? "").trim();
       const e = (en ?? "").trim();
       if (!z || !e) return;
       const bucket = zhToEn.get(z) ?? new Map<string, string[]>();
       const key = norm(e);
+      if (!enOriginal.has(key)) enOriginal.set(key, e);
       bucket.set(key, [...(bucket.get(key) ?? []), who]);
       zhToEn.set(z, bucket);
     };
@@ -638,7 +684,28 @@ describe("GQ2 · 趁热练生成题全库扫描（A 可作答性 / B 语义一�
       if (lesson.recall) push(lesson.recall.intentZh, lesson.recall.answer, `${lesson.id}:recall`);
     }
     const multiAnswer = [...zhToEn.entries()].filter(([, bucket]) => bucket.size > 1);
-    // 题面给 A 的中文、却只认 B 的英文：用户写出课程里另一处教过的等价英文即被判错
+    // 题面给 A 的中文、却只认 B 的英文：用户写出课程里另一处教过的等价英文即被判错。
+    //
+    // 2026-09-24 修（两处方法问题；此前 29 条里 25 条是误报）：
+    //   一、题干可能是「指令」而不是一句可翻译的话——如「把这些事串起来说一遍。」
+    //       「把这章学过的说法一次说一遍。」。这类中文会各自对应到每课自己的 target，
+    //       于是被读成「一句中文有 8 种合法英文」，实则每课考的就是本课那句。
+    //       判据：真正的「同一句话的多种说法」词面高度重合；指令型的彼此几乎不重合。
+    //   二、此前是「看到多解就假定判分会拒」，从未真正判分。改为直接调 judgeBoostItem，
+    //       只统计**实际被判错**的（实测 5 条判分本就接受，如词序变体
+    //       `Yesterday I went to the park.` / `I went to the park yesterday.`）。
+    const wordOverlap = (a: string, b: string): number => {
+      const A = new Set(norm(a).split(" ").filter(Boolean));
+      const B = new Set(norm(b).split(" ").filter(Boolean));
+      if (A.size === 0 || B.size === 0) return 0;
+      let hit = 0;
+      for (const word of A) if (B.has(word)) hit += 1;
+      return hit / Math.max(A.size, B.size);
+    };
+    /** 词面重合度下限：达到此值视为「同一句话的另一种说法」。 */
+    const SAME_MEANING_OVERLAP_MIN = 0.3;
+    /** 另一解中「同一句话」的占比下限：低于此值说明题干是「指令」，各解彼此无关。 */
+    const SAME_MEANING_RATIO_MIN = 0.5;
     const risky: string[] = [];
     for (const entry of UNIQUE) {
       const { item, tier } = entry;
@@ -646,18 +713,29 @@ describe("GQ2 · 趁热练生成题全库扫描（A 可作答性 / B 语义一�
       if (!item.intentZh.trim()) continue;
       const bucket = zhToEn.get(item.intentZh.trim());
       if (!bucket) continue;
-      const others = [...bucket.entries()].filter(([key]) => key !== norm(item.answer));
+      const others = [...bucket.entries()]
+        .filter(([key]) => key !== norm(item.answer))
+        .map(([key, whos]) => ({ raw: enOriginal.get(key) ?? key, who: whos[0] }));
       if (others.length === 0) continue;
-      // 只统计「另一解也出现在同一课以外/以内、且判分不认」的情况
-      const altEn = others.map(([key, whos]) => `${key}(${whos[0]})`).join(" | ");
-      risky.push(`${item.id} t${tier} kind=${item.kind} 中文="${item.intentZh}" 只认="${item.answer}" 另有合法写法=${altEn}`);
+      // 一、题干是指令：「把这章学过的说法一次说一遍。」这类中文会对应到每课各自的 target，
+      //     各解彼此无关，只有个别因虚词（I／used／to）偶然重合。
+      //     所以要看**占比**而不是最大值——只用最大值时，
+      //     L124 的 `I used to walk to school.` 会因与 `I am used to getting up early.`
+      //     共享 I／used／to（0.43）而被误判成同一句话。
+      const close = others.filter((other) => wordOverlap(item.answer, other.raw) >= SAME_MEANING_OVERLAP_MIN);
+      if (close.length / others.length < SAME_MEANING_RATIO_MIN) continue;
+      // 二、真正判分：另一解被接受的不算缺陷
+      const rejected = others.filter((other) => !judgeBoostItem(item, { text: other.raw }).passed);
+      if (rejected.length === 0) continue;
+      const altEn = rejected.map((other) => `${other.raw}(${other.who})`).join(" | ");
+      risky.push(`${item.id} t${tier} kind=${item.kind} 中文="${item.intentZh}" 只认="${item.answer}" 被判错的另一解=${altEn}`);
       record(
         "zhMultiAnswerSingleKey",
         "P1",
         item,
         tier,
         "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
-        `intentZh="${item.intentZh}" answer="${item.answer}" 另一解=${altEn}`
+        `intentZh="${item.intentZh}" answer="${item.answer}" 被判错的另一解=${altEn}`
       );
     }
     const uniqueRisky = [...new Set(risky)];

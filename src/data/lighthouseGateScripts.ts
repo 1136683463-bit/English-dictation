@@ -197,7 +197,7 @@ export const LIGHTHOUSE_GATES: LanguageGate[] = [
       {
         errorTag: "verb_form",
         npcReply: "「It was nice to met you」— the keeper's hand pauses halfway to yours. \"To met? You have put yesterday's coat on a tomorrow's word.\" The light, already low, settles: it has heard worse, and it has heard warmer.",
-        npcReplyZh: "「It was nice to met you」——守灯人伸到一半的手停住了。“To met？你把昨天的外套，套在了明天的词上。”灯已经很低了，平静下来：它听过更糟的话，也听过更暖的话。",
+        npcReplyZh: "「It was nice to met you」——守灯人伸到一半的手停住了。“To met？你把过去式，套在了明天的词上。”灯已经很低了，平静下来：它听过更糟的话，也听过更暖的话。",
         lampHint: "to 后面用原形：It was nice to meet you。"
       }
     ]

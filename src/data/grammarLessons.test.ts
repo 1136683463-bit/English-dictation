@@ -372,7 +372,7 @@ describe("零术语红线 · AI 引用源字段（2026-09-19「问一句」前�
 
   it("改写后不得有生硬拼接模式（双「的」、「好几个是」等批量替换痕迹）", () => {
     const stiff: string[] = [];
-    const PATTERNS = [/能数的的/, /好几个是/, /的的/, /时间时间/];
+    const PATTERNS = [/能数的的/, /复数复数/, /形式形式/, /的的/, /时间时间/];
     const check = (text: string, where: string) => {
       if (PATTERNS.some((pattern) => pattern.test(text))) stiff.push(`${where}：${text.slice(0, 40)}`);
     };
@@ -1092,7 +1092,7 @@ describe("题干-答案一致性守门", () => {
       for (const step of lesson.practice ?? []) {
         const prompt = step.promptZh;
         const answerWords = words(step.answer);
-        if (/(那些|这些|一群|好几个|三个)/.test(prompt) && answerWords.includes("between")) {
+        if (/(那些|这些|一群|复数|三个)/.test(prompt) && answerWords.includes("between")) {
           offenders.push(`${lesson.id} 题干「${prompt}」说的是多个，答案却用 between（${step.answer}）——between 只用于两头点名`);
         }
         if (/(两个|那两|两者|一对)/.test(prompt) && answerWords.includes("among")) {
@@ -2076,7 +2076,7 @@ describe("跨课引用核对守门（（第 N 课）↔ 被引课内容）", () 
       "lesson-139-although examples[3]": "第 12 课是 will 将来时课，引的是 will 的用法。",
       "lesson-190-learning-to-swim examples[2]": "第 13 课是「am/is/are + 动词ing」课，引的是这个进行时句式。",
       "lesson-191-walked-into examples[2]": "第 18 课是 in / on / at 课，引的是 in the kitchen 这个地点用法。",
-      "lesson-205-by-the-time examples[1]": "第 178 课是「had + 做过版」课，引的是这个更早时态句式。"
+      "lesson-205-by-the-time examples[1]": "第 178 课是「had + 过去分词」课，引的是这个更早时态句式。"
     };
 
     const offenders: string[] = [];

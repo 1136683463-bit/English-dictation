@@ -578,6 +578,117 @@ export interface SayAloudEventEvent {
   ts: string;
 }
 
+/**
+ * ─────────── 季末综合卷（P0-1，PRD §11.4） ───────────
+ *
+ * 为什么这组事件必须先落地：n=1 自用、全库真实使用为 0，**唯一的判据来源就是这些本地事件**。
+ * 三个止损判据（PRD §3.3）直接挂在其中三个事件上：
+ *   `exam_abandoned`（是否中途退出）/ `exam_submitted.totalMs`（实际耗时）/ `exam_graded`（AI 批阅质量）。
+ * 事件名与字段严格按 PRD §11.4 的表，改表就要同步改这里。
+ */
+
+export interface ExamPaperGeneratedEvent {
+  kind: "exam_paper_generated";
+  paperId: string;
+  seasonId: string;
+  itemCount: number;
+  /** 卷面配比，用于核对是否按 §4.1 装配。 */
+  shape: { mcq: number; cloze: number; zh2en: number; read: number; write: number };
+  /** 卷面实际用到的题源 id（去重与轮转的可复核依据）。 */
+  sourceItemIds: string[];
+  /** 生成期诊断；非空即说明这张卷不该发给用户。 */
+  diagnostics: string[];
+  variantIndex: number;
+  ts: string;
+}
+
+export interface ExamStartedEvent {
+  kind: "exam_started";
+  paperId: string;
+  seasonId: string;
+  itemCount: number;
+  ts: string;
+}
+
+export interface ExamSectionDwellEvent {
+  kind: "exam_section_dwell";
+  paperId: string;
+  section: 1 | 2 | 3;
+  dwellMs: number;
+  /** **唯一能逐节校正「假设耗时」的读数**（PRD §3.1 辅助读数）。 */
+  ts: string;
+}
+
+export interface ExamSectionRevealEvent {
+  kind: "exam_section_reveal";
+  paperId: string;
+  section: 1 | 2 | 3;
+  stabilizedCount: number;
+  missingCount: number;
+  ts: string;
+}
+
+export interface ExamItemResultEvent {
+  kind: "exam_item_result";
+  paperId: string;
+  itemId: string;
+  section: 1 | 2 | 3;
+  kind2: "mcq" | "cloze" | "zh2en" | "read" | "write";
+  passed: boolean;
+  score: number;
+  durationMs: number;
+  ts: string;
+}
+
+export interface ExamSubmittedEvent {
+  kind: "exam_submitted";
+  paperId: string;
+  /** **止损判据①的读数**：落在 20–40 分钟为通过，>45 分钟触发止损。 */
+  totalMs: number;
+  answered: number;
+  blank: number;
+  ts: string;
+}
+
+export interface ExamGradedEvent {
+  kind: "exam_graded";
+  paperId: string;
+  writingIssuesCount: number;
+  byAI: boolean;
+  degraded: boolean;
+  degradeReason: "not_configured" | "timeout" | "error" | "invalid" | null;
+  latencyMs: number;
+  cached?: boolean;
+  model?: string;
+  ts: string;
+}
+
+export interface ExamAbandonedEvent {
+  kind: "exam_abandoned";
+  paperId: string;
+  atSection: 1 | 2 | 3;
+  atItemIndex: number;
+  elapsedMs: number;
+  /** **止损判据②的读数**：出现本事件即视为强止损信号（PRD §3.3）。 */
+  ts: string;
+}
+
+export interface ExamDisputeEvent {
+  kind: "exam_dispute";
+  paperId: string;
+  itemId: string;
+  /** 用户主张的长度（不落原文，避免把长文本写进事件流）。 */
+  claimLength: number;
+  ts: string;
+}
+
+export interface ExamRetakeEvent {
+  kind: "exam_retake";
+  paperId: string;
+  priorPaperId?: string;
+  ts: string;
+}
+
 export type GrammarTelemetryEvent =
   | GrammarLessonStartedEvent
   | GrammarLessonCompletedEvent
@@ -621,7 +732,17 @@ export type GrammarTelemetryEvent =
   | LessonSummaryAiResultEvent
   | DiaryWriteEvent
   | SentenceCardEnqueuedEvent
-  | SayAloudEventEvent;
+  | SayAloudEventEvent
+  | ExamPaperGeneratedEvent
+  | ExamStartedEvent
+  | ExamSectionDwellEvent
+  | ExamSectionRevealEvent
+  | ExamItemResultEvent
+  | ExamSubmittedEvent
+  | ExamGradedEvent
+  | ExamAbandonedEvent
+  | ExamDisputeEvent
+  | ExamRetakeEvent;
 
 const memoryEvents: GrammarTelemetryEvent[] = [];
 
@@ -808,31 +929,51 @@ export const clearGrammarTelemetry = (): void => {
   }
 };
 
-/** R16：遥测存量统计——语法地图展示「可导出」状态，也为上限策略提供依据。 */
+/**
+ * R16：遥测存量统计——语法地图展示「可导出」状态，也为上限策略提供依据。
+ *
+ * 2026-09-24 修（首页重规划 P0a）：`activeEvents` 此前取 `listGrammarEvents().length`，
+ * 而那个函数**合并了归档**（2026-09-24 的 P0-① 修复）——于是语法线的「主键存量」
+ * 语义变成「主键 + 归档」，与 vocab / adventure 两条线（都只读主键）不一致。
+ * 三处后果：① 设置页总数算式 `active + archived` 会把语法归档**重复计入**；
+ * ② `nearCapacity` 用合并数 ⇒ 溢出一次即**永久为真**，容量预警退化成假警报；
+ * ③ 导出 JSON 里归档事件出现两次（`events` 已含归档、`archivedEvents` 又给一遍）。
+ * ⇒ 三线一律「`activeEvents` = 主键存量」，另给 `totalEvents` = 主键 + 归档（分析可见总量）。
+ */
 export interface GrammarTelemetryStats {
+  /** 主键存量（不含归档）——与 vocab / adventure 同口径。 */
   activeEvents: number;
   maxEvents: number;
   archivedEvents: number;
   archiveMax: number;
+  /** 主键 + 归档合计（分析可见总量）。 */
+  totalEvents: number;
   /** 当前主键是否已接近上限（≥80%），提示先导出归档。 */
   nearCapacity: boolean;
 }
 
 export const getGrammarTelemetryStats = (): GrammarTelemetryStats => {
-  const activeEvents = listGrammarEvents().length;
+  const activeEvents = readEvents().length;
   const archivedEvents = readArchivedEvents().length;
   return {
     activeEvents,
     maxEvents: MAX_EVENTS,
     archivedEvents,
     archiveMax: ARCHIVE_MAX_EVENTS,
+    totalEvents: activeEvents + archivedEvents,
     nearCapacity: activeEvents >= MAX_EVENTS * 0.8
   };
 };
 
-/** R16：导出快照（JSON 字符串）——含归档，供基线与 W4/D1 复盘使用。 */
+/**
+ * R16：导出快照（JSON 字符串）——含归档，供基线与 W4/D1 复盘使用。
+ *
+ * 2026-09-24 修（首页重规划 P0a）：`events` 此前取 `listGrammarEvents()`（= 主键 + 归档），
+ * 而 `archivedEvents` 又给一遍归档 ⇒ **导出 JSON 里每条归档事件出现两次**。
+ * 改为 `events` 只装主键存量、`archivedEvents` 只装归档，与 vocab / adventure 导出同形。
+ */
 export const buildGrammarTelemetryExport = (): string => {
-  const events = listGrammarEvents();
+  const events = readEvents();
   const archived = readArchivedEvents();
   const lastEventAt = events.length > 0 ? (events[events.length - 1] as { ts?: string }).ts ?? null : null;
   return JSON.stringify(

@@ -289,7 +289,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am student.",
         wrongMark: null,
         correct: "I am a student.",
-        whyZh: "说「我是一名学生」，a 不能丢：一个学生要先报数 a 再出场。光有 student 站在那儿，句子就差一口气。"
+        whyZh: "说「我是一名学生」，a 不能丢：一个学生要先带上 a 再出场。光有 student 站在那儿，句子就差一口气。"
       }
     ],
     variants: [
@@ -353,7 +353,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换表语（开心→累），I am 搭档不变（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am happy.」把「开心」换成「累（tired）」，am 要怎么变？",
+        promptZh: "句型转换：「I am happy.」把「开心」换成「累（tired）」，am 要怎么变？",
         replaceBase: "I am happy.",
         replaceTarget: "把 happy 换成 tired",
         options: ["am", "is", "are"],
@@ -458,7 +458,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She is nurse.",
         wrongMark: null,
         correct: "She is a nurse.",
-        whyZh: "她是「一名」护士，a 不能丢：a nurse。一个的东西前面要报数 a，光秃秃的 nurse 站不住。"
+        whyZh: "她是「一名」护士，a 不能丢：a nurse。一个的东西前面要加 a，光秃秃的 nurse 站不住。"
       },
       {
         wrong: "You not are my friend.",
@@ -481,7 +481,7 @@ export const grammarLessons: GrammarLesson[] = [
       title: "am、is、are 三个搭档，怎么选？",
       paragraphs: [
         "一张总表：I 专用 am；他（he）、她（she）、它（it）和一个东西用 is；你（you）、我们（we）、他们（they）和两个以上的东西用 are。",
-        "一个小窍门：am 是贴身搭档，只跟 I 出场；is 管「一个人 / 一个东西」；are 管「一伙人 / 两个以上」。遇到谁，先看他是单枪匹马还是一伙的。",
+        "一个小窍门：am 是贴身搭档，只跟 I 出场；is 管「一个人 / 一个东西」；are 管「复数 / 两个以上」。遇到谁，先看他是单数还是复数。",
         "第 7 课会再见到 are，管一整队人。这张表可以先存着，忘了随时回来翻。"
       ]
     },
@@ -537,7 +537,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换主语 You→She，be 动词跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「You are my friend.」把开头的 You 换成 She，are 要怎么变？",
+        promptZh: "句型转换：「You are my friend.」把开头的 You 换成 She，are 要怎么变？",
         replaceBase: "You are my friend.",
         replaceTarget: "把 You 换成 She",
         options: ["is", "are", "am"],
@@ -618,7 +618,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I have pen.",
         wrongMark: "pen",
         correct: "I have a pen.",
-        whyZh: "一个能数的东西不能光着出现，前面要给它配一个 a，就像先报数再出场。"
+        whyZh: "一个能数的东西不能光着出现，前面要给它配一个 a，就像先点名再出场。"
       },
       {
         wrong: "She have a cat.",
@@ -648,7 +648,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Does she has a cat?",
         wrongMark: "has",
         correct: "Does she have a cat?",
-        whyZh: "Does 一出场，动词要打回原样 have：Does she have……？一场戏只让一个词扛变化。"
+        whyZh: "Does 一出场，动词要打回原形 have：Does she have……？一场戏只让一个词扛变化。"
       }
     ],
     variants: [
@@ -664,7 +664,7 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "为什么东西前面要有 a？",
       paragraphs: [
-        "英语数东西数得很认真：一个就是一个 a，两个以上要加 s。a 就像给东西发的小号码牌，光着出现会显得「没报数」。",
+        "英语数东西数得很认真：一个就是一个 a，两个以上要加 s。a 就像给东西发的小号码牌，光着出现会显得「没带 a」。",
         "有些东西数不清，比如水、空气，它们前面就不用 a。现在先记住：能一个一个数的东西，前面要有 a。",
         "第 4 课的 a 和 an 是一对兄弟：元音开头的词要换 an。下节课见。"
       ]
@@ -692,7 +692,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：我有一本书。",
         tokens: ["I", "have", "a", "book."],
         answer: "I have a book.",
-        explain: "have 后面先说 a（一个），再说那个东西（book）——a 像是「报数」，东西跟在它后面才说得清是「一个」。"
+        explain: "have 后面先说 a（一个），再说那个东西（book）——a 像是「一个」的标记，东西跟在它后面才说得清是「一个」。"
       },
       {
         kind: "arrange",
@@ -721,7 +721,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换主语 I→She，have 变 has（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I have a pen.」把开头的 I 换成 She，have 要怎么变？",
+        promptZh: "句型转换：「I have a pen.」把开头的 I 换成 She，have 要怎么变？",
         replaceBase: "I have a pen.",
         replaceTarget: "把 I 换成 She",
         options: ["has", "have", "haves"],
@@ -826,13 +826,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I want apple.",
         wrongMark: null,
         correct: "I want an apple.",
-        whyZh: "说「想要一个苹果」，能数的东西前面要报数：an apple。光秃秃的 apple 站不住。"
+        whyZh: "说「想要一个苹果」，能数的东西前面要加 a：an apple。光秃秃的 apple 站不住。"
       },
       {
         wrong: "She want a milk tea.",
         wrongMark: "want",
         correct: "She wants a milk tea.",
-        whyZh: "「她想要」，want 要换他/她/它版 wants。变形的是 want 自己，奶茶前面的 a 不变。"
+        whyZh: "「她想要」，want 要换第三人称单数 wants。变形的是 want 自己，奶茶前面的 a 不变。"
       },
       {
         wrong: "I want an uniform.",
@@ -906,12 +906,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——上一课学过：我有一支笔。",
         tokens: ["I", "have", "a", "pen."],
         answer: "I have a pen.",
-        explain: "复现第 3 课：一个能数的东西前面要报数 a。"
+        explain: "复现第 3 课：一个能数的东西前面要加 a。"
       },
       {
         // R9 变形/替换：换名词（辅音→元音开头），冠词跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I want a book.」把「书」换成「苹果（apple）」，a 要怎么变？",
+        promptZh: "句型转换：「I want a book.」把「书」换成「苹果（apple）」，a 要怎么变？",
         replaceBase: "I want a book.",
         replaceTarget: "把 book 换成 apple",
         options: ["an", "a", "the"],
@@ -978,7 +978,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "like", role: "喜欢" },
       { text: "music", role: "音乐" }
     ],
-    oneLineRule: "喜欢一整类东西时，直接说名字，不加 a 也不加 s：I like music。说的是很多只狗、好几个的时候，才用 dogs。",
+    oneLineRule: "喜欢一整类东西时，直接说名字，不加 a 也不加 s：I like music。说的是很多只狗、不止一个的时候，才用 dogs。",
     examples: [
       { en: "I like tea.", zh: "我喜欢茶。" },
       { en: "I like dogs.", zh: "我喜欢狗。" },
@@ -996,7 +996,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I like dog.",
         wrongMark: "dog",
         correct: "I like dogs.",
-        whyZh: "喜欢「狗」这一整类，能数的名词要用 dogs（好几个）。一个 a dog 就变成特指那一只了。"
+        whyZh: "喜欢「狗」这一整类，能数的名词要用 dogs（复数）。一个 a dog 就变成特指那一只了。"
       },
       {
         wrong: "I like a music.",
@@ -1008,13 +1008,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She like cats.",
         wrongMark: "like",
         correct: "She likes cats.",
-        whyZh: "「她喜欢」，like 要换他/她/它版 likes。变形的是 like 自己，cats 照样好几个。"
+        whyZh: "「她喜欢」，like 要换第三人称单数 likes。变形的是 like 自己，cats 照样复数。"
       },
       {
         wrong: "I like a dogs.",
         wrongMark: "a",
         correct: "I like dogs.",
-        whyZh: "「喜欢狗这一整类」用 dogs 表示好几个，前面不能再加 a——a 是「一个」，dogs 是「一类」，不能凑一起。"
+        whyZh: "「喜欢狗这一整类」用 dogs 表示复数，前面不能再加 a——a 是「一个」，dogs 是「一类」，不能凑一起。"
       },
       {
         wrong: "I not like coffee.",
@@ -1042,15 +1042,15 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "为什么喜欢一整类，词要变样子？",
       paragraphs: [
-        "说「我喜欢狗」，意思是喜欢所有的狗，不是哪一只，所以 dog 要变成好几个的形式 dogs，表示「狗这一类」。",
-        "但 music、tea 这样的词数不清，没有「好几个」的形状，直接跟在 like 后面就行。",
-        "一个小结：数得清的一类 → 加 s；数不清的 → 原样。"
+        "说「我喜欢狗」，意思是喜欢所有的狗，不是哪一只，所以 dog 要变成复数的形式 dogs，表示「狗这一类」。",
+        "但 music、tea 这样的词数不清，没有「复数」的形状，直接跟在 like 后面就行。",
+        "一个小结：数得清的一类 → 加 s；数不清的 → 原形。"
       ]
     },
     summary: {
-      rule: "喜欢一整类东西：能数的一个变好几个（dogs），数不清的原样（music）。",
+      rule: "喜欢一整类东西：能数的一个变复数（dogs），数不清的原形（music）。",
       points: [
-        "I like music. —— 数不清的词原样",
+        "I like music. —— 数不清的词原形",
         "I like dogs. —— 一整类能数出来的加 s",
         "Do you like tea? —— 问对方：Do 搬到句首"
       ]
@@ -1063,14 +1063,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: ".",
         options: ["dog", "dogs", "a dog"],
         answer: "dogs",
-        explain: "喜欢的是「狗」这一整类，用 dogs 表示好几个。"
+        explain: "喜欢的是「狗」这一整类，用 dogs 表示复数。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：我喜欢茶。",
         tokens: ["I", "like", "tea."],
         answer: "I like tea.",
-        explain: "tea 这类词没有好几个，直接跟在 like 后面。"
+        explain: "tea 这类词没有复数，直接跟在 like 后面。"
       },
       {
         kind: "arrange",
@@ -1099,12 +1099,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换主语 I→She，like 变 likes（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I like music.」把开头的 I 换成 She，like 要怎么变？",
+        promptZh: "句型转换：「I like music.」把开头的 I 换成 She，like 要怎么变？",
         replaceBase: "I like music.",
         replaceTarget: "把 I 换成 She",
         options: ["likes", "like", "liking"],
         answer: "likes",
-        explain: "「她喜欢」要换他/她/它版 likes：She likes music。变形的是 like，music 不变。"
+        explain: "「她喜欢」要换第三人称单数 likes：She likes music。变形的是 like，music 不变。"
       }
     ],
     practice: [
@@ -1144,7 +1144,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "好朋友问你平时喜欢什么，你指了指正戴着的耳机。",
       intentZh: "我喜欢音乐。",
       answer: "I like music.",
-      noteZh: "music 这类数不清的词原样跟在 like 后面，不加 a。"
+      noteZh: "music 这类数不清的词原形跟在 like 后面，不加 a。"
     },
     huntCaseIds: []
   },
@@ -1204,7 +1204,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "It is rains.",
         wrongMark: "rains",
         correct: "It is raining.",
-        whyZh: "说「正在下雨」，动词要穿 -ing 外套：is raining。is 后面的动词不能光用原样加 -s。"
+        whyZh: "说「正在下雨」，动词要加 -ing：is raining。is 后面的动词不能光用原形加 -s。"
       },
       {
         wrong: "Is it three o'clock?",
@@ -1289,7 +1289,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换表语（时间→天气），It is 搭档不变（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It is three o'clock.」把「三点」换成「冷（cold）」，is 要怎么变？",
+        promptZh: "句型转换：「It is three o'clock.」把「三点」换成「冷（cold）」，is 要怎么变？",
         replaceBase: "It is three o'clock.",
         replaceTarget: "把 three o'clock 换成 cold",
         options: ["is", "are", "am"],
@@ -1353,10 +1353,10 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "We are happy.",
     blocks: [
       { text: "We", role: "我们" },
-      { text: "are", role: "是（好几个的搭档）" },
+      { text: "are", role: "是（复数的搭档）" },
       { text: "happy", role: "开心" }
     ],
-    oneLineRule: "你们、我们、他们都是「一伙的」，搭档都用 are：You are、We are、They are。",
+    oneLineRule: "你们、我们、他们都是「复数」，搭档都用 are：You are、We are、They are。",
     examples: [
       { en: "They are students.", zh: "他们是学生。" },
       { en: "We are ready.", zh: "我们准备好了。" },
@@ -1374,7 +1374,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "We is happy.",
         wrongMark: "is",
         correct: "We are happy.",
-        whyZh: "We 是一伙的，搭档是 are；is 只管一个人。"
+        whyZh: "We 是复数，搭档是 are；is 只管一个人。"
       },
       {
         wrong: "They are student.",
@@ -1386,13 +1386,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "They is my friends.",
         wrongMark: "is",
         correct: "They are my friends.",
-        whyZh: "They 是「他们」，一伙人，搭档用 are 不用 is。is 只配单个的他、她、它。"
+        whyZh: "They 是「他们」，复数，搭档用 are 不用 is。is 只配单个的他、她、它。"
       },
       {
         wrong: "We are a students.",
         wrongMark: "a",
         correct: "We are students.",
-        whyZh: "「我们是学生」用好几个 students，前面不能再加 a——a 是「一个」，students 是「一伙」，不能凑一起。"
+        whyZh: "「我们是学生」用复数 students，前面不能再加 a——a 是「一个」，students 是「复数」，不能凑一起。"
       },
       {
         wrong: "Are they classmates?",
@@ -1404,7 +1404,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "We am happy.",
         wrongMark: "am",
         correct: "We are happy.",
-        whyZh: "am 只跟 I 一个人走，We 是「我们」，搭档换 are。am 管不到一伙人。"
+        whyZh: "am 只跟 I 一个人走，We 是「我们」，搭档换 are。am 管不到复数。"
       }
     ],
     variants: [
@@ -1418,7 +1418,7 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "妈妈打电话问春游累不累", en: "We are not tired.", zh: "我们不累。" }
     ],
     deepDive: {
-      title: "为什么「一伙人」都用 are？",
+      title: "为什么「复数」都用 are？",
       paragraphs: [
         "数一数就明白：am 管 1 个（I），is 管他、她、它这 1 个，are 管你 + 我 = 我们、他 + 她 = 他们，2 个以上都归 are。",
         "you 好玩的地方：你 1 个人也用 are（You are），因为 you 这个词天生就有「对着一群人说话」的气质。",
@@ -1426,7 +1426,7 @@ export const grammarLessons: GrammarLesson[] = [
       ]
     },
     summary: {
-      rule: "你们、我们、他们都是一伙的，搭档都用 are。",
+      rule: "你们、我们、他们都是复数，搭档都用 are。",
       points: [
         "We are happy. —— 我们用 are",
         "They are not busy. —— 不是：are 后面加 not",
@@ -1441,7 +1441,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "students.",
         options: ["are", "is", "am"],
         answer: "are",
-        explain: "They 是好几个，搭档是 are。"
+        explain: "They 是复数，搭档是 are。"
       },
       {
         kind: "arrange",
@@ -1464,7 +1464,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "is",
         answer: "is",
         correctionZh: "把 is 换成 are：We are classmates。",
-        explain: "一伙人（We / They）的搭档是 are。"
+        explain: "复数（We / They）的搭档是 are。"
       },
       {
         // R8 跨课复现：上一课（L6 It is）的句式混入，抗遗忘
@@ -1477,12 +1477,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换主语 We→They，be 动词不变（一伙人都用 are，构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「We are happy.」把开头的 We 换成 They，are 要怎么变？",
+        promptZh: "句型转换：「We are happy.」把开头的 We 换成 They，are 要怎么变？",
         replaceBase: "We are happy.",
         replaceTarget: "把 We 换成 They",
         options: ["are", "is", "am"],
         answer: "are",
-        explain: "They 也是一伙的，搭档还是 are：They are happy。一伙人都用 are。"
+        explain: "They 也是复数，搭档还是 are：They are happy。复数都用 are。"
       }
     ],
     practice: [
@@ -1522,7 +1522,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "班级春游拍照，班长喊完 say cheese，你心里想说的是——",
       intentZh: "我们很开心。",
       answer: "We are happy.",
-      noteZh: "一伙人（We / You / They）的搭档都是 are。"
+      noteZh: "复数（We / You / They）的搭档都是 are。"
     },
     huntCaseIds: ["hunt-moving-day"]
   },
@@ -1593,7 +1593,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "This is my a book.",
         wrongMark: "a",
         correct: "This is my book.",
-        whyZh: "有 my 这个小标签在前面，就不用再报数 a——my 已经说清是「我的那本」了，a 和 my 不能同时贴。"
+        whyZh: "有 my 这个小标签在前面，就不用再加 a——my 已经说清是「我的那本」了，a 和 my 不能同时贴。"
       }
     ],
     variants: [
@@ -1661,12 +1661,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——上一课学过：我们是同学。",
         tokens: ["We", "are", "classmates."],
         answer: "We are classmates.",
-        explain: "复现第 7 课：一伙人（We）的搭档是 are。"
+        explain: "复现第 7 课：复数（We）的搭档是 are。"
       },
       {
         // R9 变形/替换：换主角 my→her（物主标签跟着换，构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「This is my book.」把「我的」换成「她的」，my 要怎么变？",
+        promptZh: "句型转换：「This is my book.」把「我的」换成「她的」，my 要怎么变？",
         replaceBase: "This is my book.",
         replaceTarget: "把 my 换成「她的」",
         options: ["her", "she", "hers"],
@@ -1770,13 +1770,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She go to the park.",
         wrongMark: "go",
         correct: "She goes to the park.",
-        whyZh: "「她去」，go 要换他/她/它版 goes。变形的是 go 自己，to the park 不变。"
+        whyZh: "「她去」，go 要换第三人称单数 goes。变形的是 go 自己，to the park 不变。"
       },
       {
         wrong: "I goes to the park.",
         wrongMark: "goes",
         correct: "I go to the park.",
-        whyZh: "「我去」用原样 go——goes 只配他、她。I 后面不接他/她/它版 goes。"
+        whyZh: "「我去」用原形 go——goes 只配他、她。I 后面不接第三人称单数 goes。"
       },
       {
         wrong: "I go the library.",
@@ -1855,7 +1855,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换地点（park→school），to 踏板不变但 the 消失（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I go to the park.」把「公园」换成「学校」，to the 要怎么变？",
+        promptZh: "句型转换：「I go to the park.」把「公园」换成「学校」，to the 要怎么变？",
         replaceBase: "I go to the park.",
         replaceTarget: "把 the park 换成 school",
         options: ["to school", "to the school", "school"],
@@ -1914,10 +1914,10 @@ export const grammarLessons: GrammarLesson[] = [
     blocks: [
       { text: "Yesterday", role: "昨天（信号灯）" },
       { text: "I", role: "我" },
-      { text: "went", role: "去（昨天版）" },
+      { text: "went", role: "去（过去式）" },
       { text: "to the park", role: "去公园" }
     ],
-    oneLineRule: "看到 yesterday，动词就要换形状：go 的昨天版是 went。中文动词不变，英语必须变。",
+    oneLineRule: "看到 yesterday，动词就要换形状：go 的过去式是 went。中文动词不变，英语必须变。",
     examples: [
       { en: "I saw a bird.", zh: "我看见了一只鸟。" },
       { en: "I was tired.", zh: "我很累。" },
@@ -1935,43 +1935,43 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Yesterday I go to the park.",
         wrongMark: "go",
         correct: "Yesterday I went to the park.",
-        whyZh: "看到 yesterday，动词就要换昨天版。go 的昨天版是 went——中文动词不变，英语必须变。"
+        whyZh: "看到 yesterday，动词就要换过去式。go 的过去式是 went——中文动词不变，英语必须变。"
       },
       {
         wrong: "I eated an apple.",
         wrongMark: "eated",
         correct: "I ate an apple.",
-        whyZh: "eat 的昨天版是 ate。有些动词换形状不走加 -ed 的路，要单独记。"
+        whyZh: "eat 的过去式是 ate。有些动词换形状不走加 -ed 的路，要单独记。"
       },
       {
         wrong: "I didn't went out.",
         wrongMark: "went",
         correct: "I didn't go out.",
-        whyZh: "didn't 一出场，动词就要打回原样：didn't go。一场戏只让一个词换形状。"
+        whyZh: "didn't 一出场，动词就要打回原形：didn't go。一场戏只让一个词换形状。"
       },
       {
         wrong: "Did you went yesterday?",
         wrongMark: "went",
         correct: "Did you go yesterday?",
-        whyZh: "Did 搬句首时，后面的动词也要变回原样 go：Did you go？别让动词换两次形状。"
+        whyZh: "Did 搬句首时，后面的动词也要变回原形 go：Did you go？别让动词换两次形状。"
       },
       {
         wrong: "I was watch TV.",
         wrongMark: "watch",
         correct: "I watched TV.",
-        whyZh: "watch 的昨天版是直接加 -ed：watched。was 是 am/is 的昨天版，不能跟动词穿原样凑一对。"
+        whyZh: "watch 的过去式是直接加 -ed：watched。was 是 am/is 的过去式，不能跟动词用原形凑一对。"
       },
       {
         wrong: "She see a bird yesterday.",
         wrongMark: "see",
         correct: "She saw a bird yesterday.",
-        whyZh: "yesterday 是信号灯：see 的昨天版是 saw，不规则变化要单独记。"
+        whyZh: "yesterday 是信号灯：see 的过去式是 saw，不规则变化要单独记。"
       }
     ],
     variants: [
       { label: "肯定", en: "I went to the park.", zh: "我去了公园。" },
-      { label: "否定", en: "I did not go out.", zh: "我昨天没出门。", noteZh: "昨天 + 不 = did not（didn't）。did 出场后，动词要穿回原样 go。" },
-      { label: "疑问", en: "Did you go yesterday?", zh: "你昨天去了吗？", noteZh: "把 Did 搬到句首，go 也穿回原样。" }
+      { label: "否定", en: "I did not go out.", zh: "我昨天没出门。", noteZh: "昨天 + 不 = did not（didn't）。did 出场后，动词要变回原形 go。" },
+      { label: "疑问", en: "Did you go yesterday?", zh: "你昨天去了吗？", noteZh: "把 Did 搬到句首，go 也变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "日记里写昨天的晚饭", en: "I ate noodles.", zh: "我吃了面条。" },
@@ -1979,19 +1979,19 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "妈妈问昨天作业写了没", en: "I did my homework.", zh: "我写了作业。" }
     ],
     deepDive: {
-      title: "动词的「昨天版」都有哪些形状？",
+      title: "动词的「过去式」都有哪些形状？",
       paragraphs: [
-        "大多数动词很有规律：昨天版就是加 -ed。watch→watched、play→played、walk→walked，看到原样就能猜到昨天版。",
+        "大多数动词很有规律：过去式就是加 -ed。watch→watched、play→played、walk→walked，看到原形就能猜到过去式。",
         "少数老词走自己的路：go→went、see→saw、eat→ate、am/is→was。它们是英语里最常用的词，用多了自然就记住了。",
-        "问句和说「不」的句子里，Did / did not 出场时动词要变回原样——一场戏只让一个词换形状，别让动词换两次。"
+        "问句和说「不」的句子里，Did / did not 出场时动词要变回原形——一场戏只让一个词换形状，别让动词换两次。"
       ]
     },
     summary: {
-      rule: "看到 yesterday，动词要换昨天版；大多数动词加 -ed，少数不规则。",
+      rule: "看到 yesterday，动词要换过去式；大多数动词加 -ed，少数不规则。",
       points: [
         "I watched TV. —— 大多数动词加 -ed",
-        "I went to the park. —— go 的昨天版是 went",
-        "Did you go yesterday? —— Did 搬句首，go 变回原样"
+        "I went to the park. —— go 的过去式是 went",
+        "Did you go yesterday? —— Did 搬句首，go 变回原形"
       ]
     },
     guided: [
@@ -2016,7 +2016,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：我看见了一只鸟。",
         tokens: ["a", "I", "bird.", "saw"],
         answer: "I saw a bird.",
-        explain: "see（看见）的昨天版不走 -ed，它有自己的样子：saw。这类动词要单独记——I saw a bird 是「昨天看见一只鸟」。"
+        explain: "see（看见）的过去式不走 -ed，它有自己的样子：saw。这类动词要单独记——I saw a bird 是「昨天看见一只鸟」。"
       },
       {
         kind: "spot",
@@ -2024,8 +2024,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["Yesterday", "I", "go", "to", "the", "park."],
         wrongToken: "go",
         answer: "go",
-        correctionZh: "把 go 换成昨天版 went：Yesterday I went to the park。",
-        explain: "yesterday 是信号灯，动词要换昨天版。"
+        correctionZh: "把 go 换成过去式 went：Yesterday I went to the park。",
+        explain: "yesterday 是信号灯，动词要换过去式。"
       },
       {
         // R8 跨课复现：上一课（L9 go to + 地点）的句式混入，抗遗忘
@@ -2038,12 +2038,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换时间 yesterday→every day，动词打回原形（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Yesterday I went to the park.」把 Yesterday 换成 Every day，went 要怎么变？",
+        promptZh: "句型转换：「Yesterday I went to the park.」把 Yesterday 换成 Every day，went 要怎么变？",
         replaceBase: "Yesterday I went to the park.",
         replaceTarget: "把 Yesterday 换成 Every day",
         options: ["go", "went", "goes"],
         answer: "go",
-        explain: "Every day 是每天，动词要用原样 go：Every day I go to the park. went 只是昨天版。"
+        explain: "Every day 是每天，动词要用原形 go：Every day I go to the park. went 只是过去式。"
       }
     ],
     practice: [
@@ -2077,7 +2077,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "周日晚上的日记本摊在桌上，你要写下昨天最开心的一件事。",
       intentZh: "我昨天去了公园。",
       answer: "Yesterday I went to the park.",
-      noteZh: "看到 yesterday，动词要换昨天版：go 的昨天版是 went。"
+      noteZh: "看到 yesterday，动词要换过去式：go 的过去式是 went。"
     },
     huntCaseIds: ["hunt-yesterday-park", "hunt-tense-jump"]
   },
@@ -2085,7 +2085,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-11-plural",
     number: 11,
     title: "昨天吃了三明治",
-    grammarLabel: "好几个 + 特殊的昨天版",
+    grammarLabel: "复数 + 特殊的过去式",
     episode: "小美的一天 ⑪",
     scene: "train",
     cover: cover11,
@@ -2096,7 +2096,7 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "I ate two sandwiches.",
     blocks: [
       { text: "I", role: "我" },
-      { text: "ate", role: "吃（昨天版）" },
+      { text: "ate", role: "吃（过去式）" },
       { text: "two", role: "两个" },
       { text: "sandwiches", role: "三明治（要加 s）" }
     ],
@@ -2118,7 +2118,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I ate two sandwich.",
         wrongMark: "sandwich",
         correct: "I ate two sandwiches.",
-        whyZh: "两个以上，东西要加 s。sandwich 以 ch 结尾，要变成好几个 sandwiches。"
+        whyZh: "两个以上，东西要加 s。sandwich 以 ch 结尾，要变成复数 sandwiches。"
       },
       {
         wrong: "I have three brother.",
@@ -2130,31 +2130,31 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I ate two sandwichs.",
         wrongMark: "sandwichs",
         correct: "I ate two sandwiches.",
-        whyZh: "sandwich 以 ch 结尾，好几个不是只加 s，要加 es：sandwiches。和 watches、boxes 是一个规律。"
+        whyZh: "sandwich 以 ch 结尾，复数不是只加 s，要加 es：sandwiches。和 watches、boxes 是一个规律。"
       },
       {
         wrong: "I buyed some bread.",
         wrongMark: "buyed",
         correct: "I bought some bread.",
-        whyZh: "buy 的昨天版是 bought，不走加 -ed 的路——这些老词要单独记，和 go→went 一样。"
+        whyZh: "buy 的过去式是 bought，不走加 -ed 的路——这些老词要单独记，和 go→went 一样。"
       },
       {
         wrong: "I ate a sandwiches.",
         wrongMark: "a",
         correct: "I ate a sandwich.",
-        whyZh: "a 是「一个」，后面跟一个 sandwich；好几个 sandwiches 前面不能再用 a。一个和一类不能凑一起。"
+        whyZh: "a 是「一个」，后面跟一个 sandwich；复数 sandwiches 前面不能再用 a。一个和一类不能凑一起。"
       },
       {
         wrong: "I eated two sandwiches.",
         wrongMark: "eated",
         correct: "I ate two sandwiches.",
-        whyZh: "eat 的昨天版是 ate，不是 eated——eat 不走加 -ed 的路，要单独记。"
+        whyZh: "eat 的过去式是 ate，不是 eated——eat 不走加 -ed 的路，要单独记。"
       }
     ],
     variants: [
       { label: "肯定", en: "I ate two sandwiches.", zh: "我吃了两个三明治。" },
-      { label: "否定", en: "I did not drink tea.", zh: "我没喝茶。", noteZh: "昨天 + 不 = did not，drink 穿回原样。" },
-      { label: "疑问", en: "What did you eat?", zh: "你吃了什么？", noteZh: "What 放句首 + did，eat 穿回原样。" }
+      { label: "否定", en: "I did not drink tea.", zh: "我没喝茶。", noteZh: "昨天 + 不 = did not，drink 变回原形。" },
+      { label: "疑问", en: "What did you eat?", zh: "你吃了什么？", noteZh: "What 放句首 + did，eat 变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "野餐篮里数饮料", en: "I have two bottles of water.", zh: "我有两瓶水。" },
@@ -2172,9 +2172,9 @@ export const grammarLessons: GrammarLesson[] = [
     summary: {
       rule: "两个以上要加 s；s、x、sh、ch 结尾加 es；少数词不规则。",
       points: [
-        "I ate two sandwiches. —— 好几个就要带 s：sandwiches",
-        "I drank tea. —— drink 的昨天版是 drank",
-        "What did you eat? —— What + did，eat 变回原样"
+        "I ate two sandwiches. —— 复数就要带 s：sandwiches",
+        "I drank tea. —— drink 的过去式是 drank",
+        "What did you eat? —— What + did，eat 变回原形"
       ]
     },
     guided: [
@@ -2185,21 +2185,21 @@ export const grammarLessons: GrammarLesson[] = [
         after: ".",
         options: ["book", "books", "bookes"],
         answer: "books",
-        explain: "three 后面是好几个：books。"
+        explain: "three 后面是复数：books。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：我吃了两个三明治。",
         tokens: ["I", "ate", "two", "sandwiches."],
         answer: "I ate two sandwiches.",
-        explain: "ate 是 eat 的昨天版，sandwiches 要加 s。"
+        explain: "ate 是 eat 的过去式，sandwiches 要加 s。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：我见到了我的朋友。",
         tokens: ["my", "I", "friend.", "met"],
         answer: "I met my friend.",
-        explain: "meet（见到）的昨天版不走 -ed，它是 met——I met my friend 是「昨天见到我的朋友」。"
+        explain: "meet（见到）的过去式不走 -ed，它是 met——I met my friend 是「昨天见到我的朋友」。"
       },
       {
         kind: "spot",
@@ -2208,7 +2208,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "sandwich.",
         answer: "sandwich.",
         correctionZh: "两个以上要加 s：I ate two sandwiches。",
-        explain: "two 后面是好几个，sandwich 要加 es。"
+        explain: "two 后面是复数，sandwich 要加 es。"
       },
       {
         // R8 跨课复现：上一课（L10 一般过去时）的句式混入，抗遗忘
@@ -2216,12 +2216,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——上一课学过：昨天我去了公园。",
         tokens: ["Yesterday", "I", "went", "to", "the", "park."],
         answer: "Yesterday I went to the park.",
-        explain: "复现第 10 课：yesterday 在场，动词换昨天版 went。"
+        explain: "复现第 10 课：yesterday 在场，动词换过去式 went。"
       },
       {
         // R9 变形/替换：换数量（一个→两个），名词变复数（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I ate a sandwich.」把「一个」换成「两个（two）」，sandwich 要怎么变？",
+        promptZh: "句型转换：「I ate a sandwich.」把「一个」换成「两个（two）」，sandwich 要怎么变？",
         replaceBase: "I ate a sandwich.",
         replaceTarget: "把 a 换成 two",
         options: ["sandwiches", "sandwich", "sandwichs"],
@@ -2266,7 +2266,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "好朋友发消息问你，昨天中午吃了什么。",
       intentZh: "我吃了两个三明治。",
       answer: "I ate two sandwiches.",
-      noteZh: "两个以上要加 s；sandwich 以 ch 结尾，要变成好几个 sandwiches。"
+      noteZh: "两个以上要加 s；sandwich 以 ch 结尾，要变成复数 sandwiches。"
     },
     huntCaseIds: ["hunt-breakfast", "hunt-uncountable", "hunt-passive"]
   },
@@ -2285,7 +2285,7 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "I will draw tomorrow.",
     blocks: [
       { text: "I", role: "我" },
-      { text: "will", role: "要（明天版）" },
+      { text: "will", role: "要（将来）" },
       { text: "draw", role: "画画" },
       { text: "tomorrow", role: "明天" }
     ],
@@ -2313,13 +2313,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Tomorrow I will drew.",
         wrongMark: "drew",
         correct: "Tomorrow I will draw.",
-        whyZh: "will 出场时动词保持原样，不换昨天版。一场戏只有一个变化。"
+        whyZh: "will 出场时动词保持原形，不换过去式。一场戏只有一个变化。"
       },
       {
         wrong: "I will drawing.",
         wrongMark: "drawing",
         correct: "I will draw.",
-        whyZh: "will 后面的动词穿原样：will draw。-ing 要 be 搭着才是「正在做」；这里没有 be，就不用它。"
+        whyZh: "will 后面的动词用原形：will draw。-ing 要 be 搭着才是「正在做」；这里没有 be，就不用它。"
       },
       {
         wrong: "She wills draw.",
@@ -2337,7 +2337,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Will you goes tomorrow?",
         wrongMark: "goes",
         correct: "Will you go tomorrow?",
-        whyZh: "Will 搬到句首问话，动词照样穿原样 go：Will you go……？他/她/它版 -s 管不到 will。"
+        whyZh: "Will 搬到句首问话，动词照样用原形 go：Will you go……？第三人称单数 -s 管不到 will。"
       }
     ],
     variants: [
@@ -2353,15 +2353,15 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "为什么 will 后面的动词不用变？",
       paragraphs: [
-        "过去时要动词自己换衣服（go→went），将来时不一样：变化都交给 will 这一个词，动词穿原样就行。",
-        "所以不管前面站的是 I、she 还是 they，都是 will + 动词原样：I will go、she will go、they will go，永远不会跑形。",
+        "过去时要动词自己换衣服（go→went），将来时不一样：变化都交给 will 这一个词，动词用原形就行。",
+        "所以不管前面站的是 I、she 还是 they，都是 will + 动词原形：I will go、she will go、they will go，永远不会跑形。",
         "信号灯从 yesterday 换成 tomorrow，动词旁边站一个 will，过去和将来就分开了。"
       ]
     },
     summary: {
       rule: "说明天的事，动词前面加 will，动词本身不变。",
       points: [
-        "I will draw tomorrow. —— will 后面穿原样",
+        "I will draw tomorrow. —— will 后面用原形",
         "It will not rain. —— 不会：will 后面加 not",
         "Will you come tomorrow? —— 问别人：Will 搬到句首"
       ]
@@ -2396,8 +2396,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "will", "drew", "a", "picture."],
         wrongToken: "drew",
         answer: "drew",
-        correctionZh: "把 drew 换回穿原样的 draw：I will draw a picture。",
-        explain: "will 后面的动词保持原样。"
+        correctionZh: "把 drew 换回用原形的 draw：I will draw a picture。",
+        explain: "will 后面的动词保持原形。"
       },
       {
         // R8 跨课复现：上一课（L11 复数+不规则过去式）的句式混入，抗遗忘
@@ -2410,12 +2410,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换时间（今天→明天），动词时态跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I draw a picture today.」把「今天」换成「明天」，draw 前要加什么？",
+        promptZh: "句型转换：「I draw a picture today.」把「今天」换成「明天」，draw 前要加什么？",
         replaceBase: "I draw a picture today.",
         replaceTarget: "把 today 换成 tomorrow",
         options: ["will", "am", "did"],
         answer: "will",
-        explain: "说「明天要做」，动词前面放 will：I will draw tomorrow。will 出场动词穿原样。"
+        explain: "说「明天要做」，动词前面放 will：I will draw tomorrow。will 出场动词用原形。"
       }
     ],
     practice: [
@@ -2455,7 +2455,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "睡觉前，你在日记本上写下明天的计划。",
       intentZh: "我明天要画画。",
       answer: "I will draw tomorrow.",
-      noteZh: "明天的事在动词前面加 will，动词本身保持原样。"
+      noteZh: "明天的事在动词前面加 will，动词本身保持原形。"
     },
     huntCaseIds: ["hunt-because-so", "hunt-word-order"]
   },
@@ -2476,7 +2476,7 @@ export const grammarLessons: GrammarLesson[] = [
     blocks: [
       { text: "I", role: "我" },
       { text: "am", role: "正在（我专用）" },
-      { text: "drawing", role: "画（-ing 版）" },
+      { text: "drawing", role: "画（-ing 形式）" },
       { text: "a picture", role: "一幅画" }
     ],
     oneLineRule: "说「正在做」：be 动词 + 动词ing——I am drawing，be 和 -ing 一个都不能少。",
@@ -2503,13 +2503,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am draw a picture.",
         wrongMark: "draw",
         correct: "I am drawing a picture.",
-        whyZh: "说「正在做」，动词要穿 -ing 这件外套：draw → drawing。"
+        whyZh: "说「正在做」，动词要加 -ing：draw → drawing。"
       },
       {
         wrong: "They is playing football.",
         wrongMark: "is",
         correct: "They are playing football.",
-        whyZh: "they 的搭档是 are 不是 is。一伙人做事，be 动词要用 are。"
+        whyZh: "they 的搭档是 are 不是 is。复数做事，be 动词要用 are。"
       },
       {
         wrong: "He are sleeping.",
@@ -2521,7 +2521,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am not sleep.",
         wrongMark: "sleep",
         correct: "I am not sleeping.",
-        whyZh: "说「不」的句子里动词照样要穿 -ing 外套：am not sleeping，外套不能脱。"
+        whyZh: "说「不」的句子里动词照样要加 -ing：am not sleeping，形式不能脱。"
       },
       {
         wrong: "What you are doing?",
@@ -2541,7 +2541,7 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "电话里，妈妈问你在干嘛", en: "I am doing my homework.", zh: "我正在写作业。" }
     ],
     deepDive: {
-      title: "动词的 -ing 外套怎么穿？",
+      title: "动词的 -ing 怎么加？",
       paragraphs: [
         "大多数动词直接加 -ing：draw → drawing，read → reading，listen → listening。",
         "少数短动词要双写最后一个字母再加：sit → sitting，run → running，swim → swimming——短衣服要先缝双针再接袖。",
@@ -2578,7 +2578,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：他们正在踢足球。",
         tokens: ["They", "are", "playing", "football."],
         answer: "They are playing football.",
-        explain: "they 的搭档是 are，playing 穿好 -ing 外套。"
+        explain: "they 的搭档是 are，playing 加上 -ing。"
       },
       {
         kind: "spot",
@@ -2587,7 +2587,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "sleep",
         answer: "sleep",
         correctionZh: "把 sleep 换成 sleeping：He is sleeping now。",
-        explain: "is 后面的动词要穿 -ing 外套。"
+        explain: "is 后面的动词要加 -ing。"
       },
       {
         // R8 跨课复现：上一课（L12 will）的句式混入，抗遗忘
@@ -2595,12 +2595,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——上一课学过：明天要画画。",
         tokens: ["I", "will", "draw", "tomorrow."],
         answer: "I will draw tomorrow.",
-        explain: "复现第 12 课：will 后面的动词穿原样。"
+        explain: "复现第 12 课：will 后面的动词用原形。"
       },
       {
         // R9 变形/替换：换主语 I→She，be 动词跟着变（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am drawing.」把开头的 I 换成 She，动词要怎么变？",
+        promptZh: "句型转换：「I am drawing.」把开头的 I 换成 She，动词要怎么变？",
         replaceBase: "I am drawing.",
         replaceTarget: "把 I 换成 She",
         options: ["is", "am", "are"],
@@ -2698,13 +2698,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I can swimming.",
         wrongMark: "swimming",
         correct: "I can swim.",
-        whyZh: "can 后面的动词穿原样：can swim。-ing 要 be 搭着才是「正在做」；这里没有 be，就不用它。"
+        whyZh: "can 后面的动词用原形：can swim。-ing 要 be 搭着才是「正在做」；这里没有 be，就不用它。"
       },
       {
         wrong: "Can he plays football?",
         wrongMark: "plays",
         correct: "Can he play football?",
-        whyZh: "有 can 在前面扛变化，动词打回原样：Can he play。他/她/它版 -s 管不到 can。"
+        whyZh: "有 can 在前面扛变化，动词打回原形：Can he play。第三人称单数 -s 管不到 can。"
       },
       {
         wrong: "I not can swim.",
@@ -2732,15 +2732,15 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "为什么 can 后面的动词永远不变形？",
       paragraphs: [
-        "英语里有几个「不变词」，can 和 will 是一家：所有变化都由它们扛，动词穿原样就行——can go、can eat、can play，永远不会跑形。",
-        "can 也不用换他 / 她 / 它版：He can swim，不是 He cans swim。那个 -s 是「说每天的事」时的规矩，管不到 can。",
+        "英语里有几个「不变词」，can 和 will 是一家：所有变化都由它们扛，动词用原形就行——can go、can eat、can play，永远不会跑形。",
+        "can 也不用换第三人称单数：He can swim，不是 He cans swim。那个 -s 是「说每天的事」时的规矩，管不到 can。",
         "can't 读起来和 can 差别很大：听到句尾那个「特」的音，就是「不能」。写的时候别丢掉那个小撇号。"
       ]
     },
     summary: {
-      rule: "能/会 = can + 原样；问句把 Can 搬到句首。",
+      rule: "能/会 = can + 原形；问句把 Can 搬到句首。",
       points: [
-        "I can swim. —— can 后面穿原样",
+        "I can swim. —— can 后面用原形",
         "I can't swim. —— 不会：can 后面加 not（can't）",
         "Can you swim? —— 问别人：Can 搬到句首"
       ]
@@ -2767,7 +2767,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：她会唱歌。",
         tokens: ["She", "can", "sing", "very", "well."],
         answer: "She can sing very well.",
-        explain: "can 后面的动词穿原样：can sing。"
+        explain: "can 后面的动词用原形：can sing。"
       },
       {
         kind: "spot",
@@ -2781,12 +2781,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换主语 I→He，can 不变、动词穿原样（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I can swim.」把开头的 I 换成 He，swim 要怎么变？",
+        promptZh: "句型转换：「I can swim.」把开头的 I 换成 He，swim 要怎么变？",
         replaceBase: "I can swim.",
         replaceTarget: "把 I 换成 He",
         options: ["swim", "swims", "swimming"],
         answer: "swim",
-        explain: "can 后面的动词永远穿原样：He can swim。他/她/它版 -s 管不到 can。"
+        explain: "can 后面的动词永远用原形：He can swim。第三人称单数 -s 管不到 can。"
       },
       {
         // R8 跨课复现：上一课（L13 进行时）的句式混入
@@ -2844,7 +2844,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-15-want-to",
     number: 15,
     title: "我想去旅行",
-    grammarLabel: "want to + 原样",
+    grammarLabel: "want to + 原形",
     episode: "小美的一天 ⑮",
     scene: "train",
     cover: cover15,
@@ -2856,10 +2856,10 @@ export const grammarLessons: GrammarLesson[] = [
     blocks: [
       { text: "I", role: "我" },
       { text: "want", role: "想要" },
-      { text: "to", role: "小垫板" },
-      { text: "travel", role: "旅行（原样）" }
+      { text: "to", role: "to" },
+      { text: "travel", role: "旅行（原形）" }
     ],
-    oneLineRule: "「想做……」= want to + 原样：I want to travel。want 后面要垫一块小垫板 to。",
+    oneLineRule: "「想做……」= want to + 原形：I want to travel。want 后面要加一个 to to。",
     examples: [
       { en: "I want to sleep.", zh: "我想睡觉。" },
       { en: "She wants to read a book.", zh: "她想读一本书。" },
@@ -2883,25 +2883,25 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She wants to travels.",
         wrongMark: "travels",
         correct: "She wants to travel.",
-        whyZh: "变形的事已经由 wants 做完了（他/她/它版加 -s），to 后面的动词永远穿原样。"
+        whyZh: "变形的事已经由 wants 做完了（第三人称单数加 -s），to 后面的动词永远用原形。"
       },
       {
         wrong: "She want to read.",
         wrongMark: "want",
         correct: "She wants to read.",
-        whyZh: "「她想读」，want 要换他/她/它版 wants。变形的是 want 自己，不是 to 后面的词。"
+        whyZh: "「她想读」，want 要换第三人称单数 wants。变形的是 want 自己，不是 to 后面的词。"
       },
       {
         wrong: "I want to going home.",
         wrongMark: "going",
         correct: "I want to go home.",
-        whyZh: "to 后面的动词穿原样：want to go。-ing 要 be 搭着才是「正在做」；这里没有 be，就不用它。"
+        whyZh: "to 后面的动词用原形：want to go。-ing 要 be 搭着才是「正在做」；这里没有 be，就不用它。"
       },
       {
         wrong: "I don't want go.",
         wrongMark: "want go",
         correct: "I don't want to go.",
-        whyZh: "加了 don't，to 这块小垫板也不能丢：don't want to go。垫板和否定是两回事。"
+        whyZh: "加了 don't，to 也不能丢：don't want to go。to 和否定是两回事。"
       },
       {
         wrong: "Want you to play?",
@@ -2923,16 +2923,16 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "为什么 want 后面要垫一个 to？",
       paragraphs: [
-        "want 是「想要」，但它自己迈不开步——后面跟的动词要踩着 to 这块小垫板才能出场：want to go、want to eat。",
-        "to 后面的动词永远穿原样：want to go、wants to go、wanted to go——变的只有 want 自己，to 后面从不动。",
+        "want 是「想要」，但它自己迈不开步——后面跟的动词要踩着 to 才能出场：want to go、want to eat。",
+        "to 后面的动词永远用原形：want to go、wants to go、wanted to go——变的只有 want 自己，to 后面从不动。",
         "想问别人「想不想」，把 Do 搬到句首：Do you want to play？回答：Yes, I do. / No, I don't."
       ]
     },
     summary: {
-      rule: "想做……= want to + 原样，to 这块小垫板不能丢。",
+      rule: "想做……= want to + 原形，to 不能丢。",
       points: [
-        "I want to travel. —— want + to + 原样",
-        "She wants to read. —— 他专用版是 wants，to 后面照样原样",
+        "I want to travel. —— want + to + 原形",
+        "She wants to read. —— 第三人称单数是 wants，to 后面照样原形",
         "Do you want to play? —— 问别人：Do 搬到句首"
       ]
     },
@@ -2951,14 +2951,14 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：我想去旅行。",
         tokens: ["I", "want", "to", "travel."],
       answer: "I want to travel.",
-        explain: "want to 手拉手出场，travel 保持原样。"
+        explain: "want to 手拉手出场，travel 保持原形。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：她想读一本书。",
         tokens: ["She", "wants", "to", "read", "a", "book."],
         answer: "She wants to read a book.",
-        explain: "他/她/它版是 wants，但 to 后面的 read 照样穿原样。"
+        explain: "第三人称单数是 wants，但 to 后面的 read 照样用原形。"
       },
       {
         kind: "spot",
@@ -2966,8 +2966,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["He", "wants", "to", "plays", "football."],
         wrongToken: "plays",
         answer: "plays",
-        correctionZh: "把 plays 换回穿原样的 play：He wants to play football。",
-        explain: "to 后面那个动作永远穿原样——to play，不是 plays。带 s 的那件是给「他／她做事」穿的，to 后面用不上。"
+        correctionZh: "把 plays 换回用原形的 play：He wants to play football。",
+        explain: "to 后面那个动作永远用原形——to play，不是 plays。带 s 的那件是给「他／她做事」穿的，to 后面用不上。"
       },
       {
         // R8 跨课复现：上一课（L14 can）的句式混入，抗遗忘
@@ -2975,17 +2975,17 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——上一课学过：我会游泳。",
         tokens: ["I", "can", "swim."],
         answer: "I can swim.",
-        explain: "复现第 14 课：can 后面的动词穿原样。"
+        explain: "复现第 14 课：can 后面的动词用原形。"
       },
       {
         // R9 变形/替换：换主语 I→She，want 变三单 wants（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I want to travel.」把开头的 I 换成 She，want 要怎么变？",
+        promptZh: "句型转换：「I want to travel.」把开头的 I 换成 She，want 要怎么变？",
         replaceBase: "I want to travel.",
         replaceTarget: "把 I 换成 She",
         options: ["wants", "want", "wanted"],
         answer: "wants",
-        explain: "She 是一个，want 要换他/她/它版 wants：She wants to travel。但 to 后面照样原样。"
+        explain: "She 是一个，want 要换第三人称单数 wants：She wants to travel。但 to 后面照样原形。"
       }
     ],
     practice: [
@@ -3019,7 +3019,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "笔记本上写着你的暑假心愿。凭记忆，写出这句英文。",
       intentZh: "我想去旅行。",
       answer: "I want to travel.",
-      noteZh: "want 后面要垫一块小垫板 to，动词踩上去。"
+      noteZh: "want 后面要加一个 to to，动词踩上去。"
     },
     // R7：每课 1–2 案（本案含 want to 句式，主题契合）
     huntCaseIds: ["hunt-travel-plan", "hunt-weekend-plan"]
@@ -3041,10 +3041,10 @@ export const grammarLessons: GrammarLesson[] = [
     blocks: [
       { text: "I", role: "我" },
       { text: "must", role: "必须（不变形）" },
-      { text: "finish", role: "完成（原样）" },
+      { text: "finish", role: "完成（原形）" },
       { text: "my homework", role: "我的作业" }
     ],
-    oneLineRule: "说「必须」：must + 原样——I must go。must 和 can 一样，从来不变装。",
+    oneLineRule: "说「必须」：must + 原形——I must go。must 和 can 一样，从来不变装。",
     examples: [
       { en: "I must go now.", zh: "我现在必须走了。" },
       { en: "She must finish it today.", zh: "她今天必须完成它。" },
@@ -3061,7 +3061,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I must going now.",
         wrongMark: "going",
         correct: "I must go now.",
-        whyZh: "must 后面的动词穿原样：must go。going 的 -ing 外套，must 不认。"
+        whyZh: "must 后面的动词用原形：must go。going 的 -ing 形式，must 不认。"
       },
       {
         wrong: "She musts finish it.",
@@ -3079,19 +3079,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She have to get up early.",
         wrongMark: "have",
         correct: "She has to get up early.",
-        whyZh: "have to 里的 have 要变他/她/它版：she has to。must 不变形，但 have to 的 have 会变。"
+        whyZh: "have to 里的 have 要变第三人称单数：she has to。must 不变形，但 have to 的 have 会变。"
       },
       {
         wrong: "You must not to be late.",
         wrongMark: "to be",
         correct: "You must not be late.",
-        whyZh: "must not 后面照样跟原样 be：must not be。not 不改变「must 后面穿原样」的规矩。"
+        whyZh: "must not 后面照样跟原形 be：must not be。not 不改变「must 后面用原形」的规矩。"
       },
       {
         wrong: "Must you to go now?",
         wrongMark: "to go",
         correct: "Must you go now?",
-        whyZh: "Must 搬到句首问话，后面的动词还是原样 go，不垫 to：Must you go？"
+        whyZh: "Must 搬到句首问话，后面的动词还是原形 go，不垫 to：Must you go？"
       }
     ],
     variants: [
@@ -3109,13 +3109,13 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "意思很近，口气不同：must 多是「自己要求自己，或规矩要求」——I must study（我要学）；have to 多是「外面的情况逼着你」——I have to get up early（不得不早起）。",
         "否定刚好相反，千万别弄反：must not 是「禁止」，don't have to 是「不用、没必要」——You must not run（禁止跑）/ You don't have to run（不用跑）。",
-        "它们后面都跟动词原样：must go、have to go——这一课的形状和上一课的 can 完全一样。"
+        "它们后面都跟动词原形：must go、have to go——这一课的形状和上一课的 can 完全一样。"
       ]
     },
     summary: {
-      rule: "必须 = must / have to + 原样，它们从不变装。",
+      rule: "必须 = must / have to + 原形，它们从不变装。",
       points: [
-        "I must go now. —— must 后面穿原样",
+        "I must go now. —— must 后面用原形",
         "She musts ❌ → She must ✅ —— must 不变形",
         "I have to get up early. —— have to = 外面情况逼着的「必须」"
       ]
@@ -3128,21 +3128,21 @@ export const grammarLessons: GrammarLesson[] = [
         after: "now.",
         options: ["go", "goes", "going"],
         answer: "go",
-        explain: "must 后面的动词穿原样：must go。"
+        explain: "must 后面的动词用原形：must go。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：我今天必须完成作业。",
         tokens: ["I", "must", "finish", "my", "homework", "today."],
       answer: "I must finish my homework today.",
-        explain: "must 站在原样动词前面，finish 一点不变。"
+        explain: "must 站在原形动词前面，finish 一点不变。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：我明天必须早起。",
         tokens: ["I", "have", "to", "get", "up", "early", "tomorrow."],
         answer: "I have to get up early tomorrow.",
-        explain: "have to 也是「必须」：have to + 原样。"
+        explain: "have to 也是「必须」：have to + 原形。"
       },
       {
         kind: "spot",
@@ -3159,12 +3159,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——上一课学过：我想去旅行。",
         tokens: ["I", "want", "to", "travel."],
         answer: "I want to travel.",
-        explain: "复现第 15 课：want 后面垫 to，动词穿原样。"
+        explain: "复现第 15 课：want 后面垫 to，动词用原形。"
       },
       {
         // R9 变形/替换：换主语 I→She，must 不变（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I must go now.」把开头的 I 换成 She，must 要怎么变？",
+        promptZh: "句型转换：「I must go now.」把开头的 I 换成 She，must 要怎么变？",
         replaceBase: "I must go now.",
         replaceTarget: "把 I 换成 She",
         options: ["must", "musts", "have to"],
@@ -3203,7 +3203,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "组长站在课桌前收作业。凭记忆，写出你心里想的那句英文。",
       intentZh: "我今天必须交作业。",
       answer: "I must finish my homework today.",
-      noteZh: "must 后面的动词穿原样，must 自己从不变形。"
+      noteZh: "must 后面的动词用原形，must 自己从不变形。"
     },
     huntCaseIds: ["hunt-desk-rules"]
   },
@@ -3224,7 +3224,7 @@ export const grammarLessons: GrammarLesson[] = [
     blocks: [
       { text: "This boat", role: "这条船" },
       { text: "is", role: "是" },
-      { text: "bigger", role: "更大（-er 版）" },
+      { text: "bigger", role: "更大（-er 形式）" },
       { text: "than that one", role: "比那条" }
     ],
     oneLineRule: "比「更……」：短词加 -er（bigger），长词请 more 帮忙（more beautiful），再用 than 接住比的对象。",
@@ -3294,7 +3294,7 @@ export const grammarLessons: GrammarLesson[] = [
         "短的描述词（一两个音）自己加 -er：tall → taller，old → older，fast → faster。",
         "长的描述词（三个音以上）搬不动，请 more 来帮忙：more beautiful，more interesting。",
         "像 big、hot 这种短促有力的词，加 -er 前要双写最后一个字母：bigger、hotter——和 running 的双写是同一个道理。",
-        "也有几个不守规矩的：good 的「更好」是 better，bad 的「更坏」是 worse——像 go 的昨天版是 went 一样，要单独记住。"
+        "也有几个不守规矩的：good 的「更好」是 better，bad 的「更坏」是 worse——像 go 的过去式是 went 一样，要单独记住。"
       ]
     },
     summary: {
@@ -3344,12 +3344,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——上一课学过：我现在必须走。",
         tokens: ["I", "must", "go", "now."],
         answer: "I must go now.",
-        explain: "复现第 16 课：must 后面的动词穿原样。"
+        explain: "复现第 16 课：must 后面的动词用原形。"
       },
       {
         // R9 变形/替换：换形容词 short→long（短词 -er 变长词 more），比较级形状跟着变（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「This boat is bigger than that one.」把「大」换成「好看（beautiful）」，bigger 要怎么变？",
+        promptZh: "句型转换：「This boat is bigger than that one.」把「大」换成「好看（beautiful）」，bigger 要怎么变？",
         replaceBase: "This boat is bigger than that one.",
         replaceTarget: "把 bigger 换成「更好看」",
         options: ["more beautiful", "beautifuller", "beautiful"],
@@ -3471,7 +3471,7 @@ export const grammarLessons: GrammarLesson[] = [
     variants: [
       { label: "肯定", en: "My hat is in the box.", zh: "我的帽子在盒子里。" },
       { label: "否定", en: "I am not at home.", zh: "我不在家。", noteZh: "not 照常放回 be 后面，at 这个小词站在原地不动。" },
-      { label: "疑问", en: "Is my hat on the desk?", zh: "我的帽子在桌子上吗？", noteZh: "把 Is 搬到句首，后面那截 at 跟着的小尾巴留在句尾。" }
+      { label: "疑问", en: "Is my hat on the desk?", zh: "我的帽子在桌子上吗？", noteZh: "把 Is 搬到句首，后面那截 at 留在句尾。" }
     ],
     sceneSwings: [
       { sceneZh: "早餐时说你的习惯", en: "I read in the morning.", zh: "我早上读书。" },
@@ -3538,7 +3538,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换地方 in the box→on the desk，介词跟着变（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「My hat is in the box.」把「盒子里」换成「桌子上」，in 要怎么变？",
+        promptZh: "句型转换：「My hat is in the box.」把「盒子里」换成「桌子上」，in 要怎么变？",
         replaceBase: "My hat is in the box.",
         replaceTarget: "把「盒子里」换成「桌子上」",
         options: ["on", "in", "at"],
@@ -3655,7 +3655,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "My sister and I is happy.",
         wrongMark: "is",
         correct: "My sister and I are happy.",
-        whyZh: "My sister and I 是两个人，算一伙的，用 are 不用 is。and 连起来的句首那个「谁」是好几个。"
+        whyZh: "My sister and I 是两个人，算复数，用 are 不用 is。and 连起来的句首那个「谁」是复数。"
       }
     ],
     variants: [
@@ -3673,7 +3673,7 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "两边是同一个方向的，用 and：busy and happy（又忙又开心）、cold and white（又冷又白）。",
         "两边反着来，用 but：cold but fun（虽然冷但好玩）——but 前后在「唱反调」。",
-        "and 把两个人连起来时（My sister and I），要看成「一群人」，动词跟着按「好几个」来：My sister and I were happy.",
+        "and 把两个人连起来时（My sister and I），要看成「一群人」，动词跟着按「复数」来：My sister and I were happy.",
         "下一课的 because 和 so 也是连接词家族的成员——到时候你会看到它们的一条特殊家规。"
       ]
     },
@@ -3716,7 +3716,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "was",
         answer: "was",
         correctionZh: "My sister and I 是两个人，用 were：My sister and I were happy。",
-        explain: "and 连起来的句首那个「谁」算好几个。"
+        explain: "and 连起来的句首那个「谁」是两个人，算复数——用 were。"
       },
       {
         // R8 跨课复现：上一课（L18 介词）的句式混入，抗遗忘
@@ -3729,7 +3729,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换语境（顺接→转折），连词跟着变（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I was busy and happy.」如果想说「我很累，但还不想停」，and 要怎么变？",
+        promptZh: "句型转换：「I was busy and happy.」如果想说「我很累，但还不想停」，and 要怎么变？",
         replaceBase: "I was busy and happy.",
         replaceTarget: "换成「我很累，＿不想停」（意思转弯）",
         options: ["but", "and", "so"],
@@ -3911,7 +3911,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换因果方向（前因→前果），连词跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It was cold, so I stayed at home.」想改成「因为天冷，我才待在家」，so 要怎么变？",
+        promptZh: "句型转换：「It was cold, so I stayed at home.」想改成「因为天冷，我才待在家」，so 要怎么变？",
         replaceBase: "It was cold, so I stayed at home.",
         replaceTarget: "换成「因为天冷」（说原因）",
         options: ["because", "so", "and"],
@@ -3957,11 +3957,11 @@ export const grammarLessons: GrammarLesson[] = [
   },
   {
     // ── 第三季 · 第二批（析客规格书 prd-grammar-second-batch-2026-09-13）：现在完成时拆 3 课 + 对比课 ──
-    // L21 基本式「刚做完」：不规则做过版只引入 done / eaten；一词两义（have=有 / have+做过版）在主线对比卡正面拆解
+    // L21 基本式「刚做完」：不规则过去分词只引入 done / eaten；一词两义（have=有 / have+过去分词）在主线对比卡正面拆解
     id: "lesson-21-have-done",
     number: 21,
     title: "作业写完了",
-    grammarLabel: "做过了 · have + 做过版",
+    grammarLabel: "做过了 · have + 过去分词",
     episode: "小美的一天 ㉑",
     scene: "mansion",
     cover: cover21,
@@ -3973,10 +3973,10 @@ export const grammarLessons: GrammarLesson[] = [
     blocks: [
       { text: "I", role: "我" },
       { text: "have", role: "信号灯（做过了）" },
-      { text: "done", role: "做（做过版）" },
+      { text: "done", role: "做（过去分词）" },
       { text: "my homework", role: "我的作业" }
     ],
-    oneLineRule: "说「做完了、做过了」，用 have + 做过版：I have done…。have 后面站做过的版本，不站原样。",
+    oneLineRule: "说「做完了、做过了」，用 have + 过去分词：I have done…。have 后面站过去分词，不站原形。",
     examples: [
       { en: "I have done my homework.", zh: "我已经写完作业了。" },
       { en: "I have eaten breakfast.", zh: "我吃过早饭了。" },
@@ -3993,13 +3993,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I have do my homework.",
         wrongMark: "do",
         correct: "I have done my homework.",
-        whyZh: "have 后面要站动词的做过版。do 的做过版是 done——have 已经占好了位置，动词要换上做过版的外套。"
+        whyZh: "have 后面要站动词的过去分词。do 的过去分词是 done——have 已经占好了位置，动词要换成过去分词。"
       },
       {
         wrong: "I have eat breakfast.",
         wrongMark: "eat",
         correct: "I have eaten breakfast.",
-        whyZh: "have 后面跟「东西」是「有」（I have a bag），跟「做过版」就是「做过了」（I have eaten breakfast）。看 have 后面站的是什么词。"
+        whyZh: "have 后面跟「东西」是「有」（I have a bag），跟「过去分词」就是「做过了」（I have eaten breakfast）。看 have 后面站的是什么词。"
       },
       {
         wrong: "I have finished my homework yesterday.",
@@ -4011,7 +4011,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She have done her homework.",
         wrongMark: "have",
         correct: "She has done her homework.",
-        whyZh: "「她做完了」，have 要换他/她/它版 has：She has done。have/has 跟着句首那个「谁」变，做过版 done 不变。"
+        whyZh: "「她做完了」，have 要换第三人称单数 has：She has done。have/has 跟着句首那个「谁」变，过去分词 done 不变。"
       },
       {
         wrong: "I have watched TV yesterday.",
@@ -4023,7 +4023,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Have you do your homework?",
         wrongMark: "do",
         correct: "Have you done your homework?",
-        whyZh: "问「做完了吗」，Have 搬到句首，动词照样换做过版：Have you done……？做过版不能偷懒。"
+        whyZh: "问「做完了吗」，Have 搬到句首，动词照样换过去分词：Have you done……？过去分词不能偷懒。"
       }
     ],
     variants: [
@@ -4039,15 +4039,15 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "have 明明是「有」，怎么又变成「做过了」？",
       paragraphs: [
-        "have 是个多面手：后面跟「东西」，就是「有」——I have a new bag（我有一个新背包，第 3 课学过）；后面跟「做过版」，就是「做过了」——I have done my homework（我写完了作业）。判断方法只有一个：看 have 后面站的是什么词。",
-        "做过版是动词的第三件外套。大多数动词的做过版和昨天版长得一样：watch→watched、finish→finished，昨天穿今天穿都是它。只有几个老词走自己的路：do→done、eat→eaten，遇到就单独记住。",
-        "下一课你会见到 been 和 seen——be 和 see 的做过版。加上这课的 done、eaten，四个常客就集齐了。"
+        "have 是个多面手：后面跟「东西」，就是「有」——I have a new bag（我有一个新背包，第 3 课学过）；后面跟「过去分词」，就是「做过了」——I have done my homework（我写完了作业）。判断方法只有一个：看 have 后面站的是什么词。",
+        "过去分词是动词的第三种形式。大多数动词的过去分词和过去式长得一样：watch→watched、finish→finished，昨天穿今天穿都是它。只有几个老词走自己的路：do→done、eat→eaten，遇到就单独记住。",
+        "下一课你会见到 been 和 seen——be 和 see 的过去分词。加上这课的 done、eaten，四个常客就集齐了。"
       ]
     },
     summary: {
-      rule: "说「做过了」用 have + 做过版；have 后面跟东西是「有」，跟做过版是「做过了」。",
+      rule: "说「做过了」用 have + 过去分词；have 后面跟东西是「有」，跟过去分词是「做过了」。",
       points: [
-        "I have done my homework. —— have + 做过版",
+        "I have done my homework. —— have + 过去分词",
         "I haven't done my homework. —— 还没做：have 后面加 not",
         "Have you finished your homework? —— 问别人：Have 搬到句首"
       ]
@@ -4067,7 +4067,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：我吃过早饭了。",
         tokens: ["eaten", "I", "breakfast.", "have"],
         answer: "I have eaten breakfast.",
-        explain: "have 后面站做过版：eaten 是 eat 的做过版。"
+        explain: "have 后面站过去分词：eaten 是 eat 的过去分词。"
       },
       {
         kind: "arrange",
@@ -4082,8 +4082,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "have", "do", "my", "homework."],
         wrongToken: "do",
         answer: "do",
-        correctionZh: "把 do 换成做过版 done：I have done my homework。",
-        explain: "have 后面要站做过版，do 的做过版是 done。"
+        correctionZh: "把 do 换成过去分词 done：I have done my homework。",
+        explain: "have 后面要站过去分词，do 的过去分词是 done。"
       },
       {
         // R8 跨课复现：上一课（L20 because/so）的句式混入，抗遗忘
@@ -4096,12 +4096,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换主语 I→She，have 变 has（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I have done my homework.」把开头的 I 换成 She，have 要怎么变？",
+        promptZh: "句型转换：「I have done my homework.」把开头的 I 换成 She，have 要怎么变？",
         replaceBase: "I have done my homework.",
         replaceTarget: "把 I 换成 She",
         options: ["has", "have", "had"],
         answer: "has",
-        explain: "She 是一个，have 换他/她/它版 has：She has done。做过版 done 不变。"
+        explain: "She 是一个，have 换第三人称单数 has：She has done。过去分词 done 不变。"
       }
     ],
     practice: [
@@ -4162,10 +4162,10 @@ export const grammarLessons: GrammarLesson[] = [
     blocks: [
       { text: "I", role: "我" },
       { text: "have", role: "信号灯" },
-      { text: "been", role: "去（做过版）" },
+      { text: "been", role: "去（过去分词）" },
       { text: "to Beijing", role: "去过北京" }
     ],
-    oneLineRule: "说「去过某地」用 have been to：I have been to Beijing。been 是 be 的做过版——去过了、回来了。",
+    oneLineRule: "说「去过某地」用 have been to：I have been to Beijing。been 是 be 的过去分词——去过了、回来了。",
     examples: [
       { en: "I have been to Beijing.", zh: "我去过北京。" },
       { en: "I have seen that film.", zh: "我看过那部电影。" },
@@ -4182,13 +4182,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I have be to Beijing.",
         wrongMark: "be",
         correct: "I have been to Beijing.",
-        whyZh: "be 的做过版是 been，不是 be 本身。做过版是另一件外套，不能拿原样充数。"
+        whyZh: "be 的过去分词是 been，不是 be 本身。过去分词是另一种形式，不能拿原形充数。"
       },
       {
         wrong: "I see that film yesterday.",
         wrongMark: "see",
         correct: "I saw that film yesterday.",
-        whyZh: "句子里有 yesterday，就要用昨天版：I saw that film yesterday。没有时间点、只说「看过」，才用 have + 做过版。"
+        whyZh: "句子里有 yesterday，就要用过去式：I saw that film yesterday。没有时间点、只说「看过」，才用 have + 过去分词。"
       },
       {
         wrong: "I have been to Beijing yesterday.",
@@ -4200,19 +4200,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She have been to the zoo.",
         wrongMark: "have",
         correct: "She has been to the zoo.",
-        whyZh: "「她去过」，信号灯要换他/她/它版 has：She has been to。been 这个做过版不变，have/has 跟着句首那个「谁」变。"
+        whyZh: "「她去过」，信号灯要换第三人称单数 has：She has been to。been 这个过去分词不变，have/has 跟着句首那个「谁」变。"
       },
       {
         wrong: "I have went to Beijing.",
         wrongMark: "went",
         correct: "I have been to Beijing.",
-        whyZh: "have 后面要站做过版，went 是 go 的昨天版（说昨天的事用的），不是做过版——「去过」固定是 have been to。"
+        whyZh: "have 后面要站过去分词，went 是 go 的过去式（说昨天的事用的），不是过去分词——「去过」固定是 have been to。"
       },
       {
         wrong: "Have you ever went to Beijing?",
         wrongMark: "went",
         correct: "Have you ever been to Beijing?",
-        whyZh: "问「去过没有」，Have 搬到句首，后面照样用做过版 been：Have you (ever) been to……？went 在这里站不住。"
+        whyZh: "问「去过没有」，Have 搬到句首，后面照样用过去分词 been：Have you (ever) been to……？went 在这里站不住。"
       }
     ],
     variants: [
@@ -4228,16 +4228,16 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "been 和 was 长得像，它们是什么关系？",
       paragraphs: [
-        "been 和 was 其实是同一个动词的两件外套：am / is 的昨天版是 was，做过版是 been。说「我昨天在北京」用 was（I was in Beijing yesterday），说「我去过北京」用 been（I have been to Beijing）。",
-        "还有一个近亲 gone：go 的做过版。gone 是「去了还没回来」，been 是「去过了、已经回来」——说 He has gone to Beijing 是他人还在北京，说 He has been to Beijing 是他去玩过、人回来了。这两个词先混个脸熟，不用考。",
+        "been 和 was 其实是同一个动词的两种形式：am / is 的过去式是 was，过去分词是 been。说「我昨天在北京」用 was（I was in Beijing yesterday），说「我去过北京」用 been（I have been to Beijing）。",
+        "还有一个近亲 gone：go 的过去分词。gone 是「去了还没回来」，been 是「去过了、已经回来」——说 He has gone to Beijing 是他人还在北京，说 He has been to Beijing 是他去玩过、人回来了。这两个词先混个脸熟，不用考。",
         "说「去过哪儿、看过什么」不用报日子，像翻相册：一张一张说过去就行。这也是为什么这类句子里不放 yesterday。"
       ]
     },
     summary: {
-      rule: "说「去过某地」用 have been to；「看过什么」用 have + 做过版。",
+      rule: "说「去过某地」用 have been to；「看过什么」用 have + 过去分词。",
       points: [
-        "I have been to Beijing. —— been 是 be 的做过版",
-        "I haven't seen that film. —— 还没看过：haven't + 做过版",
+        "I have been to Beijing. —— been 是 be 的过去分词",
+        "I haven't seen that film. —— 还没看过：haven't + 过去分词",
         "Have you been to Beijing? —— 问别人：Have 搬到句首"
       ]
     },
@@ -4249,14 +4249,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "to Beijing.",
         options: ["been", "was", "go"],
         answer: "been",
-        explain: "been 是 be 的做过版；was 是昨天版，不能站错位置。"
+        explain: "been 是 be 的过去分词；was 是过去式，不能站错位置。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：我看过那部电影。",
         tokens: ["that", "I", "film.", "seen", "have"],
         answer: "I have seen that film.",
-        explain: "have 后面站 seen——see 的做过版。"
+        explain: "have 后面站 seen——see 的过去分词。"
       },
       {
         kind: "arrange",
@@ -4280,17 +4280,17 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——上一课学过：我做完作业了。",
         tokens: ["I", "have", "done", "my", "homework."],
         answer: "I have done my homework.",
-        explain: "复现第 21 课：have 后面站做过版 done。"
+        explain: "复现第 21 课：have 后面站过去分词 done。"
       },
       {
         // R9 变形/替换：换主语 I→She，have 变 has（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I have been to Beijing.」把开头的 I 换成 She，have 要怎么变？",
+        promptZh: "句型转换：「I have been to Beijing.」把开头的 I 换成 She，have 要怎么变？",
         replaceBase: "I have been to Beijing.",
         replaceTarget: "把 I 换成 She",
         options: ["has", "have", "is"],
         answer: "has",
-        explain: "She 是一个，信号灯换 has：She has been to。been 这个做过版不变。"
+        explain: "She 是一个，信号灯换 has：She has been to。been 这个过去分词不变。"
       }
     ],
     practice: [
@@ -4323,16 +4323,16 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "新同学笑着等你回答，轮到你介绍自己去过哪儿了。凭记忆，写出那句英文。",
       intentZh: "我去过北京。",
       answer: "I have been to Beijing.",
-      noteZh: "been 是 be 的做过版：去过了、回来了。"
+      noteZh: "been 是 be 的过去分词：去过了、回来了。"
     },
     huntCaseIds: ["hunt-photo-album"]
   },
   {
-    // L23 结果「还在呢」：引入 broken / written；lost 白捡（昨天版做过版同形）
+    // L23 结果「还在呢」：引入 broken / written；lost 白捡（过去式过去分词同形）
     id: "lesson-23-have-lost",
     number: 23,
     title: "钥匙不见了",
-    grammarLabel: "弄丢了 / 弄坏了 · have + 做过版",
+    grammarLabel: "弄丢了 / 弄坏了 · have + 过去分词",
     episode: "小美的一天 ㉓",
     scene: "mansion",
     cover: cover23,
@@ -4344,10 +4344,10 @@ export const grammarLessons: GrammarLesson[] = [
     blocks: [
       { text: "I", role: "我" },
       { text: "have", role: "信号灯" },
-      { text: "lost", role: "弄丢（做过版）" },
+      { text: "lost", role: "弄丢（过去分词）" },
       { text: "my key", role: "我的钥匙" }
     ],
-    oneLineRule: "丢了、坏了、还在呢——结果现在还看得见的事，用 have + 做过版说：I have lost my key。",
+    oneLineRule: "丢了、坏了、还在呢——结果现在还看得见的事，用 have + 过去分词说：I have lost my key。",
     examples: [
       { en: "I have lost my key.", zh: "我把钥匙弄丢了。" },
       { en: "I have broken my cup.", zh: "我把杯子打碎了。" },
@@ -4364,31 +4364,31 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I have lose my key.",
         wrongMark: "lose",
         correct: "I have lost my key.",
-        whyZh: "lose 的做过版是 lost，不走加 -ed 的路。丢失的结果现在还在——还没进家门呢，所以用 have + 做过版。"
+        whyZh: "lose 的过去分词是 lost，不走加 -ed 的路。丢失的结果现在还在——还没进家门呢，所以用 have + 过去分词。"
       },
       {
         wrong: "I break my cup yesterday.",
         wrongMark: "break",
         correct: "I broke my cup yesterday.",
-        whyZh: "句子里有 yesterday，要用昨天版 broke。没提时间、只说「碎了还在」，才用 have + 做过版。"
+        whyZh: "句子里有 yesterday，要用过去式 broke。没提时间、只说「碎了还在」，才用 have + 过去分词。"
       },
       {
         wrong: "I have lost my key yesterday.",
         wrongMark: "yesterday",
         correct: "I lost my key yesterday.",
-        whyZh: "说了 yesterday 就用说昨天的事 lost——完成时只管「现在还没找到」，不问哪天丢的。时间点一出现，就换昨天版。"
+        whyZh: "说了 yesterday 就用说昨天的事 lost——完成时只管「现在还没找到」，不问哪天丢的。时间点一出现，就换过去式。"
       },
       {
         wrong: "She have lost her key.",
         wrongMark: "have",
         correct: "She has lost her key.",
-        whyZh: "「她丢了」，信号灯换他/她/它版 has：She has lost。lost 这个做过版不变，have/has 跟着句首那个「谁」变。"
+        whyZh: "「她丢了」，信号灯换第三人称单数 has：She has lost。lost 这个过去分词不变，have/has 跟着句首那个「谁」变。"
       },
       {
         wrong: "I have breaked my cup.",
         wrongMark: "breaked",
         correct: "I have broken my cup.",
-        whyZh: "break 的做过版是 broken，不是 breaked——它不走加 -ed 的寻常路。做过版里这种「老词」要单独记。"
+        whyZh: "break 的过去分词是 broken，不是 breaked——它不走加 -ed 的寻常路。过去分词里这种「老词」要单独记。"
       },
       {
         wrong: "I lost my key. So I can't open the door now.",
@@ -4403,7 +4403,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I have lost my key.",
         bothRight: true,
-        whyZh: "两句都对，差在哪个形状——这句的 lose 是原样（don't 后面穿原样，第 10 课的老规矩）：I don't want to lose my key again（我不想再丢钥匙）。上面那些句用的是 lost（做过版）。同一件事，前面站谁就穿哪件。"
+        whyZh: "两句都对，差在哪个形状——这句的 lose 是原形（don't 后面用原形，第 10 课的老规矩）：I don't want to lose my key again（我不想再丢钥匙）。上面那些句用的是 lost（过去分词）。同一件事，前面站谁就穿哪件。"
       }
     ],
     variants: [
@@ -4417,18 +4417,18 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "书房里，你给笔友回信", en: "I have written a letter.", zh: "我写好了一封信。" }
     ],
     deepDive: {
-      title: "丢钥匙的事在昨天，为什么不用昨天版？",
+      title: "丢钥匙的事在昨天，为什么不用过去式？",
       paragraphs: [
-        "重点不在哪一天丢的，而在「现在还没找回来」——结果一直留到了现在。凡是结果还在的事（钥匙丢了、杯子碎了），英语用 have + 做过版来说。",
-        "lost 是个白捡的词：lose 的昨天版和做过版长得一样，都是 lost。I lost my key yesterday（昨天丢的，讲故事）和 I have lost my key（还没找回来，说结果）都对，只是分工不同。",
-        "broken、written 也是老词走自己的路：break 的昨天版是 broke、做过版是 broken；write 的昨天版是 wrote、做过版是 written。两件外套别穿混。"
+        "重点不在哪一天丢的，而在「现在还没找回来」——结果一直留到了现在。凡是结果还在的事（钥匙丢了、杯子碎了），英语用 have + 过去分词来说。",
+        "lost 是个白捡的词：lose 的过去式和过去分词长得一样，都是 lost。I lost my key yesterday（昨天丢的，讲故事）和 I have lost my key（还没找回来，说结果）都对，只是分工不同。",
+        "broken、written 也是老词走自己的路：break 的过去式是 broke、过去分词是 broken；write 的过去式是 wrote、过去分词是 written。两种形式别混。"
       ]
     },
     summary: {
-      rule: "结果还在的事（丢了、碎了）用 have + 做过版：I have lost my key。",
+      rule: "结果还在的事（丢了、碎了）用 have + 过去分词：I have lost my key。",
       points: [
-        "I have lost my key. —— 结果还在：用做过版",
-        "I broke my cup yesterday. —— 有时间点：用昨天版",
+        "I have lost my key. —— 结果还在：用过去分词",
+        "I broke my cup yesterday. —— 有时间点：用过去式",
         "Have you cleaned your room? —— 问别人：Have 搬到句首"
       ]
     },
@@ -4440,14 +4440,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "my key.",
         options: ["lost", "lose", "losed"],
         answer: "lost",
-        explain: "lose 的做过版是 lost；losed 是不存在的形状。"
+        explain: "lose 的过去分词是 lost；losed 是不存在的形状。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：我写好了一封信。",
         tokens: ["letter.", "a", "written", "have", "I"],
         answer: "I have written a letter.",
-        explain: "have 后面站 written——write 的做过版。"
+        explain: "have 后面站 written——write 的过去分词。"
       },
       {
         kind: "arrange",
@@ -4462,8 +4462,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "have", "break", "my", "cup."],
         wrongToken: "break",
         answer: "break",
-        correctionZh: "把 break 换成做过版 broken：I have broken my cup。",
-        explain: "have 后面要站做过版：break 的做过版是 broken。"
+        correctionZh: "把 break 换成过去分词 broken：I have broken my cup。",
+        explain: "have 后面要站过去分词：break 的过去分词是 broken。"
       },
       {
         // R8 跨课复现：上一课（L22 have been to）的句式混入，抗遗忘
@@ -4474,14 +4474,14 @@ export const grammarLessons: GrammarLesson[] = [
         explain: "复现第 22 课：「去过」固定是 have been to。"
       },
       {
-        // R9 变形/替换：换动词 lose→break，做过版跟着换（构造迁移，复用 choose 判题）
+        // R9 变形/替换：换动词 lose→break，过去分词跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I have lost my key.」把「丢了钥匙」换成「碎了杯子」，lost 要怎么变？",
+        promptZh: "句型转换：「I have lost my key.」把「丢了钥匙」换成「碎了杯子」，lost 要怎么变？",
         replaceBase: "I have lost my key.",
-        replaceTarget: "把 lost（丢）换成 break（碎）的做过版",
+        replaceTarget: "把 lost（丢）换成 break（碎）的过去分词",
         options: ["broken", "breaked", "broke"],
         answer: "broken",
-        explain: "break 的做过版是 broken：I have broken my cup。不走加 -ed 的路。"
+        explain: "break 的过去分词是 broken：I have broken my cup。不走加 -ed 的路。"
       }
     ],
     practice: [
@@ -4520,17 +4520,17 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "外婆在门口等你，你翻遍了书包也没找到，该跟她说这个坏消息了。凭记忆，写出那句英文。",
       intentZh: "我把钥匙弄丢了。",
       answer: "I have lost my key.",
-      noteZh: "丢了、还没找回来——结果还在，用 have + 做过版。"
+      noteZh: "丢了、还没找回来——结果还在，用 have + 过去分词。"
     },
     huntCaseIds: ["hunt-lost-key"]
   },
   {
-    // L24 对比收口课：targetSentence 存昨天版核心句（无提示产出题恰好考「昨天信号选昨天版」）；
-    // 做过版核心句由 variants 肯定卡 + 破案/练习承载。零新增分词，全批复用。
+    // L24 对比收口课：targetSentence 存过去式核心句（无提示产出题恰好考「昨天信号选过去式」）；
+    // 过去分词核心句由 variants 肯定卡 + 破案/练习承载。零新增分词，全批复用。
     id: "lesson-24-past-vs-perfect",
     number: 24,
     title: "昨天去了，还是去过了？",
-    grammarLabel: "对比 · 昨天版 vs 做过版",
+    grammarLabel: "对比 · 过去式 vs 过去分词",
     episode: "小美的一天 ㉔",
     scene: "mystery",
     cover: cover24,
@@ -4542,10 +4542,10 @@ export const grammarLessons: GrammarLesson[] = [
     blocks: [
       { text: "Yesterday", role: "昨天（信号灯）" },
       { text: "I", role: "我" },
-      { text: "went", role: "去（昨天版）" },
+      { text: "went", role: "去（过去式）" },
       { text: "to the park", role: "去公园" }
     ],
-    oneLineRule: "句子里有具体时间点（yesterday、last week）就用昨天版；不报时间、只说「做过了、去过」就用 have + 做过版。",
+    oneLineRule: "句子里有具体时间点（yesterday、last week）就用过去式；不报时间、只说「做过了、去过」就用 have + 过去分词。",
     examples: [
       { en: "Yesterday I went to the park.", zh: "我昨天去了公园。" },
       { en: "I have been to the park.", zh: "我去过那个公园。" },
@@ -4562,13 +4562,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I have seen that film yesterday.",
         wrongMark: "seen",
         correct: "I saw that film yesterday.",
-        whyZh: "yesterday 已经站在句子里了，就得用昨天版 saw。做过版和具体时间点不能同台。"
+        whyZh: "yesterday 已经站在句子里了，就得用过去式 saw。过去分词和具体时间点不能同台。"
       },
       {
         wrong: "Yesterday I have done my homework.",
         wrongMark: "have",
         correct: "Yesterday I did my homework.",
-        whyZh: "Yesterday 在场，讲的是哪一天干了啥——用昨天版 did。做过版只说「做过了」，不带日子。"
+        whyZh: "Yesterday 在场，讲的是哪一天干了啥——用过去式 did。过去分词只说「做过了」，不带日子。"
       },
       {
         wrong: "I saw that film. It's great!",
@@ -4586,7 +4586,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I have gone to the park yesterday afternoon.",
         wrongMark: "have gone",
         correct: "I went to the park yesterday afternoon.",
-        whyZh: "yesterday afternoon 是确定的昨天时间，配 went 这类昨天版；说做过的事（have done）不挂具体的时间词——这是两种说法最硬的分界线。"
+        whyZh: "yesterday afternoon 是确定的昨天时间，配 went 这类过去式；说做过的事（have done）不挂具体的时间词——这是两种说法最硬的分界线。"
       },
       {
         wrong: "She has lost her key last week.",
@@ -4597,7 +4597,7 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "I have been to the park.", zh: "我去过那个公园。" },
-      { label: "否定", en: "I didn't go out yesterday.", zh: "我昨天没出门。", noteZh: "昨天 + 不 = didn't：did 出场后动词穿回原样 go。" },
+      { label: "否定", en: "I didn't go out yesterday.", zh: "我昨天没出门。", noteZh: "昨天 + 不 = didn't：did 出场后动词变回原形 go。" },
       { label: "疑问", en: "Have you been to the new park?", zh: "你去过新开的公园吗？", noteZh: "不报时间地问经历：Have 搬到句首。" }
     ],
     sceneSwings: [
@@ -4609,17 +4609,17 @@ export const grammarLessons: GrammarLesson[] = [
       title: "went 和 have been，到底怎么选？",
       paragraphs: [
         "两句话并排看：Yesterday I went to the park（我昨天去了公园——讲故事，有日子）；I have been to the park（我去过那个公园——说经历，没有日子）。同一件事，讲法分工不同。",
-        "一句话判据：句子里有具体时间点吗？有——yesterday、last week——用昨天版；没有，只说「做过了、去过」，或事情和现在有关——用 have + 做过版。",
-        "信号词小清单：看到 yesterday、last week，用昨天版；看到 just（刚刚）或不报时间，用做过版。just 先混个脸熟，不用考。",
+        "一句话判据：句子里有具体时间点吗？有——yesterday、last week——用过去式；没有，只说「做过了、去过」，或事情和现在有关——用 have + 过去分词。",
+        "信号词小清单：看到 yesterday、last week，用过去式；看到 just（刚刚）或不报时间，用过去分词。just 先混个脸熟，不用考。",
         "gone 和 been 再认一次：gone 是去了还没回来，been 是去过了、回来了。说经历，用 been。"
       ]
     },
     summary: {
-      rule: "有具体时间点用昨天版；不报时间、只说做过了就用 have + 做过版。",
+      rule: "有具体时间点用过去式；不报时间、只说做过了就用 have + 过去分词。",
       points: [
-        "Yesterday I went to the park. —— yesterday 在场：昨天版",
-        "I have been to the park. —— 不报时间的经历：做过版",
-        "I didn't go out yesterday. —— 昨天版说「不」：did + 原样"
+        "Yesterday I went to the park. —— yesterday 在场：过去式",
+        "I have been to the park. —— 不报时间的经历：过去分词",
+        "I didn't go out yesterday. —— 过去式说「不」：did + 原形"
       ]
     },
     guided: [
@@ -4630,14 +4630,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "I went to the park.",
         options: ["Yesterday", "Just", "Now"],
         answer: "Yesterday",
-        explain: "说哪一天干了啥，开头放时间点 Yesterday，动词穿昨天版。"
+        explain: "说哪一天干了啥，开头放时间点 Yesterday，动词穿过去式。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：昨天我去了公园。",
         tokens: ["to", "Yesterday", "I", "the", "park.", "went"],
         answer: "Yesterday I went to the park.",
-        explain: "Yesterday 开头，went 是 go 的昨天版。"
+        explain: "Yesterday 开头，went 是 go 的过去式。"
       },
       {
         kind: "arrange",
@@ -4652,8 +4652,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "have", "seen", "that", "film", "yesterday."],
         wrongToken: "seen",
         answer: "seen",
-        correctionZh: "把 seen 换成昨天版 saw：I saw that film yesterday。",
-        explain: "yesterday 在场，动词要用昨天版，做过版不能同台。"
+        correctionZh: "把 seen 换成过去式 saw：I saw that film yesterday。",
+        explain: "yesterday 在场，动词要用过去式，过去分词不能同台。"
       },
       {
         // R8 跨课复现：上一课（L23 have lost）的句式混入，抗遗忘
@@ -4666,7 +4666,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：加时间时间词（无→yesterday），时态跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I have seen that film.」句尾加上 yesterday，have seen 要怎么变？",
+        promptZh: "句型转换：「I have seen that film.」句尾加上 yesterday，have seen 要怎么变？",
         replaceBase: "I have seen that film.",
         replaceTarget: "句尾加上 yesterday",
         options: ["saw", "have seen", "seen"],
@@ -4724,11 +4724,11 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "He drinks milk every day.",
     blocks: [
       { text: "He", role: "他" },
-      { text: "drinks", role: "喝（他专用版）" },
+      { text: "drinks", role: "喝（第三人称单数）" },
       { text: "milk", role: "牛奶" },
       { text: "every day", role: "每天" }
     ],
-    oneLineRule: "他、她、它做事，动词后面要加个小尾巴 -s：He drinks。中文动词不变，英语里他/她/它必须变。",
+    oneLineRule: "他、她、它做事，动词后面要加个 -s：He drinks。中文动词不变，英语里他/她/它必须变。",
     examples: [
       { en: "She likes music.", zh: "她喜欢音乐。" },
       { en: "He plays football.", zh: "他踢足球。" },
@@ -4745,43 +4745,43 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "He drink milk every day.",
         wrongMark: "drink",
         correct: "He drinks milk every day.",
-        whyZh: "「他喝」是他/她/它版，动词要加小尾巴 -s：drinks。中文动词不变，英语他/她/它版必须变。"
+        whyZh: "「他喝」是第三人称单数，动词要加 -s：drinks。中文动词不变，英语第三人称单数必须变。"
       },
       {
         wrong: "She like music.",
         wrongMark: "like",
         correct: "She likes music.",
-        whyZh: "「她喜欢」要加 -s：likes。这是英语里最顽固的小尾巴，别丢了。"
+        whyZh: "「她喜欢」要加 -s：likes。这是英语里最顽固的 -s，别丢了。"
       },
       {
         wrong: "He don't like milk.",
         wrongMark: "don't",
         correct: "He doesn't like milk.",
-        whyZh: "「他不喜欢」，帮手要换他/她/它版 doesn't。don't 只配 I、you、we、they。"
+        whyZh: "「他不喜欢」，帮手要换第三人称单数 doesn't。don't 只配 I、you、we、they。"
       },
       {
         wrong: "Does he likes milk?",
         wrongMark: "likes",
         correct: "Does he like milk?",
-        whyZh: "Does 一出场，动词要打回原样 like——一场戏只让一个词扛变化，别让小尾巴长两次。"
+        whyZh: "Does 一出场，动词要打回原形 like——一场戏只让一个词扛变化，别让 -s 长两次。"
       },
       {
         wrong: "She watch TV every night.",
         wrongMark: "watch",
         correct: "She watches TV every night.",
-        whyZh: "watch 以 ch 结尾，他/她/它版不是只加 s，要加 es：watches——和 sandwich 加 es 是一个规律。"
+        whyZh: "watch 以 ch 结尾，第三人称单数不是只加 s，要加 es：watches——和 sandwich 加 es 是一个规律。"
       },
       {
         wrong: "He studys English.",
         wrongMark: "studys",
         correct: "He studies English.",
-        whyZh: "study 是「辅音 + y」结尾，他/她/它版要把 y 变 i 再加 es：studies。和 story→stories 同款。"
+        whyZh: "study 是「辅音 + y」结尾，第三人称单数要把 y 变 i 再加 es：studies。和 story→stories 同款。"
       }
     ],
     variants: [
       { label: "肯定", en: "He drinks milk every day.", zh: "他每天喝牛奶。" },
-      { label: "否定", en: "He doesn't like coffee.", zh: "他不喜欢咖啡。", noteZh: "「他/她/它」一个的「不」用 doesn't，动词打回原样。" },
-      { label: "疑问", en: "Does he play football?", zh: "他踢足球吗？", noteZh: "Does 搬到句首，动词打回原样 play。" }
+      { label: "否定", en: "He doesn't like coffee.", zh: "他不喜欢咖啡。", noteZh: "「他/她/它」一个的「不」用 doesn't，动词打回原形。" },
+      { label: "疑问", en: "Does he play football?", zh: "他踢足球吗？", noteZh: "Does 搬到句首，动词打回原形 play。" }
     ],
     sceneSwings: [
       { sceneZh: "说妈妈的日常", en: "She cooks dinner every day.", zh: "她每天做晚饭。" },
@@ -4791,19 +4791,19 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "为什么三单要加 -s？什么时候加 es？",
       paragraphs: [
-        "说每天的事时，只有「他、她、它」的动词要加小尾巴：I/you/we/they 都用原样。这是英语里最显眼的一处标记。",
+        "说每天的事时，只有「他、她、它」的动词要加：I/you/we/they 都用原形。这是英语里最显眼的一处标记。",
         "大多数动词直接加 -s：drink → drinks、like → likes、play → plays。",
         "以 s、x、ch、sh、o 结尾的加 -es：watch → watches、go → goes、fix → fixes。",
         "「辅音 + y」结尾的把 y 变 i 再加 -es：study → studies、carry → carries。元音 + y 不变：play → plays。",
-        "问句和说「不」的句子里，Does / doesn't 出场后动词打回原样：Does he play？He doesn't play——小尾巴由帮手扛。"
+        "问句和说「不」的句子里，Does / doesn't 出场后动词打回原形：Does he play？He doesn't play——-s 由 do 扛。"
       ]
     },
     summary: {
-      rule: "他、她、它做事，动词加小尾巴 -s；Does / doesn't 出场，动词打回原样。",
+      rule: "他、她、它做事，动词加 -s；Does / doesn't 出场，动词打回原形。",
       points: [
         "He drinks. —— 「他」做事要带 -s：He drinks.",
         "She watches. —— ch 结尾加 -es",
-        "Does he play? / He doesn't play. —— 帮手出场，动词回原样"
+        "Does he play? / He doesn't play. —— 帮手出场，动词回原形"
       ]
     },
     guided: [
@@ -4814,21 +4814,21 @@ export const grammarLessons: GrammarLesson[] = [
         after: "music.",
         options: ["likes", "like", "liking"],
         answer: "likes",
-        explain: "「他喜欢」是他/她/它版，动词加小尾巴 -s：likes。"
+        explain: "「他喜欢」是第三人称单数，动词加 -s：likes。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：她每晚看电视。",
         tokens: ["She", "watches", "TV", "every", "night."],
         answer: "She watches TV every night.",
-        explain: "watch 以 ch 结尾，他/她/它版加 es：watches。"
+        explain: "watch 以 ch 结尾，第三人称单数加 es：watches。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：他踢足球吗？",
         tokens: ["Does", "he", "play", "football?"],
         answer: "Does he play football?",
-        explain: "Does 搬到句首，动词打回原样 play。"
+        explain: "Does 搬到句首，动词打回原形 play。"
       },
       {
         kind: "spot",
@@ -4836,8 +4836,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["He", "drink", "milk", "every", "day."],
         wrongToken: "drink",
         answer: "drink",
-        correctionZh: "把 drink 加小尾巴：He drinks milk every day。",
-        explain: "他/她/它版动词要加 -s。"
+        correctionZh: "把 drink 加：He drinks milk every day。",
+        explain: "第三人称单数动词要加 -s。"
       },
       {
         // R8 跨课复现：上一课（L24 完成时 vs 过去时）的句式混入，抗遗忘
@@ -4850,12 +4850,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换主语 I→He，动词原形变三单（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I play football.」把开头的 I 换成 He，play 要怎么变？",
+        promptZh: "句型转换：「I play football.」把开头的 I 换成 He，play 要怎么变？",
         replaceBase: "I play football.",
         replaceTarget: "把 I 换成 He",
         options: ["plays", "play", "playing"],
         answer: "plays",
-        explain: "He 是他/她/它版，play 要加小尾巴：He plays football。"
+        explain: "He 是第三人称单数，play 要加：He plays football。"
       }
     ],
     practice: [
@@ -4896,7 +4896,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "朋友问你同桌有什么习惯。凭记忆，写出那句英文。",
       intentZh: "他每天喝牛奶。",
       answer: "He drinks milk every day.",
-      noteZh: "「他喝」是他/她/它版，drink 要加小尾巴 -s。"
+      noteZh: "「他喝」是第三人称单数，drink 要加 -s。"
     },
     // R7：三单是中式错误 Top，配 2 案持续追踪 sv_agreement
     huntCaseIds: ["hunt-my-sister", "hunt-third-person-daily"]
@@ -4920,7 +4920,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "a book", role: "一本书" },
       { text: "on the desk", role: "在桌上" }
     ],
-    oneLineRule: "说「某处有某物」用 There is / There are 开头：一个用 is，好几个用 are——中文的「有」直接说，英语要让 There 先占位。",
+    oneLineRule: "说「某处有某物」用 There is / There are 开头：一个用 is，复数用 are——中文的「有」直接说，英语要让 There 先占位。",
     examples: [
       { en: "There is a cat under the chair.", zh: "椅子下面有一只猫。" },
       { en: "There are three apples on the table.", zh: "桌上有三个苹果。" },
@@ -4944,7 +4944,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "There is three apples on the table.",
         wrongMark: "is",
         correct: "There are three apples on the table.",
-        whyZh: "三个苹果是好几个，用 There are 不用 There is——看后面的东西是一个还是好几个。"
+        whyZh: "三个苹果是复数，用 There are 不用 There is——看后面的东西是一个还是复数。"
       },
       {
         wrong: "There are a cat under the chair.",
@@ -4962,19 +4962,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "There is some books on the desk.",
         wrongMark: "is",
         correct: "There are some books on the desk.",
-        whyZh: "some books 是好几个，用 There are。some 不改变单好几个的判断——看后面的词本身。"
+        whyZh: "some books 是复数，用 There are。some 不改变单复数的判断——看后面的词本身。"
       },
       {
         wrong: "There is a milk in the fridge.",
         wrongMark: "a",
         correct: "There is some milk in the fridge.",
-        whyZh: "milk 数不清，前面不能报数 a——用 some（一些）或直接 there is milk。数不清的东西不数个数。"
+        whyZh: "milk 数不清，前面不能加 a——用 some（一些）或直接 there is milk。数不清的东西不数个数。"
       }
     ],
     variants: [
       { label: "肯定", en: "There is a book on the desk.", zh: "桌上有一本书。" },
-      { label: "否定", en: "There isn't a park near here.", zh: "这附近没有公园。", noteZh: "在 is 后面加 not：isn't。好几个东西用 aren't。" },
-      { label: "疑问", en: "Is there a park near here?", zh: "这附近有公园吗？", noteZh: "把 Is 搬到句首就是问句。好几个东西用 Are there。" }
+      { label: "否定", en: "There isn't a park near here.", zh: "这附近没有公园。", noteZh: "在 is 后面加 not：isn't。复数名词用 aren't。" },
+      { label: "疑问", en: "Is there a park near here?", zh: "这附近有公园吗？", noteZh: "把 Is 搬到句首就是问句。复数名词用 Are there。" }
     ],
     sceneSwings: [
       { sceneZh: "看冰箱里的东西", en: "There is some milk in the fridge.", zh: "冰箱里有一些牛奶。" },
@@ -4986,15 +4986,15 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "There be 说「某处存在某物」：There is a book on the desk（桌上有一本书）——重点是「那个地方有什么」。",
         "have 说「某人拥有某物」：I have a book（我有一本书）——重点是「谁拥有」。",
-        "说一个用 There is，说好几个用 There are，数不清的也用 There is（牛奶、水这类）：There is some milk。",
+        "说一个用 There is，说复数用 There are，数不清的也用 There is（牛奶、水这类）：There is some milk。",
         "问句把 Is / Are 搬到句首：Is there…? / Are there…?；否定在 be 后面加 not：isn't / aren't。"
       ]
     },
     summary: {
-      rule: "某处有某物：一个用 There is，好几个用 There are；问句 Is/Are 搬句首。",
+      rule: "某处有某物：一个用 There is，复数用 There are；问句 Is/Are 搬句首。",
       points: [
         "There is a book. —— 一个用 is",
-        "There are three apples. —— 好几个用 are",
+        "There are three apples. —— 复数用 are",
         "Is there a park? —— 问句：Is 搬句首"
       ]
     },
@@ -5013,7 +5013,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：桌上有三个苹果。",
         tokens: ["There", "are", "three", "apples", "on", "the", "table."],
         answer: "There are three apples on the table.",
-        explain: "三个苹果是好几个，用 There are。"
+        explain: "三个苹果是复数，用 There are。"
       },
       {
         kind: "arrange",
@@ -5037,17 +5037,17 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——上一课学过：他喜欢音乐。",
         tokens: ["He", "likes", "music."],
         answer: "He likes music.",
-        explain: "复现第 25 课：他/她/它版动词加 -s。"
+        explain: "复现第 25 课：第三人称单数动词加 -s。"
       },
       {
         // R9 变形/替换：换数量（一本→三本），be 动词跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「There is a book on the desk.」把「一本书」换成「三本书」，is 要怎么变？",
+        promptZh: "句型转换：「There is a book on the desk.」把「一本书」换成「三本书」，is 要怎么变？",
         replaceBase: "There is a book on the desk.",
         replaceTarget: "把 a book 换成 three books",
         options: ["are", "is", "have"],
         answer: "are",
-        explain: "三本书是好几个，用 There are：There are three books。看后面的东西是单是复。"
+        explain: "三本书是复数，用 There are：There are three books。看后面的东西是单是复。"
       }
     ],
     practice: [
@@ -5158,7 +5158,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "What are you look for?",
         wrongMark: "look",
         correct: "What are you looking for?",
-        whyZh: "「正在找」用进行时 looking：What are you looking for？are 后面的动词要穿 -ing 外套。"
+        whyZh: "「正在找」用进行时 looking：What are you looking for？are 后面的动词要加 -ing。"
       }
     ],
     variants: [
@@ -5227,12 +5227,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——上一课学过：桌上有三个苹果。",
         tokens: ["There", "are", "three", "apples", "on", "the", "table."],
         answer: "There are three apples on the table.",
-        explain: "复现第 26 课：好几个用 There are。"
+        explain: "复现第 26 课：复数用 There are。"
       },
       {
         // R9 变形/替换：换疑问对象（东西→地方），疑问词跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「What is this?」把「这是什么」换成「我的钥匙在哪」，What 要怎么变？",
+        promptZh: "句型转换：「What is this?」把「这是什么」换成「我的钥匙在哪」，What 要怎么变？",
         replaceBase: "What is this?",
         replaceTarget: "换成「在哪」（问地方）",
         options: ["Where", "When", "How"],
@@ -5278,7 +5278,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "你看到朋友在找东西，想问他在找什么。凭记忆，写出那句英文。",
       intentZh: "你在找什么？",
       answer: "What are you looking for?",
-      noteZh: "问「正在找什么」：What are you looking for？are 后面动词穿 -ing 外套。"
+      noteZh: "问「正在找什么」：What are you looking for？are 后面动词加 -ing。"
     },
     huntCaseIds: ["hunt-question-words"]
   },
@@ -5337,7 +5337,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "He play often football.",
         wrongMark: "play often",
         correct: "He often plays football.",
-        whyZh: "两个错：这类小词站在动词前（often plays），他/她/它版动词加 -s（plays）。"
+        whyZh: "两个错：这类小词站在动词前（often plays），第三人称单数动词加 -s（plays）。"
       },
       {
         wrong: "I am always arrive early.",
@@ -5395,7 +5395,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：她经常晚上看书。",
         tokens: ["She", "often", "reads", "at", "night."],
         answer: "She often reads at night.",
-        explain: "often 站在动词 reads 前面，他/她/它版 reads 加 -s。"
+        explain: "often 站在动词 reads 前面，第三人称单数 reads 加 -s。"
       },
       {
         kind: "arrange",
@@ -5424,7 +5424,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换动词类型（动作→be），频率副词位置跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I always arrive early.」把「早到」换成「开心（happy）」，always 的位置要怎么变？",
+        promptZh: "句型转换：「I always arrive early.」把「早到」换成「开心（happy）」，always 的位置要怎么变？",
         replaceBase: "I always arrive early.",
         replaceTarget: "换成「我总是开心」（用 be）",
         options: ["am always", "always am", "always is"],
@@ -5489,10 +5489,10 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "I am going to watch a movie.",
     blocks: [
       { text: "I am going to", role: "我打算" },
-      { text: "watch", role: "看（原样）" },
+      { text: "watch", role: "看（原形）" },
       { text: "a movie", role: "一场电影" }
     ],
-    oneLineRule: "说「打算做、就要做」用 be going to + 原样：I am going to watch。be 跟着句首那个「谁」变（am/is/are），going to 不变。",
+    oneLineRule: "说「打算做、就要做」用 be going to + 原形：I am going to watch。be 跟着句首那个「谁」变（am/is/are），going to 不变。",
     examples: [
       { en: "I am going to watch a movie.", zh: "我打算去看电影。" },
       { en: "She is going to visit her grandma.", zh: "她打算去看外婆。" },
@@ -5515,7 +5515,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am going to watching.",
         wrongMark: "watching",
         correct: "I am going to watch a movie.",
-        whyZh: "going to 后面的动词穿原样：going to watch。-ing 要 be 搭着才是「正在做」；和 will 后面的动词一个规矩。"
+        whyZh: "going to 后面的动词用原形：going to watch。-ing 要 be 搭着才是「正在做」；和 will 后面的动词一个规矩。"
       },
       {
         wrong: "She are going to visit her grandma.",
@@ -5539,7 +5539,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "It will rains tomorrow.",
         wrongMark: "rains",
         correct: "It is going to rain tomorrow.",
-        whyZh: "两个错：will 后动词要原样（rain 不是 rains）；说「看迹象要发生」，be going to 比 will 更贴切。"
+        whyZh: "两个错：will 后动词要原形（rain 不是 rains）；说「看迹象要发生」，be going to 比 will 更贴切。"
       }
     ],
     variants: [
@@ -5562,9 +5562,9 @@ export const grammarLessons: GrammarLesson[] = [
       ]
     },
     summary: {
-      rule: "打算/就要 = be going to + 原样，be 跟着句首那个「谁」变。",
+      rule: "打算/就要 = be going to + 原形，be 跟着句首那个「谁」变。",
       points: [
-        "I am going to watch. —— be + going to + 原样",
+        "I am going to watch. —— be + going to + 原形",
         "She is going to visit. —— be 跟着开头那个谁变 is",
         "Are you going to watch? —— 问句：be 搬句首"
       ]
@@ -5584,7 +5584,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：她打算去看外婆。",
         tokens: ["She", "is", "going", "to", "visit", "her", "grandma."],
         answer: "She is going to visit her grandma.",
-        explain: "She 的 be 是 is，going to 后面的动词穿原样 visit。"
+        explain: "She 的 be 是 is，going to 后面的动词用原形 visit。"
       },
       {
         kind: "arrange",
@@ -5613,7 +5613,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换主语 I→She，be 跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am going to watch a movie.」把开头的 I 换成 She，am 要怎么变？",
+        promptZh: "句型转换：「I am going to watch a movie.」把开头的 I 换成 She，am 要怎么变？",
         replaceBase: "I am going to watch a movie.",
         replaceTarget: "把 I 换成 She",
         options: ["is", "am", "are"],
@@ -5658,7 +5658,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "同学问你周末打算做什么。凭记忆，写出那句英文。",
       intentZh: "我打算去看电影。",
       answer: "I am going to watch a movie.",
-      noteZh: "打算 = be going to + 动词穿原样，be 跟着句首那个「谁」变。"
+      noteZh: "打算 = be going to + 动词用原形，be 跟着句首那个「谁」变。"
     },
     huntCaseIds: ["hunt-going-to-plan"]
   },
@@ -5679,7 +5679,7 @@ export const grammarLessons: GrammarLesson[] = [
     blocks: [
       { text: "There are", role: "有" },
       { text: "some", role: "一些（肯定）" },
-      { text: "apples", role: "苹果（好几个）" },
+      { text: "apples", role: "苹果（复数）" },
       { text: "on the table", role: "在桌上" }
     ],
     oneLineRule: "「一些」：好好说的时候用 some，问句和「不 / 没」的时候换 any。数得清的用 many，数不清的用 much。",
@@ -5803,7 +5803,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换句式（肯定→疑问），some 换 any（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「There are some apples.」把它改成问句「有苹果吗」，some 要怎么变？",
+        promptZh: "句型转换：「There are some apples.」把它改成问句「有苹果吗」，some 要怎么变？",
         replaceBase: "There are some apples.",
         replaceTarget: "改成问句",
         options: ["any", "some", "much"],
@@ -5991,7 +5991,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换形容词（短词最高→长词最高），形状跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I want the biggest apple.」把「大」换成「漂亮（beautiful）」，the biggest 要怎么变？",
+        promptZh: "句型转换：「I want the biggest apple.」把「大」换成「漂亮（beautiful）」，the biggest 要怎么变？",
         replaceBase: "I want the biggest apple.",
         replaceTarget: "把 biggest 换成「最漂亮」",
         options: ["the most beautiful", "the beautifulest", "most beautiful"],
@@ -6081,19 +6081,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Closing the door!",
         wrongMark: "Closing",
         correct: "Close the door!",
-        whyZh: "祈使句的动词穿原样（Close）——-ing 是「正在做」或「当名词」的打扮，祈使句两样都不用。"
+        whyZh: "祈使句的动词用原形（Close）——-ing 是「正在做」或「当名词」的打扮，祈使句两样都不用。"
       },
       {
         wrong: "Please you open the book.",
         wrongMark: "you",
         correct: "Please open the book.",
-        whyZh: "please 后面直接跟动词穿原样，不用加 you——请人做事不需要点名句首那个「谁」。"
+        whyZh: "please 后面直接跟动词用原形，不用加 you——请人做事不需要点名句首那个「谁」。"
       },
       {
         wrong: "Don't closing the door.",
         wrongMark: "closing",
         correct: "Don't close the door.",
-        whyZh: "「别做」是 Don't + 动词穿原样：Don't close。-ing 外套在祈使句里也不穿。"
+        whyZh: "「别做」是 Don't + 动词用原形：Don't close。-ing 形式在祈使句里也不穿。"
       },
       {
         wrong: "Not be late!",
@@ -6105,12 +6105,12 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Closes the door, please.",
         wrongMark: "Closes",
         correct: "Close the door, please.",
-        whyZh: "祈使句的动词穿原样，不加他/她/它版 -s——没有句首那个「谁」，就没有他/她/它版这一说。"
+        whyZh: "祈使句的动词用原形，不加第三人称单数 -s——没有句首那个「谁」，就没有第三人称单数这一说。"
       }
     ],
     variants: [
       { label: "肯定", en: "Close the door, please.", zh: "请把门关上。" },
-      { label: "否定", en: "Don't open the window.", zh: "别开窗。", noteZh: "「别做」= Don't + 动词穿原样。" },
+      { label: "否定", en: "Don't open the window.", zh: "别开窗。", noteZh: "「别做」= Don't + 动词用原形。" },
       { label: "疑问", en: "Close the door, will you?", zh: "把门关上，好吗？", noteZh: "句尾加 will you? 更客气，还是祈使句。" }
     ],
     sceneSwings: [
@@ -6123,16 +6123,16 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "请人做事时，「你」是明摆着的——英语干脆把 You 省掉，动词直接开头：Close the door（你，关门）。",
         "礼貌三档：Close the door（直白）→ Close the door, please（加 please）→ Could you close the door?（最客气，变成问句）。",
-        "「别做」在前面垫 Don't：Don't open / Don't be late——Don't + 动词原样。",
+        "「别做」在前面垫 Don't：Don't open / Don't be late——Don't + 动词原形。",
         "标语、说明书的句子全是祈使句：Push（推）、Pull（拉）、Turn left（左转）——看到动词裸开头，就是让你做事。"
       ]
     },
     summary: {
-      rule: "请人做事：动作原样开头（省 You）；别做 = Don't + 原样。",
+      rule: "请人做事：动作原形开头（省 You）；别做 = Don't + 原形。",
       points: [
         "Close the door. —— 动词开头",
         "Please sit down. —— 加 please 更礼貌",
-        "Don't be late. —— Don't 后面穿原样"
+        "Don't be late. —— Don't 后面用原形"
       ]
     },
     guided: [
@@ -6150,14 +6150,14 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：请坐下。",
         tokens: ["Please", "sit", "down."],
         answer: "Please sit down.",
-        explain: "please（请）是客气话，后面直接跟那个动作、穿原样——Please sit down 就是「请坐下」，sit 不带 s 也不垫 to。"
+        explain: "please（请）是客气话，后面直接跟那个动作、用原形——Please sit down 就是「请坐下」，sit 不带 s 也不垫 to。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：别开窗。",
         tokens: ["Don't", "open", "the", "window."],
         answer: "Don't open the window.",
-        explain: "「别做」= Don't + 动词穿原样。"
+        explain: "「别做」= Don't + 动词用原形。"
       },
       {
         kind: "spot",
@@ -6179,12 +6179,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换语气（请求→禁止），开头跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Open the window.」想改成「别开窗」，开头要怎么变？",
+        promptZh: "句型转换：「Open the window.」想改成「别开窗」，开头要怎么变？",
         replaceBase: "Open the window.",
         replaceTarget: "改成「别开窗」",
         options: ["Don't open", "Not open", "No open"],
         answer: "Don't open",
-        explain: "「别做」= Don't + 动词穿原样：Don't open the window。"
+        explain: "「别做」= Don't + 动词用原形：Don't open the window。"
       }
     ],
     practice: [
@@ -6264,13 +6264,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "This ones are mine.",
         wrongMark: "ones",
         correct: "This one is mine.",
-        whyZh: "this 是「这一个」，配一个 one 和 is；ones 是好几个，要换 these——This one is。"
+        whyZh: "this 是「这一个」，配一个 one 和 is；ones 是复数，要换 these——This one is。"
       },
       {
         wrong: "These one are mine.",
         wrongMark: "one",
         correct: "These are mine.",
-        whyZh: "these 是「这些」，配好几个；后面要么直接 These are mine，要么 These ones are——一个 one 搭不上。"
+        whyZh: "these 是「这些」，配复数；后面要么直接 These are mine，要么 These ones are——一个 one 搭不上。"
       },
       {
         wrong: "This umbrella is my.",
@@ -6294,7 +6294,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Those one is hers.",
         wrongMark: "Those one is",
         correct: "Those are hers.",
-        whyZh: "those 是「那些」（好几个），要配 are：Those are hers。一个才配 is。"
+        whyZh: "those 是「那些」（复数），要配 are：Those are hers。一个才配 is。"
       }
     ],
     variants: [
@@ -6310,10 +6310,10 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "this/that/these/those 和 my/mine 有什么不一样？",
       paragraphs: [
-        "远近四兄弟：this（这个，近）→ that（那个，远）→ these（这些，近＋好几个）→ those（那些，远＋好几个）。一对近远、一对单复。",
+        "远近四兄弟：this（这个，近）→ that（那个，远）→ these（这些，近＋复数）→ those（那些，远＋复数）。一对近远、一对单复。",
         "my 和 mine 都是「我的」：my 是小标签，必须贴在名词前面（my umbrella）；mine 自己就能当主角，站句尾（is mine）。",
         "一家人都这样：your/yours、her/hers、our/ours——带 s 的那个独立用，不带的贴名词。",
-        "these/those 配「好几个」的东西或 are（These are mine），this/that 配「一个」或 is（This is mine）——单复别配错。"
+        "these/those 配「复数」的东西或 are（These are mine），this/that 配「一个」或 is（This is mine）——单复别配错。"
       ]
     },
     summary: {
@@ -6354,8 +6354,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["These", "is", "my", "books."],
         wrongToken: "is",
         answer: "is",
-        correctionZh: "books 是好几个，要配 are：These are my books。",
-        explain: "these 是「这些」（好几个），搭档要用 are——These are her books。is 是给「一个」用的，配不上 these。"
+        correctionZh: "books 是复数，要配 are：These are my books。",
+        explain: "these 是「这些」（复数），搭档要用 are——These are her books。is 是给「一个」用的，配不上 these。"
       },
       {
         // R8 跨课复现：上一课（L32 祈使句）的句式混入，抗遗忘
@@ -6363,12 +6363,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——上一课学过：别迟到。",
         tokens: ["Don't", "be", "late!"],
         answer: "Don't be late!",
-        explain: "复现第 32 课：Don't + 动词穿原样。"
+        explain: "复现第 32 课：Don't + 动词用原形。"
       },
       {
         // R9 变形/替换：换数量（单个→多个），指示词跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「This one is mine.」把「这一把」换成「这些（书）」，This 要怎么变？",
+        promptZh: "句型转换：「This one is mine.」把「这一把」换成「这些（书）」，This 要怎么变？",
         replaceBase: "This one is mine.",
         replaceTarget: "把 This one 换成「这些书」",
         options: ["These", "Those ones is", "This"],
@@ -6430,7 +6430,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "drawing", role: "画画（-ing）" },
       { text: "at three", role: "在三点" }
     ],
-    oneLineRule: "说「过去某时正在做」：was/were + 动词ing——I was drawing。be 用过去版（was/were），动词照样穿 -ing 外套。",
+    oneLineRule: "说「过去某时正在做」：was/were + 动词ing——I was drawing。be 用过去式（was/were），动词照样加 -ing。",
     examples: [
       { en: "I was drawing at three.", zh: "三点时我正在画画。" },
       { en: "She was reading last night.", zh: "昨晚她正在看书。" },
@@ -6447,31 +6447,31 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I was draw at three.",
         wrongMark: "draw",
         correct: "I was drawing at three.",
-        whyZh: "进行时的动词必须穿 -ing 外套：was drawing。be 后面直接跟原样就塌了。"
+        whyZh: "进行时的动词必须加 -ing：was drawing。be 后面直接跟原形就塌了。"
       },
       {
         wrong: "I am drawing at three yesterday.",
         wrongMark: "am",
         correct: "I was drawing at three yesterday.",
-        whyZh: "昨天的事要用过去版的 be：was。am 是「现在」的搭档，装不下昨天。"
+        whyZh: "昨天的事要用过去式的 be：was。am 是「现在」的搭档，装不下昨天。"
       },
       {
         wrong: "They was playing football.",
         wrongMark: "was",
         correct: "They were playing football.",
-        whyZh: "They 是一伙的，过去版 be 用 were——和 are 换 were 一个道理。"
+        whyZh: "They 是复数，过去式 be 用 were——和 are 换 were 一个道理。"
       },
       {
         wrong: "She were reading last night.",
         wrongMark: "were",
         correct: "She was reading last night.",
-        whyZh: "She 是一个，过去版 be 用 was——were 只配 you/we/they。"
+        whyZh: "She 是一个，过去式 be 用 was——were 只配 you/we/they。"
       },
       {
         wrong: "What was you doing?",
         wrongMark: "was",
         correct: "What were you doing?",
-        whyZh: "you 的过去版 be 是 were——was 只配 I/he/she/it。问句里 be 也要搬句首。"
+        whyZh: "you 的过去式 be 是 were——was 只配 I/he/she/it。问句里 be 也要搬句首。"
       },
       {
         wrong: "I drawing at three.",
@@ -6483,7 +6483,7 @@ export const grammarLessons: GrammarLesson[] = [
     variants: [
       { label: "肯定", en: "I was drawing at three.", zh: "三点时我正在画画。" },
       { label: "否定", en: "I wasn't sleeping at three.", zh: "三点时我没在睡觉。", noteZh: "was 加 not：wasn't（were 加 not 是 weren't）。" },
-      { label: "疑问", en: "Were you drawing at three?", zh: "三点时你正在画画吗？", noteZh: "把 Were 搬到句首，-ing 外套不动。" }
+      { label: "疑问", en: "Were you drawing at three?", zh: "三点时你正在画画吗？", noteZh: "把 Were 搬到句首，-ing 不变。" }
     ],
     sceneSwings: [
       { sceneZh: "说昨晚正在看书", en: "She was reading last night.", zh: "昨晚她正在看书。" },
@@ -6491,19 +6491,19 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问对方当时在干嘛", en: "What were you doing?", zh: "你（那时）在干嘛？" }
     ],
     deepDive: {
-      title: "过去进行时 = 过去版的「正在」",
+      title: "过去进行时 = 过去式的「正在」",
       paragraphs: [
         "今天正在做：am/is/are + 动词的 -ing 形式（I am drawing——现在正在画）。",
-        "那时正在做：把 be 换成昨天版 was/were，-ing 外套不动（I was drawing——那时正在画）。",
-        "be 的过去版搭档：I/he/she/it 用 was，you/we/they 用 were——和 am/is/are 的分工一一对应。",
+        "那时正在做：把 be 换成过去式 was/were，-ing 不变（I was drawing——那时正在画）。",
+        "be 的过去式搭档：I/he/she/it 用 was，you/we/they 用 were——和 am/is/are 的分工一一对应。",
         "最常用的场景：过去某时正在做什么（at three yesterday）+ 讲故事背景（It was raining——当时正下着雨）。"
       ]
     },
     summary: {
-      rule: "过去某时正在做 = was/were + 动词的 -ing 形式，be 用昨天版。",
+      rule: "过去某时正在做 = was/were + 动词的 -ing 形式，be 用过去式。",
       points: [
         "I was drawing. —— was + -ing",
-        "They were playing. —— 一伙人用 were",
+        "They were playing. —— 复数用 were",
         "Were you drawing? —— 问句 Were 搬句首"
       ]
     },
@@ -6515,21 +6515,21 @@ export const grammarLessons: GrammarLesson[] = [
         after: "drawing at three.",
         options: ["was", "am", "were"],
         answer: "was",
-        explain: "I 的过去版 be 是 was：was drawing。"
+        explain: "I 的过去式 be 是 was：was drawing。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：昨晚她正在看书。",
         tokens: ["She", "was", "reading", "last", "night."],
         answer: "She was reading last night.",
-        explain: "She 用 was，动词穿 -ing 外套。"
+        explain: "She 用 was，动词加 -ing。"
       },
       {
         kind: "arrange",
         promptZh: "你想问：三点时你正在做什么？",
         tokens: ["What", "were", "you", "doing", "at", "three?"],
         answer: "What were you doing at three?",
-        explain: "you 的过去版 be 是 were，搬到句首。"
+        explain: "you 的过去式 be 是 were，搬到句首。"
       },
       {
         kind: "spot",
@@ -6537,8 +6537,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["They", "was", "playing", "football."],
         wrongToken: "was",
         answer: "was",
-        correctionZh: "They 是一伙的，用 were：They were playing football。",
-        explain: "过去版 be：一个 was，一伙 were。"
+        correctionZh: "They 是复数，用 were：They were playing football。",
+        explain: "过去式 be：一个 was，复数 were。"
       },
       {
         // R8 跨课复现：上一课（L33 指示代词）的句式混入，抗遗忘
@@ -6551,12 +6551,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换时间（现在→过去），be 跟着换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am drawing.」加上「昨天三点（at three yesterday）」这个过去时间，am 要怎么变？",
+        promptZh: "句型转换：「I am drawing.」加上「昨天三点（at three yesterday）」这个过去时间，am 要怎么变？",
         replaceBase: "I am drawing.",
         replaceTarget: "加上过去的時間 at three yesterday",
         options: ["was", "am", "were"],
         answer: "was",
-        explain: "过去的事用过去版 be：I was drawing at three yesterday。-ing 外套不动。"
+        explain: "过去的事用过去式 be：I was drawing at three yesterday。-ing 不变。"
       }
     ],
     practice: [
@@ -6834,7 +6834,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I thinks she is tired.",
         wrongMark: "thinks",
         correct: "I think she is tired.",
-        whyZh: "I 是「我」，think 不用加 s——加 -s 是 he / she / it 的待遇（第 25 课学过的他/她/它版）。"
+        whyZh: "I 是「我」，think 不用加 s——加 -s 是 he / she / it 的待遇（第 25 课学过的第三人称单数）。"
       },
       {
         wrong: "I think she is a tired.",
@@ -7075,7 +7075,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "帮小美说一句：我们不知道 Coco 在哪。",
         tokens: ["We", "don't", "know", "where", "Coco", "is."],
         answer: "We don't know where Coco is.",
-        explain: "句首那个「谁」换成一伙的 We、后面换成名字，顺序还是 where + 句首那个「谁」 + is。"
+        explain: "句首那个「谁」换成复数 We、后面换成名字，顺序还是 where + 句首那个「谁」 + is。"
       },
       {
         kind: "arrange",
@@ -7099,7 +7099,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 30 课学过：桌上有一些苹果。",
         tokens: ["There", "are", "some", "apples", "on", "the", "table."],
         answer: "There are some apples on the table.",
-        explain: "复现第 30 课：好几个用 There are，apples 加 s。"
+        explain: "复现第 30 课：复数用 There are，apples 加 s。"
       },
       {
         // R9 变形/替换：上一个问句搬进引子后面（构造迁移，复用 choose 判题）
@@ -7185,7 +7185,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She says she will comes.",
         wrongMark: "comes",
         correct: "She says she will come.",
-        whyZh: "will 后面的动词穿原样：will come。第 12 课学的老规矩，转述里照样管用。"
+        whyZh: "will 后面的动词用原形：will come。第 12 课学的老规矩，转述里照样管用。"
       },
       {
         wrong: "I think she will not come.",
@@ -7203,26 +7203,26 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She say she will come.",
         wrongMark: "say",
         correct: "She says she will come.",
-        whyZh: "句首那个「谁」 She 是他/她/它版，say 要加 -s：She says。"
+        whyZh: "句首那个「谁」 She 是第三人称单数，say 要加 -s：She says。"
       },
       {
         wrong: "Do you think she will comes?",
         wrongMark: "comes",
         correct: "Do you think she will come?",
-        whyZh: "问别人的想法：外面 Do 站句首，里面的 will come 还是原样，哪儿都不变。"
+        whyZh: "问别人的想法：外面 Do 站句首，里面的 will come 还是原形，哪儿都不变。"
       },
       {
         wrong: "She says she will coming.",
         wrongMark: "coming",
         correct: "She says she will come.",
-        whyZh: "will 后面永远穿原样——comes、came、coming 都不对，就是 come。"
+        whyZh: "will 后面永远用原形——comes、came、coming 都不对，就是 come。"
       },
       {
         // 2026-09-22 批四十八追加：补「跟谁说」这一侧（本课原有 6 张全在讲「话中话」）
         wrong: "She said me she will come.",
         wrongMark: "me",
         correct: "She says she will come.",
-        whyZh: "「跟谁说」不能光把那个人摆在后面——say 后面只装「说的话」，要带上人得垫个小词 to：She said 【to】 me（她跟我说）。中文「她跟我说」是一个词顺着说下来，英文这里要多个 to。句子里的 said 本身没错（它正是 say 的昨天版），少的是那个 to。"
+        whyZh: "「跟谁说」不能光把那个人摆在后面——say 后面只装「说的话」，要带上人得垫个小词 to：She said 【to】 me（她跟我说）。中文「她跟我说」是一个词顺着说下来，英文这里要多个 to。句子里的 said 本身没错（它正是 say 的过去式），少的是那个 to。"
       },
       {
         // 同上，双正解侧：展示「跟谁说」的正确两种说法
@@ -7268,7 +7268,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "she will come.",
         options: ["She says", "She say", "She said"],
         answer: "She says",
-        explain: "句首那个「谁」 She 是他/她/它版，say 加 -s：She says。"
+        explain: "句首那个「谁」 She 是第三人称单数，say 加 -s：She says。"
       },
       {
         kind: "arrange",
@@ -7290,8 +7290,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["She", "says", "she", "will", "comes."],
         wrongToken: "comes.",
         answer: "comes.",
-        correctionZh: "will 后面的动词穿原样：will come。",
-        explain: "will 后面永远穿原样，comes 要换回 come。"
+        correctionZh: "will 后面的动词用原形：will come。",
+        explain: "will 后面永远用原形，comes 要换回 come。"
       },
       {
         // R8 跨课复现：第 29 课（be going to）的句式混入，抗遗忘
@@ -7299,7 +7299,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 29 课学过：我打算去看电影。",
         tokens: ["I", "am", "going", "to", "watch", "a", "movie."],
         answer: "I am going to watch a movie.",
-        explain: "复现第 29 课：be going to + 动词穿原样。"
+        explain: "复现第 29 课：be going to + 动词用原形。"
       },
       {
         // R9 变形/替换：否定搬家（构造迁移，复用 choose 判题）
@@ -7402,7 +7402,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "The boy who wear glasses is my brother.",
         wrongMark: "wear",
         correct: "The boy who wears glasses is my brother.",
-        whyZh: "尾巴里的人 who 也是「他」，动词要加 -s：who wears——他/她/它版的规矩进了尾巴照样管用。"
+        whyZh: "尾巴里的人 who 也是「他」，动词要加 -s：who wears——第三人称单数的规矩进了尾巴照样管用。"
       },
       {
         wrong: "The boy who is wears glasses is my brother.",
@@ -7483,12 +7483,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 25 课学过：他每天喝牛奶。",
         tokens: ["He", "drinks", "milk", "every", "day."],
         answer: "He drinks milk every day.",
-        explain: "复现第 25 课：他/她/它版动词加 -s，drinks。"
+        explain: "复现第 25 课：第三人称单数动词加 -s，drinks。"
       },
       {
         // R9 变形/替换：换成女生（who 不变、动词形式要跟着走）
         kind: "replace",
-        promptZh: "句子变身：「The boy who wears glasses is my brother.」换成女生（The girl…），尾巴里的动词怎么变？",
+        promptZh: "句型转换：「The boy who wears glasses is my brother.」换成女生（The girl…），尾巴里的动词怎么变？",
         replaceBase: "The boy who wears glasses is my brother.",
         replaceTarget: "把 The boy 换成 The girl",
         options: ["wears", "wear", "wearing"],
@@ -7591,7 +7591,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "These are the book which I like.",
         wrongMark: "book",
         correct: "These are the books which I like.",
-        whyZh: "These 是「这些」，后面的东西要用好几个：books——好几个配好几个，第 11 课的老规矩。"
+        whyZh: "These 是「这些」，后面的东西要用复数：books——复数名词配复数搭档，第 11 课的老规矩。"
       },
       {
         wrong: "This is the book which I don't like it.",
@@ -7782,7 +7782,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I know the boy who wear glasses.",
         wrongMark: "wear",
         correct: "I know the boy who wears glasses.",
-        whyZh: "who 也是「他」，动词加 -s：who wears——尾巴里的他/她/它版规矩不变。"
+        whyZh: "who 也是「他」，动词加 -s：who wears——尾巴里的第三人称单数规矩不变。"
       },
       {
         wrong: "Do you know where is he?",
@@ -7861,7 +7861,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：两种钩子各就各位（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I know the boy who wears glasses.」把 the boy 换成 the book，钩子要怎么换？",
+        promptZh: "句型转换：「I know the boy who wears glasses.」把 the boy 换成 the book，钩子要怎么换？",
         replaceBase: "I know the boy who wears glasses.",
         replaceTarget: "把 the boy 换成 the book",
         options: ["which", "who", "it"],
@@ -7961,7 +7961,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She like reading.",
         wrongMark: "like",
         correct: "She likes reading.",
-        whyZh: "句首那个「谁」 She 是他/她/它版，like 要加 -s：She likes reading。"
+        whyZh: "句首那个「谁」 She 是第三人称单数，like 要加 -s：She likes reading。"
       },
       {
         wrong: "You like reading?",
@@ -7992,7 +7992,7 @@ export const grammarLessons: GrammarLesson[] = [
         "你在第 13 课见过 -ing：I am reading（我正在读）——前面站着 be（am/is/are），它就在说「正在做」。",
         "现在它换了第二份工作：没有 be 的时候，-ing 当「名词」用——把做一件事变成「那件事」本身（英语里这叫名词形式）：I like reading（我喜欢「读书」这件事）。",
         "怎么分？看有没有 be 搭着：有 be＝正在做（I am reading）；光 -ing、跟在 like 后面＝当名词用。同一个形式，两种用法。",
-        "中文不用变：「我喜欢读书」里的「读书」原样不动；英语要把 read 换成名词形式 reading。这是中文直译最容易漏的一步。"
+        "中文不用变：「我喜欢读书」里的「读书」原形不动；英语要把 read 换成名词形式 reading。这是中文直译最容易漏的一步。"
       ]
     },
     summary: {
@@ -8048,7 +8048,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：名词换「做的事」（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I like music.」想说「我喜欢读书」，music 要换成什么？",
+        promptZh: "句型转换：「I like music.」想说「我喜欢读书」，music 要换成什么？",
         replaceBase: "I like music.",
         replaceTarget: "把 music 换成「读书」",
         options: ["reading", "read", "to read"],
@@ -8221,7 +8221,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 14 课学过：我会游泳。",
         tokens: ["I", "can", "swim."],
         answer: "I can swim.",
-        explain: "复现第 14 课：can 后面的动词穿原样。"
+        explain: "复现第 14 课：can 后面的动词用原形。"
       },
       {
         kind: "spot",
@@ -8235,7 +8235,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：命令句变主角句（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am swimming.」想说「游泳真好玩」，开头要换成什么？",
+        promptZh: "句型转换：「I am swimming.」想说「游泳真好玩」，开头要换成什么？",
         replaceBase: "I am swimming.",
         replaceTarget: "把「我在游泳」换成「游泳这件事」",
         options: ["Swimming", "Swim", "am swimming"],
@@ -8285,7 +8285,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-44-shop-to-buy",
     number: 44,
     title: "去商店买牛奶",
-    grammarLabel: "小垫板新用法 · to + 去做什么",
+    grammarLabel: "to 的新用法 · to + 去做什么",
     episode: "小美的一天 ㊹",
     scene: "city",
     cover: cover44,
@@ -8296,10 +8296,10 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "I go to the shop to buy milk.",
     blocks: [
       { text: "I go to the shop", role: "去商店（to 带路到地方）" },
-      { text: "to buy", role: "买（垫板·说明去干嘛）" },
+      { text: "to buy", role: "买（to·说明去干嘛）" },
       { text: "milk", role: "牛奶" }
     ],
-    oneLineRule: "两个动作要垫板才缝得上：go to the shop「to buy」milk——到地方垫一块 to（带路），去做什么再垫一块 to（说明目的）。",
+    oneLineRule: "两个动作要靠 to 才连得上：go to the shop「to buy」milk——到地方加一个 to（带路），去做什么再加一个 to（说明目的）。",
     examples: [
       { en: "I go to the shop to buy milk.", zh: "我去商店买牛奶。" },
       { en: "I go to the library to read books.", zh: "我去图书馆看书。" },
@@ -8323,25 +8323,25 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I go to the shop to buy milk.",
         bothRight: true,
-        whyZh: "两句都对——只说腿儿，到商店就完了；多说一层「去干嘛」，就把 to buy 垫上。垫板可以只垫一块，也可以垫两块。"
+        whyZh: "两句都对——只说腿儿，到商店就完了；多说一层「去干嘛」，就把 to buy 加上。to 可以只垫一块，也可以垫两块。"
       },
       {
         wrong: "I go to the shop to buying milk.",
         wrongMark: "buying",
         correct: "I go to the shop to buy milk.",
-        whyZh: "垫板 to 后面永远穿原样：to buy——买东西说 buy，不说 buying。"
+        whyZh: "to 后面永远用原形：to buy——买东西说 buy，不说 buying。"
       },
       {
         wrong: "I go shop to buy milk.",
         wrongMark: "shop",
         correct: "I go to the shop to buy milk.",
-        whyZh: "去地方的第一块垫板别丢：go 【to】the shop——商店是地方，要用 to 带路。"
+        whyZh: "带路的第一个 to 别丢：go 【to】the shop——商店是地方，要用 to 带路。"
       },
       {
         wrong: "She go to the shop to buy milk.",
         wrongMark: "go",
         correct: "She goes to the shop to buy milk.",
-        whyZh: "句首那个「谁」 She 是他/她/它版，go 要加 -es：goes。"
+        whyZh: "句首那个「谁」 She 是第三人称单数，go 要加 -es：goes。"
       },
       {
         wrong: "I go to the shop to buy milks.",
@@ -8361,19 +8361,19 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "说想买面包", en: "I want to buy bread.", zh: "我想买面包。" }
     ],
     deepDive: {
-      title: "一块垫板，两个车站",
+      title: "一个 to，两个车站",
       paragraphs: [
-        "第 9 课你见过第一块小垫板：go to the library（去图书馆）——to 带路，把你送到地方。",
-        "今天垫板能垫第二块：到了商店要干嘛？把「买牛奶」也垫上——to buy milk。合起来：I go to the shop to buy milk。",
-        "为什么中文不用垫？「去商店买牛奶」一口气说完了，中间不用任何标记；英语不行，两个动作要一块垫板缝着，不然听着像两个句子硬拼。",
-        "记住手感：到地方 = to + 地方（to the shop）；去做什么 = to + 动词原样（to buy）。同一个 to，两种身份。"
+        "第 9 课你见过第一个 to：go to the library（去图书馆）——to 带路，把你送到地方。",
+        "今天 to 能用第二个：到了商店要干嘛？把「买牛奶」也垫上——to buy milk。合起来：I go to the shop to buy milk。",
+        "为什么中文不用垫？「去商店买牛奶」一口气说完了，中间不用任何标记；英语不行，两个动作中间要有一个 to 缝着，不然听着像两个句子硬拼。",
+        "记住手感：到地方 = to + 地方（to the shop）；去做什么 = to + 动词原形（to buy）。同一个 to，两种身份。"
       ]
     },
     summary: {
-      rule: "两个动作用垫板缝：go to the shop【to buy】milk——第一块带路，第二块说去干嘛。",
+      rule: "两个动作用 to 连：go to the shop【to buy】milk——第一块带路，第二块说去干嘛。",
       points: [
-        "I go to the shop to buy milk. —— 两块垫板：to the shop / to buy",
-        "to buy 后面穿原样 —— 不写 buying",
+        "I go to the shop to buy milk. —— 两个 to：to the shop / to buy",
+        "to buy 后面用原形 —— 不写 buying",
         "She goes to the park to play. —— 「她」做事要带 -es"
       ]
     },
@@ -8385,14 +8385,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "milk.",
         options: ["to buy", "buy", "buying"],
         answer: "to buy",
-        explain: "去干嘛要垫一块 to：to buy milk。"
+        explain: "去干嘛要加一个 to：to buy milk。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：我去商店买牛奶。",
         tokens: ["I", "go", "to", "the", "shop", "to", "buy", "milk."],
         answer: "I go to the shop to buy milk.",
-        explain: "两块垫板：to the shop 带路 + to buy 说目的。"
+        explain: "两个 to：to the shop 带路 + to buy 说目的。"
       },
       {
         // R8 跨课复现：第 9 课（go to）原句
@@ -8416,13 +8416,13 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "go", "to", "the", "shop", "buy", "milk."],
         wrongToken: "buy",
         answer: "buy",
-        correctionZh: "中间垫一块 to：go to the shop to buy milk。",
-        explain: "两个动作硬撞了，垫板没垫。"
+        correctionZh: "中间加一个 to：go to the shop to buy milk。",
+        explain: "两个动作硬撞了，to 没加。"
       },
       {
         // R9 变形/替换：同词换岗（want 门口的垫板）
         kind: "replace",
-        promptZh: "句子变身：「I go to the shop to buy milk.」想说「我想去旅行」——第 15 课的桌子，这里怎么垫？",
+        promptZh: "句型转换：「I go to the shop to buy milk.」想说「我想去旅行」——第 15 课的桌子，这里怎么垫？",
         replaceBase: "I want to travel.",
         replaceTarget: "把 travel 换成「买面包」",
         options: ["to buy bread", "buy bread", "buying bread"],
@@ -8463,7 +8463,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "妈妈打电话让你顺路买东西。凭记忆，写出你要说的那句英文。",
       intentZh: "我去商店买牛奶。",
       answer: "I go to the shop to buy milk.",
-      noteZh: "两块垫板：to the shop 带路 + to buy 说目的。"
+      noteZh: "两个 to：to the shop 带路 + to buy 说目的。"
     },
     huntCaseIds: ["hunt-shop-note"]
   },
@@ -8502,13 +8502,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I enjoy to read.",
         wrongMark: "to",
         correct: "I enjoy reading.",
-        whyZh: "enjoy 的门只开一扇——它不认 to，只接 -ing 形式：enjoy reading。垫板在 enjoy 门口用不上。"
+        whyZh: "enjoy 的门只开一扇——它不认 to，只接 -ing 形式：enjoy reading。to 在 enjoy 门口用不上。"
       },
       {
         wrong: "She enjoy reading.",
         wrongMark: "enjoy",
         correct: "She enjoys reading.",
-        whyZh: "句首那个「谁」 She 是他/她/它版，enjoy 要加 -s：enjoys。名词形式 reading 不动。"
+        whyZh: "句首那个「谁」 She 是第三人称单数，enjoy 要加 -s：enjoys。名词形式 reading 不动。"
       },
       {
         wrong: "I enjoy read.",
@@ -8549,7 +8549,7 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "enjoy 为什么不要 to？",
       paragraphs: [
-        "第 44 课你学过：两个动作用垫板缝——go to the shop to buy milk。但不是所有动词门口都垫板。",
+        "第 44 课你学过：两个动作用 to 连——go to the shop to buy milk。但不是所有动词门口都 to。",
         "enjoy 的门只开一扇：它后面只接 -ing 形式（enjoy reading），不认 to（enjoy to read 进不去）。每个动词的门口规矩不一样，遇到就记这一句。",
         "enjoy 本身是什么意思？「享受、很喜欢」——比 like 多一点投入。I enjoy reading 就是「我读书读得很享受」。",
         "这课只用记一个动词的门口：enjoy 只接 -ing 形式。别的动词以后一个一个遇。"
@@ -8595,7 +8595,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "to",
         answer: "to",
         correctionZh: "enjoy 的门不认 to：I enjoy reading。",
-        explain: "enjoy 后面不垫板，只接 -ing 形式。"
+        explain: "enjoy 后面不带 to，只接 -ing 形式。"
       },
       {
         // R8 跨课复现：第 25 课（三单）的句式混入
@@ -8603,12 +8603,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 25 课学过：他每天喝牛奶。",
         tokens: ["He", "drinks", "milk", "every", "day."],
         answer: "He drinks milk every day.",
-        explain: "复现第 25 课：他/她/它版动词加 -s。"
+        explain: "复现第 25 课：第三人称单数动词加 -s。"
       },
       {
         // R9 变形/替换：换做的事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I enjoy reading.」想说「我享受画画」，reading 要换成什么？",
+        promptZh: "句型转换：「I enjoy reading.」想说「我享受画画」，reading 要换成什么？",
         replaceBase: "I enjoy reading.",
         replaceTarget: "把阅读换成「画画」",
         options: ["drawing", "to draw", "draw"],
@@ -8664,7 +8664,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-46-two-partners",
     number: 46,
     title: "一句话，两种搭档",
-    grammarLabel: "收口 · 名词形式 + 小垫板",
+    grammarLabel: "收口 · 名词形式 + to",
     episode: "小美的一天 ㊻",
     scene: "mansion",
     cover: cover46,
@@ -8676,7 +8676,7 @@ export const grammarLessons: GrammarLesson[] = [
     blocks: [
       { text: "I enjoy reading", role: "名词形式搭档（enjoy）" },
       { text: "and", role: "和" },
-      { text: "I want to travel", role: "小垫板搭档（want to）" }
+      { text: "I want to travel", role: "to 搭档（want to）" }
     ],
     oneLineRule: "两样搭档同台：enjoy/like 后面跟名词形式（reading）；want 门口垫 to（to travel）——两个动词，两种搭法。",
     examples: [
@@ -8695,7 +8695,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I enjoy to read.",
         wrongMark: "to",
         correct: "I enjoy reading.",
-        whyZh: "enjoy 的门只开一扇：enjoy reading——to 进不去。对照记：同一块 read，want 门口却要垫板（want to read）。"
+        whyZh: "enjoy 的门只开一扇：enjoy reading——to 进不去。对照记：同一块 read，want 门口却要（want to read）。"
       },
       {
         wrong: "I know where is he.",
@@ -8713,19 +8713,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I want to traveling.",
         wrongMark: "traveling",
         correct: "I want to travel.",
-        whyZh: "垫板 to 后面永远穿原样：to travel——不写 traveling。"
+        whyZh: "to 后面永远用原形：to travel——不写 traveling。"
       },
       {
         wrong: "I enjoy reading and I want travel.",
         wrongMark: "want travel",
         correct: "I enjoy reading and I want to travel.",
-        whyZh: "want 门口的垫板别丢：want 【to】travel——两个动作中间要缝一块板。"
+        whyZh: "want 门口的 to 别丢：want 【to】travel——两个动作中间要缝一块板。"
       },
       {
         wrong: "She like drawing and she want to dance.",
         wrongMark: "like",
         correct: "She likes drawing and she wants to dance.",
-        whyZh: "两个动词的句首那个「谁」都是 She（他/她/它版），like 加 -s、want 也加 -s：likes / wants。"
+        whyZh: "两个动词的句首那个「谁」都是 She（第三人称单数），like 加 -s、want 也加 -s：likes / wants。"
       }
     ],
     variants: [
@@ -8735,23 +8735,23 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     sceneSwings: [
       { sceneZh: "说喜欢读书（名词形式搭档）", en: "I like reading.", zh: "我喜欢读书。" },
-      { sceneZh: "说想去旅行（小垫板搭档）", en: "I want to travel.", zh: "我想去旅行。" },
+      { sceneZh: "说想去旅行（to 搭档）", en: "I want to travel.", zh: "我想去旅行。" },
       { sceneZh: "说她喜欢画画还想跳舞", en: "She likes drawing and she wants to dance.", zh: "她喜欢画画，她还想去跳舞。" }
     ],
     deepDive: {
       title: "搭档地图 —— 还有一句悄悄话",
       paragraphs: [
-        "这一批你认识了两样搭档：名词形式（reading）——跟着 like / enjoy 出场；小垫板（to + 原样）——跟着 want 出场，也帮「去干什么」缝句（go to the shop to buy milk）。",
-        "「搭档地图」不用背：遇到动词就往门口看一眼——enjoy 的门只开一扇（只接 -ing 形式），want 的门口有垫板（认 to）。",
+        "这一批你认识了两样搭档：名词形式（reading）——跟着 like / enjoy 出场；to（to + 原形）——跟着 want 出场，也帮「去干什么」缝句（go to the shop to buy milk）。",
+        "「搭档地图」不用背：遇到动词就往门口看一眼——enjoy 的门只开一扇（只接 -ing 形式），want 的门口有（认 to）。",
         "悄悄话一句：其实「喜欢」两类搭法都能说——like reading 和 like to read 都对，意思几乎一样。你不用纠结，默认用名词形式就行。",
         "至此，你会说「喜欢做、享受做、去做、想做」——动词后面跟什么，你已经有一套自己的手感了。"
       ]
     },
     summary: {
-      rule: "两种搭档：like / enjoy + 名词形式（reading）；want + 小垫板（to travel）。",
+      rule: "两种搭档：like / enjoy + 名词形式（reading）；want + to（to travel）。",
       points: [
         "I enjoy reading. —— 名词形式搭档",
-        "I want to travel. —— 小垫板搭档",
+        "I want to travel. —— to 搭档",
         "I enjoy reading and I want to travel. —— 两样同台"
       ]
     },
@@ -8767,7 +8767,7 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         kind: "arrange",
-        promptZh: "你想说：我想去旅行（小垫板搭档）。",
+        promptZh: "你想说：我想去旅行（to 搭档）。",
         tokens: ["I", "want", "to", "travel."],
         answer: "I want to travel.",
         explain: "want 门口垫 to：want to travel。"
@@ -8799,12 +8799,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换搭档（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I like reading.」换成 want——「我想读书」，后面的词要怎么搭？",
+        promptZh: "句型转换：「I like reading.」换成 want——「我想读书」，后面的词要怎么搭？",
         replaceBase: "I like reading.",
         replaceTarget: "把 like 换成 want",
         options: ["to read", "reading", "read"],
         answer: "to read",
-        explain: "want 门口有垫板：want to read。"
+        explain: "want 门口有 to：want to read。"
       }
     ],
     practice: [
@@ -8860,10 +8860,10 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "You should sleep early.",
     blocks: [
       { text: "You should", role: "你应该（should 也是不变词）" },
-      { text: "sleep", role: "睡觉（穿原样）" },
+      { text: "sleep", role: "睡觉（用原形）" },
       { text: "early", role: "早一点" }
     ],
-    oneLineRule: "should 也进「不变词家族」：can / must / should 从来不变形，后面动词穿原样；不一样的是口气——can 能、must 必须、should 应该（给建议，比 must 轻）。",
+    oneLineRule: "should 也进「不变词家族」：can / must / should 从来不变形，后面动词用原形；不一样的是口气——can 能、must 必须、should 应该（给建议，比 must 轻）。",
     examples: [
       { en: "You should sleep early.", zh: "你应该早点睡。" },
       { en: "She should go to bed.", zh: "她该去睡了。" },
@@ -8880,13 +8880,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "You should to sleep early.",
         wrongMark: "to",
         correct: "You should sleep early.",
-        whyZh: "should 是家族成员，不垫板——should sleep early。垫板是 want 的待遇（第 15 课 / 第 44 课），别串门。"
+        whyZh: "should 是家族成员，不带 to——should sleep early。to 是 want 的待遇（第 15 课 / 第 44 课），别串门。"
       },
       {
         wrong: "She should goes to bed.",
         wrongMark: "goes",
         correct: "She should go to bed.",
-        whyZh: "家族里动词穿原样：should go——goes 的他/她/它版尾巴要脱下来（must 后面也一样）。"
+        whyZh: "家族里动词用原形：should go——goes 的第三人称单数尾巴要脱下来（must 后面也一样）。"
       },
       {
         wrong: "You must sleep early.",
@@ -8899,13 +8899,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I should to helping her.",
         wrongMark: "to helping",
         correct: "I should help her.",
-        whyZh: "should 后面既不垫 to、也不换 helping——动词就穿原样：should help。"
+        whyZh: "should 后面既不垫 to、也不换 helping——动词就用原形：should help。"
       },
       {
         wrong: "Should I to rest now?",
         wrongMark: "to",
         correct: "Should I rest now?",
-        whyZh: "问句把 Should 搬到句首，动词照原样：Should I rest？不垫 to。"
+        whyZh: "问句把 Should 搬到句首，动词照原形：Should I rest？不垫 to。"
       },
       {
         wrong: "You don't should sleep late.",
@@ -8917,7 +8917,7 @@ export const grammarLessons: GrammarLesson[] = [
     variants: [
       { label: "肯定", en: "You should sleep early.", zh: "你应该早点睡。" },
       { label: "否定", en: "You shouldn't sleep late.", zh: "你不该熬夜。", noteZh: "not 跟着 should 走，缩成一个词 shouldn't。" },
-      { label: "疑问", en: "Should I rest now?", zh: "我现在该休息一下吗？", noteZh: "Should 搬句首，动词照原样。" }
+      { label: "疑问", en: "Should I rest now?", zh: "我现在该休息一下吗？", noteZh: "Should 搬句首，动词照原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说她该去睡了", en: "She should go to bed.", zh: "她该去睡了。" },
@@ -8927,17 +8927,17 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "三兄弟的分寸：can / must / should",
       paragraphs: [
-        "家族里现在有三兄弟：can（能）、must（必须）、should（应该）。形态都一样——从来不变形，后面动词穿原样。",
+        "家族里现在有三兄弟：can（能）、must（必须）、should（应该）。形态都一样——从来不变形，后面动词用原形。",
         "不一样的是口气：must 最硬（必须，非做不可）；should 最软（应该，给建议）；can 说的是能力（能）。",
         "同样是「早点睡」：You must sleep early.（必须，像命令）/ You should sleep early.（应该，像关心）——两句语法都对，看你想要哪种口气。",
         "求别人给建议，还能把它搬句首：Should I rest now?（我该休息一下吗？）——把 Should 放最前面就行。"
       ]
     },
     summary: {
-      rule: "should 进「不变词家族」：后面动词穿原样；口气是「应该」——给建议，比 must 轻。",
+      rule: "should 进「不变词家族」：后面动词用原形；口气是「应该」——给建议，比 must 轻。",
       points: [
         "You should sleep early. —— 应该：建议口气",
-        "She should go to bed. —— 家族里动词穿原样",
+        "She should go to bed. —— 家族里动词用原形",
         "Should I rest now? —— 问句：Should 搬句首"
       ]
     },
@@ -8949,14 +8949,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "sleep early.",
         options: ["should", "should to", "shoulds"],
         answer: "should",
-        explain: "should 不垫板、不变形：You should sleep early。"
+        explain: "should 不带 to、不变形：You should sleep early。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：你应该早点睡。",
         tokens: ["You", "should", "sleep", "early."],
         answer: "You should sleep early.",
-        explain: "家族句式：should + 动词穿原样。"
+        explain: "家族句式：should + 动词用原形。"
       },
       {
         // R8 跨课复现：第 16 课（must）原句——family 对照
@@ -8964,7 +8964,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 16 课学过：我今天必须完成作业。",
         tokens: ["I", "must", "finish", "my", "homework", "today."],
         answer: "I must finish my homework today.",
-        explain: "复现第 16 课：must 也是家族成员，后面穿原样。"
+        explain: "复现第 16 课：must 也是家族成员，后面用原形。"
       },
       {
         kind: "spot",
@@ -8972,13 +8972,13 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["You", "should", "to", "sleep", "early."],
         wrongToken: "to",
         answer: "to",
-        correctionZh: "should 不垫板：去掉 to——You should sleep early。",
-        explain: "should 是家族成员，不垫板（want 才垫）。"
+        correctionZh: "should 不带 to：去掉 to——You should sleep early。",
+        explain: "should 是家族成员，不带 to（want 才垫）。"
       },
       {
         // R9 变形/替换：求建议（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「You should sleep early.」想求建议——「我该休息一下吗」，开头要换成什么？",
+        promptZh: "句型转换：「You should sleep early.」想求建议——「我该休息一下吗」，开头要换成什么？",
         replaceBase: "You should sleep early.",
         replaceTarget: "把「你应该早睡」变成「我该休息一下吗」",
         options: ["Should I", "Do I", "Am I"],
@@ -8991,7 +8991,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 25 课学过：他每天喝牛奶。",
         tokens: ["He", "drinks", "milk", "every", "day."],
         answer: "He drinks milk every day.",
-        explain: "复现第 25 课：他/她/它版动词加 -s。"
+        explain: "复现第 25 课：第三人称单数动词加 -s。"
       }
     ],
     practice: [
@@ -9027,7 +9027,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "期末复习夜，妈妈让你早点睡。凭记忆，写出那句建议的英文。",
       intentZh: "你应该早点睡。",
       answer: "You should sleep early.",
-      noteZh: "should 进家族：后面动词穿原样；口气是「应该」。"
+      noteZh: "should 进家族：后面动词用原形；口气是「应该」。"
     },
     huntCaseIds: ["hunt-advice-note"]
   },
@@ -9086,7 +9086,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "If it rain, I will stay.",
         wrongMark: "rain",
         correct: "If it rains, I will stay.",
-        whyZh: "it 是他/她/它版，动词加 -s：it rains——if 里的小句子也要站直。"
+        whyZh: "it 是第三人称单数，动词加 -s：it rains——if 里的小句子也要站直。"
       },
       {
         wrong: "If rains, I will stay.",
@@ -9098,7 +9098,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "If it rains, I will staying at home.",
         wrongMark: "staying",
         correct: "If it rains, I will stay at home.",
-        whyZh: "will 后面穿原样：will stay——staying 的 -ing 要脱下来。"
+        whyZh: "will 后面用原形：will stay——staying 的 -ing 要脱下来。"
       }
     ],
     variants: [
@@ -9151,7 +9151,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 12 课学过：明天会下雨。",
         tokens: ["It", "will", "rain."],
         answer: "It will rain.",
-        explain: "复现第 12 课：will + 原样。放进 if 里它要变：If it rains…"
+        explain: "复现第 12 课：will + 原形。放进 if 里它要变：If it rains…"
       },
       {
         kind: "spot",
@@ -9173,7 +9173,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：把陈述句改问句（条件句挂后面）
         kind: "replace",
-        promptZh: "句子变身：「If it rains, I will stay at home.」想问对方——「如果下雨，你还出门吗」，最前面换成什么？",
+        promptZh: "句型转换：「If it rains, I will stay at home.」想问对方——「如果下雨，你还出门吗」，最前面换成什么？",
         replaceBase: "If it rains, I will stay at home.",
         replaceTarget: "把「我就待在家」换成「你还出门吗」",
         options: ["Will you go out", "Do you go out", "Are you go out"],
@@ -9243,7 +9243,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "an umbrella", role: "一把伞" },
       { text: "if it rains", role: "如果下雨（条件挂后面）" }
     ],
-    oneLineRule: "建议加条件：主建议用 should（You should take an umbrella），条件用 if 挂后面（if it rains）——should 不垫板、if 里说现在。",
+    oneLineRule: "建议加条件：主建议用 should（You should take an umbrella），条件用 if 挂后面（if it rains）——should 不带 to、if 里说现在。",
     examples: [
       { en: "You should take an umbrella if it rains.", zh: "如果下雨，你应该带把伞。" },
       { en: "You shouldn't go out if it rains.", zh: "如果下雨，你不该出门。" },
@@ -9260,7 +9260,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "You should to take an umbrella if it rains.",
         wrongMark: "to",
         correct: "You should take an umbrella if it rains.",
-        whyZh: "should 是家族成员，不垫板——should take（第 47 课学过）。"
+        whyZh: "should 是家族成员，不带 to——should take（第 47 课学过）。"
       },
       {
         wrong: "If it will rain, you should take an umbrella.",
@@ -9279,19 +9279,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Should I to go now?",
         wrongMark: "to",
         correct: "Should I go now?",
-        whyZh: "问句里 should 也不垫板：Should I go now？——Should 搬句首，动词照原样。"
+        whyZh: "问句里 should 也不带 to：Should I go now？——Should 搬句首，动词照原形。"
       },
       {
         wrong: "If it rain, you should stay.",
         wrongMark: "rain",
         correct: "If it rains, you should stay.",
-        whyZh: "it 是他/她/它版，动词加 -s：it rains——if 里的小句子也要站直。"
+        whyZh: "it 是第三人称单数，动词加 -s：it rains——if 里的小句子也要站直。"
       },
       {
         wrong: "You shouldn't to worry.",
         wrongMark: "to",
         correct: "You shouldn't worry.",
-        whyZh: "否定形也不垫板：shouldn't worry——「不」跟着 should 走，动词照原样。"
+        whyZh: "否定形也不带 to：shouldn't worry——「不」跟着 should 走，动词照原形。"
       }
     ],
     variants: [
@@ -9309,12 +9309,12 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "这一批你学了两样工具：should（给建议）和 if（说条件）。现在它们同台：You should take an umbrella if it rains。",
         "组装顺序有讲究：主建议走在前面（You should take an umbrella），条件用 if 挂在后面（if it rains）——先说你要干嘛，再补一句「什么情况下」。",
-        "两个规矩同时在场：should 后面动词穿原样（不垫板）；if 里说现在（不用 will）。哪边松了都不对。",
+        "两个规矩同时在场：should 后面动词用原形（不带 to）；if 里说现在（不用 will）。哪边松了都不对。",
         "回顾这一批的三兄弟加条件句：can 能 / must 必须 / should 应该；if 管「如果」、because 管「因为」。日常对话里给建议、说条件，你现在都能接住了。"
       ]
     },
     summary: {
-      rule: "建议 + 条件：主建议 You should…（不垫板）+ 条件 if…（说现在）挂后面。",
+      rule: "建议 + 条件：主建议 You should…（不带 to）+ 条件 if…（说现在）挂后面。",
       points: [
         "You should take an umbrella if it rains. —— 建议先走，条件挂后",
         "You shouldn't go out if it rains. —— 否定：not 跟 should",
@@ -9329,7 +9329,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "an umbrella if it rains.",
         options: ["take", "to take", "taking"],
         answer: "take",
-        explain: "should 后面动词穿原样：should take。"
+        explain: "should 后面动词用原形：should take。"
       },
       {
         kind: "arrange",
@@ -9344,7 +9344,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 47 课学过：你应该早点睡。",
         tokens: ["You", "should", "sleep", "early."],
         answer: "You should sleep early.",
-        explain: "复现第 47 课：should 后面穿原样。"
+        explain: "复现第 47 课：should 后面用原形。"
       },
       {
         kind: "spot",
@@ -9352,8 +9352,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["You", "should", "to", "take", "an", "umbrella."],
         wrongToken: "to",
         answer: "to",
-        correctionZh: "should 不垫板：去掉 to——You should take an umbrella。",
-        explain: "should 是家族成员，不垫板。"
+        correctionZh: "should 不带 to：去掉 to——You should take an umbrella。",
+        explain: "should 是家族成员，不带 to。"
       },
       {
         // R8 跨课复现：第 48 课（if）原句
@@ -9366,7 +9366,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：求建议（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「You should take an umbrella if it rains.」想问对方——「如果下雨，我该带伞吗」，最前面换成什么？",
+        promptZh: "句型转换：「You should take an umbrella if it rains.」想问对方——「如果下雨，我该带伞吗」，最前面换成什么？",
         replaceBase: "You should take an umbrella if it rains.",
         replaceTarget: "把「你应该带」变成「我该带吗」",
         options: ["Should I take", "Do I take", "Am I take"],
@@ -9418,11 +9418,11 @@ export const grammarLessons: GrammarLesson[] = [
     huntCaseIds: ["hunt-weekend-tip"]
   },
   {
-    // ── 第七批 · L50 被动本体（幕后句）：谁做的不重要——把做过版借到 be 身边 ──
+    // ── 第七批 · L50 被动本体（幕后句）：谁做的不重要——把过去分词借到 be 身边 ──
     id: "lesson-50-passive",
     number: 50,
     title: "杯子被摔了",
-    grammarLabel: "幕后句 · 谁做的不重要",
+    grammarLabel: "被动句 · 谁做的不重要",
     episode: "小美的一天 ㊿",
     scene: "campus",
     cover: cover50,
@@ -9432,11 +9432,11 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我的杯子被摔了。",
     targetSentence: "My cup was broken.",
     blocks: [
-      { text: "My cup", role: "我的杯子（站台上）" },
-      { text: "was", role: "过去版 be（新搭档）" },
-      { text: "broken", role: "摔坏（做过版）" }
+      { text: "My cup", role: "我的杯子（放到前面）" },
+      { text: "was", role: "过去式 be（新搭档）" },
+      { text: "broken", role: "摔坏（过去分词）" }
     ],
-    oneLineRule: "谁做的不重要时，把「做过版」借到 be 身边：My cup was broken——杯子站台上，做事的人退到幕后（跟 have 身边是同一件外套）。",
+    oneLineRule: "谁做的不重要时，把「过去分词」借到 be 身边：My cup was broken——杯子放到前面，做事的人退到后面（跟 have 身边同一个形式）。",
     examples: [
       { en: "My cup was broken.", zh: "我的杯子被摔了。" },
       { en: "My key was lost.", zh: "我的钥匙丢了。" },
@@ -9453,39 +9453,39 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "My cup was break.",
         wrongMark: "break",
         correct: "My cup was broken.",
-        whyZh: "be 身边要穿「做过版」——不能拿原样充数：was broken。老规矩：have 身边穿什么，be 身边就穿什么。"
+        whyZh: "be 身边要穿「过去分词」——不能拿原形充数：was broken。老规矩：have 身边穿什么，be 身边就穿什么。"
       },
       {
         wrong: "My cup was broke.",
         wrongMark: "broke",
         correct: "My cup was broken.",
-        whyZh: "昨天版也不能充数：break → broke → broken 是三件外套——broke 是昨天版，be 身边要穿做过版 broken。"
+        whyZh: "过去式也不能充数：break → broke → broken 是三种形式——broke 是过去式，be 身边要穿过去分词 broken。"
       },
       {
         wrong: "My cup broken.",
         wrongMark: null,
         correct: "My cup was broken.",
-        whyZh: "少了搭档！做过版不能独自站台——be（was）是它的新搭档，丢了句子就塌了。"
+        whyZh: "少了搭档！过去分词不能独自站前面——be（was）是它的新搭档，丢了句子就塌了。"
       },
       {
         wrong: "My cup were broken.",
         wrongMark: "were",
         correct: "My cup was broken.",
-        whyZh: "一个杯子用 was——were 是一群人的搭档（好几个专用），这里请不动它。"
+        whyZh: "一个杯子用 was——were 是一群人的搭档（复数专用），这里请不动它。"
       },
       {
         wrong: "Someone broke my cup.",
         wrongMark: null,
         correct: "My cup was broken.",
         bothRight: true,
-        whyZh: "两句都对——一句说「有人摔了我的杯子」（谁干的站台上）；一句说「我的杯子被摔了」（杯子站台上）。看你想让谁当主角。"
+        whyZh: "两句都对——一句说「有人摔了我的杯子」（谁干的放到前面）；一句说「我的杯子被摔了」（杯子放到前面）。看你想让谁当主角。"
       },
       {
         wrong: "I have broken my cup.",
         wrongMark: null,
         correct: "My cup was broken.",
         bothRight: true,
-        whyZh: "两句也都对——同一件做过版外套：左边跟 have（我弄坏了），右边跟 be（杯子被弄坏了）。外套同一件，换了搭档。"
+        whyZh: "两句也都对——同一个过去分词：左边跟 have（我弄坏了），右边跟 be（杯子被弄坏了）。形式同一件，换了搭档。"
       },
       {
         // 2026-09-22 批四十六挂靠：正面展示 break 的原样用法
@@ -9494,7 +9494,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "My cup was broken.",
         bothRight: true,
-        whyZh: "两句都对，差在谁做的——这句的 break 是原样（don't 后面穿原样）：don't break my cup（别把我的杯子打碎）。今天那些句说的是「杯子被打破了」（was broken），挨打的是杯子、不是人。一个说「别做」，一个说「被做了」。"
+        whyZh: "两句都对，差在谁做的——这句的 break 是原形（don't 后面用原形）：don't break my cup（别把我的杯子打碎）。今天那些句说的是「杯子被打破了」（was broken），挨打的是杯子、不是人。一个说「别做」，一个说「被做了」。"
       }
     ],
     variants: [
@@ -9508,20 +9508,20 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "说画被画完了", en: "The picture was finished.", zh: "画被画完了。" }
     ],
     deepDive: {
-      title: "同一件外套，两个搭档",
+      title: "同一个形式，两个搭档",
       paragraphs: [
-        "第 21 课你认识过「做过版」：它是动词的第三件外套（watch→watched、do→done、break→broken）。那件外套一直跟 have 出场：I have done my homework（我写完了）。",
-        "今天它换了新搭档：be。My cup was broken（杯子被摔了）——谁摔的不重要，杯子这件事站台上。have 身边说「我干的」，be 身边说「事发生了」。",
-        "怎么分？看你想让谁当主角：做事的人重要，用主动（Someone broke my cup.）；事重要、人不重要，用幕后句（My cup was broken.）。",
-        "be 的两种用法也复习一下：be + 动词ing 是「正在做」（I am drawing）；be + 做过版是「被做过」（My cup was broken）。同一个 be，看它后面跟的是什么。"
+        "第 21 课你认识过「过去分词」：它是动词的第三种形式（watch→watched、do→done、break→broken）。那种形式一直跟 have 出场：I have done my homework（我写完了）。",
+        "今天它换了新搭档：be。My cup was broken（杯子被摔了）——谁摔的不重要，杯子这件事放到前面。have 身边说「我干的」，be 身边说「事发生了」。",
+        "怎么分？看你想让谁当主角：做事的人重要，用主动（Someone broke my cup.）；事重要、人不重要，用被动句（My cup was broken.）。",
+        "be 的两种用法也复习一下：be + 动词ing 是「正在做」（I am drawing）；be + 过去分词是「被做过」（My cup was broken）。同一个 be，看它后面跟的是什么。"
       ]
     },
     summary: {
-      rule: "谁做的不重要——把做过版借到 be 身边：My cup was broken。",
+      rule: "谁做的不重要——把过去分词借到 be 身边：My cup was broken。",
       points: [
-        "My cup was broken. —— 杯子站台上，人退幕后",
-        "Someone broke my cup. —— 也可以让做事的人站台上（都对）",
-        "I have broken my cup. —— 同一件外套、两个搭档（have / be）"
+        "My cup was broken. —— 杯子放到前面，人退到后面",
+        "Someone broke my cup. —— 也可以让做事的人站前面（都对）",
+        "I have broken my cup. —— 同一个形式、两个搭档（have / be）"
       ]
     },
     guided: [
@@ -9539,15 +9539,15 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：我的杯子被摔了。",
         tokens: ["My", "cup", "was", "broken."],
         answer: "My cup was broken.",
-        explain: "be 搭档（was）+ 做过版（broken）——谁摔的不重要。"
+        explain: "be 搭档（was）+ 过去分词（broken）——谁摔的不重要。"
       },
       {
-        // R8 跨课复现：第 21 课（have + 做过版）原句
+        // R8 跨课复现：第 21 课（have + 过去分词）原句
         kind: "arrange",
         promptZh: "先复习一小步——第 21 课学过：我已经写完作业了。",
         tokens: ["I", "have", "done", "my", "homework."],
         answer: "I have done my homework.",
-        explain: "复现第 21 课：做过版跟 have 出场。今天它还要跟 be 出场。"
+        explain: "复现第 21 课：过去分词跟 have 出场。今天它还要跟 be 出场。"
       },
       {
         kind: "spot",
@@ -9555,8 +9555,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["My", "cup", "was", "break."],
         wrongToken: "break.",
         answer: "break.",
-        correctionZh: "be 身边要穿做过版：was broken。",
-        explain: "原样不能站在 be 身边——穿做过版。"
+        correctionZh: "be 身边要穿过去分词：was broken。",
+        explain: "原形不能站在 be 身边——穿过去分词。"
       },
       {
         // R8 跨课复现：第 13 课（be + -ing）——be 的另一班岗
@@ -9564,17 +9564,17 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 13 课学过：我正在画一幅画。",
         tokens: ["I", "am", "drawing", "a", "picture."],
         answer: "I am drawing a picture.",
-        explain: "复现第 13 课：be + 动词ing 是「正在做」；be + 做过版是「被做过」——两种用法。"
+        explain: "复现第 13 课：be + 动词ing 是「正在做」；be + 过去分词是「被做过」——两种用法。"
       },
       {
         // R9 变形/替换：have 搭档换 be 搭档（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子换搭档：「I have broken my cup.」想说「杯子被摔了」（人退幕后），开头要换成什么？",
+        promptZh: "句子换搭档：「I have broken my cup.」想说「杯子被摔了」（人退到后面），开头要换成什么？",
         replaceBase: "I have broken my cup.",
-        replaceTarget: "把「我弄坏了杯子」换成「杯子被摔了」（人退幕后）",
+        replaceTarget: "把「我弄坏了杯子」换成「杯子被摔了」（人退到后面）",
         options: ["My cup was", "My cup have", "My cup is"],
         answer: "My cup was",
-        explain: "人退幕后、事站台上：My cup was broken——同一个 broken，搭档从 have 换成 was。"
+        explain: "人退到后面、事放到前面：My cup was broken——同一个 broken，搭档从 have 换成 was。"
       }
     ],
     practice: [
@@ -9610,7 +9610,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "课间回到座位，发现杯子躺在地上。凭记忆，写出你跟同桌说的那句英文。",
       intentZh: "我的杯子被摔了。",
       answer: "My cup was broken.",
-      noteZh: "谁做的不重要：事站台上（My cup was broken）——做过版跟 be 出场。"
+      noteZh: "谁做的不重要：事放到前面（My cup was broken）——过去分词跟 be 出场。"
     },
     huntCaseIds: ["hunt-broken-window"]
   },
@@ -9619,7 +9619,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-51-plural",
     number: 51,
     title: "教室被打扫了",
-    grammarLabel: "幕后句 · 好几个的搭档",
+    grammarLabel: "被动句 · 复数的搭档",
     episode: "小美的一天 五十一",
     scene: "campus",
     cover: cover51,
@@ -9630,10 +9630,10 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "The windows were cleaned yesterday.",
     blocks: [
       { text: "The windows", role: "那些窗户（一群）" },
-      { text: "were", role: "过去版 be（好几个的搭档）" },
-      { text: "cleaned", role: "打扫（做过版）" }
+      { text: "were", role: "过去式 be（复数的搭档）" },
+      { text: "cleaned", role: "打扫（过去分词）" }
     ],
-    oneLineRule: "幕后句的搭档也要配对：一个用 was、一群用 were——The windows were cleaned（窗户们被打扫了）。",
+    oneLineRule: "被动句的搭档也要配对：一个用 was、一群用 were——The windows were cleaned（窗户们被打扫了）。",
     examples: [
       { en: "The windows were cleaned yesterday.", zh: "窗户昨天被打扫了。" },
       { en: "The desks were cleaned too.", zh: "桌子也被擦了。" },
@@ -9650,19 +9650,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "The windows was cleaned.",
         wrongMark: "was",
         correct: "The windows were cleaned.",
-        whyZh: "句首那个「谁」 The windows 是一群（好几个）——用 were 搭档。一个 was、一群 were，配对不能错。"
+        whyZh: "句首那个「谁」 The windows 是一群（复数）——用 were 搭档。一个 was、一群 were，配对不能错。"
       },
       {
         wrong: "The window were cleaned.",
         wrongMark: "were",
         correct: "The window was cleaned.",
-        whyZh: "反过来的错也一样：一个窗户用 was——were 请不动（它是好几个专用）。"
+        whyZh: "反过来的错也一样：一个窗户用 was——were 请不动（它是复数专用）。"
       },
       {
         wrong: "The windows was clean yesterday.",
         wrongMark: "clean",
         correct: "The windows were cleaned yesterday.",
-        whyZh: "两个坑：搭档要配对（were），动词要穿做过版（cleaned）——clean 说「干净的」这个状态，cleaned 说「被打扫过」这件事。"
+        whyZh: "两个坑：搭档要配对（were），动词要穿过去分词（cleaned）——clean 说「干净的」这个状态，cleaned 说「被打扫过」这件事。"
       },
       {
         wrong: "Was the windows cleaned?",
@@ -9675,7 +9675,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "The windows were cleaned.",
         bothRight: true,
-        whyZh: "两句都对——一句说「有人擦了窗户」（谁干的站台上）；一句说「窗户被打扫了」（窗户站台上）。看你想让谁当主角。"
+        whyZh: "两句都对——一句说「有人擦了窗户」（谁干的放到前面）；一句说「窗户被打扫了」（窗户放到前面）。看你想让谁当主角。"
       },
       {
         wrong: "The window was cleaned yesterday.",
@@ -9699,13 +9699,13 @@ export const grammarLessons: GrammarLesson[] = [
       title: "一个用 was、一群用 were",
       paragraphs: [
         "你已经见过 was 和 were 这对搭档：I was drawing（我在画，一个人）、They were playing（他们在玩，一群）——第 34 课学的。",
-        "幕后句里它们照样配对：一个东西站台上用 was（The window was cleaned）、一群东西站台上用 were（The windows were cleaned）。",
-        "怎么记？看台上有几个人：一个人用 was、一伙人用 were——和 am/is/are 的分工一一对应（am/is 对 was，are 对 were）。",
-        "顺便对照上节课：My cup was broken（一个杯子）→ The cups were washed（一群杯子）——同一件做过版外套，搭档跟着人数换。"
+        "被动句里它们照样配对：一个东西放到前面用 was（The window was cleaned）、一群东西放到前面用 were（The windows were cleaned）。",
+        "怎么记？看前面有几个人：一个人用 was、复数用 were——和 am/is/are 的分工一一对应（am/is 对 was，are 对 were）。",
+        "顺便对照上节课：My cup was broken（一个杯子）→ The cups were washed（一群杯子）——同一个过去分词，搭档跟着人数换。"
       ]
     },
     summary: {
-      rule: "幕后句搭档要配对：一个用 was、一群用 were——The windows were cleaned。",
+      rule: "被动句搭档要配对：一个用 was、一群用 were——The windows were cleaned。",
       points: [
         "The window was cleaned. —— 一扇：was",
         "The windows were cleaned. —— 一群：were",
@@ -9727,7 +9727,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：窗户（们）昨天被打扫了。",
         tokens: ["The", "windows", "were", "cleaned", "yesterday."],
         answer: "The windows were cleaned yesterday.",
-        explain: "好几个搭档（were）+ 做过版（cleaned）。"
+        explain: "复数搭档（were）+ 过去分词（cleaned）。"
       },
       {
         // R8 跨课复现：第 50 课（单数对照）
@@ -9752,7 +9752,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 19 课学过：起风了，但我们很开心。",
         tokens: ["It", "was", "windy,", "but", "we", "were", "happy."],
         answer: "It was windy, but we were happy.",
-        explain: "复现第 19 课：we 是一伙的，用 were——和幕后句一个道理。"
+        explain: "复现第 19 课：we 是复数，用 were——和被动句一个道理。"
       },
       {
         // R9 变形/替换：单数换复数（构造迁移，复用 choose 判题）
@@ -9807,7 +9807,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-52-by-agent",
     number: 52,
     title: "蛋糕被谁吃了",
-    grammarLabel: "幕后句 · 想说谁就垫 by",
+    grammarLabel: "被动句 · 想说谁就垫 by",
     episode: "小美的一天 五十二",
     scene: "mansion",
     cover: cover52,
@@ -9817,10 +9817,10 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "蛋糕被我哥哥吃了。",
     targetSentence: "The cake was eaten by my brother.",
     blocks: [
-      { text: "The cake was eaten", role: "蛋糕被吃了（事站台上）" },
+      { text: "The cake was eaten", role: "蛋糕被吃了（事放到前面）" },
       { text: "by my brother", role: "被我哥哥（把人拉出来）" }
     ],
-    oneLineRule: "想说谁做的，就在幕后句尾巴垫一块 by：was eaten by my brother——事在前，人在后，by 是「被谁」的牌子。",
+    oneLineRule: "想说谁做的，就在被动句尾巴垫一块 by：was eaten by my brother——事在前，人在后，by 是「被谁」的牌子。",
     examples: [
       { en: "The cake was eaten by my brother.", zh: "蛋糕被我哥哥吃了。" },
       { en: "The window was broken by the wind.", zh: "窗户被风弄坏了。" },
@@ -9843,14 +9843,14 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "The cake was eaten my brother.",
         wrongMark: null,
         correct: "The cake was eaten by my brother.",
-        whyZh: "想说谁做的，by 不能丢：was eaten 【by】my brother——人从幕后拉出来，要垫一块牌子。"
+        whyZh: "想说谁做的，by 不能丢：was eaten 【by】my brother——人从后面拉出来，要垫一块牌子。"
       },
       {
         wrong: "My brother ate the cake.",
         wrongMark: null,
         correct: "The cake was eaten by my brother.",
         bothRight: true,
-        whyZh: "两句都对——一句说「我哥哥吃了蛋糕」（哥哥站台上）；一句说「蛋糕被我哥哥吃了」（蛋糕站台上、哥哥从幕后点个名）。谁重要谁上台。"
+        whyZh: "两句都对——一句说「我哥哥吃了蛋糕」（哥哥放到前面）；一句说「蛋糕被我哥哥吃了」（蛋糕放到前面、哥哥从后面点个名）。谁重要谁站前面。"
       },
       {
         wrong: "The cake was eaten.",
@@ -9863,7 +9863,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "The cake was eat by my brother.",
         wrongMark: "eat",
         correct: "The cake was eaten by my brother.",
-        whyZh: "be 身边要穿做过版：was eaten——eat → ate → eaten，第 50 课学的手感。"
+        whyZh: "be 身边要穿过去分词：was eaten——eat → ate → eaten，第 50 课学的手感。"
       },
       {
         wrong: "The cake was eaten of my brother.",
@@ -9885,9 +9885,9 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "想说谁，就垫一块 by",
       paragraphs: [
-        "上节课的幕后句是「谁做的不重要」：My cup was broken（杯子被摔了，谁摔的不管）。",
+        "上节课的被动句是「谁做的不重要」：My cup was broken（杯子被摔了，谁摔的不管）。",
         "有时候又想点个名：「是我哥哥吃的！」——这时在句尾垫一块 by：The cake was eaten by my brother。",
-        "看位置：事在台上最前面（The cake）、be + 做过版说它怎么了（was eaten）、by 后面跟「谁干的」（my brother）。顺序千万别反。",
+        "看位置：事放到最前面（The cake）、be + 过去分词说它怎么了（was eaten）、by 后面跟「谁干的」（my brother）。顺序千万别反。",
         "by 还是选配的：不想点名就不垫（The cake was eaten.）——两种说法都对，看你聊到哪一步。"
       ]
     },
@@ -9896,7 +9896,7 @@ export const grammarLessons: GrammarLesson[] = [
       points: [
         "The cake was eaten by my brother. —— by 是「被谁」的牌子",
         "The cake was eaten. —— 不想说谁就不垫（也对）",
-        "My brother ate the cake. —— 想说谁，也可以让他站台上（主动）"
+        "My brother ate the cake. —— 想说谁，也可以让他站前面（主动）"
       ]
     },
     guided: [
@@ -9922,7 +9922,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 50 课学过：我的杯子被摔了。",
         tokens: ["My", "cup", "was", "broken."],
         answer: "My cup was broken.",
-        explain: "复现第 50 课：不点名时就不垫 by——今天学点名的那一版。"
+        explain: "复现第 50 课：不点名时就不垫 by——今天学点名的那一种。"
       },
       {
         kind: "spot",
@@ -9934,7 +9934,7 @@ export const grammarLessons: GrammarLesson[] = [
         explain: "from 是「从哪里来」；被谁用 by。"
       },
       {
-        // R8 跨课复现：第 21 课（eat 的做过版）
+        // R8 跨课复现：第 21 课（eat 的过去分词）
         kind: "arrange",
         promptZh: "再对照一句——第 21 课学过：我吃过早饭了。",
         tokens: ["I", "have", "eaten", "breakfast."],
@@ -9990,11 +9990,11 @@ export const grammarLessons: GrammarLesson[] = [
     huntCaseIds: ["hunt-birthday-cake"]
   },
   {
-    // ── 第七批 · L53 has been done（已经做过了）：完成时里 be 穿做过版——been 的双身份对撞 ──
+    // ── 第七批 · L53 has been done（已经做过了）：完成时里 be 穿过去分词——been 的双身份对撞 ──
     id: "lesson-53-has-been-done",
     number: 53,
     title: "窗户已经打扫过了",
-    grammarLabel: "幕后句 · 已经做过了",
+    grammarLabel: "被动句 · 已经做过了",
     episode: "小美的一天 五十三",
     scene: "campus",
     cover: cover53,
@@ -10004,11 +10004,11 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "窗户已经打扫过了。",
     targetSentence: "The window has been cleaned.",
     blocks: [
-      { text: "The window", role: "窗户（站台上）" },
+      { text: "The window", role: "窗户（放到前面）" },
       { text: "has been", role: "已经（been 出场）" },
-      { text: "cleaned", role: "打扫（做过版）" }
+      { text: "cleaned", role: "打扫（过去分词）" }
     ],
-    oneLineRule: "说「已经被做过了」：has been + 做过版——been 是 be 的做过版（第 22 课学过），在这里跟 has 搭班。",
+    oneLineRule: "说「已经被做过了」：has been + 过去分词——been 是 be 的过去分词（第 22 课学过），在这里跟 has 搭班。",
     examples: [
       { en: "The window has been cleaned.", zh: "窗户已经打扫过了。" },
       { en: "The window hasn't been cleaned.", zh: "窗户还没被打扫。" },
@@ -10025,20 +10025,20 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "The window has cleaned.",
         wrongMark: null,
         correct: "The window has been cleaned.",
-        whyZh: "has 后面要垫 be 的做过版（been）：has been cleaned。缺了它，句子就塌了——has 不能直接抓动词。"
+        whyZh: "has 后面要垫 be 的过去分词（been）：has been cleaned。缺了它，句子就塌了——has 不能直接抓动词。"
       },
       {
         wrong: "The window has been clean.",
         wrongMark: "clean",
         correct: "The window has been cleaned.",
-        whyZh: "been 后面要穿做过版：clean 说「干净的」这个状态，cleaned 说「被打扫过」这个动作——差一个 -ed 差一个动作。"
+        whyZh: "been 后面要穿过去分词：clean 说「干净的」这个状态，cleaned 说「被打扫过」这个动作——差一个 -ed 差一个动作。"
       },
       {
         wrong: "I have been to Beijing.",
         wrongMark: null,
         correct: "The window has been cleaned.",
         bothRight: true,
-        whyZh: "两句都对——been 有两个身份：后面跟地方＝去过（I have been to Beijing）；后面跟做过版＝被做过（The window has been cleaned）。看 been 后面站的是地方还是分词。"
+        whyZh: "两句都对——been 有两个身份：后面跟地方＝去过（I have been to Beijing）；后面跟过去分词＝被做过（The window has been cleaned）。看 been 后面站的是地方还是分词。"
       },
       {
         wrong: "The window has been cleaned yesterday.",
@@ -10073,14 +10073,14 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "been 的两个身份",
       paragraphs: [
-        "第 22 课你认识过 been：它是 be 的做过版——I have been to Beijing（我去过北京）。been 后面跟地方，说的是「去过」。",
-        "今天 been 又换个活：后面跟动词的做过版——The window has been cleaned（窗户已经打扫过了）。been 后面跟分词，说的是「被做过」。",
-        "怎么分？看 been 后面站的是谁：跟地方（Beijing、the zoo）＝去过；跟做过版（cleaned、written）＝被做过。一个词，两种用法。",
+        "第 22 课你认识过 been：它是 be 的过去分词——I have been to Beijing（我去过北京）。been 后面跟地方，说的是「去过」。",
+        "今天 been 又换个活：后面跟动词的过去分词——The window has been cleaned（窗户已经打扫过了）。been 后面跟分词，说的是「被做过」。",
+        "怎么分？看 been 后面站的是谁：跟地方（Beijing、the zoo）＝去过；跟过去分词（cleaned、written）＝被做过。一个词，两种用法。",
         "和昨天的说法合起来看：The window was cleaned.（昨天打扫了）/ The window has been cleaned.（已经打扫过了，现在还是干净的）——想强调「现在做完了」，用 has been。"
       ]
     },
     summary: {
-      rule: "说「已经被做过了」：has been + 做过版——The window has been cleaned。",
+      rule: "说「已经被做过了」：has been + 过去分词——The window has been cleaned。",
       points: [
         "The window has been cleaned. —— has been + cleaned",
         "I have been to Beijing. —— been 后面跟地方＝去过",
@@ -10102,7 +10102,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：窗户已经打扫过了。",
         tokens: ["The", "window", "has", "been", "cleaned."],
         answer: "The window has been cleaned.",
-        explain: "has been + 做过版（cleaned）。"
+        explain: "has been + 过去分词（cleaned）。"
       },
       {
         // R8 跨课复现：第 22 课（been 的第一身份）
@@ -10127,7 +10127,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 24 课学过：昨天我去了公园。",
         tokens: ["Yesterday", "I", "went", "to", "the", "park."],
         answer: "Yesterday I went to the park.",
-        explain: "复现第 24 课：有 yesterday 用昨天版——完成时不吃具体时间点。"
+        explain: "复现第 24 课：有 yesterday 用过去式——完成时不吃具体时间点。"
       },
       {
         // R9 变形/替换：过去式换完成时说法（构造迁移，复用 choose 判题）
@@ -10173,7 +10173,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "早读前，同桌感叹窗户很干净。凭记忆，写出你那句「已经打扫过了」的英文。",
       intentZh: "窗户已经打扫过了。",
       answer: "The window has been cleaned.",
-      noteZh: "has been + 做过版——been 跟 has 搭班，说的还是「被做过」。"
+      noteZh: "has been + 过去分词——been 跟 has 搭班，说的还是「被做过」。"
     },
     huntCaseIds: ["hunt-cleaned-board"]
   },
@@ -10181,8 +10181,8 @@ export const grammarLessons: GrammarLesson[] = [
     // ── 第七批 · L54 收口课（零新知全复现）：被动地图——谁重要谁上台 ──
     id: "lesson-54-focus",
     number: 54,
-    title: "谁上台",
-    grammarLabel: "收口 · 谁重要谁上台",
+    title: "谁站前面",
+    grammarLabel: "收口 · 谁重要谁站前面",
     episode: "小美的一天 五十四",
     scene: "city",
     cover: cover54,
@@ -10192,14 +10192,20 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "照片是老师拍的。",
     targetSentence: "The pictures were taken by the teacher.",
     blocks: [
-      { text: "The pictures", role: "照片们（一群站台上）" },
-      { text: "were taken", role: "被拍了（were + 做过版）" },
+      { text: "The pictures", role: "照片们（一群放到前面）" },
+      { text: "were taken", role: "被拍了（were + 过去分词）" },
       { text: "by the teacher", role: "被老师（点名垫 by）" }
     ],
-    oneLineRule: "谁重要谁上台：想说谁干的用主动（The teacher took the pictures.）；想说事，用幕后句——谁重要谁上台。",
+    oneLineRule: "谁重要谁站前面：想说谁干的用主动（The teacher took the pictures.）；想说事，用被动句——谁重要谁站前面。",
     examples: [
       { en: "The pictures were taken by the teacher.", zh: "照片是老师拍的。" },
-      { en: "The window was cleaned yesterday.", zh: "窗户昨天被打扫了。" },
+      {
+        en: "The window was cleaned yesterday.",
+        zh: "窗户昨天被打扫了。",
+        // 「窗户」不标单复数，window / windows 都合法；本课的点是主动/被动而非单复数，
+        // 复数版仍演示了同一个被动结构，故纳入可接受答案。
+        acceptAlso: ["The windows were cleaned yesterday."]
+      },
       { en: "The window has been cleaned.", zh: "窗户已经打扫过了。" },
       { en: "The teacher took the pictures.", zh: "老师拍了这些照片。" }
     ],
@@ -10213,7 +10219,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "The pictures were took by the teacher.",
         wrongMark: "took",
         correct: "The pictures were taken by the teacher.",
-        whyZh: "be 身边要穿做过版：were taken——took 是昨天版，不能充数。"
+        whyZh: "be 身边要穿过去分词：were taken——took 是过去式，不能充数。"
       },
       {
         wrong: "The pictures were taken from the teacher.",
@@ -10226,19 +10232,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "The pictures were taken by the teacher.",
         bothRight: true,
-        whyZh: "两句都对——一句说「老师拍了照片」（老师站台上）；一句说「照片是老师拍的」（照片站台上、老师从幕后点个名）。谁重要谁上台。"
+        whyZh: "两句都对——一句说「老师拍了照片」（老师放到前面）；一句说「照片是老师拍的」（照片放到前面、老师从后面点个名）。谁重要谁站前面。"
       },
       {
         wrong: "The window has been cleaned yesterday.",
         wrongMark: "yesterday",
         correct: "The window was cleaned yesterday.",
-        whyZh: "有 yesterday 用昨天版：was cleaned——完成时不吃具体时间点（第 24/53 课判据）。"
+        whyZh: "有 yesterday 用过去式：was cleaned——完成时不吃具体时间点（第 24/53 课判据）。"
       },
       {
         wrong: "The window has been clean.",
         wrongMark: "clean",
         correct: "The window has been cleaned.",
-        whyZh: "been 后面要穿做过版：cleaned 说「被打扫过」——clean 是「干净的」这个状态。"
+        whyZh: "been 后面要穿过去分词：cleaned 说「被打扫过」——clean 是「干净的」这个状态。"
       },
       {
         wrong: "The pictures was taken by the teacher.",
@@ -10250,29 +10256,29 @@ export const grammarLessons: GrammarLesson[] = [
     variants: [
       { label: "肯定", en: "The pictures were taken by the teacher.", zh: "照片是老师拍的。" },
       { label: "否定", en: "The pictures weren't taken by the teacher.", zh: "照片不是老师拍的。", noteZh: "not 跟 were 走：weren't；by the teacher 照挂。" },
-      { label: "疑问", en: "Were the pictures taken by the teacher?", zh: "照片是老师拍的吗？", noteZh: "Were 搬句首（好几个配它），by the teacher 不动。" }
+      { label: "疑问", en: "Were the pictures taken by the teacher?", zh: "照片是老师拍的吗？", noteZh: "Were 搬句首（复数配它），by the teacher 不动。" }
     ],
     sceneSwings: [
       { sceneZh: "说窗户昨天被打扫了", en: "The window was cleaned yesterday.", zh: "窗户昨天被打扫了。" },
       { sceneZh: "说窗户已经打扫过了", en: "The window has been cleaned.", zh: "窗户已经打扫过了。" },
-      { sceneZh: "说照片是老师拍的（主动版）", en: "The teacher took the pictures.", zh: "老师拍了这些照片。" }
+      { sceneZh: "说照片是老师拍的（主动句）", en: "The teacher took the pictures.", zh: "老师拍了这些照片。" }
     ],
     deepDive: {
       title: "被动地图",
       paragraphs: [
-        "这一批你学了一整套「幕后句」，收口时把它们画成一张地图：",
-        "① 谁做的不重要：was/were + 做过版——My cup was broken. / The windows were cleaned.（一个 was、一群 were）",
+        "这一批你学了一整套「被动句」，收口时把它们画成一张地图：",
+        "① 谁做的不重要：was/were + 过去分词——My cup was broken. / The windows were cleaned.（一个 was、一群 were）",
         "② 想说谁做的：句尾垫 by——The cake was eaten by my brother. / The pictures were taken by the teacher.",
-        "③ 已经做过了：has been + 做过版——The window has been cleaned.（been 跟 has 搭班）",
-        "一句话判据贯穿全部：谁重要谁上台。做事的人重要，用主动（Someone broke my cup. / The teacher took the pictures.）；事重要、人不重要，用幕后句。分寸在你手里。"
+        "③ 已经做过了：has been + 过去分词——The window has been cleaned.（been 跟 has 搭班）",
+        "一句话判据贯穿全部：谁重要谁站前面。做事的人重要，用主动（Someone broke my cup. / The teacher took the pictures.）；事重要、人不重要，用被动句。分寸在你手里。"
       ]
     },
     summary: {
-      rule: "被动地图：was/were + 做过版（被做过）→ by（被谁）→ has been + 做过版（已经做过了）——谁重要谁上台。",
+      rule: "被动地图：was/were + 过去分词（被做过）→ by（被谁）→ has been + 过去分词（已经做过了）——谁重要谁站前面。",
       points: [
         "The pictures were taken by the teacher. —— 全体要素同台",
-        "The teacher took the pictures. —— 想说谁，让他站台上（都对）",
-        "谁重要谁上台 —— 一句话判据"
+        "The teacher took the pictures. —— 想说谁，让他站前面（都对）",
+        "谁重要谁站前面 —— 一句话判据"
       ]
     },
     guided: [
@@ -10283,14 +10289,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "by the teacher.",
         options: ["taken", "took", "taking"],
         answer: "taken",
-        explain: "be 身边穿做过版：were taken。"
+        explain: "be 身边穿过去分词：were taken。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：照片是老师拍的。",
         tokens: ["The", "pictures", "were", "taken", "by", "the", "teacher."],
         answer: "The pictures were taken by the teacher.",
-        explain: "全体要素同台：好几个搭档（were）+ 做过版（taken）+ 点名（by the teacher）。"
+        explain: "全体要素同台：复数搭档（were）+ 过去分词（taken）+ 点名（by the teacher）。"
       },
       {
         // R8 跨课复现：第 50 课（本体）
@@ -10298,7 +10304,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 50 课学过：我的杯子被摔了。",
         tokens: ["My", "cup", "was", "broken."],
         answer: "My cup was broken.",
-        explain: "复现第 50 课：谁做的不重要——不点名版。"
+        explain: "复现第 50 课：谁做的不重要——不点名的那种。"
       },
       {
         kind: "spot",
@@ -10306,8 +10312,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["The", "pictures", "were", "took", "by", "the", "teacher."],
         wrongToken: "took",
         answer: "took",
-        correctionZh: "be 身边穿做过版：were taken。",
-        explain: "took 是昨天版，不能充数。"
+        correctionZh: "be 身边穿过去分词：were taken。",
+        explain: "took 是过去式，不能充数。"
       },
       {
         // R8 跨课复现：第 53 课（already 版）
@@ -10315,7 +10321,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 53 课学过：窗户已经打扫过了。",
         tokens: ["The", "window", "has", "been", "cleaned."],
         answer: "The window has been cleaned.",
-        explain: "复现第 53 课：has been + 做过版——已经做过了。"
+        explain: "复现第 53 课：has been + 过去分词——已经做过了。"
       },
       {
         // R9 变形/替换：焦点选择（构造迁移，复用 choose 判题）
@@ -10383,10 +10389,10 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "He is the first to come.",
     blocks: [
       { text: "He is", role: "他是" },
-      { text: "the first", role: "第一个（排位词）" },
+      { text: "the first", role: "第一个（序数词）" },
       { text: "to come", role: "来的（做的事）" }
     ],
-    oneLineRule: "说「第几个」用排位词：first（第一）、second（第二）、third（第三）——排位词前面常带着 the。",
+    oneLineRule: "说「第几个」用序数词：first（第一）、second（第二）、third（第三）——序数词前面常带着 the。",
     examples: [
       { en: "He is the first to come.", zh: "他是第一个到的。" },
       { en: "Tom is the second to finish.", zh: "汤姆是第二个跑完的。" },
@@ -10403,19 +10409,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "He is first to come.",
         wrongMark: null,
         correct: "He is the first to come.",
-        whyZh: "排位词前面不能光着：the first——排位一出现，the 就跟上（想想第 31 课的 the best，是它家老亲戚）。"
+        whyZh: "序数词前面不能光着：the first——序数词一出现，the 就跟上（想想第 31 课的 the best，是它家老亲戚）。"
       },
       {
         wrong: "Tom is the two to finish.",
         wrongMark: "two",
         correct: "Tom is the second to finish.",
-        whyZh: "报数词不能顶排位词：two 是「两个」，second 才是「第二」——报数管几个、排位管第几。"
+        whyZh: "基数词不能顶序数词：two 是「两个」，second 才是「第二」——基数词管几个、序数词管第几。"
       },
       {
         wrong: "Amy is the three to finish.",
         wrongMark: "three",
         correct: "Amy is the third to finish.",
-        whyZh: "三的排位是 third——不是把 three 直接搬来，拼法要单独认。"
+        whyZh: "三的序数词是 third——不是把 three 直接搬来，拼法要单独认。"
       },
       {
         wrong: "He comes first.",
@@ -10429,7 +10435,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "There are three winners.",
         bothRight: true,
-        whyZh: "两句都对——一个赢家用 is、三个赢家用 are；three 是报数词，管「有几个」——别和排位家族混（第 26 课的老规矩）。"
+        whyZh: "两句都对——一个赢家用 is、三个赢家用 are；three 是基数词，管「有几个」——别和序数词混（第 26 课的老规矩）。"
       },
       {
         wrong: "The three boys are here.",
@@ -10447,23 +10453,23 @@ export const grammarLessons: GrammarLesson[] = [
     sceneSwings: [
       { sceneZh: "说汤姆第二个跑完", en: "Tom is the second to finish.", zh: "汤姆是第二个跑完的。" },
       { sceneZh: "说艾米第三个回答", en: "Amy is the third to answer.", zh: "艾米是第三个回答的。" },
-      { sceneZh: "说他第一个来（句尾版）", en: "He comes first.", zh: "他第一个来。" }
+      { sceneZh: "说他第一个来（放句尾）", en: "He comes first.", zh: "他第一个来。" }
     ],
     deepDive: {
-      title: "报数词和排位词",
+      title: "基数词和序数词",
       paragraphs: [
-        "这一课认识一个新家族：排位词——first（第一）、second（第二）、third（第三）。它们和报数词（one、two、three）是两个家族：报数词管「有几个」，排位词管「排第几」。",
-        "从「四」往后，排位词大多在数字后面加 -th：fourth、sixth、seventh……把 -th 想成「排位的小尾巴」。只有几个常客要单独认：first、second、third。",
-        "排位词前面常带着 the：the first、the second——想想第 31 课的 the best（最好的），它就是 the 家的老亲戚。排位一出现，the 就跟上。",
+        "这一课认识一个新家族：序数词——first（第一）、second（第二）、third（第三）。它们和基数词（one、two、three）是两个家族：基数词管「有几个」，序数词管「排第几」。",
+        "从「四」往后，序数词大多在数字后面加 -th：fourth、sixth、seventh……把 -th 看成一个标记。只有几个常客要单独认：first、second、third。",
+        "序数词前面常带着 the：the first、the second——想想第 31 课的 the best（最好的），它就是 the 家的老亲戚。序数词一出现，the 就跟上。",
         "把 two 和 second 放一起体会：two boys 是「两个男孩」（数出来的）；the second boy 是「第二个男孩」（排出来的）。差一个词，差一件事。"
       ]
     },
     summary: {
-      rule: "说「第几个」用排位词：first、second、third——排位词前面常带着 the。",
+      rule: "说「第几个」用序数词：first、second、third——序数词前面常带着 the。",
       points: [
         "He is the first to come. —— the first 排第一",
         "He comes first. —— 同一个「第一」，两种说法",
-        "The third boy is here. —— 排位词站名词前"
+        "The third boy is here. —— 序数词站名词前"
       ]
     },
     guided: [
@@ -10474,14 +10480,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "to come.",
         options: ["the first", "the two", "first"],
         answer: "the first",
-        explain: "排位词前面带着 the：the first——报数词 two 在这儿上不了岗。"
+        explain: "序数词前面带着 the：the first——基数词 two 在这儿用不上。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：他是第一个到的。",
         tokens: ["He", "is", "the", "first", "to", "come."],
         answer: "He is the first to come.",
-        explain: "排位词前面带着 the：the first；后面「来的事」用 to come。"
+        explain: "序数词前面带着 the：the first；后面「来的事」用 to come。"
       },
       {
         // R8 跨课复现：第 6 课（It 占位说时间）
@@ -10497,8 +10503,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["He", "is", "first", "to", "come."],
         wrongToken: "first",
         answer: "first",
-        correctionZh: "排位词前面要带着 the：the first。",
-        explain: "排位一出现，the 就跟上。"
+        correctionZh: "序数词前面要带着 the：the first。",
+        explain: "序数词一出现，the 就跟上。"
       },
       {
         // R8 跨课复现：第 26 课（There 先占位）
@@ -10511,12 +10517,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：报数换排位（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Tom is the second to finish.」把「第二」换成「第三」，排位词要怎么变？",
+        promptZh: "句型转换：「Tom is the second to finish.」把「第二」换成「第三」，序数词要怎么变？",
         replaceBase: "Tom is the second to finish.",
         replaceTarget: "把「第二」换成「第三」",
         options: ["the third", "the three", "third"],
         answer: "the third",
-        explain: "三的排位是 third（不是 three）——前面照样带着 the：the third。"
+        explain: "三的序数词是 third（不是 three）——前面照样带着 the：the third。"
       }
     ],
     practice: [
@@ -10551,7 +10557,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "周一早读，同桌指着黑板上的名次表问你谁是第一个到的。凭记忆，写出你那句英文。",
       intentZh: "他是第一个到的。",
       answer: "He is the first to come.",
-      noteZh: "排位词前面带着 the：the first；「来的事」用 to come。"
+      noteZh: "序数词前面带着 the：the first；「来的事」用 to come。"
     },
     huntCaseIds: ["hunt-race-result"]
   },
@@ -10701,7 +10707,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换月份（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「My birthday is in May.」把五月换成十月，月份名字要怎么变？",
+        promptZh: "句型转换：「My birthday is in May.」把五月换成十月，月份名字要怎么变？",
         replaceBase: "My birthday is in May.",
         replaceTarget: "把五月换成十月",
         options: ["in October", "in october", "on October"],
@@ -10771,7 +10777,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "on", role: "在（点到日子）" },
       { text: "October 1", role: "十月一号（读 October first）" }
     ],
-    oneLineRule: "说「某月某日」＝on + 月份 + 日子；日子里的数字读排位词——October 1 读 October first。",
+    oneLineRule: "说「某月某日」＝on + 月份 + 日子；日子里的数字读序数词——October 1 读 October first。",
     examples: [
       { en: "School starts on October 1.", zh: "开学在十月一号。" },
       { en: "My birthday is on May third.", zh: "我的生日在五月三号。" },
@@ -10794,7 +10800,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "School starts on October one.",
         wrongMark: "one",
         correct: "School starts on October 1.",
-        whyZh: "日子读排位词，不读报数：1 读 first——October 1 读 October first（第 55 课的排位家族又出场）。"
+        whyZh: "日子读序数词，不读基数词：1 读 first——October 1 读 October first（第 55 课的序数词又出场）。"
       },
       {
         wrong: "My birthday is in May.",
@@ -10814,7 +10820,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "School starts on October 1.",
         bothRight: true,
-        whyZh: "两句都对——第 55 课的 the first（第一个）站台上；日子里的 1 读出来就是 first：排位词家族的又一次出场。"
+        whyZh: "两句都对——第 55 课的 the first（第一个）放到前面；日子里的 1 读出来就是 first：序数词家族的又一次出场。"
       },
       {
         wrong: "School starts on Monday.",
@@ -10827,7 +10833,7 @@ export const grammarLessons: GrammarLesson[] = [
     variants: [
       { label: "肯定", en: "School starts on October 1.", zh: "开学在十月一号。" },
       { label: "否定", en: "School doesn't start on October 1.", zh: "开学不在十月一号。", noteZh: "动作请帮手 doesn't（第 25 课的规矩）；日期块原地不动。" },
-      { label: "疑问", en: "Does school start on October 1?", zh: "开学在十月一号吗？", noteZh: "Does 站句首，start 穿原样，日期块不动。" }
+      { label: "疑问", en: "Does school start on October 1?", zh: "开学在十月一号吗？", noteZh: "Does 站句首，start 用原形，日期块不动。" }
     ],
     sceneSwings: [
       { sceneZh: "说生日在五月三号", en: "My birthday is on May third.", zh: "我的生日在五月三号。" },
@@ -10839,16 +10845,16 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "把这三课连起来看：第 27 课你会问（When is your birthday?）；第 56 课你会答月份（My birthday is in May.）；今天你会答日子（My birthday is on May third.）——从问到答，生日和开学这种事你都能说全了。",
         "判据一条：点到哪一级用哪个词——只说月份用 in（in May），点到日子升级用 on（on May third）。点用 on、段用 in，第 18 课的老判据一路升级到这里。",
-        "日子为什么读 first 不读 one？因为说的是「第几个日子」——五月三号是「五月里的第三个日子」，读 May third。写的时候写 3 或 third 都行，读出来读排位词。",
+        "日子为什么读 first 不读 one？因为说的是「第几个日子」——五月三号是「五月里的第三个日子」，读 May third。写的时候写 3 或 third 都行，读出来读序数词。",
         "写日期两种顺序都对：October 1（美式）或 1 October（英式）——见到 1 October 别惊讶，它和 October 1 是一个意思。"
       ]
     },
     summary: {
-      rule: "说「某月某日」＝on + 月份 + 日子（日子读排位词）：School starts on October 1.",
+      rule: "说「某月某日」＝on + 月份 + 日子（日子读序数词）：School starts on October 1.",
       points: [
         "School starts on October 1. —— 点到日子用 on",
         "in May / on May third —— 月份一步，日子升级",
-        "October 1 读 October first —— 日子读排位词"
+        "October 1 读 October first —— 日子读序数词"
       ]
     },
     guided: [
@@ -10882,8 +10888,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["School", "starts", "on", "October", "one."],
         wrongToken: "one.",
         answer: "one.",
-        correctionZh: "日子读排位词：1 读 first——on October first。",
-        explain: "报数词不能顶排位词的岗。"
+        correctionZh: "日子读序数词：1 读 first——on October first。",
+        explain: "基数词不能顶序数词的岗。"
       },
       {
         // R8 跨课复现：第 56 课（in + 月份）
@@ -10896,12 +10902,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换日子（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「School starts on October 1.」把日子换成「五月三号」，要怎么变？",
+        promptZh: "句型转换：「School starts on October 1.」把日子换成「五月三号」，要怎么变？",
         replaceBase: "School starts on October 1.",
         replaceTarget: "把日子换成「五月三号」",
         options: ["on May third", "on May three", "in May three"],
         answer: "on May third",
-        explain: "点到日子用 on + 排位词：on May third——three 要换成 third。"
+        explain: "点到日子用 on + 序数词：on May third——three 要换成 third。"
       }
     ],
     practice: [
@@ -11033,7 +11039,7 @@ export const grammarLessons: GrammarLesson[] = [
     variants: [
       { label: "肯定", en: "She runs quickly.", zh: "她跑得快。" },
       { label: "否定", en: "She doesn't run quickly.", zh: "她跑得不快。", noteZh: "not 走帮手 doesn't；quickly 留在动词后不动。" },
-      { label: "疑问", en: "Does she run quickly?", zh: "她跑得快吗？", noteZh: "Does 站句首，run 穿原样，后座词不动。" }
+      { label: "疑问", en: "Does she run quickly?", zh: "她跑得快吗？", noteZh: "Does 站句首，run 用原形，后座词不动。" }
     ],
     sceneSwings: [
       { sceneZh: "说他做作业仔细", en: "He does his homework carefully.", zh: "他做作业很仔细。" },
@@ -11097,12 +11103,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 25 课学过：他每天喝牛奶。",
         tokens: ["He", "drinks", "milk", "every", "day."],
         answer: "He drinks milk every day.",
-        explain: "复现第 25 课：他/她/它版的 -s 别丢——今天句子里的 runs 也穿着这件外套。"
+        explain: "复现第 25 课：第三人称单数的 -s 别丢——今天句子里的 runs 也带着。"
       },
       {
         // R9 变形/替换：换样子词（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「She runs quickly.」把「快」换成「仔细（careful）」，样子词要怎么变？",
+        promptZh: "句型转换：「She runs quickly.」把「快」换成「仔细（careful）」，样子词要怎么变？",
         replaceBase: "She runs quickly.",
         replaceTarget: "把「快」换成「仔细」",
         options: ["carefully", "careful", "carefuly"],
@@ -11226,7 +11232,7 @@ export const grammarLessons: GrammarLesson[] = [
     variants: [
       { label: "肯定", en: "She sings very well.", zh: "她唱得很好。" },
       { label: "否定", en: "She doesn't sing very well.", zh: "她唱得不太好。", noteZh: "not 走帮手 doesn't；very well 原地不动。" },
-      { label: "疑问", en: "Does she sing well?", zh: "她唱得好吗？", noteZh: "Does 站句首，sing 穿原样——问句里 very 可以省。" }
+      { label: "疑问", en: "Does she sing well?", zh: "她唱得好吗？", noteZh: "Does 站句首，sing 用原形——问句里 very 可以省。" }
     ],
     sceneSwings: [
       { sceneZh: "夸姐姐唱得好", en: "She sings very well.", zh: "她唱得很好。" },
@@ -11273,7 +11279,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 14 课你听过的句子：她会唱得很好。",
         tokens: ["She", "can", "sing", "very", "well."],
         answer: "She can sing very well.",
-        explain: "复现第 14 课：can 后面的 sing 穿原样、well 收尾——今天它要转正成你自己的句子。"
+        explain: "复现第 14 课：can 后面的 sing 用原形、well 收尾——今天它要转正成你自己的句子。"
       },
       {
         kind: "spot",
@@ -11345,12 +11351,12 @@ export const grammarLessons: GrammarLesson[] = [
     huntCaseIds: ["hunt-stage-note"]
   },
 
-  // ── 第八批 · L60 收口课（there was/were）：把 L26 存在句翻到「昨天版」——回忆的开关（批八 PRD §2）──
+  // ── 第八批 · L60 收口课（there was/were）：把 L26 存在句翻到「过去式」——回忆的开关（批八 PRD §2）──
   {
     id: "lesson-60-there-was",
     number: 60,
     title: "昨天公园里有…",
-    grammarLabel: "回忆版存在句 · there was / there were",
+    grammarLabel: "there be 的过去式 · there was / there were",
     episode: "小美的一天 六十",
     scene: "mansion",
     cover: cover60,
@@ -11360,11 +11366,11 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "那天公园里有一只鸟。",
     targetSentence: "There was a bird in the park.",
     blocks: [
-      { text: "There was", role: "有（昨天版）" },
+      { text: "There was", role: "有（过去式）" },
       { text: "a bird", role: "一只鸟" },
       { text: "in the park", role: "在公园里" }
     ],
-    oneLineRule: "讲「昨天有什么」把 There is / are 换昨天版：一个用 was、好几个用 were——There 先占位的老规矩不动。",
+    oneLineRule: "讲「昨天有什么」把 There is / are 换过去式：一个用 was、复数用 were——There 先占位的老规矩不动。",
     examples: [
       { en: "There was a bird in the park.", zh: "那天公园里有一只鸟。" },
       { en: "There were two birds in the park.", zh: "那天公园里有两只鸟。" },
@@ -11381,26 +11387,26 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "There have a book yesterday.",
         wrongMark: "have",
         correct: "There was a book yesterday.",
-        whyZh: "存在的「有」用 There be，不用 have（第 26 课的老规矩）——昨天版就用 was：There was a book yesterday。"
+        whyZh: "存在的「有」用 There be，不用 have（第 26 课的老规矩）——过去式就用 was：There was a book yesterday。"
       },
       {
         wrong: "There was two birds.",
         wrongMark: "was",
         correct: "There were two birds.",
-        whyZh: "两只鸟是一群，用 were 搭档：There were two birds——一个 was、好几个 were（第 51 课的配对）。"
+        whyZh: "两只鸟是一群，用 were 搭档：There were two birds——一个 was、复数 were（第 51 课的配对）。"
       },
       {
         wrong: "Yesterday there is a bird.",
         wrongMark: "is",
         correct: "There was a bird yesterday.",
-        whyZh: "句子开头说了昨天，动词要跟着换昨天版：is→was——时间点变了，搭档跟着变。"
+        whyZh: "句子开头说了昨天，动词要跟着换过去式：is→was——时间点变了，搭档跟着变。"
       },
       {
         wrong: "There is a bird today.",
         wrongMark: null,
         correct: "There was a bird yesterday.",
         bothRight: true,
-        whyZh: "两句都对——现在版（is）说今天、昨天版（was）说那天：同一只鸟，两个时间点。"
+        whyZh: "两句都对——现在式（is）说今天、过去式（was）说那天：同一只鸟，两个时间点。"
       },
       {
         wrong: "My birthday is on May third.",
@@ -11428,20 +11434,20 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问那天有没有鸟", en: "Was there a bird?", zh: "那天有鸟吗？" }
     ],
     deepDive: {
-      title: "存在句地图：现在版与昨天版",
+      title: "存在句地图：现在式与过去式",
       paragraphs: [
-        "把第 26 课和今天连起来看：There 先占位说「有」——现在版用 is / are（There is a book / There are three apples），昨天版用 was / were（There was a bird / There were two birds）。",
-        "搭档怎么选？看后面东西的人数：一个用 is / was，一群用 are / were。现在版和昨天版一一对应：is→was、are→were。",
+        "把第 26 课和今天连起来看：There 先占位说「有」——现在式用 is / are（There is a book / There are three apples），过去式用 was / were（There was a bird / There were two birds）。",
+        "搭档怎么选？看后面东西的人数：一个用 is / was，一群用 are / were。现在式和过去式一一对应：is→was、are→were。",
         "为什么「有」不用 have？have 是「某人拥有」（I have a book），There be 是「某处存在」（There is a book）。中文都是「有」，英语两条路——第 26 课的老规矩，今天照样管用。",
-        "回忆的开关就在这：翻相册说「那天有什么」，把动词换成昨天版，一句话就把你带回那天的公园——今天这批课到此收口，说日期、夸做得好、回忆昨天，日常小事你都能说利索了。"
+        "回忆的开关就在这：翻相册说「那天有什么」，把动词换成过去式，一句话就把你带回那天的公园——今天这批课到此收口，说日期、夸做得好、回忆昨天，日常小事你都能说利索了。"
       ]
     },
     summary: {
-      rule: "说「那天有什么」：There 先占位 + 昨天版搭档——一个用 was、好几个用 were。",
+      rule: "说「那天有什么」：There 先占位 + 过去式搭档——一个用 was、复数用 were。",
       points: [
         "There was a bird in the park. —— 一只用 was",
         "There were two birds. —— 一群用 were",
-        "is→was、are→were —— 现在版和昨天版一一对应"
+        "is→was、are→were —— 现在式和过去式一一对应"
       ]
     },
     guided: [
@@ -11452,22 +11458,22 @@ export const grammarLessons: GrammarLesson[] = [
         after: "a bird in the park.",
         options: ["was", "were", "is"],
         answer: "was",
-        explain: "一只鸟用一个搭档，回忆版就是 was：There was a bird。"
+        explain: "一只鸟用一个搭档，过去式就是 was：There was a bird。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：那天公园里有一只鸟。",
         tokens: ["There", "was", "a", "bird", "in", "the", "park."],
         answer: "There was a bird in the park.",
-        explain: "There 先占位 + 昨天版搭档 was：回忆那天的公园。"
+        explain: "There 先占位 + 过去式搭档 was：回忆那天的公园。"
       },
       {
-        // R8 跨课复现：第 26 课（现在版先站好，再换昨天版）
+        // R8 跨课复现：第 26 课（现在式先站好，再换过去式）
         kind: "arrange",
         promptZh: "先复习一小步——第 26 课学过：桌上有一本书。",
         tokens: ["There", "is", "a", "book", "on", "the", "desk."],
         answer: "There is a book on the desk.",
-        explain: "复现第 26 课：现在版用 is——今天把同一句翻到昨天版就是 was。"
+        explain: "复现第 26 课：现在式用 is——今天把同一句翻到过去式就是 was。"
       },
       {
         kind: "spot",
@@ -11475,7 +11481,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["Yesterday", "there", "is", "a", "bird."],
         wrongToken: "is",
         answer: "is",
-        correctionZh: "开头说了昨天，动词要换昨天版：Yesterday there was a bird。",
+        correctionZh: "开头说了昨天，动词要换过去式：Yesterday there was a bird。",
         explain: "时间点变了，搭档跟着变。"
       },
       {
@@ -11489,12 +11495,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：单数换复数（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「There was a bird in the park.」把「一只鸟」换成「两只鸟」，搭档要怎么变？",
+        promptZh: "句型转换：「There was a bird in the park.」把「一只鸟」换成「两只鸟」，搭档要怎么变？",
         replaceBase: "There was a bird in the park.",
         replaceTarget: "把 a bird 换成 two birds",
         options: ["were", "was", "are"],
         answer: "were",
-        explain: "两只鸟是一群，用 were 搭档：There were two birds——回忆版的一群也是 were。"
+        explain: "两只鸟是一群，用 were 搭档：There were two birds——过去式的一群也是 were。"
       }
     ],
     practice: [
@@ -11535,7 +11541,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "翻相册时小美举起一张公园野餐的照片。看着那张照片，凭记忆，写出你那句英文。",
       intentZh: "那天公园里有一只鸟。",
       answer: "There was a bird in the park.",
-      noteZh: "There 先占位 + 昨天版搭档 was：一个用 was。"
+      noteZh: "There 先占位 + 过去式搭档 was：一个用 was。"
     },
     huntCaseIds: ["hunt-old-photo"]
   },
@@ -11556,10 +11562,10 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "Could you help me?",
     blocks: [
       { text: "Could you", role: "能（请你）——最客气的一档" },
-      { text: "help", role: "帮（穿原样）" },
+      { text: "help", role: "帮（用原形）" },
       { text: "me", role: "我" }
     ],
-    oneLineRule: "请人帮忙用 Could you + 原样——比 Can you 更客气；动作不垫 to、不换装。",
+    oneLineRule: "请人帮忙用 Could you + 原形——比 Can you 更客气；动作不垫 to、不换装。",
     examples: [
       { en: "Could you help me?", zh: "能帮我一下吗？" },
       { en: "Could you close the door?", zh: "能把门关上吗？" },
@@ -11576,13 +11582,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Could you to help me?",
         wrongMark: "to",
         correct: "Could you help me?",
-        whyZh: "垫板不进这扇门：Could you help——家族不垫板（第 47 课的老规矩）。"
+        whyZh: "to 不进这扇门：Could you help——家族不带 to（第 47 课的老规矩）。"
       },
       {
         wrong: "Could you helping me?",
         wrongMark: "helping",
         correct: "Could you help me?",
-        whyZh: "动词穿原样，不换 -ing 装：Could you help me——跟 must/should 家族一个规矩。"
+        whyZh: "动词用原形，不换 -ing 装：Could you help me——跟 must/should 家族一个规矩。"
       },
       {
         wrong: "Can you help me?",
@@ -11614,7 +11620,7 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "I could help you.", zh: "我可以帮你。", noteZh: "could 站动词前、动词穿原样：I could help you。" },
+      { label: "肯定", en: "I could help you.", zh: "我可以帮你。", noteZh: "could 站动词前、动词用原形：I could help you。" },
       { label: "否定", en: "I couldn't help you.", zh: "我没能帮上你。", noteZh: "could 加 not 缩成 couldn't——跟 can→can't 一个规矩。" },
       { label: "疑问", en: "Could you help me, please?", zh: "能帮我一下吗？（口气更软）", noteZh: "再加一个 please，口气更软。" }
     ],
@@ -11627,13 +11633,13 @@ export const grammarLessons: GrammarLesson[] = [
       title: "could 的两种用法",
       paragraphs: [
         "第 32 课你见过「礼貌三档」：Close the door（直白）→ Close the door, please（加个 please）→ Could you close the door?（最客气）。第三档今天正式上岗——请人帮忙、问路、求助，这一档最稳妥。",
-        "could 和 can 一样是不变词：后面动词穿原样（Could you help me），不垫 to、不换 -ing——跟 must/should 家族同一个规矩。",
+        "could 和 can 一样是不变词：后面动词用原形（Could you help me），不垫 to、不换 -ing——跟 must/should 家族同一个规矩。",
         "could 还有另一种用法：说「能」（有本事）。I could help you 就是「我可以帮你」——说出来的事，不是问句。这种用法你现在认得、听得出就行，用得到的时候它自己会顺出来。",
         "三句客气程度不同的话，排在一起看：Can you help me?（直接）→ Could you help me?（客气）→ Could you help me, please?（最软）——需要哪个请哪个。"
       ]
     },
     summary: {
-      rule: "请人帮忙用 Could you + 原样——比 Can you 更客气；不垫板、不换装。",
+      rule: "请人帮忙用 Could you + 原形——比 Can you 更客气；不带 to、不换装。",
       points: [
         "Could you help me? —— 最客气的一档",
         "Can you / Could you —— 两句都对，口气不同",
@@ -11648,14 +11654,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "me?",
         options: ["help", "to help", "helping"],
         answer: "help",
-        explain: "家族不垫板、不换装：Could you help me。"
+        explain: "家族不带 to、不换装：Could you help me。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：能帮我一下吗？",
         tokens: ["Could", "you", "help", "me?"],
         answer: "Could you help me?",
-        explain: "请人帮忙最客气的一档：Could you + 动词穿原样。"
+        explain: "请人帮忙最客气的一档：Could you + 动词用原形。"
       },
       {
         // R8 跨课复现：第 32 课（礼貌三档起点）
@@ -11671,8 +11677,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["Could", "you", "to", "help", "me?"],
         wrongToken: "to",
         answer: "to",
-        correctionZh: "垫板不进这扇门：Could you help me。",
-        explain: "家族不垫板——第 47 课的老规矩。"
+        correctionZh: "to 不进这扇门：Could you help me。",
+        explain: "家族不带 to——第 47 课的老规矩。"
       },
       {
         // R8 跨课复现：第 26 课（There 先占位）
@@ -11685,12 +11691,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换动词（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Could you help me?」把「帮忙」换成「等一下（wait a minute）」，动词要怎么变？",
+        promptZh: "句型转换：「Could you help me?」把「帮忙」换成「等一下（wait a minute）」，动词要怎么变？",
         replaceBase: "Could you help me?",
         replaceTarget: "把 help 换成 wait a minute",
         options: ["wait a minute", "to wait a minute", "waiting a minute"],
         answer: "wait a minute",
-        explain: "穿原样、不垫板：Could you wait a minute。"
+        explain: "用原形、不带 to：Could you wait a minute。"
       }
     ],
     practice: [
@@ -11731,7 +11737,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "街角，小美抱着一摞书腾不出手，想请旁边的大姐姐帮忙。凭记忆，写出她那句英文。",
       intentZh: "能帮我一下吗？",
       answer: "Could you help me?",
-      noteZh: "第三档上岗：Could you + 动词穿原样——不垫板、不换装。"
+      noteZh: "第三档上岗：Could you + 动词用原形——不带 to、不换装。"
     },
     huntCaseIds: ["hunt-help-note"]
   },
@@ -11751,10 +11757,10 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我要一杯茶。",
     targetSentence: "I would like a cup of tea.",
     blocks: [
-      { text: "I would like", role: "我想要（客气版）" },
+      { text: "I would like", role: "我想要（客气说法）" },
       { text: "a cup of tea", role: "一杯茶" }
     ],
-    oneLineRule: "想把「想要」说客气一点，用 I would like：比 I want 软一档，would 家族穿原样。",
+    oneLineRule: "想把「想要」说客气一点，用 I would like：比 I want 软一档，would 家族用原形。",
     examples: [
       { en: "I would like a cup of tea.", zh: "我要一杯茶。" },
       { en: "What would you like?", zh: "你想要点什么？" },
@@ -11771,13 +11777,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I would like to tea.",
         wrongMark: "to",
         correct: "I would like a cup of tea.",
-        whyZh: "想要的东西直接跟上，不垫板：would like a cup of tea——垫板是给动作用的（would like to sleep）。"
+        whyZh: "想要的东西直接跟上，不带 to：would like a cup of tea——to 是给动作用的（would like to sleep）。"
       },
       {
         wrong: "I would likes tea.",
         wrongMark: "likes",
         correct: "I would like a cup of tea.",
-        whyZh: "would 家族穿原样：like 不加 -s——跟 must/should 家族一个规矩。"
+        whyZh: "would 家族用原形：like 不加 -s——跟 must/should 家族一个规矩。"
       },
       {
         wrong: "I want a cup of tea.",
@@ -11821,16 +11827,16 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "would like 的两个用法",
       paragraphs: [
-        "想要「东西」：would like 后面直接跟上——I would like a cup of tea。想要「做事」：在中间垫一块 to——I would like to sleep。看后面跟的是什么，垫不垫板就定了。",
-        "would like 是 want 的客气版：I want a cup of tea（直接）→ I would like a cup of tea（客气）。点单、做客、招待客人，客气一档都用它。",
-        "would 也是「不变词」家族的一员：I / you / she / he……前面站谁，would like 都穿原样——She would like a cup of coffee（likes 的 -s 不给它穿）。",
+        "想要「东西」：would like 后面直接跟上——I would like a cup of tea。想要「做事」：在中间加一个 to——I would like to sleep。看后面跟的是什么，垫不带 to 就定了。",
+        "would like 是 want 的客气说法：I want a cup of tea（直接）→ I would like a cup of tea（客气）。点单、做客、招待客人，客气一档都用它。",
+        "would 也是「不变词」家族的一员：I / you / she / he……前面站谁，would like 都用原形——She would like a cup of coffee（likes 的 -s 不给它穿）。",
         "第 4 课你在奶茶店听过 What would you like?——当时你只会答 I want a milk tea。今天你连问带答都有了：问 What would you like?，答 I would like a cup of tea。"
       ]
     },
     summary: {
       rule: "客气想要用 would like：I would like a cup of tea——想要东西直接跟，想要做事垫 to。",
       points: [
-        "I would like a cup of tea. —— 客气版的「我要」",
+        "I would like a cup of tea. —— 客气说法的「我要」",
         "What would you like? —— 第 4 课听过，今天会问也会答",
         "I would like to sleep. —— 想要做事，垫块 to"
       ]
@@ -11843,7 +11849,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "tea.",
         options: ["a cup of", "to", "cup"],
         answer: "a cup of",
-        explain: "想要的东西直接跟上：a cup of tea——不垫板。"
+        explain: "想要的东西直接跟上：a cup of tea——不带 to。"
       },
       {
         kind: "arrange",
@@ -11866,7 +11872,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "would", "likes", "coffee."],
         wrongToken: "likes",
         answer: "likes",
-        correctionZh: "would 家族穿原样：would like coffee。",
+        correctionZh: "would 家族用原形：would like coffee。",
         explain: "likes 的 -s 不给它穿。"
       },
       {
@@ -11875,12 +11881,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 16 课学过：我今天必须完成作业。",
         tokens: ["I", "must", "finish", "my", "homework", "today."],
         answer: "I must finish my homework today.",
-        explain: "复现第 16 课：must 家族穿原样——今天认识的 would 也是这一家的。"
+        explain: "复现第 16 课：must 家族用原形——今天认识的 would 也是这一家的。"
       },
       {
         // R9 变形/替换：换主语（家族永不变形）
         kind: "replace",
-        promptZh: "句子变身：「I would like a cup of tea.」把 I 换成 She，中间那截要怎么变？",
+        promptZh: "句型转换：「I would like a cup of tea.」把 I 换成 She，中间那截要怎么变？",
         replaceBase: "I would like a cup of tea.",
         replaceTarget: "把 I 换成 She",
         options: ["would like", "would likes", "will like"],
@@ -11926,7 +11932,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "阿姨家做客，她提着茶壶问你想喝点什么。凭记忆，写出你那句英文。",
       intentZh: "我要一杯茶。",
       answer: "I would like a cup of tea.",
-      noteZh: "客气版「我要」：would like + 东西——不垫板。"
+      noteZh: "客气说法「我要」：would like + 东西——不带 to。"
     },
     huntCaseIds: ["hunt-guest-note"]
   },
@@ -12075,7 +12081,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：东西换 it（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Please give me the book.」把那本书换成小词 it，句子要怎么变？",
+        promptZh: "句型转换：「Please give me the book.」把那本书换成小词 it，句子要怎么变？",
         replaceBase: "Please give me the book.",
         replaceTarget: "把 the book 换成 it",
         options: ["Please give it to me.", "Please give me it.", "Please give it me."],
@@ -12195,13 +12201,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I finished my homework.",
         bothRight: true,
-        whyZh: "两句都对——「做完了」两条路：have done（第 21 课的做过版）或 finished（今天的收尾词）。"
+        whyZh: "两句都对——「做完了」两条路：have done（第 21 课的过去分词）或 finished（今天的收尾词）。"
       }
     ],
     variants: [
       { label: "肯定", en: "I finished reading the book.", zh: "我看完这本书啦。" },
       { label: "否定", en: "I didn't finish reading the book.", zh: "我还没看完这本书。", noteZh: "昨天的「没做完」：didn't 挡住 finish，reading 不动。" },
-      { label: "疑问", en: "Did you finish reading the book?", zh: "你看完这本书了吗？", noteZh: "Did 站句首，finish 穿原样，reading 留在原地。" }
+      { label: "疑问", en: "Did you finish reading the book?", zh: "你看完这本书了吗？", noteZh: "Did 站句首，finish 用原形，reading 留在原地。" }
     ],
     sceneSwings: [
       { sceneZh: "说写完作业了", en: "I finished my homework.", zh: "我写完作业了。" },
@@ -12213,8 +12219,8 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 45 课认识过 enjoy 的门：只接 -ing 形式（enjoy reading），to 进不去。今天的 finish 是同一个脾气：finish reading、finish drawing——只开一扇门。",
         "「名词形式」是什么？就是把动作换成 -ing 形式、当「做的事情」来用：read → reading、draw → drawing。like / enjoy / finish 这些动词后面都这么用。",
-        "也有动词门口是垫板的：want to travel（第 15 课）、would like to sleep（第 62 课）——同一个动作，门口规矩不同。遇到新动词，看一眼它认哪一种。",
-        "这类动词后面还会遇到更多：有的是「只接 -ing 形式」，有的是「接 to + 原样」——一个一个遇，不着急。"
+        "也有动词门口是 to 的：want to travel（第 15 课）、would like to sleep（第 62 课）——同一个动作，门口规矩不同。遇到新动词，看一眼它认哪一种。",
+        "这类动词后面还会遇到更多：有的是「只接 -ing 形式」，有的是「接 to + 原形」——一个一个遇，不着急。"
       ]
     },
     summary: {
@@ -12256,11 +12262,11 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "finished", "to", "read", "the", "book."],
         wrongToken: "to",
         answer: "to",
-        correctionZh: "垫板进不了 finish 的门：finished reading。",
+        correctionZh: "to 进不了 finish 的门：finished reading。",
         explain: "只接 -ing 形式——第 45 课同款规矩。"
       },
       {
-        // R8 跨课复现：第 42 课（-ing 形式这张-ing 形式）
+        // R8 跨课复现：第 42 课（-ing 形式这条线）
         kind: "arrange",
         promptZh: "再对照一句——第 42 课学过：我喜欢读书。",
         tokens: ["I", "like", "reading."],
@@ -12270,12 +12276,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换动词（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I finished reading the book.」把「读书」换成「画画（draw a picture）」，收尾句要怎么变？",
+        promptZh: "句型转换：「I finished reading the book.」把「读书」换成「画画（draw a picture）」，收尾句要怎么变？",
         replaceBase: "I finished reading the book.",
         replaceTarget: "把 reading the book 换成 draw a picture",
         options: ["drawing a picture", "draw a picture", "to draw a picture"],
         answer: "drawing a picture",
-        explain: "名词形式换上：finished drawing a picture——-ing 外套穿好。"
+        explain: "名词形式换上：finished drawing a picture——-ing 加上。"
       }
     ],
     practice: [
@@ -12369,7 +12375,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "He is as taller as me.",
         wrongMark: "taller",
         correct: "He is as tall as me.",
-        whyZh: "中间的词穿原样：加了 -er 是「更」家的人，进不了「一样」家的门。"
+        whyZh: "中间的词用原形：加了 -er 是「更」家的人，进不了「一样」家的门。"
       },
       {
         wrong: "He is taller than me.",
@@ -12408,7 +12414,7 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 17 课认识过「更」家：bigger than、taller than——比下去用 than。今天认识隔壁的「一样」家：as tall as——一样用两个 as 卡住。",
         "两家人门牌不同：than 只在「更」家用；「一样」家的两个 as 一个都不能丢——as tall as me，少一头就散架。",
-        "中间那个词穿原样：as tall as（不写 taller）、as smart as（不写 smarter）——加了 -er 就串门到「更」家去了。",
+        "中间那个词用原形：as tall as（不写 taller）、as smart as（不写 smarter）——加了 -er 就串门到「更」家去了。",
         "说不「一样」（不如）也简单：在第一个 is 后面加 not——He is not as tall as me（他不如我高）。"
       ]
     },
@@ -12465,12 +12471,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换形容（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「He is as tall as me.」把「高」换成「聪明（smart）」，中间那截要怎么变？",
+        promptZh: "句型转换：「He is as tall as me.」把「高」换成「聪明（smart）」，中间那截要怎么变？",
         replaceBase: "He is as tall as me.",
         replaceTarget: "把 tall 换成 smart",
         options: ["as smart as", "as smarter as", "smart than"],
         answer: "as smart as",
-        explain: "中间的词穿原样：as smart as——加了 -er 就串门了。"
+        explain: "中间的词用原形：as smart as——加了 -er 就串门了。"
       }
     ],
     practice: [
@@ -12659,7 +12665,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换形容词（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It is too heavy to carry.」把「重」换成「热（hot）」，句子要怎么变？",
+        promptZh: "句型转换：「It is too heavy to carry.」把「重」换成「热（hot）」，句子要怎么变？",
         replaceBase: "It is too heavy to carry.",
         replaceTarget: "把 heavy 换成 hot",
         options: ["too hot", "very hot", "hot too"],
@@ -12798,7 +12804,7 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 18 课认识过 in / on / at 三块门牌：in the box（盒子里）、on Monday（周一）、at six（六点）。今天 at 接了新活：挂在「擅长」后面——good at。",
         "门牌后面穿什么？多数要用 -ing 形式：good at drawing、good at swimming——跟第 42 课喜欢、第 45 课享受、第 64 课收尾一个规矩：-ing 形式走到哪儿都认。",
-        "例外也有：接一门学科直接跟就行——good at math、good at English（学科名本来就当「事」用）。遇到新词，看一眼它穿不穿外套。",
+        "例外也有：接一门学科直接跟就行——good at math、good at English（学科名本来就当「事」用）。遇到新词，看一眼它加不加 -y。",
         "「擅长」这件事挂在 at 上，别用 in 去推——中文说「在数学方面很好」，那个「在」是中文的思维；英语的门牌房里，擅长只认 at。"
       ]
     },
@@ -12828,7 +12834,7 @@ export const grammarLessons: GrammarLesson[] = [
         explain: "good at 后面用 -ing 形式：good at drawing。"
       },
       {
-        // R8 跨课复现：第 42 课（-ing 形式这张-ing 形式起点）
+        // R8 跨课复现：第 42 课（-ing 形式这条线起点）
         kind: "arrange",
         promptZh: "先复习一小步——第 42 课学过：我喜欢读书。",
         tokens: ["I", "like", "reading."],
@@ -12855,12 +12861,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换擅长的事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am good at drawing.」把「画画」换成「游泳（swim）」，门牌后面要怎么变？",
+        promptZh: "句型转换：「I am good at drawing.」把「画画」换成「游泳（swim）」，门牌后面要怎么变？",
         replaceBase: "I am good at drawing.",
         replaceTarget: "把 drawing 换成 swim",
         options: ["swimming", "swim", "to swim"],
         answer: "swimming",
-        explain: "名词形式换一件：good at swimming——-ing 外套穿好。"
+        explain: "名词形式换一件：good at swimming——-ing 加上。"
       }
     ],
     practice: [
@@ -12920,8 +12926,11 @@ export const grammarLessons: GrammarLesson[] = [
     dialogueZh: "小美把礼物袋递到妈妈手里。",
     intentZh: "我给妈妈买了份礼物。",
     targetSentence: "I bought a gift for my mom.",
+    // 本课 examples 已标注「同序换位」，replace 题的正确答案就是这句——
+    // 产出类题只认 for 版会把写出另一版的学习者判错（实测 29 分），故纳入可接受答案。
+    acceptAlso: ["I bought my mom a gift."],
     blocks: [
-      { text: "I bought", role: "我买了（昨天版）" },
+      { text: "I bought", role: "我买了（过去式）" },
       { text: "a gift", role: "一份礼物" },
       { text: "for my mom", role: "给妈妈的（为你办）" }
     ],
@@ -12981,12 +12990,12 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "I bought a gift for my mom.", zh: "我给妈妈买了份礼物。" },
-      { label: "否定", en: "I didn't buy a gift for my mom.", zh: "我没给妈妈买礼物。", noteZh: "昨天的「没买」用 didn't + 穿原样的 buy——bought 退回原样。" },
-      { label: "疑问", en: "Did you buy a gift for your mom?", zh: "你给妈妈买礼物了吗？", noteZh: "Did 搬句首，buy 穿原样，for your mom 不动。" }
+      { label: "否定", en: "I didn't buy a gift for my mom.", zh: "我没给妈妈买礼物。", noteZh: "昨天的「没买」用 didn't + 用原形的 buy——bought 变回原形。" },
+      { label: "疑问", en: "Did you buy a gift for your mom?", zh: "你给妈妈买礼物了吗？", noteZh: "Did 搬句首，buy 用原形，for your mom 不动。" }
     ],
     sceneSwings: [
       { sceneZh: "说她给我做了个蛋糕", en: "She made a cake for me.", zh: "她给我做了个蛋糕。" },
-      { sceneZh: "说给妈妈买了份礼物（换位版）", en: "I bought my mom a gift.", zh: "我给妈妈买了份礼物。" },
+      { sceneZh: "说给妈妈买了份礼物（换位置）", en: "I bought my mom a gift.", zh: "我给妈妈买了份礼物。" },
       { sceneZh: "问对方给妈妈买礼物了吗", en: "Did you buy a gift for your mom?", zh: "你给妈妈买礼物了吗？" }
     ],
     deepDive: {
@@ -12994,15 +13003,15 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 63 课学过递东西：give me the book、give it to me——那是「递到手」，用 to。今天 buy 出场：给你买的礼物，是你花了心思「为你办」的事，用 for。",
         "两边都记两个说法：递到手——give me the book ／ give the book to me；为你办——buy my mom a gift ／ buy a gift for my mom。顺序都是老规矩：先给谁后给什么，或者东西在前、末尾收尾。",
-        "buy 的昨天版是 bought（第 11 课见过的老实词）：bought 不走加 -ed 的路——和 go→went 一样要单独记。今天句子里它穿着昨天版出场。",
+        "buy 的过去式是 bought（第 11 课见过的老实词）：bought 不走加 -ed 的路——和 go→went 一样要单独记。今天句子里它穿着过去式出场。",
         "第 44 课你去商店买牛奶（go to the shop to buy milk）——今天的 buy 前面多了一个「给谁」：买给妈妈、买给朋友，都是 for 出场。"
       ]
     },
     summary: {
       rule: "买给谁：buy + 人 + 东西 ／ buy + 东西 + for + 人——递到手用 to，为你办用 for。",
       points: [
-        "I bought a gift for my mom. —— for 收尾版",
-        "I bought my mom a gift. —— 先给谁后给什么版（都对）",
+        "I bought a gift for my mom. —— for 放句尾",
+        "I bought my mom a gift. —— 先给谁后给什么（都对）",
         "give it to me ／ buy it for me —— to 与 for 两家人"
       ]
     },
@@ -13051,7 +13060,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换两序（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I bought a gift for my mom.」换成「先给谁、后给什么」的排法，中间要怎么变？",
+        promptZh: "句型转换：「I bought a gift for my mom.」换成「先给谁、后给什么」的排法，中间要怎么变？",
         replaceBase: "I bought a gift for my mom.",
         replaceTarget: "换成先说给谁、再说给什么",
         options: ["I bought my mom a gift.", "I bought for my mom a gift.", "I bought a gift my mom for."],
@@ -13246,12 +13255,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换请做的事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Would you mind opening the window?」把「开窗」换成「关窗（close the window）」，动词要怎么变？",
+        promptZh: "句型转换：「Would you mind opening the window?」把「开窗」换成「关窗（close the window）」，动词要怎么变？",
         replaceBase: "Would you mind opening the window?",
         replaceTarget: "把 opening the window 换成 close the window",
         options: ["closing the window", "close the window", "to close the window"],
         answer: "closing the window",
-        explain: "名词形式换一件：mind closing——-ing 外套穿好。"
+        explain: "名词形式换一件：mind closing——-ing 加上。"
       }
     ],
     practice: [
@@ -13332,7 +13341,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Would you like to some tea?",
         wrongMark: "to",
         correct: "Would you like some tea?",
-        whyZh: "东西直接跟、不垫板：some tea——垫板留给动作（would like to have）。"
+        whyZh: "东西直接跟、不带 to：some tea——to 留给动作（would like to have）。"
       },
       {
         wrong: "Do you like some tea?",
@@ -13404,7 +13413,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "?",
         options: ["some tea", "to tea", "tea to"],
         answer: "some tea",
-        explain: "东西直接跟：some tea——不垫板。"
+        explain: "东西直接跟：some tea——不带 to。"
       },
       {
         kind: "arrange",
@@ -13427,8 +13436,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["Would", "you", "like", "to", "some", "tea?"],
         wrongToken: "to",
         answer: "to",
-        correctionZh: "东西直接跟、不垫板：some tea。",
-        explain: "垫板留给动作（to have）。"
+        correctionZh: "东西直接跟、不带 to：some tea。",
+        explain: "to 留给动作（to have）。"
       },
       {
         // R8 跨课复现：第 4 课（种子）
@@ -13441,7 +13450,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换提供的东西（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Would you like some tea?」把「茶」换成「咖啡（coffee）」，句子要怎么变？",
+        promptZh: "句型转换：「Would you like some tea?」把「茶」换成「咖啡（coffee）」，句子要怎么变？",
         replaceBase: "Would you like some tea?",
         replaceTarget: "把 some tea 换成 some coffee",
         options: ["some coffee", "to coffee", "coffee some"],
@@ -13637,7 +13646,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换形容词（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「The bag is light enough to carry.」把「轻」换成「大（big）」——够大装得下，句子要怎么变？",
+        promptZh: "句型转换：「The bag is light enough to carry.」把「轻」换成「大（big）」——够大装得下，句子要怎么变？",
         replaceBase: "The bag is light enough to carry.",
         replaceTarget: "把 light 换成 big",
         options: ["big enough", "enough big", "big too"],
@@ -13832,7 +13841,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换周期（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I run twice a week.」换成「一个月一次」（一个月只跑一次），词块要怎么换？",
+        promptZh: "句型转换：「I run twice a week.」换成「一个月一次」（一个月只跑一次），词块要怎么换？",
         replaceBase: "I run twice a week.",
         replaceTarget: "把 twice a week 换成「一个月一次」",
         options: ["once a month", "one a month", "a month once"],
@@ -13957,7 +13966,7 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "It takes ten minutes.", zh: "要花十分钟。", noteZh: "take 表花时间：It takes + 时长。" },
-      { label: "否定", en: "It doesn't take long.", zh: "花不了多久。", noteZh: "doesn't 帮手 + 穿原样的 take。" },
+      { label: "否定", en: "It doesn't take long.", zh: "花不了多久。", noteZh: "doesn't 帮手 + 用原形的 take。" },
       { label: "疑问", en: "How long does it take?", zh: "要花多久？", noteZh: "How long 站句首、does 排第二。" }
     ],
     sceneSwings: [
@@ -13969,7 +13978,7 @@ export const grammarLessons: GrammarLesson[] = [
       title: "take 表花时间",
       paragraphs: [
         "「花时间」英语有自己的词：take。东西当主角——It takes ten minutes（「它」花十分钟）。这个「它」不是小美、不是公交车，是那段路、那件事本身。",
-        "问句和答句成对记：How long does it take?（要花多久？）／It takes ten minutes.（要花十分钟。）问的时候 does 帮忙，答的时候 takes 穿上 -s（它一个，他 / 她 / 它版的小尾巴）。",
+        "问句和答句成对记：How long does it take?（要花多久？）／It takes ten minutes.（要花十分钟。）问的时候 does 帮忙，答的时候 takes 带上 -s（它一个，第三人称单数的 -s）。",
         "It takes an hour by bus.（坐公交要一小时）——后面想说什么交通工具、走什么路，都可以跟。",
         "How 家族越排越长：How are you（你好吗）、How old（多大）、How many（多少）、How often（多久一次）、今天的 How long（要花多久）。还有一个认读的小兄弟：How far（有多远）——问距离，你先认得、听得出就行。"
       ]
@@ -14027,7 +14036,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：问距离的认读句（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「How long does it take?」想问「有多远」，How 后面那截要怎么换？",
+        promptZh: "句型转换：「How long does it take?」想问「有多远」，How 后面那截要怎么换？",
         replaceBase: "How long does it take?",
         replaceTarget: "把 long 换成 far（问距离）",
         options: ["How far is the school?", "How far does it take?", "How long is the school?"],
@@ -14083,7 +14092,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-74-help-let",
     number: 74,
     title: "让我来帮你",
-    grammarLabel: "让我来 · Let me / help + 动作穿原样",
+    grammarLabel: "让我来 · Let me / help + 动作用原形",
     episode: "小美的一天 七十四",
     scene: "mansion",
     cover: cover74,
@@ -14096,7 +14105,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "Let me", role: "让我来（我出手）" },
       { text: "help you", role: "帮你（搭把手）" }
     ],
-    oneLineRule: "「让我来」用 Let me + 动作穿原样（Let me help）；「帮你做」help 后面也是动作穿原样（help you carry）——口令块后面直接接动作，不垫板。",
+    oneLineRule: "「让我来」用 Let me + 动作用原形（Let me help）；「帮你做」help 后面也是动作用原形（help you carry）——口令块后面直接接动作，不带 to。",
     examples: [
       { en: "Let me help you.", zh: "让我来帮你。" },
       { en: "Let me carry the box.", zh: "让我来搬这个箱子。" },
@@ -14113,13 +14122,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Let me to help you.",
         wrongMark: "to",
         correct: "Let me help you.",
-        whyZh: "口令块后面直接接动作，不垫板：Let me help——跟第 47 课家族一个规矩。"
+        whyZh: "口令块后面直接接动作，不带 to：Let me help——跟第 47 课家族一个规矩。"
       },
       {
         wrong: "Let me helps you.",
         wrongMark: "helps",
         correct: "Let me help you.",
-        whyZh: "动词穿原样：跟 must/should/can 家族一个规矩——helps 的 -s 不给它穿。"
+        whyZh: "动词用原形：跟 must/should/can 家族一个规矩——helps 的 -s 不给它穿。"
       },
       {
         wrong: "Could you help me?",
@@ -14147,12 +14156,12 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "Let me help you.",
         bothRight: true,
-        whyZh: "两句都对——第 47 课家族不垫板（should sleep）＋今天的 Let me help：老规矩一条线。"
+        whyZh: "两句都对——第 47 课家族不带 to（should sleep）＋今天的 Let me help：老规矩一条线。"
       }
     ],
     variants: [
-      { label: "肯定", en: "Let me help you.", zh: "让我来帮你。", noteZh: "Let me + 动作穿原样。" },
-      { label: "否定", en: "She doesn't let me help.", zh: "她不让我帮忙。", noteZh: "doesn't 帮忙，let 照样穿原样。" },
+      { label: "肯定", en: "Let me help you.", zh: "让我来帮你。", noteZh: "Let me + 动作用原形。" },
+      { label: "否定", en: "She doesn't let me help.", zh: "她不让我帮忙。", noteZh: "doesn't 帮忙，let 照样用原形。" },
       { label: "疑问", en: "Can I help you?", zh: "我能帮上忙吗？", noteZh: "出手也常这么问——第 14 课 can 老熟人。" }
     ],
     sceneSwings: [
@@ -14163,14 +14172,14 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "两个口令块",
       paragraphs: [
-        "今天认识两个「口令块」：Let me（让我来——我出手）和 help（搭把手）。它们后面都直接接动作，动作穿原样：Let me help、help you carry——不垫板、不加 -s，跟 must/should/can 家族一个规矩。",
+        "今天认识两个「口令块」：Let me（让我来——我出手）和 help（搭把手）。它们后面都直接接动作，动作用原形：Let me help、help you carry——不带 to、不加 -s，跟 must/should/can 家族一个规矩。",
         "第 61 课你会说 Could you help me?（请你帮我）；今天反过来：Let me help you（让我来帮你）——请求和出手，一件事的两头都齐了。",
         "help 后面最宽松：垫不垫 to 两可——He helped me carry the box. 和 He helped me to carry the box. 都对。别的口令块一个都不垫，只有它两头都收。",
         "「让」这个字中文里管的事很多：让某人做（Let me…）、让谁等（wait）……今天先拿下一个最常用的：Let me——我出手的时候开口说它。"
       ]
     },
     summary: {
-      rule: "「让我来」Let me + 动作穿原样；「帮你做」help + 动作穿原样——口令块后面直接接动作，不垫板。",
+      rule: "「让我来」Let me + 动作用原形；「帮你做」help + 动作用原形——口令块后面直接接动作，不带 to。",
       points: [
         "Let me help you. —— 让我来（我出手）",
         "He helped me carry the box. —— help 后垫不垫 to 两可",
@@ -14192,7 +14201,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：让我来帮你。",
         tokens: ["Let", "me", "help", "you."],
         answer: "Let me help you.",
-        explain: "Let me + 动作穿原样：口令块出手。"
+        explain: "Let me + 动作用原形：口令块出手。"
       },
       {
         // R8 跨课复现：第 61 课（请求义）
@@ -14208,7 +14217,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["Let", "me", "to", "help", "you."],
         wrongToken: "to",
         answer: "to",
-        correctionZh: "口令块不垫板：Let me help you。",
+        correctionZh: "口令块不带 to：Let me help you。",
         explain: "跟 must/should 家族一个规矩。"
       },
       {
@@ -14217,17 +14226,17 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 47 课学过：你该早点睡。",
         tokens: ["You", "should", "sleep", "early."],
         answer: "You should sleep early.",
-        explain: "复现第 47 课：家族不垫板——老规矩今天扩到 Let me。"
+        explain: "复现第 47 课：家族不带 to——老规矩今天扩到 Let me。"
       },
       {
         // R9 变形/替换：换动作（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Let me help you.」把「帮你」换成「搬这个箱子（carry the box）」，动作要怎么变？",
+        promptZh: "句型转换：「Let me help you.」把「帮你」换成「搬这个箱子（carry the box）」，动作要怎么变？",
         replaceBase: "Let me help you.",
         replaceTarget: "把 help you 换成 carry the box",
         options: ["carry the box", "to carry the box", "carrying the box"],
         answer: "carry the box",
-        explain: "动作穿原样：Let me carry the box。"
+        explain: "动作用原形：Let me carry the box。"
       }
     ],
     practice: [
@@ -14262,7 +14271,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "周末搬家，小美看你抱着纸箱腾不出手，开口搭把手。凭记忆，写出她那句英文。",
       intentZh: "让我来帮你。",
       answer: "Let me help you.",
-      noteZh: "Let me + 动作穿原样——不垫板。"
+      noteZh: "Let me + 动作用原形——不带 to。"
     },
     huntCaseIds: ["hunt-moving-help"]
   },
@@ -14272,7 +14281,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-75-lets",
     number: 75,
     title: "咱们去…吧",
-    grammarLabel: "提议 · Let's + 动作穿原样",
+    grammarLabel: "提议 · Let's + 动作用原形",
     episode: "小美的一天 七十五",
     scene: "forest",
     cover: cover75,
@@ -14283,9 +14292,9 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "Let's go to the park.",
     blocks: [
       { text: "Let's", role: "咱们…吧（口令块）" },
-      { text: "go to the park", role: "去公园（动作穿原样）" }
+      { text: "go to the park", role: "去公园（动作用原形）" }
     ],
-    oneLineRule: "提议「咱们去…吧」用 Let's + 动作穿原样（Let's go）——口令块后面直接接动作，不垫板。",
+    oneLineRule: "提议「咱们去…吧」用 Let's + 动作用原形（Let's go）——口令块后面直接接动作，不带 to。",
     examples: [
       { en: "Let's go to the park.", zh: "咱们去公园吧。" },
       { en: "Good idea!", zh: "好主意！" },
@@ -14302,13 +14311,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Let's to go to the park.",
         wrongMark: "to",
         correct: "Let's go to the park.",
-        whyZh: "口令块后面直接接动作，不垫板：Let's go——跟第 74 课同规矩。"
+        whyZh: "口令块后面直接接动作，不带 to：Let's go——跟第 74 课同规矩。"
       },
       {
         wrong: "Let's going to the park.",
         wrongMark: "going",
         correct: "Let's go to the park.",
-        whyZh: "动词穿原样，不换 -ing 装：跟 must/should 家族一个规矩。"
+        whyZh: "动词用原形，不换 -ing 装：跟 must/should 家族一个规矩。"
       },
       {
         wrong: "Let's go to the park.",
@@ -14340,7 +14349,7 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "Let's go to the park.", zh: "咱们去公园吧。", noteZh: "Let's + 动作穿原样。" },
+      { label: "肯定", en: "Let's go to the park.", zh: "咱们去公园吧。", noteZh: "Let's + 动作用原形。" },
       { label: "否定", en: "Let's not go now.", zh: "咱们别现在去。", noteZh: "not 跟在 Let's 后面。" },
       { label: "疑问", en: "How about going to the park?", zh: "去公园怎么样？", noteZh: "How about 后面用 -ing 形式 going——把选项放桌上问。" }
     ],
@@ -14353,13 +14362,13 @@ export const grammarLessons: GrammarLesson[] = [
       title: "口令块 Let's 与把选项放桌上",
       paragraphs: [
         "Let's 是「Let us」的缩写——字面是「让我们」，实际是提议：咱们一起吧。它是对白里的老熟人：第 56 课「Let's circle it on the calendar.」、第 65 课「Let's check our height!」——今天正式扶正成你自己的句子。",
-        "规矩和第 74 课一样：口令块后面直接接动作、动作穿原样——Let's go、Let's eat，不垫板、不加装。",
+        "规矩和第 74 课一样：口令块后面直接接动作、动作用原形——Let's go、Let's eat，不带 to、不加装。",
         "提议还有第二种说法：How about + -ing 形式（How about going to the park?）——把选项放桌上问，比 Let's 软一点。",
         "接话成对记：别人提议，你同意就说 Good idea!（好主意）；想换个主意就说 How about…?——一条提议链就齐了。"
       ]
     },
     summary: {
-      rule: "提议「咱们…吧」：Let's + 动词原样（Let's go）——第二种说法 How about + -ing 形式。",
+      rule: "提议「咱们…吧」：Let's + 动词原形（Let's go）——第二种说法 How about + -ing 形式。",
       points: [
         "Let's go to the park. —— 口令块提议",
         "Good idea! —— 接话成对",
@@ -14381,7 +14390,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想提议：咱们去公园吧。",
         tokens: ["Let's", "go", "to", "the", "park."],
         answer: "Let's go to the park.",
-        explain: "Let's + 动作穿原样：口令块提议。"
+        explain: "Let's + 动作用原形：口令块提议。"
       },
       {
         // R8 跨课复现：第 29 课（从「我打算」到「咱们去吧」）
@@ -14397,7 +14406,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["Let's", "to", "go", "to", "the", "park."],
         wrongToken: "to",
         answer: "to",
-        correctionZh: "口令块不垫板：Let's go——去掉第一个 to。",
+        correctionZh: "口令块不带 to：Let's go——去掉第一个 to。",
         explain: "跟第 74 课同规矩。"
       },
       {
@@ -14411,7 +14420,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换第二种说法（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Let's go to the park.」换成第二种提议说法（把选项放桌上问），开头要怎么换？",
+        promptZh: "句型转换：「Let's go to the park.」换成第二种提议说法（把选项放桌上问），开头要怎么换？",
         replaceBase: "Let's go to the park.",
         replaceTarget: "换成 How about 型提议",
         options: ["How about going to the park?", "How about go to the park?", "How about to go to the park?"],
@@ -14451,7 +14460,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "周六早上天气晴，小美回头提议一起去公园。凭记忆，写出她那句英文。",
       intentZh: "咱们去公园吧。",
       answer: "Let's go to the park.",
-      noteZh: "Let's + 动作穿原样——不垫板。"
+      noteZh: "Let's + 动作用原形——不带 to。"
     },
     huntCaseIds: ["hunt-park-plan"]
   },
@@ -14601,7 +14610,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换比较的词（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I feel much better today.」把「好」换成「高（tall）」，加力句要怎么变？",
+        promptZh: "句型转换：「I feel much better today.」把「好」换成「高（tall）」，加力句要怎么变？",
         replaceBase: "I feel much better today.",
         replaceTarget: "把 better 换成 tall（说他比我高多了）",
         options: ["much taller than me", "more taller than me", "very taller than me"],
@@ -14693,7 +14702,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "He keeps do it.",
         wrongMark: "do",
         correct: "He keeps doing it.",
-        whyZh: "这个位置只接名词形式：keeps doing——他/她/它版的 -s 只动 keep 自己，后面照样用 -ing 形式。"
+        whyZh: "这个位置只接名词形式：keeps doing——第三人称单数的 -s 只动 keep 自己，后面照样用 -ing 形式。"
       },
       {
         wrong: "I finished reading the book.",
@@ -14714,7 +14723,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I keep doing my homework.",
         bothRight: true,
-        whyZh: "两句都对——第 45 课-ing 形式的老用法＋今天第五站：enjoy reading ／ keep doing。"
+        whyZh: "两句都对——第 45 课 -ing 形式的老用法＋今天第五站：enjoy reading ／ keep doing。"
       },
       {
         wrong: "I am good at drawing.",
@@ -14737,7 +14746,7 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "-ing 形式的第五站",
       paragraphs: [
-        "-ing 形式这张-ing 形式一路打卡：第 42 课 like reading（喜欢）、第 45 课 enjoy reading（享受）、第 64 课 finish reading（做完）、第 67 课 good at drawing（擅长）——今天第五站：keep reading（一直做）。",
+        "-ing 形式这条线一路打卡：第 42 课 like reading（喜欢）、第 45 课 enjoy reading（享受）、第 64 课 finish reading（做完）、第 67 课 good at drawing（擅长）——今天第五站：keep reading（一直做）。",
         "先分清 keep 和 finish：finish 是刹车——做完了、停下了；keep 是不停车——一直做、不停下。I finished reading 是「看完了」；I keep reading 是「一直在看」。",
         "keep 还有一个老位子：「保持」——keep quiet（保持安静）、keep the door open（让门开着）。今天这条是「一直做」（后面跟名词形式）——看后头跟的是状态还是名词形式，就知道是哪个岗。",
         "「他 / 她 / 它」的规矩照旧：He keeps doing——keep 自己加 -s（他不一般），后面的 doing 不动。"
@@ -14796,12 +14805,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换做的事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I keep doing my homework.」把「做作业」换成「读书（read）」，后面那个词要怎么变？",
+        promptZh: "句型转换：「I keep doing my homework.」把「做作业」换成「读书（read）」，后面那个词要怎么变？",
         replaceBase: "I keep doing my homework.",
         replaceTarget: "把 doing my homework 换成 read（一直在读书）",
         options: ["reading", "read", "to read"],
         answer: "reading",
-        explain: "名词形式换一件：keep reading——-ing 外套穿好。"
+        explain: "名词形式换一件：keep reading——-ing 加上。"
       }
     ],
     practice: [
@@ -14903,7 +14912,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I keep reading at night.",
         bothRight: true,
-        whyZh: "两句都对——第 45 课 enjoy reading ＋ 第 77 课 keep reading：-ing 形式这张-ing 形式两位老站同台。"
+        whyZh: "两句都对——第 45 课 enjoy reading ＋ 第 77 课 keep reading：-ing 形式这条线上两位老站同台。"
       },
       {
         wrong: "I always arrive early.",
@@ -14992,7 +15001,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换接线词（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I run every day, and I keep reading.」想改成「不是每天跑，但一直在读」，接头要怎么换？",
+        promptZh: "句型转换：「I run every day, and I keep reading.」想改成「不是每天跑，但一直在读」，接头要怎么换？",
         replaceBase: "I run every day, and I keep reading.",
         replaceTarget: "改成「不是每天跑，但一直在读」",
         options: ["don't run every day, but I keep", "run every day, or I keep", "not run every day, and keep"],
@@ -15189,7 +15198,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换位置（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「My desk is next to the window.」把「书桌」换成「他坐的地方」（他坐在我旁边），位置词那截要怎么变？",
+        promptZh: "句型转换：「My desk is next to the window.」把「书桌」换成「他坐的地方」（他坐在我旁边），位置词那截要怎么变？",
         replaceBase: "My desk is next to the window.",
         replaceTarget: "换成「他坐在我旁边」",
         options: ["He sits next to me.", "He sits next me.", "He next to sits me."],
@@ -15385,7 +15394,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换成一对面（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「The cat is behind the door.」把「门后」换成「学校前面」，位置那截要怎么换？",
+        promptZh: "句型转换：「The cat is behind the door.」把「门后」换成「学校前面」，位置那截要怎么换？",
         replaceBase: "The cat is behind the door.",
         replaceTarget: "换成「学校在前面（公园）」（The school is ___ the park.）",
         options: ["in front of", "in front", "front of"],
@@ -15581,7 +15590,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换两头（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I sit between Tom and Amy.」把中间那截换成「银行和公园」（说商店在它们中间），要怎么换？",
+        promptZh: "句型转换：「I sit between Tom and Amy.」把中间那截换成「银行和公园」（说商店在它们中间），要怎么换？",
         replaceBase: "I sit between Tom and Amy.",
         replaceTarget: "换成「商店在银行和公园中间」（The shop is between ___ ___）",
         options: ["the bank and the park", "the bank to the park", "bank and park"],
@@ -15683,7 +15692,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I put my bag next to the door.",
         bothRight: true,
-        whyZh: "两句都对——第 10 课 went（昨天版）＋今天 put（三天一个样）：一个换装、一个不换。"
+        whyZh: "两句都对——第 10 课 went（过去式）＋今天 put（三天一个样）：一个换装、一个不换。"
       },
       {
         wrong: "Close the door.",
@@ -15709,7 +15718,7 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "I put my bag next to the door.", zh: "我把书包放在门边。", noteZh: "put 三天一个样。" },
-      { label: "否定", en: "I don't put my bag on the desk.", zh: "我不把书包放桌上。", noteZh: "don't 帮忙，put 照样原样。" },
+      { label: "否定", en: "I don't put my bag on the desk.", zh: "我不把书包放桌上。", noteZh: "don't 帮忙，put 照样原形。" },
       { label: "疑问", en: "Where do you put your bag?", zh: "你把书包放哪儿？", noteZh: "问你放哪儿——do 帮忙（第 27 课的老规矩）。" }
     ],
     sceneSwings: [
@@ -15720,7 +15729,7 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "put：三天长一个样",
       paragraphs: [
-        "第 10 课你学过「昨天版」：go→went、eat→ate、see→saw。今天这位新朋友不一样：put 昨天不改装——今天 put、昨天 put、明天还是 put。",
+        "第 10 课你学过「过去式」：go→went、eat→ate、see→saw。今天这位新朋友不一样：put 昨天不改装——今天 put、昨天 put、明天还是 put。",
         "英语里有一小撮这样的「实在词」：形状从头到尾不变，放进任何时间的句子里都认识。put 是最常用的一个——放书包、放杯子、放钥匙，天天用。",
         "怎么用？「把什么放到哪里」：put + 东西 + 位置——I put my bag next to the door（书包放到门边）。位置那截用第 79-81 课学的词收尾。",
         "跟「直接下命令」的句子连起来也好用：Put the book in the box（把书放进盒子里）——动词开头、省掉「谁」，第 32 课的老规矩。让别人「放一下」，一句话就够。"
@@ -15730,7 +15739,7 @@ export const grammarLessons: GrammarLesson[] = [
       rule: "说「放」用 put——三天长一个样（不加 -ed）：put + 东西 + 位置。",
       points: [
         "I put my bag next to the door. —— 放 + 位置",
-        "putted ❌ —— 它不穿昨天的外套",
+        "putted ❌ —— 它不换形式",
         "Put the book in the box. —— 让别人放也一句搞定"
       ]
     },
@@ -15766,20 +15775,20 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "putted",
         answer: "putted",
         correctionZh: "put 三天长一个样：I put my bag on the desk。",
-        explain: "它不穿昨天的外套。"
+        explain: "它不换形式。"
       },
       {
-        // R8 跨课复现：第 10 课（昨天版老规矩）
+        // R8 跨课复现：第 10 课（过去式老规矩）
         kind: "arrange",
         promptZh: "再对照一句——第 10 课学过：我昨天去公园了。",
         tokens: ["Yesterday", "I", "went", "to", "the", "park."],
         answer: "Yesterday I went to the park.",
-        explain: "复现第 10 课：went（昨天版换装）——put 偏偏不换。"
+        explain: "复现第 10 课：went（过去式换装）——put 偏偏不换。"
       },
       {
         // R9 变形/替换：换位置（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I put my bag next to the door.」把「门边」换成「桌上」，位置那截要怎么换？",
+        promptZh: "句型转换：「I put my bag next to the door.」把「门边」换成「桌上」，位置那截要怎么换？",
         replaceBase: "I put my bag next to the door.",
         replaceTarget: "把 next to the door 换成「桌上」",
         options: ["on the desk", "in the desk", "at the desk"],
@@ -15914,9 +15923,9 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问对方有没有东西给我", en: "Do you have anything for me?", zh: "你有东西给我吗？" }
     ],
     deepDive: {
-      title: "some/any 的东西版",
+      title: "some/any 的不定代词",
       paragraphs: [
-        "第 30 课你学过「一些」的规矩：肯定句用 some、疑问和否定换 any。今天认识它们的「东西版」：something（某样东西）、anything（任何东西）——规矩一模一样。",
+        "第 30 课你学过「一些」的规矩：肯定句用 some、疑问和否定换 any。今天认识它们的「不定代词」：something（某样东西）、anything（任何东西）——规矩一模一样。",
         "什么时候用？想说「有个东西」，但先不说是什么（或者说不清）：I have something for you——手里攥着、话先留一半，这就是 something 的舞台。",
         "三个搭配顺手记：something to drink（喝点什么）、something to eat（吃点什么）、something for you（给你的东西）——后面跟 to + 动作，或者 for + 人。",
         "疑问否定换 anything 是反射动作：Do you have anything for me?（有东西给我吗）／I don't have anything（什么都没有）——注意「疑问本身就换」，不用等否定。"
@@ -15953,7 +15962,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 30 课学过：桌上有一些苹果。",
         tokens: ["There", "are", "some", "apples", "on", "the", "table."],
         answer: "There are some apples on the table.",
-        explain: "复现第 30 课：肯定用 some——今天认识它的「东西版」。"
+        explain: "复现第 30 课：肯定用 some——今天认识它的「不定代词」。"
       },
       {
         kind: "spot",
@@ -15975,7 +15984,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换东西（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I have something for you.」把「给你的东西」换成「喝点什么」，后半截要怎么换？",
+        promptZh: "句型转换：「I have something for you.」把「给你的东西」换成「喝点什么」，后半截要怎么换？",
         replaceBase: "I have something for you.",
         replaceTarget: "把 for you 换成「喝点什么」",
         options: ["to drink", "drink", "for drink"],
@@ -16068,7 +16077,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Someone are at the door.",
         wrongMark: "are",
         correct: "Someone is at the door.",
-        whyZh: "someone 是「一个人」：配 is——第 26 课单好几个判断的老规矩。"
+        whyZh: "someone 是「一个人」：配 is——第 26 课单复数判断的老规矩。"
       },
       {
         wrong: "There is something in the box.",
@@ -16171,7 +16180,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换说法（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「There is nothing in the box.」想换成 not 的说法，中间那截要怎么变？",
+        promptZh: "句型转换：「There is nothing in the box.」想换成 not 的说法，中间那截要怎么变？",
         replaceBase: "There is nothing in the box.",
         replaceTarget: "换成 not + anything 的说法",
         options: ["not anything", "not nothing", "no anything"],
@@ -16368,7 +16377,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换东西（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Whose book is this?」把「书」换成「包」，句子要怎么变？",
+        promptZh: "句型转换：「Whose book is this?」把「书」换成「包」，句子要怎么变？",
         replaceBase: "Whose book is this?",
         replaceTarget: "把 book 换成 bag",
         options: ["Whose bag is this?", "Whose is bag this?", "Who's bag is this?"],
@@ -16563,7 +16572,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换问的东西（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Whose bag is this?」把「包」换成「伞（umbrella）」，句子要怎么变？",
+        promptZh: "句型转换：「Whose bag is this?」把「包」换成「伞（umbrella）」，句子要怎么变？",
         replaceBase: "Whose bag is this?",
         replaceTarget: "把 bag 换成 umbrella",
         options: ["Whose umbrella is this?", "Whose is umbrella this?", "Who's umbrella is this?"],
@@ -16634,7 +16643,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "cold", role: "冷" },
       { text: "today", role: "今天" }
     ],
-    oneLineRule: "两个词可以挤一挤：It is 挤成 It's——短的这版口语里天天用，意思一模一样。",
+    oneLineRule: "两个词可以挤一挤：It is 挤成 It's——这个缩写形式口语里天天用，意思一模一样。",
     examples: [
       { en: "It's cold today.", zh: "今天真冷。" },
       { en: "It is cold today.", zh: "今天很冷。（一个意思）" },
@@ -16652,13 +16661,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "It is cold today.",
         bothRight: true,
-        whyZh: "两句都对——长的短的都在：It is cold（第 6 课学的）和 It's cold（今天学的短版）意思一模一样。"
+        whyZh: "两句都对——长的短的都在：It is cold（第 6 课学的）和 It's cold（今天学的缩写形式）意思一模一样。"
       },
       {
         wrong: "Its cold today.",
         wrongMark: "Its",
         correct: "It's cold today.",
-        whyZh: "短版的尾巴上有一小撇：It's——那一撇是把 is 挤掉后留下的记号，丢了它就成了「它的」。"
+        whyZh: "缩写形式的尾巴上有一小撇：It's——那一撇是把 is 挤掉后留下的记号，丢了它就成了「它的」。"
       },
       {
         wrong: "It cold today.",
@@ -16671,7 +16680,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "It's cold today.",
         bothRight: true,
-        whyZh: "两句都对——第 6 课的天气老句（It is sunny）＋今天的短版：天气句两版都会。"
+        whyZh: "两句都对——第 6 课的天气老句（It is sunny）＋今天的缩写形式：天气句两版都会。"
       },
       {
         wrong: "Where is my hat?",
@@ -16703,22 +16712,22 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "英语口语里，两个小词常常挤一挤合成一个短词：It is → It's、I am → I'm、That is → That's——挤完尾巴上留一小撇（'），记号还在。",
         "为什么挤？因为说话要快。老外日常说「今天冷」，十个里有九个说 It's cold——长的 It is cold 也不错，只是听起来更慢、更正式。两句都对，随你挑。",
-        "那一小撇很重要：It's 是「它是」的短版，Its 是「它的」——读起来一样，写法差一小撇，意思差一条街。写的时候记得把尾巴带上。",
-        "第 6 课你学过 It is cold today 的完整版；今天把短版装上——从今天起，打招呼聊天气，你两版都会。"
+        "那一小撇很重要：It's 是「它是」的缩写形式，Its 是「它的」——读起来一样，写法差一小撇，意思差一条街。写的时候记得把尾巴带上。",
+        "第 6 课你学过 It is cold today 的完整形式；今天把缩写形式装上——从今天起，打招呼聊天气，你两种形式都会。"
       ]
     },
     summary: {
-      rule: "两个词挤一挤：It is → It's（短的这版口语天天用）——尾巴那一小撇不能丢。",
+      rule: "两个词挤一挤：It is → It's（这个缩写形式口语天天用）——尾巴那一小撇不能丢。",
       points: [
-        "It's cold today. —— 短版（口语常用）",
-        "It is cold today. —— 长版（也对）",
+        "It's cold today. —— 缩写形式（口语常用）",
+        "It is cold today. —— 完整形式（也对）",
         "Its ❌ —— 少一小撇就成了「它的」"
       ]
     },
     guided: [
       {
         kind: "choose",
-        promptZh: "你想说：今天真冷。（用短的那版）",
+        promptZh: "你想说：今天真冷。（用缩写形式）",
         before: "",
         after: " cold today.",
         options: ["It's", "Its", "It"],
@@ -16730,7 +16739,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：今天真冷。",
         tokens: ["It's", "cold", "today."],
         answer: "It's cold today.",
-        explain: "短版：It's + cold + today。"
+        explain: "缩写形式：It's + cold + today。"
       },
       {
         // R8 跨课复现：第 6 课（长版老句）
@@ -16738,7 +16747,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 6 课学过：今天很冷。",
         tokens: ["It", "is", "cold", "today."],
         answer: "It is cold today.",
-        explain: "复现第 6 课：长版——今天把它挤短。"
+        explain: "复现第 6 课：完整形式——今天把它缩成缩写形式。"
       },
       {
         kind: "spot",
@@ -16760,7 +16769,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：长换短（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It is sunny today.」把长版挤成短版，开头要怎么变？",
+        promptZh: "句型转换：「It is sunny today.」把完整形式挤成缩写形式，开头要怎么变？",
         replaceBase: "It is sunny today.",
         replaceTarget: "把 It is 挤成短的",
         options: ["It's", "Its", "It is's"],
@@ -16816,7 +16825,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-88-its-windy",
     number: 88,
     title: "今天刮风",
-    grammarLabel: "名词穿外套 · windy / snowy / cloudy",
+    grammarLabel: "名词加 -y · windy / snowy / cloudy",
     episode: "小美的一天 八十八",
     scene: "campus",
     cover: cover88,
@@ -16827,10 +16836,10 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "It's windy today.",
     blocks: [
       { text: "It's", role: "它是（挤一挤）" },
-      { text: "windy", role: "刮风的（wind 穿了外套）" },
+      { text: "windy", role: "刮风的（wind 加 -y）" },
       { text: "today", role: "今天" }
     ],
-    oneLineRule: "名词穿上一件 -y 外套，就变成「…的」：wind→windy（刮风的）、snow→snowy（下雪的）、cloud→cloudy（多云的）。",
+    oneLineRule: "名词加个 -y，就变成「…的」：wind→windy（刮风的）、snow→snowy（下雪的）、cloud→cloudy（多云的）。",
     examples: [
       { en: "It's windy today.", zh: "今天刮风。" },
       { en: "It's snowy today.", zh: "今天下雪。" },
@@ -16847,7 +16856,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "It's wind today.",
         wrongMark: "wind",
         correct: "It's windy today.",
-        whyZh: "「刮风的」要说 windy——wind 穿上 -y 外套才变成「…的」。（这一处只在这里对照：漏外套的错不放进案子里。）"
+        whyZh: "「刮风的」要说 windy——wind 穿上 -y 形式才变成「…的」。（这一处只在这里对照：漏 -y 的错不放进案子里。）"
       },
       {
         wrong: "It's windy day.",
@@ -16860,7 +16869,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "It's windy today.",
         bothRight: true,
-        whyZh: "两句都对——第 87 课短版＋今天的 windy：天气句越说越细。"
+        whyZh: "两句都对——第 87 课缩写形式＋今天的 windy：天气句越说越细。"
       },
       {
         wrong: "It is sunny today.",
@@ -16881,11 +16890,11 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "It's windy today.",
         bothRight: true,
-        whyZh: "两句都对——云和风是一家人：云在跑（clouds）、风在吹（windy）——第 26 课的单好几个也在。"
+        whyZh: "两句都对——云和风是一家人：云在跑（clouds）、风在吹（windy）——第 26 课的单复数也在。"
       }
     ],
     variants: [
-      { label: "肯定", en: "It's windy today.", zh: "今天刮风。", noteZh: "wind 穿 -y 外套。" },
+      { label: "肯定", en: "It's windy today.", zh: "今天刮风。", noteZh: "wind 加 -y。" },
       { label: "否定", en: "It's not windy today.", zh: "今天不刮风。", noteZh: "not 跟 is 走：It's not。" },
       { label: "疑问", en: "Is it windy today?", zh: "今天刮风吗？", noteZh: "Is 搬句首——第 6 课的搬法。" }
     ],
@@ -16895,18 +16904,18 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问今天刮不刮风", en: "Is it windy today?", zh: "今天刮风吗？" }
     ],
     deepDive: {
-      title: "名词穿 -y 外套",
+      title: "名词加 -y",
       paragraphs: [
-        "天气词有一个好玩的规矩：很多都是名词「穿了外套」变来的——wind（风）穿上 -y 变成 windy（刮风的）、snow（雪）变成 snowy（下雪的）、cloud（云）变成 cloudy（多云的）。",
-        "怎么记？看到 -y 尾巴，就想「…的」：windy 是「风的（天气）」、snowy 是「雪的」、cloudy 是「云的」——外套一穿，名字就变成描述。",
+        "天气词有一个好玩的规矩：很多都是名词「加 -y」变来的——wind（风）穿上 -y 变成 windy（刮风的）、snow（雪）变成 snowy（下雪的）、cloud（云）变成 cloudy（多云的）。",
+        "怎么记？看到 -y 尾巴，就想「…的」：windy 是「风的（天气）」、snowy 是「雪的」、cloudy 是「云的」——加上 -y，名字就变成描述。",
         "第 6 课你学过 sunny（晴的）——它也是这样来的：sun（太阳）穿 -y。今天再认识三个兄弟，天气词家族就够你天天聊了。",
-        "说说天气三件套：It's + 天气词 + today——It's cold、It's windy、It's snowy——第 87 课的短版配上今天的新词，随口就能聊。"
+        "说说天气三件套：It's + 天气词 + today——It's cold、It's windy、It's snowy——第 87 课的缩写形式配上今天的新词，随口就能聊。"
       ]
     },
     summary: {
-      rule: "名词穿 -y 外套变成「…的」：wind→windy、snow→snowy、cloud→cloudy。",
+      rule: "名词加 -y变成「…的」：wind→windy、snow→snowy、cloud→cloudy。",
       points: [
-        "It's windy today. —— wind 穿外套",
+        "It's windy today. —— wind 加 -y",
         "snowy / cloudy / sunny —— -y 家族排排站",
         "It's a windy day. —— 「一个大风天」要带 a"
       ]
@@ -16919,14 +16928,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "today.",
         options: ["windy", "wind", "wind's"],
         answer: "windy",
-        explain: "刮风的要说 windy——wind 穿 -y 外套。"
+        explain: "刮风的要说 windy——wind 加 -y。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：今天刮风。",
         tokens: ["It's", "windy", "today."],
         answer: "It's windy today.",
-        explain: "短版 + windy：It's windy today。"
+        explain: "缩写形式 + windy：It's windy today。"
       },
       {
         // R8 跨课复现：第 87 课（合体）
@@ -16934,7 +16943,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 87 课学过：今天真冷。",
         tokens: ["It's", "cold", "today."],
         answer: "It's cold today.",
-        explain: "复现第 87 课：短版——今天给它换上天气新词。"
+        explain: "复现第 87 课：缩写形式——今天给它换上天气新词。"
       },
       {
         kind: "spot",
@@ -16942,7 +16951,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["It's", "wind", "today."],
         wrongToken: "wind",
         answer: "wind",
-        correctionZh: "穿 -y 外套：windy。",
+        correctionZh: "穿 -y 形式：windy。",
         explain: "「刮风的」要用 windy。"
       },
       {
@@ -16951,17 +16960,17 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 6 课学过：今天天晴。",
         tokens: ["It", "is", "sunny", "today."],
         answer: "It is sunny today.",
-        explain: "复现第 6 课：sunny 也是 -y 家族——穿外套的老规矩。"
+        explain: "复现第 6 课：sunny 也是 -y 家族——-y 的老规矩。"
       },
       {
         // R9 变形/替换：换天气词（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It's windy today.」把「刮风」换成「下雪（snow）」，天气词要怎么变？",
+        promptZh: "句型转换：「It's windy today.」把「刮风」换成「下雪（snow）」，天气词要怎么变？",
         replaceBase: "It's windy today.",
         replaceTarget: "把 windy 换成 snow（下雪的）",
         options: ["snowy", "snow", "snowing"],
         answer: "snowy",
-        explain: "snow 穿 -y 外套：It's snowy today——同一个规矩。"
+        explain: "snow 加 -y：It's snowy today——同一个规矩。"
       }
     ],
     practice: [
@@ -17002,7 +17011,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "校门口风很大，风把云吹得飞快，小美按住帽檐。凭记忆，写出你那句英文。",
       intentZh: "今天刮风。",
       answer: "It's windy today.",
-      noteZh: "wind 穿 -y 外套：windy。"
+      noteZh: "wind 加 -y：windy。"
     },
     huntCaseIds: ["hunt-windy-window"]
   },
@@ -17076,7 +17085,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "What a nice day!",
         bothRight: true,
-        whyZh: "两句都对——第 87 课短版复现：天从冷到暖，一句感叹收尾。"
+        whyZh: "两句都对——第 87 课缩写形式复现：天从冷到暖，一句感叹收尾。"
       }
     ],
     variants: [
@@ -17151,7 +17160,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换形容词（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「What a nice day!」把「好」换成「大（big）」，感叹的架子怎么变？",
+        promptZh: "句型转换：「What a nice day!」把「好」换成「大（big）」，感叹的架子怎么变？",
         replaceBase: "What a nice day!",
         replaceTarget: "把 nice 换成 big",
         options: ["What a big day!", "What big a day!", "What a day big!"],
@@ -17250,7 +17259,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "After I do my homework, I watched TV.",
         wrongMark: "watched",
         correct: "After I do my homework, I watch TV.",
-        whyZh: "说的都是每天常做的事，动词都用现在版：do…watch——两个动作同一档。"
+        whyZh: "说的都是每天常做的事，动词都用现在式：do…watch——两个动作同一档。"
       },
       {
         wrong: "I go home after school.",
@@ -17271,7 +17280,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "After I do my homework, I watch TV.",
         bothRight: true,
-        whyZh: "两句都对——第 87 课短版复现：聊完天气，聊规矩。"
+        whyZh: "两句都对——第 87 课缩写形式复现：聊完天气，聊规矩。"
       }
     ],
     variants: [
@@ -17290,7 +17299,7 @@ export const grammarLessons: GrammarLesson[] = [
         "第 9 课你学过 after school（放学后）——当时 after 后面只跟一个名字。今天它升级了：后面跟一整个小句子，谁做什么都说全——After I do my homework（我写完作业后）。",
         "为什么要有「谁」？因为英语的小句子必须站直：有人、有动作。中文说「吃完饭后」，那个人藏在话里；英语要把它请出来：After I eat dinner——那个 I 不能省。",
         "两段之间有个逗号，是分界线：逗号前是「先做的事」、逗号后是「然后做的事」——After I do my homework, I watch TV。",
-        "两个动作要站同一个时间档：都是每天常做的事，就都用现在版（do…watch）。说昨天的故事，就两个都换昨天版——今天先练现在版。"
+        "两个动作要站同一个时间档：都是每天常做的事，就都用现在式（do…watch）。说昨天的故事，就两个都换过去式——今天先练现在式。"
       ]
     },
     summary: {
@@ -17341,12 +17350,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 87 课学过：今天真冷。",
         tokens: ["It's", "cold", "today."],
         answer: "It's cold today.",
-        explain: "复现第 87 课：短版天气——聊完天，聊规矩。"
+        explain: "复现第 87 课：缩写形式天气——聊完天，聊规矩。"
       },
       {
         // R9 变形/替换：换后做的事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「After I do my homework, I watch TV.」把「看电视」换成「读书（read a book）」，后半截怎么变？",
+        promptZh: "句型转换：「After I do my homework, I watch TV.」把「看电视」换成「读书（read a book）」，后半截怎么变？",
         replaceBase: "After I do my homework, I watch TV.",
         replaceTarget: "把 I watch TV 换成「读书」",
         options: ["I read a book.", "I reading a book.", "read a book."],
@@ -17459,7 +17468,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "Before I eat, I wash my hands.",
         bothRight: true,
-        whyZh: "两句都对——第 87 课短版复现：聊完天气聊规矩。"
+        whyZh: "两句都对——第 87 课缩写形式复现：聊完天气聊规矩。"
       },
       {
         wrong: "What a nice day!",
@@ -17541,7 +17550,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：前换后（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Before I eat, I wash my hands.」把「之前」换成「之后」（吃完饭后看书），领头词要怎么换？",
+        promptZh: "句型转换：「Before I eat, I wash my hands.」把「之前」换成「之后」（吃完饭后看书），领头词要怎么换？",
         replaceBase: "Before I eat, I wash my hands.",
         replaceTarget: "换成「吃完饭后看书」的意思",
         options: ["After I eat, I read a book.", "Before I eat, I read a book.", "After I eat, I wash my hands."],
@@ -17736,7 +17745,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换条件（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「When it is sunny, I run.」把「天晴」换成「我累了」（tired），前半截怎么变？",
+        promptZh: "句型转换：「When it is sunny, I run.」把「天晴」换成「我累了」（tired），前半截怎么变？",
         replaceBase: "When it is sunny, I run.",
         replaceTarget: "把 it is sunny 换成「我累了」",
         options: ["When I am tired,", "When is tired,", "When I tired,"],
@@ -17803,9 +17812,9 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "I used to play here.",
     blocks: [
       { text: "I used to", role: "我从前常（现在不这样了）" },
-      { text: "play here", role: "在这儿玩（动作穿原样）" }
+      { text: "play here", role: "在这儿玩（动作用原形）" }
     ],
-    oneLineRule: "说「从前常这样、现在不这样了」用 used to——后面跟原样：I used to play here。",
+    oneLineRule: "说「从前常这样、现在不这样了」用 used to——后面跟原形：I used to play here。",
     examples: [
       { en: "I used to play here.", zh: "我从前常在这儿玩。" },
       { en: "She used to live in Beijing.", zh: "她从前住在北京。" },
@@ -17828,7 +17837,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I used to playing here.",
         wrongMark: "playing",
         correct: "I used to play here.",
-        whyZh: "used to 后面跟原样：play——不穿 -ing 外套（跟 want to travel 一个规矩）。"
+        whyZh: "used to 后面跟原形：play——不加 -ing（跟 want to travel 一个规矩）。"
       },
       {
         wrong: "I play here every day.",
@@ -17849,7 +17858,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I used to play here.",
         bothRight: true,
-        whyZh: "两句都对——第 25 课他/她/它版 -s（每天的习惯）＋今天 used to（从前的习惯）：习惯句两兄弟。"
+        whyZh: "两句都对——第 25 课第三人称单数 -s（每天的习惯）＋今天 used to（从前的习惯）：习惯句两兄弟。"
       },
       {
         wrong: "When it is sunny, I run.",
@@ -17860,7 +17869,7 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "I used to play here.", zh: "我从前常在这儿玩。", noteZh: "used to + 穿原样——尾巴 d 不丢。" },
+      { label: "肯定", en: "I used to play here.", zh: "我从前常在这儿玩。", noteZh: "used to + 用原形——尾巴 d 不丢。" },
       { label: "否定", en: "I didn't use to play here.", zh: "我从前不常在这儿玩。", noteZh: "「不」用 didn't——这时 use 反而不带 d（跟着 didn't 走）。" },
       { label: "疑问", en: "Did you use to play here?", zh: "你从前常在这儿玩吗？", noteZh: "问句 Did 站句首——use 也不带 d。" }
     ],
@@ -17873,13 +17882,13 @@ export const grammarLessons: GrammarLesson[] = [
       title: "used to：从前和现在的对比",
       paragraphs: [
         "used to 说的是「从前常这样、现在不这样了」——它自带一条时间线：I used to play here（从前常在这儿玩，现在不玩了）。",
-        "后面跟原样：used to play（不穿 -ing、不穿 -ed）——跟 want to travel、Let me help 一个规矩：to 后面永远穿原样。",
-        "那条小尾巴要留意：说「从前常」是 used to（带 d）；说「从前不常」「从前常吗」时，d 跑到前面的 didn't/Did 里去了——I didn't use to play／Did you use to play（这时 use 不带 d）。",
+        "后面跟原形：used to play（不穿 -ing、不穿 -ed）——跟 want to travel、Let me help 一个规矩：to 后面永远用原形。",
+        "那个 d 要留意：说「从前常」是 used to（带 d）；说「从前不常」「从前常吗」时，d 跑到前面的 didn't/Did 里去了——I didn't use to play／Did you use to play（这时 use 不带 d）。",
         "和「昨天去了一次」的 went 比一比：went 说「那次去了」；used to 说「从前常常」——一次 vs 常常，两条说过去的路，你都拿到了。"
       ]
     },
     summary: {
-      rule: "说「从前常这样、现在不这样」：used to + 原样（I used to play here）——尾巴 d 不丢。",
+      rule: "说「从前常这样、现在不这样」：used to + 原形（I used to play here）——尾巴 d 不丢。",
       points: [
         "I used to play here. —— 从前常常",
         "I play here every day. —— 现在每天（对比）",
@@ -17901,10 +17910,10 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：我从前常在这儿玩。",
         tokens: ["I", "used", "to", "play", "here."],
         answer: "I used to play here.",
-        explain: "used to + 原样：play here。"
+        explain: "used to + 原形：play here。"
       },
       {
-        // R8 跨课复现：第 10 课（昨天版对照）
+        // R8 跨课复现：第 10 课（过去式对照）
         kind: "arrange",
         promptZh: "先复习一小步——第 10 课学过：昨天我去了公园。",
         tokens: ["Yesterday", "I", "went", "to", "the", "park."],
@@ -17931,12 +17940,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换动作（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I used to play here.」把「玩」换成「住（live）」，后半截怎么变？",
+        promptZh: "句型转换：「I used to play here.」把「玩」换成「住（live）」，后半截怎么变？",
         replaceBase: "I used to play here.",
         replaceTarget: "把 play here 换成「住在北京」",
         options: ["live in Beijing", "living in Beijing", "lived in Beijing"],
         answer: "live in Beijing",
-        explain: "used to 后面跟原样：live——不穿 -ing、不穿 -ed。"
+        explain: "used to 后面跟原形：live——不穿 -ing、不穿 -ed。"
       }
     ],
     practice: [
@@ -17977,7 +17986,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "站在校门口的老操场边，小美问你从前常不常在这儿玩。凭记忆，写出你那句英文。",
       intentZh: "我从前常在这儿玩。",
       answer: "I used to play here.",
-      noteZh: "used to + 原样——尾巴 d 不丢。"
+      noteZh: "used to + 原形——尾巴 d 不丢。"
     },
     huntCaseIds: ["hunt-old-playground"]
   },
@@ -17997,7 +18006,7 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "今天真冷。多好的天啊！",
     targetSentence: "It's cold today. What a nice day!",
     blocks: [
-      { text: "It's cold today.", role: "今天真冷（短版合体）" },
+      { text: "It's cold today.", role: "今天真冷（缩写形式合体）" },
       { text: "What a nice day!", role: "多好的天啊（感叹）" }
     ],
     oneLineRule: "把这一章的话串成一次聊天：见面说天气（It's cold）、看天感叹（What a nice day!）、聊规矩（After I…）、说从前（I used to…）——一句接一句。",
@@ -18036,7 +18045,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "It's cold today.",
         bothRight: true,
-        whyZh: "两句都对——长版（It is cold）和短版（It's cold）都在：先说长的，再说短的。"
+        whyZh: "两句都对——完整形式（It is cold）和缩写形式（It's cold）都在：先说长的，再说短的。"
       },
       {
         wrong: "When it is sunny, I run.",
@@ -18066,7 +18075,7 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "大章倒带：聊两句的本事",
       paragraphs: [
-        "这一章八课，你学会了「聊两句」的一整套：见面说天气（It's cold——短版合体）、换着词说天气（windy／snowy／cloudy——名词穿 -y 外套）、看天感叹（What a nice day!）、聊规矩说先后（After I…／Before I…／When it is…）、说从前（I used to…）。",
+        "这一章八课，你学会了「聊两句」的一整套：见面说天气（It's cold——缩写形式合体）、换着词说天气（windy／snowy／cloudy——名词加 -y）、看天感叹（What a nice day!）、聊规矩说先后（After I…／Before I…／When it is…）、说从前（I used to…）。",
         "这一章的句子有个共同点：都能在「校门口见面」这个场景里用上——先打招呼聊天气、再说说自己的规矩、走着走着聊起从前。八课的话，一次聊完。",
         "先后三人组（after／before／when）是你这一章最新拿到的工具：以后讲故事、说安排，全靠它们把两件事串起来。",
         "最后看一句老朋友的感叹：What a nice bag!（第 68 课）——当时它只是一句台词，这一章里它变成了你自己的话（第 89 课）。从听到说，就是这八课走的路。"
@@ -18095,7 +18104,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：今天真冷。",
         tokens: ["It's", "cold", "today."],
         answer: "It's cold today.",
-        explain: "第 87 课短版：It's——尾巴带撇。"
+        explain: "第 87 课缩写形式：It's——尾巴带撇。"
       },
       {
         // R8 跨课复现：第 93 课（说从前）
@@ -18125,12 +18134,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换说法（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It's cold today.」把「冷」换成「刮风（windy）」，天气词怎么变？",
+        promptZh: "句型转换：「It's cold today.」把「冷」换成「刮风（windy）」，天气词怎么变？",
         replaceBase: "It's cold today.",
         replaceTarget: "把 cold 换成 windy",
         options: ["It's windy today.", "It's wind today.", "It windy today."],
         answer: "It's windy today.",
-        explain: "第 88 课老规矩：wind 穿 -y 外套——It's windy today。"
+        explain: "第 88 课老规矩：wind 加 -y——It's windy today。"
       }
     ],
     practice: [
@@ -18171,7 +18180,7 @@ export const grammarLessons: GrammarLesson[] = [
     huntCaseIds: ["hunt-after-school-talk"]
   },
 
-  // ── 第十五批 · L95 那时我正在看书（was + 穿 -ing）：昨天版的「正在」——L34 平台升级（批十五 PRD §2·单拱第一课）──
+  // ── 第十五批 · L95 那时我正在看书（was + 穿 -ing）：过去式的「正在」——L34 平台升级（批十五 PRD §2·单拱第一课）──
   {
     id: "lesson-95-was-doing",
     number: 95,
@@ -18186,11 +18195,11 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "八点的时候我正在看书。",
     targetSentence: "I was reading at eight.",
     blocks: [
-      { text: "I was", role: "我那时（昨天版搭档）" },
-      { text: "reading", role: "正在看书（-ing 外套）" },
+      { text: "I was", role: "我那时（过去式搭档）" },
+      { text: "reading", role: "正在看书（-ing 形式）" },
       { text: "at eight", role: "八点的时候" }
     ],
-    oneLineRule: "说「那时正做着」：be 换成昨天版 was/were，动作照穿 -ing 外套——I was reading at eight。",
+    oneLineRule: "说「那时正做着」：be 换成过去式 was/were，动作照加 -ing——I was reading at eight。",
     examples: [
       { en: "I was reading at eight.", zh: "八点的时候我正在看书。" },
       { en: "I was drawing at three.", zh: "三点时我正在画画。" },
@@ -18207,7 +18216,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I was read at eight.",
         wrongMark: "read",
         correct: "I was reading at eight.",
-        whyZh: "动作没穿 -ing 外套：was 后面要跟 reading——「那时正做着」，外套不能脱。"
+        whyZh: "动作没加 -ing：was 后面要跟 reading——「那时正做着」，形式不能脱。"
       },
       {
         wrong: "I read at eight.",
@@ -18255,20 +18264,20 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问对方八点在不在看书", en: "Were you reading at eight?", zh: "八点你在看书吗？" }
     ],
     deepDive: {
-      title: "昨天版的「正在」",
+      title: "过去式的「正在」",
       paragraphs: [
-        "第 34 课你学过「昨天某时正在做」：I was drawing at three（三点时我正在画画）——be 用昨天版（was/were），动作照穿 -ing 外套。今天把它拿来做主菜。",
-        "两个零件缺一不可：昨天版搭档（was/were）＋穿 -ing 的动作。少了外套（I was read）错、少了搭档（I reading）也错——合体才成立。",
-        "一个用 was、一伙用 were：I was reading（一个）／They were playing（一群）——第 51 课学过的配对，这里照样管用。",
+        "第 34 课你学过「昨天某时正在做」：I was drawing at three（三点时我正在画画）——be 用过去式（was/were），动作照加 -ing。今天把它拿来做主菜。",
+        "两个部分缺一不可：过去式搭档（was/were）＋穿 -ing 的动作。少了形式（I was read）错、少了搭档（I reading）也错——合体才成立。",
+        "一个用 was、复数用 were：I was reading（一个）／They were playing（一群）——第 51 课学过的配对，这里照样管用。",
         "跟「昨天去了」比一比：I went to the park（去了一趟，一件事做完）／I was reading at eight（那时正做着，画面停在那一刻）——两条说过去的路，今天走这条「画面」路。"
       ]
     },
     summary: {
-      rule: "说「那时正做着」：was/were + 穿 -ing 的动作（I was reading at eight）——两个零件缺一不可。",
+      rule: "说「那时正做着」：was/were + 穿 -ing 的动作（I was reading at eight）——两个部分缺一不可。",
       points: [
-        "I was reading at eight. —— 昨天版搭档 + -ing 外套",
-        "I was read ❌ ／ I read ❌ —— 少外套、少搭档都不行",
-        "They were playing. —— 一伙人用 were"
+        "I was reading at eight. —— 过去式搭档 + -ing 形式",
+        "I was read ❌ ／ I read ❌ —— 少形式、少搭档都不行",
+        "They were playing. —— 复数用 were"
       ]
     },
     guided: [
@@ -18279,14 +18288,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "at eight.",
         options: ["was reading", "was read", "read"],
         answer: "was reading",
-        explain: "昨天版搭档（was）+ 穿 -ing 的动作（reading）：两个零件。"
+        explain: "过去式搭档（was）+ 穿 -ing 的动作（reading）：两个部分。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：八点的时候我正在看书。",
         tokens: ["I", "was", "reading", "at", "eight."],
         answer: "I was reading at eight.",
-        explain: "was + reading：昨天版「正在」。"
+        explain: "was + reading：过去式「正在」。"
       },
       {
         // R8 跨课复现：第 34 课（平台老句）
@@ -18302,11 +18311,11 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "was", "read", "at", "eight."],
         wrongToken: "read",
         answer: "read",
-        correctionZh: "动作要穿 -ing 外套：was 【reading】 at eight。",
-        explain: "「那时正做着」——外套不能脱。"
+        correctionZh: "动作要加 -ing：was 【reading】 at eight。",
+        explain: "「那时正做着」——形式不能脱。"
       },
       {
-        // R8 跨课复现：第 10 课（昨天版对照）
+        // R8 跨课复现：第 10 课（过去式对照）
         kind: "arrange",
         promptZh: "再对照一句——第 10 课学过：昨天我去了公园。",
         tokens: ["Yesterday", "I", "went", "to", "the", "park."],
@@ -18316,12 +18325,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换人称（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I was reading at eight.」把 I 换成 They（一伙人），搭档要怎么变？",
+        promptZh: "句型转换：「I was reading at eight.」把 I 换成 They（复数），搭档要怎么变？",
         replaceBase: "I was reading at eight.",
         replaceTarget: "把 I 换成 They",
         options: ["were", "was", "are"],
         answer: "were",
-        explain: "一伙人用 were：They were reading——配对照旧。"
+        explain: "复数用 were：They were reading——配对照旧。"
       }
     ],
     practice: [
@@ -18362,12 +18371,12 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "小美问你昨晚八点在做什么。凭记忆，写出你那句英文。",
       intentZh: "八点的时候我正在看书。",
       answer: "I was reading at eight.",
-      noteZh: "was + 穿 -ing：两个零件缺一不可。"
+      noteZh: "was + 穿 -ing：两个部分缺一不可。"
     },
     huntCaseIds: ["hunt-eight-reading"]
   },
 
-  // ── 第十五批 · L96 当时正下着雨（背景句）：天气句的昨天版——L34 伏笔兑现（批十五 PRD §2）──
+  // ── 第十五批 · L96 当时正下着雨（背景句）：天气句的过去式——L34 伏笔兑现（批十五 PRD §2）──
   {
     id: "lesson-96-was-raining",
     number: 96,
@@ -18382,10 +18391,10 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "那天晚上正下着雨。",
     targetSentence: "It was raining.",
     blocks: [
-      { text: "It was", role: "它那时（昨天版）" },
-      { text: "raining", role: "正在下雨（-ing 外套）" }
+      { text: "It was", role: "它那时（过去式）" },
+      { text: "raining", role: "正在下雨（-ing 形式）" }
     ],
-    oneLineRule: "天气句的昨天版：It was raining——今天版说今天（It is raining），昨天版说那天。",
+    oneLineRule: "天气句的过去式：It was raining——现在式说今天（It is raining），过去式说那天。",
     examples: [
       { en: "It was raining.", zh: "当时正下着雨。" },
       { en: "It is raining.", zh: "现在正下着雨。" },
@@ -18402,34 +18411,34 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "It was rain.",
         wrongMark: "rain",
         correct: "It was raining.",
-        whyZh: "动作没穿 -ing 外套：was 后面要跟 raining——雨是「正在下」的样子。"
+        whyZh: "动作没加 -ing：was 后面要跟 raining——雨是「正在下」的样子。"
       },
       {
         wrong: "It rains yesterday.",
         wrongMark: "rains",
         correct: "It was raining.",
-        whyZh: "yesterday 在场，动词要换昨天版：光用 rains 是「天天下雨」的口气，说那天要用 was raining。"
+        whyZh: "yesterday 在场，动词要换过去式：光用 rains 是「天天下雨」的口气，说那天要用 was raining。"
       },
       {
         wrong: "It is raining.",
         wrongMark: null,
         correct: "It was raining.",
         bothRight: true,
-        whyZh: "两句都对——今天版（It is raining，现在正下）和昨天版（It was raining，那天正下）：同一场雨的两个版本。"
+        whyZh: "两句都对——现在式（It is raining，现在正下）和过去式（It was raining，那天正下）：同一场雨的两个版本。"
       },
       {
         wrong: "It was windy, but we were happy.",
         wrongMark: null,
         correct: "It was raining.",
         bothRight: true,
-        whyZh: "两句都对——第 19 课的老句子（起风了，但我们很开心）——那时版天气的老熟人。"
+        whyZh: "两句都对——第 19 课的老句子（起风了，但我们很开心）——那时的天气句的老熟人。"
       },
       {
         wrong: "It's cold today.",
         wrongMark: null,
         correct: "It was raining.",
         bothRight: true,
-        whyZh: "两句都对——第 87 课今天版（今天真冷）＋今天学的昨天版：天气两版都会。"
+        whyZh: "两句都对——第 87 课现在式（今天真冷）＋今天学的过去式：天气句两种形式都会。"
       },
       {
         wrong: "I was reading at eight.",
@@ -18450,19 +18459,19 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问那时在下雨吗", en: "Was it raining?", zh: "那时在下雨吗？" }
     ],
     deepDive: {
-      title: "今天版说今天，昨天版说那天",
+      title: "现在式说今天，过去式说那天",
       paragraphs: [
-        "天气句有两版：今天版——It is raining（现在正下着雨）；昨天版——It was raining（那天正下着雨）。零件一样，只是搭档换了版本。",
+        "天气句有两种形式：现在式——It is raining（现在正下着雨）；过去式——It was raining（那天正下着雨）。结构一样，只是搭档换了版本。",
         "第 34 课就埋了一句：「过去进行最常用的场景之一，就是讲故事背景」——今天它兑现了：讲故事时先说「那天正下着雨」，画面就铺开了。",
-        "搭配记牢：昨天版搭档（was）＋穿 -ing 的动作（raining）——少外套（It was rain）错、没换版本（It rains yesterday）也错。",
+        "搭配记牢：过去式搭档（was）＋穿 -ing 的动作（raining）——少形式（It was rain）错、没换版本（It rains yesterday）也错。",
         "先说背景、再讲事情——这是讲故事的顺序：It was raining（背景铺好），然后 When you called, I was reading（事情来了）。下一课我们就学「事情来了」怎么说。"
       ]
     },
     summary: {
-      rule: "天气句的昨天版：It was raining——搭档换昨天版、动作照穿 -ing；今天版说今天、昨天版说那天。",
+      rule: "天气句的过去式：It was raining——搭档换过去式、动作照穿 -ing；现在式说今天、过去式说那天。",
       points: [
-        "It was raining. —— 昨天版（背景句）",
-        "It is raining. —— 今天版（现在）",
+        "It was raining. —— 过去式（背景句）",
+        "It is raining. —— 现在式（现在）",
         "先说背景、再讲事情 —— 讲故事的顺序"
       ]
     },
@@ -18474,14 +18483,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: ".",
         options: ["raining", "rain", "rains"],
         answer: "raining",
-        explain: "动作穿 -ing 外套：It was raining。"
+        explain: "动作加 -ing：It was raining。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：当时正下着雨。",
         tokens: ["It", "was", "raining."],
         answer: "It was raining.",
-        explain: "昨天版搭档 + -ing 外套：三个词说完。"
+        explain: "过去式搭档 + -ing 形式：三个词说完。"
       },
       {
         // R8 跨课复现：第 34 课（伏笔原句）
@@ -18497,26 +18506,26 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["It", "was", "rain."],
         wrongToken: "rain.",
         answer: "rain",
-        correctionZh: "动作要穿 -ing 外套：It was 【raining】。",
+        correctionZh: "动作要加 -ing：It was 【raining】。",
         explain: "雨是「正在下」的样子。"
       },
       {
-        // R8 跨课复现：第 87 课（今天版对照）
+        // R8 跨课复现：第 87 课（现在式对照）
         kind: "arrange",
         promptZh: "再对照一句——第 87 课学过：今天真冷。",
         tokens: ["It's", "cold", "today."],
         answer: "It's cold today.",
-        explain: "复现第 87 课：今天版——今天学它的昨天版。"
+        explain: "复现第 87 课：现在式——今天学它的过去式。"
       },
       {
         // R9 变形/替换：今天换昨天（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It is raining.」把今天版换成昨天版，搭档要怎么变？",
+        promptZh: "句型转换：「It is raining.」把现在式换成过去式，搭档要怎么变？",
         replaceBase: "It is raining.",
-        replaceTarget: "把今天版换成昨天版",
+        replaceTarget: "把现在式换成过去式",
         options: ["It was raining.", "It was rain.", "It is rained."],
         answer: "It was raining.",
-        explain: "搭档换昨天版：It was raining——外套照穿。"
+        explain: "搭档换过去式：It was raining——形式照穿。"
       }
     ],
     practice: [
@@ -18557,7 +18566,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "小美望着窗外问你那天晚上的天气。凭记忆，写出你那句英文。",
       intentZh: "当时正下着雨。",
       answer: "It was raining.",
-      noteZh: "昨天版搭档 + -ing 外套：It was raining。"
+      noteZh: "过去式搭档 + -ing 形式：It was raining。"
     },
     huntCaseIds: ["hunt-rainy-memory"]
   },
@@ -18603,14 +18612,14 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "When you call, I was reading.",
         wrongMark: "call",
         correct: "When you called, I was reading.",
-        whyZh: "打电话那件是昨天的事，要换昨天版：When you 【called】——两截都是昨天的事。"
+        whyZh: "打电话那件是昨天的事，要换过去式：When you 【called】——两截都是昨天的事。"
       },
       {
         wrong: "When it is sunny, I run.",
         wrongMark: null,
         correct: "When you called, I was reading.",
         bothRight: true,
-        whyZh: "两句都对——when 领的那截不一定是昨天：说天天做的事，两边都用现在的版本（When it is sunny, I run）；说昨天被打断的那一次，另一截才穿 was + -ing。"
+        whyZh: "两句都对——when 领的那截不一定是昨天：说天天做的事，两边都用现在式（When it is sunny, I run）；说昨天被打断的那一次，另一截才穿 was + -ing。"
       },
       {
         wrong: "I called you but no answer.",
@@ -18647,14 +18656,14 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "两截话：谁穿 -ing、谁用短的",
       paragraphs: [
-        "这条句子里有两截：when you called（你打电话）和 I was reading（我正在看书）。哪截穿 -ing？——「被插进来的那件小事」用短版本（called），「当时正做着的」穿 -ing（was reading）。",
+        "这条句子里有两截：when you called（你打电话）和 I was reading（我正在看书）。哪截穿 -ing？——「被插进来的那件小事」用短的那截（called），「当时正做着的」穿 -ing（was reading）。",
         "为什么？想象画面：镜头先对着「正在看书」的你，忽然电话铃插进来——正在看的（画面）穿 -ing、插进来的（事件）用短的。英文的老习惯就是这样分工。",
         "第 34 课你听过朋友那句「I called you but no answer.」（我打了电话没人接）——今天你把回答递回去了：When you called, I was reading（你打电话的时候我在看书）。跨了六十多课的老对白，今天接上了。",
-        "两截的版本要配套：都是昨天的事——called（昨天版）、was reading（昨天版 + -ing）。一截换了一截没换，听起来就像半新半旧的衣服。"
+        "两截的版本要配套：都是昨天的事——called（过去式）、was reading（过去式 + -ing）。一截换了一截没换，听起来就像半新半旧的衣服。"
       ]
     },
     summary: {
-      rule: "when 领的那截是「插进来的小事」（短版本），另一截是「当时正做着」（was + 穿 -ing）——When you called, I was reading。",
+      rule: "when 领的那截是「插进来的小事」（短的那截），另一截是「当时正做着」（was + 穿 -ing）——When you called, I was reading。",
       points: [
         "When you called, I was reading. —— 小事 + 正做着",
         "called 短的 ／ was reading 穿 -ing —— 分工不换位",
@@ -18692,7 +18701,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["When", "you", "call,", "I", "was", "reading."],
         wrongToken: "call,",
         answer: "call,",
-        correctionZh: "打电话那件要换昨天版：When you 【called】。",
+        correctionZh: "打电话那件要换过去式：When you 【called】。",
         explain: "两截都是昨天的事。"
       },
       {
@@ -18706,12 +18715,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换正做着的事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「When you called, I was reading.」把「看书」换成「睡觉（sleep）」，正做着那截怎么变？",
+        promptZh: "句型转换：「When you called, I was reading.」把「看书」换成「睡觉（sleep）」，正做着那截怎么变？",
         replaceBase: "When you called, I was reading.",
         replaceTarget: "把 reading 换成 sleep",
         options: ["I was sleeping.", "I was sleep.", "I slept."],
         answer: "I was sleeping.",
-        explain: "还是 was + 穿 -ing：sleep→sleeping——外套照穿。"
+        explain: "还是 was + 穿 -ing：sleep→sleeping——形式照穿。"
       }
     ],
     practice: [
@@ -18775,7 +18784,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "While I was reading", role: "我看书那会儿（一件在进行）" },
       { text: "he was sleeping", role: "他在睡觉（另一件也在进行）" }
     ],
-    oneLineRule: "说「两件同时在发生」用 while，两边各自穿 -ing：While I was reading, he was sleeping——两支镜头同时开着。判据看镜头长短：两件都是「一阵子」才配 while；要是有一件是「一下子」（响一声、看一眼），那件要用昨天版——第 99 课那种就用 when。",
+    oneLineRule: "说「两件同时在发生」用 while，两边各自穿 -ing：While I was reading, he was sleeping——两支镜头同时开着。判据看镜头长短：两件都是「一阵子」才配 while；要是有一件是「一下子」（响一声、看一眼），那件要用过去式——第 99 课那种就用 when。",
     examples: [
       { en: "While I was reading, he was sleeping.", zh: "我看书那会儿，他在睡觉。" },
       { en: "While I was cooking, she was reading.", zh: "我做饭那会儿，她在看书。" },
@@ -18825,7 +18834,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "While I was reading, he was sleeping.",
         bothRight: true,
-        whyZh: "两句都对——第 34 课老句（一伙人当时正踢球）今天仍在——while 也是同一套零件。"
+        whyZh: "两句都对——第 34 课老句（复数当时正踢球）今天仍在——while 也是同一套结构。"
       }
     ],
     variants: [
@@ -18835,7 +18844,7 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     sceneSwings: [
       { sceneZh: "说我做饭那会儿她在看书", en: "While I was cooking, she was reading.", zh: "我做饭那会儿，她在看书。" },
-      { sceneZh: "说他在睡觉时我在看书（换顺序版）", en: "I was reading while he was sleeping.", zh: "他在睡觉的时候我在看书。" },
+      { sceneZh: "说他在睡觉时我在看书（换顺序）", en: "I was reading while he was sleeping.", zh: "他在睡觉的时候我在看书。" },
       { sceneZh: "问你弟那会儿在不在睡", en: "Was he sleeping while you were reading?", zh: "你看书时他在睡吗？" }
     ],
     deepDive: {
@@ -18895,17 +18904,17 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 34 课学过：他们当时正在踢足球。",
         tokens: ["They", "were", "playing", "football."],
         answer: "They were playing football.",
-        explain: "复现第 34 课：一伙人用 were——零件跟 while 句一样。"
+        explain: "复现第 34 课：复数用 were——结构跟 while 句一样。"
       },
       {
         // R9 变形/替换：换两件事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「While I was reading, he was sleeping.」把两件换成「我做饭、她看书」，动词怎么变？",
+        promptZh: "句型转换：「While I was reading, he was sleeping.」把两件换成「我做饭、她看书」，动词怎么变？",
         replaceBase: "While I was reading, he was sleeping.",
         replaceTarget: "换成「我做饭那会儿她在看书」",
         options: ["While I was cooking, she was reading.", "While I was cook, she was read.", "While I cooked, she read."],
         answer: "While I was cooking, she was reading.",
-        explain: "还是两边都得是一阵子：cooking／reading——外套各穿各的。"
+        explain: "还是两边都得是一阵子：cooking／reading——形式各穿各的。"
       }
     ],
     practice: [
@@ -18951,12 +18960,12 @@ export const grammarLessons: GrammarLesson[] = [
     huntCaseIds: ["hunt-two-screens"]
   },
 
-  // ── 第十五批 · L99 电话响的时候（进行 vs 昨天版）：哪件用哪个版本——响是一下子、看是一阵子（批十五 PRD §2）──
+  // ── 第十五批 · L99 电话响的时候（进行 vs 过去式）：哪件用哪个版本——响是一下子、看是一阵子（批十五 PRD §2）──
   {
     id: "lesson-99-when-rang",
     number: 99,
     title: "电话响的时候",
-    grammarLabel: "哪件用哪个版本 · 进行 vs 昨天版",
+    grammarLabel: "哪件用哪个版本 · 进行 vs 过去式",
     episode: "小美的一天 九十九",
     scene: "mansion",
     cover: cover99,
@@ -18969,7 +18978,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "I was reading", role: "我正在看书（一阵子的事）" },
       { text: "when the phone rang", role: "电话响了（一下子的事）" }
     ],
-    oneLineRule: "哪件用哪个版本：正在做的一阵子穿 -ing（was reading）、插进来的那一下用昨天版（rang）——响是一下子、看是一阵子。",
+    oneLineRule: "哪件用哪个版本：正在做的一阵子穿 -ing（was reading）、插进来的那一下用过去式（rang）——响是一下子、看是一阵子。",
     examples: [
       { en: "I was reading when the phone rang.", zh: "电话响的时候我正在看书。" },
       { en: "The phone rang while I was sleeping.", zh: "我睡觉的时候电话响了。" },
@@ -18986,13 +18995,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "The phone was ringing while I was sleeping.",
         wrongMark: "ringing",
         correct: "The phone rang while I was sleeping.",
-        whyZh: "响是一下子的事：穿 -ing 就成了「一直在响」——像闹钟一样响个不停。一下子的那件用昨天版：rang。"
+        whyZh: "响是一下子的事：穿 -ing 就成了「一直在响」——像闹钟一样响个不停。一下子的那件用过去式：rang。"
       },
       {
         wrong: "I was reading when the phone ring.",
         wrongMark: "ring",
         correct: "I was reading when the phone rang.",
-        whyZh: "响那一下没换昨天版：ring 没变形，要说 rang——第 10 课的昨天版规矩。"
+        whyZh: "响那一下没换过去式：ring 没变形，要说 rang——第 10 课的过去式规矩。"
       },
       {
         wrong: "I was reading when the phone rang.",
@@ -19024,7 +19033,7 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "I was reading when the phone rang.", zh: "电话响的时候我正在看书。", noteZh: "一阵子穿 -ing、一下子用昨天版。" },
+      { label: "肯定", en: "I was reading when the phone rang.", zh: "电话响的时候我正在看书。", noteZh: "一阵子穿 -ing、一下子用过去式。" },
       { label: "否定", en: "I was not reading when the phone rang.", zh: "电话响时我没在看书。", noteZh: "not 跟 was 走。" },
       { label: "疑问", en: "What were you doing when the phone rang?", zh: "电话响的时候你在干嘛？", noteZh: "Were 搬前面问——第 34 课的问法照旧。" }
     ],
@@ -19036,18 +19045,18 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "响是一下子，看是一阵子",
       paragraphs: [
-        "同一段回忆里有两种事：一阵子的（正在看书、正在下雨）和一下子的（电话响了、有人敲门）。英文给它们配了不同版本：一阵子穿 -ing（was reading），一下子用昨天版（rang）。",
-        "为什么？因为「响」就是一瞬间——叮铃一声就完了；「看」是一段时间——挂在那里。想象画面：镜头对着看书的你（一阵子），忽然电话铃插进来（一下子）——画面穿 -ing、插进来的用昨天版。",
+        "同一段回忆里有两种事：一阵子的（正在看书、正在下雨）和一下子的（电话响了、有人敲门）。英文给它们配了不同版本：一阵子穿 -ing（was reading），一下子用过去式（rang）。",
+        "为什么？因为「响」就是一瞬间——叮铃一声就完了；「看」是一段时间——挂在那里。想象画面：镜头对着看书的你（一阵子），忽然电话铃插进来（一下子）——画面穿 -ing、插进来的用过去式。",
         "两种摆法都行：I was reading when the phone rang（先看后响）／The phone rang while I was sleeping（先响后睡）——哪个在前先说哪个。",
-        "别忘了「响」的昨天版是 rang：ring→rang→rung（老词有自己的三件外套）——今天用中间那件。"
+        "别忘了「响」的过去式是 rang：ring→rang→rung（老词有自己的三种形式）——今天用中间那个。"
       ]
     },
     summary: {
-      rule: "一阵子穿 -ing（was reading）、一下子用昨天版（rang）——I was reading when the phone rang。",
+      rule: "一阵子穿 -ing（was reading）、一下子用过去式（rang）——I was reading when the phone rang。",
       points: [
         "I was reading when the phone rang. —— 一阵子 + 一下子",
         "The phone rang while I was sleeping. —— 换个顺序也一样",
-        "ring → rang —— 响的昨天版"
+        "ring → rang —— 响的过去式"
       ]
     },
     guided: [
@@ -19058,7 +19067,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: ".",
         options: ["rang", "ring", "ringing"],
         answer: "rang",
-        explain: "响是一下子——用昨天版：rang。"
+        explain: "响是一下子——用过去式：rang。"
       },
       {
         kind: "arrange",
@@ -19095,12 +19104,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换一下子的事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I was reading when the phone rang.」把「电话响」换成「有人敲门（knock）」，一下子那截怎么变？",
+        promptZh: "句型转换：「I was reading when the phone rang.」把「电话响」换成「有人敲门（knock）」，一下子那截怎么变？",
         replaceBase: "I was reading when the phone rang.",
         replaceTarget: "把 the phone rang 换成「有人敲门」",
         options: ["someone knocked", "someone knock", "someone was knocking"],
         answer: "someone knocked",
-        explain: "敲门也是一下子：knocked——用昨天版（不穿 -ing）。"
+        explain: "敲门也是一下子：knocked——用过去式（不穿 -ing）。"
       }
     ],
     practice: [
@@ -19141,7 +19150,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "小美指着茶几上的电话问你那一下在干嘛。凭记忆，写出你那句英文。",
       intentZh: "电话响的时候我正在看书。",
       answer: "I was reading when the phone rang.",
-      noteZh: "一阵子穿 -ing、一下子用昨天版——rang。"
+      noteZh: "一阵子穿 -ing、一下子用过去式——rang。"
     },
     huntCaseIds: ["hunt-phone-rang"]
   },
@@ -19187,7 +19196,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I used to playing here every day.",
         wrongMark: "playing",
         correct: "I used to play here every day.",
-        whyZh: "used to 后面跟原样：play——它不认 -ing 外套（跟 want to travel 一个规矩）。"
+        whyZh: "used to 后面跟原形：play——它不认 -ing（跟 want to travel 一个规矩）。"
       },
       {
         wrong: "I was reading at eight.",
@@ -19233,7 +19242,7 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "这一章你攒了三条说过去的路：那一次去了（I went to the park，一趟做完）、那会儿正做着（I was reading at eight，画面停住）、从前常常（I used to play here every day，一段时期的习惯）。",
         "今天的主角是第三条：讲故事往回翻的时候，用 used to 说「那时候的日常」——从前天天在这儿玩、从前常去那家店。它和现在对照着听：从前这样、现在不这样了。",
-        "「从前常常」和「现在常常」也要分清：现在每天还在做，用 every day 配现在版（I play here every day）；从前才这样，用 used to（I used to play here every day）——同一个 every day，动词的版本不一样。",
+        "「从前常常」和「现在常常」也要分清：现在每天还在做，用 every day 配现在式（I play here every day）；从前才这样，用 used to（I used to play here every day）——同一个 every day，动词的版本不一样。",
         "三条路走到这儿，你讲故事的底子就有了：先铺背景（It was raining）、说被什么打断（when the phone rang）、聊从前的习惯（I used to…）——昨天的故事，你能从头讲到尾了。"
       ]
     },
@@ -19253,14 +19262,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "here every day.",
         options: ["used to play", "use to play", "used to playing"],
         answer: "used to play",
-        explain: "used to + 原样：d 不丢、外套不穿。"
+        explain: "used to + 原形：d 不丢、-ing 不加。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：从前我天天在这儿玩。",
         tokens: ["I", "used", "to", "play", "here", "every", "day."],
         answer: "I used to play here every day.",
-        explain: "used to + 原样——说从前的常常。"
+        explain: "used to + 原形——说从前的常常。"
       },
       {
         // R8 跨课复现：第 93 课（老句）
@@ -19290,12 +19299,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换习惯（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I used to play here every day.」把「玩」换成「读书（read）」，后半截怎么变？",
+        promptZh: "句型转换：「I used to play here every day.」把「玩」换成「读书（read）」，后半截怎么变？",
         replaceBase: "I used to play here every day.",
         replaceTarget: "把 play here 换成「天天晚上读书」",
         options: ["read at night", "reading at night", "read at night every day"],
         answer: "read at night",
-        explain: "used to 后面跟原样：read——「从前的常常」换个习惯照样说。"
+        explain: "used to 后面跟原形：read——「从前的常常」换个习惯照样说。"
       }
     ],
     practice: [
@@ -19331,7 +19340,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "站在学校老操场边，小美问你家是不是住得近。凭记忆，写出你那句英文。",
       intentZh: "从前我天天在这儿玩。",
       answer: "I used to play here every day.",
-      noteZh: "used to——从前的常常；d 不丢、外套不穿。"
+      noteZh: "used to——从前的常常；d 不丢、-ing 不加。"
     },
     huntCaseIds: ["hunt-old-habit"]
   },
@@ -19476,17 +19485,17 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 34 课学过：三点时我正在画画。",
         tokens: ["I", "was", "drawing", "at", "three."],
         answer: "I was drawing at three.",
-        explain: "复现第 34 课：同一套零件——画面随时可以换。"
+        explain: "复现第 34 课：同一套结构——画面随时可以换。"
       },
       {
         // R9 变形/替换：接上 then（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I was reading.」后面想用 then 接「你打电话来了」，接上哪一截？",
+        promptZh: "句型转换：「I was reading.」后面想用 then 接「你打电话来了」，接上哪一截？",
         replaceBase: "I was reading.",
         replaceTarget: "用 then 接「你打电话来了」",
         options: ["Then you called.", "Then you call.", "You then called."],
         answer: "Then you called.",
-        explain: "then 站句首接上：Then you called——然后你打来了（called 是昨天版）。"
+        explain: "then 站句首接上：Then you called——然后你打来了（called 是过去式）。"
       }
     ],
     practice: [
@@ -19613,7 +19622,7 @@ export const grammarLessons: GrammarLesson[] = [
       title: "大章倒带：讲故事的整套本事",
       paragraphs: [
         "这一章八课，你把「讲故事」的整套本事拿下了：画面（I was reading at eight）、背景（It was raining）、被什么打断（When you called／the phone rang）、两件同时在（While I was reading, he was sleeping）、从前的习惯（I used to play here）。",
-        "工具箱里最重要的一条判据：一阵子的事穿 -ing（was reading、was raining）、一下子的事用昨天版（rang、called）——讲故事的节奏就靠它。",
+        "工具箱里最重要的一条判据：一阵子的事穿 -ing（was reading、was raining）、一下子的事用过去式（rang、called）——讲故事的节奏就靠它。",
         "第 34 课埋的伏笔今天全兑现了：当时那句「过去进行最常用的场景之一是讲故事背景」，你听懂了；今天你不光懂，还能把整段故事讲出来。",
         "最后一页别忘了往回翻：I used to play here（从前常在这儿玩）——故事讲完，再往前聊两句从前，一个电话的晚上就这么说圆了。"
       ]
@@ -19671,7 +19680,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换开场（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I was reading at eight.」把「八点」换成「昨晚（last night）」，句子怎么变？",
+        promptZh: "句型转换：「I was reading at eight.」把「八点」换成「昨晚（last night）」，句子怎么变？",
         replaceBase: "I was reading at eight.",
         replaceTarget: "把 at eight 换成 last night",
         options: ["I was reading last night.", "I read last night.", "I was read last night."],
@@ -19728,7 +19737,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-103-makes-me",
     number: 103,
     title: "妈妈让我先写作业",
-    grammarLabel: "让某人做 · makes + 动作穿原样",
+    grammarLabel: "让某人做 · makes + 动作用原形",
     episode: "小美的一天 一百零三",
     scene: "mansion",
     cover: cover103,
@@ -19739,9 +19748,9 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "My mom makes me do my homework.",
     blocks: [
       { text: "My mom makes me", role: "我妈妈让我（她版本）" },
-      { text: "do my homework", role: "写作业（动作穿原样）" }
+      { text: "do my homework", role: "写作业（动作用原形）" }
     ],
-    oneLineRule: "说「让某人做」用 makes + 谁 + 动作——动作穿原样、不垫板：My mom makes me do my homework。",
+    oneLineRule: "说「让某人做」用 makes + 谁 + 动作——动作用原形、不带 to：My mom makes me do my homework。",
     examples: [
       { en: "My mom makes me do my homework.", zh: "妈妈让我先写作业。" },
       { en: "My dad makes me clean my room.", zh: "爸爸让我收拾房间。" },
@@ -19758,7 +19767,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "My mom makes me to do my homework.",
         wrongMark: "to",
         correct: "My mom makes me do my homework.",
-        whyZh: "口令块不垫板：makes me 【do】——to 进不了这扇门（第 74 课的老规矩）。"
+        whyZh: "口令块不带 to：makes me 【do】——to 进不了这扇门（第 74 课的老规矩）。"
       },
       {
         wrong: "My mom make me do my homework.",
@@ -19770,7 +19779,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "My mom makes me does my homework.",
         wrongMark: "does",
         correct: "My mom makes me do my homework.",
-        whyZh: "后面穿原样：makes me 【do】——does 的 -s 只站一个位子（前面已经用过了）。"
+        whyZh: "后面用原形：makes me 【do】——does 的 -s 只站一个位子（前面已经用过了）。"
       },
       {
         wrong: "My dad makes me clean my room.",
@@ -19795,9 +19804,9 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "My mom makes me do my homework.", zh: "妈妈让我先写作业。", noteZh: "makes + 谁 + 动作穿原样。" },
-      { label: "否定", en: "My mom doesn't make me do my homework.", zh: "妈妈不逼我写作业。", noteZh: "帮手 doesn't 上场后，make 穿原样。" },
-      { label: "疑问", en: "Does your mom make you do your homework?", zh: "你妈让你写作业吗？", noteZh: "Does 站句首，make 穿原样。" }
+      { label: "肯定", en: "My mom makes me do my homework.", zh: "妈妈让我先写作业。", noteZh: "makes + 谁 + 动作用原形。" },
+      { label: "否定", en: "My mom doesn't make me do my homework.", zh: "妈妈不逼我写作业。", noteZh: "帮手 doesn't 上场后，make 用原形。" },
+      { label: "疑问", en: "Does your mom make you do your homework?", zh: "你妈让你写作业吗？", noteZh: "Does 站句首，make 用原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说爸爸让我收拾房间", en: "My dad makes me clean my room.", zh: "爸爸让我收拾房间。" },
@@ -19805,18 +19814,18 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问你妈让不让你写作业", en: "Does your mom make you do your homework?", zh: "你妈让你写作业吗？" }
     ],
     deepDive: {
-      title: "不垫板家族又添一员",
+      title: "不带 to 家族又添一员",
       paragraphs: [
-        "第 47 课 you should sleep、第 61 课 Could you help、第 74 课 Let me help——这个家族的老规矩：口令后面直接接动作、不垫板。今天 makes 入族：makes me do——照样不垫。",
-        "三个零件排好队：谁让（My mom）＋makes me（让我）＋动作穿原样（do my homework）。中文说「妈妈让我写作业」，英语的顺序正好一样，只有那个 to 千万别顺手加。",
+        "第 47 课 you should sleep、第 61 课 Could you help、第 74 课 Let me help——这个家族的老规矩：口令后面直接接动作、不带 to。今天 makes 入族：makes me do——照样不垫。",
+        "三个部分排好队：谁让（My mom）＋makes me（让我）＋动作用原形（do my homework）。中文说「妈妈让我写作业」，英语的顺序正好一样，只有那个 to 千万别顺手加。",
         "为什么容易加 to？因为中文的「让我」后面常跟个「去」——「让我去写作业」。那个「去」翻成英语的 to 就多了。记住：家族不认 to。",
         "跟第 74 课的分工：L74 学的是 Let me（我请缨）和 help（搭把手）；今天学的是 makes me（我被安排）。一个主动、一个被动——两个方向都会说，就齐了。"
       ]
     },
     summary: {
-      rule: "说「让某人做」：makes + 谁 + 动作穿原样（My mom makes me do my homework）——不垫板。",
+      rule: "说「让某人做」：makes + 谁 + 动作用原形（My mom makes me do my homework）——不带 to。",
       points: [
-        "My mom makes me do my homework. —— 三个零件排好队",
+        "My mom makes me do my homework. —— 三个部分排好队",
         "makes me to do ❌ —— 家族不认 to",
         "Let me help（第 74 课）／makes me do（今天）—— 主动与被动两个方向"
       ]
@@ -19829,14 +19838,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "my homework.",
         options: ["me do", "me to do", "me does"],
         answer: "me do",
-        explain: "口令块不垫板、后面穿原样：makes me do。"
+        explain: "口令块不带 to、后面用原形：makes me do。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：妈妈让我先写作业。",
         tokens: ["My", "mom", "makes", "me", "do", "my", "homework."],
         answer: "My mom makes me do my homework.",
-        explain: "谁让 + 让我 + 动作穿原样。"
+        explain: "谁让 + 让我 + 动作用原形。"
       },
       {
         // R8 跨课复现：第 74 课（半曝句转正前最后一面）
@@ -19852,7 +19861,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["My", "mom", "makes", "me", "to", "do", "my", "homework."],
         wrongToken: "to",
         answer: "to",
-        correctionZh: "口令块不垫板：makes me 【do】。",
+        correctionZh: "口令块不带 to：makes me 【do】。",
         explain: "to 进不了这扇门。"
       },
       {
@@ -19861,12 +19870,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 25 课学过：他每天喝牛奶。",
         tokens: ["He", "drinks", "milk", "every", "day."],
         answer: "He drinks milk every day.",
-        explain: "复现第 25 课：他/她/它版的 -s——makes 的 -s 就是它。"
+        explain: "复现第 25 课：第三人称单数的 -s——makes 的 -s 就是它。"
       },
       {
         // R9 变形/替换：换让的人（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「My mom makes me do my homework.」把妈妈换成爸爸，动词要怎么变？",
+        promptZh: "句型转换：「My mom makes me do my homework.」把妈妈换成爸爸，动词要怎么变？",
         replaceBase: "My mom makes me do my homework.",
         replaceTarget: "把 My mom 换成 My dad",
         options: ["My dad makes me do my homework.", "My dad make me do my homework.", "My dad makes me to do my homework."],
@@ -19912,7 +19921,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "小美推门进来问你要不要玩，你指了指作业本。凭记忆，写出你那句英文。",
       intentZh: "妈妈让我先写作业。",
       answer: "My mom makes me do my homework.",
-      noteZh: "makes + 谁 + 动作穿原样——不垫板。"
+      noteZh: "makes + 谁 + 动作用原形——不带 to。"
     },
     huntCaseIds: ["hunt-mom-makes"]
   },
@@ -19920,7 +19929,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-104-made-me",
     number: 104,
     title: "昨天他让我等了半小时",
-    grammarLabel: "昨天版的「让」 · made + 动作穿原样",
+    grammarLabel: "过去式的「让」 · made + 动作用原形",
     episode: "小美的一天 一百零四",
     scene: "city",
     cover: cover104,
@@ -19930,10 +19939,10 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "昨天他让我等了半小时。",
     targetSentence: "He made me wait.",
     blocks: [
-      { text: "He made me", role: "他让我（昨天版）" },
-      { text: "wait", role: "等（动作穿原样）" }
+      { text: "He made me", role: "他让我（过去式）" },
+      { text: "wait", role: "等（动作用原形）" }
     ],
-    oneLineRule: "说昨天的事：make 换昨天版 made，动作照样穿原样——He made me wait。",
+    oneLineRule: "说昨天的事：make 换过去式 made，动作照样用原形——He made me wait。",
     examples: [
       { en: "He made me wait.", zh: "他让我等了（半小时）。" },
       { en: "She made me clean my room.", zh: "她让我收拾房间。" },
@@ -19950,19 +19959,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "He made me to wait.",
         wrongMark: "to",
         correct: "He made me wait.",
-        whyZh: "口令块不垫板：made me 【wait】——to 进不了这扇门（第 103 课的老规矩）。"
+        whyZh: "口令块不带 to：made me 【wait】——to 进不了这扇门（第 103 课的老规矩）。"
       },
       {
         wrong: "He make me wait.",
         wrongMark: "make",
         correct: "He made me wait.",
-        whyZh: "说昨天的事要换昨天版：make → 【made】——昨天版没有 -s。"
+        whyZh: "说昨天的事要换过去式：make → 【made】——过去式没有 -s。"
       },
       {
         wrong: "He made me waited.",
         wrongMark: "waited",
         correct: "He made me wait.",
-        whyZh: "后面穿原样：made me 【wait】——换版本只换前面那一个词。"
+        whyZh: "后面用原形：made me 【wait】——换版本只换前面那一个词。"
       },
       {
         wrong: "She made a cake for me.",
@@ -19976,7 +19985,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "He made me wait.",
         bothRight: true,
-        whyZh: "两句都对——第 10 课昨天版 go→went；今天的 make→made 是同一条老规矩。"
+        whyZh: "两句都对——第 10 课过去式 go→went；今天的 make→made 是同一条老规矩。"
       },
       {
         wrong: "My mom makes me do my homework.",
@@ -19987,9 +19996,9 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "He made me wait.", zh: "他让我等了。", noteZh: "made + 谁 + 动作穿原样。" },
-      { label: "否定", en: "He didn't make me wait.", zh: "他没让我等。", noteZh: "帮手 didn't 上场后，make 穿原样。" },
-      { label: "疑问", en: "Did he make you wait?", zh: "他让你等了吗？", noteZh: "Did 站句首，make 穿原样。" }
+      { label: "肯定", en: "He made me wait.", zh: "他让我等了。", noteZh: "made + 谁 + 动作用原形。" },
+      { label: "否定", en: "He didn't make me wait.", zh: "他没让我等。", noteZh: "帮手 didn't 上场后，make 用原形。" },
+      { label: "疑问", en: "Did he make you wait?", zh: "他让你等了吗？", noteZh: "Did 站句首，make 用原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说她昨天让我收拾房间", en: "She made me clean my room.", zh: "她让我收拾房间。" },
@@ -19997,20 +20006,20 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问他昨天让你等了吗", en: "Did he make you wait?", zh: "他让你等了吗？" }
     ],
     deepDive: {
-      title: "同一个 made，两张脸",
+      title: "同一个 made，两种用法",
       paragraphs: [
-        "第 68 课你见过 She made a cake for me.（她给我做了个蛋糕）——那个 made 是「做」。今天 He made me wait. 的 made 是「让」。同一个词、两张脸，分辨办法只有一个：看它后面接什么——后面接「谁 + 动作」，就是「让」。",
-        "昨天版的换法跟第 10 课一样：一场戏只让一个词换形状。go 换 went、see 换 saw，今天 make 换 made。后面那个动作照样穿原样：made me wait，不跟 waited、也不垫 to。",
+        "第 68 课你见过 She made a cake for me.（她给我做了个蛋糕）——那个 made 是「做」。今天 He made me wait. 的 made 是「让」。同一个词、两种用法，分辨办法只有一个：看它后面接什么——后面接「谁 + 动作」，就是「让」。",
+        "过去式的换法跟第 10 课一样：一场戏只让一个词换形状。go 换 went、see 换 saw，今天 make 换 made。后面那个动作照样用原形：made me wait，不跟 waited、也不垫 to。",
         "为什么容易垫 to？中文的「让我去等」里有个「去」——那个「去」翻成 to 就多了。这个家族不认 to（第 103 课到现在，一直这样）。",
-        "跟第 103 课分工：今天的事说 makes me do，昨天的事说 made me wait。一个今天版、一个昨天版——两句话把「让」的现在和从前都说全了。"
+        "跟第 103 课分工：今天的事说 makes me do，昨天的事说 made me wait。一个现在式、一个过去式——两句话把「让」的现在和从前都说全了。"
       ]
     },
     summary: {
-      rule: "说昨天的事，把 make 换成昨天版 made（He made me wait）——后面照样穿原样、不垫板。",
+      rule: "说昨天的事，把 make 换成过去式 made（He made me wait）——后面照样用原形、不带 to。",
       points: [
-        "He made me wait. —— 昨天版 makes→made",
+        "He made me wait. —— 过去式 makes→made",
         "He made me to wait ❌ —— 家族不认 to",
-        "She made a cake for me.（第 68 课「做」）／He made me wait.（今天「让」）—— 同一个 made 两张脸"
+        "She made a cake for me.（第 68 课「做」）／He made me wait.（今天「让」）—— 同一个 made 两种用法"
       ]
     },
     guided: [
@@ -20021,7 +20030,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: ".",
         options: ["me wait", "me to wait", "me waited"],
         answer: "me wait",
-        explain: "昨天版照样穿原样：made me wait——不垫板、不换形。"
+        explain: "过去式照样用原形：made me wait——不带 to、不换形。"
       },
       {
         kind: "arrange",
@@ -20031,12 +20040,12 @@ export const grammarLessons: GrammarLesson[] = [
         explain: "他让我（made me）＋等（wait）。"
       },
       {
-        // R8 跨课复现：第 103 课（今天版 makes）
+        // R8 跨课复现：第 103 课（现在式 makes）
         kind: "arrange",
         promptZh: "先复习一小步——第 103 课学过：妈妈让我先写作业。",
         tokens: ["My", "mom", "makes", "me", "do", "my", "homework."],
         answer: "My mom makes me do my homework.",
-        explain: "复现第 103 课：今天版 makes——今天认识它的昨天版 made。"
+        explain: "复现第 103 课：现在式 makes——今天认识它的过去式 made。"
       },
       {
         kind: "spot",
@@ -20044,26 +20053,26 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["He", "made", "me", "to", "wait."],
         wrongToken: "to",
         answer: "to",
-        correctionZh: "口令块不垫板：made me 【wait】。",
+        correctionZh: "口令块不带 to：made me 【wait】。",
         explain: "to 进不了这扇门。"
       },
       {
-        // R8 跨课复现：第 10 课（昨天版换形老规矩）
+        // R8 跨课复现：第 10 课（过去式换形老规矩）
         kind: "arrange",
         promptZh: "再对照一句——第 10 课学过：昨天我去了公园。",
         tokens: ["Yesterday", "I", "went", "to", "the", "park."],
         answer: "Yesterday I went to the park.",
-        explain: "复现第 10 课：go→went 换昨天版——made 的换法就是它。"
+        explain: "复现第 10 课：go→went 换过去式——made 的换法就是它。"
       },
       {
-        // R9 变形/替换：今天版与昨天版互转（构造迁移，复用 choose 判题）
+        // R9 变形/替换：现在式与过去式互转（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「He made me wait.」改成说每天的事，动词要怎么变？",
+        promptZh: "句型转换：「He made me wait.」改成说每天的事，动词要怎么变？",
         replaceBase: "He made me wait.",
         replaceTarget: "把「昨天」改成「每天」",
         options: ["He makes me wait.", "He make me wait.", "He makes me to wait."],
         answer: "He makes me wait.",
-        explain: "每天的事用今天版：makes——她/他/它加 -s。"
+        explain: "每天的事用现在式：makes——她/他/它加 -s。"
       }
     ],
     practice: [
@@ -20104,7 +20113,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "他昨天迟到半小时，还问你「等很久了吗」。凭记忆，写出你那句英文。",
       intentZh: "昨天他让我等了半小时。",
       answer: "He made me wait.",
-      noteZh: "昨天版 made + 动作穿原样——不垫板。"
+      noteZh: "过去式 made + 动作用原形——不带 to。"
     },
     huntCaseIds: ["hunt-made-me-wait"]
   },
@@ -20112,7 +20121,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-105-doesnt-let",
     number: 105,
     title: "她不让我去",
-    grammarLabel: "不让做 · doesn't + let + 动作穿原样",
+    grammarLabel: "不让做 · doesn't + let + 动作用原形",
     episode: "小美的一天 一百零五",
     scene: "mansion",
     cover: cover105,
@@ -20123,9 +20132,9 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "She doesn't let me go.",
     blocks: [
       { text: "She doesn't let me", role: "她不让我（帮手出场）" },
-      { text: "go", role: "去（动作穿原样）" }
+      { text: "go", role: "去（动作用原形）" }
     ],
-    oneLineRule: "说「不让做」：帮手 doesn't 替 let 干活，let 自己穿原样——She doesn't let me go。",
+    oneLineRule: "说「不让做」：帮手 doesn't 替 let 干活，let 自己用原形——She doesn't let me go。",
     examples: [
       { en: "She doesn't let me go.", zh: "她不让我去。" },
       { en: "He doesn't let me watch TV.", zh: "他不让我看电视。" },
@@ -20142,26 +20151,26 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She doesn't lets me go.",
         wrongMark: "lets",
         correct: "She doesn't let me go.",
-        whyZh: "帮手（doesn't）已经把 -s 的活儿接走了——let 自己穿原样：【let】。"
+        whyZh: "帮手（doesn't）已经把 -s 的活儿接走了——let 自己用原形：【let】。"
       },
       {
         wrong: "She doesn't let me to go.",
         wrongMark: "to",
         correct: "She doesn't let me go.",
-        whyZh: "家族不认 to：let me 【go】——不垫板（第 74 课的老规矩）。"
+        whyZh: "家族不认 to：let me 【go】——不带 to（第 74 课的老规矩）。"
       },
       {
         wrong: "Does she lets me go?",
         wrongMark: "lets",
         correct: "She doesn't let me go.",
-        whyZh: "问句里也一样：Does 站句首接走了 -s 的活儿，后面 let 穿原样。"
+        whyZh: "问句里也一样：Does 站句首接走了 -s 的活儿，后面 let 用原形。"
       },
       {
         wrong: "She doesn't let me watch TV.",
         wrongMark: null,
         correct: "She doesn't let me go.",
         bothRight: true,
-        whyZh: "两句都对——换件事（watch TV）：规矩一样，doesn't 后面 let 穿原样。"
+        whyZh: "两句都对——换件事（watch TV）：规矩一样，doesn't 后面 let 用原形。"
       },
       {
         wrong: "She doesn't let me help.",
@@ -20180,8 +20189,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "She lets me go.", zh: "她让我去。", noteZh: "去掉 doesn't——lets 自己带 -s。" },
-      { label: "否定", en: "She doesn't let me go.", zh: "她不让我去。", noteZh: "帮手替它干活，let 穿原样。" },
-      { label: "疑问", en: "Does she let you go?", zh: "她让你去吗？", noteZh: "Does 站句首，let 穿原样。" }
+      { label: "否定", en: "She doesn't let me go.", zh: "她不让我去。", noteZh: "帮手替它干活，let 用原形。" },
+      { label: "疑问", en: "Does she let you go?", zh: "她让你去吗？", noteZh: "Does 站句首，let 用原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说她让我去", en: "She lets me go.", zh: "她让我去。" },
@@ -20191,17 +20200,17 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "帮手替它干活",
       paragraphs: [
-        "第 103、104 课学的是「她让我做」；今天学它反过来——「她不让我做」。说法很简单：请一个帮手 doesn't 站到前面，let 自己就穿原样。",
+        "第 103、104 课学的是「她让我做」；今天学它反过来——「她不让我做」。说法很简单：请一个帮手 doesn't 站到前面，let 自己就用原形。",
         "为什么 let 不用加 -s？因为 -s 的活儿被帮手接走了：doesn't 里那个 does 就是「她/他/它」的标记。一个句子里这个标记只站一次——帮手来了，let 就歇着。",
         "第 74 课你就见过一句 She doesn't let me help.——当时它只是张半露脸的卡，今天它长全了：She doesn't let me go. 想看「让吗」，就把 Does 请到句首：Does she let you go?",
         "想把它说成「让」（肯定）呢？帮手退场，lets 自己把 -s 穿上：She lets me go.——帮手在、-s 就在帮手身上；帮手走、-s 就回到 let 身上。"
       ]
     },
     summary: {
-      rule: "说「不让做」：帮手 doesn't 站前面，let 穿原样（She doesn't let me go）。",
+      rule: "说「不让做」：帮手 doesn't 站前面，let 用原形（She doesn't let me go）。",
       points: [
         "She doesn't let me go. —— 帮手接走 -s 的活儿",
-        "She doesn't lets ❌ —— 帮手在，let 就穿原样",
+        "She doesn't lets ❌ —— 帮手在，let 就用原形",
         "She lets me go.（肯定）／Does she let you go?（疑问）—— 帮手在不在，-s 换地方站"
       ]
     },
@@ -20220,7 +20229,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：她不让我去。",
         tokens: ["She", "doesn't", "let", "me", "go."],
         answer: "She doesn't let me go.",
-        explain: "帮手 + let 穿原样 + 谁 + 动作。"
+        explain: "帮手 + let 用原形 + 谁 + 动作。"
       },
       {
         // R8 跨课复现：第 74 课半曝句转正
@@ -20236,7 +20245,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["She", "doesn't", "lets", "me", "go."],
         wrongToken: "lets",
         answer: "lets",
-        correctionZh: "帮手在，let 穿原样：【let】 me go。",
+        correctionZh: "帮手在，let 用原形：【let】 me go。",
         explain: "-s 的活儿已经被 doesn't 接走了。"
       },
       {
@@ -20250,7 +20259,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：否定转肯定（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「She doesn't let me go.」去掉 doesn't，let 要怎么变？",
+        promptZh: "句型转换：「She doesn't let me go.」去掉 doesn't，let 要怎么变？",
         replaceBase: "She doesn't let me go.",
         replaceTarget: "去掉 doesn't，说「她让我去」",
         options: ["She lets me go.", "She let me go.", "She lets me to go."],
@@ -20296,7 +20305,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "同学在门口喊你，你站在门里没出来。凭记忆，写出你那句英文。",
       intentZh: "她不让我去。",
       answer: "She doesn't let me go.",
-      noteZh: "帮手 doesn't + let 穿原样——不垫板。"
+      noteZh: "帮手 doesn't + let 用原形——不带 to。"
     },
     huntCaseIds: ["hunt-not-let-me"]
   },
@@ -20304,7 +20313,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-106-let-him",
     number: 106,
     title: "她让他玩",
-    grammarLabel: "让谁做 · lets + 人名 + 动作穿原样",
+    grammarLabel: "让谁做 · lets + 人名 + 动作用原形",
     episode: "小美的一天 一百零六",
     scene: "mansion",
     cover: cover106,
@@ -20315,9 +20324,9 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "She lets him play after dinner.",
     blocks: [
       { text: "She lets him", role: "她让他（换人不换规矩）" },
-      { text: "play after dinner", role: "饭后玩（动作穿原样）" }
+      { text: "play after dinner", role: "饭后玩（动作用原形）" }
     ],
-    oneLineRule: "让谁做：lets + 人名（him/her/them）+ 动作穿原样——She lets him play after dinner。",
+    oneLineRule: "让谁做：lets + 人名（him/her/them）+ 动作用原形——She lets him play after dinner。",
     examples: [
       { en: "She lets him play after dinner.", zh: "她让他晚饭后玩。" },
       { en: "She doesn't let him stay up late.", zh: "她不让他熬夜。" },
@@ -20334,7 +20343,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She lets him to play after dinner.",
         wrongMark: "to",
         correct: "She lets him play after dinner.",
-        whyZh: "家族不认 to：lets him 【play】——不垫板（第 74 课的老规矩）。"
+        whyZh: "家族不认 to：lets him 【play】——不带 to（第 74 课的老规矩）。"
       },
       {
         wrong: "She let him play after dinner.",
@@ -20346,14 +20355,14 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She lets him plays after dinner.",
         wrongMark: "plays",
         correct: "She lets him play after dinner.",
-        whyZh: "后面穿原样：lets him 【play】——-s 只站一个位子。"
+        whyZh: "后面用原形：lets him 【play】——-s 只站一个位子。"
       },
       {
         wrong: "She doesn't let him stay up late.",
         wrongMark: null,
         correct: "She lets him play after dinner.",
         bothRight: true,
-        whyZh: "两句都对——同一课两件事：让玩、但不让熬夜；doesn't 后面照样穿原样。"
+        whyZh: "两句都对——同一课两件事：让玩、但不让熬夜；doesn't 后面照样用原形。"
       },
       {
         wrong: "Let me help you.",
@@ -20371,9 +20380,9 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "She lets him play after dinner.", zh: "她让他晚饭后玩。", noteZh: "lets + 人 + 动作穿原样。" },
-      { label: "否定", en: "She doesn't let him play after dinner.", zh: "她不许他晚饭后玩。", noteZh: "帮手替它干活，let 穿原样。" },
-      { label: "疑问", en: "Does she let him play after dinner?", zh: "她让他晚饭后玩吗？", noteZh: "Does 站句首，let 穿原样。" }
+      { label: "肯定", en: "She lets him play after dinner.", zh: "她让他晚饭后玩。", noteZh: "lets + 人 + 动作用原形。" },
+      { label: "否定", en: "She doesn't let him play after dinner.", zh: "她不许他晚饭后玩。", noteZh: "帮手替它干活，let 用原形。" },
+      { label: "疑问", en: "Does she let him play after dinner?", zh: "她让他晚饭后玩吗？", noteZh: "Does 站句首，let 用原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说她让他玩", en: "She lets him play after dinner.", zh: "她让他晚饭后玩。" },
@@ -20384,17 +20393,17 @@ export const grammarLessons: GrammarLesson[] = [
       title: "换人不换规矩",
       paragraphs: [
         "第 103 课是 My mom makes me（妈妈让我）、第 105 课是 doesn't let me（不让我）——前面跟着的一直是「我」。今天换个人：让他、让她、让他们。",
-        "换人只换中间那个词：lets me → lets him／lets her／lets them。后面的动作照样穿原样——lets him play，不垫 to、不加 -s。",
-        "第 74 课的 Let me help you. 是「我请缨」（我自己开口要帮忙）；今天的 She lets him play. 是「她放手」（她点头让他去）。两张脸长得像，说话的人不一样。",
-        "顺带一句认读：She doesn't let him stay up late.（她不让他熬夜）——这是同一个 let 的否定版，看见认识就行。"
+        "换人只换中间那个词：lets me → lets him／lets her／lets them。后面的动作照样用原形——lets him play，不垫 to、不加 -s。",
+        "第 74 课的 Let me help you. 是「我请缨」（我自己开口要帮忙）；今天的 She lets him play. 是「她放手」（她点头让他去）。两种用法长得很像，说话的人不一样。",
+        "顺带一句认读：She doesn't let him stay up late.（她不让他熬夜）——这是同一个 let 的否定句，看见认识就行。"
       ]
     },
     summary: {
-      rule: "让谁做：lets + 人名（him / her / them）+ 动作穿原样——She lets him play after dinner。",
+      rule: "让谁做：lets + 人名（him / her / them）+ 动作用原形——She lets him play after dinner。",
       points: [
         "She lets him play after dinner. —— 换人不换规矩",
-        "She lets him to play ❌ / plays ❌ —— 不垫板、后面穿原样",
-        "Let me help you.（第 74 课，我请缨）／lets him play（今天，她放手）—— 两张脸"
+        "She lets him to play ❌ / plays ❌ —— 不带 to、后面用原形",
+        "Let me help you.（第 74 课，我请缨）／lets him play（今天，她放手）—— 两种用法"
       ]
     },
     guided: [
@@ -20428,7 +20437,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["She", "lets", "him", "plays", "after", "dinner."],
         wrongToken: "plays",
         answer: "plays",
-        correctionZh: "后面穿原样：lets him 【play】。",
+        correctionZh: "后面用原形：lets him 【play】。",
         explain: "-s 只站一个位子——前面 lets 已经用过了。"
       },
       {
@@ -20442,7 +20451,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换人（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「She lets him play after dinner.」把 him 换成 them，别的怎么变？",
+        promptZh: "句型转换：「She lets him play after dinner.」把 him 换成 them，别的怎么变？",
         replaceBase: "She lets him play after dinner.",
         replaceTarget: "把 him 换成 them（让他们）",
         options: ["She lets them play after dinner.", "She let them play after dinner.", "She lets they play after dinner."],
@@ -20483,7 +20492,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "弟弟把碗一推抬头问，妈妈点头补了句「别熬夜」。凭记忆，写出你那句英文。",
       intentZh: "她让他晚饭后玩。",
       answer: "She lets him play after dinner.",
-      noteZh: "lets + him + 动作穿原样——换人不换规矩。"
+      noteZh: "lets + him + 动作用原形——换人不换规矩。"
     },
     huntCaseIds: ["hunt-let-him-play"]
   },
@@ -20491,7 +20500,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-107-have-him",
     number: 107,
     title: "老师让我来一趟",
-    grammarLabel: "让我做 · had + 人名 + 动作穿原样",
+    grammarLabel: "让我做 · had + 人名 + 动作用原形",
     episode: "小美的一天 一百零七",
     scene: "campus",
     cover: cover107,
@@ -20502,9 +20511,9 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "The teacher had me come early.",
     blocks: [
       { text: "The teacher had me", role: "老师让我（请托）" },
-      { text: "come early", role: "早点来（动作穿原样）" }
+      { text: "come early", role: "早点来（动作用原形）" }
     ],
-    oneLineRule: "说「让我做」（分内的事）：had + 谁 + 动作穿原样——The teacher had me come early。",
+    oneLineRule: "说「让我做」（分内的事）：had + 谁 + 动作用原形——The teacher had me come early。",
     examples: [
       { en: "The teacher had me come early.", zh: "老师让我早点来。" },
       { en: "My dad had me wash the car.", zh: "爸爸让我洗车。" },
@@ -20521,33 +20530,33 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "The teacher had me to come early.",
         wrongMark: "to",
         correct: "The teacher had me come early.",
-        whyZh: "家族不认 to：had me 【come】——不垫板（第 103 课的老规矩）。"
+        whyZh: "家族不认 to：had me 【come】——不带 to（第 103 课的老规矩）。"
       },
       {
         wrong: "The teacher has me come early.",
         wrongMark: "has",
         correct: "The teacher had me come early.",
-        whyZh: "说今天早上已经发生的事，要用昨天版：has → 【had】。"
+        whyZh: "说今天早上已经发生的事，要用过去式：has → 【had】。"
       },
       {
         wrong: "The teacher had me came early.",
         wrongMark: "came",
         correct: "The teacher had me come early.",
-        whyZh: "后面穿原样：had me 【come】——换版本只换前面那一个词。"
+        whyZh: "后面用原形：had me 【come】——换版本只换前面那一个词。"
       },
       {
         wrong: "The teacher had me clean the blackboard.",
         wrongMark: null,
         correct: "The teacher had me come early.",
         bothRight: true,
-        whyZh: "两句都对——换件事（擦黑板）：规矩一样，had me + 动作穿原样。"
+        whyZh: "两句都对——换件事（擦黑板）：规矩一样，had me + 动作用原形。"
       },
       {
         wrong: "I have to get up early.",
         wrongMark: null,
         correct: "The teacher had me come early.",
         bothRight: true,
-        whyZh: "两句都对——第 16 课那个 have 是「不得不」（我自己扛着）；今天这个 had 是「让我做」（别人派给我）：同一个 have 两张脸。"
+        whyZh: "两句都对——第 16 课那个 have 是「不得不」（我自己扛着）；今天这个 had 是「让我做」（别人派给我）：同一个 have 两种用法。"
       },
       {
         wrong: "My mom makes me do my homework.",
@@ -20558,9 +20567,9 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "The teacher had me come early.", zh: "老师让我早点来。", noteZh: "had + 谁 + 动作穿原样。" },
-      { label: "否定", en: "The teacher didn't have me come early.", zh: "老师没让我早点来。", noteZh: "帮手 didn't 上场后，have 穿原样。" },
-      { label: "疑问", en: "Did the teacher have you come early?", zh: "老师让你早点来吗？", noteZh: "Did 站句首，have 穿原样。" }
+      { label: "肯定", en: "The teacher had me come early.", zh: "老师让我早点来。", noteZh: "had + 谁 + 动作用原形。" },
+      { label: "否定", en: "The teacher didn't have me come early.", zh: "老师没让我早点来。", noteZh: "帮手 didn't 上场后，have 用原形。" },
+      { label: "疑问", en: "Did the teacher have you come early?", zh: "老师让你早点来吗？", noteZh: "Did 站句首，have 用原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说爸爸让我洗车", en: "My dad had me wash the car.", zh: "爸爸让我洗车。" },
@@ -20572,16 +20581,16 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 16 课你见过 I have to get up early.（我不得不早起）——那个 have to 是「我自己扛着」：外面有情况，不得不做。今天这个 have 换了个身份：The teacher had me come early.——是「别人派给我」。",
         "同样是 have，脸不一样，看后面接什么：后面跟着 to（have to），是「不得不」；后面跟着「谁 + 动作」（had me come），是「让我做」。",
-        "它是家族第三个成员：makes（推着做，第 103 课）、let（放开做，第 105 课）、had（分内的事请你做，今天）。规矩还是那一条——动作穿原样、不垫板。",
-        "说今天早上已经过去的事用 had，跟 made 的换法一样是昨天版。要注意的是：后面那个动作不跟着换，had me 【come】就行。"
+        "它是家族第三个成员：makes（推着做，第 103 课）、let（放开做，第 105 课）、had（分内的事请你做，今天）。规矩还是那一条——动作用原形、不带 to。",
+        "说今天早上已经过去的事用 had，跟 made 的换法一样是过去式。要注意的是：后面那个动作不跟着换，had me 【come】就行。"
       ]
     },
     summary: {
-      rule: "说「让我做」（分内的事）：had + 谁 + 动作穿原样（The teacher had me come early）。",
+      rule: "说「让我做」（分内的事）：had + 谁 + 动作用原形（The teacher had me come early）。",
       points: [
         "The teacher had me come early. —— 家族第三名 had",
-        "had me to come ❌ / had me came ❌ —— 不垫板、后面穿原样",
-        "I have to get up early.（第 16 课「不得不」）／had me come（今天「让我做」）—— 同一个 have 两张脸"
+        "had me to come ❌ / had me came ❌ —— 不带 to、后面用原形",
+        "I have to get up early.（第 16 课「不得不」）／had me come（今天「让我做」）—— 同一个 have 两种用法"
       ]
     },
     guided: [
@@ -20592,7 +20601,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "early.",
         options: ["me come", "me to come", "me came"],
         answer: "me come",
-        explain: "had + 谁 + 动作穿原样：had me come。"
+        explain: "had + 谁 + 动作用原形：had me come。"
       },
       {
         kind: "arrange",
@@ -20615,7 +20624,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["The", "teacher", "had", "me", "came", "early."],
         wrongToken: "came",
         answer: "came",
-        correctionZh: "后面穿原样：had me 【come】。",
+        correctionZh: "后面用原形：had me 【come】。",
         explain: "换版本只换前面那一个词。"
       },
       {
@@ -20629,7 +20638,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换主角（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「The teacher had me come early.」把 me 换成 him，别的怎么变？",
+        promptZh: "句型转换：「The teacher had me come early.」把 me 换成 him，别的怎么变？",
         replaceBase: "The teacher had me come early.",
         replaceTarget: "把 me 换成 him（让他）",
         options: ["The teacher had him come early.", "The teacher had he come early.", "The teacher had him came early."],
@@ -20675,7 +20684,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "同桌跟你捎了个话——老师要找你，你问了句「上课前？」。凭记忆，写出你那句英文。",
       intentZh: "老师让我早点来。",
       answer: "The teacher had me come early.",
-      noteZh: "had + 谁 + 动作穿原样——不垫板。"
+      noteZh: "had + 谁 + 动作用原形——不带 to。"
     },
     huntCaseIds: ["hunt-teacher-had-me"]
   },
@@ -20683,7 +20692,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-108-got-him-to",
     number: 108,
     title: "我说服了他一起去",
-    grammarLabel: "费了口舌请动 · got him to + 垫一块垫板",
+    grammarLabel: "费了口舌请动 · got him to + 加一个 to",
     episode: "小美的一天 一百零八",
     scene: "city",
     cover: cover108,
@@ -20696,11 +20705,11 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "I got him", role: "我说服了他（费了口舌）" },
       { text: "to go with me", role: "一起去（这里要垫一块）" }
     ],
-    oneLineRule: "说「说服他做」：got him to + 动作——家族里只有 get 垫一块小垫板：I got him to go with me。",
+    oneLineRule: "说「说服他做」：got him to + 动作——家族里只有 get 加一个 to：I got him to go with me。",
     examples: [
       { en: "I got him to go with me.", zh: "我说服了他一起去。" },
       { en: "She got me to wait.", zh: "她让我等了（她说动了我就等）。" },
-      { en: "Let me help you.", zh: "让我来帮你。（第 74 课——不垫板的老规矩）" },
+      { en: "Let me help you.", zh: "让我来帮你。（第 74 课——不带 to 的老规矩）" },
       { en: "I want to travel.", zh: "我想去旅行。（第 15 课）" }
     ],
     dialogue: [
@@ -20713,33 +20722,33 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I got him go with me.",
         wrongMark: "go",
         correct: "I got him to go with me.",
-        whyZh: "这一家就 get 垫垫板：got him 【to go】——前面几课练的都是不垫，到它这可得垫。"
+        whyZh: "这一家就 get 要加 to：got him 【to go】——前面几课练的都是不垫，到它这可得垫。"
       },
       {
         wrong: "I got him going with me.",
         wrongMark: "going",
         correct: "I got him to go with me.",
-        whyZh: "垫板后面穿原样：got him to 【go】——别当成 -ing 的玩法。"
+        whyZh: "to 后面用原形：got him to 【go】——别当成 -ing 的玩法。"
       },
       {
         wrong: "Yesterday I get him to go with me.",
         wrongMark: "get",
         correct: "Yesterday I got him to go with me.",
-        whyZh: "句首说了昨天，动词就得换昨天版：Yesterday I 【got】 him to go with me——「每次」才用 get。"
+        whyZh: "句首说了昨天，动词就得换过去式：Yesterday I 【got】 him to go with me——「每次」才用 get。"
       },
       {
         wrong: "My mom makes me do my homework.",
         wrongMark: null,
         correct: "I got him to go with me.",
         bothRight: true,
-        whyZh: "两句都对——四张脸排一行：makes／lets／had 都不垫板，只有 got 这句垫着 to（第 103/105/107 课与今天）。"
+        whyZh: "两句都对——四张脸排一行：makes／lets／had 都不带 to，只有 got 这句垫着 to（第 103/105/107 课与今天）。"
       },
       {
         wrong: "Let me help you.",
         wrongMark: null,
         correct: "I got him to go with me.",
         bothRight: true,
-        whyZh: "两句都对——第 74 课那句是「不垫板」的老规矩，今天这一句正是那个例外。"
+        whyZh: "两句都对——第 74 课那句是「不带 to」的老规矩，今天这一句正是那个例外。"
       },
       {
         wrong: "I want to travel.",
@@ -20750,9 +20759,9 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "I got him to go with me.", zh: "我说服了他一起去。", noteZh: "got him to + 动作穿原样。" },
-      { label: "否定", en: "I didn't get him to go with me.", zh: "我没说动他一起去。", noteZh: "帮手 didn't 上场后，get 穿原样。" },
-      { label: "疑问", en: "Did you get him to go with you?", zh: "你说动他一起去了吗？", noteZh: "Did 站句首，get 穿原样。" }
+      { label: "肯定", en: "I got him to go with me.", zh: "我说服了他一起去。", noteZh: "got him to + 动作用原形。" },
+      { label: "否定", en: "I didn't get him to go with me.", zh: "我没说动他一起去。", noteZh: "帮手 didn't 上场后，get 用原形。" },
+      { label: "疑问", en: "Did you get him to go with you?", zh: "你说动他一起去了吗？", noteZh: "Did 站句首，get 用原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说她让我等了（她说动了我）", en: "She got me to wait.", zh: "她让我等了。" },
@@ -20762,14 +20771,14 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "家族里唯一的例外",
       paragraphs: [
-        "前面五课一路练的都是「不垫板」：makes me do、let me go、lets him play、had me come——动作紧跟着走，中间什么也不加。今天这位新成员 get 不一样：它后面要垫一块小垫板 to。",
+        "前面五课一路练的都是「不带 to」：makes me do、let me go、lets him play、had me come——动作紧跟着走，中间什么也不加。今天这位新成员 get 不一样：它后面要加一个 to to。",
         "为什么？因为这家人说话的重点不同。makes 是「推着做」、let 是「放开做」、had 是「分内的事请你做」——话说到就到位。而 get 是「费了口舌把你说动」：那个 to 就是那段口舌，垫在中间。",
-        "用法跟前面一样稳：说已经说过的那次用昨天版 got（I got him to go），想说不成立就请帮手 didn't（I didn't get him to go）。变的只有 get 自己，垫板后面照样穿原样：to 【go】。",
+        "用法跟前面一样稳：说已经说过的那次用过去式 got（I got him to go），想说不成立就请帮手 didn't（I didn't get him to go）。变的只有 get 自己，to 后面照样用原形：to 【go】。",
         "把这一章的四个说法排一行——My mom makes me do my homework. / She lets him play after dinner. / The teacher had me come early. / I got him to go with me.——前面三句不垫，最后一句垫。这就是全章的一条线。"
       ]
     },
     summary: {
-      rule: "说「说服他做」：got him to + 动作——家族里只有 get 垫一块小垫板（I got him to go with me）。",
+      rule: "说「说服他做」：got him to + 动作——家族里只有 get 加一个 to（I got him to go with me）。",
       points: [
         "I got him to go with me. —— 家族第四名 get，唯一垫 to 的",
         "I got him go ❌ —— 前面练的都是不垫，到它这别忘了垫",
@@ -20784,7 +20793,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "with me.",
         options: ["to go", "go", "going"],
         answer: "to go",
-        explain: "家族里只有 get 垫板：got him 【to go】。"
+        explain: "家族里只有 get to：got him 【to go】。"
       },
       {
         kind: "arrange",
@@ -20799,7 +20808,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 74 课的老规矩：让我来帮你。",
         tokens: ["Let", "me", "help", "you."],
         answer: "Let me help you.",
-        explain: "复现第 74 课：不垫板的老规矩——今天要看那个例外。"
+        explain: "复现第 74 课：不带 to 的老规矩——今天要看那个例外。"
       },
       {
         kind: "spot",
@@ -20807,8 +20816,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "got", "him", "go", "with", "me."],
         wrongToken: "go",
         answer: "go",
-        correctionZh: "这一家就 get 垫板：got him 【to go】。",
-        explain: "前面几课练不垫板，到 get 这要垫。"
+        correctionZh: "这一家就 get 加 to：got him 【to go】。",
+        explain: "前面几课练不带 to，到 get 这要垫。"
       },
       {
         // R8 跨课复现：第 15 课（to 这块老垫板）
@@ -20819,14 +20828,14 @@ export const grammarLessons: GrammarLesson[] = [
         explain: "复现第 15 课：want to 那块 to——今天 got him 后面请的是同一位。"
       },
       {
-        // R9 变形/替换：换昨天版与今天版（构造迁移，复用 choose 判题）
+        // R9 变形/替换：换过去式与现在式（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I got him to go with me.」改成说每次都这么干，动词要怎么变？",
+        promptZh: "句型转换：「I got him to go with me.」改成说每次都这么干，动词要怎么变？",
         replaceBase: "I got him to go with me.",
         replaceTarget: "把「那次」改成「每次都」",
         options: ["I get him to go with me.", "I got him to go with me.", "I get him to going with me."],
         answer: "I get him to go with me.",
-        explain: "每次都这样就用今天版 get——后面照样 to + 穿原样。"
+        explain: "每次都这样就用现在式 get——后面照样 to + 用原形。"
       }
     ],
     practice: [
@@ -20867,7 +20876,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "朋友惊讶他居然出来了，问你「怎么说动的」。凭记忆，写出你那句英文。",
       intentZh: "我说服了他一起去。",
       answer: "I got him to go with me.",
-      noteZh: "家族里唯一的例外：got him to + 动作穿原样。"
+      noteZh: "家族里唯一的例外：got him to + 动作用原形。"
     },
     huntCaseIds: ["hunt-got-him-to"]
   },
@@ -20905,13 +20914,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I waited until the rain stops.",
         wrongMark: "stops",
         correct: "I waited until the rain stopped.",
-        whyZh: "前面用了昨天版 waited，后面也得跟昨天版：until the rain 【stopped】。"
+        whyZh: "前面用了过去式 waited，后面也得跟过去式：until the rain 【stopped】。"
       },
       {
         wrong: "I waited until the rain will stop.",
         wrongMark: "will",
         correct: "I waited until the rain stopped.",
-        whyZh: "「等到…为止」后面不请 will——用昨天版 【stopped】。"
+        whyZh: "「等到…为止」后面不请 will——用过去式 【stopped】。"
       },
       {
         wrong: "I waited by the rain stopped.",
@@ -20942,9 +20951,9 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "I waited until the rain stopped.", zh: "我一直等到雨停。", noteZh: "until + 那道线，两边都用昨天版。" },
-      { label: "否定", en: "I didn't wait until the rain stopped.", zh: "我没等到雨停。", noteZh: "帮手 didn't 上场后，wait 穿原样。" },
-      { label: "疑问", en: "Did you wait until the rain stopped?", zh: "你等到雨停了吗？", noteZh: "Did 站句首，wait 穿原样。" }
+      { label: "肯定", en: "I waited until the rain stopped.", zh: "我一直等到雨停。", noteZh: "until + 那道线，两边都用过去式。" },
+      { label: "否定", en: "I didn't wait until the rain stopped.", zh: "我没等到雨停。", noteZh: "帮手 didn't 上场后，wait 用原形。" },
+      { label: "疑问", en: "Did you wait until the rain stopped?", zh: "你等到雨停了吗？", noteZh: "Did 站句首，wait 用原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说我们等到电影结束", en: "We waited until the movie ended.", zh: "我们一直等到电影结束。" },
@@ -20956,15 +20965,15 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 90 课 after、第 91 课 before、第 92 课 when——它们都是「领一整句」的老成员。今天 until 入伙，是第四名：I waited until the rain stopped.（我一直等到雨停）。",
         "until 的意思是一道线：前面的事情一直做，那道线一到就停。所以前半截是「一直等」（waited），后半截是那道线（the rain stopped）。",
-        "两个容易塌的地方。第一，两边都得用昨天版：前面 waited、后面也要 stopped——别一半今天一半昨天。第二，后面别请 will：「等到雨停」中文里藏着个「会」，直译成 will 就多了——until the rain stopped 就行。",
+        "两个容易塌的地方。第一，两边都得用过去式：前面 waited、后面也要 stopped——别一半今天一半昨天。第二，后面别请 will：「等到雨停」中文里藏着个「会」，直译成 will 就多了——until the rain stopped 就行。",
         "还有个小邻居 by 容易混：by 是「到某个点之前把事做完」（by Friday 周五前完成），不是「一直等到」。等的那件事没做完、一直守着，就用 until。"
       ]
     },
     summary: {
-      rule: "说「一直等到…为止」：until + 那道线（I waited until the rain stopped）——两边都用昨天版。",
+      rule: "说「一直等到…为止」：until + 那道线（I waited until the rain stopped）——两边都用过去式。",
       points: [
         "I waited until the rain stopped. —— 前面一直做，那道线一到就停",
-        "until the rain stops ❌ / will stop ❌ —— 两边都得用昨天版",
+        "until the rain stops ❌ / will stop ❌ —— 两边都得用过去式",
         "until（等到）／by（到某点前做完）—— 别混：一直守着用 until"
       ]
     },
@@ -20976,7 +20985,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: ".",
         options: ["until the rain stopped", "until the rain stops", "until the rain will stop"],
         answer: "until the rain stopped",
-        explain: "两边都用昨天版：waited … stopped。"
+        explain: "两边都用过去式：waited … stopped。"
       },
       {
         kind: "arrange",
@@ -20999,8 +21008,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "waited", "until", "the", "rain", "stops."],
         wrongToken: "stops.",
         answer: "stops.",
-        correctionZh: "两边都用昨天版：until the rain 【stopped】。",
-        explain: "前面 waited，后面也要过去版。"
+        correctionZh: "两边都用过去式：until the rain 【stopped】。",
+        explain: "前面 waited，后面也要过去式。"
       },
       {
         // R8 跨课复现：第 97 课（when + 过去进行）
@@ -21013,12 +21022,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换那道线（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I waited until the rain stopped.」把雨停换成电影结束，怎么变？",
+        promptZh: "句型转换：「I waited until the rain stopped.」把雨停换成电影结束，怎么变？",
         replaceBase: "I waited until the rain stopped.",
         replaceTarget: "把 the rain stopped 换成 the movie ended",
         options: ["I waited until the movie ended.", "I waited until the movie ends.", "I waited until the movie will end."],
         answer: "I waited until the movie ended.",
-        explain: "换那道线，规矩不变：两边都用昨天版——ended。"
+        explain: "换那道线，规矩不变：两边都用过去式——ended。"
       }
     ],
     practice: [
@@ -21059,7 +21068,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "同学看你头发还湿着，问你「怎么不早点来」。凭记忆，写出你那句英文。",
       intentZh: "我一直等到雨停。",
       answer: "I waited until the rain stopped.",
-      noteZh: "until + 那道线——两边都用昨天版。"
+      noteZh: "until + 那道线——两边都用过去式。"
     },
     huntCaseIds: ["hunt-until-rain"]
   },
@@ -21078,9 +21087,9 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "My mom makes me do my homework.",
     blocks: [
       { text: "My mom makes me", role: "妈妈让我（推着做）" },
-      { text: "do my homework", role: "写作业（动作穿原样）" }
+      { text: "do my homework", role: "写作业（动作用原形）" }
     ],
-    oneLineRule: "这一章的四个说法排一行：makes 推着做、lets 放开做、had 分内事、got 垫着小垫板——谁让谁做什么，一句话说清楚。",
+    oneLineRule: "这一章的四个说法排一行：makes 推着做、lets 放开做、had 分内事、got 垫着 to——谁让谁做什么，一句话说清楚。",
     examples: [
       { en: "My mom makes me do my homework.", zh: "妈妈让我先写作业。（第 103 课）" },
       { en: "She lets him play after dinner.", zh: "她让他晚饭后玩。（第 106 课）" },
@@ -21097,19 +21106,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "My mom makes me to do my homework.",
         wrongMark: "to",
         correct: "My mom makes me do my homework.",
-        whyZh: "第 103 课回流：口令块不垫板——makes me 【do】。"
+        whyZh: "第 103 课回流：口令块不带 to——makes me 【do】。"
       },
       {
         wrong: "She doesn't lets me go.",
         wrongMark: "lets",
         correct: "She doesn't let me go.",
-        whyZh: "第 105 课回流：帮手在，let 穿原样——doesn't 【let】 me go。"
+        whyZh: "第 105 课回流：帮手在，let 用原形——doesn't 【let】 me go。"
       },
       {
         wrong: "I got him go with me.",
         wrongMark: "go",
         correct: "I got him to go with me.",
-        whyZh: "第 108 课回流：这一家就 get 垫板——got him 【to go】。"
+        whyZh: "第 108 课回流：这一家就 get 加 to——got him 【to go】。"
       },
       {
         wrong: "She lets him play after dinner.",
@@ -21123,7 +21132,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "My mom makes me do my homework.",
         bothRight: true,
-        whyZh: "两句都对——第 104 课昨天版 made：同一个说法换个时间。"
+        whyZh: "两句都对——第 104 课过去式 made：同一个说法换个时间。"
       },
       {
         wrong: "I waited until the rain stopped.",
@@ -21135,8 +21144,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "My mom makes me do my homework.", zh: "妈妈让我先写作业。", noteZh: "第 103 课主句——收口课从它开始。" },
-      { label: "否定", en: "She doesn't let him play after dinner.", zh: "她不许他晚饭后玩。", noteZh: "第 106 课否定版——帮手在，let 穿原样。" },
-      { label: "疑问", en: "Did the teacher have you come early?", zh: "老师让你早点来吗？", noteZh: "第 107 课疑问版——Did 站句首。" }
+      { label: "否定", en: "She doesn't let him play after dinner.", zh: "她不许他晚饭后玩。", noteZh: "第 106 课否定句——帮手在，let 用原形。" },
+      { label: "疑问", en: "Did the teacher have you come early?", zh: "老师让你早点来吗？", noteZh: "第 107 课疑问句——Did 站句首。" }
     ],
     sceneSwings: [
       { sceneZh: "说妈妈让我写作业", en: "My mom makes me do my homework.", zh: "妈妈让我先写作业。" },
@@ -21147,17 +21156,17 @@ export const grammarLessons: GrammarLesson[] = [
       title: "四张脸排一行",
       paragraphs: [
         "这一章一共见了四个说法，都是「谁让谁做什么」，各有各的口气。My mom makes me do my homework.——推着做。She lets him play after dinner.——放开做。The teacher had me come early.——分内的事请你做。I got him to go with me.——费了口舌把你说动。",
-        "四句话排一行看，有一条线一眼就看见：前面三句都不垫板（makes me do／lets him play／had me come），只有最后一句垫着一块小垫板（got him to go）。这就是第十六章的那条线。",
-        "再往两边看：往时间上看，昨天的事换昨天版——makes→made、has→had、get→got；往人上看，跟着走的人换了，说法照样稳：me／him／you／them 都行。",
+        "四句话排一行看，有一条线一眼就看见：前面三句都不带 to（makes me do／lets him play／had me come），只有最后一句带着一个 to（got him to go）。这就是第十六章的那条线。",
+        "再往两边看：往时间上看，昨天的事换过去式——makes→made、has→had、get→got；往人上看，跟着走的人换了，说法照样稳：me／him／you／them 都行。",
         "这一路回家和学校的事，你能一串说完了：妈妈让我写作业、她不让我去、她让他玩、老师让我来一趟、我说服了他一起去——最后一直等到雨停。"
       ]
     },
     summary: {
-      rule: "谁让谁做什么：makes 推着做、lets 放开做、had 分内事、got 垫着小垫板——四张脸排一行。",
+      rule: "谁让谁做什么：makes 推着做、lets 放开做、had 分内事、got 垫着 to——四张脸排一行。",
       points: [
-        "My mom makes me do my homework. / She lets him play after dinner. / The teacher had me come early. —— 三句不垫板",
-        "I got him to go with me. —— 只有它垫着一块小垫板",
-        "昨天的事换昨天版：makes→made、has→had、get→got"
+        "My mom makes me do my homework. / She lets him play after dinner. / The teacher had me come early. —— 三句不带 to",
+        "I got him to go with me. —— 只有它带着一个 to",
+        "昨天的事换过去式：makes→made、has→had、get→got"
       ]
     },
     guided: [
@@ -21168,7 +21177,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "my homework.",
         options: ["me do", "me to do", "me does"],
         answer: "me do",
-        explain: "第 103 课那句——makes me do，不垫板。"
+        explain: "第 103 课那句——makes me do，不带 to。"
       },
       {
         kind: "arrange",
@@ -21183,7 +21192,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 109 课学过：我一直等到雨停。",
         tokens: ["I", "waited", "until", "the", "rain", "stopped."],
         answer: "I waited until the rain stopped.",
-        explain: "复现第 109 课：时间侧留一句——两边都用昨天版。"
+        explain: "复现第 109 课：时间侧留一句——两边都用过去式。"
       },
       {
         kind: "spot",
@@ -21191,7 +21200,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["She", "doesn't", "lets", "me", "go."],
         wrongToken: "lets",
         answer: "lets",
-        correctionZh: "帮手在，let 穿原样（第 105 课）：doesn't 【let】 me go。",
+        correctionZh: "帮手在，let 用原形（第 105 课）：doesn't 【let】 me go。",
         explain: "-s 的活儿被帮手接走了。"
       },
       {
@@ -21205,12 +21214,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：四张脸互换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「My mom makes me do my homework.」改成「老师让我早点来」，怎么变？",
+        promptZh: "句型转换：「My mom makes me do my homework.」改成「老师让我早点来」，怎么变？",
         replaceBase: "My mom makes me do my homework.",
         replaceTarget: "把「妈妈让我写作业」换成「老师让我早点来」",
         options: ["The teacher had me come early.", "The teacher had me came early.", "The teacher had me to come early."],
         answer: "The teacher had me come early.",
-        explain: "第 107 课那句：had me come——分内的事，照样不垫板。"
+        explain: "第 107 课那句：had me come——分内的事，照样不带 to。"
       }
     ],
     practice: [
@@ -21262,7 +21271,7 @@ export const grammarLessons: GrammarLesson[] = [
       // 用户照提示只写第一句必然判错，且看不出为什么。这里补齐四句的意图。
       intentZh: "妈妈让我先写作业。她让他晚饭后玩。老师让我早点来。我说服了他一起去。",
       answer: "My mom makes me do my homework. She lets him play after dinner. The teacher had me come early. I got him to go with me.",
-      noteZh: "四张脸排一行：三句不垫板、只有 got 那句垫 to。"
+      noteZh: "四张脸排一行：三句不带 to、只有 got 那句垫 to。"
     },
     huntCaseIds: ["hunt-who-makes-who"]
   },
@@ -21408,7 +21417,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换人（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Grandma's birthday is in May.」把 Grandma 换成 Grandpa，别的怎么变？",
+        promptZh: "句型转换：「Grandma's birthday is in May.」把 Grandma 换成 Grandpa，别的怎么变？",
         replaceBase: "Grandma's birthday is in May.",
         replaceTarget: "把 Grandma 换成 Grandpa",
         options: ["Grandpa's birthday is in May.", "Grandpa birthday is in May.", "of Grandpa birthday is in May."],
@@ -21469,7 +21478,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-112-this-is-mine",
     number: 112,
     title: "这本是我的",
-    grammarLabel: "长版 vs 短版 · mine 自己站，撇号 s 贴东西",
+    grammarLabel: "名词性物主代词 vs 形容词性物主代词 · mine 自己站，撇号 s 贴东西",
     episode: "小美的一天 一百一十二",
     scene: "mansion",
     cover: cover112,
@@ -21480,9 +21489,9 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "This book is mine.",
     blocks: [
       { text: "This book", role: "这本书（东西先出场）" },
-      { text: "is mine", role: "是我的（长版自己站，后面空着）" }
+      { text: "is mine", role: "是我的（名词性物主代词自己站，后面空着）" }
     ],
-    oneLineRule: "东西是谁的，看后面有没有词：后面还跟着东西，用短版 my（my book）或人加撇号 s（my brother's book）；后面空了、句尾收住，用长版 mine。",
+    oneLineRule: "东西是谁的，看后面有没有词：后面还跟着东西，用形容词性物主代词 my（my book）或人加撇号 s（my brother's book）；后面空了、句尾收住，用名词性物主代词 mine。",
     examples: [
       { en: "This book is mine.", zh: "这本书是我的。" },
       { en: "That book is my brother's.", zh: "那本书是我哥哥的。" },
@@ -21499,13 +21508,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "This book is my.",
         wrongMark: "my",
         correct: "This book is mine.",
-        whyZh: "短版不能站句尾：my 是贴在东西前面的小标签（my book）；句尾收住要用长版 【mine】。"
+        whyZh: "形容词性物主代词不能站句尾：my 是贴在东西前面的小标签（my book）；句尾收住要用名词性物主代词 【mine】。"
       },
       {
         wrong: "This is mine book.",
         wrongMark: "mine",
         correct: "This book is mine.",
-        whyZh: "长版后面不能再跟东西：mine 自己就是「我的（东西）」——后面跟了 book 就用短版 my。"
+        whyZh: "名词性物主代词后面不能再跟东西：mine 自己就是「我的（东西）」——后面跟了 book 就用形容词性物主代词 my。"
       },
       {
         wrong: "This book is brother's.",
@@ -21518,7 +21527,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "This book is mine.",
         bothRight: true,
-        whyZh: "两句都对——一句说「我的」（长版 mine），一句说「哥哥的」（人加撇号 s）：两句后面都不跟东西。"
+        whyZh: "两句都对——一句说「我的」（名词性物主代词 mine），一句说「哥哥的」（人加撇号 s）：两句后面都不跟东西。"
       },
       {
         wrong: "This one is mine.",
@@ -21536,7 +21545,7 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "This book is mine.", zh: "这本书是我的。", noteZh: "长版自己站句尾。" },
+      { label: "肯定", en: "This book is mine.", zh: "这本书是我的。", noteZh: "名词性物主代词自己站句尾。" },
       { label: "否定", en: "This book is not mine.", zh: "这本书不是我的。", noteZh: "not 回到 is 后面，mine 不动。" },
       { label: "疑问", en: "Is this book yours?", zh: "这本书是你的吗？", noteZh: "Is 搬句首；「你的（东西）」是 yours，换人不换位。" }
     ],
@@ -21546,20 +21555,20 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问这本书是你的吗", en: "Is this book yours?", zh: "这本书是你的吗？" }
     ],
     deepDive: {
-      title: "短版与长版",
+      title: "形容词性物主代词与名词性物主代词",
       paragraphs: [
         "第 33 课你已经见过这对搭档：my 是贴在名词前面小标签——my umbrella、my book，后面必须跟着东西；mine 自己就能当主角，站句尾——This umbrella is mine.",
-        "今天再看第三位：人加撇号 s。第 111 课说过 Grandma's birthday——撇号 s 贴在东西前面。它也有个长版：后面东西省掉的时候，my brother's 自己就能站句尾——That book is my brother's.",
-        "三个说法排一行看：my book（短版＋东西）、my brother's book（人加撇号 s＋东西）、mine／my brother's（长版，后面空着）。规律只有一条——看后面还有没有东西。",
-        "为什么容易说错？中文说「这本书是我的」，「我的」后面本来就没有东西，直接翻成 my 就错了。英语这时候要请长版出场：This book is mine."
+        "今天再看第三位：人加撇号 s。第 111 课说过 Grandma's birthday——撇号 s 贴在东西前面。它也有个名词性物主代词：后面东西省掉的时候，my brother's 自己就能站句尾——That book is my brother's.",
+        "三个说法排一行看：my book（形容词性物主代词＋东西）、my brother's book（人加撇号 s＋东西）、mine／my brother's（名词性物主代词，后面空着）。规律只有一条——看后面还有没有东西。",
+        "为什么容易说错？中文说「这本书是我的」，「我的」后面本来就没有东西，直接翻成 my 就错了。英语这时候要请名词性物主代词出场：This book is mine."
       ]
     },
     summary: {
-      rule: "东西是谁的，看后面有没有词：后面跟着东西用短版（my book／my brother's book）；后面空了用长版（mine／my brother's）。",
+      rule: "东西是谁的，看后面有没有词：后面跟着东西用形容词性物主代词（my book／my brother's book）；后面空了用名词性物主代词（mine／my brother's）。",
       points: [
-        "This book is mine. —— 句尾收住用长版",
-        "This book is my ❌ —— 短版不能光站句尾",
-        "my（第 33 课）／Grandma's（第 111 课）—— 短版两个；mine／my brother's —— 长版两个"
+        "This book is mine. —— 句尾收住用名词性物主代词",
+        "This book is my ❌ —— 形容词性物主代词不能光站句尾",
+        "my（第 33 课）／Grandma's（第 111 课）—— 形容词性物主代词两个；mine／my brother's —— 名词性物主代词两个"
       ]
     },
     guided: [
@@ -21570,14 +21579,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: ".",
         options: ["is mine", "is my", "is me"],
         answer: "is mine",
-        explain: "句尾收住用长版：is mine。"
+        explain: "句尾收住用名词性物主代词：is mine。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：这本书是我的。",
         tokens: ["This", "book", "is", "mine."],
         answer: "This book is mine.",
-        explain: "东西先出场（This book）＋长版收尾（is mine）。"
+        explain: "东西先出场（This book）＋名词性物主代词收尾（is mine）。"
       },
       {
         // R8 跨课复现：第 33 课（长版老熟人）
@@ -21585,7 +21594,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 33 课学过：这把是我的。",
         tokens: ["This", "one", "is", "mine."],
         answer: "This one is mine.",
-        explain: "复现第 33 课：长版 mine——今天看它跟人加撇号 s 怎么分家。"
+        explain: "复现第 33 课：名词性物主代词 mine——今天看它跟人加撇号 s 怎么分家。"
       },
       {
         kind: "spot",
@@ -21593,7 +21602,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["This", "book", "is", "my."],
         wrongToken: "my.",
         answer: "my.",
-        correctionZh: "短版不能站句尾：句尾收住用长版——is 【mine】。",
+        correctionZh: "形容词性物主代词不能站句尾：句尾收住用名词性物主代词——is 【mine】。",
         explain: "my 后面得跟着东西。"
       },
       {
@@ -21607,12 +21616,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换人（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「This book is mine.」改成问对方「这本书是你的吗」，怎么说？",
+        promptZh: "句型转换：「This book is mine.」改成问对方「这本书是你的吗」，怎么说？",
         replaceBase: "This book is mine.",
         replaceTarget: "把 mine 换成「你的」，并变成问句",
         options: ["Is this book yours?", "Is this book your?", "Is this book you?"],
         answer: "Is this book yours?",
-        explain: "「你的（东西）」是 yours——长版换人不换位。"
+        explain: "「你的（东西）」是 yours——名词性物主代词换人不换位。"
       }
     ],
     practice: [
@@ -21660,7 +21669,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "茶几上两本书长得一样，哥哥问你哪本是你的。凭记忆，写出你那句英文。",
       intentZh: "这本是我的。",
       answer: "This book is mine.",
-      noteZh: "句尾收住用长版——mine。"
+      noteZh: "句尾收住用名词性物主代词——mine。"
     },
     huntCaseIds: ["hunt-whose-book-mine"]
   },
@@ -21668,7 +21677,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-113-bored-boring",
     number: 113,
     title: "我很无聊",
-    grammarLabel: "感到版 vs 让人版 · -ed 说感到、-ing 说它让人",
+    grammarLabel: "-ed 形容词 vs -ing 形容词 · -ed 说感到、-ing 说它让人",
     episode: "小美的一天 一百一十三",
     scene: "mansion",
     cover: cover113,
@@ -21679,9 +21688,9 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "I am bored.",
     blocks: [
       { text: "I am", role: "我（搭档不能丢——第 1 课老规矩）" },
-      { text: "bored", role: "没劲（感到版：我自己感到）" }
+      { text: "bored", role: "没劲（-ed 形容词：我自己感到）" }
     ],
-    oneLineRule: "感到版说「我的感受」：I am bored（我没劲）；让人版说「它让我这样」：The book is boring（这本书没劲）——同一个中文「无聊」，英语分两张脸，看是谁没劲。",
+    oneLineRule: "-ed 形容词说「我的感受」：I am bored（我没劲）；-ing 形容词说「它让我这样」：The book is boring（这本书没劲）——同一个中文「无聊」，英语分两种用法，看是谁没劲。",
     examples: [
       { en: "I am bored.", zh: "我很无聊（我没劲）。" },
       { en: "The book is boring.", zh: "这本书很无聊（它让人没劲）。" },
@@ -21698,7 +21707,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am boring.",
         wrongMark: "boring",
         correct: "I am bored.",
-        whyZh: "说自己没劲要用『感到版』：I am 【bored】。说成 boring 就变成「我很没意思」——那是说别人跟我在一起会觉得没劲。"
+        whyZh: "说自己没劲要用『-ed 形容词』：I am 【bored】。说成 boring 就变成「我很没意思」——那是说别人跟我在一起会觉得没劲。"
       },
       {
         wrong: "I bored.",
@@ -21710,32 +21719,32 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "The book is bored.",
         wrongMark: "bored",
         correct: "The book is boring.",
-        whyZh: "书不会「感到」——只有人会。说东西让人没劲，用『让人版』：The book is 【boring】。"
+        whyZh: "书不会「感到」——只有人会。说东西让人没劲，用『-ing 形容词』：The book is 【boring】。"
       },
       {
         wrong: "The book is boring.",
         wrongMark: null,
         correct: "I am bored.",
         bothRight: true,
-        whyZh: "两句都对——同一个场景的两张脸：一句说「我没劲」（感到版），一句说「它让我没劲」（让人版）。"
+        whyZh: "两句都对——同一个场景的两种用法：一句说「我没劲」（-ed 形容词），一句说「它让我没劲」（-ing 形容词）。"
       },
       {
         wrong: "I am happy.",
         wrongMark: null,
         correct: "I am bored.",
         bothRight: true,
-        whyZh: "两句都对——第 1 课说「be 后面站的是我怎么样」；今天这个感到版，也是同一排里的一个。"
+        whyZh: "两句都对——第 1 课说「be 后面站的是我怎么样」；今天这个 -ed 形容词，也是同一排里的一个。"
       },
       {
         wrong: "She was excited about it.",
         wrongMark: null,
         correct: "I am bored.",
         bothRight: true,
-        whyZh: "两句都对——你在案件里见过 excited 这张脸，今天课上正面认领：感到版就是它。"
+        whyZh: "两句都对——你在案件里见过 excited 这张脸，今天课上正面认领：-ed 形容词就是它。"
       }
     ],
     variants: [
-      { label: "肯定", en: "I am bored.", zh: "我很无聊。", noteZh: "感到版——我自己没劲。" },
+      { label: "肯定", en: "I am bored.", zh: "我很无聊。", noteZh: "-ed 形容词——我自己没劲。" },
       { label: "否定", en: "I am not bored.", zh: "我不无聊。", noteZh: "not 跟 am 走。" },
       { label: "疑问", en: "Are you bored?", zh: "你很无聊吗？", noteZh: "Are 搬句首。" }
     ],
@@ -21747,19 +21756,19 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "一个中文词，两张英文脸",
       paragraphs: [
-        "中文说「无聊」，一个词管两头：「我很无聊」和「这本书很无聊」。可这两句的意思不一样——第一句是我没劲，第二句是它让我没劲。英语分两张脸说。",
-        "感到版带 -ed：I am bored.（我没劲）She was excited.（她很兴奋）He was tired.（他累了）——说的都是「人心里什么感觉」。这个版本只给人和动物用，因为只有它们有感觉。",
-        "让人版带 -ing：The book is boring.（这本书没劲）That noise is annoying.（那声音烦人）It is interesting.（它有意思）——说的是「这东西让人怎么样」。",
-        "分辨的办法很简单：看是谁没劲。人没劲用感到版；东西让人没劲，用让人版。所以「我很无聊」永远不说 I am boring——那等于跟人自我介绍说「我这人挺没意思」。",
+        "中文说「无聊」，一个词管两头：「我很无聊」和「这本书很无聊」。可这两句的意思不一样——第一句是我没劲，第二句是它让我没劲。英语分两种用法说。",
+        "-ed 形容词：I am bored.（我没劲）She was excited.（她很兴奋）He was tired.（他累了）——说的都是「人心里什么感觉」。这个版本只给人和动物用，因为只有它们有感觉。",
+        "-ing 形容词：The book is boring.（这本书没劲）That noise is annoying.（那声音烦人）It is interesting.（它有意思）——说的是「这东西让人怎么样」。",
+        "分辨的办法很简单：看是谁没劲。人没劲用 -ed 形容词；东西让人没劲，用 -ing 形容词。所以「我很无聊」永远不说 I am boring——那等于跟人自我介绍说「我这人挺没意思」。",
         "你在案件里已经见过这张脸了：She was excited about it.（她为这事很兴奋）——当时你修的是 excite 忘了穿 -ed 外衣。今天正式认领：-ed 就是「感到」。"
       ]
     },
     summary: {
-      rule: "感到版说「我感到」（I am bored）；让人版说「它让我这样」（The book is boring）——看是谁没劲。",
+      rule: "-ed 形容词说「我感到」（I am bored）；-ing 形容词说「它让我这样」（The book is boring）——看是谁没劲。",
       points: [
-        "I am bored. —— 人没劲，用感到版",
+        "I am bored. —— 人没劲，用 -ed 形容词",
         "I am boring ❌ —— 那是「我很没意思」",
-        "The book is boring. —— 东西让人没劲，用让人版"
+        "The book is boring. —— 东西让人没劲，用 -ing 形容词"
       ]
     },
     guided: [
@@ -21770,14 +21779,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: ".",
         options: ["bored", "boring", "bore"],
         answer: "bored",
-        explain: "我自己没劲——用感到版 bored。"
+        explain: "我自己没劲——用 -ed 形容词 bored。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：我很无聊。",
         tokens: ["I", "am", "bored."],
         answer: "I am bored.",
-        explain: "搭档（I am）＋感到版（bored）。"
+        explain: "搭档（I am）＋-ed 形容词（bored）。"
       },
       {
         // R8 跨课复现：第 1 课（be 搭档）
@@ -21793,7 +21802,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "am", "boring."],
         wrongToken: "boring.",
         answer: "boring.",
-        correctionZh: "我自己没劲要用感到版：I am 【bored】。",
+        correctionZh: "我自己没劲要用 -ed 形容词：I am 【bored】。",
         explain: "boring 是「让人没劲」——说成它就成了「我这人没意思」。"
       },
       {
@@ -21802,17 +21811,17 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 19 课学过：我又忙又开心。",
         tokens: ["I", "was", "busy", "and", "happy."],
         answer: "I was busy and happy.",
-        explain: "复现第 19 课：昨天的事用 was——感到版照样站它后面。"
+        explain: "复现第 19 课：昨天的事用 was——-ed 形容词照样站它后面。"
       },
       {
         // R9 变形/替换：换主角（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am bored.」改成说这本书——说法怎么变？",
+        promptZh: "句型转换：「I am bored.」改成说这本书——说法怎么变？",
         replaceBase: "I am bored.",
         replaceTarget: "把 I 换成 The book",
         options: ["The book is boring.", "The book is bored.", "The book boring."],
         answer: "The book is boring.",
-        explain: "书不会感到——它让人没劲，用让人版：The book is boring。"
+        explain: "书不会感到——它让人没劲，用 -ing 形容词：The book is boring。"
       }
     ],
     practice: [
@@ -21860,7 +21869,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "妈妈把一本好看的书推给你，可你趴在沙发上没劲。凭记忆，写出你那句英文。",
       intentZh: "我很无聊。",
       answer: "I am bored.",
-      noteZh: "人没劲用感到版——bored。"
+      noteZh: "人没劲用 -ed 形容词——bored。"
     },
     huntCaseIds: ["hunt-bored-boring"]
   },
@@ -21878,7 +21887,7 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "还有几个苹果。",
     targetSentence: "There are a few apples.",
     blocks: [
-      { text: "There are", role: "有（好几个的版本——第 26 课）" },
+      { text: "There are", role: "有（复数的形式——第 26 课）" },
       { text: "a few apples", role: "还有几个（a 在——够吃）" }
     ],
     oneLineRule: "「还有几个」说 a few（a 在，够）；「几乎没了」说 few（a 不在，不够）——就靠那个小 a，意思反一半。",
@@ -21910,20 +21919,20 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "There are a few apple.",
         wrongMark: "apple",
         correct: "There are a few apples.",
-        whyZh: "a few 后面跟着的是好几个东西，要加尾巴：a few 【apples】。"
+        whyZh: "a few 后面跟着的是复数名词，要加尾巴：a few 【apples】。"
       },
       {
         wrong: "There is a few apples.",
         wrongMark: "is",
         correct: "There are a few apples.",
-        whyZh: "后面是好几个东西，要用 are 那个版本（第 26 课的老规矩）。"
+        whyZh: "后面是复数名词，要用 are 那个版本（第 26 课的老规矩）。"
       },
       {
         wrong: "There are several apples on the table.",
         wrongMark: null,
         correct: "There are a few apples.",
         bothRight: true,
-        whyZh: "两句都对——several 是「三五个」：比 a few 再多一点，但还没到「很多」。a few 说「还有几个」，several 说「有好几个」，都在这条刻度上。"
+        whyZh: "两句都对——several 是「三五个」：比 a few 再多一点，但还没到「很多」。a few 说「还有几个」，several 说「有复数」，都在这条刻度上。"
       },
       {
         wrong: "There are some apples on the table.",
@@ -21937,7 +21946,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "There are a few apples.",
         bothRight: true,
-        whyZh: "两句都对——第 26 课开过的那扇门：一个用 is、好几个用 are；今天换的是「几个」这个数量。"
+        whyZh: "两句都对——第 26 课开过的那扇门：一个用 is、复数用 are；今天换的是「几个」这个数量。"
       }
     ],
     variants: [
@@ -22007,12 +22016,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 26 课学过：桌上有一本书。",
         tokens: ["There", "is", "a", "book", "on", "the", "desk."],
         answer: "There is a book on the desk.",
-        explain: "复现第 26 课：一个用 is、好几个用 are——今天换的是数量那格。"
+        explain: "复现第 26 课：一个用 is、复数用 are——今天换的是数量那格。"
       },
       {
         // R9 变形/替换：换数量（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「There are a few apples.」改成说牛奶（数不清的），怎么变？",
+        promptZh: "句型转换：「There are a few apples.」改成说牛奶（数不清的），怎么变？",
         replaceBase: "There are a few apples.",
         replaceTarget: "把 apples 换成 milk（数不清的东西）",
         options: ["There is a little milk.", "There are a little milk.", "There is a few milk."],
@@ -22083,10 +22092,10 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我有一辆新自行车。",
     targetSentence: "I have got a new bike.",
     blocks: [
-      { text: "I have got", role: "我有（轻口气版——多带一个 got）" },
+      { text: "I have got", role: "我有（口语说法——多带一个 got）" },
       { text: "a new bike", role: "一辆新自行车（第一次说它，用 a）" }
     ],
-    oneLineRule: "「有」还有个轻口气版：have 后面带个 got——I have got a new bike。跟 I have a new bike 一个意思，就是听着更像聊天。",
+    oneLineRule: "「有」还有个口语说法：have 后面带个 got——I have got a new bike。跟 I have a new bike 一个意思，就是听着更像聊天。",
     examples: [
       { en: "I have got a new bike.", zh: "我有一辆新自行车。" },
       { en: "We have got a big garden.", zh: "我们有一个大花园。" },
@@ -22159,7 +22168,7 @@ export const grammarLessons: GrammarLesson[] = [
       ]
     },
     summary: {
-      rule: "「有」的轻口气版：have 后面带个 got（I have got a new bike）——跟 I have a new bike 一个意思。",
+      rule: "「有」的口语说法：have 后面带个 got（I have got a new bike）——跟 I have a new bike 一个意思。",
       points: [
         "I have got a new bike. —— have got 手拉手",
         "…is ❌ / the new bike ❌ —— got 后面直接接东西；第一次说用 a",
@@ -22211,7 +22220,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换人（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I have got a new bike.」把 I 换成 We，别的怎么变？",
+        promptZh: "句型转换：「I have got a new bike.」把 I 换成 We，别的怎么变？",
         replaceBase: "I have got a new bike.",
         replaceTarget: "把 I 换成 We",
         options: ["We have got a new bike.", "We has got a new bike.", "We have got a new bike is."],
@@ -22410,7 +22419,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换人（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「She has got a new bag.」把 She 换成 He，别的怎么变？",
+        promptZh: "句型转换：「She has got a new bag.」把 She 换成 He，别的怎么变？",
         replaceBase: "She has got a new bag.",
         replaceTarget: "把 She 换成 He",
         options: ["He has got a new bag.", "He have got a new bag.", "He has got a new bag is."],
@@ -22484,7 +22493,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "Grandma's birthday", role: "谁的生日（第 111 课）" },
       { text: "is in May", role: "在五月" }
     ],
-    oneLineRule: "这一章四种说法排一行：人后面加撇号 s（谁的）、句尾收住用长版（我的）、感到版说感受（我的感受）、a few 说还有几个——身边的事，一句话说清一件。",
+    oneLineRule: "这一章四种说法排一行：人后面加撇号 s（谁的）、句尾收住用名词性物主代词（我的）、-ed 形容词说感受（我的感受）、a few 说还有几个——身边的事，一句话说清一件。",
     examples: [
       { en: "Grandma's birthday is in May.", zh: "奶奶的生日在五月。（第 111 课）" },
       { en: "This book is mine.", zh: "这本书是我的。（第 112 课）" },
@@ -22501,7 +22510,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am boring.",
         wrongMark: "boring",
         correct: "I am bored.",
-        whyZh: "第 113 课回流：说自己没劲用感到版——I am 【bored】。"
+        whyZh: "第 113 课回流：说自己没劲用 -ed 形容词——I am 【bored】。"
       },
       {
         // 双正解条（2026-09-21 修）：few apples 语法没错（=「几乎没了」），
@@ -22515,7 +22524,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "This book is my.",
         wrongMark: "my",
         correct: "This book is mine.",
-        whyZh: "第 112 课回流：短版不能站句尾——句尾收住用长版 【mine】。"
+        whyZh: "第 112 课回流：形容词性物主代词不能站句尾——句尾收住用名词性物主代词 【mine】。"
       },
       {
         wrong: "Grandma birthday is in May.",
@@ -22528,20 +22537,20 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "This book is mine.",
         bothRight: true,
-        whyZh: "两句都对——第 116 课的 has got 与第 112 课的长版：一章里的几种说法，各站各的位。"
+        whyZh: "两句都对——第 116 课的 has got 与第 112 课的名词性物主代词：一章里的几种说法，各站各的位。"
       },
       {
         wrong: "The book is boring.",
         wrongMark: null,
         correct: "I am bored.",
         bothRight: true,
-        whyZh: "两句都对——第 113 课的两张脸：一句说「我没劲」、一句说「它让人没劲」。"
+        whyZh: "两句都对——第 113 课的两种用法：一句说「我没劲」、一句说「它让人没劲」。"
       }
     ],
     variants: [
       { label: "肯定", en: "Grandma's birthday is in May.", zh: "奶奶的生日在五月。", noteZh: "第 111 课主句——从它开始。" },
-      { label: "否定", en: "There are not many apples.", zh: "苹果不多了。", noteZh: "第 114 课否定版。" },
-      { label: "疑问", en: "Have you got a new bike?", zh: "你有新自行车吗？", noteZh: "第 115 课疑问版——Have 搬句首。" }
+      { label: "否定", en: "There are not many apples.", zh: "苹果不多了。", noteZh: "第 114 课否定句。" },
+      { label: "疑问", en: "Have you got a new bike?", zh: "你有新自行车吗？", noteZh: "第 115 课疑问句——Have 搬句首。" }
     ],
     sceneSwings: [
       { sceneZh: "说奶奶的生日在五月", en: "Grandma's birthday is in May.", zh: "奶奶的生日在五月。" },
@@ -22551,14 +22560,14 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "四种说法排一行",
       paragraphs: [
-        "这一章学了一件事的四种说法，都跟「身边的人和东西」有关。Grandma's birthday is in May.——人后面加撇号 s，说「谁的」。This book is mine.——句尾收住，用长版说「我的」。I am bored.——感到版说「我的感受」。There are a few apples.——a 在，说「还有几个」。",
-        "四种说法各有各的位子，互相不抢：说东西归谁，用撇号 s 或长版；说自己心里怎么样，用感到版；说东西剩多少，用 a few 那一套。",
+        "这一章学了一件事的四种说法，都跟「身边的人和东西」有关。Grandma's birthday is in May.——人后面加撇号 s，说「谁的」。This book is mine.——句尾收住，用名词性物主代词说「我的」。I am bored.——-ed 形容词说「我的感受」。There are a few apples.——a 在，说「还有几个」。",
+        "四种说法各有各的位子，互相不抢：说东西归谁，用撇号 s 或名词性物主代词；说自己心里怎么样，用 -ed 形容词；说东西剩多少，用 a few 那一套。",
         "还有一位：I have got a new bike.／She has got a new bag.——「有」的说法，我配 have、她他它配 has。加不加 got 都对，加了听着像聊天。",
         "中文里这些说法都比较省：一个「的」、一个「无聊」、一个「有」。英语把它们各分了一条路。这一章就是把这四条路一次走熟。"
       ]
     },
     summary: {
-      rule: "这一章几种说法排一行：撇号 s 说「谁的」、长版说「我的」、感到版说「我的感受」、a few 说「还有几个」——外加 have got 的「有」。",
+      rule: "这一章几种说法排一行：撇号 s 说「谁的」、名词性物主代词说「我的」、-ed 形容词说「我的感受」、a few 说「还有几个」——外加 have got 的「有」。",
       points: [
         "Grandma's birthday is in May.（谁的）／This book is mine.（我的）",
         "I am bored.（我的感受）／There are a few apples.（还有几个）",
@@ -22580,7 +22589,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：这本书是我的。",
         tokens: ["This", "book", "is", "mine."],
         answer: "This book is mine.",
-        explain: "第 112 课那句——句尾收住用长版。"
+        explain: "第 112 课那句——句尾收住用名词性物主代词。"
       },
       {
         // R8 跨课复现：第 113 课（两张脸）
@@ -22588,7 +22597,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 113 课学过：我很无聊。",
         tokens: ["I", "am", "bored."],
         answer: "I am bored.",
-        explain: "复现第 113 课：人没劲用感到版。"
+        explain: "复现第 113 课：人没劲用 -ed 形容词。"
       },
       {
         kind: "spot",
@@ -22610,12 +22619,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换说法（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「This book is mine.」改成说「这本书是我哥哥的」，怎么变？",
+        promptZh: "句型转换：「This book is mine.」改成说「这本书是我哥哥的」，怎么变？",
         replaceBase: "This book is mine.",
         replaceTarget: "把 mine 换成「哥哥的」",
         options: ["This book is my brother's.", "This book is brother's.", "This book is my brother."],
         answer: "This book is my brother's.",
-        explain: "第 112 课的长版另一个：人加撇号 s 自己站句尾。"
+        explain: "第 112 课的名词性物主代词另一个：人加撇号 s 自己站句尾。"
       }
     ],
     practice: [
@@ -22688,7 +22697,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "Grandma's birthday", role: "谁的生日（第 111 课）" },
       { text: "is in May", role: "在五月" }
     ],
-    oneLineRule: "这章学的都在这页上：谁的（撇号 s）、我的（长版）、我的感受（感到版）、还有几个（a few）、有（have got／has got）——身边的事，一句话说清一件。",
+    oneLineRule: "这章学的都在这页上：谁的（撇号 s）、我的（名词性物主代词）、我的感受（-ed 形容词）、还有几个（a few）、有（have got／has got）——身边的事，一句话说清一件。",
     examples: [
       { en: "Grandma's birthday is in May.", zh: "奶奶的生日在五月。（第 111 课）" },
       { en: "This book is mine.", zh: "这本书是我的。（第 112 课）" },
@@ -22711,7 +22720,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am boring.",
         wrongMark: "boring",
         correct: "I am bored.",
-        whyZh: "第 113 课回流：说自己没劲用感到版——I am 【bored】。"
+        whyZh: "第 113 课回流：说自己没劲用 -ed 形容词——I am 【bored】。"
       },
       {
         // 双正解条（2026-09-21 修）：few apples 语法没错（=「几乎没了」），
@@ -22732,7 +22741,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "Grandma's birthday is in May.",
         bothRight: true,
-        whyZh: "两句都对——第 112 课的长版与第 111 课的撇号 s：一章里几条不同的路。"
+        whyZh: "两句都对——第 112 课的名词性物主代词与第 111 课的撇号 s：一章里几条不同的路。"
       },
       {
         wrong: "I have got a new bike.",
@@ -22744,8 +22753,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "Grandma's birthday is in May.", zh: "奶奶的生日在五月。", noteZh: "第 111 课主句。" },
-      { label: "否定", en: "There are not many apples.", zh: "苹果不多了。", noteZh: "第 114 课否定版。" },
-      { label: "疑问", en: "Has she got a new bag?", zh: "她有新包吗？", noteZh: "第 116 课疑问版——Has 搬句首。" }
+      { label: "否定", en: "There are not many apples.", zh: "苹果不多了。", noteZh: "第 114 课否定句。" },
+      { label: "疑问", en: "Has she got a new bag?", zh: "她有新包吗？", noteZh: "第 116 课疑问句——Has 搬句首。" }
     ],
     sceneSwings: [
       { sceneZh: "说奶奶的生日在五月", en: "Grandma's birthday is in May.", zh: "奶奶的生日在五月。" },
@@ -22755,14 +22764,14 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "这一页上有什么",
       paragraphs: [
-        "翻回去看这一章：第 111 课学「谁的」——人后面加撇号 s；第 112 课学「我的」——句尾收住用长版；第 113 课学「我的感受」——感到版说人、让人版说东西；第 114 课学「还有几个」——a 在，够；第 115／116 课学「有」——我配 have、她他它配 has。",
+        "翻回去看这一章：第 111 课学「谁的」——人后面加撇号 s；第 112 课学「我的」——句尾收住用名词性物主代词；第 113 课学「我的感受」——-ed 形容词说人、-ing 形容词说东西；第 114 课学「还有几个」——a 在，够；第 115／116 课学「有」——我配 have、她他它配 has。",
         "这几种说法有一个共同点：中文里都很省——一个「的」、一个「无聊」、一个「有」、一个「几个」。英语把它们各分了一条路，所以每一条都要单独走熟。",
         "现在这页上的句子应该都能一口气说出来：谁的生日、哪本书是我的、我心里怎么样、桌上还剩多少、谁有什么。都是身边的事，一句话说清一件。",
         "后面还会遇到新的说法，但都是从这些路上长出来的：先把这几条走稳，加新东西的时候就不会乱。"
       ]
     },
     summary: {
-      rule: "这章学的都在这一页：谁的（撇号 s）、我的（长版）、我的感受（感到版）、还有几个（a few）、有（have got／has got）。",
+      rule: "这章学的都在这一页：谁的（撇号 s）、我的（名词性物主代词）、我的感受（-ed 形容词）、还有几个（a few）、有（have got／has got）。",
       points: [
         "Grandma's birthday is in May.（谁的）／This book is mine.（我的）",
         "I am bored.（我的感受）／There are a few apples.（还有几个）",
@@ -22784,7 +22793,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：我很无聊。",
         tokens: ["I", "am", "bored."],
         answer: "I am bored.",
-        explain: "第 113 课那句——人没劲用感到版。"
+        explain: "第 113 课那句——人没劲用 -ed 形容词。"
       },
       {
         // R8 跨课复现：第 117 课（合体课的主句）
@@ -22814,7 +22823,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换说法（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「She has got a new bag.」改成说「我」，别的怎么变？",
+        promptZh: "句型转换：「She has got a new bag.」改成说「我」，别的怎么变？",
         replaceBase: "She has got a new bag.",
         replaceTarget: "把 She 换成 I",
         options: ["I have got a new bag.", "I has got a new bag.", "I have got a new bag is."],
@@ -22961,7 +22970,7 @@ export const grammarLessons: GrammarLesson[] = [
         "说「习惯了什么」，英语用 used 这个记号，但它前面要有 am／is／are 站着——I am used to the cold.（我习惯了这个冷）。",
         "为什么前面要有 be？因为「习惯了」说的是「我现在是什么状态」——凡是说状态，英语都让 be 先站好（第 1 课的 I am、第 6 课的 It is 都是它）。be 站好了，used to 跟上，后面就是你习惯的那个东西。",
         "后面跟的东西前面常带 the：the cold（这份冷）、the city（这个城市）。说的是眼前这一份、这一个，不是随便的冷、随便的城市。",
-        "第 93 课你学过 used to play here（从前常在这儿玩）——那个 used to 后面跟的是动作，穿原样。今天这个是「习惯了」，前面多站了一个 be。两张脸长得很像，判据只有一条：看 used 前面有没有 be。"
+        "第 93 课你学过 used to play here（从前常在这儿玩）——那个 used to 后面跟的是动作，用原形。今天这个是「习惯了」，前面多站了一个 be。两种用法长得很像，判据只有一条：看 used 前面有没有 be。"
       ]
     },
     summary: {
@@ -23017,7 +23026,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换人换东西（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am used to the cold.」改成说她习惯了这个城市，怎么变？",
+        promptZh: "句型转换：「I am used to the cold.」改成说她习惯了这个城市，怎么变？",
         replaceBase: "I am used to the cold.",
         replaceTarget: "把 I 换成 She，把 the cold 换成 the city",
         options: ["She is used to the city.", "She are used to the city.", "She is use to the city."],
@@ -23159,15 +23168,15 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 119 课说「习惯了 + 东西」：I am used to the cold.（这个冷是东西）。今天说「习惯了 + 做某事」：I am used to getting up early.——早起是个动作，动作要换上名词形式才能跟在 to 后面。",
         "名词形式这个词你见过好几站了：第 42 课 I like reading.（读书是做的事）、第 45 课 enjoy drawing、第 64 课 finish reading——动作想当「名字」用，就穿上 -ing。今天算第六站。",
-        "为什么这个 to 要用名词形式？因为它前面站着 am／is／are（习惯的记号）——记号在，它后面用 -ing 形式。（第 93 课的 used to 前面没有 be，它认原样：used to play。同一块 to，前面站谁听谁的。）",
+        "为什么这个 to 要用名词形式？因为它前面站着 am／is／are（习惯的记号）——记号在，它后面用 -ing 形式。（第 93 课的 used to 前面没有 be，它认原形：used to play。同一块 to，前面站谁听谁的。）",
         "一个小提醒：get 变名词形式是 getting——尾巴双写一下再加 -ing。第 42 课起你就见过这个写法（running、sitting 都是这个规矩）。"
       ]
     },
     summary: {
-      rule: "习惯了「做某事」：后面那件事用 -ing 形式（I am used to getting up early）——有 be 站着的 to，后面用 -ing 形式。",
+      rule: "习惯了「做某事」：后面那件事用 -ing 形式（I am used to getting up early）——be 后面的 to，后面用 -ing 形式。",
       points: [
         "I am used to getting up early. —— 做的事用 -ing 形式",
-        "I am used to get up ❌ —— 有 be 站着的 to 不认原样",
+        "I am used to get up ❌ —— be 后面的 to 不认原形",
         "getting / walking / reading —— 名词形式（第 42／64 课的老朋友）"
       ]
     },
@@ -23179,7 +23188,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "early.",
         options: ["getting up", "get up", "got up"],
         answer: "getting up",
-        explain: "做的事用 -ing 形式：getting up——有 be 站着的 to 后面用 -ing 形式。"
+        explain: "做的事用 -ing 形式：getting up——be 后面的 to 后面用 -ing 形式。"
       },
       {
         kind: "arrange",
@@ -23203,7 +23212,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "get",
         answer: "get",
         correctionZh: "做的事要用 -ing 形式：get → 【getting】 up early。",
-        explain: "有 be 站着的 to 不认原样。"
+        explain: "be 后面的 to 不认原形。"
       },
       {
         // R8 跨课复现：第 42 课（名词形式第一站）
@@ -23216,7 +23225,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am used to getting up early.」改成说她习惯了走路上学，怎么变？",
+        promptZh: "句型转换：「I am used to getting up early.」改成说她习惯了走路上学，怎么变？",
         replaceBase: "I am used to getting up early.",
         replaceTarget: "把 I 换成 She，把 getting up early 换成 walking to school",
         options: ["She is used to walking to school.", "She is used to walk to school.", "She are used to walking to school."],
@@ -23340,7 +23349,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I am getting used to it.",
         bothRight: true,
-        whyZh: "两句都对——第 120 课是「习惯了做某事」；今天的 getting 版说的是那个慢慢变的过程。"
+        whyZh: "两句都对——第 120 课是「习惯了做某事」；今天的 getting 那种说的是那个慢慢变的过程。"
       }
     ],
     variants: [
@@ -23367,7 +23376,7 @@ export const grammarLessons: GrammarLesson[] = [
       points: [
         "I am getting used to it. —— 正在慢慢习惯",
         "I am used to it. —— 已经习惯了（第 119 课）",
-        "get 的两张脸：got him to go（第 108 课，把他弄动）／getting used to（今天，自己慢慢变）"
+        "get 的两种用法：got him to go（第 108 课，把他弄动）／getting used to（今天，自己慢慢变）"
       ]
     },
     guided: [
@@ -23415,7 +23424,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换样子（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am getting used to it.」改成说「我已经习惯了」，怎么变？",
+        promptZh: "句型转换：「I am getting used to it.」改成说「我已经习惯了」，怎么变？",
         replaceBase: "I am getting used to it.",
         replaceTarget: "把「正在慢慢习惯」改成「已经习惯了」",
         options: ["I am used to it.", "I am get used to it.", "I am used it."],
@@ -23476,7 +23485,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-122-two-faces",
     number: 122,
     title: "从前常，现在习惯了",
-    grammarLabel: "两张脸排一行 · used to vs be used to",
+    grammarLabel: "两种用法排一行 · used to vs be used to",
     episode: "小美的一天 一百二十二",
     scene: "sparkle",
     cover: cover122,
@@ -23486,8 +23495,8 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我从前常走路上学。",
     targetSentence: "I used to walk to school.",
     blocks: [
-      { text: "I used to", role: "我从前常（从前的记号——后面穿原样）" },
-      { text: "walk to school", role: "走路上学（动作穿原样）" }
+      { text: "I used to", role: "我从前常（从前的记号——后面用原形）" },
+      { text: "walk to school", role: "走路上学（动作用原形）" }
     ],
     oneLineRule: "说「我从前常走路上学」和「我现在走惯了」——中文只差一个字，英语换的不只是开头：I used to walk to school.／I am used to walking to school.——后面的走法也换了。",
     examples: [
@@ -23506,7 +23515,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She used to working late.",
         wrongMark: "working",
         correct: "She is used to working late.",
-        whyZh: "加不加 be，是两张脸：有 be 是「习惯了」——She is used to working late；没 be 是「从前常」——She used to work late（后面穿原样）。错在这句两头都占：既没有 be，又穿了名词形式。"
+        whyZh: "加不加 be，是两种用法：有 be 是「习惯了」——She is used to working late；没 be 是「从前常」——She used to work late（后面用原形）。错在这句两头都占：既没有 be，又穿了名词形式。"
       },
       {
         wrong: "I am used to get up early.",
@@ -23518,21 +23527,21 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I used to walking to school.",
         wrongMark: "walking",
         correct: "I used to walk to school.",
-        whyZh: "只有 used、没有 be 的时候，后面穿原样：used to 【walk】。（第 93 课学的没错——它后面确实穿原样。）"
+        whyZh: "只有 used、没有 be 的时候，后面用原形：used to 【walk】。（第 93 课学的没错——它后面确实用原形。）"
       },
       {
         wrong: "I am used to walking to school.",
         wrongMark: null,
         correct: "I used to walk to school.",
         bothRight: true,
-        whyZh: "两句都对——但意思是两件事：I used to walk 是「从前常走路」（现在不走了）；I am used to walking 是「现在走惯了」。同一块 to，两张脸。"
+        whyZh: "两句都对——但意思是两件事：I used to walk 是「从前常走路」（现在不走了）；I am used to walking 是「现在走惯了」。同一块 to，两种用法。"
       },
       {
         wrong: "I used to play here.",
         wrongMark: null,
         correct: "I used to walk to school.",
         bothRight: true,
-        whyZh: "两句都对——第 93 课的老句子：只有 used 的时候，后面穿原样（play）。"
+        whyZh: "两句都对——第 93 课的老句子：只有 used 的时候，后面用原形（play）。"
       },
       {
         wrong: "I am used to getting up early.",
@@ -23543,7 +23552,7 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "I used to walk to school.", zh: "我从前常走路上学。", noteZh: "只有 used——后面穿原样。" },
+      { label: "肯定", en: "I used to walk to school.", zh: "我从前常走路上学。", noteZh: "只有 used——后面用原形。" },
       { label: "否定", en: "I didn't use to walk to school.", zh: "我从前不常走路上学。", noteZh: "「不」用 didn't——这时 use 反而不带 d（第 93 课的老规矩）。" },
       { label: "疑问", en: "Did you use to walk to school?", zh: "你从前常走路上学吗？", noteZh: "问句 Did 站句首——use 也不带 d。" }
     ],
@@ -23553,18 +23562,18 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问你从前常走路上学吗", en: "Did you use to walk to school?", zh: "你从前常走路上学吗？" }
     ],
     deepDive: {
-      title: "同一个 to，两张脸",
+      title: "同一个 to，两种用法",
       paragraphs: [
-        "同一个 to，前面站谁它听谁的：前面站 used（从前的记号）→ 后面穿原样（I used to walk）；前面站 am／is／are／get（习惯记号）→ 后面用 -ing 形式（I am used to walking）。一个 to，两张脸。",
-        "两个记号，认准一个就错不了：有 be／get 站着，是「习惯了」——后面用 -ing 形式；只有 used，是「从前常」——后面穿原样。没有 be 的时候，used to 只能接原样。",
-        "第 93 课学过的 used to 没错——它后面确实永远穿原样。今天把这句话再补一格：used 前面站着 be（am／is／are／get），这个 to 换了一张脸，后面要用 -ing 形式。所以判据只有一条：看 used 前面有没有 be。",
-        "两个句子的意思也差得远：I used to walk to school. 是「从前常走路，现在不走了」；I am used to walking to school. 是「现在走路走惯了」。中文里「从前常走」和「走惯了」只差一个字，英语里连后面的动作写法都不一样——一个穿原样，一个用 -ing 形式。"
+        "同一个 to，前面站谁它听谁的：前面站 used（从前的记号）→ 后面用原形（I used to walk）；前面站 am／is／are／get（习惯记号）→ 后面用 -ing 形式（I am used to walking）。一个 to，两种用法。",
+        "两个记号，认准一个就错不了：有 be／get 站着，是「习惯了」——后面用 -ing 形式；只有 used，是「从前常」——后面用原形。没有 be 的时候，used to 只能接原形。",
+        "第 93 课学过的 used to 没错——它后面确实永远用原形。今天把这句话再补一格：used 前面站着 be（am／is／are／get），这个 to 换了一张脸，后面要用 -ing 形式。所以判据只有一条：看 used 前面有没有 be。",
+        "两个句子的意思也差得远：I used to walk to school. 是「从前常走路，现在不走了」；I am used to walking to school. 是「现在走路走惯了」。中文里「从前常走」和「走惯了」只差一个字，英语里连后面的动作写法都不一样——一个用原形，一个用 -ing 形式。"
       ]
     },
     summary: {
-      rule: "同一个 to，两张脸：只有 used（从前常）→ 后面穿原样；used 前面站着 be／get（习惯了）→ 后面用 -ing 形式。",
+      rule: "同一个 to，两种用法：只有 used（从前常）→ 后面用原形；used 前面站着 be／get（习惯了）→ 后面用 -ing 形式。",
       points: [
-        "I used to walk to school. —— 从前常走路（只有 used，穿原样）",
+        "I used to walk to school. —— 从前常走路（只有 used，用原形）",
         "I am used to walking to school. —— 现在走惯了（有 be，用 -ing 形式）",
         "She used to working late ❌ —— 两头都占：既没 be，又穿了名词形式"
       ]
@@ -23577,14 +23586,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "to school.",
         options: ["I used to walk", "I am used to walking", "I am used to walk"],
         answer: "I used to walk",
-        explain: "只有 used（从前常）——后面穿原样：used to walk。"
+        explain: "只有 used（从前常）——后面用原形：used to walk。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：我从前常走路上学。",
         tokens: ["I", "used", "to", "walk", "to", "school."],
         answer: "I used to walk to school.",
-        explain: "从前的记号（used to）＋走路上学（walk to school，穿原样）。"
+        explain: "从前的记号（used to）＋走路上学（walk to school，用原形）。"
       },
       {
         // R8 跨课复现：第 93 课（从前常的老句子）
@@ -23592,7 +23601,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 93 课学过：我从前常在这儿玩。",
         tokens: ["I", "used", "to", "play", "here."],
         answer: "I used to play here.",
-        explain: "复现第 93 课：只有 used——后面穿原样（play）。"
+        explain: "复现第 93 课：只有 used——后面用原形（play）。"
       },
       {
         kind: "spot",
@@ -23600,7 +23609,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["She", "used", "to", "working", "late."],
         wrongToken: "working",
         answer: "working",
-        correctionZh: "只有 used、没有 be 的时候，后面穿原样：used to 【work】。",
+        correctionZh: "只有 used、没有 be 的时候，后面用原形：used to 【work】。",
         explain: "想成「习惯了」要有 be 站着。"
       },
       {
@@ -23614,7 +23623,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换脸（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I used to walk to school.」改成说「我现在走惯了路去上学」，怎么变？",
+        promptZh: "句型转换：「I used to walk to school.」改成说「我现在走惯了路去上学」，怎么变？",
         replaceBase: "I used to walk to school.",
         replaceTarget: "把「从前常」改成「现在走惯了」",
         options: ["I am used to walking to school.", "I am used to walk to school.", "I used to walking to school."],
@@ -23667,7 +23676,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "妈妈看你自己背着书包出门，说从前可不是这样。凭记忆，写出你那句英文。",
       intentZh: "我从前常走路上学。",
       answer: "I used to walk to school.",
-      noteZh: "只有 used、没有 be——后面穿原样。"
+      noteZh: "只有 used、没有 be——后面用原形。"
     },
     huntCaseIds: ["hunt-two-faces"]
   },
@@ -23738,11 +23747,11 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I am not used to it.",
         bothRight: true,
-        whyZh: "两句都对——第 122 课的 did 是「从前常」那张脸的「不」；今天的 not 是「习惯了」这张脸的「不」。两张脸的「不」长得不一样。"
+        whyZh: "两句都对——第 122 课的 did 是「从前常」那张脸的「不」；今天的 not 是「习惯了」这张脸的「不」。两种用法的「不」长得不一样。"
       }
     ],
     variants: [
-      { label: "肯定", en: "I am used to it.", zh: "我习惯了。", noteZh: "肯定版——be 后面没有 not（第 119 课）。" },
+      { label: "肯定", en: "I am used to it.", zh: "我习惯了。", noteZh: "肯定句——be 后面没有 not（第 119 课）。" },
       { label: "否定", en: "I am not used to it.", zh: "我还不习惯。", noteZh: "not 跟在 be 后面，不请帮手。" },
       { label: "疑问", en: "Are you used to it?", zh: "你习惯了吗？", noteZh: "Are 搬到句首，别的都不动。" }
     ],
@@ -23752,11 +23761,11 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "说她还不习惯这个吵闹", en: "She is not used to the noise.", zh: "她还不习惯这个吵闹。" }
     ],
     deepDive: {
-      title: "两张脸的「不」，长得不一样",
+      title: "两种用法的「不」，长得不一样",
       paragraphs: [
         "说「不习惯」，动的是 be：I am not used to it.——not 紧跟在 am 后面，别的什么都不用请。（第 1 课就学过：说「我是什么样」，be 后面加 not。）",
         "第 93 课那张「从前常」的脸，说「不」可不一样：I didn't use to walk to school.——它请了帮手 didn't，而且跟着帮手的时候，use 反而不带 d。",
-        "两张脸摆一起看：习惯了——I am not used to it.（动 be）；从前常——I didn't use to walk.（请 did）。同样是「不」，一张脸动 be、一张脸请帮手。",
+        "两种用法摆一起看：习惯了——I am not used to it.（动 be）；从前常——I didn't use to walk.（请 did）。同样是「不」，一张脸动 be、一张脸请帮手。",
         "想问别人也一样简单：把 Are 搬到句首——Are you used to it?（你习惯了吗）回答 Yes, I am.／No, I am not.——搬出来的那个 be 直接用来答。"
       ]
     },
@@ -23765,7 +23774,7 @@ export const grammarLessons: GrammarLesson[] = [
       points: [
         "I am not used to it. —— not 跟 be 走，不请帮手",
         "Are you used to it? —— Are 搬句首",
-        "I didn't use to walk.（第 122 课）／I am not used to it.（今天）—— 两张脸的「不」不一样"
+        "I didn't use to walk.（第 122 课）／I am not used to it.（今天）—— 两种用法的「不」不一样"
       ]
     },
     guided: [
@@ -23791,7 +23800,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 119 课学过：我习惯了这个冷。",
         tokens: ["I", "am", "used", "to", "the", "cold."],
         answer: "I am used to the cold.",
-        explain: "复现第 119 课：肯定版——今天在 be 后面加个 not。"
+        explain: "复现第 119 课：肯定句——今天在 be 后面加个 not。"
       },
       {
         kind: "spot",
@@ -23813,7 +23822,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：肯定疑问互换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am not used to it.」改成问对方「你习惯了吗」，怎么变？",
+        promptZh: "句型转换：「I am not used to it.」改成问对方「你习惯了吗」，怎么变？",
         replaceBase: "I am not used to it.",
         replaceTarget: "改成问对方「你习惯了吗」",
         options: ["Are you used to it?", "Do you used to it?", "Are you use to it?"],
@@ -23873,7 +23882,7 @@ export const grammarLessons: GrammarLesson[] = [
   {
     id: "lesson-124-close-18",
     number: 124,
-    title: "同一个 to，两张脸（收口）",
+    title: "同一个 to，两种用法（收口）",
     grammarLabel: "收口 · 零新知（四句排一行）",
     episode: "小美的一天 一百二十四",
     scene: "mansion",
@@ -23884,10 +23893,10 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "把这章学过的说法一次说一遍。",
     targetSentence: "I used to walk to school.",
     blocks: [
-      { text: "I used to", role: "我从前常（只有 used——穿原样）" },
-      { text: "walk to school", role: "走路上学（动作穿原样）" }
+      { text: "I used to", role: "我从前常（只有 used——用原形）" },
+      { text: "walk to school", role: "走路上学（动作用原形）" }
     ],
-    oneLineRule: "这章学的都在这页上：从前常用 used to（后面穿原样）、习惯了用 be used to（后面用 -ing 形式）、慢慢习惯用 getting——同一个 to，前面有 be 是一张脸，没 be 是另一张。",
+    oneLineRule: "这章学的都在这页上：从前常用 used to（后面用原形）、习惯了用 be used to（后面用 -ing 形式）、慢慢习惯用 getting——同一个 to，前面有 be 是一张脸，没 be 是另一张。",
     examples: [
       { en: "I used to walk to school.", zh: "我从前常走路上学。（第 122 课）" },
       { en: "I am used to the cold.", zh: "我习惯了这个冷。（第 119 课）" },
@@ -23904,13 +23913,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She used to working late.",
         wrongMark: "working",
         correct: "She is used to working late.",
-        whyZh: "第 122 课回流：加不加 be 是两张脸——有 be 是「习惯了」（用 -ing 形式），没 be 是「从前常」（穿原样）。"
+        whyZh: "第 122 课回流：加不加 be 是两种用法——有 be 是「习惯了」（用 -ing 形式），没 be 是「从前常」（用原形）。"
       },
       {
         wrong: "I am used to get up early.",
         wrongMark: "get",
         correct: "I am used to getting up early.",
-        whyZh: "第 120 课回流：有 be 站着的 to 后面用 -ing 形式——getting up early。"
+        whyZh: "第 120 课回流：be 后面的 to 后面用 -ing 形式——getting up early。"
       },
       {
         wrong: "I don't used to it.",
@@ -23922,27 +23931,27 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I used to walking to school.",
         wrongMark: "walking",
         correct: "I used to walk to school.",
-        whyZh: "第 122 课回流：只有 used、没有 be 的时候，后面穿原样——used to 【walk】。"
+        whyZh: "第 122 课回流：只有 used、没有 be 的时候，后面用原形——used to 【walk】。"
       },
       {
         wrong: "I am getting used to it.",
         wrongMark: null,
         correct: "I used to walk to school.",
         bothRight: true,
-        whyZh: "两句都对——第 121 课的 getting 版与第 122 课的从前版：一张是「慢慢习惯中」，一张是「从前常」。"
+        whyZh: "两句都对——第 121 课的 getting 那种与第 122 课的从前那种：一张是「慢慢习惯中」，一张是「从前常」。"
       },
       {
         wrong: "I am used to the cold.",
         wrongMark: null,
         correct: "I used to walk to school.",
         bothRight: true,
-        whyZh: "两句都对——第 119 课的「习惯了」与今天的「从前常」：同一块 to，两张脸各站一行。"
+        whyZh: "两句都对——第 119 课的「习惯了」与今天的「从前常」：同一块 to，两种用法各站一行。"
       }
     ],
     variants: [
       { label: "肯定", en: "I used to walk to school.", zh: "我从前常走路上学。", noteZh: "第 122 课主句——从它开始。" },
-      { label: "否定", en: "I am not used to it.", zh: "我还不习惯。", noteZh: "第 123 课否定版——not 跟 be 走。" },
-      { label: "疑问", en: "Are you used to it?", zh: "你习惯了吗？", noteZh: "第 123 课疑问版——Are 搬句首。" }
+      { label: "否定", en: "I am not used to it.", zh: "我还不习惯。", noteZh: "第 123 课否定句——not 跟 be 走。" },
+      { label: "疑问", en: "Are you used to it?", zh: "你习惯了吗？", noteZh: "第 123 课疑问句——Are 搬句首。" }
     ],
     sceneSwings: [
       { sceneZh: "说我从前常走路上学", en: "I used to walk to school.", zh: "我从前常走路上学。" },
@@ -23952,14 +23961,14 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "这一页上有什么",
       paragraphs: [
-        "翻回去看这一章：第 119 课学「习惯了 + 东西」——used 前面站着 am／is／are；第 120 课学「习惯了 + 做某事」——后面用 -ing 形式；第 121 课学「慢慢习惯」——把 be 换成 getting；第 122 课把两张脸并排切开；第 123 课学「不习惯」怎么说。",
-        "这一章最值钱的一句话：同一个 to，前面站谁它听谁的。前面站 used（只有它一个）——后面穿原样；前面站 am／is／are／get——后面用 -ing 形式。",
+        "翻回去看这一章：第 119 课学「习惯了 + 东西」——used 前面站着 am／is／are；第 120 课学「习惯了 + 做某事」——后面用 -ing 形式；第 121 课学「慢慢习惯」——把 be 换成 getting；第 122 课把两种用法并排切开；第 123 课学「不习惯」怎么说。",
+        "这一章最值钱的一句话：同一个 to，前面站谁它听谁的。前面站 used（只有它一个）——后面用原形；前面站 am／is／are／get——后面用 -ing 形式。",
         "第 93 课学的 used to 没有错——它在自己的地盘里一直是对的。今天只是把边界划清楚了：它前面一旦站了 be，就换了一张脸。以后看到 used，先往它前面看一眼，就知道该穿哪种衣服。",
-        "现在这页上的四句话你应该都能一口气说出来：我从前常走路上学、我习惯了这个冷、我习惯了早起、我在慢慢习惯。从前的常和现在的惯，一张 to 的两张脸，你都拿到了。"
+        "现在这页上的四句话你应该都能一口气说出来：我从前常走路上学、我习惯了这个冷、我习惯了早起、我在慢慢习惯。从前的常和现在的惯，一张 to 的两种用法，你都拿到了。"
       ]
     },
     summary: {
-      rule: "同一个 to，两张脸：只有 used（从前常）→ 穿原样；前面站着 be／get（习惯了）→ 用 -ing 形式；慢慢习惯用 getting。",
+      rule: "同一个 to，两种用法：只有 used（从前常）→ 用原形；前面站着 be／get（习惯了）→ 用 -ing 形式；慢慢习惯用 getting。",
       points: [
         "I used to walk to school.（从前常）／I am used to the cold.（习惯了）",
         "I am used to getting up early.（习惯做某事）／I am getting used to it.（慢慢习惯）",
@@ -23974,7 +23983,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "to school.",
         options: ["I used to walk", "I am used to walking", "I am used to walk"],
         answer: "I used to walk",
-        explain: "第 122 课那句——只有 used，后面穿原样。"
+        explain: "第 122 课那句——只有 used，后面用原形。"
       },
       {
         kind: "arrange",
@@ -23997,7 +24006,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["She", "used", "to", "working", "late."],
         wrongToken: "working",
         answer: "working",
-        correctionZh: "第 122 课回流：只有 used、没有 be——后面穿原样：used to 【work】。",
+        correctionZh: "第 122 课回流：只有 used、没有 be——后面用原形：used to 【work】。",
         explain: "想成「习惯了」要有 be 站着。"
       },
       {
@@ -24011,7 +24020,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换脸（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I used to walk to school.」改成说「我还不习惯走路上学」，怎么变？",
+        promptZh: "句型转换：「I used to walk to school.」改成说「我还不习惯走路上学」，怎么变？",
         replaceBase: "I used to walk to school.",
         replaceTarget: "把「从前常」改成「还不习惯」",
         options: ["I am not used to walking to school.", "I don't used to walking to school.", "I am not used to walk to school."],
@@ -24062,7 +24071,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "朋友把本子翻到最后一页，让你读第一行。凭记忆，写出你这一章的第一句。",
       intentZh: "我从前常走路上学。",
       answer: "I used to walk to school.",
-      noteZh: "只有 used——后面穿原样。"
+      noteZh: "只有 used——后面用原形。"
     },
     huntCaseIds: ["hunt-close-18"]
   },
@@ -24119,7 +24128,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "It looks nice.",
         bothRight: true,
-        whyZh: "两句都对——中文一句「挺好」管两头，英语分两张脸：It 【looks】 nice 是「我看到的它」；It 【is】 nice 是「它就是挺好」。"
+        whyZh: "两句都对——中文一句「挺好」管两头，英语分两种用法：It 【looks】 nice 是「我看到的它」；It 【is】 nice 是「它就是挺好」。"
       },
       {
         wrong: "The sky looks dark.",
@@ -24133,13 +24142,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "It looks nice.",
         bothRight: true,
-        whyZh: "两句都对——第 58 课的 is heavy 说「它就是重」；今天的 looks nice 说「我看着它不错」——两张脸并排站着。"
+        whyZh: "两句都对——第 58 课的 is heavy 说「它就是重」；今天的 looks nice 说「我看着它不错」——两种用法并排站着。"
       }
     ],
     variants: [
       { label: "肯定", en: "It looks nice.", zh: "它看起来不错。", noteZh: "look 自己站中间，后面直接跟「怎么样」的词。" },
-      { label: "否定", en: "It does not look nice.", zh: "它看起来不太好。", noteZh: "说「不」请帮手 doesn't；look 退回原样。" },
-      { label: "疑问", en: "Does it look nice?", zh: "它看起来不错吗？", noteZh: "Does 站句首，look 退回原样。" }
+      { label: "否定", en: "It does not look nice.", zh: "它看起来不太好。", noteZh: "说「不」请帮手 doesn't；look 变回原形。" },
+      { label: "疑问", en: "Does it look nice?", zh: "它看起来不错吗？", noteZh: "Does 站句首，look 变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说天看着阴沉沉的", en: "The sky looks dark.", zh: "天看着阴沉沉的。" },
@@ -24152,7 +24161,7 @@ export const grammarLessons: GrammarLesson[] = [
         "说「看着怎么样」，英语让 look 自己站到中间：It looks nice.（它看起来不错）。前面是「谁」或者「什么」，后面直接跟那个「怎么样」的词。",
         "中间不站 is。中文说「它是好的」，英语是 It is nice.——那个 is 说的是「它就是」。今天要说的不是「它就是」，是「我看着它觉得」——这时候站中间的是 look，不是 is。",
         "「它」只有一个，所以 look 要带上 s：It looks nice.（第 11 课、第 12 课的 -s 老规矩：他、她、它做事，那个词就要变个样）。",
-        "第 58 课你学过 This bag is heavy.（这个包很重）——那是「它就是重」。今天加一句：This bag looks heavy.（这包看着就重）——一个说事实，一个说我看着的样子。两张脸并排站着，都对。"
+        "第 58 课你学过 This bag is heavy.（这个包很重）——那是「它就是重」。今天加一句：This bag looks heavy.（这包看着就重）——一个说事实，一个说我看着的样子。两种用法并排站着，都对。"
       ]
     },
     summary: {
@@ -24160,7 +24169,7 @@ export const grammarLessons: GrammarLesson[] = [
       points: [
         "It looks nice. —— look 自己站中间",
         "It looks is nice ❌ —— 中间不站 is",
-        "It looks nice.（我看着）/ It is nice.（它就是）—— 两张脸都对"
+        "It looks nice.（我看着）/ It is nice.（它就是）—— 两种用法都对"
       ]
     },
     guided: [
@@ -24208,7 +24217,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换东西（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It looks nice.」改成说天看着阴沉沉的，怎么变？",
+        promptZh: "句型转换：「It looks nice.」改成说天看着阴沉沉的，怎么变？",
         replaceBase: "It looks nice.",
         replaceTarget: "把 nice 换成 dark（阴沉）",
         options: ["The sky looks dark.", "The sky looks is dark.", "The sky look dark."],
@@ -24279,7 +24288,7 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "你看起来很累。",
     targetSentence: "You look tired.",
     blocks: [
-      { text: "You look", role: "你看起来（「你」配原样的 look）" },
+      { text: "You look", role: "你看起来（「你」配原形的 look）" },
       { text: "tired", role: "累（那个「怎么样」的词直接跟上）" }
     ],
     oneLineRule: "说「你看着怎么样」：你配 look（不带 s）；他、她、它配 looks（带 s）——You look tired.／She looks tired。后面照样直接跟那个「怎么样」的词。",
@@ -24299,7 +24308,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "You looks tired.",
         wrongMark: "looks",
         correct: "You look tired.",
-        whyZh: "「你」配原样的 look（不带 s）：You 【look】 tired。带 s 的那个是给「他、她、它」用的。"
+        whyZh: "「你」配原形的 look（不带 s）：You 【look】 tired。带 s 的那个是给「他、她、它」用的。"
       },
       {
         wrong: "She look tired.",
@@ -24332,13 +24341,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "You look tired.",
         bothRight: true,
-        whyZh: "两句都对——两张脸并排站着：You 【look】 tired 是「我看你像累了」；You 【are】 tired 是「你就是累了」。"
+        whyZh: "两句都对——两种用法并排站着：You 【look】 tired 是「我看你像累了」；You 【are】 tired 是「你就是累了」。"
       }
     ],
     variants: [
-      { label: "肯定", en: "You look tired.", zh: "你看起来很累。", noteZh: "「你」配原样的 look。" },
-      { label: "否定", en: "You do not look tired.", zh: "你看起来不累。", noteZh: "说「不」请帮手 don't；look 退回原样。" },
-      { label: "疑问", en: "Do I look tired?", zh: "我看起来很累吗？", noteZh: "Do 站句首，look 退回原样。" }
+      { label: "肯定", en: "You look tired.", zh: "你看起来很累。", noteZh: "「你」配原形的 look。" },
+      { label: "否定", en: "You do not look tired.", zh: "你看起来不累。", noteZh: "说「不」请帮手 don't；look 变回原形。" },
+      { label: "疑问", en: "Do I look tired?", zh: "我看起来很累吗？", noteZh: "Do 站句首，look 变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说她看起来很累", en: "She looks tired.", zh: "她看起来很累。" },
@@ -24349,8 +24358,8 @@ export const grammarLessons: GrammarLesson[] = [
       title: "你、我、他——谁配哪个形状",
       paragraphs: [
         "第 125 课学的是「东西看着怎么样」：It looks nice.（它只有一个，所以 look 带 s）。今天换成说人：You look tired.（你看起来很累）。",
-        "「你」配原样的 look——不带 s；「他、她、它」配带 s 的 looks：She looks tired.。这条老规矩你在第 25 课学过（He drinks milk），今天它换了个词站队。",
-        "「我」也一样配原样：I look tired.（我看着累）。一句话记：只有他、她、它带 s，你和我不带。",
+        "「你」配原形的 look——不带 s；「他、她、它」配带 s 的 looks：She looks tired.。这条老规矩你在第 25 课学过（He drinks milk），今天它换了个词站队。",
+        "「我」也一样配原形：I look tired.（我看着累）。一句话记：只有他、她、它带 s，你和我不带。",
         "还有一个容易多手的地方：tired 后面别加 -ly。第 58 课学过加 -ly 是「做事的样子」（slowly 慢慢地、quickly 快快地）——可这句说的不是做事，是说「看上去什么样」，所以直接跟 tired 就行。"
       ]
     },
@@ -24370,7 +24379,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "tired.",
         options: ["look", "looks", "looking"],
         answer: "look",
-        explain: "「你」配原样的 look——不带 s。"
+        explain: "「你」配原形的 look——不带 s。"
       },
       {
         kind: "arrange",
@@ -24393,7 +24402,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["You", "looks", "tired."],
         wrongToken: "looks",
         answer: "looks",
-        correctionZh: "「你」配原样的 look——不带 s：【You look】 tired。",
+        correctionZh: "「你」配原形的 look——不带 s：【You look】 tired。",
         explain: "带 s 的那个是给「他、她、它」用的。"
       },
       {
@@ -24407,7 +24416,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换人（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「You look tired.」改成说她看起来很累，怎么变？",
+        promptZh: "句型转换：「You look tired.」改成说她看起来很累，怎么变？",
         replaceBase: "You look tired.",
         replaceTarget: "把 You 换成 She",
         options: ["She looks tired.", "She look tired.", "She looks tiredly."],
@@ -24460,19 +24469,19 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "同桌刚跑完步，脸红红的，问你是不是脸很红。凭记忆，写出你那句英文。",
       intentZh: "你看起来很累。",
       answer: "You look tired.",
-      noteZh: "「你」配原样的 look——不带 s。"
+      noteZh: "「你」配原形的 look——不带 s。"
     },
     huntCaseIds: ["hunt-you-look-tired"]
   },
   {
     id: "lesson-127-two-look-faces",
     number: 127,
-    title: "同一个 look，两张脸（收口）",
+    title: "同一个 look，两种用法（收口）",
     grammarLabel: "收口 · 零新知（喊人看 vs 说样子）",
     episode: "小美的一天 一百二十七",
     scene: "sparkle",
     cover: cover127,
-    sceneSetupZh: "放学路上抬头看天：同学喊你一起看云，你看着天说要下雨了——同一个 look，两张脸。",
+    sceneSetupZh: "放学路上抬头看天：同学喊你一起看云，你看着天说要下雨了——同一个 look，两种用法。",
     dialogueEn: "The sky looks dark.",
     dialogueZh: "小美抬头看天，皱了皱眉。",
     intentZh: "天看着阴沉沉的。",
@@ -24481,7 +24490,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "The sky looks", role: "天看起来（说样子）" },
       { text: "dark", role: "阴沉沉的（那个「怎么样」的词）" }
     ],
-    oneLineRule: "同一个 look，两张脸：喊人去看是 Look at the clouds!（后面跟「去哪儿看」）；说看着什么样是 The sky looks dark.（后面跟「什么样」）——后面跟的东西不一样，说的就不是一件事。",
+    oneLineRule: "同一个 look，两种用法：喊人去看是 Look at the clouds!（后面跟「去哪儿看」）；说看着什么样是 The sky looks dark.（后面跟「什么样」）——后面跟的东西不一样，说的就不是一件事。",
     examples: [
       { en: "The sky looks dark.", zh: "天看着阴沉沉的。" },
       { en: "Look at the clouds!", zh: "看那些云！（第 88 课）" },
@@ -24498,7 +24507,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "You looks tired.",
         wrongMark: "looks",
         correct: "You look tired.",
-        whyZh: "第 126 课回流：「你」配原样的 look——不带 s。"
+        whyZh: "第 126 课回流：「你」配原形的 look——不带 s。"
       },
       {
         wrong: "It looks is nice.",
@@ -24517,7 +24526,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "The sky looks dark.",
         bothRight: true,
-        whyZh: "两句都对——同一个 look 的两张脸：Look 【at】 the clouds! 是喊人去看（后面跟「去哪儿看」）；The sky 【looks】 dark. 是说看着什么样（后面跟「什么样」）。"
+        whyZh: "两句都对——同一个 look 的两种用法：Look 【at】 the clouds! 是喊人去看（后面跟「去哪儿看」）；The sky 【looks】 dark. 是说看着什么样（后面跟「什么样」）。"
       },
       {
         wrong: "It looks like rain.",
@@ -24536,8 +24545,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "The sky looks dark.", zh: "天看着阴沉沉的。", noteZh: "说看着什么样——后面跟「什么样」。" },
-      { label: "否定", en: "The sky does not look dark.", zh: "天看着不沉。", noteZh: "说「不」请帮手 doesn't；look 退回原样。" },
-      { label: "疑问", en: "Does the sky look dark?", zh: "天看着沉吗？", noteZh: "Does 站句首，look 退回原样。" }
+      { label: "否定", en: "The sky does not look dark.", zh: "天看着不沉。", noteZh: "说「不」请帮手 doesn't；look 变回原形。" },
+      { label: "疑问", en: "Does the sky look dark?", zh: "天看着沉吗？", noteZh: "Does 站句首，look 变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "喊他一起看那些云", en: "Look at the clouds!", zh: "看那些云！" },
@@ -24545,7 +24554,7 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问天看着沉吗", en: "Does the sky look dark?", zh: "天看着沉吗？" }
     ],
     deepDive: {
-      title: "同一个 look，两张脸",
+      title: "同一个 look，两种用法",
       paragraphs: [
         "回头看看这两课：第 125 课学「东西看着怎么样」——look 自己站中间（It looks nice.）；第 126 课学「人看着怎么样」——你就不加 s、他她它就加 s（You look tired.／She looks tired.）。",
         "同一个 look，还有另一张脸：Look at the clouds!——这句是喊人去看，后面跟着「去哪儿看」，那个 at 不能少（第 88 课、第 86 课你都见过它）。",
@@ -24554,7 +24563,7 @@ export const grammarLessons: GrammarLesson[] = [
       ]
     },
     summary: {
-      rule: "同一个 look，两张脸：喊人去看是 Look at the clouds!（后面跟「去哪儿看」）；说看着什么样是 The sky looks dark.（后面跟「什么样」）。",
+      rule: "同一个 look，两种用法：喊人去看是 Look at the clouds!（后面跟「去哪儿看」）；说看着什么样是 The sky looks dark.（后面跟「什么样」）。",
       points: [
         "The sky looks dark. —— 说样子（后面跟「什么样」）",
         "Look at the clouds! —— 喊人看（后面跟「去哪儿看」，at 不能少）",
@@ -24593,7 +24602,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "look",
         answer: "look",
         correctionZh: "「天」是单个的，look 要带上 s：【looks】 dark。",
-        explain: "前面是「他」（He）时，look 要带上 s——He looks tired。look 这个原样是给「你、我们、他们」用的。"
+        explain: "前面是「他」（He）时，look 要带上 s——He looks tired。look 这个原形是给「你、我们、他们」用的。"
       },
       {
         // R8 跨课复现：第 126 课（人版）
@@ -24601,12 +24610,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 126 课学过：你看起来很累。",
         tokens: ["You", "look", "tired."],
         answer: "You look tired.",
-        explain: "复现第 126 课：「你」配原样的 look。"
+        explain: "复现第 126 课：「你」配原形的 look。"
       },
       {
         // R9 变形/替换：换脸（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：把「天看着阴沉沉的」改成「看那些云！」，怎么变？",
+        promptZh: "句型转换：把「天看着阴沉沉的」改成「看那些云！」，怎么变？",
         replaceBase: "The sky looks dark.",
         replaceTarget: "改成喊人一起看云",
         options: ["Look at the clouds!", "Look the clouds!", "Look at clouds dark!"],
@@ -24730,13 +24739,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "It sounds great.",
         bothRight: true,
-        whyZh: "两句都对——It 【is】 nice 是「它就是好」；It 【sounds】 great 是「我听着觉得好」——两张脸并排站着。"
+        whyZh: "两句都对——It 【is】 nice 是「它就是好」；It 【sounds】 great 是「我听着觉得好」——两种用法并排站着。"
       }
     ],
     variants: [
       { label: "肯定", en: "It sounds great.", zh: "听起来不错。", noteZh: "听的那个词自己站中间。" },
-      { label: "否定", en: "It does not sound great.", zh: "听着不怎么样。", noteZh: "说「不」请帮手 doesn't；sound 退回原样。" },
-      { label: "疑问", en: "Does it sound great?", zh: "听着不错吗？", noteZh: "Does 站句首，sound 退回原样。" }
+      { label: "否定", en: "It does not sound great.", zh: "听着不怎么样。", noteZh: "说「不」请帮手 doesn't；sound 变回原形。" },
+      { label: "疑问", en: "Does it sound great?", zh: "听着不错吗？", noteZh: "Does 站句首，sound 变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说那听着挺好", en: "That sounds nice.", zh: "那听着挺好。" },
@@ -24805,7 +24814,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换那个「怎么样」的词（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It sounds great.」把 great 换成 nice，别的怎么变？",
+        promptZh: "句型转换：「It sounds great.」把 great 换成 nice，别的怎么变？",
         replaceBase: "It sounds great.",
         replaceTarget: "把 great 换成 nice",
         options: ["It sounds nice.", "It sounds is nice.", "It sounds nicely."],
@@ -24934,8 +24943,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "It smells good.", zh: "闻着真香。", noteZh: "闻的那个词自己站中间，后面说 good。" },
-      { label: "否定", en: "It does not smell good.", zh: "闻着不怎么样。", noteZh: "说「不」请帮手 doesn't；smell 退回原样。" },
-      { label: "疑问", en: "Does it smell good?", zh: "闻着香吗？", noteZh: "Does 站句首，smell 退回原样。" }
+      { label: "否定", en: "It does not smell good.", zh: "闻着不怎么样。", noteZh: "说「不」请帮手 doesn't；smell 变回原形。" },
+      { label: "疑问", en: "Does it smell good?", zh: "闻着香吗？", noteZh: "Does 站句首，smell 变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说闻着挺好", en: "It smells nice.", zh: "闻着挺好。" },
@@ -25004,7 +25013,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换感官（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It smells good.」把闻换成听，别的怎么变？",
+        promptZh: "句型转换：「It smells good.」把闻换成听，别的怎么变？",
         replaceBase: "It smells good.",
         replaceTarget: "把 smells 换成 sounds（换成耳朵）",
         options: ["It sounds good.", "It sounds well.", "It sound good."],
@@ -25133,8 +25142,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "This cake tastes good.", zh: "这个蛋糕尝着真好吃。", noteZh: "尝的那个词站中间，后面说 good。" },
-      { label: "否定", en: "This cake does not taste good.", zh: "这个蛋糕尝着不怎么样。", noteZh: "说「不」请帮手 doesn't；taste 退回原样。" },
-      { label: "疑问", en: "Does this cake taste good?", zh: "这个蛋糕尝着好吃吗？", noteZh: "Does 站句首，taste 退回原样。" }
+      { label: "否定", en: "This cake does not taste good.", zh: "这个蛋糕尝着不怎么样。", noteZh: "说「不」请帮手 doesn't；taste 变回原形。" },
+      { label: "疑问", en: "Does this cake taste good?", zh: "这个蛋糕尝着好吃吗？", noteZh: "Does 站句首，taste 变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说尝着挺好", en: "It tastes nice.", zh: "尝着挺好。" },
@@ -25203,7 +25212,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换那个「怎么样」的词（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「This cake tastes good.」把 good 换成 nice，别的怎么变？",
+        promptZh: "句型转换：「This cake tastes good.」把 good 换成 nice，别的怎么变？",
         replaceBase: "This cake tastes good.",
         replaceTarget: "把 good 换成 nice",
         options: ["This cake tastes nice.", "This cake tastes nicely.", "This cake taste nice."],
@@ -25313,7 +25322,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "The water feels cold.",
         bothRight: true,
-        whyZh: "两句都对——第 76 课那句是「我觉得好多了」（说自己身上什么感觉）；今天这句是「这水摸着凉」（说东西摸起来怎么样）。同一个 feel，两张脸。"
+        whyZh: "两句都对——第 76 课那句是「我觉得好多了」（说自己身上什么感觉）；今天这句是「这水摸着凉」（说东西摸起来怎么样）。同一个 feel，两种用法。"
       },
       {
         wrong: "It smells good.",
@@ -25332,8 +25341,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "The water feels cold.", zh: "这水摸着凉。", noteZh: "摸的那个词站中间，后面跟 cold。" },
-      { label: "否定", en: "The water does not feel cold.", zh: "这水摸着不凉。", noteZh: "说「不」请帮手 doesn't；feel 退回原样。" },
-      { label: "疑问", en: "Does the water feel cold?", zh: "这水摸着凉吗？", noteZh: "Does 站句首，feel 退回原样。" }
+      { label: "否定", en: "The water does not feel cold.", zh: "这水摸着不凉。", noteZh: "说「不」请帮手 doesn't；feel 变回原形。" },
+      { label: "疑问", en: "Does the water feel cold?", zh: "这水摸着凉吗？", noteZh: "Does 站句首，feel 变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说这水摸着挺温", en: "The water feels warm.", zh: "这水摸着挺温。" },
@@ -25341,7 +25350,7 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问这水摸着凉吗", en: "Does the water feel cold?", zh: "这水摸着凉吗？" }
     ],
     deepDive: {
-      title: "同一个 feel，两张脸",
+      title: "同一个 feel，两种用法",
       paragraphs: [
         "今天集齐第四张脸：The water feels cold.（这水摸着凉）。架子跟前三张一模一样——摸的那个词自己站中间，「这水」是单个的所以带上 s，后面直接跟 cold。",
         "但 feel 这个词你早就见过：第 76 课那句 I feel much better today.（我今天好多了）。那句前面站的是「我」，说的是自己身上什么感觉；今天这句前面站的是「水」，说的是这东西摸起来怎么样。",
@@ -25353,7 +25362,7 @@ export const grammarLessons: GrammarLesson[] = [
       rule: "说「摸着怎么样」：摸的那个词自己站中间，后面直接跟那个「怎么样」的词（The water feels cold）——不加 -ly。",
       points: [
         "The water feels cold. —— 东西摸着什么感觉（今天）",
-        "I feel much better today.（第 76 课）—— 人身上什么感觉：同一个 feel 两张脸",
+        "I feel much better today.（第 76 课）—— 人身上什么感觉：同一个 feel 两种用法",
         "looks／sounds／smells／tastes／feels —— 五张脸，同一个架子"
       ]
     },
@@ -25402,7 +25411,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换那个「怎么样」的词（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「The water feels cold.」把 cold 换成 warm，别的怎么变？",
+        promptZh: "句型转换：「The water feels cold.」把 cold 换成 warm，别的怎么变？",
         replaceBase: "The water feels cold.",
         replaceTarget: "把 cold 换成 warm（温）",
         options: ["The water feels warm.", "The water feels warmly.", "The water feel warm."],
@@ -25463,7 +25472,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-132-does-it-sound-good",
     number: 132,
     title: "听着好吗",
-    grammarLabel: "说不和问 · 帮手出场，感官词退回原样",
+    grammarLabel: "说不和问 · 帮手出场，感官词变回原形",
     episode: "小美的一天 一百三十二",
     scene: "campus",
     cover: cover132,
@@ -25473,10 +25482,10 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "听着好吗？",
     targetSentence: "Does it sound good?",
     blocks: [
-      { text: "Does it sound", role: "它听着吗（帮手站句首，感官词退回原样）" },
+      { text: "Does it sound", role: "它听着吗（帮手站句首，感官词变回原形）" },
       { text: "good?", role: "好吗（那个「怎么样」的词）" }
     ],
-    oneLineRule: "说「不」和「问」：帮手（doesn't／Does）上场，听的那个词退回原样——It does not sound good.／Does it sound good?",
+    oneLineRule: "说「不」和「问」：帮手（doesn't／Does）上场，听的那个词变回原形——It does not sound good.／Does it sound good?",
     examples: [
       { en: "Does it sound good?", zh: "听着好吗？" },
       { en: "It does not sound good.", zh: "听着不怎么样。" },
@@ -25493,19 +25502,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "It not sounds good.",
         wrongMark: "not",
         correct: "It does not sound good.",
-        whyZh: "说「不」要请帮手：does not 站前面，sound 退回原样——不能说 not sounds（第 128 课：sounds 是自己站中间时的样子）。"
+        whyZh: "说「不」要请帮手：does not 站前面，sound 变回原形——不能说 not sounds（第 128 课：sounds 是自己站中间时的样子）。"
       },
       {
         wrong: "Does it sounds good?",
         wrongMark: "sounds",
         correct: "Does it sound good?",
-        whyZh: "帮手 Does 已经站到句首了，sound 要退回原样——Does it 【sound】 good?"
+        whyZh: "帮手 Does 已经站到句首了，sound 要变回原形——Does it 【sound】 good?"
       },
       {
         wrong: "It does not sounds good.",
         wrongMark: "sounds",
         correct: "It does not sound good.",
-        whyZh: "帮手在场，感官词退回原样：does not 【sound】 good。"
+        whyZh: "帮手在场，感官词变回原形：does not 【sound】 good。"
       },
       {
         wrong: "It does not sound good.",
@@ -25531,8 +25540,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "It sounds good.", zh: "听着挺好。", noteZh: "好好说——sounds 自己站中间（第 128 课）。" },
-      { label: "否定", en: "It does not sound good.", zh: "听着不怎么样。", noteZh: "说「不」请帮手 does not；sound 退回原样。" },
-      { label: "疑问", en: "Does it sound good?", zh: "听着好吗？", noteZh: "Does 站句首，sound 退回原样。" }
+      { label: "否定", en: "It does not sound good.", zh: "听着不怎么样。", noteZh: "说「不」请帮手 does not；sound 变回原形。" },
+      { label: "疑问", en: "Does it sound good?", zh: "听着好吗？", noteZh: "Does 站句首，sound 变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说闻着不怎么样", en: "It does not smell good.", zh: "闻着不怎么样。" },
@@ -25544,16 +25553,16 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "这一章你已经集齐四张脸：looks（看）／sounds（听）／smells（闻）／tastes（尝）／feels（摸）。好好说的时候，它们都是自己站中间：It sounds good.",
         "今天学「说不」和「问」——这两件事四张脸共用一套说法：请帮手。说「不」请 does not：It does not sound good.；问就把 Does 搬到句首：Does it sound good?",
-        "帮手一出场，感官词就退回原样：不能说 does not sounds，也不能说 Does it sounds——因为 -s 的活儿已经被帮手接走了（第 25 课的老规矩：一个句子里这个标记只站一次）。",
-        "第 123 课你学过一个很像的问法：Are you used to it?（把 be 搬句首）。今天这个是把 Does 搬句首、后面感官词退回原样。两套问法，看句子里原来站的是谁。"
+        "帮手一出场，感官词就变回原形：不能说 does not sounds，也不能说 Does it sounds——因为 -s 的活儿已经被帮手接走了（第 25 课的老规矩：一个句子里这个标记只站一次）。",
+        "第 123 课你学过一个很像的问法：Are you used to it?（把 be 搬句首）。今天这个是把 Does 搬句首、后面感官词变回原形。两套问法，看句子里原来站的是谁。"
       ]
     },
     summary: {
-      rule: "说「不」和「问」：帮手上场（does not／Does），感官词退回原样——It does not sound good.／Does it sound good?",
+      rule: "说「不」和「问」：帮手上场（does not／Does），感官词变回原形——It does not sound good.／Does it sound good?",
       points: [
         "It does not sound good. —— 说「不」请帮手",
         "Does it sound good? —— 问把 Does 搬句首",
-        "does not sounds ❌ / Does it sounds ❌ —— 帮手在场，感官词退回原样"
+        "does not sounds ❌ / Does it sounds ❌ —— 帮手在场，感官词变回原形"
       ]
     },
     guided: [
@@ -25564,14 +25573,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "sound good?",
         options: ["Does it", "Do it", "Does it sounds"],
         answer: "Does it",
-        explain: "问就请帮手：Does 搬句首，sound 退回原样。"
+        explain: "问就请帮手：Does 搬句首，sound 变回原形。"
       },
       {
         kind: "arrange",
         promptZh: "你想问：听着好吗？",
         tokens: ["Does", "it", "sound", "good?"],
         answer: "Does it sound good?",
-        explain: "帮手（Does）＋它（it）＋感官词退回原样（sound）＋那个「怎么样」的词（good）。"
+        explain: "帮手（Does）＋它（it）＋感官词变回原形（sound）＋那个「怎么样」的词（good）。"
       },
       {
         // R8 跨课复现：第 128 课（好好说的样子）
@@ -25587,7 +25596,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["Does", "it", "sounds", "good?"],
         wrongToken: "sounds",
         answer: "sounds",
-        correctionZh: "帮手 Does 已经站到句首了，sound 要退回原样——Does it 【sound】 good?",
+        correctionZh: "帮手 Does 已经站到句首了，sound 要变回原形——Does it 【sound】 good?",
         explain: "-s 的活儿被帮手接走了。"
       },
       {
@@ -25601,12 +25610,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：肯定转否定（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It sounds good.」改成说「听着不怎么样」，怎么变？",
+        promptZh: "句型转换：「It sounds good.」改成说「听着不怎么样」，怎么变？",
         replaceBase: "It sounds good.",
         replaceTarget: "改成说「听着不怎么样」",
         options: ["It does not sound good.", "It not sounds good.", "It does not sounds good."],
         answer: "It does not sound good.",
-        explain: "说「不」请帮手 does not——sound 退回原样。"
+        explain: "说「不」请帮手 does not——sound 变回原形。"
       }
     ],
     practice: [
@@ -25654,7 +25663,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "同学提议周末去公园，问你觉得怎么样，你想反问一句「听着好吗」。凭记忆，写出你那句英文。",
       intentZh: "听着好吗？",
       answer: "Does it sound good?",
-      noteZh: "问就请帮手——Does 搬句首，sound 退回原样。"
+      noteZh: "问就请帮手——Does 搬句首，sound 变回原形。"
     },
     huntCaseIds: ["hunt-does-it-sound-good"]
   },
@@ -25729,8 +25738,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "It looks nice.", zh: "它看起来不错。", noteZh: "第 125 课主句——从它开始。" },
-      { label: "否定", en: "It does not sound good.", zh: "听着不怎么样。", noteZh: "第 132 课否定版——帮手在场，感官词退回原样。" },
-      { label: "疑问", en: "Does it sound good?", zh: "听着好吗？", noteZh: "第 132 课疑问版——Does 搬句首。" }
+      { label: "否定", en: "It does not sound good.", zh: "听着不怎么样。", noteZh: "第 132 课否定句——帮手在场，感官词变回原形。" },
+      { label: "疑问", en: "Does it sound good?", zh: "听着好吗？", noteZh: "第 132 课疑问句——Does 搬句首。" }
     ],
     sceneSwings: [
       { sceneZh: "说它看起来不错", en: "It looks nice.", zh: "它看起来不错。" },
@@ -25741,7 +25750,7 @@ export const grammarLessons: GrammarLesson[] = [
       title: "这一页上有什么",
       paragraphs: [
         "翻回去看这一章：第 125 课学眼睛（looks），第 128 课学耳朵（sounds），第 129 课学鼻子（smells），第 130 课学嘴（tastes），第 131 课学手（feels）——五张脸，一个架子。",
-        "架子就三条：那个词自己站中间（不用 is）；前面说的是一个，所以带上 s；后面直接跟那个「怎么样」的词（不加 -ly、也不说 well）。第 132 课补上第四条：说「不」和「问」请帮手，那个词退回原样。",
+        "架子就三条：那个词自己站中间（不用 is）；前面说的是一个，所以带上 s；后面直接跟那个「怎么样」的词（不加 -ly、也不说 well）。第 132 课补上第四条：说「不」和「问」请帮手，那个词变回原形。",
         "这一章最值钱的一句话：中文说「听着好」「尝着香」「摸着凉」，那个「好／香／凉」都是直接跟上来的；英语也一样，直接把那个词放在后面就行——不用 is，不用 -ly。",
         "五句话排一行念一遍：It looks nice.／It sounds great.／It smells good.／This cake tastes good.／The water feels cold.——身边的东西，看到什么、听到什么、闻到什么，都能说一句了。"
       ]
@@ -25751,7 +25760,7 @@ export const grammarLessons: GrammarLesson[] = [
       points: [
         "It looks nice.（看）／It sounds great.（听）／It smells good.（闻）",
         "This cake tastes good.（尝）／The water feels cold.（摸）",
-        "说「不」和「问」：请帮手，那个词退回原样（第 132 课）"
+        "说「不」和「问」：请帮手，那个词变回原形（第 132 课）"
       ]
     },
     guided: [
@@ -25799,7 +25808,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换脸（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It looks nice.」把看换成听，别的怎么变？",
+        promptZh: "句型转换：「It looks nice.」把看换成听，别的怎么变？",
         replaceBase: "It looks nice.",
         replaceTarget: "把 looks 换成 sounds（换成耳朵）",
         options: ["It sounds nice.", "It sounds is nice.", "It sound nice."],
@@ -25914,7 +25923,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I am looking forward to the weekend.",
         bothRight: true,
-        whyZh: "两句都对——第 125 课那个 look 是「看起来」（后面跟什么样）；今天这个 looking forward to 是「盼着」（后面跟要等的事）：同一个 look，两张脸。"
+        whyZh: "两句都对——第 125 课那个 look 是「看起来」（后面跟什么样）；今天这个 looking forward to 是「盼着」（后面跟要等的事）：同一个 look，两种用法。"
       },
       {
         wrong: "It is cold today.",
@@ -25939,7 +25948,7 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 133 课你见过 I am looking forward to the weekend.（当时只是认读、混个脸熟）——今天它转正了：会自己说，还知道三个字要一起记。",
         "looking forward to 是「往前面望着」——something 在前面等着你，你心里盼它来。所以它后面跟的永远是要等的那件事：the weekend（周末）、the party（聚会）、the summer（夏天）。",
-        "注意这个 look 不是第 125 课那个「看」。第 125 课的 It looks nice. 说的是「它看着怎么样」（后面跟那个「怎么样」的词）；今天的 I am looking forward to… 说的是「我心里盼着」（后面跟要等的事）。同一个 look，两张脸。",
+        "注意这个 look 不是第 125 课那个「看」。第 125 课的 It looks nice. 说的是「它看着怎么样」（后面跟那个「怎么样」的词）；今天的 I am looking forward to… 说的是「我心里盼着」（后面跟要等的事）。同一个 look，两种用法。",
         "还有一个最容易踩的坑：中间那个 to 后面跟的东西有讲究——跟事情名词（the weekend）就这么说；要是跟「做某件事」，那件事得换名词形式（第 136 课细说）。"
       ]
     },
@@ -25983,7 +25992,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "look",
         answer: "look",
         correctionZh: "「盼着」这个记号是 looking——前面站着 am，它穿 -ing：am 【looking】 forward to…",
-        explain: "不是原样的 look。"
+        explain: "不是原形的 look。"
       },
       {
         // R8 跨课复现：第 1 课（be 搭档）
@@ -25996,7 +26005,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换那件事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am looking forward to the weekend.」把周末换成那场聚会，怎么变？",
+        promptZh: "句型转换：「I am looking forward to the weekend.」把周末换成那场聚会，怎么变？",
         replaceBase: "I am looking forward to the weekend.",
         replaceTarget: "把 the weekend 换成 the party",
         options: ["I am looking forward to the party.", "I am looking forward the party.", "I am look forward to the party."],
@@ -26065,7 +26074,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "She looks forward to", role: "她盼着（她是「她」——记号带上 s）" },
       { text: "the summer", role: "夏天（要等的那件事）" }
     ],
-    oneLineRule: "说「她盼着」：你、我、他们用原样的 look，她、他、它带上 s——She looks forward to the summer。后面照样跟要等的那件事。",
+    oneLineRule: "说「她盼着」：你、我、他们用原形的 look，她、他、它带上 s——She looks forward to the summer。后面照样跟要等的那件事。",
     examples: [
       { en: "She looks forward to the summer.", zh: "她盼着夏天。" },
       { en: "We look forward to the summer.", zh: "我们盼着夏天。" },
@@ -26101,7 +26110,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "She looks forward to the summer.",
         bothRight: true,
-        whyZh: "两句都对——换个人：「我们」配原样的 look，「她」配带 s 的 looks：后面照样跟要等的那件事。"
+        whyZh: "两句都对——换个人：「我们」配原形的 look，「她」配带 s 的 looks：后面照样跟要等的那件事。"
       },
       {
         wrong: "I am looking forward to the weekend.",
@@ -26120,8 +26129,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "She looks forward to the summer.", zh: "她盼着夏天。", noteZh: "她是「她」——记号带上 s。" },
-      { label: "否定", en: "She does not look forward to the summer.", zh: "她不盼着夏天。", noteZh: "说「不」请帮手 doesn't；look 退回原样。" },
-      { label: "疑问", en: "Does she look forward to the summer?", zh: "她盼着夏天吗？", noteZh: "Does 站句首，look 退回原样。" }
+      { label: "否定", en: "She does not look forward to the summer.", zh: "她不盼着夏天。", noteZh: "说「不」请帮手 doesn't；look 变回原形。" },
+      { label: "疑问", en: "Does she look forward to the summer?", zh: "她盼着夏天吗？", noteZh: "Does 站句首，look 变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说我们盼着夏天", en: "We look forward to the summer.", zh: "我们盼着夏天。" },
@@ -26132,16 +26141,16 @@ export const grammarLessons: GrammarLesson[] = [
       title: "谁配哪个形状",
       paragraphs: [
         "第 134 课学的是「我盼着」：I am looking forward to the weekend.。今天换成别人：She looks forward to the summer.（她盼着夏天）。",
-        "换人的时候，记号跟着变：我、你、我们、他们配原样的 look（We look forward to…）；她、他、它要带上 s（She looks forward to…）。这条老规矩你从第 25 课起就见过——今天它换了个词站队。",
+        "换人的时候，记号跟着变：我、你、我们、他们配原形的 look（We look forward to…）；她、他、它要带上 s（She looks forward to…）。这条老规矩你从第 25 课起就见过——今天它换了个词站队。",
         "注意「我」的写法跟别人不一样：我说的是 I am looking forward to…（am + looking），不说 I look forward to。两种都对，但第 134 课教的是前一种，先用熟这个。",
         "后面那件事还是照旧：跟要等的东西（the summer／the weekend／the party），前面常带 the。"
       ]
     },
     summary: {
-      rule: "说「她盼着」：你、我、他们配原样的 look，她、他、它带上 s（She looks forward to the summer）。",
+      rule: "说「她盼着」：你、我、他们配原形的 look，她、他、它带上 s（She looks forward to the summer）。",
       points: [
         "She looks forward to the summer. —— 她配带 s 的 looks",
-        "We look forward to the summer. —— 我们配原样的 look",
+        "We look forward to the summer. —— 我们配原形的 look",
         "She look forward ❌ —— 漏了 s；forward 后面丢 to 也不行"
       ]
     },
@@ -26190,12 +26199,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换人（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「She looks forward to the summer.」把 She 换成 We，别的怎么变？",
+        promptZh: "句型转换：「She looks forward to the summer.」把 She 换成 We，别的怎么变？",
         replaceBase: "She looks forward to the summer.",
         replaceTarget: "把 She 换成 We",
         options: ["We look forward to the summer.", "We looks forward to the summer.", "We are look forward to the summer."],
         answer: "We look forward to the summer.",
-        explain: "「我们」配原样的 look——换人换形状。"
+        explain: "「我们」配原形的 look——换人换形状。"
       }
     ],
     practice: [
@@ -26293,7 +26302,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am looking forward to saw you.",
         wrongMark: "saw",
         correct: "I am looking forward to seeing you.",
-        whyZh: "这里要用 seeing（-ing 形式），不是昨天版的 saw。"
+        whyZh: "这里要用 seeing（-ing 形式），不是过去式的 saw。"
       },
       {
         wrong: "She is looking forward to seeing you.",
@@ -26314,7 +26323,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I am looking forward to seeing you.",
         bothRight: true,
-        whyZh: "两句都对——第 120 课那个 to 后面也穿-ing 形式（getting up）；今天这个 to 后面穿 seeing：同一个规矩，两个地方用。"
+        whyZh: "两句都对——第 120 课那个 to 后面也穿 -ing 形式（getting up）；今天这个 to 后面穿 seeing：同一个规矩，两个地方用。"
       }
     ],
     variants: [
@@ -26332,15 +26341,15 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 134／135 课盼的是「东西」：the weekend（周末）、the summer（夏天）。今天盼的是「做一件事」：见到你（seeing you）。",
         "跟第 120 课一模一样的规矩：那个 to 后面要是跟「做的事」，这件事就要换上名词形式——I am used to getting up early.（第 120 课）／I am looking forward to seeing you.（今天）。动作想当「名字」用，就穿上 -ing。",
-        "最容易踩的坑：一看 to 就顺手接原样（see）。第 120 课你已经踩过一次，今天再把它记住——这个 to 后面要用 -ing 形式，不用原样。",
-        "还有一个小地方：名词形式是 seeing，不是昨天版的 saw。这个位置只接 -ing 形式——因为它要的是「做的这件事」，不是「做过的那件事」。"
+        "最容易踩的坑：一看 to 就顺手接原形（see）。第 120 课你已经踩过一次，今天再把它记住——这个 to 后面要用 -ing 形式，不用原形。",
+        "还有一个小地方：名词形式是 seeing，不是过去式的 saw。这个位置只接 -ing 形式——因为它要的是「做的这件事」，不是「做过的那件事」。"
       ]
     },
     summary: {
       rule: "盼着「做某事」：那件事要用 -ing 形式（I am looking forward to seeing you）——这个 to 后面用 -ing 形式，跟第 120 课一个规矩。",
       points: [
         "I am looking forward to seeing you. —— 做的事用 -ing 形式",
-        "I am looking forward to see ❌ —— 一看 to 就接原样，是踩过的坑",
+        "I am looking forward to see ❌ —— 一看 to 就接原形，是踩过的坑",
         "第 120 课 I am used to getting up early. —— 同一个规矩，两个地方用"
       ]
     },
@@ -26376,7 +26385,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "see",
         answer: "see",
         correctionZh: "做的事要用 -ing 形式：see → 【seeing】 you。",
-        explain: "这个 to 后面要用 -ing 形式，不用原样。"
+        explain: "这个 to 后面要用 -ing 形式，不用原形。"
       },
       {
         // R8 跨课复现：第 120 课（同一个规矩）
@@ -26384,12 +26393,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 120 课学过：我习惯了早起。",
         tokens: ["I", "am", "used", "to", "getting", "up", "early."],
         answer: "I am used to getting up early.",
-        explain: "复现第 120 课：那个 to 后面也穿-ing 形式（getting up）——同一个规矩。"
+        explain: "复现第 120 课：那个 to 后面也穿 -ing 形式（getting up）——同一个规矩。"
       },
       {
         // R9 变形/替换：换做的事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am looking forward to seeing you.」把「见到你」换成「说再见」，怎么变？",
+        promptZh: "句型转换：「I am looking forward to seeing you.」把「见到你」换成「说再见」，怎么变？",
         replaceBase: "I am looking forward to seeing you.",
         replaceTarget: "把 seeing you 换成 saying goodbye",
         options: ["I am looking forward to saying goodbye.", "I am looking forward to say goodbye.", "I am looking forward to said goodbye."],
@@ -26589,7 +26598,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：肯定转疑问（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「You are looking forward to the summer.」改成问「你盼着夏天吗」，怎么变？",
+        promptZh: "句型转换：「You are looking forward to the summer.」改成问「你盼着夏天吗」，怎么变？",
         replaceBase: "You are looking forward to the summer.",
         replaceTarget: "改成问「你盼着夏天吗」",
         options: ["Are you looking forward to the summer?", "Do you looking forward to the summer?", "You are looking forward to the summer?"],
@@ -26707,13 +26716,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I am used to getting up early.",
         bothRight: true,
-        whyZh: "两句都对——第 134 课那句后面跟的是东西（the weekend）；今天这句后面跟的是-ing 形式（getting up）：同一章的两种跟法。"
+        whyZh: "两句都对——第 134 课那句后面跟的是东西（the weekend）；今天这句后面跟的是 -ing 形式（getting up）：同一章的两种跟法。"
       }
     ],
     variants: [
       { label: "肯定", en: "I am used to getting up early.", zh: "我习惯了早起。", noteZh: "第 120 课主句——从它开始。" },
-      { label: "否定", en: "I am not looking forward to saying goodbye.", zh: "我不盼着说再见。", noteZh: "第 137 课否定版——not 跟 be 走。" },
-      { label: "疑问", en: "Are you looking forward to the summer?", zh: "你盼着夏天吗？", noteZh: "第 137 课疑问版——Are 搬句首。" }
+      { label: "否定", en: "I am not looking forward to saying goodbye.", zh: "我不盼着说再见。", noteZh: "第 137 课否定句——not 跟 be 走。" },
+      { label: "疑问", en: "Are you looking forward to the summer?", zh: "你盼着夏天吗？", noteZh: "第 137 课疑问句——Are 搬句首。" }
     ],
     sceneSwings: [
       { sceneZh: "说我习惯了早起", en: "I am used to getting up early.", zh: "我习惯了早起。" },
@@ -26782,7 +26791,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换站（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am used to getting up early.」改成说「我盼着早起」，怎么变？",
+        promptZh: "句型转换：「I am used to getting up early.」改成说「我盼着早起」，怎么变？",
         replaceBase: "I am used to getting up early.",
         replaceTarget: "把「习惯了」换成「盼着」",
         options: ["I am looking forward to getting up early.", "I am looking forward to get up early.", "I am used to looking forward to getting up early."],
@@ -26900,7 +26909,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "Although it is raining, I will go out.",
         bothRight: true,
-        whyZh: "两句都对——第二句是案件里那句（虽然天冷，我们还是出去了）：同一个写法，换成昨天的事就换成昨天版（was／went）。"
+        whyZh: "两句都对——第二句是案件里那句（虽然天冷，我们还是出去了）：同一个写法，换成昨天的事就换成过去式（was／went）。"
       },
       {
         wrong: "I will call you tomorrow.",
@@ -26925,7 +26934,7 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 12 课你判过一句「Though it was cold, but we went out.」——当时你找出了那个多余的 but，把它划掉了。今天它转正了：这个「虽然」怎么说、怎么说才不错，今天正经学。",
         "记住那条判例的重点：错的是多出来的 but，不是 Though 本身。「虽然天冷」那半句是好的，问题出在后面又补了一个「但是」。中文成对说，英语只留一个。",
-        "Although 的位置很特别：它站最前面，领着一整个小句子——Although it is raining（虽然下着雨），后面再接住「我还是要出去」。第 19 课的 but 不一样：but 站中间，把两半接起来。下一课把这两张脸摆一起看。",
+        "Although 的位置很特别：它站最前面，领着一整个小句子——Although it is raining（虽然下着雨），后面再接住「我还是要出去」。第 19 课的 but 不一样：but 站中间，把两半接起来。下一课把这两种用法摆一起看。",
         "场景也是接着第 109 课那场雨的：那回小美在屋檐下一直等，等到雨停（I waited until the rain stopped.）；这回她不等了，撑着伞就出去——Although it is raining, I will go out."
       ]
     },
@@ -26982,7 +26991,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换那件挡着的事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Although it is raining, I will go out.」把「下着雨」换成「天冷」，怎么变？",
+        promptZh: "句型转换：「Although it is raining, I will go out.」把「下着雨」换成「天冷」，怎么变？",
         replaceBase: "Although it is raining, I will go out.",
         replaceTarget: "把 it is raining 换成 it is cold",
         options: ["Although it is cold, I will go out.", "Although it is cold, but I will go out.", "Although cold, I will go out."],
@@ -27042,7 +27051,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-140-but-vs-although",
     number: 140,
     title: "可是 vs 虽然",
-    grammarLabel: "两张脸 · although 站前面 / but 站中间",
+    grammarLabel: "两种用法 · although 站前面 / but 站中间",
     episode: "小美的一天 一百四十",
     scene: "city",
     cover: cover140,
@@ -27055,7 +27064,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "Although it is raining,", role: "虽然下着雨（Although 站最前面，后面有逗号）" },
       { text: "I will go out", role: "我还是要出去（接住它）" }
     ],
-    oneLineRule: "同一个意思两张脸：Although 站最前面领一整句（后面点个逗号）；but 站中间把两半接起来——It is raining, but I will go out。",
+    oneLineRule: "同一个意思两种用法：Although 站最前面领一整句（后面点个逗号）；but 站中间把两半接起来——It is raining, but I will go out。",
     examples: [
       { en: "Although it is raining, I will go out.", zh: "虽然下着雨，我还是要出去。" },
       { en: "It is raining, but I will go out.", zh: "下着雨，但我要出去。" },
@@ -27072,7 +27081,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Although it is raining, but I will go out.",
         wrongMark: "but",
         correct: "Although it is raining, I will go out.",
-        whyZh: "两张脸不能同时上：Although 已经领了「虽然」这半，but 就不用再站中间了（只留一个）。"
+        whyZh: "两种用法不能同时上：Although 已经领了「虽然」这半，but 就不用再站中间了（只留一个）。"
       },
       {
         wrong: "Although, it is raining I will go out.",
@@ -27091,7 +27100,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "Although it is raining, I will go out.",
         bothRight: true,
-        whyZh: "两句都对——同一个意思两张脸：Although 站最前面领一整句；but 站中间把两半接起来。选哪张看你想先说哪个。"
+        whyZh: "两句都对——同一个意思两种用法：Although 站最前面领一整句；but 站中间把两半接起来。选哪张看你想先说哪个。"
       },
       {
         wrong: "I was busy and happy.",
@@ -27121,18 +27130,18 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "站前面还是站中间",
       paragraphs: [
-        "同一个意思，英语给两张脸。第一张是 Although：它站最前面，领着一整个小句子——Although it is raining,（虽然下着雨，）后面点个逗号，再接住「我还是要出去」。",
+        "同一个意思，英语给两种用法。第一张是 Although：它站最前面，领着一整个小句子——Although it is raining,（虽然下着雨，）后面点个逗号，再接住「我还是要出去」。",
         "第二张是 but：它站中间，把两半接起来——It is raining, but I will go out.（下着雨，但我要出去）。它在第 19 课就出场过（and／but 是同一个位置的两位）。",
-        "两张脸的区别不在意思，在「你想先说哪个」。先说「虽然」——Although 打头；先说事实、再补一句「可是」——but 居中来接。",
-        "一个最容易踩的坑：把两张脸都用上。前面 Although 已经说了「虽然」，后面就不用再补 but——中文成对说，英语只留一个。第 12 课你判过的那句错，错的就是这个多出来的 but。"
+        "两种用法的区别不在意思，在「你想先说哪个」。先说「虽然」——Although 打头；先说事实、再补一句「可是」——but 居中来接。",
+        "一个最容易踩的坑：把两种用法都用上。前面 Although 已经说了「虽然」，后面就不用再补 but——中文成对说，英语只留一个。第 12 课你判过的那句错，错的就是这个多出来的 but。"
       ]
     },
     summary: {
-      rule: "同一个意思两张脸：Although 站最前面领一整句（Although it is raining, I will go out）；but 站中间接两半（It is raining, but I will go out）。",
+      rule: "同一个意思两种用法：Although 站最前面领一整句（Although it is raining, I will go out）；but 站中间接两半（It is raining, but I will go out）。",
       points: [
         "Although it is raining, I will go out. —— 站最前面，后面点逗号",
         "It is raining, but I will go out. —— 站中间，前面点逗号",
-        "Although…, but… ❌ —— 两张脸不能同时上"
+        "Although…, but… ❌ —— 两种用法不能同时上"
       ]
     },
     guided: [
@@ -27166,7 +27175,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["Although", "it", "is", "raining,", "but", "I", "will", "go", "out."],
         wrongToken: "but",
         answer: "but",
-        correctionZh: "两张脸不能同时上：前面有了 Although，后面就不用 but。",
+        correctionZh: "两种用法不能同时上：前面有了 Although，后面就不用 but。",
         explain: "只留一个。"
       },
       {
@@ -27180,7 +27189,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：两张脸互换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It is raining, but I will go out.」换成「虽然」那张脸，怎么变？",
+        promptZh: "句型转换：「It is raining, but I will go out.」换成「虽然」那张脸，怎么变？",
         replaceBase: "It is raining, but I will go out.",
         replaceTarget: "换成用 Although 开头",
         options: ["Although it is raining, I will go out.", "Although it is raining, but I will go out.", "It is raining, although, I will go out."],
@@ -27241,7 +27250,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-141-close-22",
     number: 141,
     title: "虽然但是排一行（收口）",
-    grammarLabel: "收口 · 零新知（两张脸排一行）",
+    grammarLabel: "收口 · 零新知（两种用法排一行）",
     episode: "小美的一天 一百四十一",
     scene: "mansion",
     cover: cover141,
@@ -27254,7 +27263,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "Although it is raining,", role: "虽然下着雨（站最前面那张脸）" },
       { text: "I will go out", role: "我还是要出去" }
     ],
-    oneLineRule: "这一章两张脸排一行：Although 站最前面领一整句（Although it is raining, I will go out）；but 站中间接两半（It is raining, but I will go out）——只留一个。",
+    oneLineRule: "这一章两种用法排一行：Although 站最前面领一整句（Although it is raining, I will go out）；but 站中间接两半（It is raining, but I will go out）——只留一个。",
     examples: [
       { en: "Although it is raining, I will go out.", zh: "虽然下着雨，我还是要出去。（第 139 课）" },
       { en: "It is raining, but I will go out.", zh: "下着雨，但我要出去。（第 140 课）" },
@@ -27271,7 +27280,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Although it is raining, but I will go out.",
         wrongMark: "but",
         correct: "Although it is raining, I will go out.",
-        whyZh: "第 139 课回流：两张脸不能同时上——前面有了 Although，后面就不带 but。"
+        whyZh: "第 139 课回流：两种用法不能同时上——前面有了 Although，后面就不带 but。"
       },
       {
         wrong: "It is raining but I will go out.",
@@ -27296,7 +27305,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "Although it is raining, I will go out.",
         bothRight: true,
-        whyZh: "两句都对——这一章两张脸排一行：Although 站最前面，but 站中间，意思一样、位置不同。"
+        whyZh: "两句都对——这一章两种用法排一行：Although 站最前面，but 站中间，意思一样、位置不同。"
       },
       {
         wrong: "I was busy and happy.",
@@ -27308,8 +27317,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "Although it is raining, I will go out.", zh: "虽然下着雨，我还是要出去。", noteZh: "第 139 课主句——从它开始。" },
-      { label: "否定", en: "It is raining, but I will not stay at home.", zh: "下着雨，但我不待在家里。", noteZh: "第 140 课否定版——but 照样站中间。" },
-      { label: "疑问", en: "Will you go out although it is raining?", zh: "虽然下着雨，你也要出去吗？", noteZh: "第 139 课疑问版——Will 搬句首。" }
+      { label: "否定", en: "It is raining, but I will not stay at home.", zh: "下着雨，但我不待在家里。", noteZh: "第 140 课否定句——but 照样站中间。" },
+      { label: "疑问", en: "Will you go out although it is raining?", zh: "虽然下着雨，你也要出去吗？", noteZh: "第 139 课疑问句——Will 搬句首。" }
     ],
     sceneSwings: [
       { sceneZh: "说虽然下着雨，我还是要出去", en: "Although it is raining, I will go out.", zh: "虽然下着雨，我还是要出去。" },
@@ -27319,14 +27328,14 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "这一页上有什么",
       paragraphs: [
-        "这一章学了两张脸。第 139 课的 Although 站最前面，领着一整个小句子，后面点个逗号——Although it is raining, I will go out.；第 140 课的 but 站中间，把两半接起来——It is raining, but I will go out.",
-        "这两张脸还有一个来头：第 12 课你在案件里判过一句「Though it was cold, but we went out.」，当时你划掉了那个多余的 but。这一章就是那句话的正经课——错的是多出来的 but，不是「虽然」本身。",
+        "这一章学了两种用法。第 139 课的 Although 站最前面，领着一整个小句子，后面点个逗号——Although it is raining, I will go out.；第 140 课的 but 站中间，把两半接起来——It is raining, but I will go out.",
+        "这两种用法还有一个来头：第 12 课你在案件里判过一句「Though it was cold, but we went out.」，当时你划掉了那个多余的 but。这一章就是那句话的正经课——错的是多出来的 but，不是「虽然」本身。",
         "规矩只有一条：中文的「虽然…但是…」成对说，英语只留一个。前面用了 Although，后面就不带 but；想让 but 出场，前面就别放 Although。",
-        "两张脸排一行念一遍：Although it is raining, I will go out.／It is raining, but I will go out.——同一个意思，两种站法，你都拿到了。"
+        "两种用法排一行念一遍：Although it is raining, I will go out.／It is raining, but I will go out.——同一个意思，两种站法，你都拿到了。"
       ]
     },
     summary: {
-      rule: "两张脸排一行：Although 站最前面领一整句；but 站中间接两半——中文成对说，英语只留一个。",
+      rule: "两种用法排一行：Although 站最前面领一整句；but 站中间接两半——中文成对说，英语只留一个。",
       points: [
         "Although it is raining, I will go out.（站最前面）",
         "It is raining, but I will go out.（站中间）",
@@ -27378,7 +27387,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：两张脸互换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It is raining, but I will go out.」换成「虽然」那张脸，怎么变？",
+        promptZh: "句型转换：「It is raining, but I will go out.」换成「虽然」那张脸，怎么变？",
         replaceBase: "It is raining, but I will go out.",
         replaceTarget: "换成用 Although 开头",
         options: ["Although it is raining, I will go out.", "Although it is raining, but I will go out.", "Although raining, I will go out."],
@@ -27575,7 +27584,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换那件事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「As soon as I finish, I will eat.」把「写完」换成「到家」，怎么变？",
+        promptZh: "句型转换：「As soon as I finish, I will eat.」把「写完」换成「到家」，怎么变？",
         replaceBase: "As soon as I finish, I will eat.",
         replaceTarget: "把 I finish 换成 I get home",
         options: ["As soon as I get home, I will eat.", "As soon as I will get home, I will eat.", "As soon I get home, I will eat."],
@@ -27774,7 +27783,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：把刻度换成「立刻」（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「When I finish, I will eat.」想强调「立刻」，怎么变？",
+        promptZh: "句型转换：「When I finish, I will eat.」想强调「立刻」，怎么变？",
         replaceBase: "When I finish, I will eat.",
         replaceTarget: "换成强调「一到就、马上」的说法",
         options: ["As soon as I finish, I will eat.", "As soon I finish, I will eat.", "When I will finish, I will eat."],
@@ -27902,8 +27911,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "As soon as I finish, I will eat.", zh: "我一写完就来吃。", noteZh: "第 142 课主句——从它开始。" },
-      { label: "否定", en: "As soon as I finish, I will not wait.", zh: "我一写完就不等了。", noteZh: "第 142 课否定版——「不」放在 will 后面。" },
-      { label: "疑问", en: "Will you eat as soon as you finish?", zh: "你一写完就吃吗？", noteZh: "第 142 课疑问版——Will 搬句首。" }
+      { label: "否定", en: "As soon as I finish, I will not wait.", zh: "我一写完就不等了。", noteZh: "第 142 课否定句——「不」放在 will 后面。" },
+      { label: "疑问", en: "Will you eat as soon as you finish?", zh: "你一写完就吃吗？", noteZh: "第 142 课疑问句——Will 搬句首。" }
     ],
     sceneSwings: [
       { sceneZh: "说我一写完就来吃", en: "As soon as I finish, I will eat.", zh: "我一写完就来吃。" },
@@ -27972,7 +27981,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：两个刻度互换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「When I finish, I will eat.」想强调「一到就」，怎么变？",
+        promptZh: "句型转换：「When I finish, I will eat.」想强调「一到就」，怎么变？",
         replaceBase: "When I finish, I will eat.",
         replaceTarget: "换成强调「立刻」的说法",
         options: ["As soon as I finish, I will eat.", "As soon I finish, I will eat.", "When I will finish, I will eat."],
@@ -28094,7 +28103,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I like tea too.",
         bothRight: true,
-        whyZh: "两句都对——第 66 课那个 too 是「太」（站词前面）；今天这个 too 是「也」（站句尾）。同一个字，两个位置两张脸。"
+        whyZh: "两句都对——第 66 课那个 too 是「太」（站词前面）；今天这个 too 是「也」（站句尾）。同一个字，两个位置两种用法。"
       }
     ],
     variants: [
@@ -28169,7 +28178,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换一样东西（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I like tea too.」把茶换成咖啡，怎么变？",
+        promptZh: "句型转换：「I like tea too.」把茶换成咖啡，怎么变？",
         replaceBase: "I like tea too.",
         replaceTarget: "把 tea 换成 coffee",
         options: ["I like coffee too.", "I too like coffee.", "I like coffee to."],
@@ -28237,7 +28246,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-146-not-either",
     number: 146,
     title: "我也不喜欢",
-    grammarLabel: "两张脸 · 肯定用 too／否定用 either",
+    grammarLabel: "两种用法 · 肯定用 too／否定用 either",
     episode: "小美的一天 一百四十六",
     scene: "mansion",
     cover: cover146,
@@ -28279,14 +28288,14 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I like tea either.",
         wrongMark: "either",
         correct: "I like tea too.",
-        whyZh: "反过来也一样：这句没有「不」，句尾就得用 too——I like tea【 too】。两张脸不能串着用。"
+        whyZh: "反过来也一样：这句没有「不」，句尾就得用 too——I like tea【 too】。两种用法不能串着用。"
       },
       {
         wrong: "I like tea too.",
         wrongMark: null,
         correct: "I don't like coffee either.",
         bothRight: true,
-        whyZh: "两句都对——同一个「也」，两张脸：没有「不」用 too（I like tea too）；有「不」用 either（I don't like coffee either）。"
+        whyZh: "两句都对——同一个「也」，两种用法：没有「不」用 too（I like tea too）；有「不」用 either（I don't like coffee either）。"
       },
       {
         wrong: "I don't have anything for you.",
@@ -28323,7 +28332,7 @@ export const grammarLessons: GrammarLesson[] = [
       ]
     },
     summary: {
-      rule: "同一个「也」，两张脸：没有「不」用 too（I like tea too）；前面有「不」，句尾换 either（I don't like coffee either）。",
+      rule: "同一个「也」，两种用法：没有「不」用 too（I like tea too）；前面有「不」，句尾换 either（I don't like coffee either）。",
       points: [
         "I don't like coffee either. —— 有「不」，句尾用 either",
         "I don't like coffee too. ❌ —— 前面有「不」了，too 要换掉",
@@ -28375,7 +28384,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：两张脸互换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I like tea too.」改成说「我也不喜欢咖啡」，怎么变？",
+        promptZh: "句型转换：「I like tea too.」改成说「我也不喜欢咖啡」，怎么变？",
         replaceBase: "I like tea too.",
         replaceTarget: "改成有「不」的那张脸",
         options: ["I don't like coffee either.", "I don't like coffee too.", "I too don't like coffee."],
@@ -28437,20 +28446,20 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-147-close-24",
     number: 147,
     title: "也家排一行（收口）",
-    grammarLabel: "收口 · 零新知（也的两张脸）",
+    grammarLabel: "收口 · 零新知（也的两种用法）",
     episode: "小美的一天 一百四十七",
     scene: "mansion",
     cover: cover147,
     sceneSetupZh: "本子最后一页：两句话并排写着，中间画了个等号——一句有「不」，一句没有。",
     dialogueEn: "I don't like coffee either.",
     dialogueZh: "小美把两句框起来，在中间点了个点。",
-    intentZh: "把这章学过的两张脸一次说一遍。",
+    intentZh: "把这章学过的两种用法一次说一遍。",
     targetSentence: "I like tea too.",
     blocks: [
       { text: "I like tea too", role: "我也喜欢茶（没有「不」的那张脸）" },
       { text: "I don't like coffee either", role: "我也不喜欢咖啡（有「不」的那张脸）" }
     ],
-    oneLineRule: "同一个「也」，两张脸：肯定句尾用 too（I like tea too）；有「不」的句子，句尾换 either（I don't like coffee either）——看前面有没有「不」。",
+    oneLineRule: "同一个「也」，两种用法：肯定句尾用 too（I like tea too）；有「不」的句子，句尾换 either（I don't like coffee either）——看前面有没有「不」。",
     examples: [
       { en: "I like tea too.", zh: "我也喜欢茶。（第 145 课）" },
       { en: "I don't like coffee either.", zh: "我也不喜欢咖啡。（第 146 课）" },
@@ -28485,14 +28494,14 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I like tea either.",
         wrongMark: "either",
         correct: "I like tea too.",
-        whyZh: "第 146 课回流：这句没有「不」，句尾就得用 too——两张脸不能串着用。"
+        whyZh: "第 146 课回流：这句没有「不」，句尾就得用 too——两种用法不能串着用。"
       },
       {
         wrong: "I don't like coffee either.",
         wrongMark: null,
         correct: "I like tea too.",
         bothRight: true,
-        whyZh: "两句都对——这一章两张脸排一行：没有「不」用 too，有「不」用 either。"
+        whyZh: "两句都对——这一章两种用法排一行：没有「不」用 too，有「不」用 either。"
       },
       {
         wrong: "I don't have anything for you.",
@@ -28516,13 +28525,13 @@ export const grammarLessons: GrammarLesson[] = [
       title: "这一页上有什么",
       paragraphs: [
         "这一章只添了一个新词，但它是中文「也」的另一半：第 145 课的 too 管没有「不」的句子（I like tea too）；第 146 课的 either 管有「不」的句子（I don't like coffee either）。",
-        "两张脸的来头不一样。too 是老熟人：第 43 课你拼过 Drawing is fun too.，第 51 课见过 The desks were cleaned too.，第 66 课讲「太」的时候还专门提过它一句「句尾是『也』」——今天它正式上岗。",
+        "两种用法的来头不一样。too 是老熟人：第 43 课你拼过 Drawing is fun too.，第 51 课见过 The desks were cleaned too.，第 66 课讲「太」的时候还专门提过它一句「句尾是『也』」——今天它正式上岗。",
         "either 是新来的。它抄的是第 83 课那条老规矩：有「不」就换个词——那儿是 something 换成 anything，这儿是 too 换成 either。规矩一样，换的词不一样。",
-        "两张脸排一行念一遍：I like tea too.／I don't like coffee either.——同一个「也」，看前面有没有「不」，你都拿到了。"
+        "两种用法排一行念一遍：I like tea too.／I don't like coffee either.——同一个「也」，看前面有没有「不」，你都拿到了。"
       ]
     },
     summary: {
-      rule: "两张脸排一行：没有「不」用 too（I like tea too）；有「不」用 either（I don't like coffee either）——都站句尾。",
+      rule: "两种用法排一行：没有「不」用 too（I like tea too）；有「不」用 either（I don't like coffee either）——都站句尾。",
       points: [
         "I like tea too.（句尾 too）",
         "I don't like coffee either.（句尾 either）",
@@ -28561,7 +28570,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "too.",
         answer: "too.",
         correctionZh: "第 146 课回流：前面有「不」，句尾要换成 either。",
-        explain: "两张脸不能串着用。"
+        explain: "两种用法不能串着用。"
       },
       {
         // R8 跨课复现：第 83 课
@@ -28574,7 +28583,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：两张脸互换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I like tea too.」改成说「我也不喜欢咖啡」，怎么变？",
+        promptZh: "句型转换：「I like tea too.」改成说「我也不喜欢咖啡」，怎么变？",
         replaceBase: "I like tea too.",
         replaceTarget: "改成有「不」的那张脸",
         options: ["I don't like coffee either.", "I don't like coffee too.", "I like tea either."],
@@ -28695,7 +28704,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "Both books are good.",
         bothRight: true,
-        whyZh: "两句都对——第 7 课那句也是「一伙的」一起出场，搭档用 are。今天说的是「两个都」。"
+        whyZh: "两句都对——第 7 课那句也是「复数」一起出场，搭档用 are。今天说的是「两个都」。"
       },
       {
         wrong: "I ate two sandwiches.",
@@ -28719,7 +28728,7 @@ export const grammarLessons: GrammarLesson[] = [
       title: "中文的「都」在中间，英语的要站最前面",
       paragraphs: [
         "中文说「两本书都很好」——「都」字夹在中间。英语不这样：both 要走到最前面去，站在这对东西的前头——Both books are good.",
-        "它站出来以后，后面那对东西有两个小变化：名字要带上 s（books），搭档要用 are。这两条你都不陌生：第 11 课学过「两个以上加 s」，第 7 课学过「一伙的用 are」。",
+        "它站出来以后，后面那对东西有两个小变化：名字要带上 s（books），搭档要用 are。这两条你都不陌生：第 11 课学过「两个以上加 s」，第 7 课学过「复数用 are」。",
         "还有一个更省事的说法：不说 both，直接说 the two——The two books are good.（那两本都好）。两句都对，意思一样。",
         "顺带记一句：这个 both 只管「两个」。要是三个以上一起都好，英语有另一个词，今天先不碰。"
       ]
@@ -28755,7 +28764,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 7 课学过：我们很开心。",
         tokens: ["We", "are", "happy."],
         answer: "We are happy.",
-        explain: "复现第 7 课：一伙的一起出场，搭档用 are——今天那两本书也一样。"
+        explain: "复现第 7 课：复数一起出场，搭档用 are——今天那两本书也一样。"
       },
       {
         kind: "spot",
@@ -28777,7 +28786,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换一样东西（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Both books are good.」把书换成苹果，怎么变？",
+        promptZh: "句型转换：「Both books are good.」把书换成苹果，怎么变？",
         replaceBase: "Both books are good.",
         replaceTarget: "把 books 换成 apples",
         options: ["Both apples are good.", "Apples both are good.", "Both apple is good."],
@@ -28894,7 +28903,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "Neither book is good.",
         bothRight: true,
-        whyZh: "两句都对——同一个「两个」，两张脸：没有「不」用 both（Both books are good）；有「不」用 neither（Neither book is good）。"
+        whyZh: "两句都对——同一个「两个」，两种用法：没有「不」用 both（Both books are good）；有「不」用 neither（Neither book is good）。"
       },
       {
         wrong: "I don't like coffee either.",
@@ -28983,7 +28992,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：两张脸互换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Both books are good.」改成说「两本都不好」，怎么变？",
+        promptZh: "句型转换：「Both books are good.」改成说「两本都不好」，怎么变？",
         replaceBase: "Both books are good.",
         replaceTarget: "改成有「不」的那张脸",
         options: ["Neither book is good.", "Both books are not good.", "Neither books are good."],
@@ -29052,13 +29061,13 @@ export const grammarLessons: GrammarLesson[] = [
     sceneSetupZh: "本子最后一页：两行并排写着——一行没有「不」，一行有。",
     dialogueEn: "Neither book is good.",
     dialogueZh: "小美把这两行框起来，在中间点了个点。",
-    intentZh: "把这章学过的两张脸一次说一遍。",
+    intentZh: "把这章学过的两种用法一次说一遍。",
     targetSentence: "Both books are good.",
     blocks: [
       { text: "Both books are good", role: "两本都好（没有「不」那张脸）" },
       { text: "Neither book is good", role: "两本都不好（有「不」那张脸）" }
     ],
-    oneLineRule: "同一个「两个」，两张脸：没有「不」用 both（Both books are good）；有「不」的时候，最前面换 neither（Neither book is good）——看最前面那个词有没有「不」。",
+    oneLineRule: "同一个「两个」，两种用法：没有「不」用 both（Both books are good）；有「不」的时候，最前面换 neither（Neither book is good）——看最前面那个词有没有「不」。",
     examples: [
       { en: "Both books are good.", zh: "两本都好。（第 148 课）" },
       { en: "Neither book is good.", zh: "两本都不好。（第 149 课）" },
@@ -29100,14 +29109,14 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "Both books are good.",
         bothRight: true,
-        whyZh: "两句都对——这一章两张脸排一行：没有「不」用 both，有「不」用 neither。"
+        whyZh: "两句都对——这一章两种用法排一行：没有「不」用 both，有「不」用 neither。"
       },
       {
         wrong: "We are happy.",
         wrongMark: null,
         correct: "Both books are good.",
         bothRight: true,
-        whyZh: "两句都对——第 7 课那句也是「一伙的」一起出场，搭档用 are。"
+        whyZh: "两句都对——第 7 课那句也是「复数」一起出场，搭档用 are。"
       }
     ],
     variants: [
@@ -29126,11 +29135,11 @@ export const grammarLessons: GrammarLesson[] = [
         "这一章添了两个新词，它们是中文「都」的两半：第 148 课的 both 管没有「不」的句子（Both books are good）；第 149 课的 neither 管有「不」的句子（Neither book is good）。",
         "位置要注意：两个词都站最前面——不像第 146 课的 too 和 either 站句尾。从句子中间（第 83 课的 anything），到句尾（第 146 课的 either），到今天的最前面（neither），那条老规矩换过三个位置了。",
         "neither 还有个特点：它自己已经带着「不」，后面不要再补一个——Neither book is not good. 是两个「不」撞在一起，意思要翻。",
-        "两张脸排一行念一遍：Both books are good.／Neither book is good.——同一个「两个」，看最前面有没有「不」，你都拿到了。"
+        "两种用法排一行念一遍：Both books are good.／Neither book is good.——同一个「两个」，看最前面有没有「不」，你都拿到了。"
       ]
     },
     summary: {
-      rule: "两张脸排一行：没有「不」用 both（Both books are good）；有「不」用 neither（Neither book is good）——都站最前面。",
+      rule: "两种用法排一行：没有「不」用 both（Both books are good）；有「不」用 neither（Neither book is good）——都站最前面。",
       points: [
         "Both books are good.（没有「不」）",
         "Neither book is good.（有「不」——后面只说一个）",
@@ -29160,7 +29169,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 7 课学过：我们很开心。",
         tokens: ["We", "are", "happy."],
         answer: "We are happy.",
-        explain: "复现第 7 课：一伙的一起出场，搭档用 are。"
+        explain: "复现第 7 课：复数一起出场，搭档用 are。"
       },
       {
         kind: "spot",
@@ -29169,7 +29178,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "Both",
         answer: "Both",
         correctionZh: "第 149 课回流：有「不」的时候最前面换人——【Neither】 book is good。",
-        explain: "有「不」就得换最前面那个词，两张脸不能串着用。"
+        explain: "有「不」就得换最前面那个词，两种用法不能串着用。"
       },
       {
         // R8 跨课复现：第 11 课
@@ -29182,7 +29191,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：两张脸互换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Both books are good.」改成说「两本都不好」，怎么变？",
+        promptZh: "句型转换：「Both books are good.」改成说「两本都不好」，怎么变？",
         replaceBase: "Both books are good.",
         replaceTarget: "改成有「不」的那张脸",
         options: ["Neither book is good.", "Both books are not good.", "Neither books are good."],
@@ -29304,7 +29313,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "All the books are good.",
         bothRight: true,
-        whyZh: "两句都对——第 11 课那句也是「好几个」（带上 s），今天学的 all 正是冲着一群去的。"
+        whyZh: "两句都对——第 11 课那句也是「复数」（带上 s），今天学的 all 正是冲着一群去的。"
       }
     ],
     variants: [
@@ -29320,7 +29329,7 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "中文一个「都」字，英语走到第三个词了",
       paragraphs: [
-        "中文一个「都」字，英语按「管几个」分家：管两个的被拆成两张脸——没有「不」用 both（第 148 课），有「不」用 neither（第 149 课）；管三个以上、或者数不清的，用今天这个 all。",
+        "中文一个「都」字，英语按「管几个」分家：管两个的被拆成两种用法——没有「不」用 both（第 148 课），有「不」用 neither（第 149 课）；管三个以上、或者数不清的，用今天这个 all。",
         "all 跟 both 站的位置一样：最前面。后面那个东西也一样要带上 s、搭档也一样用 are——两条都是老规矩，今天一个都没变。",
         "它俩最显眼的一处不一样：all 后面可以站 the 或者 my（All the books／All my books），both 后面不站。所以「这些书全都好」说 All the books are good.，「这两本都好」说 Both books are good.。",
         "第 148 课末尾留过一句话：要是三个以上一起都好，英语有另一个词，那天先不碰。就是今天这个 all。"
@@ -29366,7 +29375,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "student",
         answer: "student",
         correctionZh: "「一个不落」说的是一群，后面要带上 s——All 【students】 are good。",
-        explain: "第 11 课的老规矩：好几个要带上 s。"
+        explain: "第 11 课的老规矩：复数要带上 -s。"
       },
       {
         // R8 跨课复现：第 11 课（好几个带上 s）
@@ -29374,12 +29383,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 11 课学过：我吃了两个三明治。",
         tokens: ["I", "ate", "two", "sandwiches."],
         answer: "I ate two sandwiches.",
-        explain: "复现第 11 课：好几个，名字带上 s。"
+        explain: "复现第 11 课：两个三明治，名字 sandwich 要带上 s。"
       },
       {
         // R9 变形/替换：the 换成 my（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「All the books are good.」把 the 换成 my，怎么变？",
+        promptZh: "句型转换：「All the books are good.」把 the 换成 my，怎么变？",
         replaceBase: "All the books are good.",
         replaceTarget: "把 the 换成 my",
         options: ["All my books are good.", "All of books are good.", "My all books are good."],
@@ -29460,7 +29469,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "Every student", role: "每个学生（一个一个来，只说一个）" },
       { text: "is here", role: "都到了（一个一个数，搭档用 is）" }
     ],
-    oneLineRule: "说「一个一个都」：every 后面只说一个——Every student is here（每个学生都到了）。上一课那个 all 后面是好几个，这个后面只站一个。",
+    oneLineRule: "说「一个一个都」：every 后面只说一个——Every student is here（每个学生都到了）。上一课那个 all 后面是复数，这个后面只站一个。",
     examples: [
       { en: "Every student is here.", zh: "每个学生都到了。" },
       { en: "All the students are here.", zh: "全班都到了。（第 151 课——那是好多个一起）" },
@@ -29533,7 +29542,7 @@ export const grammarLessons: GrammarLesson[] = [
       ]
     },
     summary: {
-      rule: "说「一个一个都」：every 后面只说一个、搭档用 is——Every student is here；上一课那个 all 后面是好几个、搭档用 are。",
+      rule: "说「一个一个都」：every 后面只说一个、搭档用 is——Every student is here；上一课那个 all 后面是复数、搭档用 are。",
       points: [
         "Every student is here. —— every 后面只说一个",
         "Every students are here. ❌ / Every are here. ❌ —— 不加 s、不能自己单站",
@@ -29585,7 +29594,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换那个东西（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Every student is here.」把 student 换成 book，怎么变？",
+        promptZh: "句型转换：「Every student is here.」把 student 换成 book，怎么变？",
         replaceBase: "Every student is here.",
         replaceTarget: "把 student 换成 book",
         options: ["Every book is here.", "Every books are here.", "All book is here."],
@@ -29663,7 +29672,7 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "她还没来。",
     targetSentence: "She hasn't come yet.",
     blocks: [
-      { text: "She hasn't come", role: "她还没来（做过版 + 没）" },
+      { text: "She hasn't come", role: "她还没来（过去分词 + 没）" },
       { text: "yet", role: "还没（站在最末尾）" }
     ],
     oneLineRule: "说「还没」：yet 站在句子最末尾——She hasn't come yet（她还没来）。说「已经」用 already，它站在中间、紧挨着 not 的位置——I have already eaten（我已经吃过了）。",
@@ -29702,21 +29711,21 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "She hasn't come yet.",
         bothRight: true,
-        whyZh: "两句都对——一个有「没」用 yet，一个是「已经」用 already；两句话都穿着「做过版」。"
+        whyZh: "两句都对——一个有「没」用 yet，一个是「已经」用 already；两句话都穿着「过去分词」。"
       },
       {
         wrong: "I haven't done my homework.",
         wrongMark: null,
         correct: "She hasn't come yet.",
         bothRight: true,
-        whyZh: "两句都对——第 21 课那句就是「做过版 + 没」，今天只是给它补上句尾那个 yet。"
+        whyZh: "两句都对——第 21 课那句就是「过去分词 + 没」，今天只是给它补上句尾那个 yet。"
       },
       {
         wrong: "I have lost my key.",
         wrongMark: null,
         correct: "She hasn't come yet.",
         bothRight: true,
-        whyZh: "两句都对——第 23 课那句也是「做过版」；今天多学两个词，让「还没」和「已经」说得出来。"
+        whyZh: "两句都对——第 23 课那句也是「过去分词」；今天多学两个词，让「还没」和「已经」说得出来。"
       }
     ],
     variants: [
@@ -29730,16 +29739,16 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "问做完了吗", en: "Have you finished yet?", zh: "你做完了吗？" }
     ],
     deepDive: {
-      title: "「做过版」缺的那两个词",
+      title: "「过去分词」缺的那两个词",
       paragraphs: [
-        "第 21 课你就学过「做过版」了：I have done my homework.（我已经写完作业了）。它的否定形也学过：I haven't done my homework.（我还没写作业）。",
+        "第 21 课你就学过「过去分词」了：I have done my homework.（我已经写完作业了）。它的否定形也学过：I haven't done my homework.（我还没写作业）。",
         "可是你有没有发现——那两句话里，中文的「已经」和「还没」在英语那边一直没露面？今天就是来补这两个词：要说明「已经」，加一个 already（站中间）；要说明「还没」，加一个 yet（站最末尾）。",
         "位置是这两个词最要紧的地方：already 紧挨着 have 站中间，yet 要走到整句话的最后。中文的「还」在中间、「已经」也在中间，英语把其中一个推到了句尾。",
-        "今天的两句话你其实都会一半了——把 already 和 yet 加上去，那半句「做过版」立刻就完整了。"
+        "今天的两句话你其实都会一半了——把 already 和 yet 加上去，那半句「过去分词」立刻就完整了。"
       ]
     },
     summary: {
-      rule: "「做过版」里补两个词：说「还没」用 yet（站句尾），说「已经」用 already（站中间）——She hasn't come yet／I have already eaten。",
+      rule: "「过去分词」里补两个词：说「还没」用 yet（站句尾），说「已经」用 already（站中间）——She hasn't come yet／I have already eaten。",
       points: [
         "She hasn't come yet. —— yet 站在最末尾",
         "I have already eaten. —— already 站在中间",
@@ -29764,12 +29773,12 @@ export const grammarLessons: GrammarLesson[] = [
         explain: "她还没来（She hasn't come）＋ 还没（yet）站在最后。"
       },
       {
-        // R8 跨课复现：第 21 课（做过版的老句子）
+        // R8 跨课复现：第 21 课（过去分词的老句子）
         kind: "arrange",
         promptZh: "先复习一小步——第 21 课学过：我已经写完作业了。",
         tokens: ["I", "have", "done", "my", "homework."],
         answer: "I have done my homework.",
-        explain: "复现第 21 课：做过版的老句式——今天给它补上「已经」那个词。"
+        explain: "复现第 21 课：过去分词的老句式——今天给它补上「已经」那个词。"
       },
       {
         kind: "spot",
@@ -29786,12 +29795,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 21 课学过：我还没写作业。",
         tokens: ["I", "haven't", "done", "my", "homework."],
         answer: "I haven't done my homework.",
-        explain: "复现第 21 课：「做过版 + 没」的老说法——今天在后面加一个 yet 就更完整。"
+        explain: "复现第 21 课：「过去分词 + 没」的老说法——今天在后面加一个 yet 就更完整。"
       },
       {
         // R9 变形/替换：句尾换成中间（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「She hasn't come yet.」改成说「她已经来了」，怎么变？",
+        promptZh: "句型转换：「She hasn't come yet.」改成说「她已经来了」，怎么变？",
         replaceBase: "She hasn't come yet.",
         replaceTarget: "改成「已经」（不加 not）",
         options: ["She has already come.", "She has come already yet.", "She already has come."],
@@ -29935,7 +29944,7 @@ export const grammarLessons: GrammarLesson[] = [
         "中文一个「还」字，其实是两个意思。一个是「还没」——到现在还没发生（She hasn't come yet.，第 153 课）；一个是「还在」——到现在还一直发生着（She is still waiting.，今天）。",
         "英语用两个词分着说，而且位置正相反：说「还没」的 yet 站在句子最末尾；说「还在」的 still 站在中间、紧挨着 is 或 have。",
         "所以判断用哪个，先问一句：这件事是「压根还没发生」，还是「一直在发生」？前者用 yet，后者用 still。",
-        "位置也顺手记一下：still 站中间，跟今天这句里的 is 挨着；要是句子里有 have（做过版），它就跟着 have 走。"
+        "位置也顺手记一下：still 站中间，跟今天这句里的 is 挨着；要是句子里有 have（过去分词），它就跟着 have 走。"
       ]
     },
     summary: {
@@ -29991,12 +30000,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换那个人（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「She is still waiting.」把 She 换成 They，怎么变？",
+        promptZh: "句型转换：「She is still waiting.」把 She 换成 They，怎么变？",
         replaceBase: "She is still waiting.",
         replaceTarget: "把 She 换成 They",
         options: ["They are still waiting.", "They is still waiting.", "They still are waiting."],
         answer: "They are still waiting.",
-        explain: "换那个人——一伙的用 are，still 照样站在中间。"
+        explain: "换那个人——复数用 are，still 照样站在中间。"
       }
     ],
     practice: [
@@ -30028,7 +30037,7 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "I was reading at eight."
       },
       {
-        // 复现第 21 课（做过版）
+        // 复现第 21 课（过去分词）
         promptZh: "复习第 21 课：我已经写完作业了。",
         tokens: ["I", "have", "done", "my", "homework."],
         distractors: ["did"],
@@ -30069,14 +30078,14 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "她三天前走的。",
     targetSentence: "She left three days ago.",
     blocks: [
-      { text: "She left", role: "她走了（动作穿昨天版）" },
+      { text: "She left", role: "她走了（动作穿过去式）" },
       { text: "three days ago", role: "三天前（数字＋时间词，ago 站最末尾）" }
     ],
-    oneLineRule: "说「多久以前」：数字＋时间词后面加 ago，它站在句子最末尾——She left three days ago（她三天前走的）。前面那件事要穿昨天版：left。",
+    oneLineRule: "说「多久以前」：数字＋时间词后面加 ago，它站在句子最末尾——She left three days ago（她三天前走的）。前面那件事要穿过去式：left。",
     examples: [
       { en: "She left three days ago.", zh: "她三天前走的。" },
       { en: "She left two hours ago.", zh: "她两个小时前走的。" },
-      { en: "I watched TV.", zh: "我看了电视。（第 10 课——昨天版）" },
+      { en: "I watched TV.", zh: "我看了电视。（第 10 课——过去式）" },
       { en: "It takes ten minutes.", zh: "要花十分钟。（第 73 课——那是「要花多久」）" }
     ],
     dialogue: [
@@ -30089,7 +30098,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She has left three days ago.",
         wrongMark: "has left",
         correct: "She left three days ago.",
-        whyZh: "「…以前」说的是过去某一个点，那句话穿昨天版就够——She 【left】 three days ago，前面不加 have。"
+        whyZh: "「…以前」说的是过去某一个点，那句话穿过去式就够——She 【left】 three days ago，前面不加 have。"
       },
       {
         wrong: "She left ago three days.",
@@ -30101,14 +30110,14 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She leaves three days ago.",
         wrongMark: "leaves",
         correct: "She left three days ago.",
-        whyZh: "看到「…以前」就要换昨天版——leave 的昨天版是 【left】。第 10 课的老规矩。"
+        whyZh: "看到「…以前」就要换过去式——leave 的过去式是 【left】。第 10 课的老规矩。"
       },
       {
         wrong: "I watched TV.",
         wrongMark: null,
         correct: "She left three days ago.",
         bothRight: true,
-        whyZh: "两句都对——第 10 课那句也是昨天版；今天多学一个「多久以前」的说法。"
+        whyZh: "两句都对——第 10 课那句也是过去式；今天多学一个「多久以前」的说法。"
       },
       {
         wrong: "She left two hours ago.",
@@ -30127,7 +30136,7 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "She left three days ago.", zh: "她三天前走的。", noteZh: "ago 站在句子最末尾。" },
-      { label: "否定", en: "She didn't leave three days ago.", zh: "她不是三天前走的。", noteZh: "didn't 一出场，动词回原样 leave。" },
+      { label: "否定", en: "She didn't leave three days ago.", zh: "她不是三天前走的。", noteZh: "didn't 一出场，动词回原形 leave。" },
       { label: "疑问", en: "Did she leave three days ago?", zh: "她是三天前走的吗？", noteZh: "Did 搬到句首——ago 照样站最末尾。" }
     ],
     sceneSwings: [
@@ -30145,10 +30154,10 @@ export const grammarLessons: GrammarLesson[] = [
       ]
     },
     summary: {
-      rule: "说「多久以前」：数字＋时间词＋ago，站在句子最末尾——She left three days ago；前面那件事穿昨天版。",
+      rule: "说「多久以前」：数字＋时间词＋ago，站在句子最末尾——She left three days ago；前面那件事穿过去式。",
       points: [
         "She left three days ago. —— ago 站最末尾",
-        "She has left three days ago. ❌ —— 「…以前」就穿昨天版，前面不加 have",
+        "She has left three days ago. ❌ —— 「…以前」就穿过去式，前面不加 have",
         "three days / two hours —— 数着说的时候，那个词要带上 s"
       ]
     },
@@ -30160,7 +30169,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "three days ago.",
         options: ["left", "has left", "leaves"],
         answer: "left",
-        explain: "「…以前」说的是过去某一个点，那句穿昨天版——She left three days ago。"
+        explain: "「…以前」说的是过去某一个点，那句穿过去式——She left three days ago。"
       },
       {
         kind: "arrange",
@@ -30170,12 +30179,12 @@ export const grammarLessons: GrammarLesson[] = [
         explain: "她走了（She left）＋ 三天前（three days ago）站在最后。"
       },
       {
-        // R8 跨课复现：第 10 课（昨天版老规矩）
+        // R8 跨课复现：第 10 课（过去式老规矩）
         kind: "arrange",
         promptZh: "先复习一小步——第 10 课学过：我看了电视。",
         tokens: ["I", "watched", "TV."],
         answer: "I watched TV.",
-        explain: "复现第 10 课：说是过去的事，动词就要换昨天版——今天那句也一样。"
+        explain: "复现第 10 课：说是过去的事，动词就要换过去式——今天那句也一样。"
       },
       {
         kind: "spot",
@@ -30197,7 +30206,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换一段时间（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「She left three days ago.」把三天换成两个小时，怎么变？",
+        promptZh: "句型转换：「She left three days ago.」把三天换成两个小时，怎么变？",
         replaceBase: "She left three days ago.",
         replaceTarget: "把 three days 换成 two hours",
         options: ["She left two hours ago.", "She left ago two hours.", "She has left two hours ago."],
@@ -30234,7 +30243,7 @@ export const grammarLessons: GrammarLesson[] = [
         answer: "It takes ten minutes."
       },
       {
-        // 复现第 95 课（昨天版进行）
+        // 复现第 95 课（过去式进行）
         promptZh: "复习第 95 课：八点的时候我正在看书。",
         tokens: ["I", "was", "reading", "at", "eight."],
         distractors: ["were"],
@@ -30257,7 +30266,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "站台上同学问那个交换生还来不来。凭记忆，写出你那句英文。",
       intentZh: "她三天前走的。",
       answer: "She left three days ago.",
-      noteZh: "ago 站在句子最末尾——前面那句穿昨天版。"
+      noteZh: "ago 站在句子最末尾——前面那句穿过去式。"
     },
     huntCaseIds: ["hunt-three-days-ago"]
   },
@@ -30275,7 +30284,7 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我等了一个小时。",
     targetSentence: "I waited for an hour.",
     blocks: [
-      { text: "I waited", role: "我等了（动作穿昨天版）" },
+      { text: "I waited", role: "我等了（动作穿过去式）" },
       { text: "for an hour", role: "一个小时（持续了多久，前面加 for）" }
     ],
     oneLineRule: "说「持续了多久」：在那块时间前面加 for——I waited for an hour（我等了一个小时）。这一课和上一课正好一对：说「多久以前」用 ago 站句尾，说「持续了多久」用 for 接在前面。",
@@ -30307,7 +30316,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I wait for an hour.",
         wrongMark: "wait",
         correct: "I waited for an hour.",
-        whyZh: "说的是已经等过了，动词要换昨天版——wait 的昨天版是 【waited】。"
+        whyZh: "说的是已经等过了，动词要换过去式——wait 的过去式是 【waited】。"
       },
       {
         wrong: "She left three days ago.",
@@ -30333,7 +30342,7 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "I waited for an hour.", zh: "我等了一个小时。", noteZh: "for 接在那块时间前面。" },
-      { label: "否定", en: "I didn't wait for an hour.", zh: "我没等一个小时。", noteZh: "didn't 一出场，动词回原样 wait。" },
+      { label: "否定", en: "I didn't wait for an hour.", zh: "我没等一个小时。", noteZh: "didn't 一出场，动词回原形 wait。" },
       { label: "疑问", en: "Did you wait for an hour?", zh: "你等了一个小时吗？", noteZh: "Did 搬到句首——for an hour 照样跟在后面。" }
     ],
     sceneSwings: [
@@ -30403,7 +30412,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换一段时间（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I waited for an hour.」把一个小时换成两个小时，怎么变？",
+        promptZh: "句型转换：「I waited for an hour.」把一个小时换成两个小时，怎么变？",
         replaceBase: "I waited for an hour.",
         replaceTarget: "把 an hour 换成 two hours",
         options: ["I waited for two hours.", "I waited two hours for.", "I wait for two hours."],
@@ -30609,7 +30618,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：两张脸互换（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「All the books are good.」改成说「这些本子一个都不好」，怎么变？",
+        promptZh: "句型转换：「All the books are good.」改成说「这些本子一个都不好」，怎么变？",
         replaceBase: "All the books are good.",
         replaceTarget: "改成有「不」的那张脸",
         options: ["None of the books are good.", "None books are good.", "All the books are not good."],
@@ -30809,7 +30818,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换地方（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Nobody is at home.」把 at home 换成 here，怎么变？",
+        promptZh: "句型转换：「Nobody is at home.」把 at home 换成 here，怎么变？",
         replaceBase: "Nobody is at home.",
         replaceTarget: "把 at home 换成 here",
         options: ["Nobody is here.", "Nobody are here.", "None is here."],
@@ -30919,7 +30928,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "It looks like boat.",
         wrongMark: "boat",
         correct: "It looks like a boat.",
-        whyZh: "一条船要说 a boat——那个 a 不能丢。like 后面跟的是一个「什么东西」，前面要报数。"
+        whyZh: "一条船要说 a boat——那个 a 不能丢。like 后面跟的是一个「什么东西」，前面要加 a。"
       },
       {
         wrong: "The sky looks dark.",
@@ -30940,13 +30949,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "It looks like a boat.",
         bothRight: true,
-        whyZh: "两句都对——第 15 课那句学过 to 这个垫板（want to go）；今天的 like 也是跟在 look 后面的一个小垫板。"
+        whyZh: "两句都对——第 15 课那句学过 to（want to go）；今天的 like 也是跟在 look 后面的一个 to。"
       }
     ],
     variants: [
       { label: "肯定", en: "It looks like a boat.", zh: "它看起来像一条船。", noteZh: "look 后面请 like 出场。" },
       { label: "否定", en: "It doesn't look like a boat.", zh: "它看起来不像一条船。", noteZh: "「不像」用 doesn't：not 跟着 does 走。" },
-      { label: "疑问", en: "Does it look like a boat?", zh: "它看起来像一条船吗？", noteZh: "Does 搬到句首——look 回原样。" }
+      { label: "疑问", en: "Does it look like a boat?", zh: "它看起来像一条船吗？", noteZh: "Does 搬到句首——look 回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说它看起来像一条船", en: "It looks like a boat.", zh: "它看起来像一条船。" },
@@ -31010,12 +31019,12 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 15 课学过：我想去。",
         tokens: ["I", "want", "to", "go."],
         answer: "I want to go.",
-        explain: "复现第 15 课：want 后面那个 to 也是个小垫板——今天的 like 位置跟它一样。"
+        explain: "复现第 15 课：want 后面那个 to 也是个 to——今天的 like 位置跟它一样。"
       },
       {
         // R9 变形/替换：换一样东西（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「It looks like a boat.」把船换成猫，怎么变？",
+        promptZh: "句型转换：「It looks like a boat.」把船换成猫，怎么变？",
         replaceBase: "It looks like a boat.",
         replaceTarget: "把 a boat 换成 a cat",
         options: ["It looks like a cat.", "It looks a cat.", "It look like a cat."],
@@ -31094,13 +31103,13 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "He seems to know you.",
     blocks: [
       { text: "He seems", role: "他好像（seem 中间站，戴着带 s 的那件）" },
-      { text: "to know you", role: "认识你（后面那个动作穿原样，前面垫个 to）" }
+      { text: "to know you", role: "认识你（后面那个动作用原形，前面垫个 to）" }
     ],
-    oneLineRule: "说「好像」用 seem，后面请 to 垫一下——He seems to know you（他好像认识你）。to 后面那个动作穿原样：to know，不换形状。",
+    oneLineRule: "说「好像」用 seem，后面请 to 垫一下——He seems to know you（他好像认识你）。to 后面那个动作用原形：to know，不换形状。",
     examples: [
       { en: "He seems to know you.", zh: "他好像认识你。" },
       { en: "She seems to like the boat.", zh: "她好像喜欢那条船。" },
-      { en: "I want to go.", zh: "我想去。（第 15 课——同一个 to 垫板）" },
+      { en: "I want to go.", zh: "我想去。（第 15 课——同一个 to to）" },
       { en: "It looks like a boat.", zh: "它看起来像一条船。（第 159 课）" }
     ],
     dialogue: [
@@ -31119,7 +31128,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "He seems to knows you.",
         wrongMark: "knows",
         correct: "He seems to know you.",
-        whyZh: "to 后面那个动作穿原样——to 【know】，不换形状。第 15 课学过：一场戏只让一个词换形状，seems 已经换过了。"
+        whyZh: "to 后面那个动作用原形——to 【know】，不换形状。第 15 课学过：一场戏只让一个词换形状，seems 已经换过了。"
       },
       {
         wrong: "He seem to know you.",
@@ -31139,7 +31148,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "He seems to know you.",
         bothRight: true,
-        whyZh: "两句都对——第 15 课那个 to 和今天这个 to 是同一个垫板；只是前面站的词不一样（want／seem）。"
+        whyZh: "两句都对——第 15 课那个 to 和今天这个 to 是同一个 to；只是前面站的词不一样（want／seem）。"
       },
       {
         wrong: "You look tired.",
@@ -31151,8 +31160,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "He seems to know you.", zh: "他好像认识你。", noteZh: "seem 后面请 to 垫一下。" },
-      { label: "否定", en: "He doesn't seem to know you.", zh: "他好像不认识你。", noteZh: "「好像不」用 doesn't：not 跟着 does 走，seem 回原样。" },
-      { label: "疑问", en: "Does he seem to know you?", zh: "他好像认识你吗？", noteZh: "Does 搬到句首——seem 回原样，to 照样在。" }
+      { label: "否定", en: "He doesn't seem to know you.", zh: "他好像不认识你。", noteZh: "「好像不」用 doesn't：not 跟着 does 走，seem 回原形。" },
+      { label: "疑问", en: "Does he seem to know you?", zh: "他好像认识你吗？", noteZh: "Does 搬到句首——seem 回原形，to 照样在。" }
     ],
     sceneSwings: [
       { sceneZh: "说他好像认识你", en: "He seems to know you.", zh: "他好像认识你。" },
@@ -31164,16 +31173,16 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 126 课你学过：You look tired.（你看起来很累）——那是眼睛看到的，说出来像在报一个事实。",
         "今天这个 seem 不一样：He seems to know you.（他好像认识你）——这是心里猜的，你觉得像，但不敢打包票。",
-        "外形上它也要请一个小垫板：seem 后面跟 to，to 后面那个动作穿原样（to know，不是 to knows）。这个 to 你第 15 课就见过——I want to go. 里那个 to 是同一个。",
-        "所以今天这句其实一半是熟的：垫板是老的，只是前面站的那个词换成了 seem。"
+        "外形上它也要请一个 to：seem 后面跟 to，to 后面那个动作用原形（to know，不是 to knows）。这个 to 你第 15 课就见过——I want to go. 里那个 to 是同一个。",
+        "所以今天这句其实一半是熟的：to 是老的，只是前面站的那个词换成了 seem。"
       ]
     },
     summary: {
-      rule: "说「好像」用 seem，后面请 to 垫一下——He seems to know you；to 后面那个动作穿原样。",
+      rule: "说「好像」用 seem，后面请 to 垫一下——He seems to know you；to 后面那个动作用原形。",
       points: [
         "He seems to know you. —— seem 后面有 to",
         "He seems know you. ❌ —— 少了 to 连不上（第 15 课老规矩）",
-        "He seems to knows you. ❌ —— to 后面穿原样，不换形状"
+        "He seems to knows you. ❌ —— to 后面用原形，不换形状"
       ]
     },
     guided: [
@@ -31207,7 +31216,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["He", "seems", "to", "knows", "you."],
         wrongToken: "knows",
         answer: "knows",
-        correctionZh: "to 后面那个动作穿原样——to 【know】 you，不换形状。",
+        correctionZh: "to 后面那个动作用原形——to 【know】 you，不换形状。",
         explain: "第 15 课学过：一场戏只让一个词换形状，seems 已经换过了。"
       },
       {
@@ -31216,17 +31225,17 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 15 课学过：我想去。",
         tokens: ["I", "want", "to", "go."],
         answer: "I want to go.",
-        explain: "复现第 15 课：这个 to 和今天那个是同一个垫板——后面都穿原样。"
+        explain: "复现第 15 课：这个 to 和今天那个是同一个 to——后面都用原形。"
       },
       {
         // R9 变形/替换：换个人（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「He seems to know you.」把这个「他」换成「她」，怎么变？",
+        promptZh: "句型转换：「He seems to know you.」把这个「他」换成「她」，怎么变？",
         replaceBase: "He seems to know you.",
         replaceTarget: "把 He 换成 She",
         options: ["She seems to know you.", "She seem to know you.", "She seems to knows you."],
         answer: "She seems to know you.",
-        explain: "换个人——She 也是「一个」，seems 照样带 s，to 后面照样原样。"
+        explain: "换个人——She 也是「一个」，seems 照样带 s，to 后面照样原形。"
       }
     ],
     practice: [
@@ -31281,7 +31290,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "远处走来一个人，朝你们招了招手。凭记忆，写出你那句英文。",
       intentZh: "他好像认识你。",
       answer: "He seems to know you.",
-      noteZh: "seem 后面请 to 垫一下——to 后面那个动作穿原样。"
+      noteZh: "seem 后面请 to 垫一下——to 后面那个动作用原形。"
     },
     huntCaseIds: ["hunt-seems-to-know"]
   },
@@ -31300,14 +31309,14 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "I need to buy some milk.",
     blocks: [
       { text: "I need", role: "我需要（need 站在中间）" },
-      { text: "to buy some milk", role: "买点牛奶（后面那个动作穿原样，前面垫个 to）" }
+      { text: "to buy some milk", role: "买点牛奶（后面那个动作用原形，前面垫个 to）" }
     ],
     oneLineRule: "说「需要」用 need，后面请 to 垫一下——I need to buy some milk（我需要买点牛奶）。它和第 16 课那个「必须」不一样：must 是别人要求你，need 是这件事本身要办。",
     examples: [
       { en: "I need to buy some milk.", zh: "我需要买点牛奶。" },
       { en: "I need to go home now.", zh: "我现在得回家。" },
       { en: "I must finish my homework today.", zh: "我今天必须写完作业。（第 16 课——那是「必须」）" },
-      { en: "I want to go.", zh: "我想去。（第 15 课——同一个 to 垫板）" }
+      { en: "I want to go.", zh: "我想去。（第 15 课——同一个 to to）" }
     ],
     dialogue: [
       { who: "npc", en: "What's on the list?", zh: "同学凑过来看你的小本子。" },
@@ -31325,7 +31334,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I need to buys some milk.",
         wrongMark: "buys",
         correct: "I need to buy some milk.",
-        whyZh: "to 后面那个动作穿原样——to 【buy】，不换形状。一场戏只让一个词换形状。"
+        whyZh: "to 后面那个动作用原形——to 【buy】，不换形状。一场戏只让一个词换形状。"
       },
       {
         wrong: "I needs to buy some milk.",
@@ -31345,20 +31354,20 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I need to buy some milk.",
         bothRight: true,
-        whyZh: "两句都对——第 15 课那个 to 和今天这个 to 是同一个垫板；只是前面站的词不一样（want／need）。"
+        whyZh: "两句都对——第 15 课那个 to 和今天这个 to 是同一个 to；只是前面站的词不一样（want／need）。"
       },
       {
         wrong: "He seems to know you.",
         wrongMark: null,
         correct: "I need to buy some milk.",
         bothRight: true,
-        whyZh: "两句都对——第 160 课那句也是「垫个 to」；to 后面照样穿原样。"
+        whyZh: "两句都对——第 160 课那句也是「垫个 to」；to 后面照样用原形。"
       }
     ],
     variants: [
       { label: "肯定", en: "I need to buy some milk.", zh: "我需要买点牛奶。", noteZh: "need 后面请 to 垫一下。" },
-      { label: "否定", en: "I don't need to buy milk.", zh: "我不需要买牛奶。", noteZh: "「不需要」用 don't：not 跟着 do 走，need 回原样。" },
-      { label: "疑问", en: "Do you need to buy milk?", zh: "你需要买牛奶吗？", noteZh: "Do 搬到句首——need 回原样，to 照样在。" }
+      { label: "否定", en: "I don't need to buy milk.", zh: "我不需要买牛奶。", noteZh: "「不需要」用 don't：not 跟着 do 走，need 回原形。" },
+      { label: "疑问", en: "Do you need to buy milk?", zh: "你需要买牛奶吗？", noteZh: "Do 搬到句首——need 回原形，to 照样在。" }
     ],
     sceneSwings: [
       { sceneZh: "说我需要买点牛奶", en: "I need to buy some milk.", zh: "我需要买点牛奶。" },
@@ -31370,16 +31379,16 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 16 课你学过「必须」：I must finish my homework today.（我今天必须写完作业）——那是外面有个人／有条规矩在要求你。",
         "今天这个 need 不一样：I need to buy some milk.（我需要买点牛奶）——没人在要求你，是这件事本身要办（家里牛奶喝完了，那就得买）。",
-        "外形上它和第 160 课的 seem 是一路：后面都请 to 垫一下，to 后面那个动作都穿原样（to buy，不是 to buys）。",
+        "外形上它和第 160 课的 seem 是一路：后面都请 to 垫一下，to 后面那个动作都用原形（to buy，不是 to buys）。",
         "这个 to 你已经见过三次了：want to（第 15 课）、seem to（第 160 课）、need to（今天）。位置一样、规矩一样，只是前面站的那个词在换。"
       ]
     },
     summary: {
-      rule: "说「需要」用 need，后面请 to 垫一下——I need to buy some milk；to 后面那个动作穿原样。",
+      rule: "说「需要」用 need，后面请 to 垫一下——I need to buy some milk；to 后面那个动作用原形。",
       points: [
         "I need to buy some milk. —— need 后面有 to",
         "I need buy some milk. ❌ —— 少了 to 连不上（第 15 课老规矩）",
-        "I need to buys some milk. ❌ —— to 后面穿原样，不换形状"
+        "I need to buys some milk. ❌ —— to 后面用原形，不换形状"
       ]
     },
     guided: [
@@ -31413,8 +31422,8 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "need", "to", "buys", "some", "milk."],
         wrongToken: "buys",
         answer: "buys",
-        correctionZh: "to 后面那个动作穿原样——to 【buy】，不换形状。",
-        explain: "to 后面那个动作穿原样，不换形状；seems 已经换过了。"
+        correctionZh: "to 后面那个动作用原形——to 【buy】，不换形状。",
+        explain: "to 后面那个动作用原形，不换形状；seems 已经换过了。"
       },
       {
         // R8 跨课复现：第 16 课（必须那张脸）
@@ -31427,12 +31436,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换要做的事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I need to buy some milk.」把「买牛奶」换成「回家」，怎么变？",
+        promptZh: "句型转换：「I need to buy some milk.」把「买牛奶」换成「回家」，怎么变？",
         replaceBase: "I need to buy some milk.",
         replaceTarget: "把 buy some milk 换成 go home",
         options: ["I need to go home.", "I need go home.", "I need to goes home."],
         answer: "I need to go home.",
-        explain: "换要做的事——need 后面照样请 to，to 后面照样穿原样。"
+        explain: "换要做的事——need 后面照样请 to，to 后面照样用原形。"
       }
     ],
     practice: [
@@ -31475,7 +31484,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "小卖部门口，你想起来家里牛奶喝完了，掏出小本子。凭记忆，写出你那句英文。",
       intentZh: "我需要买点牛奶。",
       answer: "I need to buy some milk.",
-      noteZh: "need 后面请 to 垫一下——to 后面那个动作穿原样。"
+      noteZh: "need 后面请 to 垫一下——to 后面那个动作用原形。"
     },
     huntCaseIds: ["hunt-need-to-buy"]
   },
@@ -31494,7 +31503,7 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "Most of the students like it.",
     blocks: [
       { text: "Most of the students", role: "大多数学生（most 后面拴 of）" },
-      { text: "like it", role: "都喜欢它（好几个人，动词穿原样）" }
+      { text: "like it", role: "都喜欢它（复数，动词用原形）" }
     ],
     oneLineRule: "说「大多数」用 most，后面要拴一个 of——Most of the students like it（大多数学生都喜欢它）。第 157 课那个 none 后面也拴 of，这两个正好一对：一个是「一个都不」，一个是「大多数都」。",
     examples: [
@@ -31519,7 +31528,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Most of the students likes it.",
         wrongMark: "likes",
         correct: "Most of the students like it.",
-        whyZh: "「大多数学生」是一群人，动词穿原样——Most of the students 【like】 it。带 s 的那件是给「他／她一个」穿的。"
+        whyZh: "「大多数学生」是一群人，动词用原形——Most of the students 【like】 it。带 s 的那件是给「他／她一个」穿的。"
       },
       {
         wrong: "Most of student like it.",
@@ -31565,11 +31574,11 @@ export const grammarLessons: GrammarLesson[] = [
         "第 31 课你学过 most：它站在描述词前面帮忙造「最」——the most beautiful flower（最漂亮的花）。那时候它前面还站着一个 the。",
         "今天这个 most 干的是另一件活：说「大多数」——Most of the students like it.（大多数学生都喜欢它）。它后面拴一个 of，前面不站 the。",
         "还有一件事跟第 157 课正好接上：none 后面拴 of（None of the cups），most 后面也拴 of（Most of the students）。一个是「一个都不」，一个是「大多数都」，两头都拴着同一个 of。",
-        "后面那群东西的规矩也没变：带 s（students）、动词穿原样（like）——第 11 课和第 25 课的老规矩。"
+        "后面那群东西的规矩也没变：带 s（students）、动词用原形（like）——第 11 课和第 25 课的老规矩。"
       ]
     },
     summary: {
-      rule: "说「大多数」用 most，后面拴 of——Most of the students like it；后面那群东西带 s、动词穿原样。",
+      rule: "说「大多数」用 most，后面拴 of——Most of the students like it；后面那群东西带 s、动词用原形。",
       points: [
         "Most of the students like it. —— most 后面拴 of",
         "Most the students like it. ❌ —— 少了 of，没说清是哪一群",
@@ -31621,12 +31630,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换那群人（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「Most of the students like it.」把学生换成朋友，怎么变？",
+        promptZh: "句型转换：「Most of the students like it.」把学生换成朋友，怎么变？",
         replaceBase: "Most of the students like it.",
         replaceTarget: "把 the students 换成 my friends",
         options: ["Most of my friends like it.", "Most my friends like it.", "Most of my friends likes it."],
         answer: "Most of my friends like it.",
-        explain: "换那群人——most 后面照样拴 of，动词照样穿原样。"
+        explain: "换那群人——most 后面照样拴 of，动词照样用原形。"
       }
     ],
     practice: [
@@ -31669,7 +31678,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "班长数完举手的人，把票数写在黑板角落。凭记忆，写出她那句英文。",
       intentZh: "大多数学生都喜欢它。",
       answer: "Most of the students like it.",
-      noteZh: "most 后面拴 of——后面那群东西带 s、动词穿原样。"
+      noteZh: "most 后面拴 of——后面那群东西带 s、动词用原形。"
     },
     huntCaseIds: ["hunt-most-of-students"]
   },
@@ -32907,10 +32916,10 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         text: "take a rest?",
-        role: "歇一会儿（后面跟那个动作，原样）"
+        role: "歇一会儿（后面跟那个动作，原形）"
       }
     ],
-    oneLineRule: "给人建议用 Why don't you——Why don't you take a rest?（你怎么不歇一会儿？）。它听着像在问，其实是在劝；后面那个动作穿原样。",
+    oneLineRule: "给人建议用 Why don't you——Why don't you take a rest?（你怎么不歇一会儿？）。它听着像在问，其实是在劝；后面那个动作用原形。",
     examples: [
       {
         en: "Why don't you take a rest?",
@@ -32951,7 +32960,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Why don't you to take a rest?",
         wrongMark: "to",
         correct: "Why don't you take a rest?",
-        whyZh: "后面那个动作穿原样，不垫 to——Why don't you 【take】 a rest。第 15 课那个 to 是 want 专用的，这里不用。"
+        whyZh: "后面那个动作用原形，不垫 to——Why don't you 【take】 a rest。第 15 课那个 to 是 want 专用的，这里不用。"
       },
       {
         wrong: "Why you don't take a rest?",
@@ -32963,7 +32972,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Why don't you taking a rest?",
         wrongMark: "taking",
         correct: "Why don't you take a rest?",
-        whyZh: "后面那个动作穿原样，不穿 -ing——Why don't you 【take】 a rest。don't 后面跟的就是原样。"
+        whyZh: "后面那个动作用原形，不穿 -ing——Why don't you 【take】 a rest。don't 后面跟的就是原形。"
       },
       {
         wrong: "You should sleep early.",
@@ -32998,7 +33007,7 @@ export const grammarLessons: GrammarLesson[] = [
         label: "否定",
         en: "Why don't you stop and rest?",
         zh: "你怎么不停下来歇歇？",
-        noteZh: "后面照样跟原样（stop and rest）。"
+        noteZh: "后面照样跟原形（stop and rest）。"
       },
       {
         label: "疑问",
@@ -33028,13 +33037,13 @@ export const grammarLessons: GrammarLesson[] = [
       title: "听着像问，其实是劝",
       paragraphs: [
         "Why don't you... 字面上是「你为什么不…」，但它通常不是在追问原因，而是在给建议——中文里最接近的是「你怎么不…」。语气比 should 软：You should sleep early.（你该早点睡）有点像长辈吩咐；Why don't you sleep early?（你怎么不早点睡）更像朋友商量。",
-        "注意后面那个动作穿原样：Why don't you take a rest?、Why don't you ask her?。不要把 take 写成 taking，也不要垫 to。",
+        "注意后面那个动作用原形：Why don't you take a rest?、Why don't you ask her?。不要把 take 写成 taking，也不要垫 to。",
         "还有一件事容易走形：don't 和 you 的位置不能对调。是 Why 【don't you】，不是 Why 【you don't】——因为这是个问句，don't 得跟着 Why 站前面。",
         "如果你想说的是「咱们一起」，用第 75 课的 Let's：Let's take a rest.（咱们歇会儿吧）。一个是劝对方，一个是拉上自己。"
       ]
     },
     summary: {
-      rule: "给人建议用 Why don't you + 动作原样——Why don't you take a rest?；don't 跟着 Why 站前面。",
+      rule: "给人建议用 Why don't you + 动作原形——Why don't you take a rest?；don't 跟着 Why 站前面。",
       points: [
         "Why don't you take a rest? —— 劝对方歇会儿",
         "Why don't you to take ❌ —— 不垫 to",
@@ -33056,7 +33065,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：你怎么不歇一会儿？",
         tokens: ["Why", "don't", "you", "take", "a", "rest?"],
         answer: "Why don't you take a rest?",
-        explain: "怎么不（Why don't）＋ 你（you）＋ 歇一会儿（take a rest，原样）。"
+        explain: "怎么不（Why don't）＋ 你（you）＋ 歇一会儿（take a rest，原形）。"
       },
       {
         kind: "arrange",
@@ -33072,7 +33081,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "to",
         answer: "to",
         correctionZh: "把 to 去掉：Why don't you take a rest?",
-        explain: "后面那个动作穿原样、不垫 to——Why don't you take a rest，中间不加东西。"
+        explain: "后面那个动作用原形、不垫 to——Why don't you take a rest，中间不加东西。"
       },
       {
         kind: "arrange",
@@ -33092,7 +33101,7 @@ export const grammarLessons: GrammarLesson[] = [
           "Why don't you asking her?"
         ],
         answer: "Why don't you ask her?",
-        explain: "换动作只换后面那截，照样穿原样——Why don't you 【ask】 her。"
+        explain: "换动作只换后面那截，照样用原形——Why don't you 【ask】 her。"
       }
     ],
     practice: [
@@ -33131,7 +33140,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "同桌趴着打哈欠还在硬撑，你把水杯推过去劝她。凭记忆，写出你那句英文。",
       intentZh: "你怎么不歇一会儿？",
       answer: "Why don't you take a rest?",
-      noteZh: "don't 跟着 Why 站前面——后面那个动作穿原样。"
+      noteZh: "don't 跟着 Why 站前面——后面那个动作用原形。"
     },
     huntCaseIds: ["hunt-why-dont-you-rest"],
   },
@@ -33527,7 +33536,7 @@ export const grammarLessons: GrammarLesson[] = [
         "第 148 课学过 Both books are good.（两本都好）。那时候 both 后面跟着一样东西（books），说的是「这两个都在内」。",
         "今天这个 both…and 干的是另一件活：把同一个人的两样特点接起来——She can both sing and dance.（她既会唱歌又会跳舞）。both 站第一样前面，and 站第二样前面，两个词像一对夹子。",
         "别用 or：She can both sing or dance 是错的中文思路——「又…又…」是两样都要，所以接的是 and，不是 or。",
-        "后面跟的东西形状要一样：both sing and dance（两个都是原样）、both tall and strong（两个都是形容类的词）。一头一尾对称，句子才站得稳。"
+        "后面跟的东西形状要一样：both sing and dance（两个都是原形）、both tall and strong（两个都是形容类的词）。一头一尾对称，句子才站得稳。"
       ]
     },
     summary: {
@@ -33589,7 +33598,7 @@ export const grammarLessons: GrammarLesson[] = [
           "She can sing both and swim."
         ],
         answer: "She can both sing and swim.",
-        explain: "换第二样只换最后那个词，形状不变（照样原样）——and 【swim】。"
+        explain: "换第二样只换最后那个词，形状不变（照样原形）——and 【swim】。"
       }
     ],
     practice: [
@@ -34152,7 +34161,7 @@ export const grammarLessons: GrammarLesson[] = [
         role: "为了赶上那班车（为的是什么）"
       }
     ],
-    oneLineRule: "说「为了」用 in order to——I got up early in order to catch the bus（为了赶上那班车，我起得很早）。它和第 44 课那块小垫板 to 是一家人，说的时候正式一点、清楚一点。",
+    oneLineRule: "说「为了」用 in order to——I got up early in order to catch the bus（为了赶上那班车，我起得很早）。它和第 44 课那块 to to 是一家人，说的时候正式一点、清楚一点。",
     examples: [
       {
         en: "I got up early in order to catch the bus.",
@@ -34164,7 +34173,7 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         en: "I go to the shop to buy milk.",
-        zh: "我去商店买牛奶。（第 44 课——那块小垫板）"
+        zh: "我去商店买牛奶。（第 44 课——那块 to）"
       },
       {
         en: "I got up at six o'clock.",
@@ -34193,7 +34202,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I got up early in order to catching the bus.",
         wrongMark: "catching",
         correct: "I got up early in order to catch the bus.",
-        whyZh: "in order to 后面那个动作穿原样——in order to 【catch】。第 44 课那块小垫板 to 后面也是原样。"
+        whyZh: "in order to 后面那个动作用原形——in order to 【catch】。第 44 课那块 to to 后面也是原形。"
       },
       {
         wrong: "I got up early in order catch the bus.",
@@ -34212,7 +34221,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I got up early in order to catch the bus.",
         bothRight: true,
-        whyZh: "两句都对——第 44 课那块小垫板 to 说的是「去做什么」；in order to 说的是「为了什么」，意思近，后者更正式也更清楚。"
+        whyZh: "两句都对——第 44 课那块 to to 说的是「去做什么」；in order to 说的是「为了什么」，意思近，后者更正式也更清楚。"
       },
       {
         wrong: "I got up at six o'clock.",
@@ -34234,7 +34243,7 @@ export const grammarLessons: GrammarLesson[] = [
         label: "肯定",
         en: "I got up early in order to catch the bus.",
         zh: "为了赶上那班车，我起得很早。",
-        noteZh: "in order to 后面穿原样。"
+        noteZh: "in order to 后面用原形。"
       },
       {
         label: "否定",
@@ -34267,16 +34276,16 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     deepDive: {
-      title: "to 那块小垫板的两种说法",
+      title: "to 的两种说法",
       paragraphs: [
-        "第 44 课学过：I go to the shop to buy milk.（我去商店买牛奶）。后面那个 to buy milk 说的是「去干什么」——to 像块小垫板，垫在动作前面。",
+        "第 44 课学过：I go to the shop to buy milk.（我去商店买牛奶）。后面那个 to buy milk 说的是「去干什么」——to 像块 to，垫在动作前面。",
         "今天学的 in order to 干的是同一件事，只是说得更清楚：I got up early in order to catch the bus.（为了赶上那班车，我起得很早）。它比单个 to 更强调「目的」，写在纸上、说正事的时候更常用。",
-        "两个说法后面都跟原样：to buy、in order to catch。别写成 buying 或 catching（那是第 42 课「穿 -ing 外套」的另一件活）。",
+        "两个说法后面都跟原形：to buy、in order to catch。别写成 buying 或 catching（那是第 42 课「加 -ing」的另一件活）。",
         "想说「为了不…」，把 not 插在 to 前面：in order not to miss the bus（为了不误车）。not 站的位置很固定——to 的前面，动作的前面。"
       ]
     },
     summary: {
-      rule: "说「为了」用 in order to + 动作原样——in order to catch the bus；说「为了不」就 in order not to + 原样。",
+      rule: "说「为了」用 in order to + 动作原形——in order to catch the bus；说「为了不」就 in order not to + 原形。",
       points: [
         "I got up early in order to catch the bus. —— 为了赶车",
         "in order catch ❌ —— 少了 to",
@@ -34305,7 +34314,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一小步——第 44 课学过：我去商店买牛奶。",
         tokens: ["I", "go", "to", "the", "shop", "to", "buy", "milk."],
         answer: "I go to the shop to buy milk.",
-        explain: "复现第 44 课：那块小垫板 to 说的是「去做什么」；今天换成更正式的 in order to。"
+        explain: "复现第 44 课：那块 to to 说的是「去做什么」；今天换成更正式的 in order to。"
       },
       {
         kind: "spot",
@@ -34314,7 +34323,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "catching",
         answer: "catching",
         correctionZh: "把 catching 换成 catch：in order to catch the bus。",
-        explain: "in order to 后面那个动作穿原样——第 44 课的老规矩。"
+        explain: "in order to 后面那个动作用原形——第 44 课的老规矩。"
       },
       {
         kind: "arrange",
@@ -34373,7 +34382,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "天还没大亮，你已经在公交站台上了。凭记忆，写出你那句英文。",
       intentZh: "为了赶上那班车，我起得很早。",
       answer: "I got up early in order to catch the bus.",
-      noteZh: "in order to 后面穿原样——说「为了不」就把 not 插在 to 前面。"
+      noteZh: "in order to 后面用原形——说「为了不」就把 not 插在 to 前面。"
     },
     huntCaseIds: ["hunt-in-order-to-bus"],
   },
@@ -34397,7 +34406,7 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         text: "go there myself now",
-        role: "现在自己去那儿（后面跟动作原样）"
+        role: "现在自己去那儿（后面跟动作原形）"
       }
     ],
     oneLineRule: "说「能」除了 can，还有 be able to——I am able to go there myself now（我现在能自己去了）。意思和 can 一样，但它能配「以前不能、现在能」这类变化：can 没有过去和将来那么多形状，be able to 有。",
@@ -34441,7 +34450,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am able to going there myself now.",
         wrongMark: "going",
         correct: "I am able to go there myself now.",
-        whyZh: "be able to 后面那个动作穿原样——able to 【go】。第 44 课那块小垫板 to 后面也是原样。"
+        whyZh: "be able to 后面那个动作用原形——able to 【go】。第 44 课那块 to to 后面也是原形。"
       },
       {
         wrong: "I able to go there myself now.",
@@ -34483,7 +34492,7 @@ export const grammarLessons: GrammarLesson[] = [
         label: "肯定",
         en: "I am able to go there myself now.",
         zh: "我现在能自己去了。",
-        noteZh: "be able to 后面穿原样。"
+        noteZh: "be able to 后面用原形。"
       },
       {
         label: "否定",
@@ -34525,10 +34534,10 @@ export const grammarLessons: GrammarLesson[] = [
       ]
     },
     summary: {
-      rule: "说「能」除了 can，还有 be able to + 动作原样——I am able to go there now；它能跟时间变形（was／will be）。",
+      rule: "说「能」除了 can，还有 be able to + 动作原形——I am able to go there now；它能跟时间变形（was／will be）。",
       points: [
         "I am able to go there myself now. —— 现在能了",
-        "I am able to going ❌ —— 后面穿原样",
+        "I am able to going ❌ —— 后面用原形",
         "can（第 14 课·会什么）／ be able to（今天·某一次做得到）"
       ]
     },
@@ -34540,14 +34549,14 @@ export const grammarLessons: GrammarLesson[] = [
         after: "go there myself now.",
         options: ["to", "for", "at"],
         answer: "to",
-        explain: "be able to 三个词是一组——able 【to】 go。后面那个动作穿原样。"
+        explain: "be able to 三个词是一组——able 【to】 go。后面那个动作用原形。"
       },
       {
         kind: "arrange",
         promptZh: "你想说：我现在能自己去了。",
         tokens: ["I", "am", "able", "to", "go", "there", "myself", "now."],
         answer: "I am able to go there myself now.",
-        explain: "我能（I am able to）＋ 现在自己去那儿（go there myself now，穿原样）。"
+        explain: "我能（I am able to）＋ 现在自己去那儿（go there myself now，用原形）。"
       },
       {
         kind: "arrange",
@@ -34563,7 +34572,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "going",
         answer: "going",
         correctionZh: "把 going 换成 go：able to go there。",
-        explain: "be able to 后面穿原样——和第 44 课那块小垫板一个规矩。"
+        explain: "be able to 后面用原形——和第 44 课那块 to 一个规矩。"
       },
       {
         kind: "arrange",
@@ -34583,7 +34592,7 @@ export const grammarLessons: GrammarLesson[] = [
           "She was able finish it yesterday."
         ],
         answer: "She was able to finish it yesterday.",
-        explain: "换时间就换前面那个 be：am→was——She 【was】 able to finish。后面照样穿原样。"
+        explain: "换时间就换前面那个 be：am→was——She 【was】 able to finish。后面照样用原形。"
       }
     ],
     practice: [
@@ -34622,7 +34631,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "妈妈说要送你去地铁站，你把地铁卡举给她看。凭记忆，写出你那句英文。",
       intentZh: "我现在能自己去了。",
       answer: "I am able to go there myself now.",
-      noteZh: "be able to 后面穿原样——换时间就换前面那个 be。"
+      noteZh: "be able to 后面用原形——换时间就换前面那个 be。"
     },
     huntCaseIds: ["hunt-able-to-go"],
   },
@@ -34639,6 +34648,10 @@ export const grammarLessons: GrammarLesson[] = [
     dialogueZh: "小美跟着点了点头。",
     intentZh: "我也是。",
     targetSentence: "So do I.",
+    // 本课 examples 明写 `So am I.` 是「对方说的是 am/is 时，这里也跟着换」——
+    // 两种都对，取决于对方那句话；而本题干只有「我也是。」、没给该语境，
+    // 学习者写 am 版同样是本课教过的正确说法，故纳入可接受答案。
+    acceptAlso: ["So am I."],
     blocks: [
       {
         text: "So",
@@ -34890,10 +34903,10 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         text: "walk",
-        role: "走路（后面跟原样）"
+        role: "走路（后面跟原形）"
       }
     ],
-    oneLineRule: "说「宁愿」用 would rather——I would rather walk（我宁愿走路）。rather 站在 would 后面，后面那个动作穿原样。它比 would like 更带一层「跟他比，我选这个」的意思。",
+    oneLineRule: "说「宁愿」用 would rather——I would rather walk（我宁愿走路）。rather 站在 would 后面，后面那个动作用原形。它比 would like 更带一层「跟他比，我选这个」的意思。",
     examples: [
       {
         en: "I would rather walk.",
@@ -34934,13 +34947,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I would rather to walk.",
         wrongMark: "to",
         correct: "I would rather walk.",
-        whyZh: "would rather 后面那个动作穿原样，不垫 to——I would rather 【walk】。垫 to 的是 would like（第 62 课）。"
+        whyZh: "would rather 后面那个动作用原形，不垫 to——I would rather 【walk】。垫 to 的是 would like（第 62 课）。"
       },
       {
         wrong: "I would rather walking.",
         wrongMark: "walking",
         correct: "I would rather walk.",
-        whyZh: "后面穿原样，不穿 -ing——I would rather 【walk】。"
+        whyZh: "后面用原形，不穿 -ing——I would rather 【walk】。"
       },
       {
         wrong: "I rather would walk.",
@@ -34975,7 +34988,7 @@ export const grammarLessons: GrammarLesson[] = [
         label: "肯定",
         en: "I would rather walk.",
         zh: "我宁愿走路。",
-        noteZh: "would rather 后面穿原样。"
+        noteZh: "would rather 后面用原形。"
       },
       {
         label: "否定",
@@ -35012,15 +35025,15 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 62 课学过 would like：I would like a cup of tea.（我想要一杯茶）——直接说想要什么。",
         "would rather 不一样：它自带一层比较。I would rather walk.（我宁愿走路）这句话背后总有个「跟别的选项比」——打车也堵、等着也慢，所以我选走。中文里最接近的是「宁愿／宁可」。",
-        "用法上只有两个要点：rather 站在 would 后面（不能说 I rather would）；后面那个动作穿原样（would rather walk，不是 to walk 也不是 walking）。",
+        "用法上只有两个要点：rather 站在 would 后面（不能说 I rather would）；后面那个动作用原形（would rather walk，不是 to walk 也不是 walking）。",
         "想把「不选什么」也说出来，加半句 than：I would rather walk than wait.（与其等着，我宁愿走）。这一加，比较的两头就都清楚了。"
       ]
     },
     summary: {
-      rule: "说「宁愿」用 would rather + 动作原样——I would rather walk；rather 站在 would 后面，空间固定。",
+      rule: "说「宁愿」用 would rather + 动作原形——I would rather walk；rather 站在 would 后面，空间固定。",
       points: [
         "I would rather walk. —— 两样比，选这个",
-        "would rather to walk ❌ —— 后面穿原样",
+        "would rather to walk ❌ —— 后面用原形",
         "would like（第 62 课·想要）／ would rather（今天·宁愿）"
       ]
     },
@@ -35039,7 +35052,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：我宁愿走路。",
         tokens: ["I", "would", "rather", "walk."],
         answer: "I would rather walk.",
-        explain: "我宁愿（I would rather）＋ 走路（walk，穿原样）。"
+        explain: "我宁愿（I would rather）＋ 走路（walk，用原形）。"
       },
       {
         kind: "arrange",
@@ -35055,7 +35068,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "to",
         answer: "to",
         correctionZh: "把 to 去掉：I would rather walk。",
-        explain: "would rather 后面穿原样，不垫 to——垫 to 的是 would like。"
+        explain: "would rather 后面用原形，不垫 to——垫 to 的是 would like。"
       },
       {
         kind: "arrange",
@@ -35075,7 +35088,7 @@ export const grammarLessons: GrammarLesson[] = [
           "She would rather staying at home."
         ],
         answer: "She would rather stay at home.",
-        explain: "换人只换前面那个词——She would rather ＋ 动作原样（stay at home）。"
+        explain: "换人只换前面那个词——She would rather ＋ 动作原形（stay at home）。"
       }
     ],
     practice: [
@@ -35114,7 +35127,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "下雨天路上堵成一条龙，同学说打车去吧，你把伞撑开说了一句。凭记忆，写出你那句英文。",
       intentZh: "我宁愿走路。",
       answer: "I would rather walk.",
-      noteZh: "rather 站在 would 后面——后面动作穿原样。"
+      noteZh: "rather 站在 would 后面——后面动作用原形。"
     },
     huntCaseIds: ["hunt-would-rather-walk"],
   },
@@ -35195,7 +35208,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I prefer drink tea.",
         wrongMark: "drink",
         correct: "I prefer tea.",
-        whyZh: "prefer 后面可以直接跟东西（prefer tea）；要跟动作就穿 -ing（prefer walking）。光用原样（drink）两样都不像。"
+        whyZh: "prefer 后面可以直接跟东西（prefer tea）；要跟动作就穿 -ing（prefer walking）。光用原形（drink）两样都不像。"
       },
       {
         wrong: "I would rather walk.",
@@ -35371,7 +35384,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-178-had-done",
     number: 178,
     title: "到家才发现钥匙丢了",
-    grammarLabel: "更早的那件 · had + 做过版",
+    grammarLabel: "更早的那件 · had + 过去分词",
     episode: "小美的一天 一百七十八",
     scene: "city",
     cover: cover178,
@@ -35390,7 +35403,7 @@ export const grammarLessons: GrammarLesson[] = [
         role: "在我到家之前（后来才发现的那件事）"
       }
     ],
-    oneLineRule: "两件过去的事排先后，更早那件用 had + 做过版——I had lost my key before I got home（到家之前我就把钥匙弄丢了）。第 21 课那个 have + 做过版说的是「到现在为止已经」，今天这个 had 是说「在那件事之前就已经」。",
+    oneLineRule: "两件过去的事排先后，更早那件用 had + 过去分词——I had lost my key before I got home（到家之前我就把钥匙弄丢了）。第 21 课那个 have + 过去分词说的是「到现在为止已经」，今天这个 had 是说「在那件事之前就已经」。",
     examples: [
       {
         en: "I had lost my key before I got home.",
@@ -35431,7 +35444,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I had lose my key before I got home.",
         wrongMark: "lose",
         correct: "I had lost my key before I got home.",
-        whyZh: "had 后面要跟做过版——had 【lost】。第 21 课那个 have + 做过版是同一条规矩，换成 had 也一样。"
+        whyZh: "had 后面要跟过去分词——had 【lost】。第 21 课那个 have + 过去分词是同一条规矩，换成 had 也一样。"
       },
       {
         wrong: "I lost my key before I had got home.",
@@ -35472,7 +35485,7 @@ export const grammarLessons: GrammarLesson[] = [
         label: "肯定",
         en: "I had lost my key before I got home.",
         zh: "到家之前我就把钥匙弄丢了。",
-        noteZh: "had + 做过版，说更早那件。"
+        noteZh: "had + 过去分词，说更早那件。"
       },
       {
         label: "否定",
@@ -35507,17 +35520,17 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "have 和 had，差在「站哪看」",
       paragraphs: [
-        "第 21 课学过 have + 做过版：I have done my homework.（我已经写完作业了）。它是站在「现在」往回看——到现在为止，这件事做完了。",
-        "今天这个 had + 做过版，是把那个「往回看」挪到过去某个时间点：I had lost my key before I got home.（到家之前我就把钥匙弄丢了）。站在「到家那一刻」往回看，丢钥匙已经发生了。",
-        "所以规矩就一句：两件过去的事要分先后，更早那件用 had ＋ 做过版，晚一点那件用普通的过去式。I 【had lost】 my key before I 【got】 home——前面是 had，后面是普通的过去式。",
+        "第 21 课学过 have + 过去分词：I have done my homework.（我已经写完作业了）。它是站在「现在」往回看——到现在为止，这件事做完了。",
+        "今天这个 had + 过去分词，是把那个「往回看」挪到过去某个时间点：I had lost my key before I got home.（到家之前我就把钥匙弄丢了）。站在「到家那一刻」往回看，丢钥匙已经发生了。",
+        "所以规矩就一句：两件过去的事要分先后，更早那件用 had ＋ 过去分词，晚一点那件用普通的过去式。I 【had lost】 my key before I 【got】 home——前面是 had，后面是普通的过去式。",
         "别把两件都加上 had：That's why I 【lost】 my key before I 【got】 home 里，只有更早那件该用 had。两个都加，听话的人就分不出哪件更早了。"
       ]
     },
     summary: {
-      rule: "两件过去的事分先后：更早那件用 had ＋ 做过版，晚的那件用普通过去式——I had lost my key before I got home。",
+      rule: "两件过去的事分先后：更早那件用 had ＋ 过去分词，晚的那件用普通过去式——I had lost my key before I got home。",
       points: [
         "I had lost my key before I got home. —— 更早的那件",
-        "I had lose my key ❌ —— had 后面跟做过版",
+        "I had lose my key ❌ —— had 后面跟过去分词",
         "have lost（第 23 课·到现在）／ had lost（今天·到那时）"
       ]
     },
@@ -35529,7 +35542,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "my key before I got home.",
         options: ["had lost", "have lost", "lose"],
         answer: "had lost",
-        explain: "两件过去的事，更早那件用 had + 做过版——I 【had lost】 my key。"
+        explain: "两件过去的事，更早那件用 had + 过去分词——I 【had lost】 my key。"
       },
       {
         kind: "arrange",
@@ -35552,7 +35565,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "lose",
         answer: "lose",
         correctionZh: "把 lose 换成 lost：I had lost my key。",
-        explain: "had 后面要跟做过版——第 21 课那个 have + 做过版是同一条规矩。"
+        explain: "had 后面要跟过去分词——第 21 课那个 have + 过去分词是同一条规矩。"
       },
       {
         kind: "arrange",
@@ -35572,7 +35585,7 @@ export const grammarLessons: GrammarLesson[] = [
           "She had finish her homework before dinner."
         ],
         answer: "She had finished her homework before dinner.",
-        explain: "换人换事，形状不变：had ＋ 做过版（had finished）＋ 晚那件用普通过去式。"
+        explain: "换人换事，形状不变：had ＋ 过去分词（had finished）＋ 晚那件用普通过去式。"
       }
     ],
     practice: [
@@ -35611,7 +35624,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "小美到家门口一摸口袋，心一沉——钥匙在放学路上就丢了。凭记忆，写出她那句英文。",
       intentZh: "到家之前我就把钥匙弄丢了。",
       answer: "I had lost my key before I got home.",
-      noteZh: "更早那件用 had ＋ 做过版；晚那件用普通过去式。"
+      noteZh: "更早那件用 had ＋ 过去分词；晚那件用普通过去式。"
     },
     huntCaseIds: ["hunt-had-lost-key"],
   },
@@ -35635,7 +35648,7 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         text: "take the quiet way?",
-        role: "走清静的那条（后面动作穿原样）"
+        role: "走清静的那条（后面动作用原形）"
       }
     ],
     oneLineRule: "问「我们…好吗」用 Shall we——Shall we take the quiet way?（我们走清静的那条好吗？）。它和第 75 课那个 Let's 是一对：Let's 是「咱们去吧」，Shall we 是「咱们…行吗」——把决定权递出去。",
@@ -35679,13 +35692,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "Shall we to take the quiet way?",
         wrongMark: "to",
         correct: "Shall we take the quiet way?",
-        whyZh: "Shall we 后面那个动作穿原样，不垫 to——Shall we 【take】。"
+        whyZh: "Shall we 后面那个动作用原形，不垫 to——Shall we 【take】。"
       },
       {
         wrong: "Shall we taking the quiet way?",
         wrongMark: "taking",
         correct: "Shall we take the quiet way?",
-        whyZh: "后面穿原样，不穿 -ing——Shall we 【take】。"
+        whyZh: "后面用原形，不穿 -ing——Shall we 【take】。"
       },
       {
         wrong: "Shall you take the quiet way?",
@@ -35720,7 +35733,7 @@ export const grammarLessons: GrammarLesson[] = [
         label: "肯定",
         en: "Shall we take the quiet way?",
         zh: "我们走清静的那条好吗？",
-        noteZh: "Shall we 后面穿原样。"
+        noteZh: "Shall we 后面用原形。"
       },
       {
         label: "否定",
@@ -35757,15 +35770,15 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 75 课学过 Let's：Let's go to the park.（咱们去公园吧）。它是「拿主意」——我先定了，你来跟。",
         "Shall we 换了个位置：Shall we take the quiet way?（我们走清静的那条好吗？）——把它变成一个问句，决定权递出去，让对方说行不行。中文里最接近的是「咱们…好吗」「要不咱们…」。",
-        "用法上和 Let's 一样简单：后面那个动作穿原样（Shall we take，不是 to take 也不是 taking）；Shall 后面固定是 we，因为问的是「咱们一起」。",
+        "用法上和 Let's 一样简单：后面那个动作用原形（Shall we take，不是 to take 也不是 taking）；Shall 后面固定是 we，因为问的是「咱们一起」。",
         "想说对方一个人该做什么，用第 168 课的 Why don't you；想说自己想做什么，用第 62 课的 I would like。三个都跟「提要求」有关，看你把谁放进句子里。"
       ]
     },
     summary: {
-      rule: "问「咱们…好吗」用 Shall we + 动作原样——Shall we take the quiet way?；Shall 后面固定是 we。",
+      rule: "问「咱们…好吗」用 Shall we + 动作原形——Shall we take the quiet way?；Shall 后面固定是 we。",
       points: [
         "Shall we take the quiet way? —— 把决定权递出去",
-        "Shall we to take ❌ —— 后面穿原样",
+        "Shall we to take ❌ —— 后面用原形",
         "Let's（第 75 课·拿主意）／ Shall we（今天·问行不行）／ Why don't you（第 168 课·劝对方）"
       ]
     },
@@ -35784,7 +35797,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "你想说：我们走清静的那条好吗？",
         tokens: ["Shall", "we", "take", "the", "quiet", "way?"],
         answer: "Shall we take the quiet way?",
-        explain: "咱们…好吗（Shall we）＋ 走清静的那条（take the quiet way，穿原样）。"
+        explain: "咱们…好吗（Shall we）＋ 走清静的那条（take the quiet way，用原形）。"
       },
       {
         kind: "arrange",
@@ -35800,7 +35813,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "to",
         answer: "to",
         correctionZh: "把 to 去掉：Shall we take the quiet way?",
-        explain: "Shall we 后面穿原样，不垫 to。"
+        explain: "Shall we 后面用原形，不垫 to。"
       },
       {
         kind: "arrange",
@@ -35816,7 +35829,7 @@ export const grammarLessons: GrammarLesson[] = [
         replaceTarget: "把动作换成「现在走」",
         options: ["Shall we go now?", "Shall we to go now?", "Shall we going now?"],
         answer: "Shall we go now?",
-        explain: "换动作只换后面那截，照样穿原样——Shall we 【go】 now。"
+        explain: "换动作只换后面那截，照样用原形——Shall we 【go】 now。"
       }
     ],
     practice: [
@@ -35855,7 +35868,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "岔路口两条路都能到地铁站，你把选择交给同伴。凭记忆，写出你那句英文。",
       intentZh: "我们走清静的那条好吗？",
       answer: "Shall we take the quiet way?",
-      noteZh: "Shall 后面固定是 we——后面动作穿原样。"
+      noteZh: "Shall 后面固定是 we——后面动作用原形。"
     },
     huntCaseIds: ["hunt-shall-we-quiet"],
   },
@@ -35932,7 +35945,7 @@ export const grammarLessons: GrammarLesson[] = [
     variants: [
       { label: "肯定", en: "I finished the whole book.", zh: "我把整本书都读完了。", noteZh: "whole 前面带上 the——光着站可不行。" },
       { label: "否定", en: "I did not finish the whole book.", zh: "我没把整本书读完。", noteZh: "not 跟 did 走，whole book 不动。" },
-      { label: "疑问", en: "Did you finish the whole book?", zh: "你把整本书读完了吗？", noteZh: "Did 搬句首——finish 穿原样。" }
+      { label: "疑问", en: "Did you finish the whole book?", zh: "你把整本书读完了吗？", noteZh: "Did 搬句首——finish 用原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说我把整本书都读完了", en: "I finished the whole book.", zh: "我把整本书都读完了。" },
@@ -36001,7 +36014,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换那个东西（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I finished the whole book.」把 book 换成 cake，怎么变？",
+        promptZh: "句型转换：「I finished the whole book.」把 book 换成 cake，怎么变？",
         replaceBase: "I finished the whole book.",
         replaceTarget: "把 book 换成 cake",
         options: ["I finished the whole cake.", "I finished the whole cakes.", "I finished all a cake."],
@@ -36068,9 +36081,9 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "We had better go now.",
     blocks: [
       { text: "We had better", role: "我们最好（口气比 should 重一点）" },
-      { text: "go now", role: "现在就走（动作穿原样、不垫 to）" }
+      { text: "go now", role: "现在就走（动作用原形、不垫 to）" }
     ],
-    oneLineRule: "说「最好…（不然会误事）」用 had better——We had better go now（我们最好现在就走）。它就长这样：永远用 had，后面那个动作穿原样、不垫 to。",
+    oneLineRule: "说「最好…（不然会误事）」用 had better——We had better go now（我们最好现在就走）。它就长这样：永远用 had，后面那个动作用原形、不垫 to。",
     examples: [
       { en: "We had better go now.", zh: "我们最好现在就走。" },
       { en: "You had better sleep early.", zh: "你最好早点睡。" },
@@ -36093,7 +36106,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "We had better to go now.",
         wrongMark: "to",
         correct: "We had better go now.",
-        whyZh: "后面那个动作穿原样、不垫 to——had better 【go】 now，中间不加东西。"
+        whyZh: "后面那个动作用原形、不垫 to——had better 【go】 now，中间不加东西。"
       },
       {
         wrong: "We had not better go now.",
@@ -36124,7 +36137,7 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "We had better go now.", zh: "我们最好现在就走。", noteZh: "had better ＋ 动作穿原样。" },
+      { label: "肯定", en: "We had better go now.", zh: "我们最好现在就走。", noteZh: "had better ＋ 动作用原形。" },
       { label: "否定", en: "We had better not go now.", zh: "我们最好现在别走。", noteZh: "not 站在 better 后面——had better【 not】 go。" },
       { label: "疑问", en: "Had we better go now?", zh: "我们最好现在就走吗？", noteZh: "Had 搬到句首——better 和动作都不动。" }
     ],
@@ -36139,11 +36152,11 @@ export const grammarLessons: GrammarLesson[] = [
         "第 107 课你见过一个 had：The teacher had me come early.（老师让我早点来）——那个 had 后面跟着人，说的是「让谁做什么」。",
         "今天这个 had 后面跟着的是 better：We had better go now.（我们最好现在就走）——它后面跟着那个动作，说的是「再不…就要误事」。",
         "有一件事要记牢：这个 had 永远不变，不管你说的是今天、昨天还是明天。这跟第 47 课那个 should 是一家——它们都从来不换形状。",
-        "还有个小地方：后面那个动作穿原样、不垫 to（had better go，不是 had better to go）；说「最好不要」，那个「不」站在 better 后面。"
+        "还有个小地方：后面那个动作用原形、不垫 to（had better go，不是 had better to go）；说「最好不要」，那个「不」站在 better 后面。"
       ]
     },
     summary: {
-      rule: "说「最好…（不然会误事）」用 had better——We had better go now；永远用 had，后面动作穿原样、不垫 to。",
+      rule: "说「最好…（不然会误事）」用 had better——We had better go now；永远用 had，后面动作用原形、不垫 to。",
       points: [
         "We had better go now. —— 永远用 had",
         "We had better to go now. ❌ —— 后面不垫 to",
@@ -36158,7 +36171,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "go now.",
         options: ["had better", "have better", "had better to"],
         answer: "had better",
-        explain: "这句话永远是 had——后面那个动作穿原样、不垫 to：had better go。"
+        explain: "这句话永远是 had——后面那个动作用原形、不垫 to：had better go。"
       },
       {
         kind: "arrange",
@@ -36181,7 +36194,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["We", "had", "better", "to", "go", "now."],
         wrongToken: "to",
         answer: "to",
-        correctionZh: "后面那个动作穿原样、不垫 to——had better 【go】 now，中间不加东西。",
+        correctionZh: "后面那个动作用原形、不垫 to——had better 【go】 now，中间不加东西。",
         explain: "垫了 to 就走样了——had better 后面直接跟动作，中间不加东西。"
       },
       {
@@ -36195,12 +36208,12 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换那个人（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「We had better go now.」把 We 换成 You，怎么变？",
+        promptZh: "句型转换：「We had better go now.」把 We 换成 You，怎么变？",
         replaceBase: "We had better go now.",
         replaceTarget: "把 We 换成 You",
         options: ["You had better go now.", "You have better go now.", "You had better to go now."],
         answer: "You had better go now.",
-        explain: "换那个人——had 永远不变，后面照样穿原样、不垫 to。"
+        explain: "换那个人——had 永远不变，后面照样用原形、不垫 to。"
       }
     ],
     practice: [
@@ -36243,7 +36256,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "车站的钟指到八点，同伴抬头看了一眼。凭记忆，写出你那句英文。",
       intentZh: "我们最好现在就走。",
       answer: "We had better go now.",
-      noteZh: "永远用 had——后面动作穿原样、不垫 to。"
+      noteZh: "永远用 had——后面动作用原形、不垫 to。"
     },
     huntCaseIds: ["hunt-had-better-go"],
   },
@@ -36325,7 +36338,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "She doesn't come yet.",
         wrongMark: "doesn't come",
         correct: "She hasn't come yet.",
-        whyZh: "第 153 课回流：说「还没」要用 hasn't + 做过版——She 【hasn't come】 yet。"
+        whyZh: "第 153 课回流：说「还没」要用 hasn't + 过去分词——She 【hasn't come】 yet。"
       },
       {
         wrong: "She left three days before.",
@@ -36439,7 +36452,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["She", "doesn't", "come", "yet."],
         wrongToken: "doesn't",
         answer: "doesn't",
-        correctionZh: "把 doesn't 换成 hasn't，come 穿做过版：She hasn't come yet。",
+        correctionZh: "把 doesn't 换成 hasn't，come 穿过去分词：She hasn't come yet。",
         explain: "第 153 课：还没做用 hasn't…yet。"
       },
       {
@@ -36624,7 +36637,7 @@ export const grammarLessons: GrammarLesson[] = [
         label: "疑问",
         en: "Does it look like a boat?",
         zh: "它看起来像船吗？",
-        noteZh: "Does 搬到句首，look 退回原样。"
+        noteZh: "Does 搬到句首，look 变回原形。"
       }
     ],
     sceneSwings: [
@@ -36712,7 +36725,7 @@ export const grammarLessons: GrammarLesson[] = [
           "It not look like a boat."
         ],
         answer: "It doesn't look like a boat.",
-        explain: "说「不像」用 doesn't，而且 look 退回原样（第 132 课的老规矩）。"
+        explain: "说「不像」用 doesn't，而且 look 变回原形（第 132 课的老规矩）。"
       }
     ],
     practice: [
@@ -37045,7 +37058,7 @@ export const grammarLessons: GrammarLesson[] = [
         role: "她既不喜欢茶也不喜欢咖啡（第 171 课）"
       }
     ],
-    oneLineRule: "这一季的八个说法是成对出现的：both…and／neither…nor、unless／in order to、be able to／So do I、would rather／prefer、had + 做过版／Shall we。记住一个，另一个就在旁边。",
+    oneLineRule: "这一季的八个说法是成对出现的：both…and／neither…nor、unless／in order to、be able to／So do I、would rather／prefer、had + 过去分词／Shall we。记住一个，另一个就在旁边。",
     examples: [
       {
         en: "She can both sing and dance.",
@@ -37128,7 +37141,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I would rather to walk.",
         wrongMark: "to",
         correct: "I would rather walk.",
-        whyZh: "第 176 课回流：would rather 后面穿原样，不垫 to——垫 to 的是 would like（第 62 课）。"
+        whyZh: "第 176 课回流：would rather 后面用原形，不垫 to——垫 to 的是 would like（第 62 课）。"
       },
       {
         wrong: "Shall we take the quiet way?",
@@ -37189,15 +37202,15 @@ export const grammarLessons: GrammarLesson[] = [
         "第二对：unless 和 if。第 48 课那个 if 是「如果」（从条件说），第 172 课的 unless 是「除非」（从例外说）——同一件事的两面。",
         "第三对：be able to 和 can。「会什么」用 can（第 14 课）；说「某一次做到了」或者要跟时间变化，用 be able to（第 174 课）。",
         "第四对：would rather 和 prefer。当场选一个用 would rather（第 176 课）；说平时的偏好用 prefer，后面那半截用 to（第 177 课）。",
-        "第五对：had + 做过版 和 Shall we。第 178 课那个 had 是把「往回看」挪到过去（更早那件事）；第 179 课的 Shall we 是征求意见。两件不相干，但都在这一季里配齐了。"
+        "第五对：had + 过去分词 和 Shall we。第 178 课那个 had 是把「往回看」挪到过去（更早那件事）；第 179 课的 Shall we 是征求意见。两件不相干，但都在这一季里配齐了。"
       ]
     },
     summary: {
-      rule: "这一季五对成对的说法：both…and／neither…nor、unless／if、be able to／can、would rather／prefer、had + 做过版／Shall we。",
+      rule: "这一季五对成对的说法：both…and／neither…nor、unless／if、be able to／can、would rather／prefer、had + 过去分词／Shall we。",
       points: [
         "both sing and dance（两样都占）／ neither tea nor coffee（两样都否）",
         "prefer tea to coffee —— 那半截用 to，不用 than",
-        "would rather walk —— 后面穿原样，不垫 to"
+        "would rather walk —— 后面用原形，不垫 to"
       ]
     },
     guided: [
@@ -37238,7 +37251,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 176 课学过：我宁愿走路。",
         tokens: ["I", "would", "rather", "walk."],
         answer: "I would rather walk.",
-        explain: "复现第 176 课：rather 站在 would 后面，后面穿原样。"
+        explain: "复现第 176 课：rather 站在 would 后面，后面用原形。"
       },
       {
         kind: "replace",
@@ -37340,7 +37353,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I came early so that you can resting.",
         wrongMark: "resting",
         correct: "I came early so that you can rest.",
-        whyZh: "can 后面穿原样：so that you can 【rest】。can 后面一点不变，第 14 课的老规矩。"
+        whyZh: "can 后面用原形：so that you can 【rest】。can 后面一点不变，第 14 课的老规矩。"
       },
       {
         wrong: "I got up early in order to catch the bus.",
@@ -37423,7 +37436,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongToken: "to",
         answer: "to",
         correctionZh: "换人要用 so that：in order to 后面只跟动作、前后同一个人——【so that】 you can rest。",
-        explain: "这一位要跟的是「事」（to do something），接不住「你」这个人——第 173 课那块小垫板 to 后面跟的永远是动作。"
+        explain: "这一位要跟的是「事」（to do something），接不住「你」这个人——第 173 课那块 to to 后面跟的永远是动作。"
       },
       {
         // R8 跨课复现：第 20 课（所以那张脸）
@@ -37436,7 +37449,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换那件事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I came early so that you can rest.」把「歇会儿」换成「看得见」，怎么变？",
+        promptZh: "句型转换：「I came early so that you can rest.」把「歇会儿」换成「看得见」，怎么变？",
         replaceBase: "I came early so that you can rest.",
         replaceTarget: "把 you can rest 换成 you can see",
         options: ["I came early so that you can see.", "I came early in order to you can see.", "I came early so that can see."],
@@ -37630,7 +37643,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：换前提（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I will go as long as you come.」把「你来」换成「你写完」，怎么变？",
+        promptZh: "句型转换：「I will go as long as you come.」把「你来」换成「你写完」，怎么变？",
         replaceBase: "I will go as long as you come.",
         replaceTarget: "把 you come 换成 you finish",
         options: ["I will go as long as you finish.", "I will go as long as you will finish.", "I will go as long you finish."],
@@ -37697,7 +37710,7 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "I had to walk home yesterday.",
     blocks: [
       { text: "I had to", role: "我不得不（昨天的事，用 had）" },
-      { text: "walk home yesterday", role: "昨天走回家（后面那个动作穿原样）" }
+      { text: "walk home yesterday", role: "昨天走回家（后面那个动作用原形）" }
     ],
     oneLineRule: "说「昨天不得不」要用 had to——I had to walk home yesterday（昨天我不得不走回家）。第 16 课那个 must 只管现在，说昨天的事得换成 had to。",
     examples: [
@@ -37722,13 +37735,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I had to walked home yesterday.",
         wrongMark: "walked",
         correct: "I had to walk home yesterday.",
-        whyZh: "had to 后面那个动作穿原样——had to 【walk】。一场戏只让一个词换形状，had 已经换过了。"
+        whyZh: "had to 后面那个动作用原形——had to 【walk】。一场戏只让一个词换形状，had 已经换过了。"
       },
       {
         wrong: "I have to walk home yesterday.",
         wrongMark: "have to",
         correct: "I had to walk home yesterday.",
-        whyZh: "yesterday 是过去的事，have 要换成它的昨天版——【had】 to walk home。"
+        whyZh: "yesterday 是过去的事，have 要换成它的过去式——【had】 to walk home。"
       },
       {
         wrong: "I must finish my homework today.",
@@ -37742,7 +37755,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I had to walk home yesterday.",
         bothRight: true,
-        whyZh: "两句都对——第 178 课那个 had 后面跟着「做过版」（had lost，两件过去的事排先后）；今天这个 had 后面跟着 to（had to，不得不）。同一个 had，后面跟的东西不一样。"
+        whyZh: "两句都对——第 178 课那个 had 后面跟着「过去分词」（had lost，两件过去的事排先后）；今天这个 had 后面跟着 to（had to，不得不）。同一个 had，后面跟的东西不一样。"
       },
       {
         wrong: "I have to go home now.",
@@ -37753,9 +37766,9 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "I had to walk home yesterday.", zh: "昨天我不得不走回家。", noteZh: "过去的事用 had to——后面动作穿原样。" },
-      { label: "否定", en: "I didn't have to walk home yesterday.", zh: "昨天我不必走回家。", noteZh: "「不必」用 didn't have to——帮手一出场，have 回原样。" },
-      { label: "疑问", en: "Did you have to walk home yesterday?", zh: "昨天你不得不走回家吗？", noteZh: "Did 搬到句首——have 回原样，to 照样在。" }
+      { label: "肯定", en: "I had to walk home yesterday.", zh: "昨天我不得不走回家。", noteZh: "过去的事用 had to——后面动作用原形。" },
+      { label: "否定", en: "I didn't have to walk home yesterday.", zh: "昨天我不必走回家。", noteZh: "「不必」用 didn't have to——帮手一出场，have 回原形。" },
+      { label: "疑问", en: "Did you have to walk home yesterday?", zh: "昨天你不得不走回家吗？", noteZh: "Did 搬到句首——have 回原形，to 照样在。" }
     ],
     sceneSwings: [
       { sceneZh: "说昨天不得不走回家", en: "I had to walk home yesterday.", zh: "昨天我不得不走回家。" },
@@ -37767,8 +37780,8 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 16 课你学过 must：I must finish my homework today.（我今天必须写完作业）——它说的是现在，而且它从来不变形状。",
         "可变不了形状，就没法说昨天。英语的规矩是：说过去必须／不得不，要换一个说法——had to。I had to walk home yesterday.（昨天我不得不走回家）。",
-        "外形上它跟第 178 课那个 had 有点像，但后面跟的东西不一样：第 178 课那个 had 后面跟着「做过版」（had lost my key，两件过去的事排先后）；今天这个 had 后面跟着 to（had to walk，不得不）。",
-        "还有一件老规矩没变：had to 后面那个动作穿原样——had to walk，不是 had to walked。一场戏只让一个词换形状，had 已经换过了。"
+        "外形上它跟第 178 课那个 had 有点像，但后面跟的东西不一样：第 178 课那个 had 后面跟着「过去分词」（had lost my key，两件过去的事排先后）；今天这个 had 后面跟着 to（had to walk，不得不）。",
+        "还有一件老规矩没变：had to 后面那个动作用原形——had to walk，不是 had to walked。一场戏只让一个词换形状，had 已经换过了。"
       ]
     },
     summary: {
@@ -37776,7 +37789,7 @@ export const grammarLessons: GrammarLesson[] = [
       points: [
         "I had to walk home yesterday. —— 过去的事用 had to",
         "I must walk home yesterday. ❌ —— must 只管现在，昨天要换人",
-        "I had to walked home ❌ —— had to 后面那个动作穿原样"
+        "I had to walked home ❌ —— had to 后面那个动作用原形"
       ]
     },
     guided: [
@@ -37810,7 +37823,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "had", "to", "walked", "home", "yesterday."],
         wrongToken: "walked",
         answer: "walked",
-        correctionZh: "had to 后面那个动作穿原样——had to 【walk】，不换形状。",
+        correctionZh: "had to 后面那个动作用原形——had to 【walk】，不换形状。",
         explain: "一场戏只让一个词换形状，had 已经换过了。"
       },
       {
@@ -37819,17 +37832,17 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 178 课学过：到家之前我就把钥匙弄丢了。",
         tokens: ["I", "had", "lost", "my", "key", "before", "I", "got", "home."],
         answer: "I had lost my key before I got home.",
-        explain: "复现第 178 课：那个 had 后面跟「做过版」；今天这个 had 后面跟 to。"
+        explain: "复现第 178 课：那个 had 后面跟「过去分词」；今天这个 had 后面跟 to。"
       },
       {
         // R9 变形/替换：换个说法（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I must finish my homework today.」改成说「昨天我不得不写作业」，怎么变？",
+        promptZh: "句型转换：「I must finish my homework today.」改成说「昨天我不得不写作业」，怎么变？",
         replaceBase: "I must finish my homework today.",
         replaceTarget: "改成「昨天不得不」的说法",
         options: ["I had to finish my homework yesterday.", "I must finish my homework yesterday.", "I had to finished my homework yesterday."],
         answer: "I had to finish my homework yesterday.",
-        explain: "must 换成 had to，时间词换成 yesterday，后面那个动作照样穿原样。"
+        explain: "must 换成 had to，时间词换成 yesterday，后面那个动作照样用原形。"
       }
     ],
     practice: [
@@ -37872,7 +37885,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "同桌看你很累，问你昨天怎么回去的。凭记忆，写出你那句英文。",
       intentZh: "昨天我不得不走回家。",
       answer: "I had to walk home yesterday.",
-      noteZh: "过去的事用 had to——后面那个动作穿原样。"
+      noteZh: "过去的事用 had to——后面那个动作用原形。"
     },
     huntCaseIds: ["hunt-had-to-walk"],
   },
@@ -37890,7 +37903,7 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "这些是他们的书。",
     targetSentence: "These are their books.",
     blocks: [
-      { text: "These are", role: "这些是（好几个东西）" },
+      { text: "These are", role: "这些是（复数名词）" },
       { text: "their books", role: "他们的书（their 贴在东西前面）" }
     ],
     oneLineRule: "说「他们的」用 their，它跟 my、her 一样贴在东西前面——These are their books（这些是他们的书）。第 8 课那批小标签里，my / your / his / her 你都见过了，今天补上 their。",
@@ -37922,7 +37935,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "These are their book.",
         wrongMark: "book",
         correct: "These are their books.",
-        whyZh: "These 是好几个——后面那个东西要带上 s：their 【books】。第 11 课的老规矩。"
+        whyZh: "These 是复数——后面那个东西要带上 s：their 【books】。第 11 课的老规矩。"
       },
       {
         wrong: "She is my friend.",
@@ -38018,7 +38031,7 @@ export const grammarLessons: GrammarLesson[] = [
       {
         // R9 变形/替换：贴着说 → 自己站（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「These are their books.」改成说「这些书是他们的」，怎么变？",
+        promptZh: "句型转换：「These are their books.」改成说「这些书是他们的」，怎么变？",
         replaceBase: "These are their books.",
         replaceTarget: "改成「自己站」的那个说法",
         options: ["These books are theirs.", "These books are their.", "These are theirs books."],
@@ -38085,9 +38098,9 @@ export const grammarLessons: GrammarLesson[] = [
     targetSentence: "I am learning to swim.",
     blocks: [
       { text: "I am learning", role: "我正在学（be 后面穿 -ing）" },
-      { text: "to swim", role: "游泳（后面那个动作穿原样，垫个 to）" }
+      { text: "to swim", role: "游泳（后面那个动作用原形，垫个 to）" }
     ],
-    oneLineRule: "说「我正在学做某事」：前面穿 -ing（I am learning），后面垫个小垫板 to（to swim）——I am learning to swim（我正在学游泳）。前半截是「正在做」，后半截是「要做的那件事」。",
+    oneLineRule: "说「我正在学做某事」：前面穿 -ing（I am learning），后面垫个 to to（to swim）——I am learning to swim（我正在学游泳）。前半截是「正在做」，后半截是「要做的那件事」。",
     examples: [
       { en: "I am learning to swim.", zh: "我正在学游泳。" },
       { en: "She is learning to draw.", zh: "她正在学画画。" },
@@ -38104,13 +38117,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I am learning swim.",
         wrongMark: "learning",
         correct: "I am learning to swim.",
-        whyZh: "后面那半截要垫个小垫板——to swim。少了 to，两个动作就粘在一起了。"
+        whyZh: "后面那半截要垫个 to——to swim。少了 to，两个动作就粘在一起了。"
       },
       {
         wrong: "I am learning to swimming.",
         wrongMark: "to swimming",
         correct: "I am learning to swim.",
-        whyZh: "一件戏服就够了：前面穿了 -ing（learning），后面这个动作就穿原样——to 【swim】。"
+        whyZh: "一件戏服就够了：前面穿了 -ing（learning），后面这个动作就用原形——to 【swim】。"
       },
       {
         wrong: "I learning to swim.",
@@ -38155,15 +38168,15 @@ export const grammarLessons: GrammarLesson[] = [
       paragraphs: [
         "第 13 课你学过「正在做」：I am swimming.（我正在游泳）——那说的是这件事本身正在进行。",
         "今天多了一层：正在学做某件事——I am learning to swim.（我正在学游泳）。我人还在水里扑腾着呢，还没学会。",
-        "外形上是两层拼起来的：前面那截穿 -ing（learning），跟第 13 课一个规矩，要有 be 搭着；后面那截垫个小垫板 to（to swim），跟第 15 课 want to 那个 to 是一家的。",
-        "所以这句里你见过的老朋友不少：be 加 -ing 是第 13 课的，垫板 to 是第 15 课和后面好几课的——今天只是第一次把它俩拼在一句话里。"
+        "外形上是两层拼起来的：前面那截穿 -ing（learning），跟第 13 课一个规矩，要有 be 搭着；后面那截垫个 to to（to swim），跟第 15 课 want to 那个 to 是一家的。",
+        "所以这句里你见过的老朋友不少：be 加 -ing 是第 13 课的，to to 是第 15 课和后面好几课的——今天只是第一次把它俩拼在一句话里。"
       ]
     },
     summary: {
       rule: "说「正在学做某事」：前面穿 -ing、后面垫 to——I am learning to swim。",
       points: [
         "I am learning to swim. —— 前面 -ing，后面 to",
-        "I am learning to swimming. ❌ —— 一件戏服就够了，后面穿原样",
+        "I am learning to swimming. ❌ —— 一件戏服就够了，后面用原形",
         "I learning to swim. ❌ —— 「正在」要有 be 搭着（第 13 课老规矩）"
       ]
     },
@@ -38175,7 +38188,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "swim.",
         options: ["to", "for", "at"],
         answer: "to",
-        explain: "后面那半截要垫个小垫板——learning 【to】 swim。"
+        explain: "后面那半截要垫个 to——learning 【to】 swim。"
       },
       {
         kind: "arrange",
@@ -38198,7 +38211,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "am", "learning", "to", "swimming."],
         wrongToken: "swimming.",
         answer: "swimming.",
-        correctionZh: "一件戏服就够了：前面已经穿了 -ing，后面就穿原样——to 【swim】。",
+        correctionZh: "一件戏服就够了：前面已经穿了 -ing，后面就用原形——to 【swim】。",
         explain: "两个 -ing 撞一起了。"
       },
       {
@@ -38207,17 +38220,17 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 15 课学过：我想去旅行。",
         tokens: ["I", "want", "to", "travel."],
         answer: "I want to travel.",
-        explain: "复现第 15 课：那个 to 和今天这个是一家的——后面都穿原样。"
+        explain: "复现第 15 课：那个 to 和今天这个是一家的——后面都用原形。"
       },
       {
         // R9 变形/替换：换学的那件事（构造迁移，复用 choose 判题）
         kind: "replace",
-        promptZh: "句子变身：「I am learning to swim.」把「游泳」换成「画画」，怎么变？",
+        promptZh: "句型转换：「I am learning to swim.」把「游泳」换成「画画」，怎么变？",
         replaceBase: "I am learning to swim.",
         replaceTarget: "把 to swim 换成 to draw",
         options: ["I am learning to draw.", "I am learning to drawing.", "I am learning draw."],
         answer: "I am learning to draw.",
-        explain: "换学的那件事——前面照样 -ing，后面照样垫 to、穿原样。"
+        explain: "换学的那件事——前面照样 -ing，后面照样垫 to、用原形。"
       }
     ],
     practice: [
@@ -38278,7 +38291,7 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "她走进了厨房。",
     targetSentence: "She walked into the kitchen.",
     blocks: [
-      { text: "She walked", role: "她走（第 10 课那个走过版）" },
+      { text: "She walked", role: "她走（第 10 课那个过去式）" },
       { text: "into the kitchen", role: "进到厨房里面（into 管「从外面到里面」这件事）" }
     ],
     oneLineRule: "说「走进某个地方里面」要用 into（她走进了厨房 She walked into the kitchen）——它比 in 多一层「从外面动到里面」。第 18 课那个 in 只说「人在里面」：in the kitchen 是「在厨房里」，人可能站着不动；今天这个 into 是「走进厨房里」，人是动着进去的。",
@@ -38336,8 +38349,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "She walked into the kitchen.", zh: "她走进了厨房。", noteZh: "into 管「从外面到里面」这个动作。" },
-      { label: "否定", en: "She didn't walk into the kitchen.", zh: "她没有走进厨房。", noteZh: "昨天的事用 didn't 领，走那个词穿回原样。" },
-      { label: "疑问", en: "Did she walk into the kitchen?", zh: "她走进了厨房吗？", noteZh: "Did 搬到句首，走那个词照样穿原样。" }
+      { label: "否定", en: "She didn't walk into the kitchen.", zh: "她没有走进厨房。", noteZh: "昨天的事用 didn't 领，走那个词变回原形。" },
+      { label: "疑问", en: "Did she walk into the kitchen?", zh: "她走进了厨房吗？", noteZh: "Did 搬到句首，走那个词照样用原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说她走进了厨房", en: "She walked into the kitchen.", zh: "她走进了厨房。" },
@@ -38403,7 +38416,7 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「She walked into the kitchen.」把厨房换成房间，怎么变？",
+        promptZh: "句型转换：「She walked into the kitchen.」把厨房换成房间，怎么变？",
         replaceBase: "She walked into the kitchen.",
         replaceTarget: "把 the kitchen 换成 the room",
         options: ["She walked into the room.", "She walked in the room.", "She walked into room."],
@@ -38465,7 +38478,7 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我们穿过了树林，横过了小桥。",
     targetSentence: "We walked through the forest and across the bridge.",
     blocks: [
-      { text: "We walked", role: "我们走（第 10 课那个走过版）" },
+      { text: "We walked", role: "我们走（第 10 课那个过去式）" },
       { text: "through the forest", role: "穿过树林（through 管「从中间穿过去」——两边都是树）" },
       { text: "and across the bridge", role: "横过小桥（across 管「从一头到另一头」——桥上走过去）" }
     ],
@@ -38524,8 +38537,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "We walked through the forest and across the bridge.", zh: "我们穿过了树林，横过了小桥。", noteZh: "穿过中间用 through，横过两头用 across。" },
-      { label: "否定", en: "We didn't walk through the forest or across the bridge.", zh: "我们既没穿过树林，也没横过小桥。", noteZh: "昨天的事用 didn't 领，走那个词穿回原样；否定里两个地方用 or 串起来。" },
-      { label: "疑问", en: "Did you walk through the forest or across the bridge?", zh: "你们是穿过树林，还是横过小桥？", noteZh: "Did 搬到句首，走那个词穿回原样；问是哪一个用 or。"
+      { label: "否定", en: "We didn't walk through the forest or across the bridge.", zh: "我们既没穿过树林，也没横过小桥。", noteZh: "昨天的事用 didn't 领，走那个词变回原形；否定里两个地方用 or 串起来。" },
+      { label: "疑问", en: "Did you walk through the forest or across the bridge?", zh: "你们是穿过树林，还是横过小桥？", noteZh: "Did 搬到句首，走那个词变回原形；问是哪一个用 or。"
       }
     ],
     sceneSwings: [
@@ -38593,7 +38606,7 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「We walked through the forest.」把树林换成桥，怎么变？",
+        promptZh: "句型转换：「We walked through the forest.」把树林换成桥，怎么变？",
         replaceBase: "We walked through the forest.",
         replaceTarget: "把 through the forest 换成 across the bridge",
         options: ["We walked across the bridge.", "We walked through the bridge.", "We walked across bridge."],
@@ -38695,7 +38708,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "The wind was so strong that the window broke.",
         bothRight: true,
-        whyZh: "两句都对，是 so 的两张脸——第 186 课那句的 so 站自己一句的开头，说「所以」；今天这句的 so 站在「有多…」前面，后面还得配个 that。"
+        whyZh: "两句都对，是 so 的两种用法——第 186 课那句的 so 站自己一句的开头，说「所以」；今天这句的 so 站在「有多…」前面，后面还得配个 that。"
       },
       {
         wrong: "I came early so that you can rest.",
@@ -38783,7 +38796,7 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「He was so tired that he fell asleep.」把累换成饿、把睡着换成吃了一大碗，怎么变？",
+        promptZh: "句型转换：「He was so tired that he fell asleep.」把累换成饿、把睡着换成吃了一大碗，怎么变？",
         replaceBase: "He was so tired that he fell asleep.",
         replaceTarget: "把 tired 换成 hungry，把 fell asleep 换成 ate a big bowl",
         options: ["He was so hungry that he ate a big bowl.", "He was so hungry that ate a big bowl.", "He was such hungry that he ate a big bowl."],
@@ -38973,7 +38986,7 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「It was such a big fish.」把鱼换成蛋糕，怎么变？",
+        promptZh: "句型转换：「It was such a big fish.」把鱼换成蛋糕，怎么变？",
         replaceBase: "It was such a big fish.",
         replaceTarget: "把 fish 换成 cake",
         options: ["It was such a big cake.", "It was a such big cake.", "It was so a big cake."],
@@ -39038,7 +39051,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "The cat is in", role: "猫在…里（第 18 课那个 in）" },
       { text: "its box", role: "它的盒子（its 贴在东西前面，跟 my / her 一个位置）" }
     ],
-    oneLineRule: "说「它的」用 its——不带小撇。它跟第 8 课那批小标签（my / your / his / her）站同一个位置，贴在东西前面：its box（它的盒子）。第 87 课那个 It's（带小撇）是「它是」——两个字挤一块留下的记号；今天这个 its（不带小撇）是「它的」。同一个音，两张脸，看那一小撇在不在。",
+    oneLineRule: "说「它的」用 its——不带小撇。它跟第 8 课那批小标签（my / your / his / her）站同一个位置，贴在东西前面：its box（它的盒子）。第 87 课那个 It's（带小撇）是「它是」——两个字挤一块留下的记号；今天这个 its（不带小撇）是「它的」。同一个音，两种用法，看那一小撇在不在。",
     examples: [
       { en: "The cat is in its box.", zh: "猫在它的盒子里。" },
       { en: "Its box is small.", zh: "它的盒子很小。" },
@@ -39102,7 +39115,7 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "说今天冷（第 87 课）", en: "It's cold today.", zh: "今天冷。" }
     ],
     deepDive: {
-      title: "its 和 It's：同一个音，两张脸",
+      title: "its 和 It's：同一个音，两种用法",
       paragraphs: [
         "这两个词读音一模一样，写法只差一小撇，意思却完全不同——这一小撇是英语里最容易丢、也最容易乱加的东西。",
         "带撇的 It's 是「它是」：It is 两个词挤一挤，把 i 挤掉、留一小撇做记号（第 87 课的规矩）。It's cold today.（今天冷）——这里 It's = It is。",
@@ -39118,7 +39131,7 @@ export const grammarLessons: GrammarLesson[] = [
         "The cat is in it box. ❌ —— 「它的」是 its，不是 it",
         "It's box is small. ❌ —— 带撇是「它是」；「它的盒子」要用 its box",
         "The box is its. ❌ —— its 不能自己站，得贴在东西前面（its box）",
-        "第 87 课带撇的 It's（它是）／今天不带撇的 its（它的）—— 同一个音，两张脸"
+        "第 87 课带撇的 It's（它是）／今天不带撇的 its（它的）—— 同一个音，两种用法"
       ]
     },
     guided: [
@@ -39163,7 +39176,7 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「The cat is in its box.」把盒子换成床，怎么变？",
+        promptZh: "句型转换：「The cat is in its box.」把盒子换成床，怎么变？",
         replaceBase: "The cat is in its box.",
         replaceTarget: "把 box 换成 bed",
         options: ["The cat is in its bed.", "The cat is in it bed.", "The cat is in it's bed."],
@@ -39353,7 +39366,7 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「The cat is among the boxes.」把箱子换成一堆书，怎么变？",
+        promptZh: "句型转换：「The cat is among the boxes.」把箱子换成一堆书，怎么变？",
         replaceBase: "The cat is among the boxes.",
         replaceTarget: "把 boxes 换成 books",
         options: ["The cat is among the books.", "The cat is among of the books.", "The cat is between the books."],
@@ -39405,7 +39418,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-197-irregular-past",
     number: 197,
     title: "想了一晚上，想通了",
-    grammarLabel: "昨天的老朋友 · 有些词的昨天版要单独记",
+    grammarLabel: "昨天的老朋友 · 有些词的过去式要单独记",
     episode: "小美的一天 一百九十七",
     scene: "campus",
     cover: cover197,
@@ -39415,15 +39428,15 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我想了想，知道答案了。",
     targetSentence: "I thought about it and knew the answer.",
     blocks: [
-      { text: "I thought about it", role: "我想了想（think 的昨天版是 thought，不是加 -ed）" },
-      { text: "and knew the answer", role: "知道答案了（know 的昨天版是 knew，中间那个 w 不发音）" }
+      { text: "I thought about it", role: "我想了想（think 的过去式是 thought，不是加 -ed）" },
+      { text: "and knew the answer", role: "知道答案了（know 的过去式是 knew，中间那个 w 不发音）" }
     ],
-    oneLineRule: "第 10 课说过「昨天的事要换昨天版」。大部分动词加 -ed 就行，但有一批老朋友自己的样子要单独记——今天这两个：think 的昨天版是 thought（我想了想 I thought），know 的昨天版是 knew（知道答案了 knew the answer）。它们不加 -ed，而且长得跟原来的样子很不一样，所以要一个词一个词记。",
+    oneLineRule: "第 10 课说过「昨天的事要换过去式」。大部分动词加 -ed 就行，但有一批老朋友自己的样子要单独记——今天这两个：think 的过去式是 thought（我想了想 I thought），know 的过去式是 knew（知道答案了 knew the answer）。它们不加 -ed，而且长得跟原来的样子很不一样，所以要一个词一个词记。",
     examples: [
       { en: "I thought about it and knew the answer.", zh: "我想了想，知道答案了。" },
       { en: "She thought about it.", zh: "她想了想。" },
       { en: "I knew the answer.", zh: "我知道答案了。" },
-      { en: "I went to the park yesterday.", zh: "昨天我去了公园。（第 10 课——go 的昨天版是 went，也是单独记的）" }
+      { en: "I went to the park yesterday.", zh: "昨天我去了公园。（第 10 课——go 的过去式是 went，也是单独记的）" }
     ],
     dialogue: [
       { who: "npc", en: "Did you finish the hard one?", zh: "同桌凑过来问那道难题。" },
@@ -39435,7 +39448,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I thinked about it and knowed the answer.",
         wrongMark: "thinked",
         correct: "I thought about it and knew the answer.",
-        whyZh: "think 和 know 的昨天版不是加 -ed——它们有自己的样子：think 的昨天版是 thought，know 的昨天版是 knew。这两个得单独记。"
+        whyZh: "think 和 know 的过去式不是加 -ed——它们有自己的样子：think 的过去式是 thought，know 的过去式是 knew。这两个得单独记。"
       },
       {
         wrong: "I thought about it and knew answer.",
@@ -39447,14 +39460,14 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I thought about it and know the answer.",
         wrongMark: "know",
         correct: "I thought about it and knew the answer.",
-        whyZh: "两件事都是昨天做的——前半截用了 thought，后半截也要跟着穿昨天版：know 的昨天版是 knew。"
+        whyZh: "两件事都是昨天做的——前半截用了 thought，后半截也要跟着穿过去式：know 的过去式是 knew。"
       },
       {
         wrong: "I went to the park yesterday.",
         wrongMark: null,
         correct: "I thought about it and knew the answer.",
         bothRight: true,
-        whyZh: "两句都对——第 10 课那句的 went 也是「单独记的昨天版」，跟今天这两个是同一批老朋友。"
+        whyZh: "两句都对——第 10 课那句的 went 也是「单独记的过去式」，跟今天这两个是同一批老朋友。"
       },
       {
         wrong: "I did not go out.",
@@ -39473,8 +39486,8 @@ export const grammarLessons: GrammarLesson[] = [
     ],
     variants: [
       { label: "肯定", en: "I thought about it and knew the answer.", zh: "我想了想，知道答案了。", noteZh: "think → thought、know → knew，都是单独记的。" },
-      { label: "否定", en: "I didn't think about it.", zh: "我没想过这件事。", noteZh: "说「不」用 didn't 领，后面的词穿回原样——didn't 【think】，不用写 thought。" },
-      { label: "疑问", en: "Did you think about it?", zh: "你想过吗？", noteZh: "Did 搬到句首，后面的词穿回原样——Did you 【think】。" }
+      { label: "否定", en: "I didn't think about it.", zh: "我没想过这件事。", noteZh: "说「不」用 didn't 领，后面的词变回原形——didn't 【think】，不用写 thought。" },
+      { label: "疑问", en: "Did you think about it?", zh: "你想过吗？", noteZh: "Did 搬到句首，后面的词变回原形——Did you 【think】。" }
     ],
     sceneSwings: [
       { sceneZh: "说我想了想，知道答案了", en: "I thought about it and knew the answer.", zh: "我想了想，知道答案了。" },
@@ -39484,21 +39497,21 @@ export const grammarLessons: GrammarLesson[] = [
     deepDive: {
       title: "为什么这批动词不听话",
       paragraphs: [
-        "第 10 课学的规矩是「加 -ed 就是昨天版」：play → played、watch → watched。这条规矩管得住大多数动词。",
+        "第 10 课学的规矩是「加 -ed 就是过去式」：play → played、watch → watched。这条规矩管得住大多数动词。",
         "但英语里最常说的那几十个动词偏偏不听话——它们是英语里最老的词，老到还没形成「加 -ed」这套规矩的时候就在用了，所以各留各的样子。",
         "think → thought、know → knew 就是这一批。它们不加 -ed，而且换了元音、有的还加了个不发音的字母（knew 里的 w 就不发音，读起来跟 new 一样）。",
         "这一批只能一个个记，没有捷径。好消息是它们数量有限，而且都是最常用的——你在前面几课已经碰过好几个了：went（第 10 课）、ate（第 10 课）、saw（第 10 课）、bought（第 11 课）、thought 和 knew（就是今天这两个）。剩下的以后再一个一个补。",
-        "还有个方便的地方：说「不」和问句里它们反而变回原样。I didn't think about it.（我没想）——Did 一出场，后面就穿回原样，不用去想昨天版怎么写。"
+        "还有个方便的地方：说「不」和问句里它们反而变回原形。I didn't think about it.（我没想）——Did 一出场，后面就变回原形，不用去想过去式怎么写。"
       ]
     },
     summary: {
-      rule: "think 的昨天版是 thought，know 的昨天版是 knew——这批老朋友的昨天版各是各的样子，要一个个记。",
+      rule: "think 的过去式是 thought，know 的过去式是 knew——这批老朋友的过去式各是各的样子，要一个个记。",
       points: [
-        "I thought about it. —— think 的昨天版是 thought",
-        "I knew the answer. —— know 的昨天版是 knew（w 不发音）",
+        "I thought about it. —— think 的过去式是 thought",
+        "I knew the answer. —— know 的过去式是 knew（w 不发音）",
         "I thinked / knowed ❌ —— 它们不加 -ed",
-        "I didn't think about it. —— 说「不」时它们穿回原样",
-        "第 10 课的 went 也是这一批（go 的昨天版）"
+        "I didn't think about it. —— 说「不」时它们变回原形",
+        "第 10 课的 went 也是这一批（go 的过去式）"
       ]
     },
     guided: [
@@ -39509,7 +39522,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "about it.",
         options: ["thought", "thinked", "think"],
         answer: "thought",
-        explain: "think 的昨天版是 thought——它不加 -ed，要单独记。"
+        explain: "think 的过去式是 thought——它不加 -ed，要单独记。"
       },
       {
         kind: "arrange",
@@ -39523,7 +39536,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一下——第 10 课学过：昨天我去了公园。",
         tokens: ["I", "went", "to", "the", "park", "yesterday."],
         answer: "I went to the park yesterday.",
-        explain: "复现第 10 课：went 也是「单独记的昨天版」，跟今天的 thought／knew 同一批。"
+        explain: "复现第 10 课：went 也是「单独记的过去式」，跟今天的 thought／knew 同一批。"
       },
       {
         kind: "spot",
@@ -39531,24 +39544,24 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "thinked", "about", "it", "and", "knew", "the", "answer."],
         wrongToken: "thinked",
         answer: "thinked",
-        correctionZh: "think 的昨天版是 thought——它不加 -ed：I 【thought】 about it。",
-        explain: "这批老朋友的昨天版各是各的样子，不加 -ed。"
+        correctionZh: "think 的过去式是 thought——它不加 -ed：I 【thought】 about it。",
+        explain: "这批老朋友的过去式各是各的样子，不加 -ed。"
       },
       {
         kind: "arrange",
         promptZh: "再对照一句——第 10 课学过：我没出门。",
         tokens: ["I", "did", "not", "go", "out."],
         answer: "I did not go out.",
-        explain: "复现第 10 课：didn't 一出场，后面的词就穿回原样——didn't 【go】。"
+        explain: "复现第 10 课：didn't 一出场，后面的词就变回原形——didn't 【go】。"
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「She thought about it.」把想了想换成了知道，怎么变？",
+        promptZh: "句型转换：「She thought about it.」把想了想换成了知道，怎么变？",
         replaceBase: "She thought about it.",
         replaceTarget: "把 thought about it 换成 knew the answer",
         options: ["She knew the answer.", "She knowed the answer.", "She knows the answer."],
         answer: "She knew the answer.",
-        explain: "换那件事——knew 是 know 的昨天版，照样不加 -ed。"
+        explain: "换那件事——knew 是 know 的过去式，照样不加 -ed。"
       }
     ],
     practice: [
@@ -39595,7 +39608,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-198-swam-sang",
     number: 198,
     title: "又游泳又唱歌",
-    grammarLabel: "昨天版换零件 · swim 变 swam、sing 变 sang",
+    grammarLabel: "过去式的不规则变化 · swim 变 swam、sing 变 sang",
     episode: "小美的一天 一百九十八",
     scene: "ocean",
     cover: cover198,
@@ -39605,15 +39618,15 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我们在水里游泳，一起唱歌。",
     targetSentence: "We swam in the water and sang together.",
     blocks: [
-      { text: "We swam in the water", role: "我们在水里游泳（swim 的昨天版是 swam）" },
-      { text: "and sang together", role: "一起唱歌（sing 的昨天版是 sang）" }
+      { text: "We swam in the water", role: "我们在水里游泳（swim 的过去式是 swam）" },
+      { text: "and sang together", role: "一起唱歌（sing 的过去式是 sang）" }
     ],
-    oneLineRule: "昨天的事要换昨天版（第 10 课的规矩）。今天这两个老朋友换的是里面的零件——swim 的昨天版是 swam、sing 的昨天版是 sang：两个词的 i 都换成了 a，尾巴还是原样不加 -ed。We swam in the water and sang together（我们在水里游泳，一起唱歌）。",
+    oneLineRule: "昨天的事要换过去式（第 10 课的规矩）。今天这两个老朋友换的是里面的字母——swim 的过去式是 swam、sing 的过去式是 sang：两个词的 i 都换成了 a，尾巴还是原形不加 -ed。We swam in the water and sang together（我们在水里游泳，一起唱歌）。",
     examples: [
       { en: "We swam in the water and sang together.", zh: "我们在水里游泳，一起唱歌。" },
       { en: "We swam in the water.", zh: "我们在水里游泳。" },
       { en: "She sang a song.", zh: "她唱了一首歌。" },
-      { en: "I can swim.", zh: "我会游泳。（第 14 课——那是「会」，没换零件）" }
+      { en: "I can swim.", zh: "我会游泳。（第 14 课——那是「会」，没不规则变化）" }
     ],
     dialogue: [
       { who: "npc", en: "What did you do today?", zh: "同学在车上问你今天都干了什么。" },
@@ -39625,13 +39638,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "We swimmed in the water and singed together.",
         wrongMark: "swimmed",
         correct: "We swam in the water and sang together.",
-        whyZh: "swim 和 sing 的昨天版不是加 -ed——它们换的是里面的零件：swim 变 swam、sing 变 sang，两个词的 i 都换成了 a。"
+        whyZh: "swim 和 sing 的过去式不是加 -ed——它们换的是里面的字母：swim 变 swam、sing 变 sang，两个词的 i 都换成了 a。"
       },
       {
         wrong: "We swam in the water and sing together.",
         wrongMark: "sing",
         correct: "We swam in the water and sang together.",
-        whyZh: "两件事都是今天做过的——前半截用了 swam，后半截也要跟着换：sing 的昨天版是 sang。"
+        whyZh: "两件事都是今天做过的——前半截用了 swam，后半截也要跟着换：sing 的过去式是 sang。"
       },
       {
         wrong: "We swam in water and sang together.",
@@ -39644,14 +39657,14 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "We swam in the water and sang together.",
         bothRight: true,
-        whyZh: "两句都对——第 14 课那句是「会游泳」（can 后面穿原样，不换零件）；今天这句是「游过了」，换了零件 swam。一个是会不会，一个是做过没。"
+        whyZh: "两句都对——第 14 课那句是「会游泳」（can 后面用原形，没有不规则变化）；今天这句是「游过了」，换了形式 swam。一个是会不会，一个是做过没。"
       },
       {
         wrong: "I went to the park yesterday.",
         wrongMark: null,
         correct: "We swam in the water and sang together.",
         bothRight: true,
-        whyZh: "两句都对——第 10 课那句的 went 也是换零件的（go → went），跟今天这两个是同一批老朋友。"
+        whyZh: "两句都对——第 10 课那句的 went 也是不规则变化的（go → went），跟今天这两个是同一批老朋友。"
       },
       {
         wrong: "I am swimming.",
@@ -39662,9 +39675,9 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "We swam in the water and sang together.", zh: "我们在水里游泳，一起唱歌。", noteZh: "swim → swam、sing → sang，换的是里面的零件。" },
-      { label: "否定", en: "We didn't swim or sing together.", zh: "我们没游泳，也没一起唱歌。", noteZh: "说「不」用 didn't 领，后面的词穿回原样——didn't 【swim】。" },
-      { label: "疑问", en: "Did you swim and sing together?", zh: "你们游泳、一起唱歌了吗？", noteZh: "Did 搬到句首，后面的词穿回原样。" }
+      { label: "肯定", en: "We swam in the water and sang together.", zh: "我们在水里游泳，一起唱歌。", noteZh: "swim → swam、sing → sang，换的是里面的字母。" },
+      { label: "否定", en: "We didn't swim or sing together.", zh: "我们没游泳，也没一起唱歌。", noteZh: "说「不」用 didn't 领，后面的词变回原形——didn't 【swim】。" },
+      { label: "疑问", en: "Did you swim and sing together?", zh: "你们游泳、一起唱歌了吗？", noteZh: "Did 搬到句首，后面的词变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说我们在水里游泳，一起唱歌", en: "We swam in the water and sang together.", zh: "我们在水里游泳，一起唱歌。" },
@@ -39672,23 +39685,23 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "说我会游泳（第 14 课）", en: "I can swim.", zh: "我会游泳。" }
     ],
     deepDive: {
-      title: "换零件的昨天版，比加 -ed 的还多",
+      title: "不规则变化的过去式，比加 -ed 的还多",
       paragraphs: [
-        "第 10 课学的规矩是「加 -ed 就是昨天版」：play → played、watch → watched。第 197 课又碰到一批不加 -ed 的：think → thought、know → knew。",
-        "今天这两个换的是里面的零件：swim 的 i 换成 a，就成了 swam；sing 的 i 也换成 a，就成了 sang。尾巴不加 -ed，里面的元音变了。",
+        "第 10 课学的规矩是「加 -ed 就是过去式」：play → played、watch → watched。第 197 课又碰到一批不加 -ed 的：think → thought、know → knew。",
+        "今天这两个换的是里面的字母：swim 的 i 换成 a，就成了 swam；sing 的 i 也换成 a，就成了 sang。尾巴不加 -ed，里面的元音变了。",
         "为什么会这样？因为这些是英语里最老的词——老到「加 -ed」这套规矩还没形成的时候就在用了，于是各留各的样子。",
-        "其实最常用的那些动词里，换零件的比加 -ed 的还多：go → went、eat → ate、see → saw、buy → bought、sit → sat……所以别把「加 -ed」当成唯一的路，碰到常用的动词要多留个心。",
-        "有个方便的地方：说「不」和问句里它们反而变回原样。We didn't swim.（我们没游泳）——didn't 一出场，后面就穿回原样，不用去想昨天版怎么写。"
+        "其实最常用的那些动词里，不规则变化的比加 -ed 的还多：go → went、eat → ate、see → saw、buy → bought、sit → sat……所以别把「加 -ed」当成唯一的路，碰到常用的动词要多留个心。",
+        "有个方便的地方：说「不」和问句里它们反而变回原形。We didn't swim.（我们没游泳）——didn't 一出场，后面就变回原形，不用去想过去式怎么写。"
       ]
     },
     summary: {
-      rule: "swim 的昨天版是 swam，sing 的昨天版是 sang——这两个换的是里面的零件（i 换成 a），不是加 -ed。",
+      rule: "swim 的过去式是 swam，sing 的过去式是 sang——这两个换的是里面的字母（i 换成 a），不是加 -ed。",
       points: [
-        "We swam in the water. —— swim 的昨天版是 swam",
-        "She sang a song. —— sing 的昨天版是 sang",
+        "We swam in the water. —— swim 的过去式是 swam",
+        "She sang a song. —— sing 的过去式是 sang",
         "We swimmed / singed ❌ —— 它们不加 -ed",
-        "We didn't swim. —— 说「不」时它们穿回原样",
-        "第 10 课的 went、第 197 课的 thought 也是换零件的"
+        "We didn't swim. —— 说「不」时它们变回原形",
+        "第 10 课的 went、第 197 课的 thought 也是不规则变化的"
       ]
     },
     guided: [
@@ -39699,7 +39712,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "in the water.",
         options: ["swam", "swimmed", "swim"],
         answer: "swam",
-        explain: "swim 的昨天版是 swam——换里面的零件（i 换成 a），不加 -ed。"
+        explain: "swim 的过去式是 swam——换里面的字母（i 换成 a），不加 -ed。"
       },
       {
         kind: "arrange",
@@ -39713,7 +39726,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一下——第 14 课学过：我会游泳。",
         tokens: ["I", "can", "swim."],
         answer: "I can swim.",
-        explain: "复现第 14 课：can 后面穿原样（swim），不换零件——换零件只发生在说昨天的事时。"
+        explain: "复现第 14 课：can 后面用原形（swim），没有不规则变化——不规则变化只发生在说昨天的事时。"
       },
       {
         kind: "spot",
@@ -39721,7 +39734,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["We", "swam", "in", "the", "water", "and", "sing", "together."],
         wrongToken: "sing",
         answer: "sing",
-        correctionZh: "两件事都是做过的，后半截也要换零件——sing 的昨天版是 【sang】。",
+        correctionZh: "两件事都是做过的，后半截也要不规则变化——sing 的过去式是 【sang】。",
         explain: "前半截换了、后半截没换，一句话里前后不一致。"
       },
       {
@@ -39729,16 +39742,16 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 10 课学过：昨天我去了公园。",
         tokens: ["I", "went", "to", "the", "park", "yesterday."],
         answer: "I went to the park yesterday.",
-        explain: "复现第 10 课：went 也是换零件的（go → went），跟今天的 swam／sang 同一批。"
+        explain: "复现第 10 课：went 也是不规则变化的（go → went），跟今天的 swam／sang 同一批。"
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「She sang a song.」把唱歌换成游泳，怎么变？",
+        promptZh: "句型转换：「She sang a song.」把唱歌换成游泳，怎么变？",
         replaceBase: "She sang a song.",
         replaceTarget: "把 sang a song 换成 swam in the water",
         options: ["She swam in the water.", "She swimmed in the water.", "She swim in the water."],
         answer: "She swam in the water.",
-        explain: "换那件事——swam 照样换零件，不加 -ed。"
+        explain: "换那件事——swam 照样不规则变化，不加 -ed。"
       }
     ],
     practice: [
@@ -39777,7 +39790,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "回程的车上同学问你今天都干了什么，你想起那片海。凭记忆，写出你那句英文。",
       intentZh: "我们在水里游泳，一起唱歌。",
       answer: "We swam in the water and sang together.",
-      noteZh: "swim → swam、sing → sang——换里面的零件（i 换成 a），不加 -ed。"
+      noteZh: "swim → swam、sing → sang——换里面的字母（i 换成 a），不加 -ed。"
     },
     huntCaseIds: ["hunt-swam-sang"],
   },
@@ -39785,7 +39798,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-199-sat-caught",
     number: 199,
     title: "坐旁边，赶上了",
-    grammarLabel: "昨天版 · sit 变 sat、catch 变 caught",
+    grammarLabel: "过去式 · sit 变 sat、catch 变 caught",
     episode: "小美的一天 一百九十九",
     scene: "train",
     cover: cover199,
@@ -39795,10 +39808,10 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我坐到了她旁边，赶上了公交车。",
     targetSentence: "I sat next to her and caught the bus.",
     blocks: [
-      { text: "I sat next to her", role: "我坐到她旁边（sit 的昨天版是 sat）" },
-      { text: "and caught the bus", role: "赶上了公交车（catch 的昨天版是 caught）" }
+      { text: "I sat next to her", role: "我坐到她旁边（sit 的过去式是 sat）" },
+      { text: "and caught the bus", role: "赶上了公交车（catch 的过去式是 caught）" }
     ],
-    oneLineRule: "昨天的事要换昨天版。今天这两个老朋友换零件的方式不一样：sit 的昨天版是 sat（i 换成 a，短的）；catch 的昨天版是 caught（整个换成 -aught，而且那个 gh 不发音）。I sat next to her and caught the bus（我坐到了她旁边，赶上了公交车）。",
+    oneLineRule: "昨天的事要换过去式。今天这两个老朋友不规则变化的方式不一样：sit 的过去式是 sat（i 换成 a，短的）；catch 的过去式是 caught（整个换成 -aught，而且那个 gh 不发音）。I sat next to her and caught the bus（我坐到了她旁边，赶上了公交车）。",
     examples: [
       { en: "I sat next to her and caught the bus.", zh: "我坐到了她旁边，赶上了公交车。" },
       { en: "I sat next to her.", zh: "我坐到了她旁边。" },
@@ -39815,13 +39828,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I sitted next to her and catched the bus.",
         wrongMark: "sitted",
         correct: "I sat next to her and caught the bus.",
-        whyZh: "sit 和 catch 的昨天版不是加 -ed——sit 变 sat（i 换成 a）、catch 变 caught（整个换成 -aught）。这两个都得单独记。"
+        whyZh: "sit 和 catch 的过去式不是加 -ed——sit 变 sat（i 换成 a）、catch 变 caught（整个换成 -aught）。这两个都得单独记。"
       },
       {
         wrong: "I sat next to her and catch the bus.",
         wrongMark: "catch",
         correct: "I sat next to her and caught the bus.",
-        whyZh: "两件事都是今天早上做过的——前半截用了 sat，后半截也要跟着换：catch 的昨天版是 caught。"
+        whyZh: "两件事都是今天早上做过的——前半截用了 sat，后半截也要跟着换：catch 的过去式是 caught。"
       },
       {
         wrong: "I sat next to her and caught bus.",
@@ -39841,20 +39854,20 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I sat next to her and caught the bus.",
         bothRight: true,
-        whyZh: "两句都对——第 10 课那句的 went 也是换零件的（go → went），跟今天的 sat／caught 同一批老朋友。"
+        whyZh: "两句都对——第 10 课那句的 went 也是不规则变化的（go → went），跟今天的 sat／caught 同一批老朋友。"
       },
       {
         wrong: "Please give me the book.",
         wrongMark: null,
         correct: "I sat next to her and caught the bus.",
         bothRight: true,
-        whyZh: "两句都对——第 63 课那句的 give 也有自己的昨天版：give 变 gave（跟今天的 sit → sat 一样，都是里面的 i 换成 a）。give 的位置规矩在第 63 课，形状在今天的 sat 这条线上。"
+        whyZh: "两句都对——第 63 课那句的 give 也有自己的过去式：give 变 gave（跟今天的 sit → sat 一样，都是里面的 i 换成 a）。give 的位置规矩在第 63 课，形状在今天的 sat 这条线上。"
       }
     ],
     variants: [
-      { label: "肯定", en: "I sat next to her and caught the bus.", zh: "我坐到了她旁边，赶上了公交车。", noteZh: "sit → sat、catch → caught，两个都换零件。" },
-      { label: "否定", en: "I didn't catch the bus.", zh: "我没赶上公交车。", noteZh: "说「不」用 didn't 领，后面的词穿回原样——didn't 【catch】。" },
-      { label: "疑问", en: "Did you catch the bus?", zh: "你赶上公交车了吗？", noteZh: "Did 搬到句首，后面的词穿回原样。" }
+      { label: "肯定", en: "I sat next to her and caught the bus.", zh: "我坐到了她旁边，赶上了公交车。", noteZh: "sit → sat、catch → caught，两个都不规则变化。" },
+      { label: "否定", en: "I didn't catch the bus.", zh: "我没赶上公交车。", noteZh: "说「不」用 didn't 领，后面的词变回原形——didn't 【catch】。" },
+      { label: "疑问", en: "Did you catch the bus?", zh: "你赶上公交车了吗？", noteZh: "Did 搬到句首，后面的词变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说我坐到了她旁边，赶上了公交车", en: "I sat next to her and caught the bus.", zh: "我坐到了她旁边，赶上了公交车。" },
@@ -39862,23 +39875,23 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "说我的桌子在窗边（第 79 课）", en: "My desk is next to the window.", zh: "我的桌子在窗边。" }
     ],
     deepDive: {
-      title: "换零件的几种换法",
+      title: "不规则变化的几种换法",
       paragraphs: [
-        "这一批「换零件」的老朋友，换法其实不止一种。你今天已经见过三种了。",
+        "这一批「不规则变化」的老朋友，换法其实不止一种。你今天已经见过三种了。",
         "第一种：里面的元音换一下，尾巴不动。swim → swam、sing → sang（第 198 课）、sit → sat（今天）——都是 i 换成 a，词还是那么短。",
         "第二种：整个换成另一个样子，还带个不发音的字母。catch → caught（今天）、think → thought（第 197 课）、buy → bought（第 11 课）——都收在 -aught / -ought 上，那个 gh 不发音。",
         "第三种：连开头都换了。go → went（第 10 课）——这个最不讲道理，只能硬记。",
-        "虽然换法有好几种，但有一条是共通的：说「不」和问句里它们全变回原样。I didn't catch the bus.（我没赶上）——didn't 一出场，就不用去想昨天版怎么写了。"
+        "虽然换法有好几种，但有一条是共通的：说「不」和问句里它们全变回原形。I didn't catch the bus.（我没赶上）——didn't 一出场，就不用去想过去式怎么写了。"
       ]
     },
     summary: {
-      rule: "sit 的昨天版是 sat，catch 的昨天版是 caught——两个都换零件，但换法不一样。",
+      rule: "sit 的过去式是 sat，catch 的过去式是 caught——两个都不规则变化，但换法不一样。",
       points: [
-        "I sat next to her. —— sit 的昨天版是 sat（i 换成 a）",
-        "I caught the bus. —— catch 的昨天版是 caught（换成 -aught，gh 不发音）",
+        "I sat next to her. —— sit 的过去式是 sat（i 换成 a）",
+        "I caught the bus. —— catch 的过去式是 caught（换成 -aught，gh 不发音）",
         "I sitted / catched ❌ —— 它们不加 -ed",
-        "I didn't catch the bus. —— 说「不」时它们穿回原样",
-        "第 198 课 swim → swam、第 10 课 go → went 也是换零件的"
+        "I didn't catch the bus. —— 说「不」时它们变回原形",
+        "第 198 课 swim → swam、第 10 课 go → went 也是不规则变化的"
       ]
     },
     guided: [
@@ -39889,7 +39902,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "next to her.",
         options: ["sat", "sitted", "sit"],
         answer: "sat",
-        explain: "sit 的昨天版是 sat——里面的 i 换成 a，不加 -ed。"
+        explain: "sit 的过去式是 sat——里面的 i 换成 a，不加 -ed。"
       },
       {
         kind: "arrange",
@@ -39911,19 +39924,19 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "sat", "next", "to", "her", "and", "catched", "the", "bus."],
         wrongToken: "catched",
         answer: "catched",
-        correctionZh: "catch 的昨天版是 caught——整个换成 -aught，不加 -ed：and 【caught】 the bus。",
-        explain: "catch 是这批老朋友里换得最狠的一个——它不是加个小尾巴，而是整个词换成 caught。之所以要一段话讲清，是因为按「加 -ed」的规矩会写出 catched，而这个词英语里根本不存在。"
+        correctionZh: "catch 的过去式是 caught——整个换成 -aught，不加 -ed：and 【caught】 the bus。",
+        explain: "catch 是这批老朋友里换得最狠的一个——它不是加个，而是整个词换成 caught。之所以要一段话讲清，是因为按「加 -ed」的规矩会写出 catched，而这个词英语里根本不存在。"
       },
       {
         kind: "arrange",
         promptZh: "再对照一句——第 10 课学过：昨天我去了公园。",
         tokens: ["I", "went", "to", "the", "park", "yesterday."],
         answer: "I went to the park yesterday.",
-        explain: "复现第 10 课：went 也是换零件的（go → went），跟今天的 sat／caught 同一批。"
+        explain: "复现第 10 课：went 也是不规则变化的（go → went），跟今天的 sat／caught 同一批。"
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「I caught the bus.」把公交车换成球，怎么变？",
+        promptZh: "句型转换：「I caught the bus.」把公交车换成球，怎么变？",
         replaceBase: "I caught the bus.",
         replaceTarget: "把 the bus 换成 the ball",
         options: ["I caught the ball.", "I catched the ball.", "I catch the ball."],
@@ -39975,7 +39988,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-200-felt-kept",
     number: 200,
     title: "雪里读完了那本书",
-    grammarLabel: "昨天版 · feel 变 felt、keep 变 kept",
+    grammarLabel: "过去式 · feel 变 felt、keep 变 kept",
     episode: "小美的一天 二百",
     scene: "snow",
     cover: cover200,
@@ -39985,15 +39998,15 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "雪里我觉得冷，但我还是读个不停。",
     targetSentence: "I felt cold in the snow, but I kept reading.",
     blocks: [
-      { text: "I felt cold in the snow", role: "我在雪里觉得冷（feel 的昨天版是 felt）" },
-      { text: "but I kept reading", role: "但我一直读（keep 的昨天版是 kept）" }
+      { text: "I felt cold in the snow", role: "我在雪里觉得冷（feel 的过去式是 felt）" },
+      { text: "but I kept reading", role: "但我一直读（keep 的过去式是 kept）" }
     ],
-    oneLineRule: "feel 和 keep 的昨天版刚好是一对——它们换法一模一样：中间那两个 e 只剩一个，尾巴再加个 t，就成了 felt 和 kept。I felt cold in the snow, but I kept reading（我在雪里觉得冷，但我一直读着）。这两个跟上几课的 swim → swam、sit → sat 是同一个家族的，都不加 -ed。",
+    oneLineRule: "feel 和 keep 的过去式刚好是一对——它们换法一模一样：中间那两个 e 只剩一个，尾巴再加个 t，就成了 felt 和 kept。I felt cold in the snow, but I kept reading（我在雪里觉得冷，但我一直读着）。这两个跟上几课的 swim → swam、sit → sat 是同一个家族的，都不加 -ed。",
     examples: [
       { en: "I felt cold in the snow, but I kept reading.", zh: "雪里我觉得冷，但我一直读着。" },
       { en: "I felt cold.", zh: "我觉得冷。" },
       { en: "I kept reading.", zh: "我一直读着。" },
-      { en: "I feel much better today.", zh: "我今天好多了。（第 76 课——那是现在觉得，没换零件）" }
+      { en: "I feel much better today.", zh: "我今天好多了。（第 76 课——那是现在觉得，没不规则变化）" }
     ],
     dialogue: [
       { who: "npc", en: "You finished the whole book?", zh: "妈妈推门进来，看你翻到最后一页。" },
@@ -40005,13 +40018,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I feeled cold in the snow, but I keeped reading.",
         wrongMark: "feeled",
         correct: "I felt cold in the snow, but I kept reading.",
-        whyZh: "feel 和 keep 的昨天版不是加 -ed——中间那两个 e 只剩一个、尾巴再加个 t：feel 变 felt、keep 变 kept。"
+        whyZh: "feel 和 keep 的过去式不是加 -ed——中间那两个 e 只剩一个、尾巴再加个 t：feel 变 felt、keep 变 kept。"
       },
       {
         wrong: "I felt cold in the snow, but I keep reading.",
         wrongMark: "keep",
         correct: "I felt cold in the snow, but I kept reading.",
-        whyZh: "两件事都是昨天做的——前半截用了 felt，后半截也要跟着换：keep 的昨天版是 kept。"
+        whyZh: "两件事都是昨天做的——前半截用了 felt，后半截也要跟着换：keep 的过去式是 kept。"
       },
       {
         wrong: "I felt cold in snow, but I kept reading.",
@@ -40024,27 +40037,27 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I felt cold in the snow, but I kept reading.",
         bothRight: true,
-        whyZh: "两句都对，差在什么时候——第 76 课那句是「现在觉得好多了」（feel 穿原样）；今天这句是「（昨天）觉得冷」，换了零件 felt。"
+        whyZh: "两句都对，差在什么时候——第 76 课那句是「现在觉得好多了」（feel 用原形）；今天这句是「（昨天）觉得冷」，换了形式 felt。"
       },
       {
         wrong: "We swam in the water and sang together.",
         wrongMark: null,
         correct: "I felt cold in the snow, but I kept reading.",
         bothRight: true,
-        whyZh: "两句都对——第 198 课那句的 swam / sang 也是换零件的，跟今天的 felt / kept 是同一个家族（都不加 -ed）。"
+        whyZh: "两句都对——第 198 课那句的 swam / sang 也是不规则变化的，跟今天的 felt / kept 是同一个家族（都不加 -ed）。"
       },
       {
         wrong: "I keep reading at night.",
         wrongMark: null,
         correct: "I felt cold in the snow, but I kept reading.",
         bothRight: true,
-        whyZh: "两句都对，差在什么时候——第 77 课那句是「我常在夜里读书」（keep 穿原样，说的是一种习惯）；今天这句是「（昨天）一直读着」，换了零件 kept。"
+        whyZh: "两句都对，差在什么时候——第 77 课那句是「我常在夜里读书」（keep 用原形，说的是一种习惯）；今天这句是「（昨天）一直读着」，换了形式 kept。"
       }
     ],
     variants: [
       { label: "肯定", en: "I felt cold in the snow, but I kept reading.", zh: "雪里我觉得冷，但我一直读着。", noteZh: "feel → felt、keep → kept，换法一模一样。" },
-      { label: "否定", en: "I didn't feel cold, but I kept reading.", zh: "我不觉得冷，但我一直读着。", noteZh: "说「不」用 didn't 领，后面的词穿回原样——didn't 【feel】。" },
-      { label: "疑问", en: "Did you feel cold in the snow?", zh: "你在雪里觉得冷吗？", noteZh: "Did 搬到句首，后面的词穿回原样。" }
+      { label: "否定", en: "I didn't feel cold, but I kept reading.", zh: "我不觉得冷，但我一直读着。", noteZh: "说「不」用 didn't 领，后面的词变回原形——didn't 【feel】。" },
+      { label: "疑问", en: "Did you feel cold in the snow?", zh: "你在雪里觉得冷吗？", noteZh: "Did 搬到句首，后面的词变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说雪里觉得冷，但一直读着", en: "I felt cold in the snow, but I kept reading.", zh: "雪里我觉得冷，但我一直读着。" },
@@ -40052,23 +40065,23 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "说我今天好多了（第 76 课）", en: "I feel much better today.", zh: "我今天好多了。" }
     ],
     deepDive: {
-      title: "这两个词的昨天版是一对",
+      title: "这两个词的过去式是一对",
       paragraphs: [
-        "前面几课你见过好几种「换零件」的换法：swim → swam、sing → sang（第 198 课）是里面的 i 换成 a；catch → caught（第 199 课）是整个换成 -aught；go → went（第 10 课）是连开头都换了。",
+        "前面几课你见过好几种「不规则变化」的换法：swim → swam、sing → sang（第 198 课）是里面的 i 换成 a；catch → caught（第 199 课）是整个换成 -aught；go → went（第 10 课）是连开头都换了。",
         "今天这两个刚好是一对——feel 和 keep 的换法一模一样：中间那两个 e 只剩一个，尾巴再加个 t，就成了 felt 和 kept。",
         "所以记住一个就等于记住两个：felt 和 kept 长得像，换法也像。",
         "它们跟前面那几批是同一个家族的：都是英语里最老的词，都不加 -ed，都得一个个记。好消息是这一批数量有限。",
-        "还有个方便的地方（第 197 课讲过）：说「不」和问句里它们全变回原样。I didn't feel cold.（我不觉得冷）——didn't 一出场，就不用去想昨天版怎么写了。"
+        "还有个方便的地方（第 197 课讲过）：说「不」和问句里它们全变回原形。I didn't feel cold.（我不觉得冷）——didn't 一出场，就不用去想过去式怎么写了。"
       ]
     },
     summary: {
-      rule: "feel 的昨天版是 felt，keep 的昨天版是 kept——这两个换法一模一样：两个 e 只剩一个，尾巴加个 t。",
+      rule: "feel 的过去式是 felt，keep 的过去式是 kept——这两个换法一模一样：两个 e 只剩一个，尾巴加个 t。",
       points: [
-        "I felt cold. —— feel 的昨天版是 felt",
-        "I kept reading. —— keep 的昨天版是 kept",
+        "I felt cold. —— feel 的过去式是 felt",
+        "I kept reading. —— keep 的过去式是 kept",
         "I feeled / keeped ❌ —— 它们不加 -ed",
-        "I didn't feel cold. —— 说「不」时它们穿回原样",
-        "第 198 课的 swam／sang、第 199 课的 sat／caught 也是换零件的"
+        "I didn't feel cold. —— 说「不」时它们变回原形",
+        "第 198 课的 swam／sang、第 199 课的 sat／caught 也是不规则变化的"
       ]
     },
     guided: [
@@ -40079,7 +40092,7 @@ export const grammarLessons: GrammarLesson[] = [
         after: "cold.",
         options: ["felt", "feeled", "feel"],
         answer: "felt",
-        explain: "feel 的昨天版是 felt——两个 e 只剩一个、尾巴加个 t，不加 -ed。"
+        explain: "feel 的过去式是 felt——两个 e 只剩一个、尾巴加个 t，不加 -ed。"
       },
       {
         kind: "arrange",
@@ -40093,7 +40106,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一下——第 76 课学过：我今天好多了。",
         tokens: ["I", "feel", "much", "better", "today."],
         answer: "I feel much better today.",
-        explain: "复现第 76 课：那是现在觉得，feel 穿原样；换零件只发生在说昨天的事时。"
+        explain: "复现第 76 课：那是现在觉得，feel 用原形；不规则变化只发生在说昨天的事时。"
       },
       {
         kind: "spot",
@@ -40101,7 +40114,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "felt", "cold", "in", "the", "snow,", "but", "I", "keeped", "reading."],
         wrongToken: "keeped",
         answer: "keeped",
-        correctionZh: "keep 的昨天版是 kept——两个 e 只剩一个、尾巴加个 t：but I 【kept】 reading。",
+        correctionZh: "keep 的过去式是 kept——两个 e 只剩一个、尾巴加个 t：but I 【kept】 reading。",
         explain: "前半截换了 felt、后半截却加了 -ed，一句话里两套换法混着用。"
       },
       {
@@ -40109,16 +40122,16 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 77 课学过：我常在夜里读书。",
         tokens: ["I", "keep", "reading", "at", "night."],
         answer: "I keep reading at night.",
-        explain: "复现第 77 课：那句说的是一种习惯（keep 穿原样）；今天这句是「昨天一直读着」，换了零件 kept。"
+        explain: "复现第 77 课：那句说的是一种习惯（keep 用原形）；今天这句是「昨天一直读着」，换了形式 kept。"
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「I felt cold.」把觉得冷换成觉得累，怎么变？",
+        promptZh: "句型转换：「I felt cold.」把觉得冷换成觉得累，怎么变？",
         replaceBase: "I felt cold.",
         replaceTarget: "把 cold 换成 tired",
         options: ["I felt tired.", "I feeled tired.", "I feel tired."],
         answer: "I felt tired.",
-        explain: "换那时候的感觉——felt 照样换零件，不加 -ed。"
+        explain: "换那时候的感觉——felt 照样不规则变化，不加 -ed。"
       }
     ],
     practice: [
@@ -40165,7 +40178,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-201-slept",
     number: 201,
     title: "昨晚睡得好",
-    grammarLabel: "昨天版 · sleep 变 slept",
+    grammarLabel: "过去式 · sleep 变 slept",
     episode: "小美的一天 二百零一",
     scene: "mansion",
     cover: cover201,
@@ -40175,10 +40188,10 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我昨晚睡得很好，所以今天早上精神特别好。",
     targetSentence: "I slept well last night, so I felt great this morning.",
     blocks: [
-      { text: "I slept well last night", role: "我昨晚睡得很好（sleep 的昨天版是 slept）" },
+      { text: "I slept well last night", role: "我昨晚睡得很好（sleep 的过去式是 slept）" },
       { text: "so I felt great this morning", role: "所以今早精神很好（第 20 课那个 so 说「所以」）" }
     ],
-    oneLineRule: "sleep 的昨天版是 slept——它跟第 200 课的 kept、felt 换法一样：中间两个 e 只剩一个、尾巴加个 t。I slept well last night（我昨晚睡得很好）。说「睡了一觉」就用它；要说「（那阵子）正睡着」，那是另一种说法（was sleeping），第 98 课讲过。",
+    oneLineRule: "sleep 的过去式是 slept——它跟第 200 课的 kept、felt 换法一样：中间两个 e 只剩一个、尾巴加个 t。I slept well last night（我昨晚睡得很好）。说「睡了一觉」就用它；要说「（那阵子）正睡着」，那是另一种说法（was sleeping），第 98 课讲过。",
     examples: [
       { en: "I slept well last night, so I felt great this morning.", zh: "我昨晚睡得很好，所以今早精神特别好。" },
       { en: "I slept well last night.", zh: "我昨晚睡得很好。" },
@@ -40195,19 +40208,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I sleeped well last night, so I felt great this morning.",
         wrongMark: "sleeped",
         correct: "I slept well last night, so I felt great this morning.",
-        whyZh: "sleep 的昨天版不是加 -ed——它跟第 200 课的 kept、felt 换法一样：两个 e 只剩一个、尾巴加个 t，就成了 slept。"
+        whyZh: "sleep 的过去式不是加 -ed——它跟第 200 课的 kept、felt 换法一样：两个 e 只剩一个、尾巴加个 t，就成了 slept。"
       },
       {
         wrong: "I slept well last night, so I feel great this morning.",
         wrongMark: "feel",
         correct: "I slept well last night, so I felt great this morning.",
-        whyZh: "两件事都是已经过去的——前半截用了 slept，后半截也要跟着换：feel 的昨天版是 felt。"
+        whyZh: "两件事都是已经过去的——前半截用了 slept，后半截也要跟着换：feel 的过去式是 felt。"
       },
       {
         wrong: "I was slept well last night.",
         wrongMark: "was slept",
         correct: "I slept well last night, so I felt great this morning.",
-        whyZh: "slept 本身就是昨天版，不用再搭个 was——两个帮手叠在一起反而错了：I 【slept】 well。要说「（那阵子）正睡着」才是 was sleeping（第 98 课）。"
+        whyZh: "slept 本身就是过去式，不用再搭个 was——两个帮手叠在一起反而错了：I 【slept】 well。要说「（那阵子）正睡着」才是 was sleeping（第 98 课）。"
       },
       {
         wrong: "He was sleeping at eight.",
@@ -40232,9 +40245,9 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "I slept well last night.", zh: "我昨晚睡得很好。", noteZh: "sleep 的昨天版是 slept——两个 e 只剩一个、加个 t。" },
-      { label: "否定", en: "I didn't sleep well last night.", zh: "我昨晚没睡好。", noteZh: "说「不」用 didn't 领，后面的词穿回原样——didn't 【sleep】。" },
-      { label: "疑问", en: "Did you sleep well last night?", zh: "你昨晚睡得好吗？", noteZh: "Did 搬到句首，后面的词穿回原样。" }
+      { label: "肯定", en: "I slept well last night.", zh: "我昨晚睡得很好。", noteZh: "sleep 的过去式是 slept——两个 e 只剩一个、加个 t。" },
+      { label: "否定", en: "I didn't sleep well last night.", zh: "我昨晚没睡好。", noteZh: "说「不」用 didn't 领，后面的词变回原形——didn't 【sleep】。" },
+      { label: "疑问", en: "Did you sleep well last night?", zh: "你昨晚睡得好吗？", noteZh: "Did 搬到句首，后面的词变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说昨晚睡得很好，今早精神好", en: "I slept well last night, so I felt great this morning.", zh: "我昨晚睡得很好，所以今早精神特别好。" },
@@ -40248,13 +40261,13 @@ export const grammarLessons: GrammarLesson[] = [
         "关键不在 slept 这个词，在它站的地方。第 98 课讲的是 while：while 领的两边都必须是「一阵子」——我读着书（一阵子）、他睡着（一阵子），两支镜头同时开着。",
         "可「睡了一觉」是「一下子」的事——它有个头有个尾，是做完的一整件事，不是「持续开着的那阵子」。放进 while 里就配不上。",
         "但说「我昨晚睡得很好」，本来就是在说「睡了一整觉」这件做完的事——slept 正好对。",
-        "所以判断只看一件事：**你是在说「（那阵子）正做着」，还是在说「做了一整件事」？** 说「正做着」穿 -ing（was sleeping）；说「做完了这件事」用昨天版（slept）。第 99 课那个「响是一下子、看是一阵子」也是这条规矩。"
+        "所以判断只看一件事：**你是在说「（那阵子）正做着」，还是在说「做了一整件事」？** 说「正做着」穿 -ing（was sleeping）；说「做完了这件事」用过去式（slept）。第 99 课那个「响是一下子、看是一阵子」也是这条规矩。"
       ]
     },
     summary: {
-      rule: "sleep 的昨天版是 slept（跟第 200 课的 kept／felt 一个换法）。说「睡了一整觉」用它；说「（那阵子）正睡着」穿 -ing。",
+      rule: "sleep 的过去式是 slept（跟第 200 课的 kept／felt 一个换法）。说「睡了一整觉」用它；说「（那阵子）正睡着」穿 -ing。",
       points: [
-        "I slept well last night. —— sleep 的昨天版是 slept",
+        "I slept well last night. —— sleep 的过去式是 slept",
         "I sleeped ❌ —— 它不加 -ed",
         "He was sleeping at eight. —— 说「正做着」穿 -ing（第 98 课）",
         "While I was reading, he slept. ❌ —— 不是 slept 错，是它配不上 while 的「一阵子」",
@@ -40291,7 +40304,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "sleeped", "well", "last", "night."],
         wrongToken: "sleeped",
         answer: "sleeped",
-        correctionZh: "sleep 的昨天版是 slept——两个 e 只剩一个、尾巴加个 t：I 【slept】 well。",
+        correctionZh: "sleep 的过去式是 slept——两个 e 只剩一个、尾巴加个 t：I 【slept】 well。",
         explain: "这批老朋友不加 -ed，各有各的换法。"
       },
       {
@@ -40303,12 +40316,12 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「She slept late.」把睡到很晚换成睡得早，怎么变？",
+        promptZh: "句型转换：「She slept late.」把睡到很晚换成睡得早，怎么变？",
         replaceBase: "She slept late.",
         replaceTarget: "把 late 换成 early",
         options: ["She slept early.", "She sleeped early.", "She was sleeping early."],
         answer: "She slept early.",
-        explain: "换那个「多晚」——slept 照样换零件，不加 -ed。"
+        explain: "换那个「多晚」——slept 照样不规则变化，不加 -ed。"
       }
     ],
     practice: [
@@ -40355,7 +40368,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-202-drew",
     number: 202,
     title: "画了条船贴在墙上",
-    grammarLabel: "昨天版 · draw 变 drew",
+    grammarLabel: "过去式 · draw 变 drew",
     episode: "小美的一天 二百零二",
     scene: "island",
     cover: cover202,
@@ -40365,15 +40378,15 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我画了一张那条船的画，贴在了墙上。",
     targetSentence: "I drew a picture of the boat and put it on the wall.",
     blocks: [
-      { text: "I drew a picture of the boat", role: "我画了一张那条船的画（draw 的昨天版是 drew）" },
-      { text: "and put it on the wall", role: "把它贴在墙上（put 三态同形，昨天版还是 put）" }
+      { text: "I drew a picture of the boat", role: "我画了一张那条船的画（draw 的过去式是 drew）" },
+      { text: "and put it on the wall", role: "把它贴在墙上（put 三态同形，过去式还是 put）" }
     ],
-    oneLineRule: "draw 的昨天版是 drew——里面的 aw 换成了 ew，不加 -ed：I drew a picture（我画了一张画）。第 12 课那句 Tomorrow I will drew. 被判错，不是因为 drew 这个词，是 will 后面要穿原样（will draw）；要说「（昨天）画了」，drew 才对。",
+    oneLineRule: "draw 的过去式是 drew——里面的 aw 换成了 ew，不加 -ed：I drew a picture（我画了一张画）。第 12 课那句 Tomorrow I will drew. 被判错，不是因为 drew 这个词，是 will 后面要用原形（will draw）；要说「（昨天）画了」，drew 才对。",
     examples: [
       { en: "I drew a picture of the boat and put it on the wall.", zh: "我画了一张那条船的画，贴在了墙上。" },
       { en: "I drew a picture.", zh: "我画了一张画。" },
       { en: "She drew a cat.", zh: "她画了一只猫。" },
-      { en: "I will draw tomorrow.", zh: "我明天会画。（第 12 课——will 后面穿原样）" }
+      { en: "I will draw tomorrow.", zh: "我明天会画。（第 12 课——will 后面用原形）" }
     ],
     dialogue: [
       { who: "npc", en: "Wow, who drew this?", zh: "爸爸推门进来，看着墙上的画。" },
@@ -40385,13 +40398,13 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I drawed a picture of the boat and put it on the wall.",
         wrongMark: "drawed",
         correct: "I drew a picture of the boat and put it on the wall.",
-        whyZh: "draw 的昨天版不是加 -ed——里面的 aw 换成 ew，就成了 drew。"
+        whyZh: "draw 的过去式不是加 -ed——里面的 aw 换成 ew，就成了 drew。"
       },
       {
         wrong: "I drew a picture of the boat and putted it on the wall.",
         wrongMark: "putted",
         correct: "I drew a picture of the boat and put it on the wall.",
-        whyZh: "put 是「三态同形」的老朋友（第 82 课）——它的昨天版还是 put，不加 -ed。"
+        whyZh: "put 是「三态同形」的老朋友（第 82 课）——它的过去式还是 put，不加 -ed。"
       },
       {
         wrong: "I drew a picture of boat and put it on the wall.",
@@ -40404,14 +40417,14 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I drew a picture of the boat and put it on the wall.",
         bothRight: true,
-        whyZh: "两句都对，差在什么时候——第 12 课那句是「明天会画」（will 后面穿原样 draw）；今天这句是「（昨天）画了」，换了零件 drew。"
+        whyZh: "两句都对，差在什么时候——第 12 课那句是「明天会画」（will 后面用原形 draw）；今天这句是「（昨天）画了」，换了形式 drew。"
       },
       {
         wrong: "She is learning to draw.",
         wrongMark: null,
         correct: "I drew a picture of the boat and put it on the wall.",
         bothRight: true,
-        whyZh: "两句都对——第 190 课那句是「正在学画」（to 后面穿原样）；今天这句是「画好了」。"
+        whyZh: "两句都对——第 190 课那句是「正在学画」（to 后面用原形）；今天这句是「画好了」。"
       },
       {
         wrong: "I put my bag next to the door.",
@@ -40422,9 +40435,9 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "I drew a picture of the boat.", zh: "我画了一张那条船的画。", noteZh: "draw 的昨天版是 drew——aw 换成 ew。" },
-      { label: "否定", en: "I didn't draw a picture.", zh: "我没画画。", noteZh: "说「不」用 didn't 领，后面的词穿回原样——didn't 【draw】。" },
-      { label: "疑问", en: "Did you draw a picture?", zh: "你画画了吗？", noteZh: "Did 搬到句首，后面的词穿回原样。" }
+      { label: "肯定", en: "I drew a picture of the boat.", zh: "我画了一张那条船的画。", noteZh: "draw 的过去式是 drew——aw 换成 ew。" },
+      { label: "否定", en: "I didn't draw a picture.", zh: "我没画画。", noteZh: "说「不」用 didn't 领，后面的词变回原形——didn't 【draw】。" },
+      { label: "疑问", en: "Did you draw a picture?", zh: "你画画了吗？", noteZh: "Did 搬到句首，后面的词变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说画了条船贴在墙上", en: "I drew a picture of the boat and put it on the wall.", zh: "我画了一张那条船的画，贴在了墙上。" },
@@ -40435,20 +40448,20 @@ export const grammarLessons: GrammarLesson[] = [
       title: "同一个 drew，为什么那次被判错",
       paragraphs: [
         "第 12 课你见过一句被划掉的：Tomorrow I will drew.——今天这句 I drew a picture 却是对的。同一个 drew，一次错一次对。",
-        "关键不在 drew，在它前面站的是谁。will 的规矩是「后面那个动作穿原样」（第 12 课）——will 后面只能站 draw，站 drew 就配不上；而且 Tomorrow 说的是明天，本来也不该用昨天版。",
-        "但今天这句是「（昨天）画了一张画」——做的是一件已经做完的事，就该用昨天版 drew。",
-        "所以判断看两件事：**前面是 will 还是说昨天的事？** will 后面穿原样（will draw）；说昨天做的，用昨天版（drew）。",
-        "顺便记一个老朋友：今天这句后半截的 put 是三态同形（第 82 课）——它过去、现在、将来都是一个样子，不用换零件。这两个词放在一句里，正好把两种「昨天版」都演示了一遍。"
+        "关键不在 drew，在它前面站的是谁。will 的规矩是「后面那个动作用原形」（第 12 课）——will 后面只能站 draw，站 drew 就配不上；而且 Tomorrow 说的是明天，本来也不该用过去式。",
+        "但今天这句是「（昨天）画了一张画」——做的是一件已经做完的事，就该用过去式 drew。",
+        "所以判断看两件事：**前面是 will 还是说昨天的事？** will 后面用原形（will draw）；说昨天做的，用过去式（drew）。",
+        "顺便记一个老朋友：今天这句后半截的 put 是三态同形（第 82 课）——它过去、现在、将来都是一个样子，不用不规则变化。这两个词放在一句里，正好把两种「过去式」都演示了一遍。"
       ]
     },
     summary: {
-      rule: "draw 的昨天版是 drew（aw 换成 ew）——说「（昨天）画了」用它；will 后面要穿原样（will draw）。",
+      rule: "draw 的过去式是 drew（aw 换成 ew）——说「（昨天）画了」用它；will 后面要用原形（will draw）。",
       points: [
-        "I drew a picture. —— draw 的昨天版是 drew",
+        "I drew a picture. —— draw 的过去式是 drew",
         "I drawed ❌ —— 它不加 -ed",
-        "I will draw tomorrow. —— will 后面穿原样（第 12 课）",
+        "I will draw tomorrow. —— will 后面用原形（第 12 课）",
         "Tomorrow I will drew. ❌ —— 不是 drew 错，是 will 后面不能站它",
-        "I put it on the wall. —— put 三态同形（第 82 课），昨天版还是 put"
+        "I put it on the wall. —— put 三态同形（第 82 课），过去式还是 put"
       ]
     },
     guided: [
@@ -40473,7 +40486,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一下——第 12 课学过：我明天会画。",
         tokens: ["I", "will", "draw", "tomorrow."],
         answer: "I will draw tomorrow.",
-        explain: "复现第 12 课：will 后面穿原样（draw）；说昨天画的才用 drew。"
+        explain: "复现第 12 课：will 后面用原形（draw）；说昨天画的才用 drew。"
       },
       {
         kind: "spot",
@@ -40481,7 +40494,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "drawed", "a", "picture", "of", "the", "boat."],
         wrongToken: "drawed",
         answer: "drawed",
-        correctionZh: "draw 的昨天版是 drew——里面的 aw 换成 ew：I 【drew】 a picture。",
+        correctionZh: "draw 的过去式是 drew——里面的 aw 换成 ew：I 【drew】 a picture。",
         explain: "这批老朋友不加 -ed，各有各的换法。"
       },
       {
@@ -40489,11 +40502,11 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 82 课学过：我把包放在门边。",
         tokens: ["I", "put", "my", "bag", "next", "to", "the", "door."],
         answer: "I put my bag next to the door.",
-        explain: "复现第 82 课：put 三态同形，昨天版还是 put；跟今天的 drew 一个换一个不换。"
+        explain: "复现第 82 课：put 三态同形，过去式还是 put；跟今天的 drew 一个换一个不换。"
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「She drew a cat.」把猫换成一条船，怎么变？",
+        promptZh: "句型转换：「She drew a cat.」把猫换成一条船，怎么变？",
         replaceBase: "She drew a cat.",
         replaceTarget: "把 a cat 换成 a boat",
         options: ["She drew a boat.", "She drawed a boat.", "She draw a boat."],
@@ -40545,7 +40558,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-203-wore",
     number: 203,
     title: "昨天戴了顶新帽子",
-    grammarLabel: "昨天版 · wear 变 wore",
+    grammarLabel: "过去式 · wear 变 wore",
     episode: "小美的一天 二百零三",
     scene: "city",
     cover: cover203,
@@ -40555,10 +40568,10 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我昨天戴了我的新帽子，今天还想再戴一次。",
     targetSentence: "I wore my new hat yesterday, and I want to wear it again today.",
     blocks: [
-      { text: "I wore my new hat yesterday", role: "我昨天戴了新帽子（wear 的昨天版是 wore）" },
-      { text: "and I want to wear it again today", role: "今天还想再戴（want to 后面穿原样 wear）" }
+      { text: "I wore my new hat yesterday", role: "我昨天戴了新帽子（wear 的过去式是 wore）" },
+      { text: "and I want to wear it again today", role: "今天还想再戴（want to 后面用原形 wear）" }
     ],
-    oneLineRule: "wear「戴」的昨天版是 wore——不加 -ed，也不跟 wears 一个样：第 39 课那个 wears 是「他/她戴」（多一个小 s），今天说的是昨天戴了，用 wore。I wore my new hat yesterday（我昨天戴了新帽子）。句子后半截 I want to wear it again today——want to 后面那个动作穿原样（第 15 课的老规矩），所以又变回 wear。",
+    oneLineRule: "wear「戴」的过去式是 wore——不加 -ed，也不跟 wears 一个样：第 39 课那个 wears 是「他/她戴」（多一个小 s），今天说的是昨天戴了，用 wore。I wore my new hat yesterday（我昨天戴了新帽子）。句子后半截 I want to wear it again today——want to 后面那个动作用原形（第 15 课的老规矩），所以又变回 wear。",
     examples: [
       { en: "I wore my new hat yesterday, and I want to wear it again today.", zh: "我昨天戴了我的新帽子，今天还想再戴一次。" },
       { en: "I wore my new hat yesterday.", zh: "我昨天戴了我的新帽子。" },
@@ -40575,19 +40588,19 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I weared my new hat yesterday.",
         wrongMark: "weared",
         correct: "I wore my new hat yesterday, and I want to wear it again today.",
-        whyZh: "wear 的昨天版不是加 -ed——它有自己的样子：wore。"
+        whyZh: "wear 的过去式不是加 -ed——它有自己的样子：wore。"
       },
       {
         wrong: "I worn my new hat yesterday.",
         wrongMark: "worn",
         correct: "I wore my new hat yesterday, and I want to wear it again today.",
-        whyZh: "worn 不是一个人出场用的形状——它得跟着 have／had（第 24 课那种「做过版」）。说昨天戴上它，用 wore。"
+        whyZh: "worn 不是一个人出场用的形状——它得跟着 have／had（第 24 课那种「过去分词」）。说昨天戴上它，用 wore。"
       },
       {
         wrong: "I wore my new hat yesterday, and I want to wearing it again today.",
         wrongMark: "wearing",
         correct: "I wore my new hat yesterday, and I want to wear it again today.",
-        whyZh: "want to 后面那个动作穿原样——to 【wear】。第 15 课的老规矩，穿了 -ing 就配不上 to。"
+        whyZh: "want to 后面那个动作用原形——to 【wear】。第 15 课的老规矩，穿了 -ing 就配不上 to。"
       },
       {
         wrong: "The boy who wears glasses is my brother.",
@@ -40601,20 +40614,20 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I wore my new hat yesterday, and I want to wear it again today.",
         bothRight: true,
-        whyZh: "两句都对——这句就是今天这句的后半截：want to 后面穿原样 wear（第 15 课）。前半天用 wore、后半天用 wear，一句里两种形状都出场。"
+        whyZh: "两句都对——这句就是今天这句的后半截：want to 后面用原形 wear（第 15 课）。前半天用 wore、后半天用 wear，一句里两种形状都出场。"
       },
       {
         wrong: "I go to the shop to buy milk.",
         wrongMark: null,
         correct: "I wore my new hat yesterday, and I want to wear it again today.",
         bothRight: true,
-        whyZh: "两句都对——第 44 课那句的 to buy 也是「to 后面穿原样」；今天这句的 to wear 同一个规矩。"
+        whyZh: "两句都对——第 44 课那句的 to buy 也是「to 后面用原形」；今天这句的 to wear 同一个规矩。"
       }
     ],
     variants: [
-      { label: "肯定", en: "I wore my new hat yesterday.", zh: "我昨天戴了新帽子。", noteZh: "wear 的昨天版是 wore，不加 -ed。" },
-      { label: "否定", en: "I didn't wear my new hat yesterday.", zh: "我昨天没戴新帽子。", noteZh: "说「不」用 didn't 领，后面的词穿回原样——didn't 【wear】。" },
-      { label: "疑问", en: "Did you wear your new hat yesterday?", zh: "你昨天戴新帽子了吗？", noteZh: "Did 搬到句首，后面的词穿回原样。" }
+      { label: "肯定", en: "I wore my new hat yesterday.", zh: "我昨天戴了新帽子。", noteZh: "wear 的过去式是 wore，不加 -ed。" },
+      { label: "否定", en: "I didn't wear my new hat yesterday.", zh: "我昨天没戴新帽子。", noteZh: "说「不」用 didn't 领，后面的词变回原形——didn't 【wear】。" },
+      { label: "疑问", en: "Did you wear your new hat yesterday?", zh: "你昨天戴新帽子了吗？", noteZh: "Did 搬到句首，后面的词变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说昨天戴了新帽子，今天还想戴", en: "I wore my new hat yesterday, and I want to wear it again today.", zh: "我昨天戴了新帽子，今天还想再戴一次。" },
@@ -40625,19 +40638,19 @@ export const grammarLessons: GrammarLesson[] = [
       title: "wear 的三种形状",
       paragraphs: [
         "wear 这个词有三个形状，各管一个场合。你已经在第 39 课见过第二个了。",
-        "第一个是 wear（原样）：I want to wear it.（我想戴它）——to 后面、don't 后面、will 后面，都是它。",
+        "第一个是 wear（原形）：I want to wear it.（我想戴它）——to 后面、don't 后面、will 后面，都是它。",
         "第二个是 wears（多一个小 s）：The boy wears glasses.（那个男生戴眼镜）——说的是「他/她」一个，多一个小 s。第 39 课那个 who wears glasses 就是它。",
-        "第三个是 wore（昨天版）：I wore my new hat yesterday.（我昨天戴了新帽子）——说昨天的事。",
-        "所以别看它们长得像，分工很清楚：**穿原样**看前面站着谁（to／don't／will 后面就是 wear）；**「他/她」一个**多一个小 s（wears）；**说昨天**用它自己的样子（wore，不加 -ed）。",
-        "还有一个形状叫 worn——那个得跟着 have／had 一起出场（第 24 课那种「做过版」），今天先不碰。"
+        "第三个是 wore（过去式）：I wore my new hat yesterday.（我昨天戴了新帽子）——说昨天的事。",
+        "所以别看它们长得像，分工很清楚：**用原形**看前面站着谁（to／don't／will 后面就是 wear）；**「他/她」一个**多一个小 s（wears）；**说昨天**用它自己的样子（wore，不加 -ed）。",
+        "还有一个形状叫 worn——那个得跟着 have／had 一起出场（第 24 课那种「过去分词」），今天先不碰。"
       ]
     },
     summary: {
-      rule: "wear 的昨天版是 wore——不加 -ed，也不跟 wears 一个样（那个多一个小 s，说的是「他/她」）。",
+      rule: "wear 的过去式是 wore——不加 -ed，也不跟 wears 一个样（那个多一个小 s，说的是「他/她」）。",
       points: [
-        "I wore my new hat yesterday. —— wear 的昨天版是 wore",
+        "I wore my new hat yesterday. —— wear 的过去式是 wore",
         "The boy who wears glasses. —— 「他/她」一个，多一个小 s（第 39 课）",
-        "I want to wear it. —— to 后面穿原样（第 15 课）",
+        "I want to wear it. —— to 后面用原形（第 15 课）",
         "I weared ❌ —— 它不加 -ed",
         "I worn ❌ —— worn 得跟着 have／had 出场"
       ]
@@ -40672,7 +40685,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "weared", "my", "new", "hat", "yesterday."],
         wrongToken: "weared",
         answer: "weared",
-        correctionZh: "wear 的昨天版是 wore——它不加 -ed：I 【wore】 my new hat。",
+        correctionZh: "wear 的过去式是 wore——它不加 -ed：I 【wore】 my new hat。",
         explain: "这批老朋友不加 -ed，各有各的样子。"
       },
       {
@@ -40680,11 +40693,11 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "再对照一句——第 15 课学过：我想去旅行。",
         tokens: ["I", "want", "to", "travel."],
         answer: "I want to travel.",
-        explain: "复现第 15 课：to 后面那个动作穿原样——今天这句后半截的 to wear 一个规矩。"
+        explain: "复现第 15 课：to 后面那个动作用原形——今天这句后半截的 to wear 一个规矩。"
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「She wore a red dress.」把红裙子换成新帽子，怎么变？",
+        promptZh: "句型转换：「She wore a red dress.」把红裙子换成新帽子，怎么变？",
         replaceBase: "She wore a red dress.",
         replaceTarget: "把 a red dress 换成 a new hat",
         options: ["She wore a new hat.", "She weared a new hat.", "She worn a new hat."],
@@ -40728,7 +40741,7 @@ export const grammarLessons: GrammarLesson[] = [
       promptZh: "妈妈看见门边挂着的新帽子，问你周末戴过没有。凭记忆，写出你那句英文。",
       intentZh: "我昨天戴了我的新帽子，今天还想再戴一次。",
       answer: "I wore my new hat yesterday, and I want to wear it again today.",
-      noteZh: "wear → wore（不加 -ed）；后半截 want to 后面穿原样 wear。"
+      noteZh: "wear → wore（不加 -ed）；后半截 want to 后面用原形 wear。"
     },
     huntCaseIds: ["hunt-wore"],
   },
@@ -40736,7 +40749,7 @@ export const grammarLessons: GrammarLesson[] = [
     id: "lesson-204-gave",
     number: 204,
     title: "她给了我一块大蛋糕",
-    grammarLabel: "昨天版 · give 变 gave",
+    grammarLabel: "过去式 · give 变 gave",
     episode: "小美的一天 二百零四",
     scene: "mansion",
     cover: cover204,
@@ -40746,10 +40759,10 @@ export const grammarLessons: GrammarLesson[] = [
     intentZh: "我把书给了她，她给了我一块大蛋糕。",
     targetSentence: "I gave her the book, and she gave me a big cake.",
     blocks: [
-      { text: "I gave her the book", role: "我把书给了她（give 的昨天版是 gave，先给谁后给什么）" },
+      { text: "I gave her the book", role: "我把书给了她（give 的过去式是 gave，先给谁后给什么）" },
       { text: "and she gave me a big cake", role: "她给了我一块大蛋糕（照样先给谁后给什么）" }
     ],
-    oneLineRule: "give 的昨天版是 gave——不加 -ed。I gave her the book（我把书给了她）。第 63 课那个位置规矩照样管用：先给谁（her）、后给什么（the book）——换成昨天说，只是把 give 换成 gave，两个东西的位置一动不动。",
+    oneLineRule: "give 的过去式是 gave——不加 -ed。I gave her the book（我把书给了她）。第 63 课那个位置规矩照样管用：先给谁（her）、后给什么（the book）——换成昨天说，只是把 give 换成 gave，两个东西的位置一动不动。",
     examples: [
       { en: "I gave her the book, and she gave me a big cake.", zh: "我把书给了她，她给了我一块大蛋糕。" },
       { en: "I gave her the book.", zh: "我把书给了她。" },
@@ -40766,7 +40779,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "I gived her the book.",
         wrongMark: "gived",
         correct: "I gave her the book, and she gave me a big cake.",
-        whyZh: "give 的昨天版不是加 -ed——它有自己的样子：gave。"
+        whyZh: "give 的过去式不是加 -ed——它有自己的样子：gave。"
       },
       {
         wrong: "I gave her the book, and she give me a big cake.",
@@ -40785,7 +40798,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrongMark: null,
         correct: "I gave her the book, and she gave me a big cake.",
         bothRight: true,
-        whyZh: "两句都对，差在什么时候——第 63 课那句是「请把书递给我」（现在说，give 穿原样）；今天这句是「（那天）给了她」，换了零件 gave。位置规矩两句话一个样：先给谁、后给什么。"
+        whyZh: "两句都对，差在什么时候——第 63 课那句是「请把书递给我」（现在说，give 用原形）；今天这句是「（那天）给了她」，换了形式 gave。位置规矩两句话一个样：先给谁、后给什么。"
       },
       {
         wrong: "Please give it to me.",
@@ -40803,9 +40816,9 @@ export const grammarLessons: GrammarLesson[] = [
       }
     ],
     variants: [
-      { label: "肯定", en: "I gave her the book.", zh: "我把书给了她。", noteZh: "give 的昨天版是 gave——先给谁、后给什么。" },
-      { label: "否定", en: "I didn't give her the book.", zh: "我没把书给她。", noteZh: "说「不」用 didn't 领，后面的词穿回原样——didn't 【give】。" },
-      { label: "疑问", en: "Did you give her the book?", zh: "你把书给她了吗？", noteZh: "Did 搬到句首，后面的词穿回原样。" }
+      { label: "肯定", en: "I gave her the book.", zh: "我把书给了她。", noteZh: "give 的过去式是 gave——先给谁、后给什么。" },
+      { label: "否定", en: "I didn't give her the book.", zh: "我没把书给她。", noteZh: "说「不」用 didn't 领，后面的词变回原形——didn't 【give】。" },
+      { label: "疑问", en: "Did you give her the book?", zh: "你把书给她了吗？", noteZh: "Did 搬到句首，后面的词变回原形。" }
     ],
     sceneSwings: [
       { sceneZh: "说我把书给了她，她给了我蛋糕", en: "I gave her the book, and she gave me a big cake.", zh: "我把书给了她，她给了我一块大蛋糕。" },
@@ -40813,23 +40826,23 @@ export const grammarLessons: GrammarLesson[] = [
       { sceneZh: "说请把书递给我（第 63 课）", en: "Please give me the book.", zh: "请把书递给我。" }
     ],
     deepDive: {
-      title: "give 的昨天版，位置一动不动",
+      title: "give 的过去式，位置一动不动",
       paragraphs: [
         "第 63 课你学过 give 的位置规矩：先给谁、后给什么——give me the book。这条规矩昨天说、今天说、明天说都一样。",
         "今天多出来的只是一件事：说昨天的时候，give 要换成 gave。I gave her the book.（我把书给了她）——位置还是那个位置，只有动词本身换了样子。",
         "它换的是里面的元音：give 的 i 换成 a，就成了 gave。跟第 199 课的 sit → sat 是一个换法。",
-        "有一处对照要记住：东西要是换成了小词 it，它太轻、站不住前面那个位子，得跑到后面垫上 to——give it to me（第 63 课）。但那是 it 的事，跟昨天版没关系：gave it to me 也一样。",
-        "还有个方便的地方（第 197 课讲过）：说「不」和问句里它变回原样。I didn't give her the book.（我没给她）——didn't 一出场，就不用去想昨天版怎么写了。"
+        "有一处对照要记住：东西要是换成了小词 it，它太轻、站不住前面那个位子，得跑到后面垫上 to——give it to me（第 63 课）。但那是 it 的事，跟过去式没关系：gave it to me 也一样。",
+        "还有个方便的地方（第 197 课讲过）：说「不」和问句里它变回原形。I didn't give her the book.（我没给她）——didn't 一出场，就不用去想过去式怎么写了。"
       ]
     },
     summary: {
-      rule: "give 的昨天版是 gave——不加 -ed；第 63 课的位置规矩照样管用（先给谁、后给什么）。",
+      rule: "give 的过去式是 gave——不加 -ed；第 63 课的位置规矩照样管用（先给谁、后给什么）。",
       points: [
-        "I gave her the book. —— give 的昨天版是 gave",
+        "I gave her the book. —— give 的过去式是 gave",
         "I gived ❌ —— 它不加 -ed",
         "I gave to her the book. ❌ —— 两个都在时不垫 to（第 63 课）",
-        "Please give me the book. —— 现在说，穿原样（第 63 课）",
-        "I didn't give her the book. —— 说「不」时穿回原样"
+        "Please give me the book. —— 现在说，用原形（第 63 课）",
+        "I didn't give her the book. —— 说「不」时变回原形"
       ]
     },
     guided: [
@@ -40854,7 +40867,7 @@ export const grammarLessons: GrammarLesson[] = [
         promptZh: "先复习一下——第 63 课学过：请把书递给我。",
         tokens: ["Please", "give", "me", "the", "book."],
         answer: "Please give me the book.",
-        explain: "复现第 63 课：那是现在说（give 穿原样）；位置规矩跟今天一模一样。"
+        explain: "复现第 63 课：那是现在说（give 用原形）；位置规矩跟今天一模一样。"
       },
       {
         kind: "spot",
@@ -40862,7 +40875,7 @@ export const grammarLessons: GrammarLesson[] = [
         tokens: ["I", "gived", "her", "the", "book."],
         wrongToken: "gived",
         answer: "gived",
-        correctionZh: "give 的昨天版是 gave——它不加 -ed：I 【gave】 her the book。",
+        correctionZh: "give 的过去式是 gave——它不加 -ed：I 【gave】 her the book。",
         explain: "这批老朋友不加 -ed，各有各的样子。"
       },
       {
@@ -40874,7 +40887,7 @@ export const grammarLessons: GrammarLesson[] = [
       },
       {
         kind: "replace",
-        promptZh: "句子变身：「She gave me a big cake.」把蛋糕换成书，怎么变？",
+        promptZh: "句型转换：「She gave me a big cake.」把蛋糕换成书，怎么变？",
         replaceBase: "She gave me a big cake.",
         replaceTarget: "把 a big cake 换成 a book",
         options: ["She gave me a book.", "She gived me a book.", "She gave to me a book."],
@@ -40939,7 +40952,7 @@ export const grammarLessons: GrammarLesson[] = [
       { text: "By the time I got home", role: "我到家的时候（这一半先说，用两个词开头）" },
       { text: "it was dark", role: "天已经黑了（那一半后说）" }
     ],
-    oneLineRule: "说「到…的时候，已经…」用 By the time 开头：By the time I got home, it was dark（我到家的时候，天已经黑了）。它跟第 48 课那条老规矩是一家人——前面那半句说的是「什么时候」，用平常的版本，不要请 will 出场。",
+    oneLineRule: "说「到…的时候，已经…」用 By the time 开头：By the time I got home, it was dark（我到家的时候，天已经黑了）。它跟第 48 课那条老规矩是一家人——前面那半句说的是「什么时候」，用一般现在时，不要请 will 出场。",
     examples: [
       { en: "By the time I got home, it was dark.", zh: "我到家的时候，天已经黑了。" },
       { en: "By the time we got to the station, the train had left.", zh: "我们到车站的时候，火车已经开走了。（第 178 课——更早那件用 had）" },
@@ -40956,7 +40969,7 @@ export const grammarLessons: GrammarLesson[] = [
         wrong: "By the time I will get home, it will be dark.",
         wrongMark: "will get",
         correct: "By the time I get home, it will be dark.",
-        whyZh: "By the time 领的那半句说的是「什么时候」，用平常的版本——别请 will 出场（第 48 课的老规矩）：By the time I 【get】 home。后面那半句才用它。"
+        whyZh: "By the time 领的那半句说的是「什么时候」，用一般现在时——别请 will 出场（第 48 课的老规矩）：By the time I 【get】 home。后面那半句才用它。"
       },
       {
         wrong: "By the time I got to the station, the train left.",
@@ -41006,14 +41019,14 @@ export const grammarLessons: GrammarLesson[] = [
       title: "「到…的时候」和那条老规矩",
       paragraphs: [
         "第 48 课学过一条规矩：说「如果…就…」的时候，前面那半句不要请 will 出场。By the time 领的这半句也守同一条——它说的是「什么时候」，不是「会发生什么」。",
-        "所以 By the time I get home, it will be dark.（等我到家的时候就黑了）——前面穿平常的版本，后面才用它。",
+        "所以 By the time I get home, it will be dark.（等我到家的时候就黑了）——前面用一般现在时，后面才用它。",
         "为什么中文里体会不到？因为中文说「等我到家的时候」直接顺着说下来，没有「前半句要换版本」这回事。英语里这个前半句是个小句子，它自己也得符合「说现在」的规矩。",
         "还有一件要分清楚：By the time 那半句和后面那半句，谁先谁后。By the time I got to the station, the train had left.——车比我先到，所以车那件穿第 178 课那件 had 版。",
-        "最后提一句容易混的：第 188 课的 had to（不得不）和这里的 had（更早）长得像，但位置不一样——had to 后面跟动作，had 后面跟做过版。"
+        "最后提一句容易混的：第 188 课的 had to（不得不）和这里的 had（更早）长得像，但位置不一样——had to 后面跟动作，had 后面跟过去分词。"
       ]
     },
     summary: {
-      rule: "「到…的时候」用 By the time 开头，它领着的那半句用平常的版本（第 48 课的老规矩）——别请 will 出场。",
+      rule: "「到…的时候」用 By the time 开头，它领着的那半句用一般现在时（第 48 课的老规矩）——别请 will 出场。",
       points: [
         "By the time I got home, it was dark. —— 我到家的时候天已经黑了",
         "By the time I will get home ❌ —— 前半句别请 will（第 48 课）",
@@ -41026,9 +41039,9 @@ export const grammarLessons: GrammarLesson[] = [
       { kind: "choose", promptZh: "你想说：我到家的时候天已经黑了。开头用哪个？", before: "", after: "I got home, it was dark.", options: ["By the time", "In the time", "At the time"], answer: "By the time", explain: "「到…的时候」整块用 By the time 开头。" },
       { kind: "arrange", promptZh: "你想说：我到家的时候，天已经黑了。", tokens: ["By", "the", "time", "I", "got", "home,", "it", "was", "dark."], answer: "By the time I got home, it was dark.", explain: "By the time 领前半句（我到家），后半句说天黑了——两边都是普通过去。" },
       { kind: "arrange", promptZh: "先复习一下——第 9 课学过：我们八点到家。", tokens: ["We", "got", "home", "at", "eight."], answer: "We got home at eight.", explain: "复现第 9 课：这句只报「几点到的」（got home at eight）——没有「另一件已经发生了」要扣，所以用不上 By the time。" },
-      { kind: "spot", promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？", tokens: ["By", "the", "time", "I", "will", "get", "home,", "it", "will", "be", "dark."], wrongToken: "will", answer: "will", correctionZh: "前半句别请 will 出场：By the time I 【get】 home——第 48 课的老规矩。", explain: "这个前半句说的是「什么时候」，用平常的版本，will 是多余的。" },
+      { kind: "spot", promptZh: "有人是这样说的，你帮他看看：哪个词块不太对？", tokens: ["By", "the", "time", "I", "will", "get", "home,", "it", "will", "be", "dark."], wrongToken: "will", answer: "will", correctionZh: "前半句别请 will 出场：By the time I 【get】 home——第 48 课的老规矩。", explain: "这个前半句说的是「什么时候」，用一般现在时，will 是多余的。" },
       { kind: "arrange", promptZh: "再对照一句——第 178 课学过：我们到车站的时候，火车已经开走了。", tokens: ["By", "the", "time", "we", "got", "to", "the", "station,", "the", "train", "had", "left."], answer: "By the time we got to the station, the train had left.", explain: "复现第 178 课：车比我们先到，所以车那件穿 had 版。" },
-      { kind: "replace", promptZh: "句子变身：「By the time I got home, it was dark.」把 dark 换成 late，怎么变？", replaceBase: "By the time I got home, it was dark.", replaceTarget: "把 dark 换成 late", options: ["By the time I got home, it was late.", "By the time I got home, it were late.", "By the time I get home, it was late."], answer: "By the time I got home, it was late.", explain: "换后面那半句的一个词——was 和 got 都不动。" }
+      { kind: "replace", promptZh: "句型转换：「By the time I got home, it was dark.」把 dark 换成 late，怎么变？", replaceBase: "By the time I got home, it was dark.", replaceTarget: "把 dark 换成 late", options: ["By the time I got home, it was late.", "By the time I got home, it were late.", "By the time I get home, it was late."], answer: "By the time I got home, it was late.", explain: "换后面那半句的一个词——was 和 got 都不动。" }
     ],
     practice: [
       { promptZh: "你想说：我到家的时候，天已经黑了。", tokens: ["By", "the", "time", "I", "got", "home,", "it", "was", "dark."], distractors: ["will"], answer: "By the time I got home, it was dark." },

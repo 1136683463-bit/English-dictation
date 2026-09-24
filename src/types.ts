@@ -398,6 +398,76 @@ export interface RuneState {
   unlockedAt?: string;
 }
 
+/**
+ * 考试单题作答记录（P0-1，PRD §11.1）。
+ *
+ * `passed` 的语义是「稳住 / 还漏」——**字段名刻意避开「正确 / 错误」**，
+ * 与 UI 呈现口径一致（PRD §4.5）。`score` 仅供内部诊断与埋点，
+ * 与 `passed` 满足不变量 `passed === (score >= EXAM_ZH2EN_PASS_SCORE)`。
+ */
+export interface ExamItemResult {
+  itemId: string;
+  section: 1 | 2 | 3;
+  kind: "mcq" | "cloze" | "zh2en" | "read" | "write";
+  /** 用户作答原文（自由输入的长文本由归一化器截断）。 */
+  answer: string;
+  passed: boolean;
+  score: number;
+  durationMs: number;
+  /** 课内出处（G6 可追溯）；阅读/写作不绑课，允许为空串。 */
+  sourceLessonId: string;
+  answeredAt: string;
+}
+
+/**
+ * 一次季末卷的作答会话（P0-1）。key = `paperId`。
+ *
+ * 中断续做（P0，PRD §4.7）就靠 `cursor` + `results`：每节结束即写入，
+ * 退出/关应用/切路由都不丢；重进落在 `cursor` 指的题号上。
+ */
+export interface ExamSession {
+  paperId: string;
+  seasonId: string;
+  variantIndex: number;
+  startedAt: string;
+  updatedAt: string;
+  submittedAt?: string;
+  /** 最后未完成的题号。`index` 为卷内该节的第几题（从 0 起）。 */
+  cursor: { section: 1 | 2 | 3; index: number };
+  results: ExamItemResult[];
+  /** 已揭晓的节（逐节揭晓，PRD §4.8）。 */
+  revealedSections: number[];
+  /**
+   * 写作题的作答与 AI 批改结果。
+   * `degraded === true` 表示 AI 未给出批改（未配置 / 超时 / 解析失败）——
+   * 此时只保留用户原文并提供重试，**不得显示任何伪造评语或分数**（G-A3）。
+   */
+  writing?: {
+    text: string;
+    corrected?: string;
+    recast?: string;
+    comment?: string;
+    issues?: { original: string; correction: string; explanation: string; tag?: string }[];
+    degraded?: boolean;
+    degradeReason?: string;
+  };
+}
+
+/**
+ * 「我觉得这句没错」的异议记录（P0-1）。
+ *
+ * 只记录、不即时改判：既有架构红线是「AI 一旦沾判分，用户一辩它就翻供」
+ * （`prd-grammar-ai-tutor-2026-09-19.md:285`），所以异议只落库供 M4 复核质量。
+ */
+export interface ExamDispute {
+  id: string;
+  paperId: string;
+  itemId: string;
+  /** 用户的主张原文（截断后存储）。 */
+  claim: string;
+  createdAt: string;
+}
+
 export interface AppData {
   schemaVersion: number;
   unitGroups: UnitGroup[];
@@ -424,6 +494,13 @@ export interface AppData {
    * 语义 = 至少完成过一次该档；复练不改写此字段（完成后无限重练）。可选层，不参与解锁判定。
    */
   grammarBoostsDone?: Record<string, number[]>;
+  /**
+   * 季末综合卷的作答会话（P0-1）：paperId → 会话。可选，旧数据无此键。
+   * 只承载「考试作答」本身；**不参与解锁、不计入掌握度、不写弱点通路**（PRD §4.10 不变量 7）。
+   */
+  examSessions?: Record<string, ExamSession>;
+  /** 考试异议记录（只记录不改判）。数组上限由归一化器兜住。 */
+  examDisputes?: ExamDispute[];
   /**
    * 已删除的**内置词书** id（删除标记 / tombstone，2026-09-23 加）。
    *
@@ -627,6 +704,8 @@ export interface LessonBlock {
 export interface LessonExample {
   en: string;
   zh: string;
+  /** 这句中文还有别的同样算对的说法（判分取最高分）。用法见 GrammarLesson.acceptAlso。 */
+  acceptAlso?: string[];
 }
 
 /** 引导练习（第②段「试一试」）：几乎不会错的点选 / 拼装 / 找茬题。 */
@@ -768,6 +847,26 @@ export interface GrammarLesson {
   dialogueZh: string;
   intentZh: string;
   targetSentence: string;
+  /**
+   * 除 `targetSentence` 之外**同样算对**的说法（可选）。
+   *
+   * 用于「同一句中文，课内教了两种都对的说法」——此时产出类题（凭记忆写 / 自己写）
+   * 只认一个基准句，会把写出另一种的学习者判错。如 L68「我给妈妈买了份礼物。」：
+   * 基准句 `I bought a gift for my mom.`，而本课 sceneSwings 又教了
+   * `I bought my mom a gift.`（buy sb sth 双宾），两种都对。
+   *
+   * **判定标准是「写出另一解是否也正确」**，看三条：
+   *   1. 两种说法只在**特定语境**下分别正确，而题目本身**没给出该语境** → 填。
+   *      如 L175「我也是。」：`So do I.` / `So am I.` 取决于对方那句话，
+   *      而题干只有「我也是。」（本课 examples 也明说「对方说的是 am/is 时，这里也跟着换」）。
+   *   2. 中文本身**不区分**英文要区分的那个点 → 填。
+   *      如 L54「窗户昨天被打扫了。」：「窗户」不标单复数，`window` / `windows` 都合法，
+   *      且本课的点是主动/被动，不是单复数。
+   *   3. 另一种说法会**抹掉本课要教的区别**，或只是**别课的回顾** → **不填**。
+   *      如 L112「这本是我的。」：本课的点就是长版 `mine` / 短版 `my` 之分，
+   *      而 `This one is mine.` 在本课 examples 里被标为「第 33 课」的回顾。
+   */
+  acceptAlso?: string[];
   blocks: LessonBlock[];
   oneLineRule: string;
   examples: LessonExample[];

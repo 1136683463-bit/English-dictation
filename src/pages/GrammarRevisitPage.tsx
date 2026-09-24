@@ -1,6 +1,7 @@
 import { CheckCircle2, Clock, Lightbulb } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { isSubmitKey } from "../components/imeGuard";
 import { useAppData } from "../AppContext";
 import PageHeader from "../components/PageHeader";
 import EmptyState from "../components/EmptyState";
@@ -9,6 +10,7 @@ import { buildAmbushQuestions, buildRevisitQuiz, judgeAmbushPick, type AmbushQue
 import { appendGrammarEvent, listGrammarEventsByKind } from "../services/grammarTelemetry";
 import { nowIso } from "../services/storage";
 import { checkLessonTokens } from "../services/lessonService";
+import { spellingMatches } from "../services/diffService";
 import { explainForSentence } from "../services/grammarExplainService";
 
 /**
@@ -218,7 +220,18 @@ export default function GrammarRevisitPage() {
     if (!currentQuiz || currentQuiz.kind !== "cloze" || !clozeValue.trim()) return;
     const attempts = attemptsThisQ + 1;
     setAttemptsThisQ(attempts);
-    const passed = clozeValue.trim().toLowerCase() === (currentQuiz.clozeAnswer ?? "").toLowerCase();
+    /**
+     * 2026-09-24 修：改用 `spellingMatches`（diffService 的**词级判分权威实现**）。
+     *
+     * 原实现是裸 `clozeValue.trim().toLowerCase() === 答案.toLowerCase()`——
+     * **没有全角折叠**，于是中文输入法打出的全角字母（`ｐｉｃｔｕｒｅ`）
+     * 或弯撇号（`don’t`）一律判错（实测确认）。
+     *
+     * 更说明问题的是**同一页面口径不一致**：本页的 rebuild 题走
+     * `checkLessonTokens`（含全角折叠），cloze 题却用裸比较——
+     * 用户在两种题型间来回时，同一个词一个判对一个判错。
+     */
+    const passed = spellingMatches(currentQuiz.clozeAnswer ?? "", clozeValue);
     if (passed && attempts === 1) setFirstTryCount((c) => c + 1);
     setFeedback(passed ? "pass" : "retry");
   };
@@ -327,7 +340,11 @@ export default function GrammarRevisitPage() {
                      * Shift+Enter 也被当成提交（用户没有换行的余地）。
                      * 课内（GrammarLessonPage）与复习页都有这两行守卫，这里漏了。
                      */
-                    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing && clozeValue.trim()) {
+                    /**
+                     * 2026-09-24：统一改用 `isSubmitKey`——内联版漏了组词态的
+                     * `keyCode === 229` 信号（部分输入法只给这个、不上报 isComposing）。
+                     */
+                    if (isSubmitKey(e) && clozeValue.trim()) {
                       submitCloze();
                     }
                   }}

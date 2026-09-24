@@ -127,7 +127,17 @@ export const isFreeOutputPassed = (
 export const checkLessonTokens = (selected: string[], answer: string): boolean =>
   tokenSequencesEquivalent(selected, answer);
 
-/** 点选题判分。 */
+/**
+ * 点选题判分。
+ *
+ * ⚠️ 这里用裸 `toLowerCase` 比较是**有意为之**，不并入 diffService 的折叠归一化：
+ * 点选题的两侧都**不是用户手打的**——`picked` 来自点选（值取自 `options`），
+ * `answer` 取自同一份课程数据，所以两侧写法天然一致，全角/畸形输入不可能出现。
+ * 反而若在这里做宽容折叠，会放过「选项串错」这类数据缺陷。
+ *
+ * 需要折叠的是**用户可能手打**的判分点（拼写、填空、自由输出）——
+ * 那些一律走 diffService 的 `spellingMatches` / `compareText`。
+ */
 export const checkLessonChoice = (picked: string, answer: string): boolean =>
   picked.trim().toLowerCase() === answer.trim().toLowerCase();
 
@@ -557,7 +567,7 @@ const THIRD_PERSON_BASE_VERBS =
 
 export const detectThirdPersonMiss = (input: string): string | null => {
   const pattern = new RegExp(`\\b(he|she|it)\\s+(${THIRD_PERSON_BASE_VERBS})\\b`, "i");
-  return pattern.test(input) ? "他 / 她 / 它做事，动词要加 s——检查一下动词有没有小尾巴。" : null;
+  return pattern.test(input) ? "他 / 她 / 它做事，动词要加 -s——检查一下动词有没有带 -s。" : null;
 };
 
 /**
@@ -633,6 +643,131 @@ export const lessonCompletionMark = (): string => nowIso();
  * 课程里练错过一次以上的句子，回流成句子卡，进入现有 SM-2 复习队列。
  * 同一句子 + 同一课程只收一次，避免反复刷课产生重复卡片。
  */
+/**
+ * 课内答错时，真正该进复习队列的**那一句**。
+ *
+ * 队列是**句子**级的（SM-2 逐句复习），而 guided 各型的 `answer` 不都是句子：
+ *   - `choose`：answer 是单个词（`am` / `is` / `have`）——用 before/after 还原整句
+ *     （`I` + `am` + `happy.` → `I am happy.`）
+ *   - `arrange`：answer 本来就是整句
+ *   - `replace` / `spot`：answer 分别是「变形后的词」与「错的词」，
+ *     而**变换后的正确整句不在数据里**，无法还原 → 不入队。
+ *     这两个句型已由 core 句 / practice / recall / contrast 四条通道覆盖，
+ *     代价是「换主语后动词怎么变」这一点不再单独进复习（要补需在数据层加字段）。
+ *
+ * 此前直接把 `answer` 入队，产出的是「词块数 1」的卡：复习时点一下就过
+ * （gq1 的 rebuildTooFewChunks，全库 393 处，P0）。
+ */
+/**
+ * 本课核心句（`targetSentence`）在对话里是**谁说的**。
+ *
+ * 用途：「说出来」段档 2 的题面文案。实测全库 205 课里 **196 课**核心句是小美（`who === "me"`）的台词，
+ * 但**9 课不是**——那些课的核心句其实是对方的话（如 L72 `How often do you run?` 是同学问的、
+ * L32 `Close the door.` 是对方提的要求）。题面若一律写「写出**她要说的**那句话——不是同学问她的那一句」，
+ * 在这 9 课上正好说反，学习者会被引向错误的句子。
+ *
+ * 归一化后按对话逐行比对；对话里找不到（理论上不该发生）返回 `null`，调用侧用中性文案。
+ */
+export const outputSpeakerOfTarget = (
+  lesson: GrammarLesson
+): "me" | "other" | null => {
+  const target = normalizeLessonSentence(lesson.targetSentence ?? "");
+  if (!target) return null;
+  for (const line of lesson.dialogue ?? []) {
+    if (normalizeLessonSentence(line.en ?? "") !== target) continue;
+    return line.who === "me" ? "me" : "other";
+  }
+  return null;
+};
+
+/**
+ * 课程词汇池（用于 cloze 的同类别干扰项）。
+ *
+ * 为什么不用 bundledDictionary：那本词典有 3.3MB / 数万词，远超出课程的 500 词门槛——
+ * 拿它当干扰项会出现用户从没学过的词，反而是"超纲干扰"。
+ * 这里只用**全部课程文本里出现过的词**（约 430 个），保证干扰项也在用户的学习范围内。
+ *
+ * 2026-09-24 从 grammarBoostService 移到这里：复习卡侧（grammarReviewService.buildClozeOptions）
+ * 也需要它——那边原先缺这一类候选，内容词的干扰项只能退化成「句内其他词」，
+ * 词性不符、一眼可排除（gq1 weakDistractors 1282 条的主因）。
+ */
+let courseVocabularyCache: string[] | null = null;
+export const courseVocabulary = (): string[] => {
+  if (courseVocabularyCache) return courseVocabularyCache;
+  const words = new Set<string>();
+  for (const lesson of grammarLessons) {
+    const texts: string[] = [
+      lesson.targetSentence,
+      ...(lesson.examples ?? []).map((example) => example.en),
+      ...(lesson.practice ?? []).map((step) => step.answer),
+      ...(lesson.variants ?? []).map((variant) => variant.en),
+      ...(lesson.dialogue ?? []).map((line) => line.en)
+    ];
+    for (const text of texts) {
+      for (const raw of (text ?? "").split(/\s+/)) {
+        /**
+         * 2026-09-25：剔除「被引号引用的词」这种伪词（**按原始 token 判断**）。
+         *
+         * 反例（gq1 C-1 实测抓到）：lesson-138 的台词是
+         * `Two 'to's on one page!`——作者在**引用「to」这个单词**并说它有两个。
+         * 下面的清洗只剥首尾标点，于是 `'to's` 被剥成 `to's` 收进池子，
+         * 成了复习 cloze 的干扰项（一个不存在的英语词）。
+         *
+         * 判据必须看**原文**：清洗后只剩一个撇号（`to's`），看起来跟真缩写无异；
+         * 只有原文里撇号 ≥2 才说明作者用了引号引用（`'to's`）。
+         * 真缩写（don't / mustn't / it's）原文只有 1 个撇号，不受影响。
+         */
+        if ((raw.match(/['\u2019]/g) ?? []).length >= 2) continue;
+        // 保留词内撇号（don't / shouldn't 是完整词；剥掉会变成 didnt 这种不存在的写法），
+        // 只剥词首尾的标点。
+        const clean = raw
+          .replace(/^[.,!?;:'"\u2019(\[]+/, "")
+          .replace(/[.,!?;:'"\u2019)\]]+$/, "")
+          .replace(/\u2019/g, "'")
+          .toLowerCase();
+        if (clean.length < 3) continue;
+        /**
+         * 只收**纯字母词**。撇号形式一律不收：
+         *  - 缩略语（don't / shouldn't）已由 cloze 候选来源①「功能词同族替换」覆盖；
+         *  - 课程文本里还有**引用词本身**的写法（L14 对话 `Two 'to's on one page!`），
+         *    抽出来是 `to's`——不是英语词，进了池子就会当干扰项（gq1 distractorNotRealWord 实测命中）。
+         */
+        if (!/^[a-z]+$/.test(clean)) continue;
+        // 只收**基础形式**：屈折形式（-ed/-ing/-est/-ly）不作为干扰项候选，
+        // 否则会出现 "It is ___ today." 的选项里混进 written/taller 这类不匹配的词形。
+        if (/(ed|ing|est|ly)$/.test(clean) && clean.length > 4) continue;
+        words.add(clean);
+      }
+    }
+  }
+  courseVocabularyCache = [...words];
+  return courseVocabularyCache;
+};
+
+export const reviewSentenceOfGuidedStep = (step: LessonGuidedStep): string => {
+  if (step.kind === "arrange") return step.answer.trim();
+  if (step.kind !== "choose") return "";
+  const before = step.before ?? "";
+  const after = step.after ?? "";
+  /**
+   * choose 的题面有**两种排法**，还原时要分开处理：
+   *   ① 占位符在 before/after 里面（L85「___ book is this?」+ answer「Whose」）
+   *      → answer 是**填空**，替换掉那个 `___`；
+   *   ② 占位符在 before/after 之间（L01「I」+ answer「am」+「happy.」）
+   *      → answer 夹在两段中间。
+   * 只做 ② 会把 ① 拼成「___ book is this? Whose」——占位符与答案一起留在句子里，
+   * 后续挖空还会把 `___` 当干扰项（实测如此）。
+   */
+  const blank = `${before} ${after}`.includes("___")
+    ? `${before} ${after}`.replace("___", step.answer)
+    : [before, step.answer, after].join(" ");
+  // 标点前不留空格（after 常以「.」开头，拼出来会是 `I like dogs .`）
+  const full = blank.replace(/\s+/g, " ").replace(/\s+([.,!?;:])/g, "$1").trim();
+  // 还原不出整句、或占位符没被填掉时宁可不入队，也不要塞一个残句进句子队列
+  if (full.includes("___")) return "";
+  return full.split(" ").filter(Boolean).length >= 2 ? full : "";
+};
+
 export const addLessonMistakeSentence = (
   data: AppData,
   lesson: GrammarLesson,

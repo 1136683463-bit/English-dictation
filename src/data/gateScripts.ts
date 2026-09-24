@@ -191,15 +191,15 @@ export const STATION_GATES: LanguageGate[] = [
     npcLine: "The girl in the green coat—does she go to the city too?",
     npcLineZh: "那个穿绿大衣的女孩——她也去城里吗？",
     zhIntent: "说她每天去城里。",
-    canDo: "说清「她每天去城里」——动词带上小尾巴",
+    canDo: "说清「她每天去城里」——动词带上 -s",
     requiredPattern: "She goes to the city every day.",
     sampleAnswer: "She goes to the city every day.",
-    skeleton: { subject: "She", verb: "goes（去，带小尾巴 -s）", subjectLabel: "谁", verbLabel: "做什么" },
+    skeleton: { subject: "She", verb: "goes（去，带 -s）", subjectLabel: "谁", verbLabel: "做什么" },
     counterExample: "She go to the city every day.",
-    counterNote: "she 后面的 go 要带小尾巴 -s",
+    counterNote: "she 后面的 go 要带 -s",
     hints: [
       "She g___ to the city every day.",
-      "她/他后面的动词要带一条小尾巴：go → goes。",
+      "她/他后面的动词要带上 -s：go → goes。",
       "She goes to the city every day."
     ],
     acceptRegex: "^she\\s+(goes|travels|commutes)\\s+to\\s+the\\s+city\\s+(every\\s*day|everyday|daily|each\\s+day)[.!]?$",
@@ -207,7 +207,7 @@ export const STATION_GATES: LanguageGate[] = [
       {
         errorTag: "sv_agreement",
         npcReply: "She go? One girl, or two? If it is just her, the word needs its tail.",
-        npcReplyZh: "她 go？一个还是两个？如果只是她，那个词需要它的小尾巴。",
+        npcReplyZh: "她 go？一个还是两个？如果只是她，那个词需要它的 -s。",
         lampHint: "她（she）后面的动词要加 -s：go → goes。"
       }
     ]

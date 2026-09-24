@@ -128,7 +128,7 @@ describe("R24 前测结果页对错可见性", () => {
     const whys = [...container.querySelectorAll(".lesson-pretest-why")];
     expect(whys.length).toBe(2);
     expect(whys[0].textContent).toContain("刮风的要说 windy");
-    expect(whys[1].textContent).toContain("外套");
+    expect(whys[1].textContent).toContain("-y");
 
     // 全对的课不应因此进入复习队列
     expect(container.querySelector(".lesson-saved-hint")).toBeNull();
@@ -154,6 +154,6 @@ describe("R24 前测结果页对错可见性", () => {
     // 答错的那题仍要解释「为什么」
     const whys = [...container.querySelectorAll(".lesson-pretest-why")];
     expect(whys.length).toBe(1);
-    expect(whys[0].textContent).toContain("外套");
+    expect(whys[0].textContent).toContain("-y");
   });
 });

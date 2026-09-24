@@ -139,7 +139,7 @@ describe("界面层级：深挖卡 / 答对反馈 / 指令句", () => {
     for (let step = 0; step < 8; step += 1) {
       const instr = container.querySelector(".lesson-quiz-prompt.is-instruction");
       if (instr) {
-        expect(instr.textContent).toContain("句子变身");
+        expect(instr.textContent).toContain("句型转换");
         return;
       }
       // 推进一题：选可点的选项或词块，再点下一题

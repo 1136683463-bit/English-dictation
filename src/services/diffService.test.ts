@@ -37,7 +37,7 @@ describe("diffService · 缩写与全称等价", () => {
     ]);
   });
 
-  it("各课真实答句的长短版都能通过各自的通过线（忆段 70 / 产出段 90）", () => {
+  it("各课真实答句的完整形式与缩写形式都能通过各自的通过线（忆段 70 / 产出段 90）", () => {
     const pairs: Array<[string, string]> = [
       ["It's cold today.", "It is cold today."], // L87 考点课
       ["Let's go to the park.", "Let us go to the park."], // L75

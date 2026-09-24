@@ -277,17 +277,40 @@ describe("R02 找错知识缺口 → SM-2 复习队列", () => {
     expect(twice.data.cards).toHaveLength(1);
   });
 
-  it("同案同罪名的多处不同错词各自成卡（幂等键含原错词）；无缺口零新增", () => {
-    // hunt-moving-day 有两处 tense（moved / helped）——同罪名不同错词，应各建一张
+  it("同案多处错并入同一张卡（正面对每处错点都是同一句）；无缺口零新增", () => {
+    /**
+     * 2026-09-24 改：原先按错点逐个建卡，而同一案件的每张卡正面都是同一句
+     * `correctedSentence`——一案 7 处错就出 7 张**卡面完全相同**的卡，
+     * 复习时同一句话连着出现、挤占每次 10 张的复习容量
+     * （gq1 huntDuplicateCards 曾 214 条 = 576 张多余卡）。
+     * 改为**一案一卡**：grammarNote 把命中的每个错点（罪名 + 原错词 → 改法）并列列出——
+     * 弱点归因读的就是这些标记，并入不丢归因。
+     */
+    // hunt-moving-day 有两处 tense（moved / helped）
     const caseItem = huntCases.find((item) => item.id === "hunt-moving-day")!;
     const allGap = caseItem.errors.map((error) => error.tokenIndex);
     const { data, added } = addHuntGapSentences(makeTestData(), caseItem, allGap);
-    expect(added).toBe(caseItem.errors.length);
-    const tenseCards = data.cards.filter((card) => {
-      const details = data.sentenceDetails.find((item) => item.cardId === card.id);
-      return details?.grammarNote.startsWith("[tense:");
-    });
-    expect(tenseCards).toHaveLength(2);
+    // 一案只建一张卡，无论命中几处错点
+    expect(added).toBe(1);
+    const huntCards = data.cards.filter((card) => card.sourceId === `hunt:${caseItem.id}`);
+    expect(huntCards).toHaveLength(1);
+    // 正面是完整正确句：包含每个错点的**改法**（删词型错点原词本就不在，勿用子串判断）
+    expect(huntCards[0].front.split(/\s+/).length).toBeGreaterThan(2);
+    for (const error of caseItem.errors) {
+      expect(huntCards[0].front.toLowerCase()).toContain(error.correction.toLowerCase());
+    }
+    // 讲解并列列出本案全部错点，弱点归因用的标记一个不少
+    const details = data.sentenceDetails.find((item) => item.cardId === huntCards[0].id)!;
+    for (const error of caseItem.errors) {
+      expect(details.grammarNote).toContain(`[${error.tag}:${error.original}]`);
+    }
+
+    // 幂等：同一案件重复结算，不重复建卡、不重复并入
+    const second = addHuntGapSentences(data, caseItem, allGap);
+    expect(second.added).toBe(0);
+    expect(second.data.cards).toHaveLength(data.cards.length);
+    const detailsAfter = second.data.sentenceDetails.find((item) => item.cardId === huntCards[0].id);
+    expect(detailsAfter?.grammarNote).toBe(details.grammarNote);
 
     const { data: unchanged, added: zero } = addHuntGapSentences(makeTestData(), caseItem, []);
     expect(zero).toBe(0);

@@ -4,6 +4,7 @@ import {
   BookOpenCheck,
   ChevronRight,
   Flame,
+  GraduationCap,
   Import,
   Map,
   RotateCcw,
@@ -13,6 +14,7 @@ import { Link } from "react-router-dom";
 import { useAppData } from "../AppContext";
 import BannerHero from "../components/BannerHero";
 import { getLearningStats } from "../services/reviewService";
+import { summarizeLessonProgress } from "../services/lessonService";
 import trainingHero from "../assets/training-hero.jpg";
 
 const estimateMinutes = (dueTotal: number, weakWords: number) => {
@@ -25,6 +27,16 @@ export default function TrainingPage() {
   // R2：薄弱词数字统一走权威源 getLearningStats（getWeakCards 口径），不再单独调 getWeakStats。
   const stats = getLearningStats(data);
   const minutes = estimateMinutes(stats.dueTotal, stats.weakWords);
+  /**
+   * 语法线的枢纽入口（2026-09-24 首页重规划 P2 补）。
+   *
+   * 为什么在这里补：本页是事实上的**次级枢纽**（「训练方式」7 行模式列表），
+   * 而它对 `grammar` 的引用数为 **0**——冒险线在这里有一行，语法线一行都没有。
+   * 首页重规划把「并列展示三条线」的需求交给这个枢纽（这是已验证的范式：
+   * 主路径 + 次级枢纽），所以枢纽必须真的能装下三条线，否则「并列需求已交付」就是空话。
+   * 数据走路径页同一套服务（`summarizeLessonProgress`），不另算一套。
+   */
+  const lessonProgress = summarizeLessonProgress(data);
 
   const modes = [
     {
@@ -58,6 +70,15 @@ export default function TrainingPage() {
       to: "/adventure",
       icon: Map,
       tone: "orange"
+    },
+    {
+      title: "语法阶梯",
+      // 课数不写死 205：全库多处断言锁的是 `grammarLessons.length`，写死数字会在加课那天变成假文案。
+      description: `${lessonProgress.total} 课从「认识」到「用对」，每课五段：看、跟、忆、练、破。`,
+      meta: `已完成 ${lessonProgress.done}/${lessonProgress.total} 课`,
+      to: "/grammar",
+      icon: GraduationCap,
+      tone: "amber"
     },
     {
       title: "词书训练",

@@ -33,6 +33,9 @@ import {
   Rating,
   Review,
   ReviewMode,
+  ExamDispute,
+  ExamItemResult,
+  ExamSession,
   RuneState,
   Schedule,
   SentenceDetails,
@@ -156,6 +159,106 @@ const normalizeLessonStagesDone = (value: unknown): Record<string, number[]> => 
  */
 const normalizeLessonTiersDone = normalizeLessonStagesDone;
 
+/**
+ * 考试作答会话归一化（P0-1）。照 `normalizeLessonStagesDone` 的纪律：
+ * 非对象一律降级为空、逐字段白名单拷贝、非法值回落安全值、**绝不抛错**。
+ *
+ * 为什么必须在这里登记：`knownAppDataKeys` 是显式白名单，未登记的键会被静默丢弃——
+ * 而考试会话一旦被吃掉，用户中断续做的进度就没了（PRD §4.7 是 P0）。
+ * 自由输入必须截断，避免一条超长 textarea 把整份 localStorage 撑爆。
+ */
+const EXAM_FREE_TEXT_MAX = 4000;
+const trimFreeText = (value: unknown) => asString(value).slice(0, EXAM_FREE_TEXT_MAX);
+
+/** 节序号只认 1/2/3，其余一律回落 1（TS 无法从 unknown 直接收窄成字面量联合）。 */
+const asExamSection = (value: unknown): 1 | 2 | 3 => (value === 2 || value === 3 ? value : 1);
+
+const normalizeExamSessions = (value: unknown): Record<string, ExamSession> => {
+  if (!isRecord(value)) return {};
+  const result: Record<string, ExamSession> = {};
+  for (const [paperId, raw] of Object.entries(value)) {
+    if (typeof paperId !== "string" || !paperId) continue;
+    if (!isRecord(raw)) continue;
+    const rawCursor = isRecord(raw.cursor) ? raw.cursor : {};
+    const section = asExamSection(rawCursor.section);
+    const index = Math.max(0, Math.floor(asNumber(rawCursor.index, 0)));
+    const results: ExamItemResult[] = (Array.isArray(raw.results) ? raw.results : [])
+      .filter(isRecord)
+      .map((item) => ({
+        itemId: asString(item.itemId),
+        section: asExamSection(item.section),
+        kind: (["mcq", "cloze", "zh2en", "read", "write"] as const).includes(item.kind as never)
+          ? (item.kind as ExamItemResult["kind"])
+          : "mcq",
+        answer: trimFreeText(item.answer),
+        passed: asBoolean(item.passed),
+        score: Math.min(100, Math.max(0, asNumber(item.score, 0))),
+        durationMs: Math.max(0, asNumber(item.durationMs, 0)),
+        sourceLessonId: asString(item.sourceLessonId),
+        answeredAt: validIsoOrNow(item.answeredAt)
+      }))
+      .filter((item) => Boolean(item.itemId))
+      .slice(0, 200);
+    const revealedSections = (Array.isArray(raw.revealedSections) ? raw.revealedSections : [])
+      .filter((entry): entry is number => entry === 1 || entry === 2 || entry === 3)
+      .filter((entry, position, list) => list.indexOf(entry) === position)
+      .sort((left, right) => left - right);
+    const rawWriting = isRecord(raw.writing) ? raw.writing : undefined;
+    result[paperId] = {
+      paperId,
+      seasonId: asString(raw.seasonId),
+      variantIndex: Math.max(0, Math.floor(asNumber(raw.variantIndex, 0))),
+      startedAt: validIsoOrNow(raw.startedAt),
+      updatedAt: validIsoOrNow(raw.updatedAt),
+      ...(asString(raw.submittedAt) ? { submittedAt: validIsoOrNow(raw.submittedAt) } : {}),
+      cursor: { section, index },
+      results,
+      revealedSections,
+      ...(rawWriting
+        ? {
+            writing: {
+              text: trimFreeText(rawWriting.text),
+              ...(rawWriting.corrected !== undefined ? { corrected: trimFreeText(rawWriting.corrected) } : {}),
+              ...(rawWriting.recast !== undefined ? { recast: trimFreeText(rawWriting.recast) } : {}),
+              ...(rawWriting.comment !== undefined ? { comment: trimFreeText(rawWriting.comment) } : {}),
+              ...(Array.isArray(rawWriting.issues)
+                ? {
+                    issues: rawWriting.issues
+                      .filter(isRecord)
+                      .slice(0, 20)
+                      .map((issue) => ({
+                        original: trimFreeText(issue.original),
+                        correction: trimFreeText(issue.correction),
+                        explanation: trimFreeText(issue.explanation),
+                        ...(issue.tag !== undefined ? { tag: asString(issue.tag) } : {})
+                      }))
+                  }
+                : {}),
+              ...(rawWriting.degraded !== undefined ? { degraded: asBoolean(rawWriting.degraded) } : {}),
+              ...(rawWriting.degradeReason !== undefined ? { degradeReason: asString(rawWriting.degradeReason) } : {})
+            }
+          }
+        : {})
+    };
+  }
+  return result;
+};
+
+/** 考试异议记录归一化（P0-1）：非对象丢弃、ts 走既有 validIsoOrNow、**数组设上限**防无限增长。 */
+const EXAM_DISPUTE_MAX = 200;
+const normalizeExamDisputes = (value: unknown): ExamDispute[] =>
+  (Array.isArray(value) ? value : [])
+    .filter(isRecord)
+    .map((item) => ({
+      id: asString(item.id) || uid("exam_dispute"),
+      paperId: asString(item.paperId),
+      itemId: asString(item.itemId),
+      claim: trimFreeText(item.claim),
+      createdAt: validIsoOrNow(item.createdAt)
+    }))
+    .filter((item) => Boolean(item.paperId) && Boolean(item.itemId))
+    .slice(-EXAM_DISPUTE_MAX);
+
 const knownAppDataKeys = [
   "schemaVersion",
   "unitGroups",
@@ -173,6 +276,8 @@ const knownAppDataKeys = [
   "grammarLessonsDone",
   "grammarLessonStagesDone",
   "grammarBoostsDone",
+  "examSessions",
+  "examDisputes",
   "diaryEntries",
   "schedules",
   "dictionaryEntries",
@@ -1108,6 +1213,13 @@ export const migrateData = (raw: unknown): AppData => {  const parsed = typeof r
       : {}),
     grammarLessonStagesDone: normalizeLessonStagesDone(parsed.grammarLessonStagesDone),
     grammarBoostsDone: normalizeLessonTiersDone(parsed.grammarBoostsDone),
+    // 考试会话/异议：可选字段，无值时不下发该键（保持旧数据形状不变，与 deletedBuiltinUnitIds 同款）
+    ...(Object.keys(normalizeExamSessions(parsed.examSessions)).length > 0
+      ? { examSessions: normalizeExamSessions(parsed.examSessions) }
+      : {}),
+    ...(normalizeExamDisputes(parsed.examDisputes).length > 0
+      ? { examDisputes: normalizeExamDisputes(parsed.examDisputes) }
+      : {}),
     diaryEntries: normalizeDiaryEntries(parsed.diaryEntries),
     schedules: normalizeSchedules(parsed.schedules, cards),
     dictionaryEntries: normalizeDictionaryEntries(parsed.dictionaryEntries),
@@ -1795,6 +1907,16 @@ export const totalLocalStorageCostBytes = (excludeKeys: readonly string[] = []):
   }
   return total;
 };
+
+/**
+ * 「除主数据键以外」的全部键成本（字节）。
+ *
+ * 给 `AppContext.refreshStoragePressure` 用：那条路径每次保存都跑，
+ * 且手上已经有主数据键的精确 JSON，所以只需补上其余键（遥测三对键等）的成本
+ * 才是用户真实面对的容量账单。为此不能把主数据键重复计入，故在这里排除它——
+ * 而不是把 `STORAGE_KEY` 导出去让调用方自己拼。
+ */
+export const otherLocalStorageCostBytes = (): number => totalLocalStorageCostBytes([STORAGE_KEY]);
 const STARTUP_REPAIR_KEY = "personal-vocab-startup-repairs-v1";
 
 /** 纯函数：对比启动时的 raw 快照与迁移结果，列出被自动修复/清理的问题。 */

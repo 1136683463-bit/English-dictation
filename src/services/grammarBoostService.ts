@@ -1,8 +1,8 @@
 import type { AppData, GrammarErrorTag, GrammarLesson } from "../types";
 import { GRAMMAR_LESSON_BY_ID, grammarLessons } from "../data/grammarLessons";
-import { compareText, diffScore, tokenSequencesEquivalent } from "./diffService";
+import { compareText, diffScore, spellingMatches, tokenSequencesEquivalent } from "./diffService";
 import { computeWeakSpots } from "./grammarWeakSpotsService";
-import { isFreeOutputPassed, normalizeLessonSentence } from "./lessonService";
+import { courseVocabulary, isFreeOutputPassed, normalizeLessonSentence } from "./lessonService";
 import { explainForSentence, resolveGuidedExplain } from "./grammarExplainService";
 import { listGrammarEventsByKind, type GrammarBoostStepResultEvent } from "./grammarTelemetry";
 
@@ -118,6 +118,13 @@ export interface BoostItem {
   intentZh: string;
   /** 完整正确句（判题基准；cloze 为题面句）。 */
   answer: string;
+  /**
+   * 除 `answer` 之外**同样算对**的说法（课内标注，见 GrammarLesson.acceptAlso）。
+   * 判分取各候选中的最高分。用于「同一句中文在课内教了两种都对的说法」的情况——
+   * 如 L68「我给妈妈买了份礼物。」既可说 `I bought a gift for my mom.`
+   * 也可说 `I bought my mom a gift.`（本课 sceneSwings 里就教了后者）。
+   */
+  acceptAlso?: string[];
   /**
    * 答对之后的一句「为什么」（零术语）。
    * 用户反馈：只给正确答案不够——讲清楚为什么用这个，才知道下次怎么用。
@@ -454,12 +461,30 @@ const buildCloze = (
       //   故改为：**先把 lower 还原成基础形，再只对基础形生成变体**。
       //   `cleaned` → `clean`（+ed 的还原）→ 产出 `cleans`／`cleaned`／`cleaning`（全是真词）；
       //   `takes` → `take` → 产出 `takes`／`taked`? 否——`take` 在 IRREGULAR_VERBS 里，整支跳过。
-      const base = lower.replace(/ies$/, "y").replace(/ing$/, "").replace(/ed$/, "").replace(/s$/, "");
+      // 修正（2026-09-24，第三次）：上面这条还原链会把「本身就以 -ed 结尾的基础形」剥坏——
+      //   它分不清「基础形 need」与「过去式 needed」，一律按过去式剥：
+      //   `need` → `ne`、`seed` → `se`、`speed` → `spe`；
+      //   随后 `-e` 结尾那支 `push(base + "d")` 就造出 `ned`／`sed`／`sped` 这类非词
+      //   （实测 lesson-161 的干扰项 `ned` 来自 `need`）。
+      //   改法：剥 -ed 之后必须**落在一个已知动词上**才算数，否则说明 lower 本身就是基础形。
+      //   `need` 无可剥 → 保持 `need` → 产出 `needs`／`needed`／`needing`（全是真词）；
+      //   `needed` → `need` ✓；`cleaned` → `clean` ✓（与修改前一致）。
+      const withoutEdOrPlural = lower.replace(/ies$/, "y").replace(/ing$/, "").replace(/s$/, "");
+      const strippedEd = withoutEdOrPlural.replace(/ed$/, "");
+      // 剥 -ed 只有在**落在已知动词上**时才采纳：`needed`→`need` 采纳，`need`→`ne` 不采纳。
+      const base = strippedEd !== withoutEdOrPlural && KNOWN_VERBS.has(strippedEd) ? strippedEd : withoutEdOrPlural;
       if (base && !IRREGULAR_VERBS.has(base) && !IRREGULAR_VERBS.has(lower)) {
+        // 修正（2026-09-24，第四次）：`-s` 也分形态——`-s/-sh/-ch/-x/-z` 结尾要加 `-es`。
+        //   原来一律 `${base}s`，于是 `finish` → **`finishs`**（真词是 `finishes`），
+        //   实测出现在 lesson-153 / lesson-180 的 cloze 选项里。
+        //   注意 `isRealEnglishWord(allowInflection)` 抓不到它：那个谓词先剥词尾再查词典，
+        //   `finishs` 剥成 `finish` 就算「合法」——所以必须在这里造对，不能指望下游筛掉。
+        const thirdPerson = /(s|sh|ch|x|z)$/.test(base) ? `${base}es` : `${base}s`;
         for (const suffix of ["s", "ed", "ing"]) {
           // 辅音 + y 才变 ies（study→studies；play→plays）
           if (/[^aeiou]y$/.test(base)) push(`${base.slice(0, -1)}ies`);
           else if (/e$/.test(base)) push(`${base}d`);
+          else if (suffix === "s") push(thirdPerson);
           else push(`${base}${suffix}`);
         }
       }
@@ -509,47 +534,6 @@ export const buildRecallHints = (sentence: string): string[] => {
   ];
 };
 
-/**
- * 课程词汇池（用于 cloze 的同类别干扰项）。
- *
- * 为什么不用 bundledDictionary：那本词典有 3.3MB / 数万词，远超出课程的 500 词门槛——
- * 拿它当干扰项会出现用户从没学过的词，反而是"超纲干扰"。
- * 这里只用**全部课程文本里出现过的词**（约 430 个），保证干扰项也在用户的学习范围内。
- */
-let courseVocabularyCache: string[] | null = null;
-const courseVocabulary = (): string[] => {
-  if (courseVocabularyCache) return courseVocabularyCache;
-  const words = new Set<string>();
-  for (const lesson of grammarLessons) {
-    const texts: string[] = [
-      lesson.targetSentence,
-      ...(lesson.examples ?? []).map((example) => example.en),
-      ...(lesson.practice ?? []).map((step) => step.answer),
-      ...(lesson.variants ?? []).map((variant) => variant.en),
-      ...(lesson.dialogue ?? []).map((line) => line.en)
-    ];
-    for (const text of texts) {
-      for (const raw of (text ?? "").split(/\s+/)) {
-        // 保留词内撇号（don't / shouldn't 是完整词；剥掉会变成 didnt 这种不存在的写法），
-        // 只剥词首尾的标点。
-        const clean = raw
-          .replace(/^[.,!?;:'"\u2019(\[]+/, "")
-          .replace(/[.,!?;:'"\u2019)\]]+$/, "")
-          .replace(/\u2019/g, "'")
-          .toLowerCase();
-        if (clean.length < 3) continue;
-        if (!/^[a-z]+('[a-z]+)?$/.test(clean)) continue;
-        // 只收**基础形式**：屈折形式（-ed/-ing/-est/-ly）不作为干扰项候选，
-        // 否则会出现 "It is ___ today." 的选项里混进 written/taller 这类不匹配的词形。
-        if (/(ed|ing|est|ly)$/.test(clean) && clean.length > 4) continue;
-        words.add(clean);
-      }
-    }
-  }
-  courseVocabularyCache = [...words];
-  return courseVocabularyCache;
-};
-
 // ── 素材池：去重后的课程句子（档 1/2 的本地派生基础）──────────────────
 
 type SentenceSource =
@@ -581,20 +565,22 @@ interface PooledSentence {
   zh: string;
   source: SentenceSource;
   index: number;
+  /** 这句在课内还有别的合法说法（只有 target 句会带，见 GrammarLesson.acceptAlso）。 */
+  acceptAlso?: string[];
 }
 
 const poolOf = (lesson: GrammarLesson): PooledSentence[] => {
   const pool: PooledSentence[] = [];
-  const push = (en: string | undefined, zh: string, source: SentenceSource, index: number) => {
+  const push = (en: string | undefined, zh: string, source: SentenceSource, index: number, acceptAlso?: string[]) => {
     const sentence = (en ?? "").trim();
     if (!sentence || splitWords(sentence).length < 3) return;
-    pool.push({ en: sentence, zh, source, index });
+    pool.push({ en: sentence, zh, source, index, acceptAlso });
   };
-  push(lesson.targetSentence, lesson.intentZh, "target", 0);
+  push(lesson.targetSentence, lesson.intentZh, "target", 0, lesson.acceptAlso);
   (lesson.variants ?? []).forEach((variant, index) => push(variant.en, variant.zh, "variants", index));
   (lesson.sceneSwings ?? []).forEach((swing, index) => push(swing.en, swing.zh, "sceneSwings", index));
   lesson.practice.forEach((step, index) => push(step.answer, step.promptZh, "practice", index));
-  lesson.examples.forEach((example, index) => push(example.en, example.zh, "examples", index));
+  lesson.examples.forEach((example, index) => push(example.en, example.zh, "examples", index, example.acceptAlso));
   (lesson.dialogue ?? []).forEach((line, index) => push(line.en, line.zh, "dialogue", index));
   if (lesson.recall) push(lesson.recall.answer, lesson.recall.intentZh, "recall", 0);
   lesson.blocks.forEach((block, index) => push(block.text, "", "blocks", index));
@@ -704,14 +690,14 @@ const weakSpotRelevance = (lesson: GrammarLesson, tag: GrammarErrorTag): number 
  * 词表刻意用「用户看得见的话」而不是术语——课程正文本身就是零术语写的。
  */
 const WEAK_SPOT_KEYWORDS: Partial<Record<GrammarErrorTag, string[]>> = {
-  tense: ["过去式", "昨天版", "过去", "yesterday", "was", "were", "went", "did"],
+  tense: ["过去式", "过去式", "过去", "yesterday", "was", "were", "went", "did"],
   sv_agreement: ["搭档", "他、她", "加 s", "he ", "she ", "it ", "has", "does"],
   missing_be: ["be 动词", "am", "is", "are", "丢", "少了一个"],
   article: ["a / an", "the", "冠词", "前面要有"],
   plural: ["复数", "两个以上", "加 s", "s 尾巴"],
   preposition: ["搭配", "介词", "in ", "on ", "at "],
   word_order: ["语序", "位置", "站错", "顺序"],
-  verb_form: ["穿", "外套", "ing", "原样", "做过版"],
+  verb_form: ["穿", "形式", "ing", "原形", "过去分词"],
   fragment: ["缺", "句子塌", "没有动词", "主语"],
   run_on: ["because", "so", "连词"],
   comparison: ["比较", "更", "-er", "more"]
@@ -1159,6 +1145,7 @@ const buildTierTwo = (
       promptZh: "看着中文，把这句话写出来（想不起来可以要提示）。",
       intentZh: sentence.zh,
       answer: sentence.en,
+      acceptAlso: sentence.acceptAlso,
       explainZh: recallExplanationFor(lesson, sentence),
       hints: buildRecallHints(sentence.en),
       sourceRef: boostSourceRef(lesson.id, sentence.source, sentence.index, 2),
@@ -1194,10 +1181,11 @@ const buildTierTwo = (
       normalizeLessonSentence(lesson.targetSentence)
     ]);
     const SCENE_LIKE_ZH = /问|说|补|回答|指着|喊|笑|递|看看|轮到/;
-    const translationPool: Array<{ en: string; zh: string; source: SentenceSource; index: number }> = [
+    const translationPool: Array<{ en: string; zh: string; source: SentenceSource; index: number; acceptAlso?: string[] }> = [
       ...(lesson.examples ?? []).map((example, index) => ({
         en: example.en,
         zh: example.zh,
+        acceptAlso: example.acceptAlso,
         source: "examples" as SentenceSource,
         index
       })),
@@ -1221,6 +1209,7 @@ const buildTierTwo = (
         promptZh: "照着中文，把整句写出来。",
         intentZh: sentence.zh,
         answer: sentence.en,
+        acceptAlso: sentence.acceptAlso,
         explainZh: sentenceExplanationFor(lesson, { en: sentence.en, zh: sentence.zh, source: sentence.source, index: sentence.index }),
         sourceRef: boostSourceRef(lesson.id, sentence.source, sentence.index, 2),
         itemKind: "derived",
@@ -1341,6 +1330,7 @@ const buildTierThree = (
       promptZh: "不给提示了——照着中文，把这句话自己写出来。",
       intentZh: sentence.zh,
       answer: sentence.en,
+      acceptAlso: sentence.acceptAlso,
       explainZh: sentence.source === "recall" ? (lesson.recall?.noteZh ?? lesson.oneLineRule) : lesson.oneLineRule,
       sourceRef: boostSourceRef(lesson.id, sentence.source, sentence.index, 3),
       itemKind: "derived",
@@ -1352,6 +1342,26 @@ const buildTierThree = (
   // 讲法用 variants 自带的 noteZh（课内已写好的「怎么变」说明），比 oneLineRule 更贴题。
   const variants = lesson.variants ?? [];
   const shapedVersions = variants.filter((variant) => variant.label !== "肯定" && variant.en.trim() && variant.zh.trim());
+  /**
+   * `label` 实际是**槽位名**（全库恰好 205/205/205 的「肯定/否定/疑问」），
+   * 而个别课用这个槽位装了别的变体：L66 的「否定」槽是 `It is too heavy for me.`（加 for me，
+   * 不是否定句）、L89 是 `What a bad day!`（换词，不是否定句）。
+   * 题面原来无条件写「把它说成「否定」的样子」——**给出了假指令**：
+   * 学习者照「写成否定」去写会被判错，而正确答案从指令里推不出来。
+   *
+   * 所以只在**答案确实是该形态**时才承诺形态，否则用中性题面（具体怎么变由 explainZh 讲，
+   * 那两课的 noteZh 本来就写对了）。判据与 gq2 的 B-5 检查同口径。
+   */
+  const labelMatchesContent = (label: string, sentence: string): boolean => {
+    const lower = sentence.toLowerCase();
+    if (label === "否定") {
+      return /\b(not|never|no|neither|nobody|nothing|none)\b|n't/.test(lower);
+    }
+    if (label === "疑问") {
+      return /^(is|are|am|was|were|do|does|did|can|could|will|would|should|must|may|have|has|had|what|where|when|who|why|how|whose|which)\b/.test(sentence.trim());
+    }
+    return true;
+  };
   for (const target of shapedVersions) {
     // 样例句：优先用肯定句（说同一件事的另一面），没有就用核心句
     const known = variants.find((variant) => variant.label === "肯定")?.en?.trim() || lesson.targetSentence;
@@ -1359,7 +1369,9 @@ const buildTierThree = (
     candidates.variant.push({
       id: `boost-${lesson.id}-t3-variant-${target.label}`,
       kind: "variant",
-      promptZh: `这句话还能换个说法——把它说成「${target.label}」的样子。`,
+      promptZh: labelMatchesContent(target.label, target.en)
+        ? `这句话还能换个说法——把它说成「${target.label}」的样子。`
+        : "这句话还能换个说法——按这一课的结构，把下面这一版写出来。",
       intentZh: target.zh,
       answer: target.en,
       explainZh: target.noteZh?.trim() || lesson.oneLineRule,
@@ -1376,6 +1388,7 @@ const buildTierThree = (
   for (const [index, contrast] of (lesson.contrast ?? []).entries()) {
     if (!contrast.wrong.trim() || !contrast.correct.trim()) continue;
     if (normalizeLessonSentence(contrast.wrong) === normalizeLessonSentence(contrast.correct)) continue;
+    if (contrast.bothRight) continue; // 双正解条没有"错"，不能出改错题
     candidates.fix.push({
       id: `boost-${lesson.id}-t3-fix-${index}`,
       kind: "fix",
@@ -1477,8 +1490,16 @@ export const judgeBoostContrast = (item: BoostItem, pickedProblem: boolean): boo
 };
 
 /** 单空填空：大小写宽容。 */
+/**
+ * cloze（填空）判分。
+ *
+ * 2026-09-24 修：改用 `spellingMatches`（diffService 的**词级判分权威实现**）。
+ * 原实现是裸 `toLowerCase` 比较，**没有全角折叠**——中文输入法打出的全角字母
+ * （`ｐｉｃｔｕｒｅ`）或弯撇号（`don’t`）会被判错（实测确认）。
+ * 项目其它词级判分（拼写页）早已走 normalizeSpelling，这里是与全站口径对齐。
+ */
 export const judgeBoostCloze = (item: BoostItem, picked: string): boolean =>
-  picked.trim().toLowerCase() === (item.clozeAnswer ?? "").trim().toLowerCase();
+  spellingMatches(item.clozeAnswer ?? "", picked);
 
 /**
  * 改错：点中的词块是否为那一处错（与课内 spot 同口径——点中下标即通过）。
@@ -1523,17 +1544,30 @@ export const judgeBoostTokens = (item: BoostItem, built: string[]): boolean =>
 export const boostArrangeAnswerLength = (item: BoostItem): number =>
   item.answer.split(/\s+/).filter(Boolean).length;
 
+/**
+ * 产出类判分取「最高分」：`answer` 与 `acceptAlso` 里哪个说得更近就用哪个当基准。
+ * 没有 `acceptAlso` 时只有一个候选，行为与从前完全一致。
+ */
+const bestProduceMatch = (item: BoostItem, input: string): { score: number; reference: string } => {
+  let best = { score: -1, reference: item.answer };
+  for (const reference of [item.answer, ...(item.acceptAlso ?? [])]) {
+    const score = diffScore(compareText(reference, input, false));
+    if (score > best.score) best = { score, reference };
+  }
+  return best;
+};
+
 /** 中文→整句（有提示）：通过线 70，返回分数供提示梯度使用。 */
 export const judgeBoostRecall = (item: BoostItem, input: string): { passed: boolean; score: number } => {
-  const score = diffScore(compareText(item.answer, input, false));
+  const { score, reference } = bestProduceMatch(item, input);
   // 状语移位（yesterday I went... vs I went... yesterday）算对——统一走 isFreeOutputPassed
-  return { passed: isFreeOutputPassed(input, item.answer, score, BOOST_RECALL_PASS_SCORE), score };
+  return { passed: isFreeOutputPassed(input, reference, score, BOOST_RECALL_PASS_SCORE), score };
 };
 
 /** 无提示整句产出：通过线 90。 */
 export const judgeBoostProduce = (item: BoostItem, input: string): { passed: boolean; score: number } => {
-  const score = diffScore(compareText(item.answer, input, false));
-  return { passed: isFreeOutputPassed(input, item.answer, score, BOOST_PRODUCE_PASS_SCORE), score };
+  const { score, reference } = bestProduceMatch(item, input);
+  return { passed: isFreeOutputPassed(input, reference, score, BOOST_PRODUCE_PASS_SCORE), score };
 };
 
 export const judgeBoostItem = (

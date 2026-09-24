@@ -1,0 +1,4468 @@
+{
+  "lessonId": "lesson-01-am",
+  "viewport": {
+    "width": 375,
+    "height": 667
+  },
+  "mode": "correct",
+  "steps": [
+    {
+      "step": 1,
+      "questionNumber": 1,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "am",
+          "cls": "lesson-option",
+          "disabled": false,
+          "accName": "am",
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "is",
+          "cls": "lesson-option",
+          "disabled": false,
+          "accName": "is",
+          "w": 65,
+          "h": 52
+        },
+        {
+          "text": "are",
+          "cls": "lesson-option",
+          "disabled": false,
+          "accName": "are",
+          "w": 77,
+          "h": 52
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 课前试一试 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 课前试一试 1 / 2 不判分、不影响进度 你想说：我很开心。 am is are 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 667,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-01.png"
+    },
+    {
+      "step": 2,
+      "questionNumber": 1,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "am",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "am",
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "is",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "is",
+          "w": 65,
+          "h": 52
+        },
+        {
+          "text": "are",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "are",
+          "w": 77,
+          "h": 52
+        },
+        {
+          "text": "下一题",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "下一题",
+          "w": 80,
+          "h": 44
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 课前试一试 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 课前试一试 1 / 2 不判分、不影响进度 你想说：我很开心。 am is are 先记住你的直觉——过完这一段就看到答案。 下一题 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 693,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-02.png"
+    },
+    {
+      "step": 3,
+      "questionNumber": 2,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "没问题",
+          "cls": "lesson-option",
+          "disabled": false,
+          "accName": "没问题",
+          "w": 102,
+          "h": 52
+        },
+        {
+          "text": "有问题",
+          "cls": "lesson-option",
+          "disabled": false,
+          "accName": "有问题",
+          "w": 102,
+          "h": 52
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 课前试一试 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 课前试一试 2 / 2 不判分、不影响进度 有人是这样说的，你觉得这句话有问题吗？ I is Xiaomei. 没问题 有问题 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 667,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-03.png"
+    },
+    {
+      "step": 4,
+      "questionNumber": 2,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "没问题",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "没问题",
+          "w": 102,
+          "h": 52
+        },
+        {
+          "text": "有问题",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "有问题",
+          "w": 102,
+          "h": 52
+        },
+        {
+          "text": "看看结果",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "看看结果",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 课前试一试 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 课前试一试 2 / 2 不判分、不影响进度 有人是这样说的，你觉得这句话有问题吗？ I is Xiaomei. 没问题 有问题 先记住你的直觉——过完这一段就看到答案。 看看结果 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 770,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-04.png"
+    },
+    {
+      "step": 5,
+      "questionNumber": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        },
+        {
+          "level": "H2",
+          "text": "直觉不准？正好"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "开始上课",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "开始上课",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 课前试一试 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 直觉不准？正好 前测里有 1 处拿不准——这一课就是讲它们的。 拿不准的句子已经排进明天的复习队列。先看看是哪几处： 第 2 题 · 有人是这样说的，你觉得这句话有问题吗？ 判断错了 原句 I is Xiaomei. 你的判断 没问题 正确判断 有问题 正确说法 I am Xiaomei. is 不是 I 的搭档。英语里谁和谁是搭档是固定的：I 只跟 am 一起出场，就像搭档不能换人。 开始上课 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 1023,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-05.png"
+    },
+    {
+      "step": 6,
+      "questionNumber": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "1 剧场",
+          "cls": "lesson-watch-step on",
+          "disabled": false,
+          "accName": "1 剧场",
+          "w": 80,
+          "h": 34
+        },
+        {
+          "text": "2 搭装与对错",
+          "cls": "lesson-watch-step",
+          "disabled": false,
+          "accName": "2 搭装与对错",
+          "w": 118,
+          "h": 34
+        },
+        {
+          "text": "3 变奏",
+          "cls": "lesson-watch-step",
+          "disabled": false,
+          "accName": "3 变奏",
+          "w": 80,
+          "h": 34
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "下一步：搭装与对错",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "下一步：搭装与对错",
+          "w": 240,
+          "h": 44
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "1 剧场",
+          "cls": "lesson-watch-step on",
+          "w": 80,
+          "h": 34
+        },
+        {
+          "name": "2 搭装与对错",
+          "cls": "lesson-watch-step",
+          "w": 118,
+          "h": 34
+        },
+        {
+          "name": "3 变奏",
+          "cls": "lesson-watch-step",
+          "w": 80,
+          "h": 34
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 1 剧场 2 搭装与对错 3 变奏 新学期第一天，教室里坐满了不认识的同学。 Hi! Who are you? 旁边的同学转过头来问你。 Are you new here? 她又补了一句。 I am Xiaomei. 轮到你说了——你是小美。 轮到你说了： 我是小美。 下一步：搭装与对错 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 1060,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-06.png"
+    },
+    {
+      "step": 7,
+      "questionNumber": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "1 剧场",
+          "cls": "lesson-watch-step",
+          "disabled": false,
+          "accName": "1 剧场",
+          "w": 80,
+          "h": 34
+        },
+        {
+          "text": "2 搭装与对错",
+          "cls": "lesson-watch-step on",
+          "disabled": false,
+          "accName": "2 搭装与对错",
+          "w": 118,
+          "h": 34
+        },
+        {
+          "text": "3 变奏",
+          "cls": "lesson-watch-step",
+          "disabled": false,
+          "accName": "3 变奏",
+          "w": 80,
+          "h": 34
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "AI is Xiaomei.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "accName": "AI is Xiaomei.",
+          "w": 306,
+          "h": 56
+        },
+        {
+          "text": "BI am Xiaomei.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "accName": "BI am Xiaomei.",
+          "w": 306,
+          "h": 56
+        },
+        {
+          "text": "AI Xiaomei.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "accName": "AI Xiaomei.",
+          "w": 306,
+          "h": 56
+        },
+        {
+          "text": "BI am Xiaomei.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "accName": "BI am Xiaomei.",
+          "w": 306,
+          "h": 56
+        },
+        {
+          "text": "上一步",
+          "cls": "secondary-button",
+          "disabled": false,
+          "accName": "上一步",
+          "w": 80,
+          "h": 44
+        },
+        {
+          "text": "下一步：变奏",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "下一步：变奏",
+          "w": 240,
+          "h": 44
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [
+        {
+          "text": "I",
+          "disabled": false,
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "am",
+          "disabled": false,
+          "w": 55,
+          "h": 38
+        },
+        {
+          "text": "Xiaomei",
+          "disabled": false,
+          "w": 89,
+          "h": 38
+        }
+      ],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "1 剧场",
+          "cls": "lesson-watch-step",
+          "w": 80,
+          "h": 34
+        },
+        {
+          "name": "2 搭装与对错",
+          "cls": "lesson-watch-step on",
+          "w": 118,
+          "h": 34
+        },
+        {
+          "name": "3 变奏",
+          "cls": "lesson-watch-step",
+          "w": 80,
+          "h": 34
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 1 剧场 2 搭装与对错 3 变奏 看这个句子是怎么搭出来的 I 我 am 是（我专用） Xiaomei 名字 听一遍完整的句子 一句话 英语说「我是谁」，am 不能丢。I am 是一对固定搭档，说「我是……」它们就一起出场。 有人是这样说的，你帮他看看 两句话只有一句是对的——点出你认为对的那句： A I is Xiaomei. B I am Xiaomei. 再看一组： A I Xiaomei. B I am Xiaomei. 上一步 下一步：变奏 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 1288,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-07.png"
+    },
+    {
+      "step": 8,
+      "questionNumber": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "1 剧场",
+          "cls": "lesson-watch-step",
+          "disabled": false,
+          "accName": "1 剧场",
+          "w": 80,
+          "h": 34
+        },
+        {
+          "text": "2 搭装与对错",
+          "cls": "lesson-watch-step",
+          "disabled": false,
+          "accName": "2 搭装与对错",
+          "w": 118,
+          "h": 34
+        },
+        {
+          "text": "3 变奏",
+          "cls": "lesson-watch-step on",
+          "disabled": false,
+          "accName": "3 变奏",
+          "w": 80,
+          "h": 34
+        },
+        {
+          "text": "连播例句",
+          "cls": "lesson-autoplay-toggle",
+          "disabled": false,
+          "accName": "连播：自动依次读下面的例句",
+          "w": 68,
+          "h": 20
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "肯定",
+          "cls": "lesson-variant-tab on",
+          "disabled": false,
+          "accName": "肯定",
+          "w": 57,
+          "h": 27
+        },
+        {
+          "text": "否定",
+          "cls": "lesson-variant-tab",
+          "disabled": false,
+          "accName": "否定",
+          "w": 57,
+          "h": 27
+        },
+        {
+          "text": "疑问",
+          "cls": "lesson-variant-tab",
+          "disabled": false,
+          "accName": "疑问",
+          "w": 57,
+          "h": 27
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "想知道为什么？为什么 am 只跟 I？is 和 are 呢？收起",
+          "cls": "lesson-deepdive-head",
+          "disabled": false,
+          "accName": "想知道为什么？为什么 am 只跟 I？is 和 are 呢？收起",
+          "w": 342,
+          "h": 37
+        },
+        {
+          "text": "上一步",
+          "cls": "secondary-button",
+          "disabled": false,
+          "accName": "上一步",
+          "w": 80,
+          "h": 44
+        },
+        {
+          "text": "看懂了，试一试",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "看懂了，试一试",
+          "w": 240,
+          "h": 44
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "1 剧场",
+          "cls": "lesson-watch-step",
+          "w": 80,
+          "h": 34
+        },
+        {
+          "name": "2 搭装与对错",
+          "cls": "lesson-watch-step",
+          "w": 118,
+          "h": 34
+        },
+        {
+          "name": "3 变奏",
+          "cls": "lesson-watch-step on",
+          "w": 80,
+          "h": 34
+        },
+        {
+          "name": "连播：自动依次读下面的例句",
+          "cls": "lesson-autoplay-toggle",
+          "w": 68,
+          "h": 20
+        },
+        {
+          "name": "肯定",
+          "cls": "lesson-variant-tab on",
+          "w": 57,
+          "h": 27
+        },
+        {
+          "name": "否定",
+          "cls": "lesson-variant-tab",
+          "w": 57,
+          "h": 27
+        },
+        {
+          "name": "疑问",
+          "cls": "lesson-variant-tab",
+          "w": 57,
+          "h": 27
+        },
+        {
+          "name": "想知道为什么？为什么 am 只跟 I？is 和 are 呢？",
+          "cls": "lesson-deepdive-head",
+          "w": 342,
+          "h": 37
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 1 剧场 2 搭装与对错 3 变奏 同一个说法，还能讲这些连播例句 I am a student. 我是一名学生。 Are you a teacher? 你是一名老师吗？ I am not hungry. 我不饿。 I am happy. 我很开心。 I am ready. 我准备好了。 I am free on Sunday. 我周日有空。 换三种口气说 肯定 否定 疑问 I am happy. 我很开心。 换一个生活场景 宿舍里，室友问你周末干嘛 I am free on Sunday. 我周日有空。 回家后，妈妈问你今天开心吗 I am happy today. 我今天很开心。 球场上，朋友喊你来玩 I am ready! 我准备好了！ 想知道为什么？ 为什么 am 只跟 I？is 和 are 呢？ 收起 1 英语的 be 动词有三个搭档，各管一摊：I 专用 am；他、她、它和一个东西用 is；你、我们、他们和两个以上的东西用 are。 2 下一课你会见到 is 和 are。现在只要记住：说「我」的时候，am 永远在场。这张搭档总表在第 2 课的深挖卡里会完整给出。 想追问这一课？在设置里填好 AI 中转站就能问（不填也能正常上课）。 上一步 看懂了，试一试 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 1690,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-08.png"
+    },
+    {
+      "step": 9,
+      "questionNumber": 1,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "am",
+          "cls": "lesson-option",
+          "disabled": false,
+          "accName": "am",
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "is",
+          "cls": "lesson-option",
+          "disabled": false,
+          "accName": "is",
+          "w": 65,
+          "h": 52
+        },
+        {
+          "text": "are",
+          "cls": "lesson-option",
+          "disabled": false,
+          "accName": "are",
+          "w": 77,
+          "h": 52
+        },
+        {
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 第 1 / 5 题 几乎不会错，放心点 你想说：我很开心。 I＿＿happy. am is are 回去再看一遍讲解 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 667,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-09.png"
+    },
+    {
+      "step": 10,
+      "questionNumber": 1,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "am",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "am",
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "is",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "is",
+          "w": 65,
+          "h": 52
+        },
+        {
+          "text": "are",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "are",
+          "w": 77,
+          "h": 52
+        },
+        {
+          "text": "下一题",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "下一题",
+          "w": 266,
+          "h": 44
+        },
+        {
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 第 1 / 5 题 几乎不会错，放心点 你想说：我很开心。 Iamhappy. am is are 句首那个「谁」是 I 的时候，搭档永远是 am。 下一题 回去再看一遍讲解 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 803,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-10.png"
+    },
+    {
+      "step": 11,
+      "questionNumber": 2,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "student.",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "student.",
+          "w": 90,
+          "h": 38
+        },
+        {
+          "text": "I",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "I",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "a",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "a",
+          "w": 42,
+          "h": 38
+        },
+        {
+          "text": "am",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "am",
+          "w": 55,
+          "h": 38
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "移除最后一个词",
+          "w": 35,
+          "h": 44
+        },
+        {
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [
+        {
+          "text": "student.",
+          "disabled": false,
+          "w": 90,
+          "h": 38
+        },
+        {
+          "text": "I",
+          "disabled": false,
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "a",
+          "disabled": false,
+          "w": 42,
+          "h": 38
+        },
+        {
+          "text": "am",
+          "disabled": false,
+          "w": 55,
+          "h": 38
+        }
+      ],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "student.",
+          "cls": "lesson-chip",
+          "w": 90,
+          "h": 38
+        },
+        {
+          "name": "I",
+          "cls": "lesson-chip",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "name": "a",
+          "cls": "lesson-chip",
+          "w": 42,
+          "h": 38
+        },
+        {
+          "name": "am",
+          "cls": "lesson-chip",
+          "w": 55,
+          "h": 38
+        },
+        {
+          "name": "移除最后一个词",
+          "cls": "icon-button",
+          "w": 35,
+          "h": 44
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 第 2 / 5 题 几乎不会错，放心点 你想说：我是一名学生。 点下面的词块，或直接把词块拖进来 student. I a am 0 / 4 块 · 点词块选上、再点取消；拖动或按 ← → 调整位置 回去再看一遍讲解 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 758,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-11.png"
+    },
+    {
+      "step": 12,
+      "questionNumber": 3,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "am",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "am",
+          "w": 55,
+          "h": 38
+        },
+        {
+          "text": "I",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "I",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "Xiaoming.",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "Xiaoming.",
+          "w": 102,
+          "h": 38
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "移除最后一个词",
+          "w": 35,
+          "h": 44
+        },
+        {
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [
+        {
+          "text": "am",
+          "disabled": false,
+          "w": 55,
+          "h": 38
+        },
+        {
+          "text": "I",
+          "disabled": false,
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "Xiaoming.",
+          "disabled": false,
+          "w": 102,
+          "h": 38
+        }
+      ],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "am",
+          "cls": "lesson-chip",
+          "w": 55,
+          "h": 38
+        },
+        {
+          "name": "I",
+          "cls": "lesson-chip",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "name": "Xiaoming.",
+          "cls": "lesson-chip",
+          "w": 102,
+          "h": 38
+        },
+        {
+          "name": "移除最后一个词",
+          "cls": "icon-button",
+          "w": 35,
+          "h": 44
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 第 3 / 5 题 几乎不会错，放心点 你想说：我是小明。 点下面的词块，或直接把词块拖进来 am I Xiaoming. 0 / 3 块 · 点词块选上、再点取消；拖动或按 ← → 调整位置 回去再看一遍讲解 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 758,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-12.png"
+    },
+    {
+      "step": 13,
+      "questionNumber": 4,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "I",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "I",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "is",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "is",
+          "w": 44,
+          "h": 38
+        },
+        {
+          "text": "Xiaomei.",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "Xiaomei.",
+          "w": 93,
+          "h": 38
+        },
+        {
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [
+        {
+          "text": "I",
+          "disabled": false,
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "is",
+          "disabled": false,
+          "w": 44,
+          "h": 38
+        },
+        {
+          "text": "Xiaomei.",
+          "disabled": false,
+          "w": 93,
+          "h": 38
+        }
+      ],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "I",
+          "cls": "lesson-chip",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "name": "is",
+          "cls": "lesson-chip",
+          "w": 44,
+          "h": 38
+        },
+        {
+          "name": "Xiaomei.",
+          "cls": "lesson-chip",
+          "w": 93,
+          "h": 38
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 第 4 / 5 题 找出藏起来的小问题，随便点 有人是这样说的，你帮他看看：哪个词块不太对？ I is Xiaomei. 回去再看一遍讲解 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 667,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-13.png"
+    },
+    {
+      "step": 14,
+      "questionNumber": 5,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "am",
+          "cls": "lesson-option",
+          "disabled": false,
+          "accName": "am",
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "is",
+          "cls": "lesson-option",
+          "disabled": false,
+          "accName": "is",
+          "w": 65,
+          "h": 52
+        },
+        {
+          "text": "are",
+          "cls": "lesson-option",
+          "disabled": false,
+          "accName": "are",
+          "w": 77,
+          "h": 52
+        },
+        {
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 第 5 / 5 题 几乎不会错，放心点 句子变身：「I am happy.」把「开心」换成「累（tired）」，am 要怎么变？ I am happy. → 把 happy 换成 tired：＿＿ am is are 回去再看一遍讲解 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 697,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-14.png"
+    },
+    {
+      "step": 15,
+      "questionNumber": 5,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "am",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "am",
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "is",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "is",
+          "w": 65,
+          "h": 52
+        },
+        {
+          "text": "are",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "are",
+          "w": 77,
+          "h": 52
+        },
+        {
+          "text": "下面自己来",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "下面自己来",
+          "w": 266,
+          "h": 44
+        },
+        {
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 第 5 / 5 题 几乎不会错，放心点 句子变身：「I am happy.」把「开心」换成「累（tired）」，am 要怎么变？ I am happy. → 把 happy 换成 tired：am am is are 换后面的说明不用怕：句首那个「谁」还是 I，搭档永远是 am——I am tired。 下面自己来 回去再看一遍讲解 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 853,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-15.png"
+    },
+    {
+      "step": 16,
+      "questionNumber": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "提交",
+          "cls": "primary-button",
+          "disabled": true,
+          "accName": "提交",
+          "w": 64,
+          "h": 44
+        },
+        {
+          "text": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一眼讲解",
+          "w": 96,
+          "h": 14
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [
+        {
+          "tag": "textarea",
+          "ph": "Type in English…（回车提交）",
+          "val": "",
+          "accName": "英文输入区",
+          "w": 264,
+          "h": 92
+        }
+      ],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 凭记忆写出来 没有选项，全靠自己——写错了也没关系 开学第一天，老师让每个人做自我介绍。凭记忆，写出小美的那句英文。 这句要说的是：我是小美。 提交 回去再看一眼讲解 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 826,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-16.png"
+    },
+    {
+      "step": 17,
+      "questionNumber": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "进入练习",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "进入练习",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一眼讲解",
+          "w": 96,
+          "h": 14
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 凭记忆写出来 没有选项，全靠自己——写错了也没关系 开学第一天，老师让每个人做自我介绍。凭记忆，写出小美的那句英文。 这句要说的是：我是小美。 凭记忆写出来了——这就是真的记住！ I am Xiaomei. I 和 am 是固定搭档，说「我是……」它们一起出场。 进入练习 回去再看一眼讲解 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 803,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-17.png"
+    },
+    {
+      "step": 18,
+      "questionNumber": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "继续刚才",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "继续刚才",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "重新开始",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "重新开始",
+          "w": 48,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 继续刚才的进度 上次学到这 上次停在跟着练这一段——继续，还是从头来？ 继续刚才 重新开始",
+      "scrollH": 667,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-18.png"
+    },
+    {
+      "step": 19,
+      "questionNumber": 5,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "am",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "am",
+          "w": 76,
+          "h": 52
+        },
+        {
+          "text": "is",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "is",
+          "w": 65,
+          "h": 52
+        },
+        {
+          "text": "are",
+          "cls": "lesson-option",
+          "disabled": true,
+          "accName": "are",
+          "w": 77,
+          "h": 52
+        },
+        {
+          "text": "下面自己来",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "下面自己来",
+          "w": 266,
+          "h": 44
+        },
+        {
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 第 5 / 5 题 几乎不会错，放心点 句子变身：「I am happy.」把「开心」换成「累（tired）」，am 要怎么变？ I am happy. → 把 happy 换成 tired：am am is are 换后面的说明不用怕：句首那个「谁」还是 I，搭档永远是 am——I am tired。 下面自己来 回去再看一遍讲解",
+      "scrollH": 667,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-19.png"
+    },
+    {
+      "step": 20,
+      "questionNumber": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "提交",
+          "cls": "primary-button",
+          "disabled": true,
+          "accName": "提交",
+          "w": 64,
+          "h": 44
+        },
+        {
+          "text": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一眼讲解",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "inputs": [
+        {
+          "tag": "textarea",
+          "ph": "Type in English…（回车提交）",
+          "val": "",
+          "accName": "英文输入区",
+          "w": 264,
+          "h": 92
+        }
+      ],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 凭记忆写出来 没有选项，全靠自己——写错了也没关系 开学第一天，老师让每个人做自我介绍。凭记忆，写出小美的那句英文。 这句要说的是：我是小美。 提交 回去再看一眼讲解",
+      "scrollH": 667,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-20.png"
+    },
+    {
+      "step": 21,
+      "questionNumber": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "进入练习",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "进入练习",
+          "w": 96,
+          "h": 44
+        },
+        {
+          "text": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一眼讲解",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 凭记忆写出来 没有选项，全靠自己——写错了也没关系 开学第一天，老师让每个人做自我介绍。凭记忆，写出小美的那句英文。 这句要说的是：我是小美。 凭记忆写出来了——这就是真的记住！ I am Xiaomei. I 和 am 是固定搭档，说「我是……」它们一起出场。 进入练习 回去再看一眼讲解",
+      "scrollH": 667,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-21.png"
+    },
+    {
+      "step": 22,
+      "questionNumber": 1,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "I",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "I",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "tired.",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "tired.",
+          "w": 69,
+          "h": 38
+        },
+        {
+          "text": "am",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "am",
+          "w": 55,
+          "h": 38
+        },
+        {
+          "text": "is",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "is",
+          "w": 44,
+          "h": 38
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "移除最后一个词",
+          "w": 35,
+          "h": 44
+        },
+        {
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "inputs": [],
+      "chips": [
+        {
+          "text": "I",
+          "disabled": false,
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "tired.",
+          "disabled": false,
+          "w": 69,
+          "h": 38
+        },
+        {
+          "text": "am",
+          "disabled": false,
+          "w": 55,
+          "h": 38
+        },
+        {
+          "text": "is",
+          "disabled": false,
+          "w": 44,
+          "h": 38
+        }
+      ],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "I",
+          "cls": "lesson-chip",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "name": "tired.",
+          "cls": "lesson-chip",
+          "w": 69,
+          "h": 38
+        },
+        {
+          "name": "am",
+          "cls": "lesson-chip",
+          "w": 55,
+          "h": 38
+        },
+        {
+          "name": "is",
+          "cls": "lesson-chip",
+          "w": 44,
+          "h": 38
+        },
+        {
+          "name": "移除最后一个词",
+          "cls": "icon-button",
+          "w": 35,
+          "h": 44
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 第 1 / 4 题 词块库混进了干扰项——挑 3 个词拼出你要说的句子 你想说：我很累。 点下面的词块，或直接把词块拖进来 I tired. am is 0 / 3 块 · 点词块选上、再点取消；拖动或按 ← → 调整位置 回去再看一遍讲解",
+      "scrollH": 667,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-22.png"
+    },
+    {
+      "step": 23,
+      "questionNumber": 2,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "I",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "I",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "am",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "am",
+          "w": 55,
+          "h": 38
+        },
+        {
+          "text": "teacher.",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "teacher.",
+          "w": 88,
+          "h": 38
+        },
+        {
+          "text": "a",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "a",
+          "w": 42,
+          "h": 38
+        },
+        {
+          "text": "is",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "is",
+          "w": 44,
+          "h": 38
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "移除最后一个词",
+          "w": 35,
+          "h": 44
+        },
+        {
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "inputs": [],
+      "chips": [
+        {
+          "text": "I",
+          "disabled": false,
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "am",
+          "disabled": false,
+          "w": 55,
+          "h": 38
+        },
+        {
+          "text": "teacher.",
+          "disabled": false,
+          "w": 88,
+          "h": 38
+        },
+        {
+          "text": "a",
+          "disabled": false,
+          "w": 42,
+          "h": 38
+        },
+        {
+          "text": "is",
+          "disabled": false,
+          "w": 44,
+          "h": 38
+        }
+      ],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "I",
+          "cls": "lesson-chip",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "name": "am",
+          "cls": "lesson-chip",
+          "w": 55,
+          "h": 38
+        },
+        {
+          "name": "teacher.",
+          "cls": "lesson-chip",
+          "w": 88,
+          "h": 38
+        },
+        {
+          "name": "a",
+          "cls": "lesson-chip",
+          "w": 42,
+          "h": 38
+        },
+        {
+          "name": "is",
+          "cls": "lesson-chip",
+          "w": 44,
+          "h": 38
+        },
+        {
+          "name": "移除最后一个词",
+          "cls": "icon-button",
+          "w": 35,
+          "h": 44
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 第 2 / 4 题 词块库混进了干扰项——挑 4 个词拼出你要说的句子 你想说：我是一名老师。 点下面的词块，或直接把词块拖进来 I am teacher. a is 0 / 4 块 · 点词块选上、再点取消；拖动或按 ← → 调整位置 回去再看一遍讲解",
+      "scrollH": 667,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-23.png"
+    },
+    {
+      "step": 24,
+      "questionNumber": 3,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "I",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "I",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "are",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "are",
+          "w": 56,
+          "h": 38
+        },
+        {
+          "text": "am",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "am",
+          "w": 55,
+          "h": 38
+        },
+        {
+          "text": "hungry.",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "hungry.",
+          "w": 85,
+          "h": 38
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "移除最后一个词",
+          "w": 35,
+          "h": 44
+        },
+        {
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "inputs": [],
+      "chips": [
+        {
+          "text": "I",
+          "disabled": false,
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "are",
+          "disabled": false,
+          "w": 56,
+          "h": 38
+        },
+        {
+          "text": "am",
+          "disabled": false,
+          "w": 55,
+          "h": 38
+        },
+        {
+          "text": "hungry.",
+          "disabled": false,
+          "w": 85,
+          "h": 38
+        }
+      ],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "I",
+          "cls": "lesson-chip",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "name": "are",
+          "cls": "lesson-chip",
+          "w": 56,
+          "h": 38
+        },
+        {
+          "name": "am",
+          "cls": "lesson-chip",
+          "w": 55,
+          "h": 38
+        },
+        {
+          "name": "hungry.",
+          "cls": "lesson-chip",
+          "w": 85,
+          "h": 38
+        },
+        {
+          "name": "移除最后一个词",
+          "cls": "icon-button",
+          "w": 35,
+          "h": 44
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 第 3 / 4 题 词块库混进了干扰项——挑 3 个词拼出你要说的句子 食堂阿姨问你饿不饿，你想说：我很饿。 点下面的词块，或直接把词块拖进来 I are am hungry. 0 / 3 块 · 点词块选上、再点取消；拖动或按 ← → 调整位置 回去再看一遍讲解",
+      "scrollH": 667,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-24.png"
+    },
+    {
+      "step": 25,
+      "questionNumber": 4,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "I",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "I",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "is",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "is",
+          "w": 44,
+          "h": 38
+        },
+        {
+          "text": "tired.",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "tired.",
+          "w": 69,
+          "h": 38
+        },
+        {
+          "text": "am",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "am",
+          "w": 55,
+          "h": 38
+        },
+        {
+          "text": "not",
+          "cls": "lesson-chip",
+          "disabled": false,
+          "accName": "not",
+          "w": 57,
+          "h": 38
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "移除最后一个词",
+          "w": 35,
+          "h": 44
+        },
+        {
+          "text": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一遍讲解",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "inputs": [],
+      "chips": [
+        {
+          "text": "I",
+          "disabled": false,
+          "w": 38,
+          "h": 38
+        },
+        {
+          "text": "is",
+          "disabled": false,
+          "w": 44,
+          "h": 38
+        },
+        {
+          "text": "tired.",
+          "disabled": false,
+          "w": 69,
+          "h": 38
+        },
+        {
+          "text": "am",
+          "disabled": false,
+          "w": 55,
+          "h": 38
+        },
+        {
+          "text": "not",
+          "disabled": false,
+          "w": 57,
+          "h": 38
+        }
+      ],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "I",
+          "cls": "lesson-chip",
+          "w": 38,
+          "h": 38
+        },
+        {
+          "name": "is",
+          "cls": "lesson-chip",
+          "w": 44,
+          "h": 38
+        },
+        {
+          "name": "tired.",
+          "cls": "lesson-chip",
+          "w": 69,
+          "h": 38
+        },
+        {
+          "name": "am",
+          "cls": "lesson-chip",
+          "w": 55,
+          "h": 38
+        },
+        {
+          "name": "not",
+          "cls": "lesson-chip",
+          "w": 57,
+          "h": 38
+        },
+        {
+          "name": "移除最后一个词",
+          "cls": "icon-button",
+          "w": 35,
+          "h": 44
+        },
+        {
+          "name": "回去再看一遍讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 第 4 / 4 题 词块库混进了干扰项——挑 4 个词拼出你要说的句子 室友问你累不累，你想说：我不累。 点下面的词块，或直接把词块拖进来 I is tired. am not 0 / 4 块 · 点词块选上、再点取消；拖动或按 ← → 调整位置 回去再看一遍讲解",
+      "scrollH": 667,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-25.png"
+    },
+    {
+      "step": 26,
+      "questionNumber": null,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "AI am Xiaomei.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "accName": "AI am Xiaomei.",
+          "w": 256,
+          "h": 56
+        },
+        {
+          "text": "BI are Xiaomei.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "accName": "BI are Xiaomei.",
+          "w": 256,
+          "h": 56
+        },
+        {
+          "text": "AI am happy today.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "accName": "AI am happy today.",
+          "w": 256,
+          "h": 56
+        },
+        {
+          "text": "BI am not happy today.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "accName": "BI am not happy today.",
+          "w": 256,
+          "h": 56
+        },
+        {
+          "text": "最后一步：说出来",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "最后一步：说出来",
+          "w": 160,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 练完一轮，再帮他看看这两句 挑出对的那句——错的能说出哪不对就更稳了 两句话只有一句是对的——点出你认为对的那句： A I am Xiaomei. B I are Xiaomei. 再看一组： A I am happy today. B I am not happy today. 最后一步：说出来",
+      "scrollH": 804,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-26.png"
+    },
+    {
+      "step": 27,
+      "questionNumber": 1,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "提交",
+          "cls": "primary-button",
+          "disabled": true,
+          "accName": "提交",
+          "w": 64,
+          "h": 44
+        },
+        {
+          "text": "想不起来？给我一点提示",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "想不起来？给我一点提示",
+          "w": 132,
+          "h": 14
+        },
+        {
+          "text": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一眼讲解",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "inputs": [
+        {
+          "tag": "textarea",
+          "ph": "Type in English…（回车提交）",
+          "val": "",
+          "accName": "英文输入区",
+          "w": 264,
+          "h": 92
+        }
+      ],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "想不起来？给我一点提示",
+          "cls": "ghost-link",
+          "w": 132,
+          "h": 14
+        },
+        {
+          "name": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 最后一步 · 说出来（1 / 2） 给你句型框，把句子补完整 这一幕里轮到小美说话。凭记忆，按这一课的句型写出她要说的那句话——不是同学问她的那一句。 这句要说的是：你是新来的吗？ 句型框：Are you ___ ___? 提交 想不起来？给我一点提示 回去再看一眼讲解",
+      "scrollH": 711,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-27.png"
+    },
+    {
+      "step": 28,
+      "questionNumber": 1,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放这句，跟着读",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "下一句（这次没有提示）",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "下一句（这次没有提示）",
+          "w": 208,
+          "h": 44
+        },
+        {
+          "text": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一眼讲解",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 最后一步 · 说出来（1 / 2） 给你句型框，把句子补完整 这一幕里轮到小美说话。凭记忆，按这一课的句型写出她要说的那句话——不是同学问她的那一句。 这句要说的是：你是新来的吗？ 句型框：Are you ___ ___? 完全是自己写出来的！ Are you new here? 问别人时把 Are 搬到句首。你回答时还是用 I am。 敢开口试一试？ 点一下听这句，跟着说出来。不算分，随时跳过。 下一句（这次没有提示） 回去再看一眼讲解",
+      "scrollH": 780,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-28.png"
+    },
+    {
+      "step": 29,
+      "questionNumber": 2,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "提交",
+          "cls": "primary-button",
+          "disabled": true,
+          "accName": "提交",
+          "w": 64,
+          "h": 44
+        },
+        {
+          "text": "想不起来？给我一点提示",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "想不起来？给我一点提示",
+          "w": 132,
+          "h": 14
+        },
+        {
+          "text": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一眼讲解",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "inputs": [
+        {
+          "tag": "textarea",
+          "ph": "Type in English…（回车提交）",
+          "val": "",
+          "accName": "英文输入区",
+          "w": 264,
+          "h": 92
+        }
+      ],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "想不起来？给我一点提示",
+          "cls": "ghost-link",
+          "w": 132,
+          "h": 14
+        },
+        {
+          "name": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 最后一步 · 说出来（2 / 2） 没有中文提示，全靠自己 这一幕里轮到小美说话。凭记忆，按这一课的句型写出她要说的那句话——不是同学问她的那一句。 提交 想不起来？给我一点提示 回去再看一眼讲解",
+      "scrollH": 667,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-29.png"
+    },
+    {
+      "step": 30,
+      "questionNumber": 2,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放这句，跟着读",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "完成这一课",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "完成这一课",
+          "w": 112,
+          "h": 44
+        },
+        {
+          "text": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "回去再看一眼讲解",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "回去再看一眼讲解",
+          "cls": "ghost-link",
+          "w": 96,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 最后一步 · 说出来（2 / 2） 没有中文提示，全靠自己 这一幕里轮到小美说话。凭记忆，按这一课的句型写出她要说的那句话——不是同学问她的那一句。 完全是自己写出来的！ I am Xiaomei. I 和 am 是固定搭档，说「我是……」它们一起出场。 敢开口试一试？ 点一下听这句，跟着说出来。不算分，随时跳过。 完成这一课 回去再看一眼讲解",
+      "scrollH": 701,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-30.png"
+    },
+    {
+      "step": 31,
+      "questionNumber": 1,
+      "headings": [
+        {
+          "level": "H1",
+          "text": "小美的一天 ① · 我是谁"
+        },
+        {
+          "level": "H2",
+          "text": "第 1 课完成"
+        },
+        {
+          "level": "H3",
+          "text": "这一课掌握了什么"
+        },
+        {
+          "level": "H3",
+          "text": "你现在能说出这些新句子"
+        },
+        {
+          "level": "H3",
+          "text": "还差什么"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 44,
+          "h": 44
+        },
+        {
+          "text": "○ 再认一次",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约 2 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "○ 自己想",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 题，约 4 分钟）",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "text": "○ 换你来说",
+          "cls": "lesson-boost-tier",
+          "disabled": false,
+          "accName": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题，约 4 分钟）",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 30,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 30,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 30,
+          "h": 44
+        },
+        {
+          "text": "",
+          "cls": "icon-button",
+          "disabled": false,
+          "accName": "播放发音",
+          "w": 30,
+          "h": 44
+        },
+        {
+          "text": "练个弱点",
+          "cls": "receipt-queue-link",
+          "disabled": false,
+          "accName": "练个弱点",
+          "w": 72,
+          "h": 25
+        },
+        {
+          "text": "AAm I Xiaomei.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "accName": "AAm I Xiaomei.",
+          "w": 264,
+          "h": 56
+        },
+        {
+          "text": "BI am Xiaomei.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "accName": "BI am Xiaomei.",
+          "w": 264,
+          "h": 56
+        },
+        {
+          "text": "AI am a student.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "accName": "AI am a student.",
+          "w": 264,
+          "h": 56
+        },
+        {
+          "text": "BI am student.",
+          "cls": "lesson-option lesson-contrast-choice",
+          "disabled": false,
+          "accName": "BI am student.",
+          "w": 264,
+          "h": 56
+        },
+        {
+          "text": "趁热再练 2 分钟",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "趁热再练 2 分钟",
+          "w": 170,
+          "h": 44
+        },
+        {
+          "text": "下一课：第 2 课 · 你是谁，他是谁",
+          "cls": "secondary-button",
+          "disabled": false,
+          "accName": "下一课：第 2 课 · 你是谁，他是谁",
+          "w": 275,
+          "h": 44
+        },
+        {
+          "text": "返回课程地图",
+          "cls": "ghost-link",
+          "disabled": false,
+          "accName": "返回课程地图",
+          "w": 72,
+          "h": 14
+        },
+        {
+          "text": "去破这一案找一找本课学过的语法漏洞",
+          "cls": "lesson-challenge-card",
+          "disabled": false,
+          "accName": "去破这一案找一找本课学过的语法漏洞",
+          "w": 344,
+          "h": 63
+        },
+        {
+          "text": "学下一课：第 2 课",
+          "cls": "primary-button",
+          "disabled": false,
+          "accName": "学下一课：第 2 课",
+          "w": 162,
+          "h": 44
+        },
+        {
+          "text": "再学一遍这一课",
+          "cls": "secondary-button",
+          "disabled": false,
+          "accName": "再学一遍这一课",
+          "w": 144,
+          "h": 44
+        }
+      ],
+      "inputs": [],
+      "chips": [],
+      "dots": [],
+      "smallTargets": [
+        {
+          "name": "第 1 课 趁热练 再认一次（看看还认得出来吗——4 题，约",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 自己想（给中文，自己把句子想出来——5 ",
+          "cls": "lesson-boost-tier",
+          "w": 67,
+          "h": 20
+        },
+        {
+          "name": "第 1 课 趁热练 换你来说（不给提示，自己说一遍——3 题",
+          "cls": "lesson-boost-tier",
+          "w": 79,
+          "h": 20
+        },
+        {
+          "name": "播放发音",
+          "cls": "icon-button",
+          "w": 30,
+          "h": 44
+        },
+        {
+          "name": "播放发音",
+          "cls": "icon-button",
+          "w": 30,
+          "h": 44
+        },
+        {
+          "name": "播放发音",
+          "cls": "icon-button",
+          "w": 30,
+          "h": 44
+        },
+        {
+          "name": "播放发音",
+          "cls": "icon-button",
+          "w": 30,
+          "h": 44
+        },
+        {
+          "name": "练个弱点",
+          "cls": "receipt-queue-link",
+          "w": 72,
+          "h": 25
+        },
+        {
+          "name": "返回课程地图",
+          "cls": "ghost-link",
+          "w": 72,
+          "h": 14
+        }
+      ],
+      "unnamedCount": 0,
+      "unnamed": [],
+      "body": "小美的一天 ① · 我是谁 be 动词 · I am · 已完成，可再学一遍 趁热练 ○ 再认一次 ○ 自己想 ○ 换你来说 本季第 1 / 12 课 第 1 课完成 一课一课积累，你已经能用英语介绍自己、讲正在做的事、说明天的计划。 这一课掌握了什么 be 动词 · I am 一句话 I am 是一对固定搭档：说「我是……」它们一起出场。 不累 am 后面加 not I am not tired. 问对方 Are 搬到句首 Are you new here? I is ❌ → I am ✅ I 的搭档不能换人 你现在能说出这些新句子 I am Xiaomei. 肯定I am happy. 否定I am not tired. 疑问Are you new here? 还差什么 is 不是 I 的搭档。英语里谁和谁是搭档是固定的：I 只跟 am 一起出场，就像搭档不能换人。 前测里拿不准的 1 处，这一课已经讲过、也练过了。 上面这些句子已排进复习队列，明天会自动来见你 练个弱点 去破案之前，最后再帮他看两句 两句话只有一句是对的——点出你认为对的那句： A Am I Xiaomei. B I am Xiaomei. 再看一组： A I am a student. B I am student. 趁热再练 2 分钟 下一课：第 2 课 · 你是谁，他是谁 返回课程地图 这一课学会了，正好用它去帮侦探找到对应的语法漏洞。 挑战不计时、不扣分，随时可以回来。 去破这一案 找一找本课学过的语法漏洞 学下一课：第 2 课 再学一遍这一课",
+      "scrollH": 2301,
+      "screenshot": "/Users/liujun/Documents/英语听写/uiux-audit-2026-09-24-grammar/screenshots-lesson/lesson-01-am-mobile-correct-31.png"
+    }
+  ]
+}

@@ -401,7 +401,7 @@ describe("PR1-8 复习页 reveal 文案「正确的说法是」命中情绪红�
   beforeEach(() => resetStorage());
 
   it("看答案后页面出现「正确的说法是」", async () => {
-    seedAppData(
+    const seeded = seedAppData(
       cardsToData([
         makeSentenceCard({
           id: "card-z",
@@ -410,9 +410,18 @@ describe("PR1-8 复习页 reveal 文案「正确的说法是」命中情绪红�
         })
       ])
     );
+    /**
+     * 2026-09-24：干扰项改为「同长度课程词汇池」后，cloze 选项不再取自句内词——
+     * 原先硬编码点的 `i`（句内词）已不存在。改为与同文件其它用例一致的写法：
+     * 从任务里取**第一个非答案选项**再点。
+     */
+    const task = buildGrammarReviewTask(buildGrammarReviewSession(seeded)[0], seeded.sentenceDetails);
+    expect(task.mode).toBe("cloze");
+    const wrongOption = task.options.find((option) => option !== task.answer);
+    expect(wrongOption, "cloze 必须有干扰项可点").toBeTruthy();
     const page = mountPage(<GrammarReviewPage />, "/grammar/review", "/grammar/review");
     // 先点错一个选项（cloze 首题未答时不显示「看答案」）
-    clickElement(buttonMatching(page, /^i$/)!);
+    clickElement(buttonMatching(page, new RegExp(`^${wrongOption}$`))!);
     clickText(page, "想不起来了，看答案");
     await flushAsync();
     expect(page.text()).toContain("正确的说法是：");
@@ -424,79 +433,81 @@ describe("PR1-8 复习页 reveal 文案「正确的说法是」命中情绪红�
 // 五、答案与题面语义一致
 // ══════════════════════════════════════════════════════════════════
 
-describe("PR1-9 趁热练 fix 题把「两句都对」的句子当成「这句写错了」", () => {
+/**
+ * 修复前：tier-3「自己改错」通道漏了 bothRight 过滤（tier-1 对比通道已于 2026-09-21 修，见 PR1-10）。
+ * `contrast.bothRight === true` 的条目里 `wrong` 是**另一句正确的话**，却被套上
+ * promptZh「这句写错了——请你把它改对，整句写出来。」：
+ *   - L76 题面 `How much milk is there?` → 答案 `I feel much better.`：两句毫无关系，**不可作答**（照题面写 17 分）
+ *   - L87 `It's cold today.` → `It is cold today.`、L169 `I'd like a cup of tea.` → `I would like…`：两句都对，判分放行
+ *   - L114 `There are few apples.` → `There are a few apples.`：两句都成立但意思不同，照题面写 80 分、低于 90 分线
+ * 现在该通道跳过 bothRight；双正解素材仍由专门的 `bothright` 通道承载。
+ */
+describe("PR1-9 趁热练 fix 题不再把「两句都对」的句子当成「这句写错了」（2026-09-24 修）", () => {
   beforeEach(() => resetStorage());
 
-  it("lesson-87：题面说写错了、讲解说两句都对，答案是被改动的那句", async () => {
-    const items = buildBoostItems("lesson-87-its-cold", 3, {});
-    const fix = items.find((item) => item.kind === "fix")!;
-    expect(fix.shapedFrom).toBe("It's cold today.");
-    expect(fix.answer).toBe("It is cold today.");
-    expect(fix.shapedLabel).toBe("这句有问题");
-    expect(fix.promptZh).toContain("这句写错了");
-    // 讲解却明说两句都对
-    expect(fix.explainZh).toContain("两句都对");
-    // 题面要求「改对」，但源数据说原句本身没问题 —— 学生照原样写反而判通过
-    const { judgeBoostItem } = await import("../../services/grammarBoostService");
-    expect(
-      judgeBoostItem(fix, { text: fix.shapedFrom ?? "" }).passed,
-      "照题面给出的原句作答被判通过（说明该句本身没有可改之处）"
-    ).toBe(true);
-
+  it("lesson-87：fix 题不再取用 bothRight 素材，换成真正的错句", () => {
     const lesson = grammarLessons.find((entry) => entry.id === "lesson-87-its-cold")!;
-    const bothRight = (lesson.contrast ?? []).filter((entry) => entry.bothRight && entry.wrong.trim() === fix.shapedFrom);
-    expect(bothRight.length, "源数据明确标注 bothRight").toBe(1);
+    const bothRightWrong = new Set(
+      (lesson.contrast ?? []).filter((entry) => entry.bothRight).map((entry) => entry.wrong.trim())
+    );
+    expect(bothRightWrong.size, "源数据仍标注 bothRight——守卫靠过滤，不靠删数据").toBeGreaterThan(0);
+
+    const fix = buildBoostItems("lesson-87-its-cold", 3, {}).find((item) => item.kind === "fix");
+    expect(fix, "该课仍有改错题：守卫换料，不取消题型").toBeTruthy();
+    expect(bothRightWrong.has(fix!.shapedFrom ?? ""), "题面不得取自 bothRight 素材").toBe(false);
+    // 换上的应是真正有错的句子：题面与答案规范化后必须不同
+    expect(fix!.shapedFrom).not.toBe(fix!.answer);
   });
 
-  it("全库 3 处被抽中（候选池 460 条 bothRight 中，命中取决于交错取题顺序）", () => {
+  it("全库 205 课 × 16 轮：没有任何 fix 题的题面取自 bothRight 素材", () => {
     const hits: string[] = [];
     for (const lesson of grammarLessons) {
-      const bothRightWrong = new Set((lesson.contrast ?? []).filter((entry) => entry.bothRight).map((entry) => entry.wrong.trim()));
-      for (const item of buildBoostItems(lesson.id, 3, {})) {
-        if (item.kind === "fix" && item.shapedFrom && bothRightWrong.has(item.shapedFrom)) hits.push(lesson.id);
+      const bothRightWrong = new Set(
+        (lesson.contrast ?? []).filter((entry) => entry.bothRight).map((entry) => entry.wrong.trim())
+      );
+      if (bothRightWrong.size === 0) continue;
+      for (let round = 0; round < 16; round += 1) {
+        for (const item of buildBoostItems(lesson.id, 3, { round })) {
+          if (item.kind !== "fix" || !item.shapedFrom) continue;
+          if (bothRightWrong.has(item.shapedFrom)) hits.push(`${lesson.id}:r${round}:${item.shapedFrom}`);
+        }
       }
     }
-    expect(hits.length, "实际抽中的 bothRight 来源 fix 题").toBeGreaterThan(0);
-    expect(hits).toContain("lesson-87-its-cold");
+    expect([...new Set(hits)], "fix 题面取自 bothRight 素材的处数").toEqual([]);
   });
 
-  it("候选池规模：460 条 bothRight 全部可被 fix 题取用（无 bothRight 过滤）", () => {
-    let candidates = 0;
+  it("守卫不是空转：候选池里 bothRight 条目确实存在，只是取不到", () => {
+    let bothRightCandidates = 0;
     for (const lesson of grammarLessons) {
       for (const contrast of lesson.contrast ?? []) {
         if (!contrast.bothRight) continue;
         if (!contrast.wrong.trim() || !contrast.correct.trim()) continue;
         if (contrast.wrong.trim() === contrast.correct.trim()) continue;
-        candidates += 1;
+        bothRightCandidates += 1;
       }
     }
-    expect(candidates, "候选池应远大于 0（数据增长中，不写死绝对值）").toBeGreaterThan(100);
+    // 池子仍在（数据增长中，不写死绝对值）；取用数为 0 由上一个用例保证
+    expect(bothRightCandidates, "bothRight 候选池应远大于 0").toBeGreaterThan(100);
   });
 
-  it("反向危害：有的 fix 用原句作答反而通过（判分对「两句都对」无感知）", async () => {
+  it("反向危害已消除：没有 fix 题会因「照原样作答」通过（不再有 bothRight 来源）", async () => {
     const { judgeBoostItem } = await import("../../services/grammarBoostService");
-    const results: Array<{ lessonId: string; passed: boolean; score: number | undefined; isBothRight: boolean }> = [];
+    const contradictory: string[] = [];
     for (const lesson of grammarLessons) {
-      const bothRightWrong = new Set((lesson.contrast ?? []).filter((entry) => entry.bothRight).map((entry) => entry.wrong.trim()));
+      const bothRightWrong = new Set(
+        (lesson.contrast ?? []).filter((entry) => entry.bothRight).map((entry) => entry.wrong.trim())
+      );
       for (const item of buildBoostItems(lesson.id, 3, {})) {
         if (item.kind !== "fix") continue;
-        const judged = judgeBoostItem(item, { text: item.shapedFrom ?? "" });
-        results.push({
-          lessonId: lesson.id,
-          passed: judged.passed,
-          score: judged.score,
-          isBothRight: Boolean(item.shapedFrom && bothRightWrong.has(item.shapedFrom))
-        });
+        if (!item.shapedFrom || !bothRightWrong.has(item.shapedFrom)) continue;
+        const judged = judgeBoostItem(item, { text: item.shapedFrom });
+        contradictory.push(`${lesson.id}:${item.id}:${judged.passed ? "通过" : "不通过"}`);
       }
     }
-    const contradictory = results.filter((entry) => entry.isBothRight);
-    expect(contradictory.length).toBeGreaterThan(0);
-    // 其中 2 处「照原样作答」直接判通过（90 分线把两者视为等价），1 处判不通过（17 分）
-    expect(contradictory.filter((entry) => entry.passed).length, "照原样作答被判通过的数量").toBeGreaterThan(0);
-    // 其余处照原样作答被判不通过（同一句式两种判法，取决于 90 分线）
-    expect(contradictory.filter((entry) => !entry.passed).length + contradictory.filter((entry) => entry.passed).length).toBe(contradictory.length);
+    expect(contradictory).toEqual([]);
   });
 });
+
 
 describe("PR1-10 趁热练档 1 对比题已排除 bothRight 句（2026-09-21 修）", () => {
   beforeEach(() => resetStorage());

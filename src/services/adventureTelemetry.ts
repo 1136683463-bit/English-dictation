@@ -430,10 +430,13 @@ export const clearAdventureTelemetry = (): void => {
 
 /** 遥测存量统计：为上限策略提供依据（复用 grammarTelemetry 的 stats 模式）。 */
 export interface AdventureTelemetryStats {
+  /** 主键存量（不含归档）。 */
   activeEvents: number;
   maxEvents: number;
   archivedEvents: number;
   archiveMax: number;
+  /** 主键 + 归档合计（分析可见总量）。 */
+  totalEvents: number;
   /** 当前主键是否已接近上限（≥80%），提示先导出归档。 */
   nearCapacity: boolean;
 }
@@ -446,6 +449,7 @@ export const getAdventureTelemetryStats = (): AdventureTelemetryStats => {
     maxEvents: MAX_EVENTS,
     archivedEvents,
     archiveMax: ARCHIVE_MAX_EVENTS,
+    totalEvents: activeEvents + archivedEvents,
     nearCapacity: activeEvents >= MAX_EVENTS * 0.8
   };
 };

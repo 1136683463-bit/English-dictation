@@ -62,7 +62,7 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m7",
     afterLesson: 46,
     title: "我能说清喜欢做的事和想做的事",
-    zh: "名词形式（like/enjoy + reading）+ 小垫板（want to travel）——动词后面跟什么，你已经有手感了。",
+    zh: "名词形式（like/enjoy + reading）+ to（want to travel）——动词后面跟什么，你已经有手感了。",
     samples: ["I like reading.", "I enjoy reading.", "I want to travel."]
   },
   {
@@ -76,7 +76,7 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m9",
     afterLesson: 54,
     title: "我能让事当主角",
-    zh: "幕后句（谁做的不重要）+ by（想说谁就垫）+ has been（已经做过了）——谁重要谁上台，你的句子能挑焦点了。",
+    zh: "被动句（谁做的不重要）+ by（想说谁就垫）+ has been（已经做过了）——谁重要谁站前面，你的句子能挑焦点了。",
     samples: ["My cup was broken.", "The cake was eaten by my brother.", "The window has been cleaned."]
   },
   {
@@ -146,7 +146,7 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m19",
     afterLesson: 118,
     title: "我能说清身边的人和东西",
-    zh: "谁的（人后面加撇号 s）+ 我的（句尾用长版）+ 我的感受（感到版）+ 还有几个（a few）+ 有（have got／has got）——身边的事，一句话说清一件。",
+    zh: "谁的（人后面加撇号 s）+ 我的（句尾用名词性物主代词）+ 我的感受（-ed 形容词）+ 还有几个（a few）+ 有（have got／has got）——身边的事，一句话说清一件。",
     samples: ["Grandma's birthday is in May.", "This book is mine.", "I am bored."]
   },
   {
@@ -160,7 +160,7 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m21",
     afterLesson: 127,
     title: "我能说出看到的东西是什么样",
-    zh: "看着怎么样（It looks nice）+ 换人换形（You look tired／She looks tired）+ 同一个 look 两张脸（喊人看 vs 说样子）——看到什么就说什么。",
+    zh: "看着怎么样（It looks nice）+ 换人换形（You look tired／She looks tired）+ 同一个 look 两种用法（喊人看 vs 说样子）——看到什么就说什么。",
     samples: ["It looks nice.", "You look tired.", "The sky looks dark."]
   },
   {
@@ -195,14 +195,14 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m26",
     afterLesson: 147,
     title: "我能说「我也不」",
-    zh: "我也一样（too 站句尾）+ 我也不（有「不」换 either）+ 都站句尾——同一个「也」，中文一个字，英语两张脸。",
+    zh: "我也一样（too 站句尾）+ 我也不（有「不」换 either）+ 都站句尾——同一个「也」，中文一个字，英语两种用法。",
     samples: ["I like tea too.", "I don't like coffee either.", "Drawing is fun too."]
   },
   {
     id: "can-do-m27",
     afterLesson: 150,
     title: "我能说「两个都」和「两个都不」",
-    zh: "两个都（both 站最前面）+ 两个都不（有「不」换 neither）+ 后面那个东西带上 s、搭档用 are——同一个「两个」，两张脸。",
+    zh: "两个都（both 站最前面）+ 两个都不（有「不」换 neither）+ 后面那个东西带上 s、搭档用 are——同一个「两个」，两种用法。",
     samples: ["Both books are good.", "Neither book is good.", "Are both books good?"]
   },
   {
@@ -223,7 +223,7 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m30",
     afterLesson: 156,
     title: "我能说「多久以前」和「持续多久」",
-    zh: "多久以前（数字＋时间词＋ago 站句尾，动词穿昨天版）+ 持续多久（for 接在那块时间前面）+ 数着说的词带上 s——往回数、数时长，两条路。",
+    zh: "多久以前（数字＋时间词＋ago 站句尾，动词穿过去式）+ 持续多久（for 接在那块时间前面）+ 数着说的词带上 s——往回数、数时长，两条路。",
     samples: ["She left three days ago.", "I waited for an hour.", "She left two hours ago."]
   },
   {
@@ -237,14 +237,14 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m32",
     afterLesson: 160,
     title: "我能说「像什么」和「好像」",
-    zh: "看起来像（look 后面请 like 出场：It looks like a boat）+ 好像（seem 后面请 to 垫一下：He seems to know you）+ to 后面那个动作穿原样。",
+    zh: "看起来像（look 后面请 like 出场：It looks like a boat）+ 好像（seem 后面请 to 垫一下：He seems to know you）+ to 后面那个动作用原形。",
     samples: ["It looks like a boat.", "He seems to know you.", "She seems to like the boat."]
   },
   {
     id: "can-do-m33",
     afterLesson: 162,
     title: "我能说「需要」和「大多数」",
-    zh: "需要（need 后面请 to 垫一下：I need to buy some milk）+ 大多数（most 后面拴 of：Most of the students like it）+ to 后面穿原样、一群人配原样动词。",
+    zh: "需要（need 后面请 to 垫一下：I need to buy some milk）+ 大多数（most 后面拴 of：Most of the students like it）+ to 后面用原形、一群人配原形动词。",
     samples: ["I need to buy some milk.", "Most of the students like it.", "I need to go home now."]
   },
   {
@@ -265,7 +265,7 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m36",
     afterLesson: 188,
     title: "我能说「昨天不得不」",
-    zh: "昨天不得不（must 只管现在，过去的事用 had to：I had to walk home yesterday）+ had to 后面穿原样——同一句「不得不」，时间不同说法不同。",
+    zh: "昨天不得不（must 只管现在，过去的事用 had to：I had to walk home yesterday）+ had to 后面用原形——同一句「不得不」，时间不同说法不同。",
     samples: ["I had to walk home yesterday.", "She had to cook dinner last night.", "I must finish my homework today."]
   },
   {
@@ -279,7 +279,7 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m38",
     afterLesson: 190,
     title: "我能说「我正在学做某事」",
-    zh: "正在学做（前面穿 -ing、后面垫 to：I am learning to swim）+ 两层拼起来（be 加 -ing 是第 13 课的，垫板 to 是第 15 课那家的）——会了和学着，差着呢。",
+    zh: "正在学做（前面穿 -ing、后面垫 to：I am learning to swim）+ 两层拼起来（be 加 -ing 是第 13 课的，to to 是第 15 课那家的）——会了和学着，差着呢。",
     samples: ["I am learning to swim.", "She is learning to draw.", "I am swimming."]
   },
   {
@@ -307,7 +307,7 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
     id: "can-do-m42",
     afterLesson: 195,
     title: "我能说「它的」",
-    zh: "它的（its 不带小撇，跟 my／her 站同一个位置，贴在东西前面：The cat is in its box）+ 分清同一个音的两张脸——带撇的 It's 是「它是」（第 87 课）／不带撇的 its 是「它的」（今天）。判断只看一件事：能不能换成 it is。",
+    zh: "它的（its 不带小撇，跟 my／her 站同一个位置，贴在东西前面：The cat is in its box）+ 分清同一个音的两种用法——带撇的 It's 是「它是」（第 87 课）／不带撇的 its 是「它的」（今天）。判断只看一件事：能不能换成 it is。",
     samples: ["The cat is in its box.", "Its box is small.", "It's cold today."]
   },
   {
@@ -320,64 +320,64 @@ export const CAN_DO_MILESTONES: CanDoMilestone[] = [
   {
     id: "can-do-m44",
     afterLesson: 197,
-    title: "我能说「有些词的昨天版要单独记」",
-    zh: "老朋友自己的昨天版（think 的昨天版是 thought、know 的是 knew——不加 -ed，要一个个记）+ 说「不」和问句里它们反而变回原样（I didn't think about it）。这一批还有 went／ate／saw／bought（第 10 课）。",
+    title: "我能说「有些词的过去式要单独记」",
+    zh: "老朋友自己的过去式（think 的过去式是 thought、know 的是 knew——不加 -ed，要一个个记）+ 说「不」和问句里它们反而变回原形（I didn't think about it）。这一批还有 went／ate／saw／bought（第 10 课）。",
     samples: ["I thought about it and knew the answer.", "She thought about it.", "I went to the park yesterday."]
   },
   {
     id: "can-do-m45",
     afterLesson: 198,
     title: "我能说「游过泳、唱过歌」",
-    zh: "换零件的昨天版（swim 变 swam、sing 变 sang——里面的 i 换成 a，不加 -ed：We swam in the water and sang together）+ 说「不」和问句里它们穿回原样（didn't swim）。",
+    zh: "不规则变化的过去式（swim 变 swam、sing 变 sang——里面的 i 换成 a，不加 -ed：We swam in the water and sang together）+ 说「不」和问句里它们变回原形（didn't swim）。",
     samples: ["We swam in the water and sang together.", "We swam in the water.", "She sang a song."]
   },
   {
     id: "can-do-m46",
     afterLesson: 199,
     title: "我能说「坐旁边、赶上了」",
-    zh: "两种换法（sit 变 sat 是换里面的元音；catch 变 caught 是整个换成 -aught、那个 gh 不发音：I sat next to her and caught the bus）+ 这批老朋友说「不」和问句里都穿回原样。",
+    zh: "两种换法（sit 变 sat 是换里面的元音；catch 变 caught 是整个换成 -aught、那个 gh 不发音：I sat next to her and caught the bus）+ 这批老朋友说「不」和问句里都变回原形。",
     samples: ["I sat next to her and caught the bus.", "I caught the bus.", "I didn't catch the bus."]
   },
   {
     id: "can-do-m47",
     afterLesson: 200,
     title: "我能说「觉得冷、一直读着」",
-    zh: "一对换法一样的昨天版（feel 变 felt、keep 变 kept——中间两个 e 只剩一个、尾巴加个 t：I felt cold, but I kept reading）+ 说「不」和问句里它们穿回原样（didn't feel）。这一批还有第 198 课的 swam／sang、第 199 课的 sat／caught。",
+    zh: "一对换法一样的过去式（feel 变 felt、keep 变 kept——中间两个 e 只剩一个、尾巴加个 t：I felt cold, but I kept reading）+ 说「不」和问句里它们变回原形（didn't feel）。这一批还有第 198 课的 swam／sang、第 199 课的 sat／caught。",
     samples: ["I felt cold in the snow, but I kept reading.", "I felt cold.", "I kept reading."]
   },
   {
     id: "can-do-m48",
     afterLesson: 201,
     title: "我能说「昨晚睡得好」",
-    zh: "sleep 的昨天版是 slept（跟第 200 课的 kept／felt 一个换法：两个 e 只剩一个、加个 t）+ 分清「睡了一整觉」和「正做着」——说「做完了这件事」用 slept，说「（那阵子）正睡着」穿 -ing（was sleeping，第 98 课）。同一个形式，地方不一样，对错不一样。",
+    zh: "sleep 的过去式是 slept（跟第 200 课的 kept／felt 一个换法：两个 e 只剩一个、加个 t）+ 分清「睡了一整觉」和「正做着」——说「做完了这件事」用 slept，说「（那阵子）正睡着」穿 -ing（was sleeping，第 98 课）。同一个形式，地方不一样，对错不一样。",
     samples: ["I slept well last night.", "He was sleeping at eight.", "I slept well last night, so I felt great this morning."]
   },
   {
     id: "can-do-m49",
     afterLesson: 202,
     title: "我能说「画了张画」",
-    zh: "draw 的昨天版是 drew（aw 换成 ew）+ 分清「前面是 will 还是说昨天的事」——will 后面穿原样（will draw，第 12 课）；说昨天做的用 drew。顺便记 put 三态同形（第 82 课），昨天版还是 put。",
+    zh: "draw 的过去式是 drew（aw 换成 ew）+ 分清「前面是 will 还是说昨天的事」——will 后面用原形（will draw，第 12 课）；说昨天做的用 drew。顺便记 put 三态同形（第 82 课），过去式还是 put。",
     samples: ["I drew a picture of the boat and put it on the wall.", "She drew a cat.", "I will draw tomorrow."]
   },
   {
     id: "can-do-m50",
     afterLesson: 203,
     title: "我能说「昨天戴了新帽子」",
-    zh: "wear 的昨天版是 wore（不加 -ed：I wore my new hat yesterday）+ 分清 wear 家的三个形状——穿原样（to／don't 后面：want to wear）／「他/她」一个多一个小 s（wears，第 39 课）／说昨天用它自己的样子（wore）。",
+    zh: "wear 的过去式是 wore（不加 -ed：I wore my new hat yesterday）+ 分清 wear 家的三个形状——用原形（to／don't 后面：want to wear）／「他/她」一个多一个小 s（wears，第 39 课）／说昨天用它自己的样子（wore）。",
     samples: ["I wore my new hat yesterday.", "The boy who wears glasses is my brother.", "I want to wear it again today."]
   },
   {
     id: "can-do-m51",
     afterLesson: 204,
     title: "我能说「我给了她」",
-    zh: "give 的昨天版是 gave（不加 -ed：I gave her the book）+ 第 63 课的位置规矩照样管用——先给谁、后给什么（gave her the book）；东西换成小词 it 才垫 to（give it to me）。昨天说、今天说，站位一动不动，只有动词换样子。",
+    zh: "give 的过去式是 gave（不加 -ed：I gave her the book）+ 第 63 课的位置规矩照样管用——先给谁、后给什么（gave her the book）；东西换成小词 it 才垫 to（give it to me）。昨天说、今天说，站位一动不动，只有动词换样子。",
     samples: ["I gave her the book.", "Please give me the book.", "Please give it to me."]
   },
   {
     id: "can-do-m52",
     afterLesson: 205,
     title: "我能说「到…的时候，已经…」",
-    zh: "说「到…的时候」用 By the time 开头（By the time I got home, it was dark）+ 它领的那半句用平常的版本、不请 will 出场（第 48 课的老规矩）+ 要分先后时，更早那件穿第 178 课的 had 版（the train had left）。",
+    zh: "说「到…的时候」用 By the time 开头（By the time I got home, it was dark）+ 它领的那半句用一般现在时、不请 will 出场（第 48 课的老规矩）+ 要分先后时，更早那件穿第 178 课的 had 版（the train had left）。",
     samples: ["By the time I got home, it was dark.", "By the time we got to the station, the train had left.", "By the time you wake up, I will finish it."]
   }
 ];

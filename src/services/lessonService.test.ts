@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { grammarLessons } from "../data/grammarLessons";
 import {
   addLessonCoreSentence,
   addLessonMistakeSentence,
@@ -24,8 +25,7 @@ import {
   markLessonStageDone,
   normalizeLessonSentence,
   shuffleTokenOrder,
-  summarizeLessonProgress
-} from "./lessonService";
+  summarizeLessonProgress, reviewSentenceOfGuidedStep, outputSpeakerOfTarget } from "./lessonService";
 import type { AppData, GrammarLesson, LessonGuidedStep } from "../types";
 
 const baseData = (overrides: Partial<AppData> = {}): AppData =>
@@ -224,6 +224,100 @@ describe("lessonService · 错句与核心句回流 SM-2", () => {
   });
 });
 
+describe("outputSpeakerOfTarget · 核心句在对话里是谁说的（「说出来」文案要用）", () => {
+  /**
+   * 「说出来」档 2 的题面原文案是「这一幕里轮到小美说话。凭记忆，按这一课的句型写出**她**要说的那句话
+   * ——不是同学问她的那一句」。但全库 205 课里有 11 课的核心句**不是**小美的台词，
+   * 而是对方的话——这 11 课沿用该文案正好说反（浏览器走查发现）。
+   *
+   * 例：L72 的核心句是 `How often do you run?`（同学问的「你多久跑一次」），
+   *     L32 是 `Close the door.`（对方提的要求）。
+   */
+  it("核心句是小美台词时判 me（L01：I am Xiaomei.）", () => {
+    const lesson = grammarLessons.find((entry) => entry.id === "lesson-01-am")!;
+    expect(outputSpeakerOfTarget(lesson)).toBe("me");
+  });
+
+  it("核心句是对方的话时判 other（L72：How often do you run?）", () => {
+    const lesson = grammarLessons.find((entry) => entry.id === "lesson-72-how-often")!;
+    expect(lesson.targetSentence).toBe("How often do you run?");
+    expect(outputSpeakerOfTarget(lesson), "这句是同学问的，不是小美说的").toBe("other");
+  });
+
+  it("全库：判定值合法，且「不是小美说的」那几课确实存在（回归：曾经一律按「她说」写文案）", () => {
+    const counts = { me: 0, other: 0, null: 0 };
+    const notHerLine: string[] = [];
+    for (const lesson of grammarLessons) {
+      const who = outputSpeakerOfTarget(lesson);
+      counts[String(who) as keyof typeof counts] += 1;
+      if (who !== "me") notHerLine.push(lesson.id);
+    }
+    expect(counts.me, "绝大多数课的核心句是小美的台词").toBeGreaterThan(150);
+    expect(
+      notHerLine.length,
+      `核心句不是小美台词的课（文案要换中性说法）：${notHerLine.join(", ")}`
+    ).toBeGreaterThan(0);
+    expect(counts.me + counts.other + counts.null).toBe(grammarLessons.length);
+  });
+});
+
+describe("reviewSentenceOfGuidedStep · 答错时入队的那一句（复习队列是句子级的）", () => {
+  /**
+   * 队列按句复习（SM-2 逐句），而入队侧此前直接把 guided 的 `answer` 当句子——
+   * choose / replace / spot 的 answer 是**单个词**（`am` / `is` / `have`），
+   * 于是进了队列就变成「只有一个词块、点一下就过」的空题
+   * （gq1 rebuildTooFewChunks 曾 393 处、clozeSingleOption 曾 311 处，均 P0/P1）。
+   */
+  it("choose：占位符在两段之间时，answer 夹进去（L01 形状）", () => {
+    expect(reviewSentenceOfGuidedStep({ kind: "choose", promptZh: "", before: "I", after: "happy.", answer: "am", explain: "" }))
+      .toBe("I am happy.");
+  });
+
+  it("choose：占位符写在 before 里时，answer 替换掉它（L85 形状）", () => {
+    expect(reviewSentenceOfGuidedStep({ kind: "choose", promptZh: "", before: "___ book is this?", after: "", answer: "Whose", explain: "" }))
+      .toBe("Whose book is this?");
+  });
+
+  it("choose：标点前不留空格（after 以「.」开头）", () => {
+    expect(reviewSentenceOfGuidedStep({ kind: "choose", promptZh: "", before: "I like", after: ".", answer: "dogs", explain: "" }))
+      .toBe("I like dogs.");
+  });
+
+  it("choose：还原不出整句时返回空串（宁可不入队，也不塞单词进句子队列）", () => {
+    expect(reviewSentenceOfGuidedStep({ kind: "choose", promptZh: "", before: "", after: "", answer: "am", explain: "" })).toBe("");
+    // 占位符没被填掉同样不入队（残句比缺卡更糟）
+    expect(reviewSentenceOfGuidedStep({ kind: "choose", promptZh: "", before: "___ ___ here.", after: "", answer: "is", explain: "" })).toBe("");
+  });
+
+  it("arrange：answer 本就是整句", () => {
+    expect(reviewSentenceOfGuidedStep({ kind: "arrange", promptZh: "", tokens: [], answer: "I am Xiaomei.", explain: "" }))
+      .toBe("I am Xiaomei.");
+  });
+
+  it("replace / spot：变换后的整句不在数据里 → 不入队", () => {
+    expect(reviewSentenceOfGuidedStep({ kind: "replace", promptZh: "", replaceBase: "I am drawing.", replaceTarget: "把 I 换成 She", answer: "is", explain: "" })).toBe("");
+    expect(reviewSentenceOfGuidedStep({ kind: "spot", promptZh: "", tokens: ["I", "is", "Xiaomei."], wrongToken: "is", answer: "is", explain: "" })).toBe("");
+  });
+
+  it("全库 205 课的 choose 题都能还原成干净整句（回归：曾把 ___ 一起拼进句子）", () => {
+    const problems: string[] = [];
+    let choices = 0;
+    for (const lesson of grammarLessons) {
+      for (const [index, step] of lesson.guided.entries()) {
+        if (step.kind !== "choose") continue;
+        choices += 1;
+        const sentence = reviewSentenceOfGuidedStep(step);
+        if (!sentence) { problems.push(`${lesson.id} guided[${index}] 还原为空`); continue; }
+        if (sentence.includes("___")) problems.push(`${lesson.id} guided[${index}] 残留占位符：${sentence}`);
+        if (/\s[.,!?;:]/.test(sentence)) problems.push(`${lesson.id} guided[${index}] 标点前有空格：${sentence}`);
+        if (!sentence.toLowerCase().includes(step.answer.toLowerCase())) problems.push(`${lesson.id} guided[${index}] 句中没有答案词：${sentence}`);
+      }
+    }
+    expect(choices, "每课一道 choose").toBeGreaterThan(150);
+    expect(problems).toEqual([]);
+  });
+});
+
 describe("lessonService · 三单常驻检查（R04）", () => {
   it("he/she/it + 动词原形给提醒，正确形式不提醒", () => {
     expect(detectThirdPersonMiss("he go to school")).not.toBeNull();
@@ -380,7 +474,7 @@ describe("F1 三关卡完成态", () => {
 describe("R9 replace 变形题", () => {
   const replaceStep: LessonGuidedStep = {
     kind: "replace",
-    promptZh: "句子变身：「I am drawing.」把主语 I 换成 She，动词要怎么变？",
+    promptZh: "句型转换：「I am drawing.」把主语 I 换成 She，动词要怎么变？",
     replaceBase: "I am drawing.",
     replaceTarget: "把 I 换成 She",
     options: ["is", "am", "are"],

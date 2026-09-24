@@ -2,8 +2,11 @@ import { ArrowLeft, CheckCircle2, Eraser, Flag, Flame, Lightbulb, Search, Sparkl
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppData } from "../AppContext";
+import { isSubmitKey } from "../components/imeGuard";
 import AdventureScene from "../components/AdventureScene";
 import EmptyState from "../components/EmptyState";
+import EmphasisText from "../components/EmphasisText";
+import WhyWrongPanel from "../components/WhyWrongPanel";
 import PageHeader from "../components/PageHeader";
 import { useReturnFocus } from "../components/useReturnFocus";
 import SpeakButton from "../components/SpeakButton";
@@ -88,13 +91,25 @@ import {
   judgeGuidedStep,
   markLessonDone,
   normalizeLessonSentence,
+  outputSpeakerOfTarget,
+  reviewSentenceOfGuidedStep,
   shuffleTokenOrder
 } from "../services/lessonService";
 import { imeSafeFormProps } from "../components/imeGuard";
 
 /** R02：课前测试题。复用引导题（choose）与正误对比（contrast 判断）做「先试后学」。 */
 type PretestQuestion =
-  | { kind: "choose"; prompt: string; options: string[]; answer: string; reviewSentence: string; reviewNote: string }
+  | {
+      kind: "choose";
+      prompt: string;
+      options: string[];
+      answer: string;
+      /** 结果页展示的「正确答案」（对 choose 而言就是那个词）。 */
+      reviewSentence: string;
+      reviewNote: string;
+      /** 答错时入队的那句（整句；还原不出时为空串＝不入队）。与展示用的 reviewSentence 分开。 */
+      enqueueSentence: string;
+    }
   | {
       kind: "contrast";
       sentence: string;
@@ -106,7 +121,10 @@ type PretestQuestion =
        * contrast[0] 是 bothRight，但判题写死「有问题」为正确）。
        */
       hasProblem: boolean;
+      /** 答错时入队的那句（对比题的正确句本身就是整句，与 reviewSentence 同值）。 */
+      enqueueSentence: string;
     };
+
 
 /**
  * 前测逐题记录（R02 反馈补强 / R25）：结果页要能说清
@@ -978,7 +996,8 @@ export default function GrammarLessonPage() {
         options: chooseStep.options,
         answer: chooseStep.answer,
         reviewSentence: chooseStep.answer,
-        reviewNote: resolveGuidedExplain(chooseStep, lesson)
+        reviewNote: resolveGuidedExplain(chooseStep, lesson),
+        enqueueSentence: reviewSentenceOfGuidedStep(chooseStep)
       });
     }
     // 优先取「真有问题」的对比组做前测；只有双正解条可用时才用它（此时两边都对）。
@@ -989,7 +1008,8 @@ export default function GrammarLessonPage() {
         sentence: contrast.wrong,
         reviewSentence: contrast.correct,
         reviewNote: contrast.whyZh,
-        hasProblem: !contrast.bothRight
+        hasProblem: !contrast.bothRight,
+        enqueueSentence: contrast.correct
       });
     }
     return questions;
@@ -1164,7 +1184,7 @@ export default function GrammarLessonPage() {
     if (!correct) {
       setPretestWrongCount((current) => current + 1);
       setReviewNotes((notes) => (notes.includes(question.reviewNote) ? notes : [...notes, question.reviewNote]));
-      updateData((latest) => addLessonMistakeSentence(latest, lesson, question.reviewSentence, question.reviewNote));
+      updateData((latest) => addLessonMistakeSentence(latest, lesson, question.enqueueSentence, question.reviewNote));
     }
   };
 
@@ -1177,9 +1197,16 @@ export default function GrammarLessonPage() {
     setPretestPicked(null);
   };
 
-  /** 一步里错过至少一次的句子，进入复习队列（SM-2），错句变成明天的复习任务。 */
+  /**
+   * 一步里错过至少一次的句子，进入复习队列（SM-2），错句变成明天的复习任务。
+   *
+   * 唯一收口：**词数 < 2 的不入队**。队列是句子级的，单词卡在复习里会退化成
+   * 「只有一个词块、点一下就过」的空题（gq1 rebuildTooFewChunks 全库 393 处）。
+   * 上层应传整句（guided 用 reviewSentenceOfGuidedStep 还原），这里兜住漏网的。
+   */
   const saveMistakeIfNeeded = (hadMisses: number, sentence: string, note: string) => {
     if (hadMisses <= 0) return;
+    if (sentence.trim().split(/\s+/).filter(Boolean).length < 2) return;
     updateData((latest) => addLessonMistakeSentence(latest, lesson, sentence, note));
     // W2 观测：正课答错 → 复习队列的增长链入队事件（与 boost/diary 同口径）
     appendGrammarEvent({
@@ -1456,7 +1483,7 @@ export default function GrammarLessonPage() {
         setGuidedHint(mismatchHint(pickedTokens, guidedStep.answer));
         setGuidedFeedback("retry");
       } else {
-        saveMistakeIfNeeded(guidedMisses, guidedStep.answer, guidedStep.explain);
+        saveMistakeIfNeeded(guidedMisses, reviewSentenceOfGuidedStep(guidedStep), guidedStep.explain);
         recordStepResult(
           "guided",
           guidedStep.kind,
@@ -1703,7 +1730,7 @@ export default function GrammarLessonPage() {
     }
     if (!passed) setGuidedMisses((current) => current + 1);
     else {
-      saveMistakeIfNeeded(guidedMisses, guidedStep.answer, guidedStep.explain);
+      saveMistakeIfNeeded(guidedMisses, reviewSentenceOfGuidedStep(guidedStep), guidedStep.explain);
       /**
        * choose / replace 分支同样要结算单题耗时（2026-09-21 修）。
        * 此前只有 arrange 走 `judgeArrange` 时结算，这一支漏传——
@@ -1872,6 +1899,16 @@ export default function GrammarLessonPage() {
     [halfPromptSentence, lesson?.targetSentence]
   );
   const currentOutput = outputPlan[Math.min(outputStep, outputPlan.length - 1)];
+
+  /**
+   * 本课核心句在对话里是谁说的（「说出来」档 2 的文案要用）。
+   * 见 outputSpeakerOfTarget：205 课里 11 课的核心句不是小美的台词，
+   * 原文案「写出她要说的那句话」在那 11 课上说反。
+   */
+  const outputSpeaker = useMemo(
+    () => (lesson ? outputSpeakerOfTarget(lesson) : null),
+    [lesson]
+  );
 
   /**
    * R-AI1：output 答对后的「为什么」。
@@ -2128,8 +2165,28 @@ export default function GrammarLessonPage() {
    * + 课级保险丝 ≤2 次）→ L3 兜底话术。本地层零延迟同步；AI 层异步不阻塞任何按钮；
    * 全部失败静默落 L3（固定话术，不给任何猜测）。
    */
-  const openWhyWrong = (stepIndex: number, wrongSentence: string) => {
+  /**
+   * 打开「为什么我写的不对」追问层。
+   *
+   * 2026-09-24 泛化：原先只服务练习段——正确句写死取 `practiceStep`、
+   * `section` 写死 `"practice"`，于是跟段（跟段用户实测：答错只有「照着拼一遍」
+   * 没有追问入口）与忆段都接不上。现在各段把自己的参照传进来，
+   * 不传时保持练习段行为（向后兼容，练习/产出两处调用点不动）。
+   *
+   * `stepIndex` 是**带命名空间的步骤键**：练习用原始下标、产出用 100+、
+   * 跟段用 200+、忆段用 300——面板按「键相等」归属到对应段，
+   * 避免不同段的下标撞车（练习第 0 题 ≠ 跟段第 0 题）。
+   */
+  const openWhyWrong = (
+    stepIndex: number,
+    wrongSentence: string,
+    ref?: { correctSentence?: string; promptZh?: string; section?: LessonSection; anchorPrefix?: string }
+  ) => {
     if (!lesson) return;
+    const correctSentence = ref?.correctSentence ?? practiceStep?.answer ?? lesson.targetSentence;
+    const promptZh = ref?.promptZh ?? practiceStep?.promptZh ?? lesson.intentZh;
+    const section: LessonSection = ref?.section ?? "practice";
+    const anchorPrefix = ref?.anchorPrefix ?? "practice.step";
     whyWrongStepRef.current = stepIndex;
     setWhyWrongSentence(wrongSentence);
     setWhyWrongRated(null);
@@ -2143,7 +2200,7 @@ export default function GrammarLessonPage() {
       kind: "practice_why_wrong_requested",
       lessonId: lesson.id,
       stepIndex,
-      section: "practice",
+      section,
       sentenceHash,
       matchSource,
       ...(localMatch?.diffScoreAtMatch ? { diffScoreAtMatch: localMatch.diffScoreAtMatch } : {}),
@@ -2161,7 +2218,7 @@ export default function GrammarLessonPage() {
     // 实测相邻换序样本 348 命中里 138 条（39.7%）讲解完全不提「顺序」。
     // 顺序类错因本就有确定性正解（explainStructuralWhy 对换序覆盖 100%），
     // 所以 fuzzySwap 一律改走结构解释，绝不给「讲错比不讲更糟」的机会。
-    const structural = explainStructuralWhy(wrongSentence, practiceStep?.answer ?? lesson.targetSentence);
+    const structural = explainStructuralWhy(wrongSentence, correctSentence);
     const fuzzySwap = localMatch?.source === "local_fuzzy" && structural?.kind === "swap";
 
     // L1/L1.5 本地命中：零延迟直接给（换序形除外，见上）
@@ -2230,18 +2287,18 @@ export default function GrammarLessonPage() {
     const usedForWhyWrong = whyWrongQuotaRef.current.consume();
     void requestLessonExplain(data.settings.aiProvider, {
       question: [
-        `用户想说的是「${practiceStep?.promptZh ?? lesson.intentZh}」。`,
-        `他拼出了「${wrongSentence}」，而正确说法是「${practiceStep?.answer ?? ""}」。`,
+        `用户想说的是「${promptZh}」。`,
+        `他拼出了「${wrongSentence}」，而正确说法是「${correctSentence}」。`,
         "请逐词对照这两个句子，指出他这句具体哪个词放错了/多用了/漏掉了，以及那个位置为什么该用正确说法里的词。",
         "必须贴着他拼的词讲，不要复述课内通用规则。"
       ].join(""),
-      anchorRef: `practice.step:${stepIndex}`,
+      anchorRef: `${anchorPrefix}:${stepIndex}`,
       anchorText: lesson.oneLineRule,
       // A1（M1）：把本题正误句作为可引用素材送进白名单——否则「逐词对照」必被
       // foreign 校验打回，只剩通用复述能过检（实测答案句可引用率 27.2% 的根因）。
       context: buildLessonExplainContext(lesson.id, {
         userSentence: wrongSentence,
-        correctSentence: practiceStep?.answer
+        correctSentence
       }) ?? explainContext!
     }).then((outcome) => {
       appendGrammarEvent({
@@ -2426,13 +2483,42 @@ export default function GrammarLessonPage() {
       : `从第 ${index + 1} 个词开始有点不对。点拼装区里的词块可以移除它，换个词试试。`;
   };
 
+  /**
+   * ST2（用户实测「我乱选也判断正确了」）：通关后的摆弄必须如实显示。
+   *
+   * 「已通过的题保留通关态」（ST1/FAIL-4 的修法）保住的是**出口**，
+   * 不是「当前摆法仍然正确」这个断言——用户答对后把词块拆掉乱点回去，
+   * 不满答案词数就不触发判题，旧的 pass 反馈会一直挂着，
+   * 横幅于是对着一个错误的拼法说「就是这句」。
+   *
+   * 判定：反馈是 pass、但**当前拼装区**已不等于答案 → 处于「通过后摆弄」态，
+   * 渲染层据此改挂中性横幅（出口保留，判定结果不变）。
+   */
+  const arrangeFiddlingAfterPass = (stage: "guided" | "practice"): boolean => {
+    const step = stage === "guided" ? guidedStep : practiceStep;
+    // 2026-09-24 修类型窄化：LessonPracticeStep 没有 kind 字段（练习段全部是 arrange），
+    // `step.kind` 在并集上取不到。用 `"kind" in step` 判别：没有 kind ⇒ 练习段
+    // ⇒ 恒为 arrange；有 kind ⇒ 跟段 ⇒ 按实际 kind 判。语义与改写前一致。
+    if (!step) return false;
+    const isArrange = !("kind" in step) || step.kind === "arrange";
+    if (!isArrange) return false;
+    const passed = stage === "guided" ? guidedFeedback === "pass" : practiceFeedback === "pass";
+    if (!passed) return false;
+    const order = stage === "guided" ? guidedOrder : practiceOrder;
+    const displayTokens = arrangeTokensOf(step);
+    const pickedTokens = order.map((index) => displayTokens[index]).filter(Boolean) as string[];
+    return !checkLessonTokens(pickedTokens, step.answer);
+  };
+
   const renderArrangeArea = (stage: "guided" | "practice") => {
     const step = stage === "guided" ? guidedStep : practiceStep;
     if (!step) return null;
     // R4：展示词块 = 正确词 + 干扰项（打乱后的顺序）；点击/拖拽记录展示下标
     const tokens = arrangeTokensOf(step);
     const order = stage === "guided" ? guidedOrder : practiceOrder;
-    const passed = stage === "guided" ? guidedFeedback === "pass" : practiceFeedback === "pass";
+    // ST2：绿色高亮同样要诚实——通关后摆弄中（排列已不等于答案）不算「拼对了」
+    const passed = (stage === "guided" ? guidedFeedback === "pass" : practiceFeedback === "pass")
+      && !arrangeFiddlingAfterPass(stage);
     // 词块库防作弊打乱：数据里的 tokens 常按答案顺序写，直接渲染会让「点词成句」变成顺着点一遍。
     const bankIndexes = shuffleTokenOrder(
       tokens,
@@ -3157,9 +3243,10 @@ export default function GrammarLessonPage() {
             </div>
             {/* 变形/找错题的 promptZh 是「要我做什么」的纯指令（如「句子变身：…要怎么变？」），
                 与下方题干同权重时会被连读成一句。这里标记为指令态降一级；
-                choose 类题的 promptZh 本身是题目内容（「你想说：我很开心」），保持原样。 */}
+                choose 类题的 promptZh 本身是题目内容（「你想说：我很开心」），保持原样。
+                「…」里是要点（要变的词/目标句），用 EmphasisText 加粗标出。 */}
             <p className={`lesson-quiz-prompt${guidedStep.kind === "replace" ? " is-instruction" : ""}`}>
-              {guidedStep.promptZh}
+              <EmphasisText text={guidedStep.promptZh} />
             </p>
 
             {guidedStep.kind === "spot" ? (
@@ -3215,7 +3302,7 @@ export default function GrammarLessonPage() {
               renderArrangeArea("guided")
             )}
 
-            {guidedFeedback === "pass" && (
+            {guidedFeedback === "pass" && !arrangeFiddlingAfterPass("guided") && (
               <div className="lesson-feedback pass" aria-live="polite">
                 {/* 修正句与讲解拆开：前者是「答案就是这句」（具体、要一眼看到），
                     后者是「为什么」（解释、次级）——同段落时会被读成一长句流水。 */}
@@ -3229,6 +3316,16 @@ export default function GrammarLessonPage() {
                 {guidedExplainResolved && (
                   <p className="lesson-feedback-why">{guidedExplainResolved}</p>
                 )}
+                <button type="button" className="primary-button" onClick={guidedNext}>
+                  {guided.index + 1 >= guidedDisplayOrderMemo.length ? "下面自己来" : "下一题"}
+                </button>
+              </div>
+            )}
+            {guidedFeedback === "pass" && arrangeFiddlingAfterPass("guided") && (
+              <div className="lesson-feedback fiddling" aria-live="polite">
+                <p>
+                  <CheckCircle2 size={16} /> 这一题已经通过 ✓ —— 拼装区可以自由摆弄，不影响结果。
+                </p>
                 <button type="button" className="primary-button" onClick={guidedNext}>
                   {guided.index + 1 >= guidedDisplayOrderMemo.length ? "下面自己来" : "下一题"}
                 </button>
@@ -3249,6 +3346,57 @@ export default function GrammarLessonPage() {
                       想不起来了，照着拼一遍
                     </button>
                   </div>
+                )}
+                {/**
+                  * 2026-09-24 补（用户实测：跟段答错没有「问 AI 为什么不对」入口）。
+                  *
+                  * 此前追问层只接了练习段与产出段——跟段的 retry 反馈卡只有
+                  * 「照着拼一遍」，用户想问为什么时无处可问。
+                  * 现在与练习段同一套：答错态下入口恒在（判据是**当前反馈态**，
+                  * 不是累计错次——那是上一轮修过的坑）。
+                  *
+                  * 步骤键用 200 + guided.index 命名空间：与练习段的原始下标、
+                  * 产出段的 100+ 区分开，面板按「键相等」归属到对应段。
+                  */}
+                {guidedFeedback === "retry" && (
+                  <>
+                    {!whyWrongOpen && (
+                      <div className="lesson-stage-actions center">
+                        <button
+                          type="button"
+                          className="lesson-whywrong-entry"
+                          onClick={() =>
+                            openWhyWrong(
+                              200 + guided.index,
+                              guidedOrder.map((tokenIndex) => arrangeTokensOf(guidedStep)[tokenIndex] ?? "").join(" "),
+                              {
+                                correctSentence: guidedStep.answer,
+                                promptZh: guidedStep.promptZh,
+                                section: "guided",
+                                anchorPrefix: "guided.step"
+                              }
+                            )
+                          }
+                        >
+                          <Lightbulb size={13} aria-hidden="true" /> 为什么我拼的不对？
+                        </button>
+                      </div>
+                    )}
+                    {whyWrongOpen && whyWrongStepRef.current === 200 + guided.index && (
+                      <WhyWrongPanel
+                        wrongSentence={whyWrongSentence}
+                        correctSentence={guidedStep.answer}
+                        mineLabel="你拼的"
+                        loading={whyWrongLoading}
+                        match={whyWrongMatch}
+                        ai={whyWrongAI}
+                        fallback={whyWrongFallback}
+                        rated={whyWrongRated}
+                        onRate={rateWhyWrong}
+                        onClose={() => setWhyWrongOpen(false)}
+                      />
+                    )}
+                  </>
                 )}
               </div>
             )}
@@ -3283,8 +3431,16 @@ export default function GrammarLessonPage() {
                     value={recallValue}
                     onChange={(event) => setRecallValue(event.target.value)}
                     onKeyDown={(event) => {
-                      // R5 忆段：回车直接提交（Shift+Enter 换行；输入法组词态的回车不触发）
-                      if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+                      /**
+                       * R5 忆段：回车直接提交。
+                       *
+                       * 2026-09-24 统一改用 `isSubmitKey`（components/imeGuard.ts）——
+                       * 内联版本只判了 `isComposing`，**漏了组词态的另一个信号
+                       * `keyCode === 229`**（旧引擎/部分输入法只给这个、不上报 isComposing）。
+                       * 那类输入法下组词回车会误提交半截输入——正是 imeGuard 模块注释里
+                       * 记录过的真机缺陷。Shift+Enter 换行由 isSubmitKey 内部排除。
+                       */
+                      if (isSubmitKey(event)) {
                         event.preventDefault();
                         if (recallValue.trim()) submitRecall();
                       }
@@ -3321,6 +3477,50 @@ export default function GrammarLessonPage() {
                           想不起来，看答案
                         </button>
                       </div>
+                    )}
+                    {/**
+                      * 2026-09-24 补（路线图 #3「忆段补 openWhyWrong」——该改动此前因并发截断丢失）。
+                      * 忆段是自由书写，与产出段同一形态：错句 = 输入框原文，
+                      * 正确说法 = 本课核心句。步骤键用 300 命名空间（单题）。
+                      * 与练习段同口径：答错态下入口恒在。
+                      */}
+                    {recallOutcome === "idle" && (
+                      <>
+                        {!whyWrongOpen && (
+                          <div className="lesson-stage-actions center">
+                            <button
+                              type="button"
+                              className="lesson-whywrong-entry"
+                              onClick={() => {
+                                // 回调里 TS 的属性窄化失效——此处重查一次（外层 guard 已保证 recall 存在）
+                                if (!lesson.recall) return;
+                                openWhyWrong(300, recallValue.trim(), {
+                                  correctSentence: lesson.recall.answer,
+                                  promptZh: lesson.recall.promptZh,
+                                  section: "recall",
+                                  anchorPrefix: "recall"
+                                });
+                              }}
+                            >
+                              <Lightbulb size={13} aria-hidden="true" /> 为什么我写的不对？
+                            </button>
+                          </div>
+                        )}
+                        {whyWrongOpen && whyWrongStepRef.current === 300 && (
+                          <WhyWrongPanel
+                            wrongSentence={whyWrongSentence}
+                            correctSentence={lesson.recall.answer}
+                            mineLabel="你写的"
+                            loading={whyWrongLoading}
+                            match={whyWrongMatch}
+                            ai={whyWrongAI}
+                            fallback={whyWrongFallback}
+                            rated={whyWrongRated}
+                            onRate={rateWhyWrong}
+                            onClose={() => setWhyWrongOpen(false)}
+                          />
+                        )}
+                      </>
                     )}
                   </div>
                 )}
@@ -3480,7 +3680,7 @@ export default function GrammarLessonPage() {
 
             {renderArrangeArea("practice")}
 
-            {practiceFeedback === "pass" && (
+            {practiceFeedback === "pass" && !arrangeFiddlingAfterPass("practice") && (
               <div className="lesson-feedback pass" aria-live="polite">
                 <p>
                   <CheckCircle2 size={16} /> 就是这句！<strong>{practiceStep.answer}</strong>
@@ -3491,6 +3691,16 @@ export default function GrammarLessonPage() {
                     与答案句一致的 contrast.whyZh → 与其他句一致的 → oneLineRule。 */}
                 <p className="lesson-why-line">
                   <Lightbulb size={13} aria-hidden="true" /> {practiceWhy}
+                </p>
+                <button type="button" className="primary-button" onClick={practiceNext}>
+                  {practiceIndex + 1 >= lesson.practice.length ? "最后一步：说出来" : "下一题"}
+                </button>
+              </div>
+            )}
+            {practiceFeedback === "pass" && arrangeFiddlingAfterPass("practice") && (
+              <div className="lesson-feedback fiddling" aria-live="polite">
+                <p>
+                  <CheckCircle2 size={16} /> 这一题已经通过 ✓ —— 拼装区可以自由摆弄，不影响结果。
                 </p>
                 <button type="button" className="primary-button" onClick={practiceNext}>
                   {practiceIndex + 1 >= lesson.practice.length ? "最后一步：说出来" : "下一题"}
@@ -3529,110 +3739,18 @@ export default function GrammarLessonPage() {
                       </div>
                     )}
                     {whyWrongOpen && whyWrongStepRef.current === practiceIndex && (
-                      <div className="lesson-whywrong-panel" aria-live="polite">
-                        {whyWrongLoading && <p className="lesson-ask-loading">想一想你这句错在哪一类……</p>}
-                        {whyWrongMatch && (
-                          <div className="lesson-whywrong-answer">
-                            {whyWrongSentence && (
-                              <div className="lesson-whywrong-compare">
-                                <p className="lesson-whywrong-mine">你拼的：<strong>{whyWrongSentence}</strong></p>
-                                <p className="lesson-whywrong-right">正确说法：<strong>{whyWrongMatch.correctSentence ?? practiceStep?.answer}</strong></p>
-                              </div>
-                            )}
-                            <p>{whyWrongMatch.whyZh}</p>
-                            <p className="lesson-ask-source">来自：这一课的辨析</p>
-                            <div className="lesson-ask-rating">
-                              <span>这句讲得：</span>
-                              {(["helpful", "unclear", "wrong"] as const).map((verdict) => (
-                                <button
-                                  type="button"
-                                  key={verdict}
-                                  className={`lesson-ask-rate${whyWrongRated === verdict ? " rated" : ""}`}
-                                  onClick={() => rateWhyWrong(verdict)}
-                                >
-                                  {verdict === "helpful" ? "有用" : verdict === "unclear" ? "没讲清" : "讲错了"}
-                                </button>
-                              ))}
-                              {whyWrongRated && <span className="lesson-ask-rated-note">收到，谢谢反馈</span>}
-                            </div>
-                            {whyWrongMatch.correctSentence && (
-                              <p className="lesson-whywrong-correct">
-                                正确说法（不自动揭示，自己拼出来才算）：<strong>{whyWrongMatch.correctSentence}</strong>
-                              </p>
-                            )}
-                            <button type="button" className="lesson-ask-close" onClick={() => { setWhyWrongOpen(false); }}>
-                              收起，再试一遍
-                            </button>
-                          </div>
-                        )}
-                        {whyWrongAI && (
-                          <div className="lesson-whywrong-answer">
-                            {whyWrongSentence && (
-                              <div className="lesson-whywrong-compare">
-                                <p className="lesson-whywrong-mine">你拼的：<strong>{whyWrongSentence}</strong></p>
-                                <p className="lesson-whywrong-right">正确说法：<strong>{practiceStep?.answer}</strong></p>
-                              </div>
-                            )}
-                            <p>{whyWrongAI.answer}</p>
-                            <p className="lesson-ask-source">来自：{describeExplainSource(whyWrongAI.citedSource)}</p>
-                            <div className="lesson-ask-rating">
-                              <span>这句讲得：</span>
-                              {(["helpful", "unclear", "wrong"] as const).map((verdict) => (
-                                <button
-                                  type="button"
-                                  key={verdict}
-                                  className={`lesson-ask-rate${whyWrongRated === verdict ? " rated" : ""}`}
-                                  onClick={() => rateWhyWrong(verdict)}
-                                >
-                                  {verdict === "helpful" ? "有用" : verdict === "unclear" ? "没讲清" : "讲错了"}
-                                </button>
-                              ))}
-                              {whyWrongRated && <span className="lesson-ask-rated-note">收到，谢谢反馈</span>}
-                            </div>
-                            <button type="button" className="lesson-ask-close" onClick={() => { setWhyWrongOpen(false); }}>
-                              收起，再试一遍
-                            </button>
-                          </div>
-                        )}
-                        {whyWrongFallback && (
-                          <div className="lesson-whywrong-fallback">
-                            {(() => {
-                              // 兜底也要讲「为什么不对」：错句和答案都是已知词块，
-                              // 多词/缺词/换序/用错词在本地就能确定性说出来，不让用户空手猜。
-                              const wrongSentence = practiceOrder
-                                .map((tokenIndex) => arrangeTokensOf(practiceStep)[tokenIndex] ?? "")
-                                .join(" ");
-                              const structural = explainStructuralWhy(wrongSentence, practiceStep.answer);
-                              return (
-                                <>
-                                  {whyWrongSentence && (
-                                    <div className="lesson-whywrong-compare">
-                                      <p className="lesson-whywrong-mine">你拼的：<strong>{whyWrongSentence}</strong></p>
-                                      <p className="lesson-whywrong-right">正确说法：<strong>{practiceStep?.answer}</strong></p>
-                                    </div>
-                                  )}
-                                  <p>
-                                    {structural
-                                      ? structural.whyZh
-                                      : "答案不对哦——再检查一下。"}
-                                  </p>
-                                  {structural && (
-                                    <p className="lesson-whywrong-fallback-hint">
-                                      照着这个拼：<strong>{structural.answer}</strong>
-                                    </p>
-                                  )}
-                                  {!structural && (
-                                    <p className="lesson-whywrong-fallback-hint">先照着拼一遍，明天复习会再见到它。</p>
-                                  )}
-                                </>
-                              );
-                            })()}
-                            <button type="button" className="lesson-ask-close" onClick={() => { setWhyWrongOpen(false); }}>
-                              收起
-                            </button>
-                          </div>
-                        )}
-                      </div>
+                      <WhyWrongPanel
+                        wrongSentence={whyWrongSentence}
+                        correctSentence={practiceStep?.answer ?? lesson.targetSentence}
+                        mineLabel="你拼的"
+                        loading={whyWrongLoading}
+                        match={whyWrongMatch}
+                        ai={whyWrongAI}
+                        fallback={whyWrongFallback}
+                        rated={whyWrongRated}
+                        onRate={rateWhyWrong}
+                        onClose={() => setWhyWrongOpen(false)}
+                      />
                     )}
                     <div className="lesson-stage-actions center">
                       <button type="button" className="ghost-link" onClick={revealPractice}>
@@ -3665,8 +3783,21 @@ export default function GrammarLessonPage() {
                 {currentOutput.skeleton ? "给你句型框，把句子补完整" : "没有中文提示，全靠自己"}
               </span>
             </div>
+            {/**
+              「说出来」段有**两档**，题面文案必须跟着档走（浏览器走查发现）：
+                · 档 1（skeleton）= 变体句，如 L01 的 `Are you new here?`——它其实是**同学**的问句。
+                  原文案写「写出**她要说的**那句话——不是同学问她的那一句」，正好把学习者引开。
+                · 档 2 = 本课核心句。205 课里 194 课的核心句是小美的台词，但有 11 课不是
+                  （是对方的话，如 L72 `How often do you run?`、L32 `Close the door.`），
+                  这 11 课沿用原文案同样说反。
+              用 `outputSpeakerOfTarget` 判定说话人后再给文案。
+            */}
             <p className="lesson-quiz-prompt">
-              这一幕里轮到小美说话。凭记忆，按这一课的句型写出她要说的那句话——不是同学问她的那一句。
+              {currentOutput.skeleton
+                ? "先按这一课的句型把这句写出来——句型框给了一半，缺的那截你来补。"
+                : outputSpeaker === "me"
+                  ? "这一幕里轮到小美说话。凭记忆，按这一课的句型写出她要说的那句话——不是同学问她的那一句。"
+                  : "凭记忆，按这一课的句型写出这一幕里的那句话。"}
             </p>
             {currentOutput.skeleton && (
               <p className="lesson-quiz-note" style={{ margin: "8px 0 0", lineHeight: 1.8 }}>
@@ -3684,8 +3815,8 @@ export default function GrammarLessonPage() {
                     value={outputValue}
                     onChange={(event) => setOutputValue(event.target.value)}
                     onKeyDown={(event) => {
-                      // 回车直接提交（Shift+Enter 换行；输入法组词态的回车不触发）
-                      if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+                      // 回车直接提交；IME 与修饰键判断统一走 isSubmitKey（见忆段的说明）
+                      if (isSubmitKey(event)) {
                         event.preventDefault();
                         if (outputValue.trim()) submitOutput();
                       }
@@ -3775,65 +3906,18 @@ export default function GrammarLessonPage() {
                       </button>
                     )}
                     {whyWrongOpen && whyWrongStepRef.current === 100 + outputStep && (
-                      <div className="lesson-whywrong-panel" aria-live="polite">
-                        {whyWrongLoading && <p className="lesson-ask-loading">想一想你这句错在哪一类……</p>}
-                        {whyWrongAI && (
-                          <div className="lesson-whywrong-answer">
-                            {whyWrongSentence && (
-                              <div className="lesson-whywrong-compare">
-                                <p className="lesson-whywrong-mine">你写的：<strong>{whyWrongSentence}</strong></p>
-                                <p className="lesson-whywrong-right">正确说法：<strong>{currentOutput?.sentence}</strong></p>
-                              </div>
-                            )}
-                            <p>{whyWrongAI.answer}</p>
-                            <p className="lesson-ask-source">来自：{describeExplainSource(whyWrongAI.citedSource)}</p>
-                            <div className="lesson-ask-rating">
-                              <span>这句讲得：</span>
-                              {(["helpful", "unclear", "wrong"] as const).map((verdict) => (
-                                <button
-                                  type="button"
-                                  key={verdict}
-                                  className={`lesson-ask-rate${whyWrongRated === verdict ? " rated" : ""}`}
-                                  onClick={() => rateWhyWrong(verdict)}
-                                >
-                                  {verdict === "helpful" ? "有用" : verdict === "unclear" ? "没讲清" : "讲错了"}
-                                </button>
-                              ))}
-                              {whyWrongRated && <span className="lesson-ask-rated-note">收到，谢谢反馈</span>}
-                            </div>
-                            <button type="button" className="lesson-ask-close" onClick={() => { setWhyWrongOpen(false); }}>
-                              收起
-                            </button>
-                          </div>
-                        )}
-                        {whyWrongFallback && (
-                          <div className="lesson-whywrong-fallback">
-                            {(() => {
-                              // 兜底也讲结构错因：与 practice 同一解释器，AI 不可用不空手
-                              const structural = explainStructuralWhy(outputValue.trim(), currentOutput.sentence);
-                              return (
-                                <>
-                                  {whyWrongSentence && (
-                                    <div className="lesson-whywrong-compare">
-                                      <p className="lesson-whywrong-mine">你写的：<strong>{whyWrongSentence}</strong></p>
-                                      <p className="lesson-whywrong-right">正确说法：<strong>{currentOutput?.sentence}</strong></p>
-                                    </div>
-                                  )}
-                                  <p>{structural ? structural.whyZh : "这句和核心句还没对上——对照下面的差异提示再试一次。"}</p>
-                                  {structural && (
-                                    <p className="lesson-whywrong-fallback-hint">
-                                      照着这个写：<strong>{structural.answer}</strong>
-                                    </p>
-                                  )}
-                                </>
-                              );
-                            })()}
-                            <button type="button" className="lesson-ask-close" onClick={() => { setWhyWrongOpen(false); }}>
-                              收起
-                            </button>
-                          </div>
-                        )}
-                      </div>
+                      <WhyWrongPanel
+                        wrongSentence={whyWrongSentence}
+                        correctSentence={currentOutput?.sentence ?? lesson.targetSentence}
+                        mineLabel="你写的"
+                        loading={whyWrongLoading}
+                        match={whyWrongMatch}
+                        ai={whyWrongAI}
+                        fallback={whyWrongFallback}
+                        rated={whyWrongRated}
+                        onRate={rateWhyWrong}
+                        onClose={() => setWhyWrongOpen(false)}
+                      />
                     )}
                   </div>
                 )}

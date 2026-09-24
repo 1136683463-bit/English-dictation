@@ -85,7 +85,7 @@ export const ECHO_RUNES: GrammarRune[] = [
     name: "单复之镜",
     glyph: "mirror",
     rarity: "common",
-    oneLineRule: "一个照原样，两个以上照镜子——名词要戴上 -s 的尾巴。",
+    oneLineRule: "一个用原形，两个以上用复数——名词要戴上 -s 的尾巴。",
     spells: ["I want two apples.", "The pears are sweet.", "Two oranges, please."]
   },
   {
@@ -316,7 +316,7 @@ export const ECHO_RUNES: GrammarRune[] = [
     name: "被动之幕",
     glyph: "curtain",
     rarity: "legendary",
-    oneLineRule: "谁做的不重要时，主语退到幕后：be + 过去分词。",
+    oneLineRule: "谁做的不重要时，做事的人退到后面：be + 过去分词。",
     spells: ["The light was lit last night.", "The door is opened at dawn.", "The city was built by dreamers."]
   },
   {

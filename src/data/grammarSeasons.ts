@@ -28,8 +28,8 @@ export const LESSON_GROUPS: GrammarSeason[] = [
   { id: "season-5", label: "第五季 · 动词的两件新搭档", hint: "喜欢做、享受做、去做、想做：like/enjoy + reading；go … to buy", min: 42, max: 46 },
   // 第六批 · 语用入门（2026-09-17）：S5 首兑——should 建议 + if 条件句
   { id: "season-6", label: "第六季 · 建议与条件", hint: "给人建议、说条件：should 应该 / if 如果……就……", min: 47, max: 49 },
-  // 第七批 · 幕后句（2026-09-17）：be + 做过版——谁做的不重要，把事推到台前
-  { id: "season-7", label: "第七季 · 幕后句", hint: "谁做的不重要——把事推到台前：杯子被摔了、窗户被打扫了", min: 50, max: 54 },
+  // 第七批 · 幕后句（2026-09-17）：be + 过去分词——谁做的不重要，把事推到台前
+  { id: "season-7", label: "第七季 · 被动句", hint: "谁做的不重要——把事推到台前：杯子被摔了、窗户被打扫了", min: 50, max: 54 },
   // 第八批 · 日常细节（2026-09-18）：日期链（序数→月份→日期）+ 副词链（-ly→well/fast）+ there was/were
   { id: "season-8", label: "第八季 · 日常细节", hint: "说日期、夸做得好、回忆昨天——日常里的小事说利索", min: 55, max: 60 },
   // 第九批 · 客气与程度（2026-09-18）：could 请求 + would like + give 双宾 + finish 门卫 + as…as + too…to
@@ -49,11 +49,11 @@ export const LESSON_GROUPS: GrammarSeason[] = [
   // 第十六批 · 谁让谁做什么（2026-09-19）：make/let/have/get 四动词 + until 折入 + 四动词收口（大章节 8 课·单拱）
   { id: "season-16", label: "第十六季 · 谁让谁做什么", hint: "妈妈让我写、他不让我去、老师让我来、我说服他一起——「让」字四个说法，一次说清楚", min: 103, max: 110 },
   // 第十七批 · 我一直想说的那些（2026-09-19）：物主 's + mine 分工 + -ed/-ing + a few + have got/has got + 收口（大章节 8 课·单拱）
-  { id: "season-17", label: "第十七季 · 我一直想说的那些", hint: "谁的（撇号 s）、我的（mine）、我的感受（感到版）、还有几个（a few）、有（have got）——身边的事，一句话说清一件", min: 111, max: 118 },
+  { id: "season-17", label: "第十七季 · 我一直想说的那些", hint: "谁的（撇号 s）、我的（mine）、我的感受（-ed 形容词）、还有几个（a few）、有（have got）——身边的事，一句话说清一件", min: 111, max: 118 },
   // 第十八批 · 同一个 to，两张脸（2026-09-19）：be used to + 东西/-ing + get used to + 两张脸切开 + 否疑 + 收口（B1 开局章 6 课·单拱）
-  { id: "season-18", label: "第十八季 · 同一个 to，两张脸", hint: "习惯了（be used to）、慢慢习惯（get used to）、从前常（used to）——同一个 to，前面有 be 是一张脸，没 be 是另一张", min: 119, max: 124 },
+  { id: "season-18", label: "第十八季 · 同一个 to，两种用法", hint: "习惯了（be used to）、慢慢习惯（get used to）、从前常（used to）——同一个 to，前面有 be 是一张脸，没 be 是另一张", min: 119, max: 124 },
   // 第十九批 · 我看到的和感觉到的（2026-09-19）：look + 形容词 立岗（东西版）+ 换人换形 + 同一个 look 两张脸收口（3 课小章·单拱）
-  { id: "season-19", label: "第十九季 · 我看到的和感觉到的", hint: "它看起来不错、你看起来很累、同一个 look 两张脸——看到什么就说什么，一句一句来", min: 125, max: 127 },
+  { id: "season-19", label: "第十九季 · 我看到的和感觉到的", hint: "它看起来不错、你看起来很累、同一个 look 两种用法——看到什么就说什么，一句一句来", min: 125, max: 127 },
   // 第二十批 · 五种感官（2026-09-19）：sound/smell/taste/feel 四词立岗 + 否疑合体 + 五句排一行收口（造词课 6 课大章·单拱）
   { id: "season-20", label: "第二十季 · 五种感官", hint: "听起来不错、闻着好、尝着好、摸着凉——同一个架子，换四双耳朵", min: 128, max: 133 },
   // 第二十一批 · 盼着那一天（2026-09-20）：look forward to 整块立岗 + 换人换形 + 名词形式 + 否疑 + 与批十八两站收口（B 档收官 5 课大章·单拱）
@@ -66,7 +66,7 @@ export const LESSON_GROUPS: GrammarSeason[] = [
   { id: "season-25", label: "第二十五季 · 一个都不、看起来像、需要", hint: "家里一个人都没有、它看起来像一条船、我需要买点牛奶——身边的事一件件说", min: 157, max: 162 },
   { id: "season-26", label: "第二十六季 · 自己、日常四句", hint: "我自己能做、我们互相帮忙、人太多了、你怎么不歇会儿——日常里最顺口的几句", min: 163, max: 169 },
   { id: "season-27", label: "第二十七季 · 一对一对的说法", hint: "既…又…／既不…也不…、除非／为了、能够／我也是、宁愿／更喜欢、更早的事／征求同意，再加整个和最好——成对学，记得牢", min: 170, max: 181 },
-  { id: "season-28", label: "第二十八季 · 收口、目的、条件、不得不、他们的与走向哪儿", hint: "把整季的句型排一行，再加七格：做这事是为了让谁做什么（so that）、只要你来我就去（as long as）、昨天不得不走回家（had to）、他们的东西（their／theirs）、我正在学游泳（be 后面穿 -ing，再垫 to）、她走进了厨房（进到里面用 into）、我们穿过了树林、横过了小桥（中间钻过去用 through，一头到另一头用 across）、风太大把窗吹破了（太…了用 so…that 一头一尾）、好大的一条鱼（这么…的一个用 such a，a 紧跟 such）、猫在它的盒子里（「它的」写 its，不带小撇）、猫在一堆箱子中间（一群里用 among，两个才用 between）、想了一晚上想通了（think 的昨天版是 thought、know 的是 knew）、又游泳又唱歌（swim 变 swam、sing 变 sang）、坐旁边赶上了（sit 变 sat、catch 变 caught）、雪里读完了那本书（feel 变 felt、keep 变 kept——两个 e 只剩一个再加 t）、昨晚睡得好（sleep 变 slept）、画了条船贴在墙上（draw 变 drew，aw 换成 ew）、昨天戴了顶新帽子（wear 变 wore）、她给了我一块大蛋糕（give 变 gave，位置照样先给谁后给什么）、到家的时候天已经黑了（到…的时候用 by the time，前半句不请 will）", min: 182, max: 205 }
+  { id: "season-28", label: "第二十八季 · 收口、目的、条件、不得不、他们的与走向哪儿", hint: "把整季的句型排一行，再加七格：做这事是为了让谁做什么（so that）、只要你来我就去（as long as）、昨天不得不走回家（had to）、他们的东西（their／theirs）、我正在学游泳（be 后面穿 -ing，再垫 to）、她走进了厨房（进到里面用 into）、我们穿过了树林、横过了小桥（中间钻过去用 through，一头到另一头用 across）、风太大把窗吹破了（太…了用 so…that 一头一尾）、好大的一条鱼（这么…的一个用 such a，a 紧跟 such）、猫在它的盒子里（「它的」写 its，不带小撇）、猫在一堆箱子中间（一群里用 among，两个才用 between）、想了一晚上想通了（think 的过去式是 thought、know 的是 knew）、又游泳又唱歌（swim 变 swam、sing 变 sang）、坐旁边赶上了（sit 变 sat、catch 变 caught）、雪里读完了那本书（feel 变 felt、keep 变 kept——两个 e 只剩一个再加 t）、昨晚睡得好（sleep 变 slept）、画了条船贴在墙上（draw 变 drew，aw 换成 ew）、昨天戴了顶新帽子（wear 变 wore）、她给了我一块大蛋糕（give 变 gave，位置照样先给谁后给什么）、到家的时候天已经黑了（到…的时候用 by the time，前半句不请 will）", min: 182, max: 205 }
 ];
 
 /** 按课号查所属季（找不到返回 undefined——出现即数据缺口，宁可显式暴露）。 */

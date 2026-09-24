@@ -722,7 +722,9 @@ export default function SpellingPage() {
           <button className="secondary-button" onClick={() => setShowHint((current) => !current)}>
             提示
           </button>
-          <Link to="/" className="icon-button" title="首页">
+          {/* 「首页」直接指向 /today：2026-09-24 首页收敛后 `/` 也会重定向到那里，
+              直连少一次跳转，也让「首页是哪个页面」在代码里只有一个答案。 */}
+          <Link to="/today" className="icon-button" title="首页">
             <Home size={17} />
           </Link>
         </div>

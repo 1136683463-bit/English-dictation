@@ -9,7 +9,40 @@
   --line: #e8edf1;
   --line-strong: #d7dfe6;
   --accent: #f26a1b;
+  /*
+   * ─────────── 对比度达标（2026-09-25，审计 A-2 五组逐项复核后落盘） ───────────
+   *
+   * 复核结论：审计 A-2 的五组**全部仍不达标**（审计要求「以当前代码复核」，此即那次复核）。
+   * 修法是改 token 值而非改规则——五组受影响的前景/背景**全都是 token**，
+   * 包括看起来像硬编码的两个侧栏灰（其实是 --sidebar-ink / --sidebar-ink-muted）。
+   *
+   * ⚠️ --sidebar-ink-muted 采用「A 方案：与主灰合并」：
+   *   它现值 #949ca8 只有 2.77:1，要达标必须暗到 ≈#6b7481，而那正好等于主灰的达标值——
+   *   于是「弱化灰」这个语义在数值上消失。这是**有意的取舍**：那行 12px 装饰性提示语
+   *   （「继续加油！」）的层次价值低于可读性，且它旁边「0 天」的层级本来就由字号承担。
+   *   若将来要恢复层次，正确做法是改文案形式（合并进打卡卡主体或去掉），而不是把灰调回去。
+   *
+   * 达标值由 src/edge/verify/ex9-contrast.test.ts 自动计算守住——改这五个值必须过那道闸。
+   */
   --accent-strong: #d95a12;
+  /*
+   * 主行动按钮（CTA）专用填充色（2026-09-25，修审计 A-1）。
+   * 白字在 --accent(#f26a1b) 上只有 3.06:1，在 --accent-strong(#d95a12) 上也只有 3.87:1，
+   * 两者都不到 WCAG AA 要求的 4.5:1（16px/700 不算 large text，large 门槛是 18.66px+700）。
+   * --accent 仍保留为品牌色（装饰、描边、浅底），只有「白字 + 实心填充」这一层换用 CTA 色。
+   * 换的是同色相更深的一档，视觉上是「同一个橙压暗」，不是换色。
+   * 对比度由 src/edge/verify/ex9-contrast.test.ts 自动计算守住——改这两个值必须过那道闸。
+   */
+  --accent-cta: #c2410c;
+  --accent-cta-strong: #a8390a;
+  /*
+   * 移动端固定底栏的实测高度（2026-09-25，修审计 F-1）。
+   * 实测方法：375×667 视口下取 `aside.sidebar` 的 getBoundingClientRect().top，
+   * 667 − 454.7 ≈ 212px（= 视口的 31.8%）。审计报的是 213px / 32%，一致。
+   * 底栏是 `height: auto`（导航格 + 品牌行 + 打卡卡），所以这个值只能在**改动底栏内容后重测**，
+   * 不能靠推导。下面 .app-shell 的预留空间直接引用它，避免两者再次漂移（原来硬编码 74px，差 138px）。
+   */
+  --mobile-bar-h: 212px;
   --accent-soft: #fff1e8;
   --secondary: #48b878;
   --secondary-soft: #e9f8ef;
@@ -330,8 +363,8 @@
 .adventure-sentence-card.expanded .adventure-sentence-index,
 .adventure-sentence-card.playing .adventure-sentence-index {
   color: #fff;
-  border-color: var(--accent);
-  background: var(--accent);
+  border-color: var(--accent-cta);
+  background: var(--accent-cta);
 }
 
 .adventure-sentence-trigger {
@@ -357,7 +390,7 @@
 }
 
 .adventure-sentence-playing-label {
-  color: var(--accent);
+  color: var(--accent-ink);
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 11px;
   font-weight: 800;
@@ -373,8 +406,8 @@
 
 .adventure-sentence-audio.active {
   color: #fff;
-  border-color: var(--accent);
-  background: var(--accent);
+  border-color: var(--accent-cta);
+  background: var(--accent-cta);
 }
 
 .adventure-sentence-detail {
@@ -833,7 +866,7 @@ button:disabled {
   display: grid;
   place-items: center;
   color: #fff;
-  background: var(--accent);
+  background: var(--accent-cta);
   box-shadow: 0 4px 12px rgba(242, 106, 27, 0.22);
 }
 
@@ -915,7 +948,7 @@ button:disabled {
 }
 
 .sidebar a.active {
-  color: var(--accent);
+  color: var(--accent-ink);
   font-weight: 650;
   background: var(--sidebar-active-bg);
 }
@@ -926,11 +959,11 @@ button:disabled {
 }
 
 .sidebar a.active svg {
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 
 .sidebar a.active svg {
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 
 .mobile-more-toggle,
@@ -1149,12 +1182,12 @@ button:disabled {
 
 .primary-button {
   color: #fff;
-  background: var(--accent);
+  background: var(--accent-cta);
   box-shadow: 0 1px 2px rgba(31, 43, 58, 0.06);
 }
 
 .primary-button:hover:not(:disabled) {
-  background: var(--accent-strong);
+  background: var(--accent-cta-strong);
   box-shadow: 0 4px 12px rgba(242, 106, 27, 0.22);
 }
 
@@ -7114,8 +7147,8 @@ input.large-textarea {
 
 .review-rating-strong {
   color: #fff;
-  border-color: var(--accent);
-  background: var(--accent);
+  border-color: var(--accent-cta);
+  background: var(--accent-cta);
   box-shadow: 0 4px 12px rgba(242, 106, 27, 0.18);
 }
 
@@ -11152,7 +11185,16 @@ input.large-textarea {
   .app-shell {
     grid-template-columns: 1fr;
     min-height: 100vh;
-    padding-bottom: 74px;
+    /**
+     * 预留出固定底栏的高度（审计 F-1）。
+     *
+     * 原来写死 74px，而底栏实测 212px —— 差 138px，导致任何页面的最后一个可交互元素
+     * 都会被底栏压住，点它命中的是底栏自己（实测诊断屏的「回到语法地图」被压住，
+     * 中心点命中 .sidebar-streak）。修法不是「再加一点」，而是**引用底栏高度 token**，
+     * 这样底栏内容变化时两者不会各自漂移。
+     * +16px 是视觉呼吸，+safe-area 照顾刘海屏底边。
+     */
+    padding-bottom: calc(var(--mobile-bar-h) + 16px + env(safe-area-inset-bottom));
   }
 
   .app-shell.sidebar-collapsed {
@@ -12041,7 +12083,12 @@ input.large-textarea {
 
 @media (max-width: 520px) {
   .app-shell {
-    padding-bottom: 74px;
+    /**
+     * ⚠️ 这一档才是 375×667 下**实际生效**的那条（375 ≤ 520），
+     * 它曾把 ≤860px 档的预留再次覆盖回 74px —— 审计 F-1 与我这轮实测到的
+     * 「最后一个可交互元素被底栏压住」就是从这里来的。两处必须同步引用同一个 token。
+     */
+    padding-bottom: calc(var(--mobile-bar-h) + 16px + env(safe-area-inset-bottom));
   }
 
   .sidebar nav {
@@ -12592,7 +12639,7 @@ input.large-textarea {
   place-items: center;
   color: #fff;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--accent-cta);
 }
 
 .adventure-template-icon {
@@ -14783,7 +14830,7 @@ input.large-textarea {
   font-size: 10px;
   font-weight: 700;
   border-radius: 8px;
-  background: var(--accent);
+  background: var(--accent-cta);
 }
 
 .adventure-reader-frame .adventure-play-layout {
@@ -14943,8 +14990,8 @@ input.large-textarea {
 
 .adventure-reader-frame .adventure-route-node.current > span {
   color: #fff;
-  border-color: var(--accent);
-  background: var(--accent);
+  border-color: var(--accent-cta);
+  background: var(--accent-cta);
 }
 
 .adventure-vocab-backdrop {
@@ -15331,9 +15378,9 @@ html {
 :root {
   --sidebar-bg: #ffffff;
   --sidebar-line: #f1f2f4;
-  --sidebar-ink: #6f7885;
+  --sidebar-ink: #6b7481;
   --sidebar-ink-strong: #1f2b3a;
-  --sidebar-ink-muted: #949ca8;
+  --sidebar-ink-muted: #6b7481;
   --sidebar-hover: #f3f5f7;
   --sidebar-active-bg: color-mix(in srgb, var(--accent) 7%, transparent);
   --main-pad-y: 36px;
@@ -15507,7 +15554,7 @@ html {
 
 .adv-eyebrow {
   display: block;
-  color: var(--accent);
+  color: var(--accent-ink);
   font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -15669,12 +15716,12 @@ html {
   font-weight: 600;
   border: 1px solid transparent;
   border-radius: 12px;
-  background: var(--accent);
+  background: var(--accent-cta);
   box-shadow: 0 6px 16px rgba(242, 106, 27, 0.22);
 }
 
 .adv-primary:hover {
-  background: var(--accent-strong);
+  background: var(--accent-cta-strong);
 }
 
 .adv-ghost {
@@ -16429,7 +16476,11 @@ html {
 :root {
   /* 文字级语义色：≤16px 的彩色文字一律用 -ink（白/冷灰底 ≥ 4.5:1），
      原 --accent 等基色仅用于按钮底、描边、图标填充等图形场景（≥ 3:1） */
-  --accent-ink: #c04a0b;
+  /* 2026-09-25 复核（审计 A-2 五组）：这套体系此前**只落地了一部分**——
+     仍有大量 ≤16px 文字直接用基色（--accent-strong / --secondary / --blue），实测 5 组全不达标。
+     本轮修法是**把那些文字规则迁到 -ink，不动基色本身**（基色继续服务按钮底/描边/图标）。
+     -ink 族实测：绿 5.43/4.95、蓝 5.18/4.66、琥珀 5.49/4.96、红 6.16/5.47 —— 全部达标。 */
+  --accent-ink: #c2410c;
   --green-ink: #24784c;
   --blue-ink: #2f62ea;
   --amber-ink: #8a6200;
@@ -16999,6 +17050,16 @@ html {
   color: var(--ink-soft);
   font-size: 13.5px;
   line-height: 1.6;
+}
+
+/* 「为什么推荐这个」说明行（2026-09-24 首页重规划）：比描述更弱一级，但仍可读。 */
+.ui-banner-note {
+  display: block;
+  max-width: 520px;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.5;
 }
 
 .ui-banner-actions {
@@ -18372,7 +18433,7 @@ html {
 .boost-tier-suggest {
   padding: 1px 8px;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--accent-cta);
   color: #fff;
   font-size: 11px;
   font-weight: 700;
@@ -18957,7 +19018,7 @@ html {
   flex: 1;
   min-width: 0;
   display: grid;
-  gap: 4px;
+  gap: 6px;
 }
 
 .weak-spots-title {
@@ -18969,7 +19030,8 @@ html {
 
 .weak-spots-title strong {
   color: var(--ink);
-  font-size: 14.5px;
+  font-size: 15.5px;
+  font-weight: 800;
 }
 
 .weak-spots-stat {
@@ -18981,6 +19043,13 @@ html {
   font-weight: 650;
 }
 
+/* 「近 7 天 N 次」是「这毛病多严重」的即时信号 → accent 色；
+   「累计 N 次」只是历史背景 → 保持弱色。两个 pill 同权重时看不出该看哪个。 */
+.weak-spots-stat:first-of-type {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
 .weak-spots-plain {
   margin: 0;
   color: var(--ink-soft);
@@ -18988,12 +19057,21 @@ html {
   line-height: 1.55;
 }
 
+/* 例句做成等宽 chip（2026-09-24 层级重排）：
+   这是「具体错在哪」的可核对证据，此前是一条 12px 灰字 + 左边框，
+   和上下解释文字糊在一起。改成独立的浅底 chip 后，四行内容有了节奏：
+   标题（大黑）→ 解释（次级）→ 例句（等宽 chip）→ 状态（绿色）。 */
 .weak-spots-example {
   margin: 0;
-  padding-left: 9px;
-  border-left: 2px solid var(--line-strong);
-  color: var(--muted);
-  font-size: 12px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface-muted);
+  color: var(--ink-soft);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12.5px;
   line-height: 1.5;
 }
 
@@ -19832,6 +19910,26 @@ html {
   border-radius: var(--radius-sm);
 }
 
+
+/* ST2：通关后自由摆弄的中性横幅——如实区分「拼对了」与「已通过、正在玩」 */
+.lesson-feedback.fiddling {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--surface-2, #f4f5f7);
+  border: 1px dashed var(--border, #d8dbe0);
+  color: var(--text-2, #5a6068);
+}
+.lesson-feedback.fiddling p {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+}
+
+
 .lesson-feedback.pass {
   display: flex;
   flex-wrap: wrap;
@@ -20600,6 +20698,21 @@ html {
   margin: 0;
   color: var(--ink-soft);
   font-size: 16px;
+  line-height: 1.65;
+}
+
+/* 题干里的「…」要点（要找的语法现象 / 被替换的词）：加粗 + 浅底，
+   与旁边的指令文字拉开层级——此前同字重，扫视抓不到重点（2026-09-24）。
+   用底色而非仅加粗：中文加粗在小字号下对比有限，浅底更稳。 */
+.emphasis-quote {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.lesson-quiz-prompt .emphasis-quote {
+  padding: 1px 2px;
+  border-radius: 4px;
+  background: var(--accent-soft);
 }
 
 /* 纯指令态（如「句子变身：…要怎么变？」）：这是「要我做什么」，
@@ -20610,6 +20723,14 @@ html {
   color: var(--muted);
   font-size: 14px;
   line-height: 1.6;
+}
+
+/* 指令态的题干同样标出要点（「句子变身：「I am happy.」把「开心」换成…」），
+   但要点的强调不能盖过下方题干本身——这里只加粗，不给底色 */
+.lesson-quiz-prompt.is-instruction .emphasis-quote {
+  padding: 0;
+  background: none;
+  color: var(--ink);
 }
 
 .lesson-option-row {
@@ -21616,7 +21737,7 @@ html {
 }
 
 .lesson-watch-step.on i {
-  background: var(--accent);
+  background: var(--accent-cta);
   color: #fff;
 }
 
@@ -23594,7 +23715,7 @@ html {
 
 .today-hero-eyebrow {
   display: block;
-  color: var(--accent);
+  color: var(--accent-ink);
   font-size: 12.5px;
   font-weight: 800;
   letter-spacing: 0.16em;
@@ -24211,6 +24332,140 @@ html {
   align-items: center;
 }
 
+/* ── 三线状态行（2026-09-24 首页重规划新增）─────────────────────────────────
+   三条线（记忆 / 语法阶梯 / 冒险）各一行，常驻可见；形态是**细行**而不是等权大卡。
+   复用 `.today-task-row` 的尺寸语言（圆形图标 + 双行文案 + 右侧尾列），但更紧凑：
+   这一块是「概览」不是「操作队列」——用户扫一眼三条线走到哪了，再决定点哪条。 */
+.today-line-list {
+  display: grid;
+  margin: 6px -24px 0;
+}
+
+.today-line-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+  transition: background 160ms ease;
+}
+
+.today-line-row:last-child {
+  border-bottom: 0;
+}
+
+.today-line-row:hover {
+  background: #fafbfc;
+}
+
+/* 图标比任务队列的小一号：视觉上「这是概览」 */
+.today-line-row .today-task-icon {
+  width: 44px;
+  height: 44px;
+}
+
+.today-line-main {
+  min-width: 0;
+  flex: 1;
+  display: grid;
+  gap: 2px;
+}
+
+.today-line-main strong {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.today-line-main span {
+  color: var(--muted);
+  font-size: 12.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.today-line-tail {
+  flex: 0 0 auto;
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+  text-align: right;
+}
+
+.today-line-value {
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.today-line-tail small {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* ── 移动端首屏预算（2026-09-24 首页重规划 P3）──────────────────────────────
+   动机：375×667 下 `.today-v2 .ui-banner-inner` 的 `min-height: 224px`
+   （特异性 0,2,0）压过了 `@media (max-width:720px) .ui-banner-inner { min-height: 0 }`
+   （0,1,0），于是 224px 固定生效、吃掉首屏 33.6%；叠加四数字摘要条后，
+   原先的任务队列第 5 行落在第 1.54 屏。三线状态行要在不牺牲可读性的前提下进到第 2 屏，
+   就必须在这里**显式**给一个更高特异性的值。
+
+   注意：数析建议的 `min(224px, 34vh)` 是**空操作**——375×667 时 34vh = 226.8px、
+   1440×900 时 34vh = 306px，两个视口下 `min()` 都返回 224px。所以这里给的是绝对值。 */
+@media (max-width: 720px) {
+  .today-v2 .ui-banner-inner {
+    min-height: 0;
+    padding-top: 20px;
+    padding-bottom: 22px;
+  }
+
+  .today-v2 .ui-banner-copy h1 {
+    font-size: 27px;
+  }
+
+  /* 四个数字压成一行：省下约两行的高度，这是首屏预算的主要来源 */
+  .today-strip {
+    padding-top: 16px;
+    padding-bottom: 14px;
+    gap: 12px 10px;
+  }
+
+  .today-strip-icon {
+    display: none;
+  }
+
+  .today-strip-stat {
+    min-width: 0;
+    flex: 1 1 0;
+    padding-right: 0;
+    border-right: 0;
+    gap: 1px;
+  }
+
+  .today-strip-stat strong {
+    font-size: 19px;
+  }
+
+  .today-strip-stat small {
+    font-size: 10.5px;
+  }
+
+  /* 三线行在手机上退到两栏：线名/位置 + 尾列，去掉 44px 图标省一行高度 */
+  .today-line-row {
+    gap: 10px;
+    padding: 11px 16px;
+  }
+
+  .today-line-row .today-task-icon {
+    width: 34px;
+    height: 34px;
+  }
+}
+
 /* 摘要卡右侧行动区（原 Hero 的两个按钮移入卡内） */
 .today-strip {
   flex-wrap: wrap;
@@ -24739,7 +24994,7 @@ html {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--accent);
+  color: var(--accent-ink);
   font-size: 13px;
 }
 
@@ -25033,7 +25288,7 @@ html {
   padding: 3px 10px;
   border-radius: 99px;
   font-size: 12px;
-  color: var(--accent);
+  color: var(--accent-ink);
   background: var(--accent-soft, #fff1e8);
 }
 
@@ -25595,7 +25850,7 @@ html {
 .world-progress {
   font-size: 13px;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-ink);
   white-space: nowrap;
 }
 
@@ -25674,7 +25929,7 @@ html {
 .gate-row-next {
   font-size: 12px;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-ink);
   white-space: nowrap;
 }
 
@@ -26224,7 +26479,7 @@ html {
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: var(--accent);
+  color: var(--accent-ink);
   padding: 4px 10px;
   border-radius: 999px;
   background: var(--accent-soft);
@@ -26843,7 +27098,7 @@ html {
 }
 
 .stats-wrong-row:nth-child(2) .stats-wrong-rank { background: var(--danger); color: #fff; }
-.stats-wrong-row:nth-child(3) .stats-wrong-rank { background: var(--accent); color: #fff; }
+.stats-wrong-row:nth-child(3) .stats-wrong-rank { background: var(--accent-cta); color: #fff; }
 .stats-wrong-row:nth-child(4) .stats-wrong-rank { background: var(--amber); color: #fff; }
 
 .stats-wrong-body {
@@ -26871,7 +27126,7 @@ html {
   font-style: normal;
   font-size: 13px;
   font-weight: 600;
-  color: var(--accent);
+  color: var(--accent-ink);
   font-variant-numeric: tabular-nums;
 }
 
@@ -27521,7 +27776,7 @@ html {
   gap: 6px;
   padding: 10px 14px;
   font-size: 13px;
-  color: var(--accent);
+  color: var(--accent-ink);
   text-decoration: none;
   transition: background 0.12s ease;
 }
@@ -27975,7 +28230,7 @@ html {
   flex-shrink: 0;
   padding: 7px 16px;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--accent-cta);
   color: #fff;
   font-size: 13.5px;
   font-weight: 700;
@@ -27984,7 +28239,7 @@ html {
 }
 
 .weak-spots-narrative-cta:hover {
-  background: var(--accent-strong);
+  background: var(--accent-cta-strong);
 }
 
 /* ④ 语法能力画像（/grammar/profile） */

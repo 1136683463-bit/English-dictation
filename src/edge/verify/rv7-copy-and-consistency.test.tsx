@@ -195,7 +195,9 @@ describe("RV7-b 数据带进来的讲解文案（记录现状）", () => {
         }
       }
     }
-    expect(total).toBeGreaterThan(300);
+    // 2026-09-24：hunt 改为一案一卡后，grammarNote 由「每错点一条」变为「每案一条」，
+    // 总数从 >300 降到 214（= 有错点命中的案件数）。零术语断言不受影响（仍为 0）。
+    expect(total).toBeGreaterThan(200);
     // 2026-09-22 批四十三：huntCases 的用户可见文案做了零术语清理（313 处 → 0），
     // 断言随之由「记录缺陷（>300）」反转为「不得再命中」。
     expect(hitCount, `仍有 grammarNote 命中术语：${samples.join(" | ")}`).toBe(0);
@@ -479,7 +481,8 @@ describe("RV7-c 答案与题面语义一致", () => {
       });
       if (task.mode === "cloze" && task.options.length < 4) underFour += 1;
     });
-    expect(underFour).toBeGreaterThan(15);
+    // 2026-09-24：补上课程词汇池候选后，选项凑不满 4 个的题从 >15 降到 0（原为「记录缺陷」断言）
+    expect(underFour).toBe(0);
   });
 
   it("cloze 干扰项常是题面里已有的词（用户可直接排除）", () => {
@@ -526,10 +529,13 @@ describe("RV7-c 答案与题面语义一致", () => {
       if (visible.length > 0) anyDistractorVisible += 1;
     });
     expect(total).toBeGreaterThan(190);
-    // 现状：每一课的干扰项里都至少有 1 个已在题面出现过（用户可直接排除）
-    expect(anyDistractorVisible).toBe(total);
-    // 绝大多数课的干扰项「全部」都能从题面上划掉
-    expect(allDistractorsVisible / total).toBeGreaterThan(0.85);
+    /**
+     * 2026-09-24：这条原先记录的是**缺陷现状**——每一课的干扰项里都至少有一个已在题面出现过
+     * （用户可直接排除），根源是内容词只能退化成「句内其他词」。
+     * 补上「同长度课程词汇池」候选后，该数从 205/205 降到个位数，断言随之反转为**守卫**。
+     */
+    expect(anyDistractorVisible / total, "干扰项不应再普遍取自题面").toBeLessThan(0.1);
+    expect(allDistractorsVisible / total, "「全部可从题面划掉」的题应几乎绝迹").toBeLessThan(0.05);
   });
 
   it("rebuild 的词块集合等于原句词集合，且不是原序", () => {

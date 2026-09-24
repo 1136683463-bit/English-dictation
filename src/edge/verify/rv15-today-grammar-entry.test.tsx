@@ -9,24 +9,36 @@
  * today / training / adventure / library）。**内容做完了却没人看见。**
  *
  * 本文件锁三件事：
- *   ① 首屏 Hero 有语法线主 CTA，且**落点正确**（到期语法句优先，其次下一课）
- *   ② 任务队列里有语法行，且进度数字与 `lessonService` 同源（不另算一套）
- *   ③ 空态不炸：一节课没学、也没有到期卡时，CTA 仍指向语法路径
+ *   ① 语法线有固定入口，且**落点正确**（到期语法句优先，其次下一课）
+ *   ② 该入口的进度数字与 `lessonService` 同源（不另算一套）
+ *   ③ 空态不炸：一节课没学、也没有到期卡时，入口仍指向语法路径
  *
- * ⚠️ 判据纪律：本闸**只查「有没有入口、指向对不对」**，不查文案措辞——
- * 文案会随产品调整，把它写死会让闸变成「改文案就红」的噪声源。
+ * ⚠️ 判据纪律：本闸**只查「有没有入口、指向对不对、三处数据源是否同源」**，
+ * 不查文案措辞——文案会随产品调整，把它写死会让闸变成「改文案就红」的噪声源。
+ *
+ * ── 2026-09-24 首页重规划对锚点的影响（重要，勿当成放水）────────────────
+ * 语法线的固定入口锚点 `today-grammar-cta` 从 **Hero 的 action 槽**移到了
+ * **「三线走到哪了」区块的语法行**（`TodayPage` 的 `.today-line-row`）。原因：
+ * 重规划后 Hero 的主 CTA 允许指向任意一条线（由 `homeDirectiveService` 决策），
+ * 语法线不再恒占主 CTA，所以「语法线的固定入口」需要一个不随推荐变化的锚点。
+ *
+ * ① ② ③ ④ 的**断言一字未改**（指向第 N 课、含「语法阶梯」与 `/205`、空态落在语法线内），
+ * 只改了 ① ② 两条的**用例标题**（原标题写着「首屏 Hero」，移位置后已不属实，
+ * 留着会误导下一个人）。第 ⑤ 条则**升级**为「三处同源」判据，见该用例内的说明。
+ * 新位置在 DOM 顺序上比原先的任务队列第 5 行**更靠前**，不是降级。
  */
 import { describe, expect, it } from "vitest";
 import { mountPage, resetStorage } from "../harness";
 import TodayPage from "../../pages/TodayPage";
 import { grammarLessons } from "../../data/grammarLessons";
+import { lineOfPath } from "../../services/homeDirectiveService";
 import { makeAppData, seedAppData } from "./fixtures";
 import type { AppData } from "../../types";
 
 const mountToday = () => mountPage(<TodayPage />, "/today", "/today");
 
 describe("RV15 今日页的语法线入口", () => {
-  it("① 首屏 Hero 有语法主 CTA，指向第 1 课（新课未开始时）", () => {
+  it("① 语法线有固定入口，指向第 1 课（新课未开始时）", () => {
     resetStorage();
     seedAppData(makeAppData({}) as AppData);
     const page = mountToday();
@@ -39,7 +51,7 @@ describe("RV15 今日页的语法线入口", () => {
     page.unmount();
   });
 
-  it("② 学完前 N 课，CTA 指向第 N+1 课（与 lessonService 同源）", () => {
+  it("② 学完前 N 课，入口指向第 N+1 课（与 lessonService 同源）", () => {
     resetStorage();
     const done = grammarLessons.slice(0, 3).map((lesson) => lesson.id);
     seedAppData(makeAppData({ grammarLessonsDone: done }) as AppData);
@@ -76,16 +88,35 @@ describe("RV15 今日页的语法线入口", () => {
     page.unmount();
   });
 
-  it("⑤ 闸自检：判据能真的区分（换个不存在的 href 就该失败）", () => {
+  it("⑤ 闸自检：主 CTA / 落点 / 说明行三条数据源同源，且检测器真的能区分", () => {
     resetStorage();
     seedAppData(makeAppData({}) as AppData);
     const page = mountToday();
-    const cta = page.container.querySelector<HTMLAnchorElement>("[data-testid='today-grammar-cta']");
+    const cta = page.container.querySelector<HTMLAnchorElement>("[data-testid='today-primary-cta']");
+    expect(cta, "今日页应有主 CTA").toBeTruthy();
+    const line = cta!.getAttribute("data-line");
     const href = cta!.getAttribute("href") ?? "";
-    // 正例：确实在语法线内
-    expect(href.startsWith("/grammar/"), "落点应在语法线内").toBe(true);
-    // 反例：它**不该**是词汇线或其他模块（防有人把 CTA 指错地方却没人发现）
-    expect(/^\/(review|training|words|mistakes|units|library|stats|settings|today|adventure)/.test(href), "落点不应指向词汇线或其它模块").toBe(false);
+    const note = page.container.querySelector<HTMLElement>("[data-testid='today-cta-note']");
+
+    /**
+     * 判据从「落点必须在语法线内」升级为「三处必须同源」——**这是升级，不是放宽**：
+     * 旧判据在改造后必然为假（首页重规划后主 CTA 允许指向任意一条线），
+     * 但它锁的其实只是「谁是首屏主角」这个当时的产品选择，而不是「文案与按钮是否自相矛盾」
+     * 这个真正的缺陷。真实数据下改造前的 Hero 会渲染成「建议可以推进新词」+ 按钮「继续第 1 课」
+     * ——推荐词汇、按钮开语法，而旧判据对它**完全无感**。新判据能抓到这个错配。
+     */
+    expect(["vocab", "grammar", "adventure"], "data-line 必须是三条线之一").toContain(line);
+    expect(lineOfPath(href), `落点 ${href} 必须属于 data-line 声明的线`).toBe(line);
+    expect(note, "应有「为什么是它」说明行").toBeTruthy();
+    expect(note!.getAttribute("data-line"), "说明行必须与主 CTA 同线").toBe(line);
+
+    // ── 错配检测器自检：判据必须能真的失败（正例为真、反例为假、未知路径不得被悄悄归类） ──
+    expect(lineOfPath("/grammar/lesson/l1"), "语法落点应判为 grammar").toBe("grammar");
+    expect(lineOfPath("/adventure/adv-1"), "冒险落点应判为 adventure").toBe("adventure");
+    expect(lineOfPath("/training"), "训练落点应判为 vocab").toBe("vocab");
+    expect(lineOfPath("/adventure/adv-1") !== "grammar", "跨线落点必须被判为错配").toBe(true);
+    expect(lineOfPath("/training") !== "grammar", "跨线落点必须被判为错配").toBe(true);
+    expect(lineOfPath("/nonsense"), "无法归属的路径必须为 null，否则错配会被放行").toBe(null);
     page.unmount();
   });
 });
