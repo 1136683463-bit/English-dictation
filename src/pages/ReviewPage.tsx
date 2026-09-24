@@ -120,6 +120,15 @@ export default function ReviewPage() {
   const [revealed, setRevealed] = useState(false);
   const [answer, setAnswer] = useState("");
   const [diff, setDiff] = useState<ReturnType<typeof compareText>>([]);
+  /**
+   * 上次「检查答案」时的文本快照（ST2b，2026-09-24）。
+   *
+   * 批改面板此前只看 `diff.length > 0`：检查完再改文本，面板仍以「当前答案」的口径
+   * 展示上一版的差异与分数——与课程页「答对后乱摆仍显示答对」是同一类不诚实。
+   * 语言日记页的 `settled = done && !isDirty` 已是正确模式，这里对齐：
+   * 文本与快照不一致时，面板降级为「上一版的批改」并提示重新检查。
+   */
+  const [checkedAnswer, setCheckedAnswer] = useState<string | null>(null);
   const [lastAttempt, setLastAttempt] = useState<ReviewAttempt | null>(null);
   const [pendingLowRating, setPendingLowRating] = useState<1 | 2 | null>(null);
   // R10：达 dailyReviewLimit 后的软劝导条，本次访问内可关闭。
@@ -177,6 +186,7 @@ export default function ReviewPage() {
   const checkAnswer = () => {
     const tokens = compareText(expected, answer, data.settings.strictPunctuation);
     setDiff(tokens);
+    setCheckedAnswer(answer);
     setRevealed(true);
   };
 
@@ -200,6 +210,7 @@ export default function ReviewPage() {
     });
     setAnswer("");
     setDiff([]);
+    setCheckedAnswer(null);
     setRevealed(false);
     setIndex((current) => Math.min(current, Math.max(0, queue.length - 2)));
   };
@@ -507,12 +518,17 @@ export default function ReviewPage() {
                 )}
 
                 {diff.length > 0 && (
-                  <div className="review-result-panel">
+                  <div className={`review-result-panel${checkedAnswer !== answer ? " is-stale" : ""}`}>
                     <div className="panel-header">
                       <h2>批改结果</h2>
                       <strong>{score} 分</strong>
                     </div>
                     <DiffView tokens={diff} />
+                    {checkedAnswer !== answer && (
+                      <p className="review-result-stale" role="status">
+                        这是上一版的批改——文本已改动，点「检查答案」重新批改。
+                      </p>
+                    )}
                   </div>
                 )}
 

@@ -164,7 +164,20 @@ const mcqCandidatesOf = (lesson: GrammarLesson): Candidate[] => {
   const out: Candidate[] = [];
   for (const [index, step] of lesson.guided.entries()) {
     if (step.kind !== "choose" || !step.answer) continue;
-    const sentence = `${step.before ?? ""}____${step.after ?? ""}`.replace(/\s+/g, " ").trim();
+    /**
+     * 空位两侧必须**补空格**再拼（2026-09-25 真机走查抓出）。
+     *
+     * 原先直接 `${before}____${after}`：`before` 不以空格结尾时（"I want"）会拼成
+     * `I want____apple.`。两个后果：
+     *   ① 题面难看（空位粘在前一个词上）；
+     *   ② 更严重——错题回流时把空位换回答案会得到 `I wantanapple.`，
+     *      被「必须是整句」的守门判为 2 个词而**静默丢弃**，于是选择题的错题一条都没进复习队列。
+     */
+    const sentence = [step.before ?? "", "____", step.after ?? ""]
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .join(" ")
+      .replace(/\s+/g, " ");
     const options = (step.options ?? []).map((text, optionIndex) => ({
       id: `o${optionIndex}`,
       en: text,

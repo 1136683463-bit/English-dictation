@@ -197,16 +197,19 @@ describe("EX2 考试页文案纪律（P0-9 页面侧）", () => {
     expect(offenders, `考试页出现倒计时措辞：\n${offenders.join("\n")}`).toEqual([]);
   });
 
-  it("不承诺未实现的行为：P1-2（错题回流 SM-2）落地前，不许写「会回到复习队列」", () => {
+  it("承诺必须兑现：文案说「排进复习队列」，代码里就真的要有回流（P1-2 已落地）", () => {
     /**
-     * 这是一条**反向登记**用例：等 P1-2 真做完了，它应该变红
-     * ——那时把「会回来」的文案加回去，并删掉这条断言。
-     * 现在它守着「别又写出一个兑现不了的承诺」。
+     * 这条用例**翻过面**。原来它守的是「P1-2 没做，就不许写『会回到复习队列』」；
+     * P1-2 落地后改为守「写了就必须有实现」——同一件事的两个方向。
+     * 判据：页面文案只要出现「复习队列」，源文件里就必须真的调用回流函数。
      */
-    const offenders = pageCopy().filter((text) => text.includes("复习") || text.includes("队列"));
+    const copy = pageCopy();
+    const promises = copy.filter((text) => text.includes("复习队列"));
+    if (promises.length === 0) return; // 不承诺也可以，那这条就不适用
+    const raw = readFileSync(new URL("../../pages/GrammarExamPage.tsx", import.meta.url), "utf8");
     expect(
-      offenders,
-      `错题回流（P1-2）尚未实现，文案不得承诺：\n${offenders.join("\n")}`
-    ).toEqual([]);
+      raw.includes("queueExamMistakes"),
+      `文案承诺了「复习队列」但页面没调用回流：\n${promises.join("\n")}`
+    ).toBe(true);
   });
 });

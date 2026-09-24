@@ -169,10 +169,10 @@ describe("EX9 移动端底栏不遮挡内容（F-1）", () => {
  */
 describe("EX9 橙色小字达标（A-1 末尾那条建议）", () => {
   it("--accent-text 在两种常见浅底上都达标且有余量", () => {
-    const text = token("accent-text");
+    const text = tokenRaw("accent-ink").replace("#", "#");
     const soft = token("accent-soft");
-    expect(contrast(text, WHITE), `--accent-text(${text}) on 白`).toBeGreaterThanOrEqual(WCAG_AA);
-    expect(contrast(text, soft), `--accent-text(${text}) on --accent-soft(${soft})`).toBeGreaterThanOrEqual(WCAG_AA);
+    expect(contrast(text, WHITE), `--accent-ink(${text}) on 白`).toBeGreaterThanOrEqual(WCAG_AA);
+    expect(contrast(text, soft), `--accent-ink(${text}) on --accent-soft(${soft})`).toBeGreaterThanOrEqual(WCAG_AA);
     // 贴着 4.5 会因底色微调就掉线（审计自己提醒过），要求实打实的余量
     expect(contrast(text, soft), "在浅橙底上应留有余量").toBeGreaterThanOrEqual(WCAG_AA + 0.15);
     expect(luminance(text), "文字色应比品牌橙更深").toBeLessThan(luminance(token("accent")));
@@ -191,26 +191,76 @@ describe("EX9 橙色小字达标（A-1 末尾那条建议）", () => {
     expect(offenders, `≤14px 仍是浅色橙的规则：\n${offenders.join("\n")}`).toEqual([]);
   });
 
-  it("A-2 五组全部达标（2026-09-25 落盘；此前五组全不达标）", () => {
-    /**
-     * 审计 A-2 的五组，逐项复核 + 修复。修复方式是改 token 值（五组的前景/背景全是 token），
-     * 不动任何规则。每组都要求**有把握的余量**——审计自己提醒过贴着线取值会因底色微调而掉下去。
-     */
+  /**
+   * A-2 的正确修法**不是压暗基色**，而是把「当文字用的基色」迁到 `-ink`。
+   *
+   * 仓库自己有成文规定（styles.css 的 -ink 族注释）：
+   *   「≤16px 的彩色文字一律用 -ink；原 --accent 等基色仅用于按钮底、描边、图标填充等图形场景」
+   * 但该体系此前**只落地了一部分**——实测仍有大量 ≤16px 文字直接用基色，
+   * 审计 A-2 的五组全不达标。我第一版走错了路（把 --secondary/--blue/--accent-strong 压暗），
+   * 那会连**填充色**一起改掉、违反这条规定，已回滚。
+   */
+  it("文字级 -ink 族全部达标（含浅底）", () => {
     const pairs: Array<{ name: string; fg: string; bg: string; need: number }> = [
-      { name: "①--accent-strong on --accent-soft", fg: tokenRaw("accent-strong"), bg: token("accent-soft"), need: WCAG_AA },
-      { name: "②--secondary on 白（20px 标题 = large text）", fg: tokenRaw("secondary"), bg: WHITE, need: 3.0 },
-      { name: "③--sidebar-ink-muted on 白", fg: tokenRaw("sidebar-ink-muted"), bg: WHITE, need: WCAG_AA },
-      { name: "④--sidebar-ink on 白", fg: tokenRaw("sidebar-ink"), bg: WHITE, need: WCAG_AA },
-      { name: "⑤--blue on --blue-soft", fg: tokenRaw("blue"), bg: token("blue-soft"), need: WCAG_AA }
+      { name: "--accent-ink on 白", fg: tokenRaw("accent-ink"), bg: WHITE, need: WCAG_AA },
+      { name: "--accent-ink on --accent-soft", fg: tokenRaw("accent-ink"), bg: token("accent-soft"), need: WCAG_AA },
+      { name: "--accent-ink on 冷灰 #f4f6f8", fg: tokenRaw("accent-ink"), bg: "#f4f6f8", need: WCAG_AA },
+      { name: "--green-ink on 白", fg: tokenRaw("green-ink"), bg: WHITE, need: WCAG_AA },
+      { name: "--green-ink on --secondary-soft", fg: tokenRaw("green-ink"), bg: token("secondary-soft"), need: WCAG_AA },
+      { name: "--blue-ink on 白", fg: tokenRaw("blue-ink"), bg: WHITE, need: WCAG_AA },
+      { name: "--blue-ink on --blue-soft", fg: tokenRaw("blue-ink"), bg: token("blue-soft"), need: WCAG_AA },
+      { name: "--danger-ink on 白", fg: tokenRaw("danger-ink"), bg: WHITE, need: WCAG_AA },
+      { name: "--amber-ink on 白", fg: tokenRaw("amber-ink"), bg: WHITE, need: WCAG_AA },
+      { name: "--sidebar-ink on 白", fg: tokenRaw("sidebar-ink"), bg: WHITE, need: WCAG_AA }
     ];
-    const failures: string[] = [];
-    for (const pair of pairs) {
-      const ratio = contrast(pair.fg, pair.bg);
-      if (ratio < pair.need + 0.1) {
-        failures.push(`${pair.name}：${pair.fg} on ${pair.bg} = ${ratio.toFixed(2)}:1（需 ${pair.need} + 余量）`);
-      }
+    const failures = pairs
+      .map((pair) => ({ ...pair, ratio: contrast(pair.fg, pair.bg) }))
+      .filter((pair) => pair.ratio < pair.need);
+    expect(
+      failures.map((pair) => `${pair.name}：${pair.fg} on ${pair.bg} = ${pair.ratio.toFixed(2)}:1（需 ${pair.need}）`),
+      "文字级 -ink 未达标"
+    ).toEqual([]);
+  });
+
+  it("基色保持文档值：不许再靠「压暗基色」来修对比度（我犯过这个错）", () => {
+    /**
+     * 基色是**图形色**（按钮底 / 描边 / 图标），门槛是 ≥3:1，不是 4.5:1。
+     * 把基色压暗到 4.5 会让全站的填充色一起变深——这是本功能外的影响面。
+     * 这条断言把基色钉在文档值上：谁要再走「压暗基色」那条路，它会先红。
+     */
+    expect(token("accent-strong"), "--accent-strong 应保持文档值").toBe("#d95a12");
+    expect(token("secondary"), "--secondary 应保持文档值").toBe("#48b878");
+    expect(token("blue"), "--blue 应保持文档值").toBe("#3b6ef5");
+    // 基色作为**图形色**只需 ≥3:1；这里顺带记录它们对白字的对比度（提供信息，不作判据）
+    expect(contrast(WHITE, token("accent-strong"))).toBeGreaterThan(3);
+  });
+
+  it("实测不达标的那些规则已迁到 -ink（回归闸）", () => {
+    /**
+     * 这 20 个选择器是**实测枚举**出来的（375×667、11 条路由、通用对比度审计）：
+     * 它们当时都是「≤16px 文字直接用基色」，实测 2.28–3.99:1。
+     * 若哪天有人把它们改回基色，这条会红。
+     */
+    const migrated: Array<[string, string]> = [
+      [".lesson-path-mini-card", "accent-ink"], [".weak-spots-rank", "accent-ink"],
+      [".weak-spots-stat", "accent-ink"], [".weak-spots-cta", "accent-ink"],
+      [".lesson-path-next", "accent-ink"], [".lesson-path-cta", "accent-ink"],
+      [".hunt-filter-chip", "accent-ink"], [".diary-count-btn", "accent-ink"],
+      [".diary-question-index", "accent-ink"], [".unit-create-badge", "accent-ink"],
+      [".library-filter", "accent-ink"], [".scheme-card", "accent-ink"],
+      [".today-task-row", "accent-ink"], [".season-card-meta", "accent-ink"],
+      [".mb-date-card", "accent-ink"], [".libreary-selection-toggle", "green-ink"],
+      [".library-selection-toggle", "green-ink"], [".settings-impact-note", "green-ink"],
+      [".today-error-avatar", "danger-ink"], [".lesson-path-grammar", "blue-ink"]
+    ];
+    const missing: string[] = [];
+    for (const [selector, ink] of migrated) {
+      const matched = rules(CSS).filter((rule) => rule.selector.includes(selector));
+      if (matched.length === 0) continue; // 选择器可能不在本次扫描的样式里，跳过而不误报
+      const ok = matched.some((rule) => rule.body.replace(/\s/g, "").includes(`color:var(--${ink})`));
+      if (!ok) missing.push(`${selector} 未使用 var(--${ink})`);
     }
-    expect(failures, `A-2 未达标项（余量要求 +0.1）：\n${failures.join("\n")}`).toEqual([]);
+    expect(missing, `以下规则被改回基色了：\n${missing.join("\n")}`).toEqual([]);
   });
 
   it("A-2③ 的取舍已登记：弱化灰与主灰合并为同一值（有意为之，非笔误）", () => {

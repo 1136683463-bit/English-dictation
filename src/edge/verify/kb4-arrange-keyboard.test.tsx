@@ -201,7 +201,8 @@ describe("KB4 拼装区键盘等价性", () => {
     await flushAsync();
     expect(builtWords(page).length, "撤销后少一块").toBe(words.length - 1);
     // 已通过的题：擦一块不再撤销通关（保住「下一题」，只是允许回头改）
-    expect(feedbackClass(page), "已通过的题擦一块仍保留 pass 态").toContain("pass");
+    // ST2（2026-09-24）：擦完拼法已不等于答案 → 横幅按事实转中性；判定与出口不变
+    expect(feedbackClass(page), "已通过的题擦一块：横幅转中性，不谎称当前拼法正确").toContain("fiddling");
     expect(canAdvance(page), "已通过的题擦一块仍有「下一题」").toBe(true);
     const missing = words.find((word) => !builtWords(page).map(norm).includes(word));
     expect(missing, "应能算出缺的那个词").toBeTruthy();
@@ -279,8 +280,8 @@ describe("KB4 拼装区键盘等价性", () => {
     await flushAsync();
     expect(
       feedbackClass(page),
-      "点词块移除不应撤销「通过」"
-    ).toContain("pass");
+      "点词块移除不应撤销「通过」——横幅转中性、出口仍在（ST2）"
+    ).toContain("fiddling");
     expect(canAdvance(page), "「下一题」应仍在").toBe(true);
     page.unmount();
   });
@@ -295,7 +296,7 @@ describe("KB4 拼装区键盘等价性", () => {
     expect(feedbackClass(page), "前置：已通过").toContain("pass");
     clickEl(undoButton(page));
     await flushAsync();
-    expect(feedbackClass(page), "橡皮擦路径：已通过的题擦一块仍保留 pass").toContain("pass");
+    expect(feedbackClass(page), "橡皮擦路径：已通过的题擦一块 → 横幅转中性（ST2），出口仍在").toContain("fiddling");
     expect(canAdvance(page), "橡皮擦路径：下一题仍在").toBe(true);
     page.unmount();
   });

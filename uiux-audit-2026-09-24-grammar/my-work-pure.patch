@@ -1,0 +1,1353 @@
+diff --git a/src/edge/verify/gq1-review-tasks.test.ts b/src/edge/verify/gq1-review-tasks.test.ts
+index 6fba023..48f615e 100644
+--- a/src/edge/verify/gq1-review-tasks.test.ts
++++ b/src/edge/verify/gq1-review-tasks.test.ts
+@@ -34,6 +34,7 @@ import { grammarLessons } from "../../data/grammarLessons";
+ import { huntCases } from "../../data/huntCases";
+ import { bundledDictionary } from "../../data/bundledDictionary";
+ import { addHuntGapSentences } from "../../services/huntService";
++import { reviewSentenceOfGuidedStep } from "../../services/lessonService";
+ import { makeTestData } from "../../services/testUtils";
+ import {
+   buildGrammarReviewTask,
+@@ -56,6 +57,20 @@ const hasSentenceEnd = (value: string): boolean => /[.!?]["')\]]*$/.test(value.t
+ 
+ // ── 干扰项「是不是真词」的判定依据（三层，从严到宽） ──
+ const dictHeadwords = new Set(bundledDictionary.map((entry) => entry.word.toLowerCase()));
++/**
++ * 词典的**真实词性**（n. / v. / a. / adv. …）。
++ *
++ * 2026-09-24 加：此前的 `slotOf` 用**后缀形状**推词性，把 `tired`（形容词 a.）判成
++ * `verb-ed`、`always`（副词 adv.）判成 `verb-s`，于是同为内容词的干扰项被当成
++ * 「一个像动词、一个像名词」而删掉——gq1 的 weakDistractors 1214 条里大量是这个成因。
++ * 这与 `ned`／`finishing`／`finishs` 同属「用形状判断身份」。
++ */
++const dictPos = new Map<string, string>();
++for (const entry of bundledDictionary) {
++  const word = entry.word.toLowerCase();
++  const pos = String((entry as { partOfSpeech?: string }).partOfSpeech ?? "");
++  if (pos && !dictPos.has(word)) dictPos.set(word, pos);
++}
+ /** 应用自身语料里出现过的词（课程 + 案件 + 课程词汇池）——用户学过、见过。 */
+ const appCorpus = new Set<string>();
+ const addCorpus = (text: string | undefined): void => {
+@@ -98,7 +113,15 @@ const baseForms = (word: string): string[] => {
+   const out = [word];
+   if (word.endsWith("ies") && word.length > 4) out.push(`${word.slice(0, -3)}y`);
+   if (word.endsWith("es") && word.length > 3) out.push(word.slice(0, -2));
+-  if (word.endsWith("s") && !word.endsWith("ss") && word.length > 3) out.push(word.slice(0, -1));
++  /**
++   * 剥 `-s` 前先确认「词干 + s」本身是合法英语变形。
++   * 否则会把**造出来的词**当成真词：`finishs` 剥成 `finish` 就撞上词典
++   * （正确形态是 `finishes`）——2026-09-24 的 blind spot，
++   * 实测漏掉了 lesson-153 / lesson-180 的两道题。
++   * 咝音（s/sh/ch/x/z）结尾的词干只能配 `-es`，不配 `-s`。
++   */
++  const sibilantStem = /(s|sh|ch|x|z)$/.test(word.slice(0, -1));
++  if (word.endsWith("s") && !word.endsWith("ss") && word.length > 3 && !sibilantStem) out.push(word.slice(0, -1));
+   if (word.endsWith("ed") && word.length > 3) out.push(word.slice(0, -2), `${word.slice(0, -1)}`);
+   if (word.endsWith("ing") && word.length > 4) out.push(word.slice(0, -3), `${word.slice(0, -3)}e`);
+   return out;
+@@ -124,16 +147,43 @@ const SLOT_PATTERNS: Array<[string, RegExp]> = [
+   ["pronoun", /^(i|you|he|she|it|we|they|me|him|her|us|them|my|your|his|our|their|this|that|these|those|mine|yours|hers|ours|theirs)$/],
+   ["numeral", /^\d+$/]
+ ];
++/** 词的真实词性（变形先还原到基础形查词典）；词典无此条时返回 null。 */
++const posOf = (word: string): string | null => {
++  const lower = word.toLowerCase();
++  if (dictPos.has(lower)) return dictPos.get(lower)!;
++  for (const base of baseForms(lower)) if (dictPos.has(base)) return dictPos.get(base)!;
++  return null;
++};
++const VERB_POS = new Set(["v.", "vt.", "vi."]);
++/** 三个「动词形状」的槽位——只在词典确认是动词时才承认。 */
++const VERB_SHAPED = new Set(["verb-s", "verb-ed", "verb-ing"]);
+ const slotOf = (word: string): string => {
+   const lower = word.toLowerCase();
+-  for (const [name, pattern] of SLOT_PATTERNS) if (pattern.test(lower)) return name;
++  const pos = posOf(lower);
++  const verbish = Boolean(pos && VERB_POS.has(pos));
++  for (const [name, pattern] of SLOT_PATTERNS) {
++    // `tired` 是形容词 a.、`always` 是副词 adv.——形状像动词但不是动词，不能落进动词槽
++    if (VERB_SHAPED.has(name) && !verbish) continue;
++    if (pattern.test(lower)) return name;
++  }
+   return "other";
+ };
+ /** 动词类槽位之间不互通（am 的干扰项不该是 teacher）；「其他」与任何非动词槽位都算互通。 */
++/**
++ * 两个词是否**同词根**（want / wants / wanting / wanted）。
++ * 同词根的形态变体是最**强**的干扰项——当这一课的点就是动词形态时
++ * （`don't` + 原形、`Could you` + 原形、`have` + 过去分词、`be` + `-ing`），
++ * 它们正是要考的差别，不该因为「动词槽之间不互通」被判成无效（2026-09-24 修）。
++ */
++const sharesBaseForm = (a: string, b: string): boolean => {
++  const left = new Set(baseForms(a.toLowerCase()));
++  return baseForms(b.toLowerCase()).some((form) => left.has(form));
++};
+ const slotCompatible = (answer: string, distractor: string): boolean => {
+   const a = slotOf(answer);
+   const d = slotOf(distractor);
+   if (a === d) return true;
++  if (sharesBaseForm(answer, distractor)) return true;
+   const verbish = new Set(["be", "aux", "verb-s", "verb-ed", "verb-ing", "neg-contraction"]);
+   return !verbish.has(a) && !verbish.has(d);
+ };
+@@ -162,9 +212,19 @@ for (const lesson of grammarLessons) {
+     `${lesson.id} · addLessonCoreSentence`
+   );
+   lesson.guided.forEach((step, index) => {
++    /**
++     * 2026-09-24：入队侧已改为「只入整句」，枚举必须走同一个函数，否则会报出永远不会出现的卡。
++     * 规则见 lessonService.reviewSentenceOfGuidedStep：
++     *   choose 用 before/answer/after 还原整句；arrange 本就是整句；
++     *   replace / spot 变换后的整句不在数据里 → 不入队（返回空串）。
++     * 此前这里无条件压 `step.answer`，于是把 `am` / `is` / `have` 这类**单个词**
++     * 也当成卡枚举出来，产出 rebuildTooFewChunks 393 处（P0）。
++     */
++    const sentence = reviewSentenceOfGuidedStep(step);
++    if (!sentence) return;
+     pushCard(
+       `lesson:${lesson.id}#guided${index}`,
+-      step.answer ?? "",
++      sentence,
+       `语法课：${lesson.episode} ${lesson.title}`,
+       `${lesson.id} guided[${index}].${step.kind}`
+     );
+@@ -286,32 +346,70 @@ const record = (check: string, severity: Finding["severity"], scan: ScanCard, de
+  * 回归门禁：只允许变好，不允许变差（占比上界 = 基线占比 × 1.1 + 少量绝对容差）。
+  */
+ const BASELINE = {
+-  /** 答案词仍出现在题面里（泄题）：扫描时为 0，必须保持 0 */
+-  clozeAnswerVisibleInPrompt: 0,
+-  /** 选项不足 4 个的 cloze 占比（扫描时 656/3609 = 18.2%） */
+-  clozeFewerThanFourOptionsRatio: 0.182,
+-  /** 只有 1 个选项的 cloze 占比（扫描时 291/3609 = 8.1%） */
+-  clozeSingleOptionRatio: 0.081,
+-  /** sentence 词数 < 2 或 无句末标点的卡占比（扫描时 371/451 of 3609 = 10~12.5%） */
+-  sentenceNotASentenceRatio: 0.125,
+-  /** free_type 题面复述答案的占比（扫描时 1/3609） */
+-  freeTypePromptEchoesAnswer: 1,
+-  /** hunt 卡面混入中文修正括注（扫描时 4 张卡 / 每卡 3 型） */
+-  huntCardCjkInFront: 4,
++  /**
++   * 答案词仍出现在题面里（泄题）**计数**。⚠ 这一项**没有被断言**（只在 A1-3 的 console.log 里打印），
++   * 被断言的是下面的 `clozeAnswerVisible`。当前实际 = 4。要真正守住需改成断言。
++   */
++  clozeAnswerVisibleInPrompt: 4,
++  /** 选项不足 4 个的 cloze 占比（2026-09-24：686 → 222 / 3481 = 6.4%） */
++  /**
++   * 2026-09-24：222 → 0。review 侧 buildClozeOptions 补上「同长度课程词汇池」这一类候选后，
++   * 内容词不再只能退化成句内其他词，选项数稳定到 4。
++   */
++  clozeFewerThanFourOptionsRatio: 0,
++  /** 只有 1 个选项的 cloze 占比（2026-09-24：311 → 0） */
++  clozeSingleOptionRatio: 0,
++  /** sentence 词数 < 2 或 无句末标点的卡占比（2026-09-24：1500 → 15；词数<2 已归零） */
++  sentenceNotASentenceRatio: 0.002,
++  /**
++   * cloze 挖掉的不是实词的占比（2026-09-24：123 → 21 / 3481 = 0.6%）。
++   * 此前 A1-3 复用了 `sentenceNotASentenceRatio` 这个键——两个检查量的根本不是一件事，
++   * 导致收紧「词数<2」时会连带把这一项卡住（反之亦然）。故拆成独立键。
++   */
++  improperBlankRatio: 0.007,
++  /** free_type 题面复述答案的占比（2026-09-24：1 → 0） */
++  freeTypePromptEchoesAnswer: 0,
++  /** hunt 卡面混入中文修正括注（2026-09-24：4 → 0） */
++  huntCardCjkInFront: 0,
+   /** 同一案件产生多张 front 相同的卡（扫描时 745 卡 → 543 张是重复；见 2.6b） */
+   huntDuplicateCards: 581, // 批四十七：+L204 后 577→581（数据增长）
+-  /** 词块数 < 2 的 rebuild 占比（扫描时 371/3609 = 10.3%） */
+-  rebuildTooFewChunksRatio: 0.103,
+-  /** 多词句打乱后仍等于原句（首尾同形兜底失效）占比（扫描时 1/3609） */
+-  rebuildAlreadySolvedRatio: 0.001,
++  /** 词块数 < 2 的 rebuild 占比（2026-09-24：393 → 0。根因＝单词语答案被当句子入队） */
++  rebuildTooFewChunksRatio: 0,
++  /** 多词句打乱后仍等于原句（首尾同形兜底失效）占比（2026-09-24：1 → 0） */
++  rebuildAlreadySolvedRatio: 0,
+   /** hunt cloze 的正确答案是中文括注片段（扫描时 3 题，随挖空位变化在 2–7 之间） */
+   huntClozeAnswerIsChineseFragment: 7,
+-  /** 复习 cloze 干扰项不是真词（扫描时 8 个去重词：mustn't + hunt 中文括注碎片） */
+-  distractorNotRealWord: 8,
++  /** 复习 cloze 干扰项不是真词（2026-09-24：8 → 1；剩下 1 条是误报，见下） */
++  distractorNotRealWord: 1,
+   /** cloze 答案词仍在题面（扫描时含 hunt 修正句的 4 例） */
+   clozeAnswerVisible: 4
+ };
+ 
++/**
++ * 2026-09-24 基线大幅收紧的来源（复习卡生成题的「单词语卡」类缺陷整批归零）：
++ *
++ * 根因：`GrammarLessonPage` 把 guided 各题的 `answer` 直接当句子入队，而
++ * choose / replace / spot 的 answer 是**单个词**（`am` / `is` / `have`）。
++ * 单词卡进了句子级复习队列后，cloze 只剩 1 个选项、rebuild 只剩 1 个词块。
++ *
++ * 修法三处联动：
++ *   ① 入队侧 `lessonService.reviewSentenceOfGuidedStep`——choose 用 before/after 还原整句
++ *      （含 `___` 占位符的排法），replace / spot 因变换后整句不在数据里而不入队；
++ *      `saveMistakeIfNeeded` 收口：词数 < 2 一律不入队。
++ *   ② 生成侧 `grammarReviewService.buildGrammarReviewTask`——词块 < 2 的卡强制走 free_type，
++ *      兜住用户队列里的存量卡。
++ *   ③ 扫描侧本文件的 guided 枚举改用同一个 `reviewSentenceOfGuidedStep`，
++ *      否则会报出永远不会出现的卡（此前无条件压 `step.answer`）。
++ *
++ * ③ 是「让扫描跟着生产者走」而不是「改数字」——枚举本就是在模拟入队规则，
++ * 生产者改了、枚举不跟着改，扫描就会指向不存在的卡。核实方式：全库 205 课逐课
++ * 还原 choose 题，占位符残留 0 / 答案缺失 0 / 标点空格 0（探针 review-sentence-verify）。
++ *
++ * 仍存的已知误报：`distractorNotRealWord` 剩 1 条是 `mustn't`——它是真词，
++ * 该检查判定「不是英语词」是因为词典查不了缩写。
++ */
++
++
+ describe("GQ1 · 复习卡生成题全库扫描（A 可作答性 / B 语义一致 / C 干扰项 / D 判分）", () => {
+   it("扫描覆盖：枚举出的卡片与生成的任务量（证明覆盖面）", () => {
+     const byOrigin = new Map<string, number>();
+@@ -324,7 +422,9 @@ describe("GQ1 · 复习卡生成题全库扫描（A 可作答性 / B 语义一
+     console.log("[GQ1] 卡片数:", cards.length, "任务数:", tasks.length, "free_type flag:", isFreeTypeReviewEnabled());
+     console.log("[GQ1] 题型分布:", [...modeCounts.entries()]);
+     console.log("[GQ1] 来源分布(前 12):", [...byOrigin.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12));
+-    expect(cards.length).toBeGreaterThan(3000);
++        // 2026-09-24：hunt 一案一卡后，重复卡面（曾 576 张）不再产生，卡片数由 3481 降至 ~2905。
++    // 此下限原先按「含重复卡」的旧基数写成 3000，会误报覆盖不足。
++    expect(cards.length).toBeGreaterThan(2800);
+     expect(tasks.length).toBe(cards.length * reviewCountsForScan.length);
+   });
+ 
+@@ -486,7 +586,7 @@ describe("GQ1 · 复习卡生成题全库扫描（A 可作答性 / B 语义一
+       }
+     }
+     console.log("[GQ1] A1-3 挖空非实词:", improperBlank.length, "题面泄漏答案:", leaked.length, "基线:", BASELINE.clozeAnswerVisibleInPrompt);
+-    expect(improperBlank.length / cards.length).toBeLessThanOrEqual(BASELINE.sentenceNotASentenceRatio);
++    expect(improperBlank.length / cards.length).toBeLessThanOrEqual(BASELINE.improperBlankRatio);
+     expect(leaked.length).toBeLessThanOrEqual(BASELINE.clozeAnswerVisible);
+   });
+ 
+@@ -835,19 +935,28 @@ describe("GQ1 · 复习卡生成题全库扫描（A 可作答性 / B 语义一
+       const { task } = entry;
+       if (task.mode !== "cloze") continue;
+       items += 1;
+-      const valid = task.options.filter((option) => {
+-        if (option === task.answer) return false;
+-        if (judgeNorm(option) === judgeNorm(task.answer)) return false;
+-        if (/^[0-9]+$/.test(option)) return false;
+-        if (!isRealEnglishWord(option)) return false;
+-        return slotCompatible(task.answer, option);
+-      }).length;
++      /**
++       * 2026-09-24：记下**每个干扰项是被哪条判据删掉的**。只有计数看不出该修哪条判据——
++       * gq2 的同类检查就是靠这个发现「slotCompatible 把同词根形态变体当无效」的。
++       */
++      const whyDropped = (option: string): string | null => {
++        if (option === task.answer || judgeNorm(option) === judgeNorm(task.answer)) return "同于答案";
++        if (/^[0-9]+$/.test(option)) return "数字";
++        if (!isRealEnglishWord(option)) return "非真词";
++        if (!slotCompatible(task.answer, option)) return "槽位不相容";
++        return null;
++      };
++      const valid = task.options.filter((option) => whyDropped(option) === null).length;
+       histogram.set(valid, (histogram.get(valid) ?? 0) + 1);
+       if (valid >= 2) good += 1;
+       else {
+-        const sample = `${entry.scan.id} answer="${task.answer}" options=${JSON.stringify(task.options)} prompt="${task.promptText}" 有效=${valid}`;
++        const dropped = task.options
++          .filter((option) => whyDropped(option) !== null)
++          .map((option) => `${option}(${whyDropped(option)})`)
++          .join(" ");
++        const sample = `${entry.scan.id} answer="${task.answer}" options=${JSON.stringify(task.options)} 有效=${valid} 被删=${dropped} prompt="${task.promptText}"`;
+         record("weakDistractors", "P1", entry.scan, `有效干扰项只有 ${valid} 个（题目近似白送）`, sample);
+-        if (badSamples.length < 8) badSamples.push(sample);
++        if (badSamples.length < 30) badSamples.push(sample);
+       }
+     }
+     console.log("[GQ1] C-2 有效干扰项 ≥2 的题:", `${good}/${items}`, `= ${((good / items) * 100).toFixed(1)}%`);
+diff --git a/src/edge/verify/gq2-boost-items.test.ts b/src/edge/verify/gq2-boost-items.test.ts
+index 8239f27..14bac4d 100644
+--- a/src/edge/verify/gq2-boost-items.test.ts
++++ b/src/edge/verify/gq2-boost-items.test.ts
+@@ -86,7 +86,15 @@ const baseForms = (word: string): string[] => {
+   const out = [word];
+   if (word.endsWith("ies") && word.length > 4) out.push(`${word.slice(0, -3)}y`);
+   if (word.endsWith("es") && word.length > 3) out.push(word.slice(0, -2));
+-  if (word.endsWith("s") && !word.endsWith("ss") && word.length > 3) out.push(word.slice(0, -1));
++  /**
++   * 剥 `-s` 前先确认「词干 + s」本身是合法英语变形。
++   * 否则会把**造出来的词**当成真词：`finishs` 剥成 `finish` 就撞上词典
++   * （正确形态是 `finishes`）——2026-09-24 的 blind spot，
++   * 实测漏掉了 lesson-153 / lesson-180 的两道题。
++   * 咝音（s/sh/ch/x/z）结尾的词干只能配 `-es`，不配 `-s`。
++   */
++  const sibilantStem = /(s|sh|ch|x|z)$/.test(word.slice(0, -1));
++  if (word.endsWith("s") && !word.endsWith("ss") && word.length > 3 && !sibilantStem) out.push(word.slice(0, -1));
+   if (word.endsWith("ed") && word.length > 3) out.push(word.slice(0, -2), word.slice(0, -1));
+   if (word.endsWith("ing") && word.length > 4) out.push(word.slice(0, -3), `${word.slice(0, -3)}e`);
+   return out;
+@@ -119,10 +127,21 @@ const slotOf = (word: string): string => {
+   for (const [name, pattern] of SLOT_PATTERNS) if (pattern.test(lower)) return name;
+   return "other";
+ };
++/**
++ * 两个词是否**同词根**（want / wants / wanting / wanted）。
++ * 同词根的形态变体是最**强**的干扰项——当这一课的点就是动词形态时
++ * （`don't` + 原形、`Could you` + 原形、`have` + 过去分词、`be` + `-ing`），
++ * 它们正是要考的差别，不该因为「动词槽之间不互通」被判成无效（2026-09-24 修）。
++ */
++const sharesBaseForm = (a: string, b: string): boolean => {
++  const left = new Set(baseForms(a.toLowerCase()));
++  return baseForms(b.toLowerCase()).some((form) => left.has(form));
++};
+ const slotCompatible = (answer: string, distractor: string): boolean => {
+   const a = slotOf(answer);
+   const d = slotOf(distractor);
+   if (a === d) return true;
++  if (sharesBaseForm(answer, distractor)) return true;
+   const verbish = new Set(["neg-contraction", "be", "aux", "verb-s", "verb-ed", "verb-ing"]);
+   return !verbish.has(a) && !verbish.has(d);
+ };
+@@ -202,16 +221,40 @@ for (const lesson of grammarLessons) {
+   }
+ }
+ 
+-/** 已知基线上界（2026-09-21 扫描；源码 grammarBoostService.ts sha256 d8f95f40…）。 */
++/**
++ * 已知基线上界（2026-09-21 扫描；源码 grammarBoostService.ts sha256 d8f95f40…）。
++ *
++ * 2026-09-24：`bothRightAsWrong` 由 12 压到 0。tier-3「改错」通道此前漏了 bothRight 守卫，
++ * 双正解素材被当成「这句写错了」，用户照题面写反而被判错。补上守卫后该通道候选池
++ * 729 条保留、506 条 bothRight 排除，三档题量不受影响（仍每课出满）。
++ *
++ * 2026-09-24：`zhMultiAnswerSingleKey` 由 40 压到 6，再随 `acceptAlso` 降到 1。
++ * B-6 此前有两处方法问题导致虚报（把「把这章学过的说法一次说一遍。」这类**指令**
++ * 当成可翻译的句子；以及看到多解就假定判分会拒、从未真正判分）。修好后，再把课内
++ * 确实同样算对的说法纳入 `GrammarLesson.acceptAlso`：
++ *   - L68 两种语序（本课 examples 本就标了「同序换位」、replace 题答案就是那一句）
++ *   - L54 `window` / `windows`（中文不标单复数；本课的点是主动/被动，复数版仍演示同一结构）
++ *   - L175 `So do I.` / `So am I.`（本课 examples 明说「对方说的是 am/is 时这里也跟着换」，
++ *     而题干只有「我也是。」、没给该语境）
++ *
++ * 剩下 1 条是**有意保留、不是待修缺陷**：L112「这本是我的。」的 `This one is mine.`——
++ * 本课的点就是长版 `mine` / 短版 `my` 之分，且该说法在本课 examples 里被标为
++ * 「第 33 课」的回顾，接受它会抹掉本课要教的区别。
++ *
++ * 2026-09-24：`fabricatedDistractor` 由 10 压到 0。加后缀造词前的「还原基础形」一链
++ * 分不清「基础形 need」与「过去式 needed」，把 `need` 剥成 `ne`、再 +d 造出非词 `ned`
++ * （lesson-161 的干扰项）。改为「剥 -ed 之后必须落在已知动词上才算数」后，
++ * `ned` 消失且全库干扰项未出现新的非词。
++ */
+ const BASELINE = {
+   /** contrast 题面取自 bothRight 条（用户选「没问题」反被判错） */
+-  bothRightAsWrong: 12,
+-  fabricatedDistractor: 10,
++  bothRightAsWrong: 0,
++  fabricatedDistractor: 0,
+   visibleAnswer: 1,
+   emptyOrBadAnswer: 0,
+   arrangeNotConstructible: 0,
+-  zhMultiAnswerSingleKey: 40,
+-  weakDistractors: 160
++  zhMultiAnswerSingleKey: 1,
++  weakDistractors: 49
+ };
+ 
+ describe("GQ2 · 趁热练生成题全库扫描（A 可作答性 / B 语义一致 / C 干扰项 / D 判分）", () => {
+@@ -614,18 +657,21 @@ describe("GQ2 · 趁热练生成题全库扫描（A 可作答性 / B 语义一
+     console.log(mismatches.join("\n"));
+     console.log("[GQ2] B-5 说明：variants 的 label 是数据侧人工标注（如 L66「It is too heavy for me.」标成「否定」），");
+     console.log("            出题侧直接引用 label 拼题面，未校验答案形式——属于数据语义标注问题，用户看到「说成否定」却写成陈述");
+-    expect(mismatches.length).toBeLessThanOrEqual(40);
++    expect(mismatches.length).toBeLessThanOrEqual(0);
+   });
+ 
+   it("B-6 中英对照题：中文提示是否多解而只认一解（真实判错场景统计）", () => {
+     // 收集全库「中文 → 英文」映射（课程内所有可作题源的句对）
+     const zhToEn = new Map<string, Map<string, string[]>>();
++    /** 归一化英文 → 原始英文：判分要用原文，不能用归一化结果。 */
++    const enOriginal = new Map<string, string>();
+     const push = (zh: string, en: string, who: string): void => {
+       const z = (zh ?? "").trim();
+       const e = (en ?? "").trim();
+       if (!z || !e) return;
+       const bucket = zhToEn.get(z) ?? new Map<string, string[]>();
+       const key = norm(e);
++      if (!enOriginal.has(key)) enOriginal.set(key, e);
+       bucket.set(key, [...(bucket.get(key) ?? []), who]);
+       zhToEn.set(z, bucket);
+     };
+@@ -638,7 +684,28 @@ describe("GQ2 · 趁热练生成题全库扫描（A 可作答性 / B 语义一
+       if (lesson.recall) push(lesson.recall.intentZh, lesson.recall.answer, `${lesson.id}:recall`);
+     }
+     const multiAnswer = [...zhToEn.entries()].filter(([, bucket]) => bucket.size > 1);
+-    // 题面给 A 的中文、却只认 B 的英文：用户写出课程里另一处教过的等价英文即被判错
++    // 题面给 A 的中文、却只认 B 的英文：用户写出课程里另一处教过的等价英文即被判错。
++    //
++    // 2026-09-24 修（两处方法问题；此前 29 条里 25 条是误报）：
++    //   一、题干可能是「指令」而不是一句可翻译的话——如「把这些事串起来说一遍。」
++    //       「把这章学过的说法一次说一遍。」。这类中文会各自对应到每课自己的 target，
++    //       于是被读成「一句中文有 8 种合法英文」，实则每课考的就是本课那句。
++    //       判据：真正的「同一句话的多种说法」词面高度重合；指令型的彼此几乎不重合。
++    //   二、此前是「看到多解就假定判分会拒」，从未真正判分。改为直接调 judgeBoostItem，
++    //       只统计**实际被判错**的（实测 5 条判分本就接受，如词序变体
++    //       `Yesterday I went to the park.` / `I went to the park yesterday.`）。
++    const wordOverlap = (a: string, b: string): number => {
++      const A = new Set(norm(a).split(" ").filter(Boolean));
++      const B = new Set(norm(b).split(" ").filter(Boolean));
++      if (A.size === 0 || B.size === 0) return 0;
++      let hit = 0;
++      for (const word of A) if (B.has(word)) hit += 1;
++      return hit / Math.max(A.size, B.size);
++    };
++    /** 词面重合度下限：达到此值视为「同一句话的另一种说法」。 */
++    const SAME_MEANING_OVERLAP_MIN = 0.3;
++    /** 另一解中「同一句话」的占比下限：低于此值说明题干是「指令」，各解彼此无关。 */
++    const SAME_MEANING_RATIO_MIN = 0.5;
+     const risky: string[] = [];
+     for (const entry of UNIQUE) {
+       const { item, tier } = entry;
+@@ -646,18 +713,29 @@ describe("GQ2 · 趁热练生成题全库扫描（A 可作答性 / B 语义一
+       if (!item.intentZh.trim()) continue;
+       const bucket = zhToEn.get(item.intentZh.trim());
+       if (!bucket) continue;
+-      const others = [...bucket.entries()].filter(([key]) => key !== norm(item.answer));
++      const others = [...bucket.entries()]
++        .filter(([key]) => key !== norm(item.answer))
++        .map(([key, whos]) => ({ raw: enOriginal.get(key) ?? key, who: whos[0] }));
+       if (others.length === 0) continue;
+-      // 只统计「另一解也出现在同一课以外/以内、且判分不认」的情况
+-      const altEn = others.map(([key, whos]) => `${key}(${whos[0]})`).join(" | ");
+-      risky.push(`${item.id} t${tier} kind=${item.kind} 中文="${item.intentZh}" 只认="${item.answer}" 另有合法写法=${altEn}`);
++      // 一、题干是指令：「把这章学过的说法一次说一遍。」这类中文会对应到每课各自的 target，
++      //     各解彼此无关，只有个别因虚词（I／used／to）偶然重合。
++      //     所以要看**占比**而不是最大值——只用最大值时，
++      //     L124 的 `I used to walk to school.` 会因与 `I am used to getting up early.`
++      //     共享 I／used／to（0.43）而被误判成同一句话。
++      const close = others.filter((other) => wordOverlap(item.answer, other.raw) >= SAME_MEANING_OVERLAP_MIN);
++      if (close.length / others.length < SAME_MEANING_RATIO_MIN) continue;
++      // 二、真正判分：另一解被接受的不算缺陷
++      const rejected = others.filter((other) => !judgeBoostItem(item, { text: other.raw }).passed);
++      if (rejected.length === 0) continue;
++      const altEn = rejected.map((other) => `${other.raw}(${other.who})`).join(" | ");
++      risky.push(`${item.id} t${tier} kind=${item.kind} 中文="${item.intentZh}" 只认="${item.answer}" 被判错的另一解=${altEn}`);
+       record(
+         "zhMultiAnswerSingleKey",
+         "P1",
+         item,
+         tier,
+         "中文提示对应的英文有多个合法写法，判分只认其中一个（用户写出另一解会被判错）",
+-        `intentZh="${item.intentZh}" answer="${item.answer}" 另一解=${altEn}`
++        `intentZh="${item.intentZh}" answer="${item.answer}" 被判错的另一解=${altEn}`
+       );
+     }
+     const uniqueRisky = [...new Set(risky)];
+diff --git a/src/edge/verify/pr1-promises.test.tsx b/src/edge/verify/pr1-promises.test.tsx
+index 4d2b04a..487b399 100644
+--- a/src/edge/verify/pr1-promises.test.tsx
++++ b/src/edge/verify/pr1-promises.test.tsx
+@@ -401,7 +401,7 @@ describe("PR1-8 复习页 reveal 文案「正确的说法是」命中情绪红
+   beforeEach(() => resetStorage());
+ 
+   it("看答案后页面出现「正确的说法是」", async () => {
+-    seedAppData(
++    const seeded = seedAppData(
+       cardsToData([
+         makeSentenceCard({
+           id: "card-z",
+@@ -410,9 +410,18 @@ describe("PR1-8 复习页 reveal 文案「正确的说法是」命中情绪红
+         })
+       ])
+     );
++    /**
++     * 2026-09-24：干扰项改为「同长度课程词汇池」后，cloze 选项不再取自句内词——
++     * 原先硬编码点的 `i`（句内词）已不存在。改为与同文件其它用例一致的写法：
++     * 从任务里取**第一个非答案选项**再点。
++     */
++    const task = buildGrammarReviewTask(buildGrammarReviewSession(seeded)[0], seeded.sentenceDetails);
++    expect(task.mode).toBe("cloze");
++    const wrongOption = task.options.find((option) => option !== task.answer);
++    expect(wrongOption, "cloze 必须有干扰项可点").toBeTruthy();
+     const page = mountPage(<GrammarReviewPage />, "/grammar/review", "/grammar/review");
+     // 先点错一个选项（cloze 首题未答时不显示「看答案」）
+-    clickElement(buttonMatching(page, /^i$/)!);
++    clickElement(buttonMatching(page, new RegExp(`^${wrongOption}$`))!);
+     clickText(page, "想不起来了，看答案");
+     await flushAsync();
+     expect(page.text()).toContain("正确的说法是：");
+@@ -424,80 +433,82 @@ describe("PR1-8 复习页 reveal 文案「正确的说法是」命中情绪红
+ // 五、答案与题面语义一致
+ // ══════════════════════════════════════════════════════════════════
+ 
+-describe("PR1-9 趁热练 fix 题把「两句都对」的句子当成「这句写错了」", () => {
++/**
++ * 修复前：tier-3「自己改错」通道漏了 bothRight 过滤（tier-1 对比通道已于 2026-09-21 修，见 PR1-10）。
++ * `contrast.bothRight === true` 的条目里 `wrong` 是**另一句正确的话**，却被套上
++ * promptZh「这句写错了——请你把它改对，整句写出来。」：
++ *   - L76 题面 `How much milk is there?` → 答案 `I feel much better.`：两句毫无关系，**不可作答**（照题面写 17 分）
++ *   - L87 `It's cold today.` → `It is cold today.`、L169 `I'd like a cup of tea.` → `I would like…`：两句都对，判分放行
++ *   - L114 `There are few apples.` → `There are a few apples.`：两句都成立但意思不同，照题面写 80 分、低于 90 分线
++ * 现在该通道跳过 bothRight；双正解素材仍由专门的 `bothright` 通道承载。
++ */
++describe("PR1-9 趁热练 fix 题不再把「两句都对」的句子当成「这句写错了」（2026-09-24 修）", () => {
+   beforeEach(() => resetStorage());
+ 
+-  it("lesson-87：题面说写错了、讲解说两句都对，答案是被改动的那句", async () => {
+-    const items = buildBoostItems("lesson-87-its-cold", 3, {});
+-    const fix = items.find((item) => item.kind === "fix")!;
+-    expect(fix.shapedFrom).toBe("It's cold today.");
+-    expect(fix.answer).toBe("It is cold today.");
+-    expect(fix.shapedLabel).toBe("这句有问题");
+-    expect(fix.promptZh).toContain("这句写错了");
+-    // 讲解却明说两句都对
+-    expect(fix.explainZh).toContain("两句都对");
+-    // 题面要求「改对」，但源数据说原句本身没问题 —— 学生照原样写反而判通过
+-    const { judgeBoostItem } = await import("../../services/grammarBoostService");
+-    expect(
+-      judgeBoostItem(fix, { text: fix.shapedFrom ?? "" }).passed,
+-      "照题面给出的原句作答被判通过（说明该句本身没有可改之处）"
+-    ).toBe(true);
+-
++  it("lesson-87：fix 题不再取用 bothRight 素材，换成真正的错句", () => {
+     const lesson = grammarLessons.find((entry) => entry.id === "lesson-87-its-cold")!;
+-    const bothRight = (lesson.contrast ?? []).filter((entry) => entry.bothRight && entry.wrong.trim() === fix.shapedFrom);
+-    expect(bothRight.length, "源数据明确标注 bothRight").toBe(1);
++    const bothRightWrong = new Set(
++      (lesson.contrast ?? []).filter((entry) => entry.bothRight).map((entry) => entry.wrong.trim())
++    );
++    expect(bothRightWrong.size, "源数据仍标注 bothRight——守卫靠过滤，不靠删数据").toBeGreaterThan(0);
++
++    const fix = buildBoostItems("lesson-87-its-cold", 3, {}).find((item) => item.kind === "fix");
++    expect(fix, "该课仍有改错题：守卫换料，不取消题型").toBeTruthy();
++    expect(bothRightWrong.has(fix!.shapedFrom ?? ""), "题面不得取自 bothRight 素材").toBe(false);
++    // 换上的应是真正有错的句子：题面与答案规范化后必须不同
++    expect(fix!.shapedFrom).not.toBe(fix!.answer);
+   });
+ 
+-  it("全库 3 处被抽中（候选池 460 条 bothRight 中，命中取决于交错取题顺序）", () => {
++  it("全库 205 课 × 16 轮：没有任何 fix 题的题面取自 bothRight 素材", () => {
+     const hits: string[] = [];
+     for (const lesson of grammarLessons) {
+-      const bothRightWrong = new Set((lesson.contrast ?? []).filter((entry) => entry.bothRight).map((entry) => entry.wrong.trim()));
+-      for (const item of buildBoostItems(lesson.id, 3, {})) {
+-        if (item.kind === "fix" && item.shapedFrom && bothRightWrong.has(item.shapedFrom)) hits.push(lesson.id);
++      const bothRightWrong = new Set(
++        (lesson.contrast ?? []).filter((entry) => entry.bothRight).map((entry) => entry.wrong.trim())
++      );
++      if (bothRightWrong.size === 0) continue;
++      for (let round = 0; round < 16; round += 1) {
++        for (const item of buildBoostItems(lesson.id, 3, { round })) {
++          if (item.kind !== "fix" || !item.shapedFrom) continue;
++          if (bothRightWrong.has(item.shapedFrom)) hits.push(`${lesson.id}:r${round}:${item.shapedFrom}`);
++        }
+       }
+     }
+-    expect(hits.length, "实际抽中的 bothRight 来源 fix 题").toBeGreaterThan(0);
+-    expect(hits).toContain("lesson-87-its-cold");
++    expect([...new Set(hits)], "fix 题面取自 bothRight 素材的处数").toEqual([]);
+   });
+ 
+-  it("候选池规模：460 条 bothRight 全部可被 fix 题取用（无 bothRight 过滤）", () => {
+-    let candidates = 0;
++  it("守卫不是空转：候选池里 bothRight 条目确实存在，只是取不到", () => {
++    let bothRightCandidates = 0;
+     for (const lesson of grammarLessons) {
+       for (const contrast of lesson.contrast ?? []) {
+         if (!contrast.bothRight) continue;
+         if (!contrast.wrong.trim() || !contrast.correct.trim()) continue;
+         if (contrast.wrong.trim() === contrast.correct.trim()) continue;
+-        candidates += 1;
++        bothRightCandidates += 1;
+       }
+     }
+-    expect(candidates, "候选池应远大于 0（数据增长中，不写死绝对值）").toBeGreaterThan(100);
++    // 池子仍在（数据增长中，不写死绝对值）；取用数为 0 由上一个用例保证
++    expect(bothRightCandidates, "bothRight 候选池应远大于 0").toBeGreaterThan(100);
+   });
+ 
+-  it("反向危害：有的 fix 用原句作答反而通过（判分对「两句都对」无感知）", async () => {
++  it("反向危害已消除：没有 fix 题会因「照原样作答」通过（不再有 bothRight 来源）", async () => {
+     const { judgeBoostItem } = await import("../../services/grammarBoostService");
+-    const results: Array<{ lessonId: string; passed: boolean; score: number | undefined; isBothRight: boolean }> = [];
++    const contradictory: string[] = [];
+     for (const lesson of grammarLessons) {
+-      const bothRightWrong = new Set((lesson.contrast ?? []).filter((entry) => entry.bothRight).map((entry) => entry.wrong.trim()));
++      const bothRightWrong = new Set(
++        (lesson.contrast ?? []).filter((entry) => entry.bothRight).map((entry) => entry.wrong.trim())
++      );
+       for (const item of buildBoostItems(lesson.id, 3, {})) {
+         if (item.kind !== "fix") continue;
+-        const judged = judgeBoostItem(item, { text: item.shapedFrom ?? "" });
+-        results.push({
+-          lessonId: lesson.id,
+-          passed: judged.passed,
+-          score: judged.score,
+-          isBothRight: Boolean(item.shapedFrom && bothRightWrong.has(item.shapedFrom))
+-        });
++        if (!item.shapedFrom || !bothRightWrong.has(item.shapedFrom)) continue;
++        const judged = judgeBoostItem(item, { text: item.shapedFrom });
++        contradictory.push(`${lesson.id}:${item.id}:${judged.passed ? "通过" : "不通过"}`);
+       }
+     }
+-    const contradictory = results.filter((entry) => entry.isBothRight);
+-    expect(contradictory.length).toBeGreaterThan(0);
+-    // 其中 2 处「照原样作答」直接判通过（90 分线把两者视为等价），1 处判不通过（17 分）
+-    expect(contradictory.filter((entry) => entry.passed).length, "照原样作答被判通过的数量").toBeGreaterThan(0);
+-    // 其余处照原样作答被判不通过（同一句式两种判法，取决于 90 分线）
+-    expect(contradictory.filter((entry) => !entry.passed).length + contradictory.filter((entry) => entry.passed).length).toBe(contradictory.length);
++    expect(contradictory).toEqual([]);
+   });
+ });
+ 
++
+ describe("PR1-10 趁热练档 1 对比题已排除 bothRight 句（2026-09-21 修）", () => {
+   beforeEach(() => resetStorage());
+ 
+diff --git a/src/edge/verify/rv10-session-dedupe.test.ts b/src/edge/verify/rv10-session-dedupe.test.ts
+index cf40142..3773627 100644
+--- a/src/edge/verify/rv10-session-dedupe.test.ts
++++ b/src/edge/verify/rv10-session-dedupe.test.ts
+@@ -28,13 +28,18 @@ const makeDue = (data: AppData): AppData => ({
+ });
+ 
+ describe("RV10 会话去重", () => {
+-  it("同一案件的 4 张卡（同一句）在会话里只占 1 个槽位", () => {
++  it("同一案件只有一张卡（2026-09-24 一案一卡），会话里出现一次", () => {
+     // 挑一个 4 错点的案子
+     const caseItem = huntCases.find((item) => item.errors.length >= 4);
+     expect(caseItem, "库里应有 4 错点案件").toBeTruthy();
+     let data = makeAppData({ cards: [], schedules: [], sentenceDetails: [] }) as AppData;
+     data = addHuntGapSentences(data, caseItem!, caseItem!.errors.map((error) => error.tokenIndex)).data;
+-    expect(data.cards.length, "该案应生成多张卡").toBeGreaterThan(1);
++    /**
++     * 2026-09-24 改：入队侧已改「一案一卡」（addHuntGapSentences 不再按错点建多张
++     * 卡面相同的卡），所以这里只有一张卡——会话里只出现一次的原因从
++     * 「会话去重兜底」变成「本来就只有一张」。原断言「该案应生成多张卡」随之作废。
++     */
++    expect(data.cards.length, "一案一卡").toBe(1);
+     // 让这些卡都到期（新建卡 status="new" 不进队列，这里模拟「已复习过两次」）
+     data = makeDue(data);
+     const session = buildGrammarReviewSession(data, 10);
+diff --git a/src/edge/verify/rv5-cloze-quality.test.ts b/src/edge/verify/rv5-cloze-quality.test.ts
+index 6abfb56..4d0300f 100644
+--- a/src/edge/verify/rv5-cloze-quality.test.ts
++++ b/src/edge/verify/rv5-cloze-quality.test.ts
+@@ -6,12 +6,17 @@
+  *    第二个 late 仍在题面上——用户直接照抄。
+  * ② 单词卡的题面塌成光秃秃的 `____`：front="am" 这类卡挖空后没有任何上下文，
+  *    用户无从判断要填什么（全库实测 12 例）。
++ *
++ * 2026-09-24 追加：② 的修复一度被 downstream 的「单词卡一律转 free_type」守卫遮蔽成死代码。
++ * 该守卫的理由（cloze 会只剩 1 个选项）对**功能词**不成立——实测 front="am" 的选项是
++ * am/is/are 三条。守卫已收窄为：单词卡一律不走 rebuild；cloze 选项 ≥2 就用 cloze，否则 free_type。
++ * 本文件后三条用例锁死这个分流，防止再次被遮蔽。
+  */
+ import { describe, expect, it } from "vitest";
+ import { buildGrammarReviewTask, type GrammarReviewCard } from "../../services/grammarReviewService";
+ import type { Card } from "../../types";
+ 
+-const mk = (front: string, id = "c1", note = ""): GrammarReviewCard =>
++const mk = (front: string, id = "c1", note = "", reviewCount = 0): GrammarReviewCard =>
+   ({
+     card: {
+       id,
+@@ -28,7 +33,7 @@ const mk = (front: string, id = "c1", note = ""): GrammarReviewCard =>
+       cardId: id,
+       easeFactor: 2.5,
+       intervalDays: 3,
+-      reviewCount: 0, // 0 → cloze
++      reviewCount, // 0 → cloze；1 → rebuild
+       lapseCount: 0,
+       nextReviewAt: "2024-01-01T00:00:00.000Z"
+     }
+@@ -68,4 +73,62 @@ describe("RV5 挖空题面质量", () => {
+     expect(task.promptText.trim()).not.toBe("____");
+     expect(task.promptText.length).toBeGreaterThan(4);
+   });
++
++  /**
++   * 以下三条锁死 2026-09-24 收窄的分流规则（见文件头）。
++   * 判据一句话：**单词卡一律不走 rebuild；cloze 选项 ≥2 就用 cloze，否则 free_type。**
++   */
++  it("单词卡永不走 rebuild（reviewCount=1 也是），因为 1 个词块＝点一下就过", () => {
++    for (const word of ["am", "is", "the", "went"]) {
++      const task = buildGrammarReviewTask(mk(word, `rb-${word}`, "第 1 课核心句", 1));
++      expect(task.mode, `单词卡「${word}」不得走 rebuild`).not.toBe("rebuild");
++    }
++  });
++
++  it("cloze 选项 ≥2 的功能词走 cloze：题面带锚点、选项含答案、且不是单选项", () => {
++    for (const word of ["am", "is", "are", "the", "my"]) {
++      const task = buildGrammarReviewTask(mk(word, `fn-${word}`, "第 1 课核心句"));
++      expect(task.mode, `功能词「${word}」应走 cloze`).toBe("cloze");
++      expect(task.options.length, `「${word}」不得塌成单选项`).toBeGreaterThanOrEqual(2);
++      expect(task.options).toContain(task.answer);
++      expect(task.promptText).toContain("第 1 课核心句");
++      expect(task.promptText.trim(), "题面不能只有空位").not.toBe("____");
++    }
++  });
++
++  /**
++   * 单词卡的分流**不变量**（2026-09-25 由「按词逐个写死」改为「只锁不变量」）。
++   *
++   * 为什么改：原先这里写死「went / dogs / tomorrow / quickly 必须退 free_type」，
++   * 依据是 `buildClozeOptions` 对它们凑不出干扰项。但干扰项来源会随内容侧演进
++   * （2026-09-24 起新增了「课程词汇池」这一类），写死具体词的期望会**随别人改池子而假红**。
++   * 真正该守的是规则本身：
++   *   ① 单词卡永不 rebuild（1 个词块＝点一下就过）；
++   *   ② 若出 cloze，选项必须 ≥2 且含答案；
++   *   ③ 若退 free_type，题面必须带来源锚点、且不得泄漏答案。
++   * 这三条对任何干扰项来源都成立。
++   */
++  it("单词卡分流不变量：永不 rebuild；cloze 必须 ≥2 且含答案；free_type 必须带锚点不泄漏", () => {
++    const words = ["am", "is", "are", "the", "my", "to", "went", "dogs", "tomorrow", "quickly"];
++    const freeTypeSeen: string[] = [];
++    for (const word of words) {
++      const task = buildGrammarReviewTask(mk(word, `inv-${word}`, "第 1 课核心句"));
++      expect(task.mode, `单词卡「${word}」不得走 rebuild`).not.toBe("rebuild");
++      expect(task.promptText.trim(), `「${word}」的题面不能是空`).not.toBe("");
++      if (task.mode === "cloze") {
++        expect(task.options.length, `「${word}」的 cloze 选项不足 2 个`).toBeGreaterThanOrEqual(2);
++        expect(task.options, `「${word}」的 cloze 选项里必须含答案`).toContain(task.answer);
++      } else {
++        freeTypeSeen.push(word);
++        expect(task.sentence, `「${word}」退 free_type 时必须留下要产出的句子`).toBe(word);
++        expect(task.promptText, `「${word}」的 free_type 题面必须带来源锚点`).toContain("第 1 课核心句");
++        expect(
++          task.promptText.toLowerCase().includes(word.toLowerCase()),
++          `「${word}」的 free_type 题面不得泄漏答案`
++        ).toBe(false);
++      }
++    }
++    // 记录当前实际走 free_type 的词（不写死期望：干扰项池变化时这条只是信息，不是判据）
++    expect(Array.isArray(freeTypeSeen), "free_type 分支当前命中：" + freeTypeSeen.join("/")).toBe(true);
++  });
+ });
+diff --git a/src/edge/verify/rv7-copy-and-consistency.test.tsx b/src/edge/verify/rv7-copy-and-consistency.test.tsx
+index 960540d..dd36312 100644
+--- a/src/edge/verify/rv7-copy-and-consistency.test.tsx
++++ b/src/edge/verify/rv7-copy-and-consistency.test.tsx
+@@ -195,7 +195,9 @@ describe("RV7-b 数据带进来的讲解文案（记录现状）", () => {
+         }
+       }
+     }
+-    expect(total).toBeGreaterThan(300);
++    // 2026-09-24：hunt 改为一案一卡后，grammarNote 由「每错点一条」变为「每案一条」，
++    // 总数从 >300 降到 214（= 有错点命中的案件数）。零术语断言不受影响（仍为 0）。
++    expect(total).toBeGreaterThan(200);
+     // 2026-09-22 批四十三：huntCases 的用户可见文案做了零术语清理（313 处 → 0），
+     // 断言随之由「记录缺陷（>300）」反转为「不得再命中」。
+     expect(hitCount, `仍有 grammarNote 命中术语：${samples.join(" | ")}`).toBe(0);
+@@ -479,7 +481,8 @@ describe("RV7-c 答案与题面语义一致", () => {
+       });
+       if (task.mode === "cloze" && task.options.length < 4) underFour += 1;
+     });
+-    expect(underFour).toBeGreaterThan(15);
++    // 2026-09-24：补上课程词汇池候选后，选项凑不满 4 个的题从 >15 降到 0（原为「记录缺陷」断言）
++    expect(underFour).toBe(0);
+   });
+ 
+   it("cloze 干扰项常是题面里已有的词（用户可直接排除）", () => {
+@@ -526,10 +529,13 @@ describe("RV7-c 答案与题面语义一致", () => {
+       if (visible.length > 0) anyDistractorVisible += 1;
+     });
+     expect(total).toBeGreaterThan(190);
+-    // 现状：每一课的干扰项里都至少有 1 个已在题面出现过（用户可直接排除）
+-    expect(anyDistractorVisible).toBe(total);
+-    // 绝大多数课的干扰项「全部」都能从题面上划掉
+-    expect(allDistractorsVisible / total).toBeGreaterThan(0.85);
++    /**
++     * 2026-09-24：这条原先记录的是**缺陷现状**——每一课的干扰项里都至少有一个已在题面出现过
++     * （用户可直接排除），根源是内容词只能退化成「句内其他词」。
++     * 补上「同长度课程词汇池」候选后，该数从 205/205 降到个位数，断言随之反转为**守卫**。
++     */
++    expect(anyDistractorVisible / total, "干扰项不应再普遍取自题面").toBeLessThan(0.1);
++    expect(allDistractorsVisible / total, "「全部可从题面划掉」的题应几乎绝迹").toBeLessThan(0.05);
+   });
+ 
+   it("rebuild 的词块集合等于原句词集合，且不是原序", () => {
+diff --git a/src/services/grammarBoostService.test.ts b/src/services/grammarBoostService.test.ts
+index f6ace2e..e1b0b89 100644
+--- a/src/services/grammarBoostService.test.ts
++++ b/src/services/grammarBoostService.test.ts
+@@ -464,6 +464,78 @@ describe("grammarBoostService · 档 2 出题（自己想）", () => {
+   });
+ });
+ 
++describe("acceptAlso · 课内标注的等价说法同样算对（L68 两种语序）", () => {
++  /**
++   * 「我给妈妈买了份礼物。」本课 examples 标了「同序换位」，replace 题的正确答案
++   * 就是 `I bought my mom a gift.`——但产出类题原先只认 for 版，写出另一版实测判 29 分。
++   * 修法：等价说法写进 GrammarLesson.acceptAlso，判分取各候选中的最高分。
++   */
++  it("L68 的两种语序都判对，且不放行无关说法", () => {
++    for (const tier of [2, 3] as const) {
++      const item = buildBoostItems("lesson-68-buy-for", tier).find(
++        (entry) => entry.answer === "I bought a gift for my mom."
++      );
++      expect(item, `tier${tier} 应有以该句为答案的题`).toBeDefined();
++      expect(judgeBoostItem(item!, { text: "I bought a gift for my mom." }).passed, "基准句").toBe(true);
++      expect(judgeBoostItem(item!, { text: "I bought my mom a gift." }).passed, "同序换位也算对").toBe(true);
++      expect(
++        judgeBoostItem(item!, { text: "I gave my teacher some flowers." }).passed,
++        "acceptAlso 不是放行一切：换了动词与宾语必须判错"
++      ).toBe(false);
++    }
++  });
++
++  it("缺省时不改变行为：未标注 acceptAlso 的课不带该字段", () => {
++    const withoutField = grammarLessons.filter((lesson) => !lesson.acceptAlso);
++    expect(withoutField.length, "绝大多数课未标注").toBeGreaterThan(100);
++    for (const lesson of withoutField.slice(0, 20)) {
++      for (const item of buildBoostItems(lesson.id, 3)) {
++        expect(item.acceptAlso, `${item.id} 不该带 acceptAlso`).toBeUndefined();
++      }
++    }
++  });
++
++  it("只作用于 target 句，不串到该课其它句子上", () => {
++    const items = buildBoostItems("lesson-68-buy-for", 3);
++    const targetItems = items.filter((item) => item.answer === "I bought a gift for my mom.");
++    expect(targetItems.length, "该课应有 target 来源的题").toBeGreaterThan(0);
++    for (const item of items.filter((entry) => entry.answer !== "I bought a gift for my mom.")) {
++      expect(item.acceptAlso, `${item.id} 答案不是 target 句，不该带 acceptAlso`).toBeUndefined();
++    }
++  });
++
++  it("L54：中文不标单复数的翻译题，window / windows 都判对（走 examples 通道）", () => {
++    const item = buildBoostItems("lesson-54-focus", 2).find(
++      (entry) => entry.answer === "The window was cleaned yesterday."
++    );
++    expect(item, "该课应有以这句为答案的题").toBeDefined();
++    expect(item!.kind, "由 examples 出的翻译题").toBe("translate");
++    expect(item!.acceptAlso, "examples 上的 acceptAlso 要带到题上").toEqual(["The windows were cleaned yesterday."]);
++    expect(judgeBoostItem(item!, { text: "The window was cleaned yesterday." }).passed, "基准句").toBe(true);
++    expect(judgeBoostItem(item!, { text: "The windows were cleaned yesterday." }).passed, "复数版也对").toBe(true);
++  });
++
++  it("L175：题干没给语境，So do I. / So am I. 都判对", () => {
++    for (const tier of [2, 3] as const) {
++      const item = buildBoostItems("lesson-175-so-do-i", tier).find(
++        (entry) => entry.answer === "So do I."
++      );
++      expect(item, `tier${tier} 应有以该句为答案的题`).toBeDefined();
++      expect(item!.acceptAlso).toEqual(["So am I."]);
++      expect(judgeBoostItem(item!, { text: "So do I." }).passed, "基准句").toBe(true);
++      expect(judgeBoostItem(item!, { text: "So am I." }).passed, "am 版也对（本课 examples 明说跟着换）").toBe(true);
++    }
++  });
++
++  it("该接受才接受：L112 的两种物主代词之分不放进 acceptAlso", () => {
++    const item = buildBoostItems("lesson-112-this-is-mine", 3).find(
++      (entry) => entry.answer === "This book is mine."
++    );
++    expect(item).toBeDefined();
++    expect(item!.acceptAlso, "本课的点就是两种物主代词之分，不该接受另一解").toBeUndefined();
++  });
++});
++
+ describe("grammarBoostService · 档 3 出题（换你来说）", () => {
+   it("题量 3、三种产出任务形态、答案非空", () => {
+     const items = buildBoostItems(sampleLessonId(), 3);
+@@ -806,9 +878,13 @@ describe("cloze 干扰项质量（这是「题目能不能做」的底线）", (
+   //   已变形的词不再叠第二个变形后缀（cleaneding／takesed／takess ❌）。
+   it("全库 cloze 干扰项不得是伪造词（词形结构判定）", () => {
+     // 允许多段后缀的例外（真词里存在的组合）
++    // 2026-09-24 补 `needing`：`need` 是基础形、但词尾恰好是 `-ed`，
++    // 于是 need+ing 的形状（`…eding`）与伪造词 `cleaned+ing`（cleaneding）撞型，被规则①误伤。
++    // 它是真词，按本例外表处理。
+     const LEGIT = new Set([
+       "closed", "cleaned", "played", "studied", "watched", "finished", "started",
+-      "wanted", "needed", "liked", "helped", "opened", "listened", "walked", "worked"
++      "wanted", "needed", "liked", "helped", "opened", "listened", "walked", "worked",
++      "needing"
+     ]);
+     const isFabricatedWord = (word: string): boolean => {
+       const w = word.toLowerCase().replace(/[^a-z']/g, "");
+diff --git a/src/services/grammarReviewService.test.ts b/src/services/grammarReviewService.test.ts
+index 31257d5..3e60a29 100644
+--- a/src/services/grammarReviewService.test.ts
++++ b/src/services/grammarReviewService.test.ts
+@@ -150,6 +150,63 @@ describe("grammarReviewService（R03 语法点复习）", () => {
+   });
+ });
+ 
++describe("存量兜底：单词卡不得做成退化的 cloze / rebuild", () => {
++  /**
++   * 入队侧已不再产生这类卡（见 lessonService.reviewSentenceOfGuidedStep：choose 用
++   * before/after 还原整句，replace / spot 因变换后整句不在数据里而不入队），
++   * 本分支只兜**用户队列里的历史卡**与旁路入队。
++   *
++   * 判据（2026-09-24 收窄，比「单词卡一律 free_type」更准）：
++   *   - `rebuild` 只剩 1 个词块确实是废题 → 单词卡一律不走 rebuild；
++   *   - 但 `cloze` 对**功能词**不退化：`buildClozeOptions` 有功能词同族替换，
++   *     `front="am"` 能凑出 `["am","is","are"]`，配上来源锚点仍是可作答的题；
++   *   - 只有同族也凑不出时（`dogs` / `went`）cloze 才塌成单选项 → 那才退 free_type。
++   *
++   * 所以这里断言的是**不变量**，不写死具体阈值：
++   *   ① 单词卡永不 rebuild；② 单词卡若出 cloze，选项必须 ≥ 2。
++   */
++  const taskFor = (front: string, reviewCount = 0) => {
++    const card = makeCard("x1", front, "lesson:lesson-01-am");
++    return buildGrammarReviewTask({ card, schedule: makeSchedule("x1", iso(-1), 0, reviewCount) }, []);
++  };
++
++  it("单词卡：任何 reviewCount 下都不做 rebuild，且 cloze 选项必 ≥ 2", () => {
++    for (const front of ["am", "have", "dogs", "went"]) {
++      for (const reviewCount of [0, 1, 2, 3, 4, 5]) {
++        const task = taskFor(front, reviewCount);
++        expect(task.mode, `front="${front}" reviewCount=${reviewCount} 做成了 rebuild`).not.toBe("rebuild");
++        if (task.mode === "cloze") {
++          expect(
++            (task.options ?? []).length,
++            `front="${front}" reviewCount=${reviewCount} 的 cloze 只剩单选项`
++          ).toBeGreaterThanOrEqual(2);
++        }
++        expect(task.promptText.trim(), "每种模式都要给出写哪句的抓手").not.toBe("");
++      }
++    }
++  });
++
++  it("单词卡不再只能退 free_type：课程词汇池能给出选项时照常出 cloze（2026-09-24）", () => {
++    /**
++     * 此前 review 侧 buildClozeOptions 缺「同长度课程词汇池」这一类候选，
++     * 内容词（dogs / went）只能退化成句内其他词或塌成单选项，于是不得不一律退 free_type。
++     * 补上该类候选后，这类卡能正常出 cloze——free_type 只在**真的凑不出**时才用。
++     */
++    const task = taskFor("dogs", 0);
++    expect(task.mode).toBe("cloze");
++    expect((task.options ?? []).length, "选项必须 ≥2，否则又会塌成单选项").toBeGreaterThanOrEqual(2);
++    expect(task.scrambled ?? []).toHaveLength(0);
++  });
++
++  it("正常整句不受影响：仍能给出词块 ≥ 2 的 rebuild 或选项 ≥ 2 的 cloze", () => {
++    for (const reviewCount of [0, 1, 2, 3]) {
++      const task = taskFor("I am happy.", reviewCount);
++      if (task.mode === "rebuild") expect((task.scrambled ?? []).length).toBeGreaterThanOrEqual(2);
++      if (task.mode === "cloze") expect((task.options ?? []).length).toBeGreaterThanOrEqual(2);
++    }
++  });
++});
++
+ describe("R-UX9 diversifyReviewModes（同型不连出）", () => {
+   const itemWithCount = (id: string, reviewCount: number) => ({
+     card: makeCard(id, `Sentence ${id} is here.`, "lesson:lesson-01-am"),
+diff --git a/src/services/huntService.test.ts b/src/services/huntService.test.ts
+index 550f1dc..c4136a0 100644
+--- a/src/services/huntService.test.ts
++++ b/src/services/huntService.test.ts
+@@ -277,17 +277,40 @@ describe("R02 找错知识缺口 → SM-2 复习队列", () => {
+     expect(twice.data.cards).toHaveLength(1);
+   });
+ 
+-  it("同案同罪名的多处不同错词各自成卡（幂等键含原错词）；无缺口零新增", () => {
+-    // hunt-moving-day 有两处 tense（moved / helped）——同罪名不同错词，应各建一张
++  it("同案多处错并入同一张卡（正面对每处错点都是同一句）；无缺口零新增", () => {
++    /**
++     * 2026-09-24 改：原先按错点逐个建卡，而同一案件的每张卡正面都是同一句
++     * `correctedSentence`——一案 7 处错就出 7 张**卡面完全相同**的卡，
++     * 复习时同一句话连着出现、挤占每次 10 张的复习容量
++     * （gq1 huntDuplicateCards 曾 214 条 = 576 张多余卡）。
++     * 改为**一案一卡**：grammarNote 把命中的每个错点（罪名 + 原错词 → 改法）并列列出——
++     * 弱点归因读的就是这些标记，并入不丢归因。
++     */
++    // hunt-moving-day 有两处 tense（moved / helped）
+     const caseItem = huntCases.find((item) => item.id === "hunt-moving-day")!;
+     const allGap = caseItem.errors.map((error) => error.tokenIndex);
+     const { data, added } = addHuntGapSentences(makeTestData(), caseItem, allGap);
+-    expect(added).toBe(caseItem.errors.length);
+-    const tenseCards = data.cards.filter((card) => {
+-      const details = data.sentenceDetails.find((item) => item.cardId === card.id);
+-      return details?.grammarNote.startsWith("[tense:");
+-    });
+-    expect(tenseCards).toHaveLength(2);
++    // 一案只建一张卡，无论命中几处错点
++    expect(added).toBe(1);
++    const huntCards = data.cards.filter((card) => card.sourceId === `hunt:${caseItem.id}`);
++    expect(huntCards).toHaveLength(1);
++    // 正面是完整正确句：包含每个错点的**改法**（删词型错点原词本就不在，勿用子串判断）
++    expect(huntCards[0].front.split(/\s+/).length).toBeGreaterThan(2);
++    for (const error of caseItem.errors) {
++      expect(huntCards[0].front.toLowerCase()).toContain(error.correction.toLowerCase());
++    }
++    // 讲解并列列出本案全部错点，弱点归因用的标记一个不少
++    const details = data.sentenceDetails.find((item) => item.cardId === huntCards[0].id)!;
++    for (const error of caseItem.errors) {
++      expect(details.grammarNote).toContain(`[${error.tag}:${error.original}]`);
++    }
++
++    // 幂等：同一案件重复结算，不重复建卡、不重复并入
++    const second = addHuntGapSentences(data, caseItem, allGap);
++    expect(second.added).toBe(0);
++    expect(second.data.cards).toHaveLength(data.cards.length);
++    const detailsAfter = second.data.sentenceDetails.find((item) => item.cardId === huntCards[0].id);
++    expect(detailsAfter?.grammarNote).toBe(details.grammarNote);
+ 
+     const { data: unchanged, added: zero } = addHuntGapSentences(makeTestData(), caseItem, []);
+     expect(zero).toBe(0);
+diff --git a/src/services/huntService.ts b/src/services/huntService.ts
+index c2c9375..4f5999c 100644
+--- a/src/services/huntService.ts
++++ b/src/services/huntService.ts
+@@ -535,32 +535,48 @@ export const addHuntGapSentences = (
+   const gapSet = new Set(gapTokenIndexes);
+   let next = data;
+   let added = 0;
+-  // 同一案件的每张卡正面都是这句「完整正确句」（见 correctedSentenceOf 说明），
+-  // 对同案只算一次，避免在每个错点里重复做同样的替换。
++  // 同一案件的所有错点共用同一个完整正确句（correctedSentenceOf）。
++  // 卡片若按错点逐个建，会产出「卡面完全相同」的多张卡——一案最多 7 张，
++  // 复习时同一句话连着出现、挤占每次 10 张的复习容量（gq1 的 huntDuplicateCards，214 条）。
++  // 因此改为**一案一卡**：grammarNote 把本案命中的每个错点（罪名 + 原错词 → 改法）并列列出，
++  // 已有卡缺哪个标记就并入哪个（弱点归因读的是这些标记，并入不丢归因）。
+   const correctedSentence = correctedSentenceOf(caseItem);
+   if (!correctedSentence) return { data: next, added };
+-  for (const error of caseItem.errors) {
+-    if (!gapSet.has(error.tokenIndex)) continue;
+-    const sentence = correctedSentence;
+-    // 幂等键 = 案件 + 罪名 + 原错词（同案同罪名可能有多处不同错词，如两个不同的过去式，需各自成卡）
+-    const gapKey = `[${error.tag}:${error.original}]`;
+-    const duplicated = next.cards.some((card) => {
+-      if (card.type !== "sentence" || card.sourceId !== `hunt:${caseItem.id}`) return false;
+-      const details = next.sentenceDetails.find((item) => item.cardId === card.id);
+-      return details?.grammarNote.includes(gapKey) ?? false;
+-    });
+-    if (duplicated) continue;
+-    next = addSentence(next, {
+-      sentence,
+-      translation: "",
+-      keywords: "",
+-      grammarNote: `[${error.tag}:${error.original}] ${GRAMMAR_ERROR_TAG_LABELS[error.tag]}：${error.original} → ${error.correction}。${error.explanation}`,
+-      sourceId: `hunt:${caseItem.id}`,
+-      note: `找错案件：${caseItem.title}（${GRAMMAR_ERROR_TAG_LABELS[error.tag]}）`,
+-      tags: "语法"
+-    });
+-    added += 1;
++  const relevant = caseItem.errors.filter((error) => gapSet.has(error.tokenIndex));
++  if (relevant.length === 0) return { data: next, added };
++  const sourceId = `hunt:${caseItem.id}`;
++  const grammarNoteOf = (error: HuntCase["errors"][number]) =>
++    `[${error.tag}:${error.original}] ${GRAMMAR_ERROR_TAG_LABELS[error.tag]}：${error.original} → ${error.correction}。${error.explanation}`;
++  const existing = next.cards.find(
++    (card) => card.type === "sentence" && card.sourceId === sourceId
++  );
++  if (existing) {
++    const details = next.sentenceDetails.find((item) => item.cardId === existing.id);
++    const note = details?.grammarNote ?? "";
++    const missing = relevant.filter((error) => !note.includes(`[${error.tag}:${error.original}]`));
++    if (missing.length === 0) return { data: next, added };
++    return {
++      data: {
++        ...next,
++        sentenceDetails: next.sentenceDetails.map((item) =>
++          item.cardId === existing.id
++            ? { ...item, grammarNote: `${note}\n${missing.map(grammarNoteOf).join("\n")}` }
++            : item
++        )
++      },
++      added
++    };
+   }
++  next = addSentence(next, {
++    sentence: correctedSentence,
++    translation: "",
++    keywords: "",
++    grammarNote: relevant.map(grammarNoteOf).join("\n"),
++    sourceId,
++    note: `找错案件：${caseItem.title}（${[...new Set(relevant.map((error) => GRAMMAR_ERROR_TAG_LABELS[error.tag]))].join("/")}）`,
++    tags: "语法"
++  });
++  added += 1;
+   return { data: next, added };
+ };
+ 
+diff --git a/src/services/lessonService.test.ts b/src/services/lessonService.test.ts
+index 6c1cd3c..df86416 100644
+--- a/src/services/lessonService.test.ts
++++ b/src/services/lessonService.test.ts
+@@ -1,4 +1,5 @@
+ import { describe, expect, it } from "vitest";
++import { grammarLessons } from "../data/grammarLessons";
+ import {
+   addLessonCoreSentence,
+   addLessonMistakeSentence,
+@@ -24,8 +25,7 @@ import {
+   markLessonStageDone,
+   normalizeLessonSentence,
+   shuffleTokenOrder,
+-  summarizeLessonProgress
+-} from "./lessonService";
++  summarizeLessonProgress, reviewSentenceOfGuidedStep, outputSpeakerOfTarget } from "./lessonService";
+ import type { AppData, GrammarLesson, LessonGuidedStep } from "../types";
+ 
+ const baseData = (overrides: Partial<AppData> = {}): AppData =>
+@@ -224,6 +224,100 @@ describe("lessonService · 错句与核心句回流 SM-2", () => {
+   });
+ });
+ 
++describe("outputSpeakerOfTarget · 核心句在对话里是谁说的（「说出来」文案要用）", () => {
++  /**
++   * 「说出来」档 2 的题面原文案是「这一幕里轮到小美说话。凭记忆，按这一课的句型写出**她**要说的那句话
++   * ——不是同学问她的那一句」。但全库 205 课里有 11 课的核心句**不是**小美的台词，
++   * 而是对方的话——这 11 课沿用该文案正好说反（浏览器走查发现）。
++   *
++   * 例：L72 的核心句是 `How often do you run?`（同学问的「你多久跑一次」），
++   *     L32 是 `Close the door.`（对方提的要求）。
++   */
++  it("核心句是小美台词时判 me（L01：I am Xiaomei.）", () => {
++    const lesson = grammarLessons.find((entry) => entry.id === "lesson-01-am")!;
++    expect(outputSpeakerOfTarget(lesson)).toBe("me");
++  });
++
++  it("核心句是对方的话时判 other（L72：How often do you run?）", () => {
++    const lesson = grammarLessons.find((entry) => entry.id === "lesson-72-how-often")!;
++    expect(lesson.targetSentence).toBe("How often do you run?");
++    expect(outputSpeakerOfTarget(lesson), "这句是同学问的，不是小美说的").toBe("other");
++  });
++
++  it("全库：判定值合法，且「不是小美说的」那几课确实存在（回归：曾经一律按「她说」写文案）", () => {
++    const counts = { me: 0, other: 0, null: 0 };
++    const notHerLine: string[] = [];
++    for (const lesson of grammarLessons) {
++      const who = outputSpeakerOfTarget(lesson);
++      counts[String(who) as keyof typeof counts] += 1;
++      if (who !== "me") notHerLine.push(lesson.id);
++    }
++    expect(counts.me, "绝大多数课的核心句是小美的台词").toBeGreaterThan(150);
++    expect(
++      notHerLine.length,
++      `核心句不是小美台词的课（文案要换中性说法）：${notHerLine.join(", ")}`
++    ).toBeGreaterThan(0);
++    expect(counts.me + counts.other + counts.null).toBe(grammarLessons.length);
++  });
++});
++
++describe("reviewSentenceOfGuidedStep · 答错时入队的那一句（复习队列是句子级的）", () => {
++  /**
++   * 队列按句复习（SM-2 逐句），而入队侧此前直接把 guided 的 `answer` 当句子——
++   * choose / replace / spot 的 answer 是**单个词**（`am` / `is` / `have`），
++   * 于是进了队列就变成「只有一个词块、点一下就过」的空题
++   * （gq1 rebuildTooFewChunks 曾 393 处、clozeSingleOption 曾 311 处，均 P0/P1）。
++   */
++  it("choose：占位符在两段之间时，answer 夹进去（L01 形状）", () => {
++    expect(reviewSentenceOfGuidedStep({ kind: "choose", promptZh: "", before: "I", after: "happy.", answer: "am", explain: "" }))
++      .toBe("I am happy.");
++  });
++
++  it("choose：占位符写在 before 里时，answer 替换掉它（L85 形状）", () => {
++    expect(reviewSentenceOfGuidedStep({ kind: "choose", promptZh: "", before: "___ book is this?", after: "", answer: "Whose", explain: "" }))
++      .toBe("Whose book is this?");
++  });
++
++  it("choose：标点前不留空格（after 以「.」开头）", () => {
++    expect(reviewSentenceOfGuidedStep({ kind: "choose", promptZh: "", before: "I like", after: ".", answer: "dogs", explain: "" }))
++      .toBe("I like dogs.");
++  });
++
++  it("choose：还原不出整句时返回空串（宁可不入队，也不塞单词进句子队列）", () => {
++    expect(reviewSentenceOfGuidedStep({ kind: "choose", promptZh: "", before: "", after: "", answer: "am", explain: "" })).toBe("");
++    // 占位符没被填掉同样不入队（残句比缺卡更糟）
++    expect(reviewSentenceOfGuidedStep({ kind: "choose", promptZh: "", before: "___ ___ here.", after: "", answer: "is", explain: "" })).toBe("");
++  });
++
++  it("arrange：answer 本就是整句", () => {
++    expect(reviewSentenceOfGuidedStep({ kind: "arrange", promptZh: "", tokens: [], answer: "I am Xiaomei.", explain: "" }))
++      .toBe("I am Xiaomei.");
++  });
++
++  it("replace / spot：变换后的整句不在数据里 → 不入队", () => {
++    expect(reviewSentenceOfGuidedStep({ kind: "replace", promptZh: "", replaceBase: "I am drawing.", replaceTarget: "把 I 换成 She", answer: "is", explain: "" })).toBe("");
++    expect(reviewSentenceOfGuidedStep({ kind: "spot", promptZh: "", tokens: ["I", "is", "Xiaomei."], wrongToken: "is", answer: "is", explain: "" })).toBe("");
++  });
++
++  it("全库 205 课的 choose 题都能还原成干净整句（回归：曾把 ___ 一起拼进句子）", () => {
++    const problems: string[] = [];
++    let choices = 0;
++    for (const lesson of grammarLessons) {
++      for (const [index, step] of lesson.guided.entries()) {
++        if (step.kind !== "choose") continue;
++        choices += 1;
++        const sentence = reviewSentenceOfGuidedStep(step);
++        if (!sentence) { problems.push(`${lesson.id} guided[${index}] 还原为空`); continue; }
++        if (sentence.includes("___")) problems.push(`${lesson.id} guided[${index}] 残留占位符：${sentence}`);
++        if (/\s[.,!?;:]/.test(sentence)) problems.push(`${lesson.id} guided[${index}] 标点前有空格：${sentence}`);
++        if (!sentence.toLowerCase().includes(step.answer.toLowerCase())) problems.push(`${lesson.id} guided[${index}] 句中没有答案词：${sentence}`);
++      }
++    }
++    expect(choices, "每课一道 choose").toBeGreaterThan(150);
++    expect(problems).toEqual([]);
++  });
++});
++
+ describe("lessonService · 三单常驻检查（R04）", () => {
+   it("he/she/it + 动词原形给提醒，正确形式不提醒", () => {
+     expect(detectThirdPersonMiss("he go to school")).not.toBeNull();
+@@ -380,7 +474,7 @@ describe("F1 三关卡完成态", () => {
+ describe("R9 replace 变形题", () => {
+   const replaceStep: LessonGuidedStep = {
+     kind: "replace",
+-    promptZh: "句子变身：「I am drawing.」把主语 I 换成 She，动词要怎么变？",
++    promptZh: "句型转换：「I am drawing.」把主语 I 换成 She，动词要怎么变？",
+     replaceBase: "I am drawing.",
+     replaceTarget: "把 I 换成 She",
+     options: ["is", "am", "are"],
+diff --git a/src/services/lessonService.ts b/src/services/lessonService.ts
+index c61cc84..52917c7 100644
+--- a/src/services/lessonService.ts
++++ b/src/services/lessonService.ts
+@@ -127,7 +127,17 @@ export const isFreeOutputPassed = (
+ export const checkLessonTokens = (selected: string[], answer: string): boolean =>
+   tokenSequencesEquivalent(selected, answer);
+ 
+-/** 点选题判分。 */
++/**
++ * 点选题判分。
++ *
++ * ⚠️ 这里用裸 `toLowerCase` 比较是**有意为之**，不并入 diffService 的折叠归一化：
++ * 点选题的两侧都**不是用户手打的**——`picked` 来自点选（值取自 `options`），
++ * `answer` 取自同一份课程数据，所以两侧写法天然一致，全角/畸形输入不可能出现。
++ * 反而若在这里做宽容折叠，会放过「选项串错」这类数据缺陷。
++ *
++ * 需要折叠的是**用户可能手打**的判分点（拼写、填空、自由输出）——
++ * 那些一律走 diffService 的 `spellingMatches` / `compareText`。
++ */
+ export const checkLessonChoice = (picked: string, answer: string): boolean =>
+   picked.trim().toLowerCase() === answer.trim().toLowerCase();
+ 
+@@ -557,7 +567,7 @@ const THIRD_PERSON_BASE_VERBS =
+ 
+ export const detectThirdPersonMiss = (input: string): string | null => {
+   const pattern = new RegExp(`\\b(he|she|it)\\s+(${THIRD_PERSON_BASE_VERBS})\\b`, "i");
+-  return pattern.test(input) ? "他 / 她 / 它做事，动词要加 s——检查一下动词有没有小尾巴。" : null;
++  return pattern.test(input) ? "他 / 她 / 它做事，动词要加 -s——检查一下动词有没有带 -s。" : null;
+ };
+ 
+ /**
+@@ -633,6 +643,131 @@ export const lessonCompletionMark = (): string => nowIso();
+  * 课程里练错过一次以上的句子，回流成句子卡，进入现有 SM-2 复习队列。
+  * 同一句子 + 同一课程只收一次，避免反复刷课产生重复卡片。
+  */
++/**
++ * 课内答错时，真正该进复习队列的**那一句**。
++ *
++ * 队列是**句子**级的（SM-2 逐句复习），而 guided 各型的 `answer` 不都是句子：
++ *   - `choose`：answer 是单个词（`am` / `is` / `have`）——用 before/after 还原整句
++ *     （`I` + `am` + `happy.` → `I am happy.`）
++ *   - `arrange`：answer 本来就是整句
++ *   - `replace` / `spot`：answer 分别是「变形后的词」与「错的词」，
++ *     而**变换后的正确整句不在数据里**，无法还原 → 不入队。
++ *     这两个句型已由 core 句 / practice / recall / contrast 四条通道覆盖，
++ *     代价是「换主语后动词怎么变」这一点不再单独进复习（要补需在数据层加字段）。
++ *
++ * 此前直接把 `answer` 入队，产出的是「词块数 1」的卡：复习时点一下就过
++ * （gq1 的 rebuildTooFewChunks，全库 393 处，P0）。
++ */
++/**
++ * 本课核心句（`targetSentence`）在对话里是**谁说的**。
++ *
++ * 用途：「说出来」段档 2 的题面文案。实测全库 205 课里 **196 课**核心句是小美（`who === "me"`）的台词，
++ * 但**9 课不是**——那些课的核心句其实是对方的话（如 L72 `How often do you run?` 是同学问的、
++ * L32 `Close the door.` 是对方提的要求）。题面若一律写「写出**她要说的**那句话——不是同学问她的那一句」，
++ * 在这 9 课上正好说反，学习者会被引向错误的句子。
++ *
++ * 归一化后按对话逐行比对；对话里找不到（理论上不该发生）返回 `null`，调用侧用中性文案。
++ */
++export const outputSpeakerOfTarget = (
++  lesson: GrammarLesson
++): "me" | "other" | null => {
++  const target = normalizeLessonSentence(lesson.targetSentence ?? "");
++  if (!target) return null;
++  for (const line of lesson.dialogue ?? []) {
++    if (normalizeLessonSentence(line.en ?? "") !== target) continue;
++    return line.who === "me" ? "me" : "other";
++  }
++  return null;
++};
++
++/**
++ * 课程词汇池（用于 cloze 的同类别干扰项）。
++ *
++ * 为什么不用 bundledDictionary：那本词典有 3.3MB / 数万词，远超出课程的 500 词门槛——
++ * 拿它当干扰项会出现用户从没学过的词，反而是"超纲干扰"。
++ * 这里只用**全部课程文本里出现过的词**（约 430 个），保证干扰项也在用户的学习范围内。
++ *
++ * 2026-09-24 从 grammarBoostService 移到这里：复习卡侧（grammarReviewService.buildClozeOptions）
++ * 也需要它——那边原先缺这一类候选，内容词的干扰项只能退化成「句内其他词」，
++ * 词性不符、一眼可排除（gq1 weakDistractors 1282 条的主因）。
++ */
++let courseVocabularyCache: string[] | null = null;
++export const courseVocabulary = (): string[] => {
++  if (courseVocabularyCache) return courseVocabularyCache;
++  const words = new Set<string>();
++  for (const lesson of grammarLessons) {
++    const texts: string[] = [
++      lesson.targetSentence,
++      ...(lesson.examples ?? []).map((example) => example.en),
++      ...(lesson.practice ?? []).map((step) => step.answer),
++      ...(lesson.variants ?? []).map((variant) => variant.en),
++      ...(lesson.dialogue ?? []).map((line) => line.en)
++    ];
++    for (const text of texts) {
++      for (const raw of (text ?? "").split(/\s+/)) {
++        /**
++         * 2026-09-25：剔除「被引号引用的词」这种伪词（**按原始 token 判断**）。
++         *
++         * 反例（gq1 C-1 实测抓到）：lesson-138 的台词是
++         * `Two 'to's on one page!`——作者在**引用「to」这个单词**并说它有两个。
++         * 下面的清洗只剥首尾标点，于是 `'to's` 被剥成 `to's` 收进池子，
++         * 成了复习 cloze 的干扰项（一个不存在的英语词）。
++         *
++         * 判据必须看**原文**：清洗后只剩一个撇号（`to's`），看起来跟真缩写无异；
++         * 只有原文里撇号 ≥2 才说明作者用了引号引用（`'to's`）。
++         * 真缩写（don't / mustn't / it's）原文只有 1 个撇号，不受影响。
++         */
++        if ((raw.match(/['\u2019]/g) ?? []).length >= 2) continue;
++        // 保留词内撇号（don't / shouldn't 是完整词；剥掉会变成 didnt 这种不存在的写法），
++        // 只剥词首尾的标点。
++        const clean = raw
++          .replace(/^[.,!?;:'"\u2019(\[]+/, "")
++          .replace(/[.,!?;:'"\u2019)\]]+$/, "")
++          .replace(/\u2019/g, "'")
++          .toLowerCase();
++        if (clean.length < 3) continue;
++        /**
++         * 只收**纯字母词**。撇号形式一律不收：
++         *  - 缩略语（don't / shouldn't）已由 cloze 候选来源①「功能词同族替换」覆盖；
++         *  - 课程文本里还有**引用词本身**的写法（L14 对话 `Two 'to's on one page!`），
++         *    抽出来是 `to's`——不是英语词，进了池子就会当干扰项（gq1 distractorNotRealWord 实测命中）。
++         */
++        if (!/^[a-z]+$/.test(clean)) continue;
++        // 只收**基础形式**：屈折形式（-ed/-ing/-est/-ly）不作为干扰项候选，
++        // 否则会出现 "It is ___ today." 的选项里混进 written/taller 这类不匹配的词形。
++        if (/(ed|ing|est|ly)$/.test(clean) && clean.length > 4) continue;
++        words.add(clean);
++      }
++    }
++  }
++  courseVocabularyCache = [...words];
++  return courseVocabularyCache;
++};
++
++export const reviewSentenceOfGuidedStep = (step: LessonGuidedStep): string => {
++  if (step.kind === "arrange") return step.answer.trim();
++  if (step.kind !== "choose") return "";
++  const before = step.before ?? "";
++  const after = step.after ?? "";
++  /**
++   * choose 的题面有**两种排法**，还原时要分开处理：
++   *   ① 占位符在 before/after 里面（L85「___ book is this?」+ answer「Whose」）
++   *      → answer 是**填空**，替换掉那个 `___`；
++   *   ② 占位符在 before/after 之间（L01「I」+ answer「am」+「happy.」）
++   *      → answer 夹在两段中间。
++   * 只做 ② 会把 ① 拼成「___ book is this? Whose」——占位符与答案一起留在句子里，
++   * 后续挖空还会把 `___` 当干扰项（实测如此）。
++   */
++  const blank = `${before} ${after}`.includes("___")
++    ? `${before} ${after}`.replace("___", step.answer)
++    : [before, step.answer, after].join(" ");
++  // 标点前不留空格（after 常以「.」开头，拼出来会是 `I like dogs .`）
++  const full = blank.replace(/\s+/g, " ").replace(/\s+([.,!?;:])/g, "$1").trim();
++  // 还原不出整句、或占位符没被填掉时宁可不入队，也不要塞一个残句进句子队列
++  if (full.includes("___")) return "";
++  return full.split(" ").filter(Boolean).length >= 2 ? full : "";
++};
++
+ export const addLessonMistakeSentence = (
+   data: AppData,
+   lesson: GrammarLesson,

@@ -1,5 +1,7 @@
 import type { AppData, ExamItemResult, ExamSession } from "../types";
 import { nowIso } from "./storage";
+import { GRAMMAR_LESSON_BY_ID } from "../data/grammarLessons";
+import { addLessonMistakeSentence } from "./lessonService";
 import type { ExamPaper, ExamPaperItem } from "./grammarExamPaperService";
 
 /**
@@ -257,4 +259,78 @@ export const examDiagnosis = (paper: ExamPaper, session: ExamSession | undefined
     stabilizedCount: stabilized.size,
     missingCount: missingLabels.length
   };
+};
+
+/**
+ * 错题回流（P1-2）：把「还漏」且能指回某一课的题，还原成**整句**喂给既有 SM-2 队列。
+ *
+ * 规格：PRD §4.8（结果页的「错题回流入口」）｜裁决 14「考试错题只做**新增入口**，
+ * 把题源 id 喂给既有队列，不改算法」｜§4.10 不变量 1。
+ *
+ * 三件事必须守住：
+ * 1. **不改 SM-2**：只调用既有的 `addLessonMistakeSentence`（它内部走 `addSentence`，
+ *    与课内答错、日记批改进的是同一条队列、同一套参数）。
+ * 2. **只回流「整句」**：队列是句子级的，塞一个 `am` 进去只会产出一道废题
+ *    （这正是入队侧修过的 `rebuildTooFewChunks`）。所以按题型还原：
+ *      - `zh2en`：答案本身就是完整句 → 直接用
+ *      - `cloze` / `mcq(choose)`：题面是「选一个填进空位：I ____ happy.」→ 把空位换回答案
+ *      - `read` / `write`：阅读选项是短语、写作无判分 → **不回流**
+ * 3. **只回流错题**：已稳住的句子不进队列（避免把会的东西再排一遍）。
+ */
+export const reviewableSentenceOf = (item: ExamPaperItem): string => {
+  if (!item || item.kind === "read" || item.kind === "write") return "";
+  const answer = (item.answer ?? "").trim();
+  if (!answer) return "";
+  // 题面里带空位：把空位换回答案即可还原整句（选择题与填空题都是这个形态）
+  const prompt = item.promptZh ?? "";
+  const blankAt = prompt.indexOf("____");
+  if (blankAt >= 0) {
+    const sentence = prompt
+      .slice(blankAt - 200) // 防题面异常长
+      .replace(/^[\s\S]*?：/, "") // 去掉「选一个填进空位：」这类中文前缀
+      .replace("____", answer)
+      .trim();
+    return sentence.split(/\s+/).filter(Boolean).length >= 3 ? sentence : "";
+  }
+  // 无空位：只有「答案本身就是句子」时才可用（对比题的正确答案、中译英的答案句）
+  const looksLikeSentence = answer.includes(" ") && /[.!?]$/.test(answer);
+  return looksLikeSentence && answer.split(/\s+/).filter(Boolean).length >= 3 ? answer : "";
+};
+
+/** 本卷里「还漏」且可回流的句子（去重、可溯源到课）。 */
+export const examMistakeSentences = (
+  paper: ExamPaper,
+  session: ExamSession | undefined
+): Array<{ lessonId: string; sentence: string; grammarNote: string }> => {
+  const byId = new Map(paper.items.map((item) => [item.id, item]));
+  const seen = new Set<string>();
+  const out: Array<{ lessonId: string; sentence: string; grammarNote: string }> = [];
+  for (const result of session?.results ?? []) {
+    if (result.passed) continue;
+    const item = byId.get(result.itemId);
+    if (!item || !item.sourceLessonId) continue;
+    const sentence = reviewableSentenceOf(item);
+    if (!sentence || seen.has(sentence)) continue;
+    seen.add(sentence);
+    out.push({
+      lessonId: item.sourceLessonId,
+      sentence,
+      grammarNote: `第 ${item.sourceLessonNumber} 课：${item.grammarLabel}`
+    });
+  }
+  return out;
+};
+
+/**
+ * 交卷后把错题喂进既有队列。**幂等**（`addLessonMistakeSentence` 按句子+来源去重），
+ * 所以重复交卷/重看结果屏都不会重复入队。
+ */
+export const queueExamMistakes = (data: AppData, paper: ExamPaper, session: ExamSession | undefined): AppData => {
+  let next = data;
+  for (const mistake of examMistakeSentences(paper, session)) {
+    const lesson = GRAMMAR_LESSON_BY_ID.get(mistake.lessonId);
+    if (!lesson) continue;
+    next = addLessonMistakeSentence(next, lesson, mistake.sentence, mistake.grammarNote);
+  }
+  return next;
 };

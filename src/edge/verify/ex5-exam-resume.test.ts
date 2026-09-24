@@ -25,7 +25,9 @@ import {
   revealExamSection,
   startExamSession,
   submitExamSession,
-  itemsOfSection
+  itemsOfSection,
+  queueExamMistakes,
+  reviewableSentenceOf
 } from "../../services/grammarExamSessionService";
 import type { AppData } from "../../types";
 
@@ -160,5 +162,91 @@ describe("EX5 中断续做：三处断点（P0 发布门）", () => {
     expect(next.section).toBe(3);
     expect(next.index).toBeLessThan(itemsOfSection(paper, 3).length);
     expect(next.index).toBeGreaterThanOrEqual(0);
+  });
+});
+
+describe("EX5 错题回流（P1-2）：只回流整句、只回流错题、幂等", () => {
+  it("错题还原成整句并入队；已稳住的与阅读/写作不回流", () => {
+    let data = startExamSession(emptyData(), paper);
+    const section1 = itemsOfSection(paper, 1);
+    // 第 1 题答对（不该回流），其余节 1 全错
+    section1.forEach((item, index) => {
+      data = recordExamItem(data, paper, item, {
+        answer: index === 0 ? item.answer : "错的",
+        passed: index === 0,
+        score: index === 0 ? 100 : 0,
+        durationMs: 1000
+      });
+    });
+    for (const item of itemsOfSection(paper, 2)) {
+      data = recordExamItem(data, paper, item, { answer: "x", passed: false, score: 0, durationMs: 1000 });
+    }
+    const session = getExamSession(data, paper.paperId)!;
+    const queued = queueExamMistakes(data, paper, session);
+
+    const cards = queued.cards.filter((card) => card.type === "sentence" && card.tags?.includes("语法"));
+    expect(cards.length, "应有错题句被入队").toBeGreaterThan(0);
+    for (const card of cards) {
+      const words = card.front.trim().split(/\s+/).filter(Boolean);
+      expect(words.length, `回流必须是整句（队列是句子级）：${card.front}`).toBeGreaterThanOrEqual(3);
+    }
+    // 已稳住的那题不得入队
+    const passedItem = section1[0];
+    if (reviewableSentenceOf(passedItem)) {
+      const sentence = reviewableSentenceOf(passedItem);
+      expect(cards.some((card) => card.front.trim() === sentence), "已稳住的句子不该进队列").toBe(false);
+    }
+    // 阅读/写作不回流（判定不了、也不该判）
+    for (const item of itemsOfSection(paper, 2).filter((i) => i.kind === "read")) {
+      expect(reviewableSentenceOf(item), `阅读题不该有可回流句：${item.id}`).toBe("");
+    }
+    expect(reviewableSentenceOf(paper.items.find((i) => i.kind === "write")!), "写作题不该有可回流句").toBe("");
+  });
+
+  it("幂等：重复入队不产生重复卡（交卷可被重复触发）", () => {
+    let data = startExamSession(emptyData(), paper);
+    for (const item of itemsOfSection(paper, 1)) {
+      data = recordExamItem(data, paper, item, { answer: "错的", passed: false, score: 0, durationMs: 1000 });
+    }
+    const session = getExamSession(data, paper.paperId)!;
+    const once = queueExamMistakes(data, paper, session);
+    const twice = queueExamMistakes(once, paper, getExamSession(once, paper.paperId));
+    const count = (d: AppData) => d.cards.filter((c) => c.type === "sentence" && c.tags?.includes("语法")).length;
+    expect(count(twice), "重复入队不应增加句子卡").toBe(count(once));
+    expect(count(once), "第一次应确实入队了").toBeGreaterThan(0);
+  });
+
+  it("还原规则：cloze/choose 用题面把空位换回答案；答案非句子且无空位则跳过", () => {
+    const cloze = itemsOfSection(paper, 1).find((i) => i.kind === "cloze")!;
+    const restored = reviewableSentenceOf(cloze);
+    expect(restored, "填空题应能还原出整句").not.toBe("");
+    expect(restored.includes("____"), "还原后不该还留着空位").toBe(false);
+    expect(restored.split(/\s+/).length, "还原的是整句").toBeGreaterThanOrEqual(3);
+  });
+
+  it("【真机走查抓出的回归】空位两侧必须有空格：否则回流会被静默丢弃", () => {
+    /**
+     * 真机走查发现：选择题题面曾被拼成 `I want____apple.`（before 不以空格结尾）。
+     * 后果不只是难看——回流把 `____` 换回答案会得到 `I wantanapple.`，
+     * 被「整句 ≥3 词」守门判掉，于是**选择题的错题一条都进不了复习队列**。
+     * 这条守住：凡是带空位的题面，空位前后都得是空格。
+     */
+    const withBlank = paper.items.filter((item) => (item.promptZh ?? "").includes("____"));
+    expect(withBlank.length, "卷面应有带空位的题").toBeGreaterThan(0);
+    // 判据：空位**前面**必须是空格或中文冒号（可选空格）；**后面**必须是空格或句尾。
+    // 注意不能要求「后面一定有空格」——空位落在句尾时（`… I ____`）后面本来就没有。
+    const wellSpaced = /(^|[：\s])____(\s|$)/;
+    const offenders = withBlank
+      .filter((item) => !wellSpaced.test(`：${item.promptZh}`.replace(/^[^：]*：/, "：")))
+      .map((item) => `${item.id}: ${item.promptZh}`);
+    expect(offenders, `空位两侧缺空格：\n${offenders.join("\n")}`).toEqual([]);
+  });
+
+  it("带空位的题都能还原出整句（回流的前提）", () => {
+    const restored = paper.items
+      .filter((item) => (item.promptZh ?? "").includes("____"))
+      .map((item) => ({ id: item.id, kind: item.kind, sentence: reviewableSentenceOf(item) }));
+    const failed = restored.filter((entry) => entry.sentence.trim().split(/\s+/).length < 3);
+    expect(failed.slice(0, 5).map((e) => `${e.id}(${e.kind}) → 「${e.sentence}」`), "这些带空位的题还原不出整句").toEqual([]);
   });
 });

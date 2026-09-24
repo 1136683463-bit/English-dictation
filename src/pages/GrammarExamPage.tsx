@@ -15,6 +15,7 @@ import {
   recordExamDispute,
   recordExamItem,
   recordExamWriting,
+  queueExamMistakes,
   revealExamSection,
   startExamSession,
   submitExamSession
@@ -279,7 +280,14 @@ export default function GrammarExamPage() {
 
   const revealNext = (answeredSection: 1 | 2 | 3) => {
     if (answeredSection === 3) {
-      updateData((latest) => submitExamSession(latest, paper.paperId));
+      /**
+       * 交卷 + **错题回流**（P1-2）。先 submit 再入队，用同一份 session；
+       * 入队本身幂等（`addLessonMistakeSentence` 按「句子+来源」去重），重复交卷不会重复排。
+       */
+      updateData((latest) => {
+        const submitted = submitExamSession(latest, paper.paperId);
+        return queueExamMistakes(submitted, paper, getExamSession(submitted, paper.paperId));
+      });
       appendGrammarEvent({
         kind: "exam_submitted",
         paperId: paper.paperId,
@@ -454,12 +462,10 @@ export default function GrammarExamPage() {
       {diagnosis.missingCount > 0 ? (
         <p className="lesson-why-line">
           {/*
-            ⚠️ 文案纪律：这里**不许**写「已经排进复习队列 / 明天会再见到」——
-            错题回流 SM-2 是 P1-2，本批（M2）边界明确写了不做（PRD §13）。
-            文案不许承诺尚未实现的行为：用户按承诺去复习页找不到这几句，信任就没了。
-            P1-2 落地后，再把「会回来」这句加回来，并同步 ex2 的守门。
+            P1-2 已落地：这些句子**真的**进了 SM-2 队列（见 revealNext 里的 queueExamMistakes）。
+            这句话之所以能写回来，是因为行为已经存在——文案不许承诺尚未实现的行为。
           */}
-          <Lightbulb size={13} /> 先回课里看一眼最省事——点上面每条的「出自第 N 课」就能跳过去。
+          <Lightbulb size={13} /> 这几处已经排进你的复习队列，明天会再见到它们。
         </p>
       ) : null}
 

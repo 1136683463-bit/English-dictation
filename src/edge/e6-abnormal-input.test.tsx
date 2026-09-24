@@ -46,8 +46,14 @@ const enterPractice = (page: Mounted) => {
   expect(inSection(page, "自己来"), `应在练习段，实际: ${sectionLabels(page).join(",")}`).toBe(true);
 };
 
-const feedbackKind = (page: Mounted): "pass" | "retry" | "none" => {
+/**
+ * 反馈态。`fiddling`＝「通过后自由摆弄」（ST2，2026-09-24）：
+ * 判定仍是 pass（出口与记录都不变），但**当前拼装区已不等于答案**，
+ * 横幅按事实降级为中性，不再对错误的拼法声称「答对」。
+ */
+const feedbackKind = (page: Mounted): "pass" | "fiddling" | "retry" | "none" => {
   if (page.container.querySelector(".lesson-feedback.pass")) return "pass";
+  if (page.container.querySelector(".lesson-feedback.fiddling")) return "fiddling";
   if (page.container.querySelector(".lesson-feedback.retry")) return "retry";
   return "none";
 };
@@ -190,7 +196,10 @@ describe("E6 · 异常输入", () => {
        */
       clickEl(builtChips(page)[0]);
       expect(builtWords(page).length).toBe(before - 1);
-      expect(feedbackKind(page), "已通过的题移除一块后仍保持 pass").toBe("pass");
+      expect(
+        feedbackKind(page),
+        "已通过的题移除一块：判定不变但拼法已不等于答案 → 横幅转「已通过·自由摆弄」，不得仍显示答对"
+      ).toBe("fiddling");
       expect(page.buttons().includes("下一题"), "出口不应因一次移除而消失").toBe(true);
     } else {
       answerGuidedCorrectly(page, { step, sourceIndex: first, displayIndex: 0 });
